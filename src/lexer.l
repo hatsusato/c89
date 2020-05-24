@@ -11,7 +11,9 @@
 %%
 
 "#" BEGIN(preprocess);
-<preprocess>[^\n]*[\n] BEGIN(INITIAL);
+<preprocess>[^\n\\]*
+<preprocess>[\\]+[^\\]
+<preprocess>[\n] { BEGIN(INITIAL); return PREPROCESS; }
 
 "/*" BEGIN(comment);
 <comment>[^*]*
