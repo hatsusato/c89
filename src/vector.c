@@ -56,3 +56,9 @@ boolean vector_empty(const Vector *v) {
   assert(v);
   return vector_allocated(v) ? v->begin == v->end : true;
 }
+void vector_push_back(Vector *v, int i) {
+  if (v->end == v->capacity) {
+    vector_extend(v);
+  }
+  *v->end++ = i;
+}
