@@ -1,12 +1,12 @@
 #include <stdio.h>
 
-int yylex(void);
-extern int num_lines;
-extern int num_chars;
+#include "parser.tab.h"
+int g_result;
 
+void yyerror(const char* msg) {
+  fprintf(stderr, "%s\n", msg);
+}
 int main(void) {
-  yylex();
-  printf("lines: %d, ", num_lines);
-  printf("chars: %d\n", num_chars);
-  return 0;
+  yyparse();
+  return g_result;
 }

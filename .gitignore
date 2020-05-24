@@ -1,3 +1,5 @@
+*.tab.h
+
 # Prerequisites
 *.d
 
