@@ -11,9 +11,6 @@ struct struct_Vector {
   char *capacity;
 };
 
-static boolean vector_allocated(const Vector *v) {
-  return v->begin != NULL;
-}
 static int vector_size(const Vector *v) {
   return v->begin ? v->end - v->begin : 0;
 }
@@ -64,7 +61,7 @@ int vector_length(const Vector *v) {
 }
 boolean vector_empty(const Vector *v) {
   assert(v);
-  return vector_allocated(v) ? v->begin == v->end : true;
+  return v->begin == v->end;
 }
 void vector_push_back(Vector *v, void *e, int size) {
   assert(v);
