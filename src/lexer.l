@@ -112,4 +112,6 @@
 [1-9][0-9]* { return INTEGER; }
 [0][xX][0-9a-fA-F]* { return INTEGER; }
 
+[ \t\n]
+
 %%
