@@ -103,3 +103,7 @@ void vector_copy(Vector *v, void *buf, Size len) {
   memcpy(v->data + v->size, buf, len);
   v->size += len;
 }
+void vector_clear(Vector *v) {
+  assert(v);
+  v->size = 0;
+}
