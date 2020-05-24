@@ -7,6 +7,7 @@
 
 %x preprocess
 %x comment
+%x string
 
 %%
 
@@ -19,6 +20,11 @@
 <comment>[^*]*
 <comment>"*"+[^*/]*
 <comment>"*"+"/" { BEGIN(INITIAL); return COMMENT; }
+
+["] BEGIN(string);
+<string>[^"\n\\]
+<string>[\\][^\n]
+<string>["] { BEGIN(INITIAL); return LITERAL; }
 
 "auto" return AUTO;
 "break" return BREAK;
