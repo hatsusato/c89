@@ -78,3 +78,15 @@ void vector_append(Vector *v, const Vector *w) {
   memcpy(v->data + v->size, w->data, w->size);
   v->size += w->size;
 }
+Vector *vector_clone(const Vector *v) {
+  Vector *w = nil;
+  assert(v);
+  w = vector_new(v->align);
+  if (0 == v->size) {
+    return w;
+  }
+  vector_extend(w, v->size);
+  memcpy(w->data, v->data, v->size);
+  w->size = v->size;
+  return w;
+}
