@@ -22,3 +22,7 @@ Vector *vector_free(Vector *v) {
   free(v);
   return NULL;
 }
+int vector_size(Vector *v) {
+  assert(v);
+  return v->begin ? v->end - v->begin : 0;
+}
