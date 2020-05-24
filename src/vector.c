@@ -25,10 +25,11 @@ static int *vector_alloc(Vector *v, int size, int capacity) {
 }
 static void vector_extend(Vector *v) {
   static const int initial_size = 16;
+  int *src = NULL;
   int size = vector_size(v);
   int capacity = vector_capacity(v);
   capacity += 0 < capacity ? capacity : initial_size;
-  int *src = vector_alloc(v, size, capacity);
+  src = vector_alloc(v, size, capacity);
   if (src) {
     memcpy(v->begin, src, size * sizeof(int));
     free(src);
@@ -43,8 +44,9 @@ Vector *vector_new(void) {
   return v;
 }
 void vector_free(Vector **v) {
+  Vector *p = NULL;
   assert(v && *v);
-  Vector *p = *v;
+  p = *v;
   free(p->begin);
   free(p);
   *v = NULL;
