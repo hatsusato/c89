@@ -29,6 +29,11 @@ static Size vector_capacity(const Vector *v) {
 static boolean vector_full(const Vector *v) {
   return v->end == v->capacity;
 }
+static Size vector_capacity_next(const Vector *v) {
+  Size initial_size = 16 * v->align;
+  Size capacity = vector_capacity(v);
+  return (0 == capacity) ? initial_size : 2 * capacity;
+}
 static Byte *vector_alloc(Vector *v, Size size, Size capacity) {
   Byte *prev = v->begin;
   v->begin = malloc(capacity);
@@ -37,11 +42,9 @@ static Byte *vector_alloc(Vector *v, Size size, Size capacity) {
   return prev;
 }
 static void vector_extend(Vector *v) {
-  static const Size initial_size = 16;
   Byte *src = NULL;
   Size size = vector_size(v);
-  Size capacity = vector_capacity(v);
-  capacity = 0 < capacity ? 2 * capacity : v->align * initial_size;
+  Size capacity = vector_capacity_next(v);
   src = vector_alloc(v, size, capacity);
   memcpy(v->begin, src, size);
   vector_free_begin(src);
