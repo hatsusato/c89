@@ -11,11 +11,20 @@ struct struct_Vector {
   char *capacity;
 };
 
+static char *vector_origin(void) {
+  static char origin = 0;
+  return &origin;
+}
+static void vector_free_begin(char *begin) {
+  if (vector_origin() != begin) {
+    free(begin);
+  }
+}
 static int vector_size(const Vector *v) {
-  return v->begin ? v->end - v->begin : 0;
+  return v->end - v->begin;
 }
 static int vector_capacity(const Vector *v) {
-  return v->begin ? v->capacity - v->begin : 0;
+  return v->capacity - v->begin;
 }
 static char *vector_alloc(Vector *v, int size, int capacity) {
   char *prev = v->begin;
@@ -31,10 +40,8 @@ static void vector_extend(Vector *v) {
   int capacity = vector_capacity(v);
   capacity = 0 < capacity ? 2 * capacity : v->align * initial_size;
   src = vector_alloc(v, size, capacity);
-  if (src) {
-    memcpy(v->begin, src, size);
-    free(src);
-  }
+  memcpy(v->begin, src, size);
+  vector_free_begin(src);
 }
 
 Vector *vector_new(Alignment a) {
@@ -42,16 +49,16 @@ Vector *vector_new(Alignment a) {
   assert(0 < a);
   v = malloc(sizeof(Vector));
   v->align = a;
-  v->begin = NULL;
-  v->end = NULL;
-  v->capacity = NULL;
+  v->begin = vector_origin();
+  v->end = v->begin;
+  v->capacity = v->begin;
   return v;
 }
 void vector_free(Vector **v) {
   Vector *p = NULL;
   assert(v && *v);
   p = *v;
-  free(p->begin);
+  vector_free_begin(p->begin);
   free(p);
   *v = NULL;
 }
