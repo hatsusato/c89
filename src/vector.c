@@ -26,6 +26,9 @@ static int vector_size(const Vector *v) {
 static int vector_capacity(const Vector *v) {
   return v->capacity - v->begin;
 }
+static boolean vector_full(const Vector *v) {
+  return v->end == v->capacity;
+}
 static char *vector_alloc(Vector *v, int size, int capacity) {
   char *prev = v->begin;
   v->begin = malloc(capacity);
@@ -73,9 +76,17 @@ boolean vector_empty(const Vector *v) {
 void vector_push_back(Vector *v, void *e, int size) {
   assert(v);
   assert(size <= v->align);
-  if (v->end == v->capacity) {
+  if (vector_full(v)) {
     vector_extend(v);
   }
   memcpy(v->end, e, size);
   v->end += v->align;
+}
+void *vector_back(Vector *v) {
+  assert(v);
+  if (vector_full(v)) {
+    vector_extend(v);
+  }
+  v->end += v->align;
+  return v->end - v->align;
 }
