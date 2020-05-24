@@ -90,3 +90,16 @@ Vector *vector_clone(const Vector *v) {
   w->size = v->size;
   return w;
 }
+void vector_copy(Vector *v, void *buf, Size len) {
+  assert(v);
+  if (0 == len) {
+    return;
+  }
+  assert(buf);
+  len *= v->align;
+  if (v->capacity < v->size + len) {
+    vector_extend(v, v->size + len);
+  }
+  memcpy(v->data + v->size, buf, len);
+  v->size += len;
+}
