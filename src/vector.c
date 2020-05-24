@@ -10,21 +10,19 @@ struct struct_Vector {
   Size size, capacity;
 };
 
+static Size max_size(Size x, Size y) {
+  return x < y ? y : x;
+}
 static boolean vector_full(const Vector *v) {
   return v->size == v->capacity;
 }
-static Size vector_capacity_next(const Vector *v) {
+static void vector_capacity_next(Vector *v) {
   Size initial_size = 16 * v->align;
-  Size capacity = v->capacity;
-  return (0 == capacity) ? initial_size : 2 * capacity;
+  v->capacity += max_size(initial_size, v->capacity);
 }
-static Byte *vector_extend(Vector *v, Vector *base) {
+static Byte *vector_alloc(Vector *v) {
   Byte *prev = v->data;
-  int size = base->size;
-  int capacity = vector_capacity_next(base);
-  v->data = malloc(capacity);
-  v->size = size;
-  v->capacity = capacity;
+  v->data = malloc(v->capacity);
   return prev;
 }
 
@@ -55,7 +53,8 @@ void *vector_back(Vector *v) {
   void *ptr = nil;
   assert(v);
   if (vector_full(v)) {
-    if ((ptr = vector_extend(v, v))) {
+    vector_capacity_next(v);
+    if ((ptr = vector_alloc(v))) {
       memcpy(v->data, ptr, v->size);
       free(ptr);
     }
