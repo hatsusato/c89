@@ -48,7 +48,7 @@ static void vector_copy(Vector *v, void *src) {
 }
 
 Vector *vector_new(Alignment a) {
-  Vector *v = NULL;
+  Vector *v = nil;
   assert(0 < a);
   v = malloc(sizeof(Vector));
   v->align = a;
@@ -61,7 +61,7 @@ void vector_free(Vector **v) {
   assert(v && *v);
   vector_free_begin((*v)->begin);
   free(*v);
-  *v = NULL;
+  *v = nil;
 }
 Size vector_length(const Vector *v) {
   assert(v);

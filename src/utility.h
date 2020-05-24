@@ -6,6 +6,7 @@
 typedef signed char boolean;
 #define true (1)
 #define false (0)
+#define nil (NULL)
 
 typedef unsigned char Byte;
 typedef int Size;
