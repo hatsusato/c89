@@ -9,7 +9,7 @@ typedef int Alignment;
 
 Vector *vector_new(Alignment);
 void vector_free(Vector **);
-int vector_size(const Vector *);
+int vector_length(const Vector *);
 boolean vector_empty(const Vector *);
 void vector_push_back(Vector *, void *, int);
 

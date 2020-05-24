@@ -55,7 +55,7 @@ void vector_free(Vector **v) {
   free(p);
   *v = NULL;
 }
-int vector_size(const Vector *v) {
+int vector_length(const Vector *v) {
   assert(v);
   return vector_allocated(v) ? (v->end - v->begin) / v->align : 0;
 }
