@@ -30,3 +30,7 @@ int vector_size(const Vector *v) {
   assert(v);
   return vector_allocated(v) ? v->end - v->begin : 0;
 }
+boolean vector_empty(const Vector *v) {
+  assert(v);
+  return vector_allocated(v) ? v->begin == v->end : true;
+}
