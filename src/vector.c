@@ -16,7 +16,7 @@ static Size max_size(Size x, Size y) {
 static boolean vector_full(const Vector *v) {
   return v->size == v->capacity;
 }
-static void vector_capacity_next(Vector *v) {
+static void vector_extend(Vector *v) {
   Size initial_size = 16 * v->align;
   v->capacity += max_size(initial_size, v->capacity);
 }
@@ -53,7 +53,7 @@ void *vector_back(Vector *v) {
   void *ptr = nil;
   assert(v);
   if (vector_full(v)) {
-    vector_capacity_next(v);
+    vector_extend(v);
     if ((ptr = vector_alloc(v))) {
       memcpy(v->data, ptr, v->size);
       free(ptr);
