@@ -5,7 +5,12 @@
 %option noyywrap
 %option never-interactive
 
+%x preprocess
+
 %%
+
+"#" BEGIN(preprocess);
+<preprocess>[^\n]*[\n] BEGIN(INITIAL);
 
 "auto" return AUTO;
 "break" return BREAK;
