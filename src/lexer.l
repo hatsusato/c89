@@ -6,11 +6,17 @@
 %option never-interactive
 
 %x preprocess
+%x comment
 
 %%
 
 "#" BEGIN(preprocess);
 <preprocess>[^\n]*[\n] BEGIN(INITIAL);
+
+"/*" BEGIN(comment);
+<comment>[^*]*
+<comment>"*"+[^*/]*
+<comment>"*"+"/" BEGIN(INITIAL);
 
 "auto" return AUTO;
 "break" return BREAK;
