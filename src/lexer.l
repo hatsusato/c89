@@ -106,4 +106,6 @@
 ";" return SEMIC;
 "..." return ELLIP;
 
+[_a-zA-Z][_a-zA-Z0-9]* { return IDENT; }
+
 %%
