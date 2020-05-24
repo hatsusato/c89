@@ -10,15 +10,6 @@ struct struct_Vector {
   Size size, capacity;
 };
 
-static Byte *vector_origin(void) {
-  static Byte origin = 0;
-  return &origin;
-}
-static void vector_free_data(Byte *data) {
-  if (vector_origin() != data) {
-    free(data);
-  }
-}
 static Size vector_size(const Vector *v) {
   return v->size;
 }
@@ -42,22 +33,19 @@ static Byte *vector_extend(Vector *v, Vector *base) {
   v->capacity = capacity;
   return prev;
 }
-static void vector_copy(Vector *v, void *src) {
-  memcpy(v->data, src, vector_size(v));
-}
 
 Vector *vector_new(Alignment a) {
   Vector *v = nil;
   assert(0 < a);
   v = malloc(sizeof(Vector));
   v->align = a;
-  v->data = vector_origin();
+  v->data = nil;
   v->size = v->capacity = 0;
   return v;
 }
 void vector_free(Vector **v) {
   assert(v && *v);
-  vector_free_data((*v)->data);
+  free((*v)->data);
   free(*v);
   *v = nil;
 }
@@ -70,16 +58,17 @@ boolean vector_empty(const Vector *v) {
   return 0 == v->size;
 }
 void *vector_back(Vector *v) {
-  void *ret = nil;
+  void *ptr = nil;
   assert(v);
   if (vector_full(v)) {
-    Byte *src = vector_extend(v, v);
-    vector_copy(v, src);
-    vector_free_data(src);
+    if ((ptr = vector_extend(v, v))) {
+      memcpy(v->data, ptr, v->size);
+      free(ptr);
+    }
   }
-  ret = v->data + v->size;
+  ptr = v->data + v->size;
   v->size += v->align;
-  return ret;
+  return ptr;
 }
 void *vector_at(Vector *v, Index i) {
   assert(v);
