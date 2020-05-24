@@ -18,7 +18,7 @@
 "/*" BEGIN(comment);
 <comment>[^*]*
 <comment>"*"+[^*/]*
-<comment>"*"+"/" BEGIN(INITIAL);
+<comment>"*"+"/" { BEGIN(INITIAL); return COMMENT; }
 
 "auto" return AUTO;
 "break" return BREAK;
