@@ -10,15 +10,8 @@ struct struct_Vector {
   Size size, capacity;
 };
 
-static Size max_size(Size x, Size y) {
-  return x < y ? y : x;
-}
 static boolean vector_full(const Vector *v) {
   return v->size == v->capacity;
-}
-static void vector_extend(Vector *v) {
-  Size initial_size = 16 * v->align;
-  v->capacity += max_size(initial_size, v->capacity);
 }
 static void vector_alloc(Vector *v) {
   void *prev = v->data;
@@ -27,6 +20,15 @@ static void vector_alloc(Vector *v) {
     memcpy(v->data, prev, v->size);
     free(prev);
   }
+}
+static void vector_extend(Vector *v, Size size) {
+  Size initial_size = 16 * v->align;
+  if (v->capacity < size) {
+    v->capacity = size;
+  } else {
+    v->capacity += initial_size;
+  }
+  vector_alloc(v);
 }
 
 Vector *vector_new(Alignment a) {
@@ -56,8 +58,7 @@ void *vector_back(Vector *v) {
   void *ptr = nil;
   assert(v);
   if (vector_full(v)) {
-    vector_extend(v);
-    vector_alloc(v);
+    vector_extend(v, 2 * v->capacity);
   }
   ptr = v->data + v->size;
   v->size += v->align;
@@ -72,8 +73,7 @@ void vector_append(Vector *v, const Vector *w) {
   assert(v && w);
   assert(v->align == w->align);
   if (v->capacity < v->size + w->size) {
-    v->capacity = v->size + w->size;
-    vector_alloc(v);
+    vector_extend(v, v->size + w->size);
   }
   memcpy(v->data + v->size, w->data, w->size);
   v->size += w->size;
