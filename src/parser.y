@@ -102,8 +102,134 @@
 
 %start top
 %%
-top
-: COMMA
+top: %empty
+| token top
+| PREPROCESS top
+| COMMENT top
+;
+token:
+  keyword
+| identifier
+| constant
+| string-literal
+| operator
+| punctuator
+;
+keyword:
+  "auto"
+| "break"
+| "case"
+| "char"
+| "const"
+| "continue"
+| "default"
+| "do"
+| "double"
+| "else"
+| "enum"
+| "extern"
+| "float"
+| "for"
+| "goto"
+| "if"
+| "int"
+| "long"
+| "register"
+| "return"
+| "signed"
+| "sizeof"
+| "short"
+| "static"
+| "struct"
+| "switch"
+| "typedef"
+| "union"
+| "unsigned"
+| "void"
+| "volatile"
+| "while"
+;
+identifier:
+  IDENT
+;
+constant:
+  floating-constant
+| integer-constant
+/* | enumeration-constant */
+| character-constant
+;
+floating-constant:
+  FLOATING
+;
+integer-constant:
+  INTEGER
+;
+/* enumeration-constant: */
+/*   IDENT */
+/* ; */
+character-constant:
+  CHARACTER
+;
+string-literal:
+  LITERAL
+;
+operator:
+  "["
+| "]"
+| "("
+| ")"
+| "."
+| "->"
+| "++"
+| "--"
+| "&"
+| "*"
+| "+"
+| "-"
+| "~"
+| "!"
+| "/"
+| "%"
+| "<<"
+| ">>"
+| "<"
+| ">"
+| "<="
+| ">="
+| "=="
+| "!="
+| "^"
+| "|"
+| "&&"
+| "||"
+| "?"
+| ":"
+| "="
+| "*="
+| "/="
+| "%="
+| "+="
+| "-="
+| "<<="
+| ">>="
+| "&="
+| "^="
+| "|="
+| ","
+;
+punctuator:
+/*   "[" */
+/* | "]" */
+/* | "(" */
+/* | ")" */
+  "{"
+| "}"
+/* | "*" */
+/* | "," */
+/* | ":" */
+/* | "=" */
+| ";"
+| "..."
 ;
 %%
 
