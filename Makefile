@@ -17,7 +17,7 @@ yacc_pre = src/parser
 yacc_src = $(yacc_pre).y
 yacc_med = $(yacc_pre).tab.c $(yacc_pre).tab.h
 yacc_obj = $(yacc_pre:src/%=obj/%).tab.o
-srcs = src/main.c
+srcs = src/main.c src/vector.c
 objs = $(srcs:src/%.c=obj/%.o) $(lex_obj) $(yacc_obj)
 deps = $(objs:%.o=%.d)
 meds = $(lex_med) $(yacc_med)
