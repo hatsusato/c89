@@ -7,8 +7,7 @@
 struct struct_Vector {
   Alignment align;
   Byte *begin;
-  Byte *end;
-  Byte *capacity;
+  Size size, capacity;
 };
 
 static Byte *vector_origin(void) {
@@ -21,13 +20,13 @@ static void vector_free_begin(Byte *begin) {
   }
 }
 static Size vector_size(const Vector *v) {
-  return v->end - v->begin;
+  return v->size;
 }
 static Size vector_capacity(const Vector *v) {
-  return v->capacity - v->begin;
+  return v->capacity;
 }
 static boolean vector_full(const Vector *v) {
-  return v->end == v->capacity;
+  return v->size == v->capacity;
 }
 static Size vector_capacity_next(const Vector *v) {
   Size initial_size = 16 * v->align;
@@ -39,8 +38,8 @@ static Byte *vector_extend(Vector *v, Vector *base) {
   int size = vector_size(base);
   int capacity = vector_capacity_next(base);
   v->begin = malloc(capacity);
-  v->end = v->begin + size;
-  v->capacity = v->begin + capacity;
+  v->size = size;
+  v->capacity = capacity;
   return prev;
 }
 static void vector_copy(Vector *v, void *src) {
@@ -53,8 +52,7 @@ Vector *vector_new(Alignment a) {
   v = malloc(sizeof(Vector));
   v->align = a;
   v->begin = vector_origin();
-  v->end = v->begin;
-  v->capacity = v->begin;
+  v->size = v->capacity = 0;
   return v;
 }
 void vector_free(Vector **v) {
@@ -69,19 +67,22 @@ Size vector_length(const Vector *v) {
 }
 boolean vector_empty(const Vector *v) {
   assert(v);
-  return v->begin == v->end;
+  return 0 == v->size;
 }
 void *vector_back(Vector *v) {
+  void *ret = nil;
   assert(v);
   if (vector_full(v)) {
     Byte *src = vector_extend(v, v);
     vector_copy(v, src);
     vector_free_begin(src);
   }
-  v->end += v->align;
-  return v->end - v->align;
+  ret = v->begin + v->size;
+  v->size += v->align;
+  return ret;
 }
 void *vector_at(Vector *v, Index i) {
   assert(v);
+  assert(i * v->align < v->size);
   return v->begin + i * v->align;
 }
