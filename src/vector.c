@@ -1,5 +1,6 @@
 #include "vector.h"
 
+#include <assert.h>
 #include <stdlib.h>
 
 struct struct_Vector {
@@ -14,4 +15,10 @@ Vector *vector_new(void) {
   v->end = NULL;
   v->capacity = NULL;
   return v;
+}
+Vector *vector_free(Vector *v) {
+  assert(v);
+  free(v->begin);
+  free(v);
+  return NULL;
 }
