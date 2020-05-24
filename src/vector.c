@@ -15,7 +15,7 @@ static boolean vector_allocated(const Vector *v) {
   return v->begin != NULL;
 }
 static int vector_capacity(const Vector *v) {
-  return vector_allocated(v) ? (v->capacity - v->begin) / v->align : 0;
+  return v->begin ? v->capacity - v->begin : 0;
 }
 static char *vector_alloc(Vector *v, int size, int capacity) {
   char *prev = v->begin;
@@ -28,8 +28,8 @@ static void vector_extend(Vector *v) {
   static const int initial_size = 16;
   char *src = NULL;
   int size = v->begin ? v->end - v->begin : 0;
-  int capacity =
-      v->begin ? 2 * (v->capacity - v->begin) : v->align * initial_size;
+  int capacity = vector_capacity(v);
+  capacity = 0 < capacity ? 2 * capacity : v->align * initial_size;
   src = vector_alloc(v, size, capacity);
   if (src) {
     memcpy(v->begin, src, size);
