@@ -12,6 +12,9 @@ struct struct_Vector {
 static boolean vector_allocated(const Vector *v) {
   return v->begin != NULL;
 }
+static int vector_capacity(const Vector *v) {
+  return vector_allocated(v) ? v->capacity - v->begin : 0;
+}
 
 Vector *vector_new(void) {
   Vector *v = malloc(sizeof(Vector));
