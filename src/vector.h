@@ -12,5 +12,6 @@ void vector_free(Vector **);
 int vector_length(const Vector *);
 boolean vector_empty(const Vector *);
 void *vector_back(Vector *);
+void *vector_at(Vector *, int);
 
 #endif /* INCLUDE_GUARD_228B134A_0631_479A_9421_9C226E168C9E */

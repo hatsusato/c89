@@ -81,3 +81,7 @@ void *vector_back(Vector *v) {
   v->end += v->align;
   return v->end - v->align;
 }
+void *vector_at(Vector *v, int i) {
+  assert(v);
+  return v->begin + i * v->align;
+}
