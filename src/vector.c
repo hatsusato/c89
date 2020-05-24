@@ -58,11 +58,9 @@ Vector *vector_new(Alignment a) {
   return v;
 }
 void vector_free(Vector **v) {
-  Vector *p = NULL;
   assert(v && *v);
-  p = *v;
-  vector_free_begin(p->begin);
-  free(p);
+  vector_free_begin((*v)->begin);
+  free(*v);
   *v = NULL;
 }
 int vector_length(const Vector *v) {
