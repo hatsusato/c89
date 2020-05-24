@@ -6,41 +6,41 @@
 
 struct struct_Vector {
   Alignment align;
-  char *begin;
-  char *end;
-  char *capacity;
+  Byte *begin;
+  Byte *end;
+  Byte *capacity;
 };
 
-static char *vector_origin(void) {
-  static char origin = 0;
+static Byte *vector_origin(void) {
+  static Byte origin = 0;
   return &origin;
 }
-static void vector_free_begin(char *begin) {
+static void vector_free_begin(Byte *begin) {
   if (vector_origin() != begin) {
     free(begin);
   }
 }
-static int vector_size(const Vector *v) {
+static Size vector_size(const Vector *v) {
   return v->end - v->begin;
 }
-static int vector_capacity(const Vector *v) {
+static Size vector_capacity(const Vector *v) {
   return v->capacity - v->begin;
 }
 static boolean vector_full(const Vector *v) {
   return v->end == v->capacity;
 }
-static char *vector_alloc(Vector *v, int size, int capacity) {
-  char *prev = v->begin;
+static Byte *vector_alloc(Vector *v, Size size, Size capacity) {
+  Byte *prev = v->begin;
   v->begin = malloc(capacity);
   v->end = v->begin + size;
   v->capacity = v->begin + capacity;
   return prev;
 }
 static void vector_extend(Vector *v) {
-  static const int initial_size = 16;
-  char *src = NULL;
-  int size = vector_size(v);
-  int capacity = vector_capacity(v);
+  static const Size initial_size = 16;
+  Byte *src = NULL;
+  Size size = vector_size(v);
+  Size capacity = vector_capacity(v);
   capacity = 0 < capacity ? 2 * capacity : v->align * initial_size;
   src = vector_alloc(v, size, capacity);
   memcpy(v->begin, src, size);
@@ -63,7 +63,7 @@ void vector_free(Vector **v) {
   free(*v);
   *v = NULL;
 }
-int vector_length(const Vector *v) {
+Size vector_length(const Vector *v) {
   assert(v);
   return vector_size(v) / v->align;
 }
@@ -79,7 +79,7 @@ void *vector_back(Vector *v) {
   v->end += v->align;
   return v->end - v->align;
 }
-void *vector_at(Vector *v, int i) {
+void *vector_at(Vector *v, Index i) {
   assert(v);
   return v->begin + i * v->align;
 }
