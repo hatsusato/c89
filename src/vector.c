@@ -68,3 +68,16 @@ void *vector_at(Vector *v, Index i) {
   assert(i * v->align < v->size);
   return v->data + i * v->align;
 }
+void vector_append(Vector *v, const Vector *w) {
+  assert(v && w);
+  assert(v->align == w->align);
+  if (v->capacity < v->size + w->size) {
+    void *src = nil;
+    v->capacity = v->size + w->size;
+    src = vector_alloc(v);
+    memcpy(v->data, src, v->size);
+    free(src);
+  }
+  memcpy(v->data + v->size, w->data, w->size);
+  v->size += w->size;
+}
