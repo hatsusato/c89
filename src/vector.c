@@ -15,6 +15,13 @@ static boolean vector_allocated(const Vector *v) {
 static int vector_capacity(const Vector *v) {
   return vector_allocated(v) ? v->capacity - v->begin : 0;
 }
+static int *vector_alloc(Vector *v, int size, int capacity) {
+  int *prev = v->begin;
+  v->begin = malloc(capacity * sizeof(int));
+  v->end = v->begin + size;
+  v->capacity = v->begin + capacity;
+  return prev;
+}
 
 Vector *vector_new(void) {
   Vector *v = malloc(sizeof(Vector));
