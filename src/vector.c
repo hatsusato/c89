@@ -9,6 +9,10 @@ struct struct_Vector {
   int *capacity;
 };
 
+static boolean vector_allocated(const Vector *v) {
+  return v->begin != NULL;
+}
+
 Vector *vector_new(void) {
   Vector *v = malloc(sizeof(Vector));
   v->begin = NULL;
@@ -22,7 +26,7 @@ Vector *vector_free(Vector *v) {
   free(v);
   return NULL;
 }
-int vector_size(Vector *v) {
+int vector_size(const Vector *v) {
   assert(v);
-  return v->begin ? v->end - v->begin : 0;
+  return vector_allocated(v) ? v->end - v->begin : 0;
 }
