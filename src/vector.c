@@ -14,6 +14,9 @@ struct struct_Vector {
 static boolean vector_allocated(const Vector *v) {
   return v->begin != NULL;
 }
+static int vector_size(const Vector *v) {
+  return v->begin ? v->end - v->begin : 0;
+}
 static int vector_capacity(const Vector *v) {
   return v->begin ? v->capacity - v->begin : 0;
 }
@@ -27,7 +30,7 @@ static char *vector_alloc(Vector *v, int size, int capacity) {
 static void vector_extend(Vector *v) {
   static const int initial_size = 16;
   char *src = NULL;
-  int size = v->begin ? v->end - v->begin : 0;
+  int size = vector_size(v);
   int capacity = vector_capacity(v);
   capacity = 0 < capacity ? 2 * capacity : v->align * initial_size;
   src = vector_alloc(v, size, capacity);
@@ -57,7 +60,7 @@ void vector_free(Vector **v) {
 }
 int vector_length(const Vector *v) {
   assert(v);
-  return vector_allocated(v) ? (v->end - v->begin) / v->align : 0;
+  return vector_size(v) / v->align;
 }
 boolean vector_empty(const Vector *v) {
   assert(v);
