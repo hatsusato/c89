@@ -7,7 +7,7 @@ struct struct_Vector;
 typedef struct struct_Vector Vector;
 
 Vector *vector_new(void);
-Vector *vector_free(Vector *);
+void vector_free(Vector **);
 int vector_size(const Vector *);
 boolean vector_empty(const Vector *);
 void vector_push_back(Vector *, int);

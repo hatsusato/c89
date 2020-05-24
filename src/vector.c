@@ -42,11 +42,12 @@ Vector *vector_new(void) {
   v->capacity = NULL;
   return v;
 }
-Vector *vector_free(Vector *v) {
-  assert(v);
-  free(v->begin);
-  free(v);
-  return NULL;
+void vector_free(Vector **v) {
+  assert(v && *v);
+  Vector *p = *v;
+  free(p->begin);
+  free(p);
+  *v = NULL;
 }
 int vector_size(const Vector *v) {
   assert(v);
