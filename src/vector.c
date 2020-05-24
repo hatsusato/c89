@@ -20,10 +20,13 @@ static void vector_extend(Vector *v) {
   Size initial_size = 16 * v->align;
   v->capacity += max_size(initial_size, v->capacity);
 }
-static Byte *vector_alloc(Vector *v) {
-  Byte *prev = v->data;
+static void vector_alloc(Vector *v) {
+  void *prev = v->data;
   v->data = malloc(v->capacity);
-  return prev;
+  if (prev) {
+    memcpy(v->data, prev, v->size);
+    free(prev);
+  }
 }
 
 Vector *vector_new(Alignment a) {
@@ -54,10 +57,7 @@ void *vector_back(Vector *v) {
   assert(v);
   if (vector_full(v)) {
     vector_extend(v);
-    if ((ptr = vector_alloc(v))) {
-      memcpy(v->data, ptr, v->size);
-      free(ptr);
-    }
+    vector_alloc(v);
   }
   ptr = v->data + v->size;
   v->size += v->align;
@@ -72,11 +72,8 @@ void vector_append(Vector *v, const Vector *w) {
   assert(v && w);
   assert(v->align == w->align);
   if (v->capacity < v->size + w->size) {
-    void *src = nil;
     v->capacity = v->size + w->size;
-    src = vector_alloc(v);
-    memcpy(v->data, src, v->size);
-    free(src);
+    vector_alloc(v);
   }
   memcpy(v->data + v->size, w->data, w->size);
   v->size += w->size;
