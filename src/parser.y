@@ -1,6 +1,7 @@
 %code top {
 }
 %code requires {
+  #include <stdio.h>
 }
 %code provides {
   int yylex(void);
@@ -180,4 +181,8 @@ const char* show_token(int token) {
       return "UNKNOWN";
   }
 #undef CASE_TOKEN
+}
+
+void yyerror(const char* msg) {
+  fprintf(stderr, "%s\n", msg);
 }
