@@ -34,7 +34,7 @@ static Size vector_capacity_next(const Vector *v) {
   Size capacity = vector_capacity(v);
   return (0 == capacity) ? initial_size : 2 * capacity;
 }
-static Byte *vector_alloc(Vector *v, Vector *base) {
+static Byte *vector_extend(Vector *v, Vector *base) {
   Byte *prev = v->begin;
   int size = vector_size(base);
   int capacity = vector_capacity_next(base);
@@ -45,12 +45,6 @@ static Byte *vector_alloc(Vector *v, Vector *base) {
 }
 static void vector_copy(Vector *v, void *src) {
   memcpy(v->begin, src, vector_size(v));
-}
-static void vector_extend(Vector *v) {
-  Byte *src = NULL;
-  src = vector_alloc(v, v);
-  vector_copy(v, src);
-  vector_free_begin(src);
 }
 
 Vector *vector_new(Alignment a) {
@@ -80,7 +74,9 @@ boolean vector_empty(const Vector *v) {
 void *vector_back(Vector *v) {
   assert(v);
   if (vector_full(v)) {
-    vector_extend(v);
+    Byte *src = vector_extend(v, v);
+    vector_copy(v, src);
+    vector_free_begin(src);
   }
   v->end += v->align;
   return v->end - v->align;
