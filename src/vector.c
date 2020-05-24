@@ -43,10 +43,13 @@ static Byte *vector_alloc(Vector *v, Vector *base) {
   v->capacity = v->begin + capacity;
   return prev;
 }
+static void vector_copy(Vector *v, void *src) {
+  memcpy(v->begin, src, vector_size(v));
+}
 static void vector_extend(Vector *v) {
   Byte *src = NULL;
   src = vector_alloc(v, v);
-  memcpy(v->begin, src, vector_size(v));
+  vector_copy(v, src);
   vector_free_begin(src);
 }
 
