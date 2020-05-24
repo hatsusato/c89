@@ -13,6 +13,7 @@ lex_med = $(lex_pre).c
 lex_obj = $(lex_pre:src/%=obj/%).o
 srcs = src/main.c
 objs = $(srcs:src/%.c=obj/%.o) $(lex_obj)
+deps = $(objs:%.o=%.d)
 
 .PHONY: all release debug
 all: release
@@ -30,6 +31,11 @@ $(lex_obj): cflags += -Wno-unused-function
 
 $(objs): obj/%.o: src/%.c | obj
 	$(CC) $(cflags) -c $< -o $@
+
+$(deps): obj/%.d: src/%.c | obj
+	$(CC) -MG -MM -MP $< -MF $@
+
+-include $(deps)
 
 obj:
 	mkdir -p $@
