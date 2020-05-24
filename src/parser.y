@@ -11,6 +11,14 @@
 
 %define api.value.type {int}
 
+%token PREPROCESS
+%token COMMENT
+%token IDENT
+%token FLOATING
+%token INTEGER
+%token CHARACTER
+%token LITERAL
+
 %token AUTO "auto"
 %token BREAK "break"
 %token CASE "case"
@@ -88,6 +96,9 @@
 %token HAT_ASG "^="
 %token BAR_ASG "|="
 %token COMMA ","
+%token SEMIC ";"
+%token ELLIP "..."
+%token UNKNOWN
 
 %start top
 %%
@@ -101,6 +112,13 @@ const char* show_token(int token) {
   case t:                                       \
     return #t
   switch (token) {
+    CASE_TOKEN(PREPROCESS);
+    CASE_TOKEN(COMMENT);
+    CASE_TOKEN(IDENT);
+    CASE_TOKEN(FLOATING);
+    CASE_TOKEN(INTEGER);
+    CASE_TOKEN(CHARACTER);
+    CASE_TOKEN(LITERAL);
     CASE_TOKEN(AUTO);
     CASE_TOKEN(BREAK);
     CASE_TOKEN(CASE);
@@ -177,6 +195,8 @@ const char* show_token(int token) {
     CASE_TOKEN(HAT_ASG);
     CASE_TOKEN(BAR_ASG);
     CASE_TOKEN(COMMA);
+    CASE_TOKEN(SEMIC);
+    CASE_TOKEN(ELLIP);
     default:
       return "UNKNOWN";
   }

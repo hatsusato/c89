@@ -95,5 +95,7 @@
 "^=" return HAT_ASG;
 "|=" return BAR_ASG;
 "," return COMMA;
+";" return SEMIC;
+"..." return ELLIP;
 
 %%
