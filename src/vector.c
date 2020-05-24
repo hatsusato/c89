@@ -73,15 +73,6 @@ boolean vector_empty(const Vector *v) {
   assert(v);
   return v->begin == v->end;
 }
-void vector_push_back(Vector *v, void *e, int size) {
-  assert(v);
-  assert(size <= v->align);
-  if (vector_full(v)) {
-    vector_extend(v);
-  }
-  memcpy(v->end, e, size);
-  v->end += v->align;
-}
 void *vector_back(Vector *v) {
   assert(v);
   if (vector_full(v)) {
