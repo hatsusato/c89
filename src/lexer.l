@@ -11,17 +11,10 @@
 
 %%
 
-[\"] {
-    BEGIN(string);
-    copy_lval(true);
- }
+[\"]               { BEGIN(string); copy_lval(true); }
 <string>[^\"\n\\]* { copy_lval(false); }
-<string>[\\][^\n] { copy_lval(false); }
-<string>[\"] {
-    BEGIN(INITIAL);
-    copy_lval(false);
-    return LITERAL;
-}
+<string>[\\][^\n]  { copy_lval(false); }
+<string>[\"]       { BEGIN(INITIAL); copy_lval(false); return LITERAL; }
 
 "auto"     { COPY_AND_RETURN(AUTO);     }
 "break"    { COPY_AND_RETURN(BREAK);    }
