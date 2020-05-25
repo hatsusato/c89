@@ -106,7 +106,7 @@ top: %empty
 | token top
 ;
 token
-: keyword
+: keyword { print_token("keyword", $$); }
 | identifier
 | constant
 | string-literal { print_token("literal", $$); }

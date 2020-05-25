@@ -1,6 +1,7 @@
 %{
 #include "parser.tab.h"
     void copy_lval(boolean clear);
+#define COPY_AND_RETURN(t) copy_lval(true); return t
 %}
 
 %option noyywrap
@@ -22,38 +23,38 @@
     return LITERAL;
 }
 
-"auto" return AUTO;
-"break" return BREAK;
-"case" return CASE;
-"char" return CHAR;
-"const" return CONST;
-"continue" return CONTINUE;
-"default" return DEFAULT;
-"do" return DO;
-"double" return DOUBLE;
-"else" return ELSE;
-"enum" return ENUM;
-"extern" return EXTERN;
-"float" return FLOAT;
-"for" return FOR;
-"goto" return GOTO;
-"if" return IF;
-"int" return INT;
-"long" return LONG;
-"register" return REGISTER;
-"return" return RETURN;
-"signed" return SIGNED;
-"sizeof" return SIZEOF;
-"short" return SHORT;
-"static" return STATIC;
-"struct" return STRUCT;
-"switch" return SWITCH;
-"typedef" return TYPEDEF;
-"union" return UNION;
-"unsigned" return UNSIGNED;
-"void" return VOID;
-"volatile" return VOLATILE;
-"while" return WHILE;
+"auto"     { COPY_AND_RETURN(AUTO);     }
+"break"    { COPY_AND_RETURN(BREAK);    }
+"case"     { COPY_AND_RETURN(CASE);     }
+"char"     { COPY_AND_RETURN(CHAR);     }
+"const"    { COPY_AND_RETURN(CONST);    }
+"continue" { COPY_AND_RETURN(CONTINUE); }
+"default"  { COPY_AND_RETURN(DEFAULT);  }
+"do"       { COPY_AND_RETURN(DO);       }
+"double"   { COPY_AND_RETURN(DOUBLE);   }
+"else"     { COPY_AND_RETURN(ELSE);     }
+"enum"     { COPY_AND_RETURN(ENUM);     }
+"extern"   { COPY_AND_RETURN(EXTERN);   }
+"float"    { COPY_AND_RETURN(FLOAT);    }
+"for"      { COPY_AND_RETURN(FOR);      }
+"goto"     { COPY_AND_RETURN(GOTO);     }
+"if"       { COPY_AND_RETURN(IF);       }
+"int"      { COPY_AND_RETURN(INT);      }
+"long"     { COPY_AND_RETURN(LONG);     }
+"register" { COPY_AND_RETURN(REGISTER); }
+"return"   { COPY_AND_RETURN(RETURN);   }
+"signed"   { COPY_AND_RETURN(SIGNED);   }
+"sizeof"   { COPY_AND_RETURN(SIZEOF);   }
+"short"    { COPY_AND_RETURN(SHORT);    }
+"static"   { COPY_AND_RETURN(STATIC);   }
+"struct"   { COPY_AND_RETURN(STRUCT);   }
+"switch"   { COPY_AND_RETURN(SWITCH);   }
+"typedef"  { COPY_AND_RETURN(TYPEDEF);  }
+"union"    { COPY_AND_RETURN(UNION);    }
+"unsigned" { COPY_AND_RETURN(UNSIGNED); }
+"void"     { COPY_AND_RETURN(VOID);     }
+"volatile" { COPY_AND_RETURN(VOLATILE); }
+"while"    { COPY_AND_RETURN(WHILE);    }
 
 "[" return LBRK;
 "]" return RBRK;
