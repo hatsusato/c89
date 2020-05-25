@@ -98,9 +98,9 @@
 
 [_a-zA-Z][_a-zA-Z0-9]* { COPY_AND_RETURN(IDENT); }
 
-[0][0-7]* { return INTEGER; }
-[1-9][0-9]* { return INTEGER; }
-[0][xX][0-9a-fA-F]* { return INTEGER; }
+[0][0-7]*           { COPY_AND_RETURN(INTEGER); }
+[1-9][0-9]*         { COPY_AND_RETURN(INTEGER); }
+[0][xX][0-9a-fA-F]* { COPY_AND_RETURN(INTEGER); }
 
 [ \t\n]
 
