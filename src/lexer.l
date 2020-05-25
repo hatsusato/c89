@@ -141,9 +141,13 @@
 void copy_lval(boolean clear) {
   if (!yylval) {
     yylval = vector_new(1);
+    *(char*)vector_back(yylval)=0;
   }
   if (clear) {
     vector_clear(yylval);
+    *(char*)vector_back(yylval)=0;
   }
+  vector_pop(yylval);
   vector_copy(yylval, yytext, yyleng);
+  *(char*)vector_back(yylval)=0;
 }
