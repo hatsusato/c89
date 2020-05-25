@@ -107,7 +107,7 @@
 top: %empty
 | token top
 | PREPROCESS top { print_token("prepro", $1); }
-| COMMENT top
+| COMMENT top { print_token("comment", $1); }
 ;
 token:
   keyword

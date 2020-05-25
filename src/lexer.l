@@ -24,10 +24,17 @@
   return PREPROCESS;
 }
 
-"/*" BEGIN(comment);
-<comment>[^*]*
-<comment>"*"+[^*/]*
-<comment>"*"+"/" { BEGIN(INITIAL); return COMMENT; }
+"/*" {
+  BEGIN(comment);
+  copy_lval(true);
+}
+<comment>[^*]* { copy_lval(false); }
+<comment>"*"+[^*/]* { copy_lval(false); }
+<comment>"*"+"/" {
+  BEGIN(INITIAL);
+  copy_lval(false);
+  return COMMENT;
+}
 
 [\"] BEGIN(string);
 <string>[^\"\n\\]*
