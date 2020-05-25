@@ -105,16 +105,16 @@
 top: %empty
 | token top
 ;
-token:
-  keyword
+token
+: keyword
 | identifier
 | constant
 | string-literal { print_token("literal", $$); }
 | operator
 | punctuator
 ;
-keyword:
-  "auto"
+keyword
+: "auto"
 | "break"
 | "case"
 | "char"
@@ -147,32 +147,32 @@ keyword:
 | "volatile"
 | "while"
 ;
-identifier:
-  IDENT
+identifier
+: IDENT
 ;
-constant:
-  floating-constant
+constant
+: floating-constant
 | integer-constant
 /* | enumeration-constant */
 | character-constant
 ;
-floating-constant:
-  FLOATING
+floating-constant
+: FLOATING
 ;
-integer-constant:
-  INTEGER
+integer-constant
+: INTEGER
 ;
 /* enumeration-constant: */
 /*   IDENT */
 /* ; */
-character-constant:
-  CHARACTER
+character-constant
+: CHARACTER
 ;
-string-literal:
-  LITERAL
+string-literal
+: LITERAL
 ;
-operator:
-  "["
+operator
+: "["
 | "]"
 | "("
 | ")"
@@ -215,12 +215,12 @@ operator:
 | "|="
 | ","
 ;
-punctuator:
-/*   "[" */
+punctuator
+/* : "[" */
 /* | "]" */
 /* | "(" */
 /* | ")" */
-  "{"
+: "{"
 | "}"
 /* | "*" */
 /* | "," */
@@ -319,8 +319,8 @@ const char* show_token(int token) {
     CASE_TOKEN(COMMA);
     CASE_TOKEN(SEMIC);
     CASE_TOKEN(ELLIP);
-    default:
-      return "UNKNOWN";
+  default:
+    return "UNKNOWN";
   }
 #undef CASE_TOKEN
 }
