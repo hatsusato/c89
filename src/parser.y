@@ -113,7 +113,7 @@ token:
   keyword
 | identifier
 | constant
-| string-literal
+| string-literal { print_token("literal", $$); }
 | operator
 | punctuator
 ;

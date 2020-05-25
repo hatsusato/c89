@@ -36,10 +36,17 @@
   return COMMENT;
 }
 
-[\"] BEGIN(string);
-<string>[^\"\n\\]*
-<string>[\\][^\n]
-<string>[\"] { BEGIN(INITIAL); return LITERAL; }
+[\"] {
+  BEGIN(string);
+  copy_lval(true);
+}
+<string>[^\"\n\\]* { copy_lval(false); }
+<string>[\\][^\n] { copy_lval(false); }
+<string>[\"] {
+  BEGIN(INITIAL);
+  copy_lval(false);
+  return LITERAL;
+}
 
 "auto" return AUTO;
 "break" return BREAK;
