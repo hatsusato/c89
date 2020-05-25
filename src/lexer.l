@@ -56,52 +56,52 @@
 "volatile" { COPY_AND_RETURN(VOLATILE); }
 "while"    { COPY_AND_RETURN(WHILE);    }
 
-"[" return LBRK;
-"]" return RBRK;
-"(" return LPAR;
-")" return RPAR;
-"{" return LBRC;
-"}" return RBRC;
-"." return DOT;
-"->" return ARROW;
-"++" return INC;
-"--" return DEC;
-"&" return AMP;
-"*" return STAR;
-"+" return PLUS;
-"-" return MIN;
-"~" return TILDA;
-"!" return EXCL;
-"/" return SLA;
-"%" return PERC;
-"<<" return LSHF;
-">>" return RSHF;
-"<" return LT;
-">" return GT;
-"<=" return LE;
-">=" return GE;
-"==" return EQ;
-"!=" return NE;
-"^" return HAT;
-"|" return BAR;
-"&&" return AND;
-"||" return OR;
-"?" return QUEST;
-":" return COLON;
-"=" return ASG;
-"*=" return STAR_ASG;
-"/=" return SLA_ASG;
-"%=" return PERC_ASG;
-"+=" return PLUS_ASG;
-"-=" return MIN_ASG;
-"<<=" return LSHF_ASG;
-">>=" return RSHF_ASG;
-"&=" return AMP_ASG;
-"^=" return HAT_ASG;
-"|=" return BAR_ASG;
-"," return COMMA;
-";" return SEMIC;
-"..." return ELLIP;
+"["   { COPY_AND_RETURN(LBRK);     }
+"]"   { COPY_AND_RETURN(RBRK);     }
+"("   { COPY_AND_RETURN(LPAR);     }
+")"   { COPY_AND_RETURN(RPAR);     }
+"{"   { COPY_AND_RETURN(LBRC);     }
+"}"   { COPY_AND_RETURN(RBRC);     }
+"."   { COPY_AND_RETURN(DOT);      }
+"->"  { COPY_AND_RETURN(ARROW);    }
+"++"  { COPY_AND_RETURN(INC);      }
+"--"  { COPY_AND_RETURN(DEC);      }
+"&"   { COPY_AND_RETURN(AMP);      }
+"*"   { COPY_AND_RETURN(STAR);     }
+"+"   { COPY_AND_RETURN(PLUS);     }
+"-"   { COPY_AND_RETURN(MIN);      }
+"~"   { COPY_AND_RETURN(TILDA);    }
+"!"   { COPY_AND_RETURN(EXCL);     }
+"/"   { COPY_AND_RETURN(SLA);      }
+"%"   { COPY_AND_RETURN(PERC);     }
+"<<"  { COPY_AND_RETURN(LSHF);     }
+">>"  { COPY_AND_RETURN(RSHF);     }
+"<"   { COPY_AND_RETURN(LT);       }
+">"   { COPY_AND_RETURN(GT);       }
+"<="  { COPY_AND_RETURN(LE);       }
+">="  { COPY_AND_RETURN(GE);       }
+"=="  { COPY_AND_RETURN(EQ);       }
+"!="  { COPY_AND_RETURN(NE);       }
+"^"   { COPY_AND_RETURN(HAT);      }
+"|"   { COPY_AND_RETURN(BAR);      }
+"&&"  { COPY_AND_RETURN(AND);      }
+"||"  { COPY_AND_RETURN(OR);       }
+"?"   { COPY_AND_RETURN(QUEST);    }
+":"   { COPY_AND_RETURN(COLON);    }
+"="   { COPY_AND_RETURN(ASG);      }
+"*="  { COPY_AND_RETURN(STAR_ASG); }
+"/="  { COPY_AND_RETURN(SLA_ASG);  }
+"%="  { COPY_AND_RETURN(PERC_ASG); }
+"+="  { COPY_AND_RETURN(PLUS_ASG); }
+"-="  { COPY_AND_RETURN(MIN_ASG);  }
+"<<=" { COPY_AND_RETURN(LSHF_ASG); }
+">>=" { COPY_AND_RETURN(RSHF_ASG); }
+"&="  { COPY_AND_RETURN(AMP_ASG);  }
+"^="  { COPY_AND_RETURN(HAT_ASG);  }
+"|="  { COPY_AND_RETURN(BAR_ASG);  }
+","   { COPY_AND_RETURN(COMMA);    }
+";"   { COPY_AND_RETURN(SEMIC);    }
+"..." { COPY_AND_RETURN(ELLIP);    }
 
 [_a-zA-Z][_a-zA-Z0-9]* { return IDENT; }
 

@@ -110,8 +110,8 @@ token
 | identifier
 | constant
 | string-literal { print_token("literal", $$); }
-| operator
-| punctuator
+| operator { print_token("punctuator", $$); }
+| punctuator { print_token("punctuator", $$); }
 ;
 keyword
 : "auto"
