@@ -1,6 +1,6 @@
 %{
 #include "parser.tab.h"
-  void copy_lval(boolean);
+    void copy_lval(boolean clear);
 %}
 
 %option noyywrap
@@ -11,15 +11,15 @@
 %%
 
 [\"] {
-  BEGIN(string);
-  copy_lval(true);
-}
+    BEGIN(string);
+    copy_lval(true);
+ }
 <string>[^\"\n\\]* { copy_lval(false); }
 <string>[\\][^\n] { copy_lval(false); }
 <string>[\"] {
-  BEGIN(INITIAL);
-  copy_lval(false);
-  return LITERAL;
+    BEGIN(INITIAL);
+    copy_lval(false);
+    return LITERAL;
 }
 
 "auto" return AUTO;
@@ -113,15 +113,15 @@
 %%
 
 void copy_lval(boolean clear) {
-  if (!yylval) {
-    yylval = vector_new(1);
+    if (!yylval) {
+        yylval = vector_new(1);
+        *(char*)vector_back(yylval)=0;
+    }
+    if (clear) {
+        vector_clear(yylval);
+        *(char*)vector_back(yylval)=0;
+    }
+    vector_pop(yylval);
+    vector_copy(yylval, yytext, yyleng);
     *(char*)vector_back(yylval)=0;
-  }
-  if (clear) {
-    vector_clear(yylval);
-    *(char*)vector_back(yylval)=0;
-  }
-  vector_pop(yylval);
-  vector_copy(yylval, yytext, yyleng);
-  *(char*)vector_back(yylval)=0;
 }
