@@ -107,7 +107,7 @@ top: %empty
 ;
 token
 : keyword { print_token("keyword", $$); }
-| identifier
+| identifier { print_token("identifier", $$); }
 | constant
 | string-literal { print_token("literal", $$); }
 | operator { print_token("punctuator", $$); }
