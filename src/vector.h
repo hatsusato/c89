@@ -16,5 +16,6 @@ void vector_append(Vector *, const Vector *);
 Vector *vector_clone(const Vector *);
 void vector_copy(Vector *, void *, Size);
 void vector_clear(Vector *);
+void vector_pop(Vector *);
 
 #endif /* INCLUDE_GUARD_228B134A_0631_479A_9421_9C226E168C9E */

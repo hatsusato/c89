@@ -107,3 +107,8 @@ void vector_clear(Vector *v) {
   assert(v);
   v->size = 0;
 }
+void vector_pop(Vector *v) {
+  assert(v);
+  assert(0 < v->size);
+  --v->size;
+}
