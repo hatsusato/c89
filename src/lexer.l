@@ -103,6 +103,7 @@
 [0][xX][0-9a-fA-F]* { COPY_AND_RETURN(INTEGER); }
 
 [ \t\n]
+. { return UNKNOWN; }
 
 %%
 
