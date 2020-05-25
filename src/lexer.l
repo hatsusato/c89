@@ -6,35 +6,9 @@
 %option noyywrap
 %option never-interactive
 
-%x preprocess
-%x comment
 %x string
 
 %%
-
-"#" {
-  BEGIN(preprocess);
-  copy_lval(true);
-}
-<preprocess>[^\n\\]* { copy_lval(false); }
-<preprocess>[\\]+[^\\] { copy_lval(false); }
-<preprocess>[\n] {
-  BEGIN(INITIAL);
-  copy_lval(false);
-  return PREPROCESS;
-}
-
-"/*" {
-  BEGIN(comment);
-  copy_lval(true);
-}
-<comment>[^*]* { copy_lval(false); }
-<comment>"*"+[^*/]* { copy_lval(false); }
-<comment>"*"+"/" {
-  BEGIN(INITIAL);
-  copy_lval(false);
-  return COMMENT;
-}
 
 [\"] {
   BEGIN(string);

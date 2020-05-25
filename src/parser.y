@@ -13,8 +13,6 @@
 
 %define api.value.type {Vector *}
 
-%token PREPROCESS
-%token COMMENT
 %token IDENT
 %token FLOATING
 %token INTEGER
@@ -106,8 +104,6 @@
 %%
 top: %empty
 | token top
-| PREPROCESS top { print_token("prepro", $1); }
-| COMMENT top { print_token("comment", $1); }
 ;
 token:
   keyword
@@ -240,8 +236,6 @@ const char* show_token(int token) {
   case t:                                       \
     return #t
   switch (token) {
-    CASE_TOKEN(PREPROCESS);
-    CASE_TOKEN(COMMENT);
     CASE_TOKEN(IDENT);
     CASE_TOKEN(FLOATING);
     CASE_TOKEN(INTEGER);
