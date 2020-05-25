@@ -1,15 +1,17 @@
 %code top {
 }
 %code requires {
-  #include <stdio.h>
+#include <stdio.h>
+#include "vector.h"
 }
 %code provides {
   int yylex(void);
   void yyerror(const char *);
   const char* show_token(int);
+  void print_token(const char *, Vector* v);
 }
 
-%define api.value.type {int}
+%define api.value.type {Vector *}
 
 %token PREPROCESS
 %token COMMENT
@@ -331,4 +333,10 @@ const char* show_token(int token) {
 
 void yyerror(const char* msg) {
   fprintf(stderr, "%s\n", msg);
+}
+
+void print_token(const char* header, Vector* v) {
+  if (v) {
+    printf("%s: %s\n", header, (char *)vector_at(v, 0));
+  }
 }

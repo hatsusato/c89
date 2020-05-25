@@ -1,5 +1,6 @@
 %{
 #include "parser.tab.h"
+  void copy_lval(boolean);
 %}
 
 %option noyywrap
@@ -115,3 +116,13 @@
 [ \t\n]
 
 %%
+
+void copy_lval(boolean clear) {
+  if (!yylval) {
+    yylval = vector_new(1);
+  }
+  if (clear) {
+    vector_clear(yylval);
+  }
+  vector_copy(yylval, yytext, yyleng);
+}
