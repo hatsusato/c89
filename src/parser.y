@@ -106,7 +106,7 @@
 %%
 top: %empty
 | token top
-| PREPROCESS top
+| PREPROCESS top { print_token("prepro", $1); }
 | COMMENT top
 ;
 token:

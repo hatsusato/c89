@@ -12,10 +12,17 @@
 
 %%
 
-"#" BEGIN(preprocess);
-<preprocess>[^\n\\]*
-<preprocess>[\\]+[^\\]
-<preprocess>[\n] { BEGIN(INITIAL); return PREPROCESS; }
+"#" {
+  BEGIN(preprocess);
+  copy_lval(true);
+}
+<preprocess>[^\n\\]* { copy_lval(false); }
+<preprocess>[\\]+[^\\] { copy_lval(false); }
+<preprocess>[\n] {
+  BEGIN(INITIAL);
+  copy_lval(false);
+  return PREPROCESS;
+}
 
 "/*" BEGIN(comment);
 <comment>[^*]*
