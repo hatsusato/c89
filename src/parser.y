@@ -5,12 +5,13 @@
 #include "vector.h"
 }
 %code provides {
-  int yylex(void);
+#include "lexer.h"
   void yyerror(const char *);
   const char* show_token(int);
   void print_token(const char *, Vector* v);
 }
 
+%define api.pure
 %define api.value.type {Vector *}
 
 %token IDENT

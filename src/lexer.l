@@ -1,20 +1,26 @@
 %{
+#define yyHEADER_H
 #include "parser.tab.h"
-    void copy_lval(boolean clear);
-#define COPY_AND_RETURN(t) copy_lval(true); return t
+  void copy_lval(boolean, YYSTYPE *);
+#define COPY_AND_RETURN(t) copy_lval(true, yylval); return t
 %}
 
+%option noinput
+%option nounput
+%option bison-bridge
 %option noyywrap
 %option never-interactive
+%option warn
+%option nodefault
 
 %x string
 
 %%
 
-[\"]               { BEGIN(string); copy_lval(true); }
-<string>[^\"\n\\]* { copy_lval(false); }
-<string>[\\][^\n]  { copy_lval(false); }
-<string>[\"]       { BEGIN(INITIAL); copy_lval(false); return LITERAL; }
+[\"]               { BEGIN(string); copy_lval(true, yylval); }
+<string>[^\"\n\\]* { copy_lval(false, yylval); }
+<string>[\\][^\n]  { copy_lval(false, yylval); }
+<string>[\"]       { BEGIN(INITIAL); copy_lval(false, yylval); return LITERAL; }
 
 "auto"     { COPY_AND_RETURN(AUTO);     }
 "break"    { COPY_AND_RETURN(BREAK);    }
@@ -107,16 +113,16 @@
 
 %%
 
-void copy_lval(boolean clear) {
-    if (!yylval) {
-        yylval = vector_new(1);
-        *(char*)vector_back(yylval)=0;
+void copy_lval(boolean clear, YYSTYPE *yylval) {
+    if (!*yylval) {
+        *yylval = vector_new(1);
+        *(char*)vector_back(*yylval)=0;
     }
     if (clear) {
-        vector_clear(yylval);
-        *(char*)vector_back(yylval)=0;
+        vector_clear(*yylval);
+        *(char*)vector_back(*yylval)=0;
     }
-    vector_pop(yylval);
-    vector_append(yylval, yytext, yyleng);
-    *(char*)vector_back(yylval)=0;
+    vector_pop(*yylval);
+    vector_append(*yylval, yytext, yyleng);
+    *(char*)vector_back(*yylval)=0;
 }
