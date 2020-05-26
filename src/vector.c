@@ -51,10 +51,6 @@ Size vector_length(const Vector *v) {
   assert(v);
   return v->size / v->align;
 }
-boolean vector_empty(const Vector *v) {
-  assert(v);
-  return 0 == v->size;
-}
 void *vector_back(Vector *v) {
   Size size = 0;
   assert(v);
