@@ -6,7 +6,7 @@
 
 struct struct_Vector {
   Alignment align;
-  Byte *data;
+  void *data;
   Size size, capacity;
 };
 
@@ -29,6 +29,10 @@ static void vector_extend(Vector *v, Size size) {
     v->capacity += initial_size;
   }
   vector_alloc(v);
+}
+static void *vector_offset(Vector *v, Size offset) {
+  Byte *ptr = v->data;
+  return ptr + offset;
 }
 
 Vector *vector_new(Alignment a) {
@@ -55,19 +59,19 @@ boolean vector_empty(const Vector *v) {
   return 0 == v->size;
 }
 void *vector_back(Vector *v) {
-  void *ptr = nil;
+  Size size = 0;
   assert(v);
   if (vector_full(v)) {
     vector_extend(v, 2 * v->capacity);
   }
-  ptr = v->data + v->size;
+  size = v->size;
   v->size += v->align;
-  return ptr;
+  return vector_offset(v, size);
 }
 void *vector_at(Vector *v, Index i) {
   assert(v);
-  assert(i * v->align < v->size);
-  return v->data + i * v->align;
+  assert(v->align * i < v->size);
+  return vector_offset(v, v->align * i);
 }
 Vector *vector_clone(const Vector *v) {
   Vector *w = nil;
@@ -91,7 +95,7 @@ void vector_append(Vector *v, void *buf, Size len) {
   if (v->capacity < v->size + len) {
     vector_extend(v, v->size + len);
   }
-  memcpy(v->data + v->size, buf, len);
+  memcpy(vector_offset(v, v->size), buf, len);
   v->size += len;
 }
 void vector_clear(Vector *v) {
