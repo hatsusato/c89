@@ -1,21 +1,22 @@
 #!/usr/bin/make -f
 
-LEX = flex
-YACC = bison
-target = main.out
+LEX := flex
+YACC := bison
+target := main.out
+lex_prefix := src/lexer
+yacc_prefix := src/parser
+files := main.c vector.c
+
 ldflags =
 cflags = -Wall -Wextra -ansi -pedantic
 cflags += -MMD -MP -MT $@
-release_cflags = -O3 -DNDEBUG
-debug_cflags = -g
-lex_prefix = src/lexer
-lex_intermeds = $(addprefix $(lex_prefix),.c .h)
-yacc_prefix = src/parser
-yacc_intermeds = $(addprefix $(yacc_prefix),.tab.c .tab.h)
-intermeds = $(lex_intermeds) $(yacc_intermeds)
-files = main.c vector.c
-srcs = $(filter %.c,$(intermeds)) $(addprefix src/,$(files))
-objs = $(srcs:src/%.c=obj/%.o)
+release_cflags := -O3 -DNDEBUG
+debug_cflags := -g
+lex_intermeds := $(addprefix $(lex_prefix),.c .h)
+yacc_intermeds := $(addprefix $(yacc_prefix),.tab.c .tab.h)
+intermeds := $(lex_intermeds) $(yacc_intermeds)
+srcs := $(filter %.c,$(intermeds)) $(addprefix src/,$(files))
+objs := $(srcs:src/%.c=obj/%.o)
 
 .PHONY: all release debug
 all: release
