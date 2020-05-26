@@ -12,9 +12,8 @@ Size vector_length(const Vector *);
 boolean vector_empty(const Vector *);
 void *vector_back(Vector *);
 void *vector_at(Vector *, Index);
-void vector_append(Vector *, const Vector *);
 Vector *vector_clone(const Vector *);
-void vector_copy(Vector *, void *, Size);
+void vector_append(Vector *, void *, Size);
 void vector_clear(Vector *);
 void vector_pop(Vector *);
 

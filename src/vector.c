@@ -69,15 +69,6 @@ void *vector_at(Vector *v, Index i) {
   assert(i * v->align < v->size);
   return v->data + i * v->align;
 }
-void vector_append(Vector *v, const Vector *w) {
-  assert(v && w);
-  assert(v->align == w->align);
-  if (v->capacity < v->size + w->size) {
-    vector_extend(v, v->size + w->size);
-  }
-  memcpy(v->data + v->size, w->data, w->size);
-  v->size += w->size;
-}
 Vector *vector_clone(const Vector *v) {
   Vector *w = nil;
   assert(v);
@@ -90,7 +81,7 @@ Vector *vector_clone(const Vector *v) {
   w->size = v->size;
   return w;
 }
-void vector_copy(Vector *v, void *buf, Size len) {
+void vector_append(Vector *v, void *buf, Size len) {
   assert(v);
   if (0 == len) {
     return;

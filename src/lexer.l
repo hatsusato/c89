@@ -117,6 +117,6 @@ void copy_lval(boolean clear) {
         *(char*)vector_back(yylval)=0;
     }
     vector_pop(yylval);
-    vector_copy(yylval, yytext, yyleng);
+    vector_append(yylval, yytext, yyleng);
     *(char*)vector_back(yylval)=0;
 }
