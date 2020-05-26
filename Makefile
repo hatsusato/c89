@@ -8,13 +8,14 @@ cflags = -Wall -Wextra -ansi -pedantic
 cflags += -MMD -MP -MT $@
 release_cflags = -O3 -DNDEBUG
 debug_cflags = -g
-srcs = src/main.c src/vector.c
-objs = $(srcs:src/%.c=obj/%.o) $(lex_obj) $(yacc_obj)
-meds = $(lex_med) $(yacc_med)
 lex_prefix = src/lexer
 lex_intermeds = $(addprefix $(lex_prefix),.c .h)
 yacc_prefix = src/parser
 yacc_intermeds = $(addprefix $(yacc_prefix),.tab.c .tab.h)
+intermeds = $(lex_intermeds) $(yacc_intermeds)
+files = main.c vector.c
+srcs = $(filter %.c,$(intermeds)) $(addprefix src/,$(files))
+objs = $(srcs:src/%.c=obj/%.o)
 
 .PHONY: all release debug
 all: release
@@ -41,6 +42,6 @@ obj:
 
 .PHONY: clean distclean
 clean:
-	$(RM) -r obj $(meds)
+	$(RM) -r obj $(intermeds)
 distclean: clean
 	$(RM) $(target)

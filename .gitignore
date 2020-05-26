@@ -1,4 +1,5 @@
-*.tab.h
+lexer.[ch]
+parser.tab.[ch]
 
 # Prerequisites
 *.d
