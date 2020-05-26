@@ -9,7 +9,7 @@ files := main.c vector.c
 
 ldflags =
 cflags = -Wall -Wextra -ansi -pedantic
-cflags += -MMD -MP -MT $@
+dflags = -MF $@ -MG -MM -MP -MT $@
 release_cflags := -O3 -DNDEBUG
 debug_cflags := -g
 lflags := --header-file=$(lex_prefix).h --outfile=$(lex_prefix).c
@@ -17,8 +17,9 @@ yflags := -d -b $(yacc_prefix)
 lex_intermeds := $(addprefix $(lex_prefix),.c .h)
 yacc_intermeds := $(addprefix $(yacc_prefix),.tab.c .tab.h)
 intermeds := $(lex_intermeds) $(yacc_intermeds)
-srcs := $(filter %.c,$(intermeds)) $(addprefix src/,$(files))
+srcs := $(addprefix src/,$(files)) $(filter %.c,$(intermeds))
 objs := $(srcs:src/%.c=obj/%.o)
+deps := $(objs:%.o=%.d)
 
 .PHONY: all release debug
 all: release
@@ -38,7 +39,10 @@ $(yacc_intermeds): $(yacc_prefix).y
 $(objs): obj/%.o: src/%.c | obj
 	$(CC) $(cflags) -c $< -o $@
 
--include $(objs:%.o=%.d)
+$(deps): obj/%.d: src/%.c | obj
+	$(CC) $(dflags) $<
+
+-include $(deps)
 
 obj:
 	mkdir -p $@
