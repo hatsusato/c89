@@ -1,13 +1,14 @@
 %{
 #define yyHEADER_H
 #include "parser.tab.h"
-  void copy_lval(boolean, YYSTYPE *);
-#define COPY_AND_RETURN(t) copy_lval(true, yylval); return t
+  void copy_lval(boolean, yyscan_t);
+#define COPY_AND_RETURN(t) copy_lval(true, yyscanner); return t
 %}
 
 %option noinput
 %option nounput
 %option bison-bridge
+%option reentrant
 %option noyywrap
 %option never-interactive
 %option warn
@@ -17,10 +18,10 @@
 
 %%
 
-[\"]               { BEGIN(string); copy_lval(true, yylval); }
-<string>[^\"\n\\]* { copy_lval(false, yylval); }
-<string>[\\][^\n]  { copy_lval(false, yylval); }
-<string>[\"]       { BEGIN(INITIAL); copy_lval(false, yylval); return LITERAL; }
+[\"]               { BEGIN(string); copy_lval(true, yyscanner); }
+<string>[^\"\n\\]* { copy_lval(false, yyscanner); }
+<string>[\\][^\n]  { copy_lval(false, yyscanner); }
+<string>[\"]       { BEGIN(INITIAL); copy_lval(false, yyscanner); return LITERAL; }
 
 "auto"     { COPY_AND_RETURN(AUTO);     }
 "break"    { COPY_AND_RETURN(BREAK);    }
@@ -113,16 +114,17 @@
 
 %%
 
-void copy_lval(boolean clear, YYSTYPE *yylval) {
-    if (!*yylval) {
-        *yylval = vector_new(1);
-        *(char*)vector_back(*yylval)=0;
-    }
-    if (clear) {
-        vector_clear(*yylval);
-        *(char*)vector_back(*yylval)=0;
-    }
-    vector_pop(*yylval);
-    vector_append(*yylval, yytext, yyleng);
-    *(char*)vector_back(*yylval)=0;
+void copy_lval(boolean clear, yyscan_t scanner) {
+  YYSTYPE *lval = yyget_lval(scanner);
+  if (!*lval) {
+    *lval = vector_new(1);
+    *(char*)vector_back(*lval) = 0;
+  }
+  if (clear) {
+    vector_clear(*lval);
+    *(char*)vector_back(*lval) = 0;
+  }
+  vector_pop(*lval);
+  vector_append(*lval, yyget_text(scanner), yyget_leng(scanner));
+  *(char*)vector_back(*lval) = 0;
 }

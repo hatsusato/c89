@@ -3,16 +3,21 @@
 %code requires {
 #include <stdio.h>
 #include "vector.h"
+#ifndef YY_TYPEDEF_YY_SCANNER_T
+#define YY_TYPEDEF_YY_SCANNER_T
+  typedef void* yyscan_t;
+#endif
 }
 %code provides {
 #include "lexer.h"
-  void yyerror(const char *);
+  void yyerror(const char *, yyscan_t);
   const char* show_token(int);
   void print_token(const char *, Vector* v);
 }
 
-%define api.pure
+%define api.pure full
 %define api.value.type {Vector *}
+%param {yyscan_t scanner}
 
 %token IDENT
 %token FLOATING
@@ -326,7 +331,8 @@ const char* show_token(int token) {
 #undef CASE_TOKEN
 }
 
-void yyerror(const char* msg) {
+void yyerror(const char* msg, yyscan_t scanner) {
+  (void)scanner;
   fprintf(stderr, "%s\n", msg);
 }
 
