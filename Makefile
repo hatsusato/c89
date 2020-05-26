@@ -5,6 +5,7 @@ YACC = bison
 target = main.out
 ldflags =
 cflags = -Wall -Wextra -ansi -pedantic
+cflags += -MMD -MP -MT $@
 release_cflags = -O3 -DNDEBUG
 debug_cflags = -g
 lflags = -t
@@ -19,7 +20,6 @@ yacc_med = $(yacc_pre).tab.c $(yacc_pre).tab.h
 yacc_obj = $(yacc_pre:src/%=obj/%).tab.o
 srcs = src/main.c src/vector.c
 objs = $(srcs:src/%.c=obj/%.o) $(lex_obj) $(yacc_obj)
-deps = $(objs:%.o=%.d)
 meds = $(lex_med) $(yacc_med)
 
 .PHONY: all release debug
@@ -43,10 +43,7 @@ $(yacc_med): $(yacc_src)
 $(objs): obj/%.o: src/%.c | obj
 	$(CC) $(cflags) -c $< -o $@
 
-$(deps): obj/%.d: src/%.c | obj
-	$(CC) -MG -MM -MP $< -MF $@
-
--include $(deps)
+-include $(objs:%.o=%.d)
 
 obj:
 	mkdir -p $@
