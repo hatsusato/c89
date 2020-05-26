@@ -10,9 +10,6 @@ struct struct_Vector {
   Size size, capacity;
 };
 
-static boolean vector_full(const Vector *v) {
-  return v->size == v->capacity;
-}
 static void vector_alloc(Vector *v) {
   void *prev = v->data;
   v->data = malloc(v->capacity);
@@ -61,7 +58,7 @@ boolean vector_empty(const Vector *v) {
 void *vector_back(Vector *v) {
   Size size = 0;
   assert(v);
-  if (vector_full(v)) {
+  if (v->size == v->capacity) {
     vector_extend(v, 2 * v->capacity);
   }
   size = v->size;
