@@ -109,7 +109,7 @@
 %start top
 %%
 top: %empty
-| token top
+| top token
 ;
 token
 : keyword { print_token("keyword", $$); }
