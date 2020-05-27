@@ -103,7 +103,7 @@
 ";"   { COPY_AND_RETURN(SEMIC);    }
 "..." { COPY_AND_RETURN(ELLIP);    }
 
-[_a-zA-Z][_a-zA-Z0-9]* { COPY_AND_RETURN(IDENT); }
+[_[:alpha:]][_[:alnum:]]* { COPY_AND_RETURN(IDENT); }
 
 [0][0-7]*           { COPY_AND_RETURN(INTEGER); }
 [1-9][0-9]*         { COPY_AND_RETURN(INTEGER); }
