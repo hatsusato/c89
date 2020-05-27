@@ -143,8 +143,8 @@ s-char         {source-character-set}|{single-quote}|{escape-sequence}
 {character-constant} { COPY_AND_RETURN(CHARACTER); }
 {string-literal}     { COPY_AND_RETURN(LITERAL); }
 
-[ \t\n]
-. { return UNKNOWN; }
+[ \t\n\v\f]
+. { COPY_AND_RETURN(UNKNOWN); }
 
 %%
 
