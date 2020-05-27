@@ -33,6 +33,8 @@ integer-suffix       {unsigned-suffix}{long-suffix}|{long-suffix}{unsigned-suffi
 unsigned-suffix      [uU]?
 long-suffix          [lL]?
 
+character-constant {wide-prefix}{single-quote}{c-char}+{single-quote}
+c-char {source-character-set}|{double-quote}|{escape-sequence}
 escape-sequence {simple-escape-sequence}|{octal-escape-sequence}|{hexadecimal-escape-sequence}
 simple-escape-sequence {backslash}[\'\"\?\\abfnrtv]
 octal-escape-sequence {backslash}{octal-digit}{1,3}
@@ -126,7 +128,7 @@ s-char {source-character-set}|{single-quote}|{escape-sequence}
 [_[:alpha:]][_[:alnum:]]* { COPY_AND_RETURN(IDENT); }
 
 {integer-constant} { COPY_AND_RETURN(INTEGER); }
-
+{character-constant} {COPY_AND_RETURN(CHARACTER); }
 {string-literal} { COPY_AND_RETURN(LITERAL); }
 
 [ \t\n]
