@@ -26,6 +26,14 @@ identifier {nondigit}({nondigit}|{digit})*
 nondigit   [_a-zA-Z]
 digit      [0-9]
 
+floating-constant   ({floating-fractional}|{floating-integer}){floating-suffix}
+floating-fractional {fractional-constant}{exponent-part}?
+floating-integer    {digit}+{exponent-part}
+fractional-constant {digit}+[.]{digit}*|{digit}*[.]{digit}+
+exponent-part       [eE]{sign}{digit}+
+sign                [+-]?
+floating-suffix     [flFL]?
+
 integer-constant     ({decimal-constant}|{octal-constant}|{hexadecimal-constant}){integer-suffix}
 decimal-constant     {nonzero-digit}{digit}*
 octal-constant       [0]{octal-digit}*
@@ -130,7 +138,7 @@ s-char         {source-character-set}|{single-quote}|{escape-sequence}
 "..." { COPY_AND_RETURN(ELLIP);    }
 
 {identifier}         { COPY_AND_RETURN(IDENT); }
-
+{floating-constant}  { COPY_AND_RETURN(FLOATING); }
 {integer-constant}   { COPY_AND_RETURN(INTEGER); }
 {character-constant} { COPY_AND_RETURN(CHARACTER); }
 {string-literal}     { COPY_AND_RETURN(LITERAL); }
