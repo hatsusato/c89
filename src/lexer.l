@@ -16,6 +16,16 @@
 
 %x string
 
+integer-constant     ({decimal-constant}|{octal-constant}|{hexadecimal-constant}){integer-suffix}
+decimal-constant     {nonzero-digit}[[:digit:]]*
+octal-constant       [0]{octal-digit}*
+hexadecimal-constant [0][xX]{hexadecimal-digit}+
+nonzero-digit        [1-9]
+octal-digit          [0-7]
+hexadecimal-digit    [0-9a-fA-F]
+integer-suffix       {unsigned-suffix}{long-suffix}|{long-suffix}{unsigned-suffix}
+unsigned-suffix      [uU]?
+long-suffix          [lL]?
 %%
 
 [\"]               { BEGIN(string); copy_lval(true, yyscanner); }
@@ -105,9 +115,7 @@
 
 [_[:alpha:]][_[:alnum:]]* { COPY_AND_RETURN(IDENT); }
 
-[0][0-7]*           { COPY_AND_RETURN(INTEGER); }
-[1-9][0-9]*         { COPY_AND_RETURN(INTEGER); }
-[0][xX][0-9a-fA-F]* { COPY_AND_RETURN(INTEGER); }
+{integer-constant} { COPY_AND_RETURN(INTEGER); }
 
 [ \t\n]
 . { return UNKNOWN; }
