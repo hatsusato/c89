@@ -114,7 +114,7 @@ top: %empty
 token
 : keyword { print_token("keyword", $$); }
 | identifier { print_token("identifier", $$); }
-| constant { print_token("constant", $$); }
+| constant
 | string-literal { print_token("literal", $$); }
 | operator { print_token("punctuator", $$); }
 | punctuator { print_token("punctuator", $$); }
@@ -157,10 +157,10 @@ identifier
 : IDENT
 ;
 constant
-: floating-constant
-| integer-constant
+: floating-constant { print_token("floating", $$); }
+| integer-constant { print_token("integer", $$); }
 /* | enumeration-constant */
-| character-constant
+| character-constant { print_token("character", $$); }
 ;
 floating-constant
 : FLOATING
