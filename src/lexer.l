@@ -22,8 +22,12 @@ double-quote [\"]
 backslash [\\]
 source-character-set [^\'\"\\\n]
 
+identifier {nondigit}({nondigit}|{digit})*
+nondigit   [_a-zA-Z]
+digit      [0-9]
+
 integer-constant     ({decimal-constant}|{octal-constant}|{hexadecimal-constant}){integer-suffix}
-decimal-constant     {nonzero-digit}[[:digit:]]*
+decimal-constant     {nonzero-digit}{digit}*
 octal-constant       [0]{octal-digit}*
 hexadecimal-constant [0][xX]{hexadecimal-digit}+
 nonzero-digit        [1-9]
@@ -125,7 +129,7 @@ s-char {source-character-set}|{single-quote}|{escape-sequence}
 ";"   { COPY_AND_RETURN(SEMIC);    }
 "..." { COPY_AND_RETURN(ELLIP);    }
 
-[_[:alpha:]][_[:alnum:]]* { COPY_AND_RETURN(IDENT); }
+{identifier} { COPY_AND_RETURN(IDENT); }
 
 {integer-constant} { COPY_AND_RETURN(INTEGER); }
 {character-constant} {COPY_AND_RETURN(CHARACTER); }
