@@ -16,6 +16,12 @@
 
 %x string
 
+wide-prefix [L]?
+single-quote [\']
+double-quote [\"]
+backslash [\\]
+source-character-set [^\'\"\\\n]
+
 integer-constant     ({decimal-constant}|{octal-constant}|{hexadecimal-constant}){integer-suffix}
 decimal-constant     {nonzero-digit}[[:digit:]]*
 octal-constant       [0]{octal-digit}*
@@ -26,12 +32,16 @@ hexadecimal-digit    [0-9a-fA-F]
 integer-suffix       {unsigned-suffix}{long-suffix}|{long-suffix}{unsigned-suffix}
 unsigned-suffix      [uU]?
 long-suffix          [lL]?
-%%
 
-[\"]               { BEGIN(string); copy_lval(true, yyscanner); }
-<string>[^\"\n\\]* { copy_lval(false, yyscanner); }
-<string>[\\][^\n]  { copy_lval(false, yyscanner); }
-<string>[\"]       { BEGIN(INITIAL); copy_lval(false, yyscanner); return LITERAL; }
+escape-sequence {simple-escape-sequence}|{octal-escape-sequence}|{hexadecimal-escape-sequence}
+simple-escape-sequence {backslash}[\'\"\?\\abfnrtv]
+octal-escape-sequence {backslash}{octal-digit}{1,3}
+hexadecimal-escape-sequence {backslash}[x]{hexadecimal-digit}+
+
+string-literal {wide-prefix}{double-quote}{s-char}*{double-quote}
+s-char {source-character-set}|{single-quote}|{escape-sequence}
+
+%%
 
 "auto"     { COPY_AND_RETURN(AUTO);     }
 "break"    { COPY_AND_RETURN(BREAK);    }
@@ -116,6 +126,8 @@ long-suffix          [lL]?
 [_[:alpha:]][_[:alnum:]]* { COPY_AND_RETURN(IDENT); }
 
 {integer-constant} { COPY_AND_RETURN(INTEGER); }
+
+{string-literal} { COPY_AND_RETURN(LITERAL); }
 
 [ \t\n]
 . { return UNKNOWN; }
