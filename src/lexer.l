@@ -16,10 +16,10 @@
 
 %x string
 
-wide-prefix [L]?
-single-quote [\']
-double-quote [\"]
-backslash [\\]
+wide-prefix          [L]?
+single-quote         [\']
+double-quote         [\"]
+backslash            [\\]
 source-character-set [^\'\"\\\n]
 
 identifier {nondigit}({nondigit}|{digit})*
@@ -37,15 +37,15 @@ integer-suffix       {unsigned-suffix}{long-suffix}|{long-suffix}{unsigned-suffi
 unsigned-suffix      [uU]?
 long-suffix          [lL]?
 
-character-constant {wide-prefix}{single-quote}{c-char}+{single-quote}
-c-char {source-character-set}|{double-quote}|{escape-sequence}
-escape-sequence {simple-escape-sequence}|{octal-escape-sequence}|{hexadecimal-escape-sequence}
-simple-escape-sequence {backslash}[\'\"\?\\abfnrtv]
-octal-escape-sequence {backslash}{octal-digit}{1,3}
+character-constant          {wide-prefix}{single-quote}{c-char}+{single-quote}
+c-char                      {source-character-set}|{double-quote}|{escape-sequence}
+escape-sequence             {simple-escape-sequence}|{octal-escape-sequence}|{hexadecimal-escape-sequence}
+simple-escape-sequence      {backslash}[\'\"\?\\abfnrtv]
+octal-escape-sequence       {backslash}{octal-digit}{1,3}
 hexadecimal-escape-sequence {backslash}[x]{hexadecimal-digit}+
 
 string-literal {wide-prefix}{double-quote}{s-char}*{double-quote}
-s-char {source-character-set}|{single-quote}|{escape-sequence}
+s-char         {source-character-set}|{single-quote}|{escape-sequence}
 
 %%
 
@@ -129,11 +129,11 @@ s-char {source-character-set}|{single-quote}|{escape-sequence}
 ";"   { COPY_AND_RETURN(SEMIC);    }
 "..." { COPY_AND_RETURN(ELLIP);    }
 
-{identifier} { COPY_AND_RETURN(IDENT); }
+{identifier}         { COPY_AND_RETURN(IDENT); }
 
-{integer-constant} { COPY_AND_RETURN(INTEGER); }
-{character-constant} {COPY_AND_RETURN(CHARACTER); }
-{string-literal} { COPY_AND_RETURN(LITERAL); }
+{integer-constant}   { COPY_AND_RETURN(INTEGER); }
+{character-constant} { COPY_AND_RETURN(CHARACTER); }
+{string-literal}     { COPY_AND_RETURN(LITERAL); }
 
 [ \t\n]
 . { return UNKNOWN; }
