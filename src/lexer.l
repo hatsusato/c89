@@ -16,44 +16,54 @@
 
 %x string
 
-wide-prefix          [L]?
-single-quote         [\']
-double-quote         [\"]
-backslash            [\\]
-source-character-set [^\'\"\\\n]
+wide-prefix      [L]?
+single-quote     [\']
+double-quote     [\"]
+backslash        [\\]
+question-mark    [\?]
+dot              [\.]
+char-e           [eE]
+char-f           [fF]
+char-l           [lL]
+char-u           [uU]
+char-x           [xX]
+lower-x          [x]
+zero             [0]
+escape-character [abfnrtv]
+character-set    [^\'\"\\\n]
 
 identifier {nondigit}({nondigit}|{digit})*
 nondigit   [_a-zA-Z]
 digit      [0-9]
 
-floating-constant   ({floating-fractional}|{floating-integer}){floating-suffix}
+floating-constant   ({floating-fractional}|{floating-integer}){floating-suffix}?
 floating-fractional {fractional-constant}{exponent-part}?
 floating-integer    {digit}+{exponent-part}
-fractional-constant {digit}+[.]{digit}*|{digit}*[.]{digit}+
-exponent-part       [eE]{sign}{digit}+
-sign                [+-]?
-floating-suffix     [flFL]?
+fractional-constant {digit}+{dot}{digit}*|{digit}*{dot}{digit}+
+exponent-part       {char-e}{sign}?{digit}+
+sign                [+-]
+floating-suffix     {char-f}|{char-l}
 
 integer-constant     ({decimal-constant}|{octal-constant}|{hexadecimal-constant}){integer-suffix}
 decimal-constant     {nonzero-digit}{digit}*
-octal-constant       [0]{octal-digit}*
-hexadecimal-constant [0][xX]{hexadecimal-digit}+
+octal-constant       {zero}{octal-digit}*
+hexadecimal-constant {zero}{char-x}{hexadecimal-digit}+
 nonzero-digit        [1-9]
 octal-digit          [0-7]
 hexadecimal-digit    [0-9a-fA-F]
 integer-suffix       {unsigned-suffix}{long-suffix}|{long-suffix}{unsigned-suffix}
-unsigned-suffix      [uU]?
-long-suffix          [lL]?
+unsigned-suffix      {char-u}?
+long-suffix          {char-l}?
 
 character-constant          {wide-prefix}{single-quote}{c-char}+{single-quote}
-c-char                      {source-character-set}|{double-quote}|{escape-sequence}
+c-char                      {character-set}|{double-quote}|{escape-sequence}
 escape-sequence             {simple-escape-sequence}|{octal-escape-sequence}|{hexadecimal-escape-sequence}
-simple-escape-sequence      {backslash}[\'\"\?\\abfnrtv]
+simple-escape-sequence      {backslash}({single-quote}|{double-quote}|{question-mark}|{backslash}|{escape-character})
 octal-escape-sequence       {backslash}{octal-digit}{1,3}
-hexadecimal-escape-sequence {backslash}[x]{hexadecimal-digit}+
+hexadecimal-escape-sequence {backslash}{lower-x}{hexadecimal-digit}+
 
 string-literal {wide-prefix}{double-quote}{s-char}*{double-quote}
-s-char         {source-character-set}|{single-quote}|{escape-sequence}
+s-char         {character-set}|{single-quote}|{escape-sequence}
 
 %%
 
