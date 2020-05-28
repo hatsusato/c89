@@ -16,6 +16,7 @@
 
 %x string
 
+space            [ \t\n\v\f]
 wide-prefix      [L]?
 single-quote     [\']
 double-quote     [\"]
@@ -66,6 +67,7 @@ string-literal {wide-prefix}{double-quote}{s-char}*{double-quote}
 s-char         {character-set}|{single-quote}|{escape-sequence}
 
 %%
+{space}
 
 "auto"     { COPY_AND_RETURN(KEYWORD_AUTO);     }
 "break"    { COPY_AND_RETURN(KEYWORD_BREAK);    }
@@ -154,7 +156,6 @@ s-char         {character-set}|{single-quote}|{escape-sequence}
 {character-constant} { COPY_AND_RETURN(TOKEN_CHARACTER_CONSTANT); }
 {string-literal}     { COPY_AND_RETURN(TOKEN_STRING_LITERAL);     }
 
-[ \t\n\v\f]
 . { COPY_AND_RETURN(TOKEN_UNKNOWN); }
 
 %%
