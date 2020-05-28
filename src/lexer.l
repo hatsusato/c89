@@ -2,7 +2,6 @@
 #define yyHEADER_H
 #include "parser.tab.h"
   int copy_lval(int, yyscan_t);
-#define COPY_AND_RETURN(t) return copy_lval(t, yyscanner)
 %}
 
 %option noinput
@@ -69,94 +68,94 @@ s-char         {character-set}|{single-quote}|{escape-sequence}
 %%
 {space}
 
-"auto"     { COPY_AND_RETURN(KEYWORD_AUTO);     }
-"break"    { COPY_AND_RETURN(KEYWORD_BREAK);    }
-"case"     { COPY_AND_RETURN(KEYWORD_CASE);     }
-"char"     { COPY_AND_RETURN(KEYWORD_CHAR);     }
-"const"    { COPY_AND_RETURN(KEYWORD_CONST);    }
-"continue" { COPY_AND_RETURN(KEYWORD_CONTINUE); }
-"default"  { COPY_AND_RETURN(KEYWORD_DEFAULT);  }
-"do"       { COPY_AND_RETURN(KEYWORD_DO);       }
-"double"   { COPY_AND_RETURN(KEYWORD_DOUBLE);   }
-"else"     { COPY_AND_RETURN(KEYWORD_ELSE);     }
-"enum"     { COPY_AND_RETURN(KEYWORD_ENUM);     }
-"extern"   { COPY_AND_RETURN(KEYWORD_EXTERN);   }
-"float"    { COPY_AND_RETURN(KEYWORD_FLOAT);    }
-"for"      { COPY_AND_RETURN(KEYWORD_FOR);      }
-"goto"     { COPY_AND_RETURN(KEYWORD_GOTO);     }
-"if"       { COPY_AND_RETURN(KEYWORD_IF);       }
-"int"      { COPY_AND_RETURN(KEYWORD_INT);      }
-"long"     { COPY_AND_RETURN(KEYWORD_LONG);     }
-"register" { COPY_AND_RETURN(KEYWORD_REGISTER); }
-"return"   { COPY_AND_RETURN(KEYWORD_RETURN);   }
-"signed"   { COPY_AND_RETURN(KEYWORD_SIGNED);   }
-"sizeof"   { COPY_AND_RETURN(KEYWORD_SIZEOF);   }
-"short"    { COPY_AND_RETURN(KEYWORD_SHORT);    }
-"static"   { COPY_AND_RETURN(KEYWORD_STATIC);   }
-"struct"   { COPY_AND_RETURN(KEYWORD_STRUCT);   }
-"switch"   { COPY_AND_RETURN(KEYWORD_SWITCH);   }
-"typedef"  { COPY_AND_RETURN(KEYWORD_TYPEDEF);  }
-"union"    { COPY_AND_RETURN(KEYWORD_UNION);    }
-"unsigned" { COPY_AND_RETURN(KEYWORD_UNSIGNED); }
-"void"     { COPY_AND_RETURN(KEYWORD_VOID);     }
-"volatile" { COPY_AND_RETURN(KEYWORD_VOLATILE); }
-"while"    { COPY_AND_RETURN(KEYWORD_WHILE);    }
+"auto"     { return copy_lval(KEYWORD_AUTO, yyscanner);     }
+"break"    { return copy_lval(KEYWORD_BREAK, yyscanner);    }
+"case"     { return copy_lval(KEYWORD_CASE, yyscanner);     }
+"char"     { return copy_lval(KEYWORD_CHAR, yyscanner);     }
+"const"    { return copy_lval(KEYWORD_CONST, yyscanner);    }
+"continue" { return copy_lval(KEYWORD_CONTINUE, yyscanner); }
+"default"  { return copy_lval(KEYWORD_DEFAULT, yyscanner);  }
+"do"       { return copy_lval(KEYWORD_DO, yyscanner);       }
+"double"   { return copy_lval(KEYWORD_DOUBLE, yyscanner);   }
+"else"     { return copy_lval(KEYWORD_ELSE, yyscanner);     }
+"enum"     { return copy_lval(KEYWORD_ENUM, yyscanner);     }
+"extern"   { return copy_lval(KEYWORD_EXTERN, yyscanner);   }
+"float"    { return copy_lval(KEYWORD_FLOAT, yyscanner);    }
+"for"      { return copy_lval(KEYWORD_FOR, yyscanner);      }
+"goto"     { return copy_lval(KEYWORD_GOTO, yyscanner);     }
+"if"       { return copy_lval(KEYWORD_IF, yyscanner);       }
+"int"      { return copy_lval(KEYWORD_INT, yyscanner);      }
+"long"     { return copy_lval(KEYWORD_LONG, yyscanner);     }
+"register" { return copy_lval(KEYWORD_REGISTER, yyscanner); }
+"return"   { return copy_lval(KEYWORD_RETURN, yyscanner);   }
+"signed"   { return copy_lval(KEYWORD_SIGNED, yyscanner);   }
+"sizeof"   { return copy_lval(KEYWORD_SIZEOF, yyscanner);   }
+"short"    { return copy_lval(KEYWORD_SHORT, yyscanner);    }
+"static"   { return copy_lval(KEYWORD_STATIC, yyscanner);   }
+"struct"   { return copy_lval(KEYWORD_STRUCT, yyscanner);   }
+"switch"   { return copy_lval(KEYWORD_SWITCH, yyscanner);   }
+"typedef"  { return copy_lval(KEYWORD_TYPEDEF, yyscanner);  }
+"union"    { return copy_lval(KEYWORD_UNION, yyscanner);    }
+"unsigned" { return copy_lval(KEYWORD_UNSIGNED, yyscanner); }
+"void"     { return copy_lval(KEYWORD_VOID, yyscanner);     }
+"volatile" { return copy_lval(KEYWORD_VOLATILE, yyscanner); }
+"while"    { return copy_lval(KEYWORD_WHILE, yyscanner);    }
 
-"."   { COPY_AND_RETURN(OPERATOR_PERIOD);             }
-"->"  { COPY_AND_RETURN(OPERATOR_ARROW);              }
-"++"  { COPY_AND_RETURN(OPERATOR_INCREMENT);          }
-"--"  { COPY_AND_RETURN(OPERATOR_DECREMENT);          }
-"&"   { COPY_AND_RETURN(OPERATOR_AMPERSAND);          }
-"*"   { COPY_AND_RETURN(OPERATOR_ASTERISK);           }
-"+"   { COPY_AND_RETURN(OPERATOR_PLUS);               }
-"-"   { COPY_AND_RETURN(OPERATOR_MINUS);              }
-"~"   { COPY_AND_RETURN(OPERATOR_TILDE);              }
-"!"   { COPY_AND_RETURN(OPERATOR_EXCLAMATION);        }
-"/"   { COPY_AND_RETURN(OPERATOR_SLASH);              }
-"%"   { COPY_AND_RETURN(OPERATOR_PERCENT);            }
-"<<"  { COPY_AND_RETURN(OPERATOR_LEFT_SHIFT);         }
-">>"  { COPY_AND_RETURN(OPERATOR_RIGHT_SHIFT);        }
-"<"   { COPY_AND_RETURN(OPERATOR_LESS_THAN);          }
-">"   { COPY_AND_RETURN(OPERATOR_GREATER_THAN);       }
-"<="  { COPY_AND_RETURN(OPERATOR_LESS_EQUAL);         }
-">="  { COPY_AND_RETURN(OPERATOR_GREATER_EQUAL);      }
-"=="  { COPY_AND_RETURN(OPERATOR_EQUAL);              }
-"!="  { COPY_AND_RETURN(OPERATOR_NOT_EQUAL);          }
-"^"   { COPY_AND_RETURN(OPERATOR_CARET);              }
-"|"   { COPY_AND_RETURN(OPERATOR_BAR);                }
-"&&"  { COPY_AND_RETURN(OPERATOR_AND);                }
-"||"  { COPY_AND_RETURN(OPERATOR_OR);                 }
-"?"   { COPY_AND_RETURN(OPERATOR_QUESTION);           }
-"="   { COPY_AND_RETURN(OPERATOR_ASSIGN);             }
-"*="  { COPY_AND_RETURN(OPERATOR_ASTERISK_ASSIGN);    }
-"/="  { COPY_AND_RETURN(OPERATOR_SLASH_ASSIGN);       }
-"%="  { COPY_AND_RETURN(OPERATOR_PERCENT_ASSIGN);     }
-"+="  { COPY_AND_RETURN(OPERATOR_PLUS_ASSIGN);        }
-"-="  { COPY_AND_RETURN(OPERATOR_MINUS_ASSIGN);       }
-"<<=" { COPY_AND_RETURN(OPERATOR_LEFT_SHIFT_ASSIGN);  }
-">>=" { COPY_AND_RETURN(OPERATOR_RIGHT_SHIFT_ASSIGN); }
-"&="  { COPY_AND_RETURN(OPERATOR_AMPERSAND_ASSIGN);   }
-"^="  { COPY_AND_RETURN(OPERATOR_CARET_ASSIGN);       }
-"|="  { COPY_AND_RETURN(OPERATOR_BAR_ASSIGN);         }
+"."   { return copy_lval(OPERATOR_PERIOD, yyscanner);             }
+"->"  { return copy_lval(OPERATOR_ARROW, yyscanner);              }
+"++"  { return copy_lval(OPERATOR_INCREMENT, yyscanner);          }
+"--"  { return copy_lval(OPERATOR_DECREMENT, yyscanner);          }
+"&"   { return copy_lval(OPERATOR_AMPERSAND, yyscanner);          }
+"*"   { return copy_lval(OPERATOR_ASTERISK, yyscanner);           }
+"+"   { return copy_lval(OPERATOR_PLUS, yyscanner);               }
+"-"   { return copy_lval(OPERATOR_MINUS, yyscanner);              }
+"~"   { return copy_lval(OPERATOR_TILDE, yyscanner);              }
+"!"   { return copy_lval(OPERATOR_EXCLAMATION, yyscanner);        }
+"/"   { return copy_lval(OPERATOR_SLASH, yyscanner);              }
+"%"   { return copy_lval(OPERATOR_PERCENT, yyscanner);            }
+"<<"  { return copy_lval(OPERATOR_LEFT_SHIFT, yyscanner);         }
+">>"  { return copy_lval(OPERATOR_RIGHT_SHIFT, yyscanner);        }
+"<"   { return copy_lval(OPERATOR_LESS_THAN, yyscanner);          }
+">"   { return copy_lval(OPERATOR_GREATER_THAN, yyscanner);       }
+"<="  { return copy_lval(OPERATOR_LESS_EQUAL, yyscanner);         }
+">="  { return copy_lval(OPERATOR_GREATER_EQUAL, yyscanner);      }
+"=="  { return copy_lval(OPERATOR_EQUAL, yyscanner);              }
+"!="  { return copy_lval(OPERATOR_NOT_EQUAL, yyscanner);          }
+"^"   { return copy_lval(OPERATOR_CARET, yyscanner);              }
+"|"   { return copy_lval(OPERATOR_BAR, yyscanner);                }
+"&&"  { return copy_lval(OPERATOR_AND, yyscanner);                }
+"||"  { return copy_lval(OPERATOR_OR, yyscanner);                 }
+"?"   { return copy_lval(OPERATOR_QUESTION, yyscanner);           }
+"="   { return copy_lval(OPERATOR_ASSIGN, yyscanner);             }
+"*="  { return copy_lval(OPERATOR_ASTERISK_ASSIGN, yyscanner);    }
+"/="  { return copy_lval(OPERATOR_SLASH_ASSIGN, yyscanner);       }
+"%="  { return copy_lval(OPERATOR_PERCENT_ASSIGN, yyscanner);     }
+"+="  { return copy_lval(OPERATOR_PLUS_ASSIGN, yyscanner);        }
+"-="  { return copy_lval(OPERATOR_MINUS_ASSIGN, yyscanner);       }
+"<<=" { return copy_lval(OPERATOR_LEFT_SHIFT_ASSIGN, yyscanner);  }
+">>=" { return copy_lval(OPERATOR_RIGHT_SHIFT_ASSIGN, yyscanner); }
+"&="  { return copy_lval(OPERATOR_AMPERSAND_ASSIGN, yyscanner);   }
+"^="  { return copy_lval(OPERATOR_CARET_ASSIGN, yyscanner);       }
+"|="  { return copy_lval(OPERATOR_BAR_ASSIGN, yyscanner);         }
 
-"["   { COPY_AND_RETURN(PUNCTUATOR_LEFT_BRACKET);  }
-"]"   { COPY_AND_RETURN(PUNCTUATOR_RIGHT_BRACKET); }
-"("   { COPY_AND_RETURN(PUNCTUATOR_LEFT_PAREN);    }
-")"   { COPY_AND_RETURN(PUNCTUATOR_RIGHT_PAREN);   }
-"{"   { COPY_AND_RETURN(PUNCTUATOR_LEFT_BRACE);    }
-"}"   { COPY_AND_RETURN(PUNCTUATOR_RIGHT_BRACE);   }
-","   { COPY_AND_RETURN(PUNCTUATOR_COMMA);         }
-":"   { COPY_AND_RETURN(PUNCTUATOR_COLON);         }
-";"   { COPY_AND_RETURN(PUNCTUATOR_SEMICOLON);     }
-"..." { COPY_AND_RETURN(PUNCTUATOR_ELLIPSIS);      }
+"["   { return copy_lval(PUNCTUATOR_LEFT_BRACKET, yyscanner);  }
+"]"   { return copy_lval(PUNCTUATOR_RIGHT_BRACKET, yyscanner); }
+"("   { return copy_lval(PUNCTUATOR_LEFT_PAREN, yyscanner);    }
+")"   { return copy_lval(PUNCTUATOR_RIGHT_PAREN, yyscanner);   }
+"{"   { return copy_lval(PUNCTUATOR_LEFT_BRACE, yyscanner);    }
+"}"   { return copy_lval(PUNCTUATOR_RIGHT_BRACE, yyscanner);   }
+","   { return copy_lval(PUNCTUATOR_COMMA, yyscanner);         }
+":"   { return copy_lval(PUNCTUATOR_COLON, yyscanner);         }
+";"   { return copy_lval(PUNCTUATOR_SEMICOLON, yyscanner);     }
+"..." { return copy_lval(PUNCTUATOR_ELLIPSIS, yyscanner);      }
 
-{identifier}         { COPY_AND_RETURN(TOKEN_IDENTIFIER);         }
-{floating-constant}  { COPY_AND_RETURN(TOKEN_FLOATING_CONSTANT);  }
-{integer-constant}   { COPY_AND_RETURN(TOKEN_INTEGER_CONSTANT);   }
-{character-constant} { COPY_AND_RETURN(TOKEN_CHARACTER_CONSTANT); }
-{string-literal}     { COPY_AND_RETURN(TOKEN_STRING_LITERAL);     }
+{identifier}         { return copy_lval(TOKEN_IDENTIFIER, yyscanner);         }
+{floating-constant}  { return copy_lval(TOKEN_FLOATING_CONSTANT, yyscanner);  }
+{integer-constant}   { return copy_lval(TOKEN_INTEGER_CONSTANT, yyscanner);   }
+{character-constant} { return copy_lval(TOKEN_CHARACTER_CONSTANT, yyscanner); }
+{string-literal}     { return copy_lval(TOKEN_STRING_LITERAL, yyscanner);     }
 
-. { COPY_AND_RETURN(TOKEN_UNKNOWN); }
+. { return copy_lval(TOKEN_UNKNOWN, yyscanner); }
 
 %%
 
