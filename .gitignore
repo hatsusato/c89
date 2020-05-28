@@ -1,5 +1,6 @@
 lexer.[ch]
 parser.tab.[ch]
+test/
 
 # Prerequisites
 *.d
