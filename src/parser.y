@@ -2,7 +2,6 @@
 }
 %code requires {
 #include <stdio.h>
-#include "vector.h"
 #ifndef YY_TYPEDEF_YY_SCANNER_T
 #define YY_TYPEDEF_YY_SCANNER_T
   typedef void* yyscan_t;
@@ -12,11 +11,11 @@
 #include "lexer.h"
   void yyerror(const char *, yyscan_t);
   const char* show_token(int);
-  void print_token(const char *, Vector* v);
+  void print_token(const char *, const char *);
 }
 
 %define api.pure full
-%define api.value.type {Vector *}
+%define api.value.type {const char *}
 %param {yyscan_t scanner}
 
 %token TOKEN_IDENTIFIER
@@ -253,8 +252,6 @@ void yyerror(const char* msg, yyscan_t scanner) {
   fprintf(stderr, "%s\n", msg);
 }
 
-void print_token(const char* header, Vector* v) {
-  if (v) {
-    printf("%s: %s\n", header, (char *)vector_at(v, 0));
-  }
+void print_token(const char* header, const char* token) {
+  printf("%s: %s\n", header, token);
 }

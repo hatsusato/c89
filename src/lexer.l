@@ -1,8 +1,8 @@
 %{
 #define yyHEADER_H
 #include "parser.tab.h"
-  void copy_lval(boolean, yyscan_t);
-#define COPY_AND_RETURN(t) copy_lval(true, yyscanner); return t
+  int copy_lval(int, yyscan_t);
+#define COPY_AND_RETURN(t) return copy_lval(t, yyscanner)
 %}
 
 %option noinput
@@ -160,17 +160,7 @@ s-char         {character-set}|{single-quote}|{escape-sequence}
 
 %%
 
-void copy_lval(boolean clear, yyscan_t scanner) {
-  YYSTYPE *lval = yyget_lval(scanner);
-  if (!*lval) {
-    *lval = vector_new(1);
-    *(char*)vector_back(*lval) = 0;
-  }
-  if (clear) {
-    vector_clear(*lval);
-    *(char*)vector_back(*lval) = 0;
-  }
-  vector_pop(*lval);
-  vector_append(*lval, yyget_text(scanner), yyget_leng(scanner));
-  *(char*)vector_back(*lval) = 0;
+int copy_lval(int token, yyscan_t scanner) {
+  *yyget_lval(scanner) = yyget_text(scanner);
+  return token;
 }
