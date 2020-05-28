@@ -19,11 +19,12 @@
 %define api.value.type {Vector *}
 %param {yyscan_t scanner}
 
-%token IDENT
-%token FLOATING
-%token INTEGER
-%token CHARACTER
-%token LITERAL
+%token TOKEN_IDENTIFIER
+%token TOKEN_FLOATING_CONSTANT
+%token TOKEN_INTEGER_CONSTANT
+%token TOKEN_CHARACTER_CONSTANT
+%token TOKEN_STRING_LITERAL
+%token TOKEN_UNKNOWN
 
 %token KEYWORD_AUTO "auto"
 %token KEYWORD_BREAK "break"
@@ -104,7 +105,6 @@
 %token COMMA ","
 %token SEMIC ";"
 %token ELLIP "..."
-%token UNKNOWN
 
 %start top
 %%
@@ -154,7 +154,7 @@ keyword
 | "while"
 ;
 identifier
-: IDENT
+: TOKEN_IDENTIFIER
 ;
 constant
 : floating-constant { print_token("floating", $$); }
@@ -163,19 +163,19 @@ constant
 | character-constant { print_token("character", $$); }
 ;
 floating-constant
-: FLOATING
+: TOKEN_FLOATING_CONSTANT
 ;
 integer-constant
-: INTEGER
+: TOKEN_INTEGER_CONSTANT
 ;
 /* enumeration-constant: */
-/*   IDENT */
+/*   TOKEN_IDENTIFIER */
 /* ; */
 character-constant
-: CHARACTER
+: TOKEN_CHARACTER_CONSTANT
 ;
 string-literal
-: LITERAL
+: TOKEN_STRING_LITERAL
 ;
 operator
 : "["

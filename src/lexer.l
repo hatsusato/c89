@@ -147,14 +147,14 @@ s-char         {character-set}|{single-quote}|{escape-sequence}
 ";"   { COPY_AND_RETURN(SEMIC);    }
 "..." { COPY_AND_RETURN(ELLIP);    }
 
-{identifier}         { COPY_AND_RETURN(IDENT); }
-{floating-constant}  { COPY_AND_RETURN(FLOATING); }
-{integer-constant}   { COPY_AND_RETURN(INTEGER); }
-{character-constant} { COPY_AND_RETURN(CHARACTER); }
-{string-literal}     { COPY_AND_RETURN(LITERAL); }
+{identifier}         { COPY_AND_RETURN(TOKEN_IDENTIFIER);         }
+{floating-constant}  { COPY_AND_RETURN(TOKEN_FLOATING_CONSTANT);  }
+{integer-constant}   { COPY_AND_RETURN(TOKEN_INTEGER_CONSTANT);   }
+{character-constant} { COPY_AND_RETURN(TOKEN_CHARACTER_CONSTANT); }
+{string-literal}     { COPY_AND_RETURN(TOKEN_STRING_LITERAL);     }
 
 [ \t\n\v\f]
-. { COPY_AND_RETURN(UNKNOWN); }
+. { COPY_AND_RETURN(TOKEN_UNKNOWN); }
 
 %%
 
