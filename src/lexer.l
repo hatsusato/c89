@@ -11,9 +11,6 @@
 %option noyywrap
 %option never-interactive
 %option warn
-%option nodefault
-
-%x string
 
 space            [ \t\n\v\f]
 wide-prefix      [L]?
@@ -21,7 +18,7 @@ single-quote     [\']
 double-quote     [\"]
 backslash        [\\]
 question-mark    [\?]
-dot              [\.]
+period           [\.]
 char-e           [eE]
 char-f           [fF]
 char-l           [lL]
@@ -36,13 +33,13 @@ identifier {nondigit}({nondigit}|{digit})*
 nondigit   [_a-zA-Z]
 digit      [0-9]
 
-floating-constant   ({floating-fractional}|{floating-integer}){floating-suffix}?
+floating-constant   ({floating-fractional}|{floating-integer}){floating-suffix}
 floating-fractional {fractional-constant}{exponent-part}?
 floating-integer    {digit}+{exponent-part}
-fractional-constant {digit}+{dot}{digit}*|{digit}*{dot}{digit}+
+fractional-constant {digit}+{period}{digit}*|{digit}*{period}{digit}+
 exponent-part       {char-e}{sign}?{digit}+
 sign                [+-]
-floating-suffix     {char-f}|{char-l}
+floating-suffix     {char-f}?|{char-l}?
 
 integer-constant     ({decimal-constant}|{octal-constant}|{hexadecimal-constant}){integer-suffix}
 decimal-constant     {nonzero-digit}{digit}*
@@ -55,12 +52,12 @@ integer-suffix       {unsigned-suffix}{long-suffix}|{long-suffix}{unsigned-suffi
 unsigned-suffix      {char-u}?
 long-suffix          {char-l}?
 
-character-constant          {wide-prefix}{single-quote}{c-char}+{single-quote}
-c-char                      {character-set}|{double-quote}|{escape-sequence}
-escape-sequence             {simple-escape-sequence}|{octal-escape-sequence}|{hexadecimal-escape-sequence}
-simple-escape-sequence      {backslash}({single-quote}|{double-quote}|{question-mark}|{backslash}|{escape-character})
-octal-escape-sequence       {backslash}{octal-digit}{1,3}
-hexadecimal-escape-sequence {backslash}{lower-x}{hexadecimal-digit}+
+character-constant {wide-prefix}{single-quote}{c-char}+{single-quote}
+c-char             {character-set}|{double-quote}|{escape-sequence}
+escape-sequence    {simple-escape}|{octal-escape}|{hexadecimal-escape}
+simple-escape      {backslash}({single-quote}|{double-quote}|{question-mark}|{backslash}|{escape-character})
+octal-escape       {backslash}{octal-digit}{1,3}
+hexadecimal-escape {backslash}{lower-x}{hexadecimal-digit}+
 
 string-literal {wide-prefix}{double-quote}{s-char}*{double-quote}
 s-char         {character-set}|{single-quote}|{escape-sequence}
@@ -154,7 +151,6 @@ s-char         {character-set}|{single-quote}|{escape-sequence}
 {integer-constant}   { return copy_lval(TOKEN_INTEGER_CONSTANT, yyscanner);   }
 {character-constant} { return copy_lval(TOKEN_CHARACTER_CONSTANT, yyscanner); }
 {string-literal}     { return copy_lval(TOKEN_STRING_LITERAL, yyscanner);     }
-
 . { return copy_lval(TOKEN_UNKNOWN, yyscanner); }
 
 %%
