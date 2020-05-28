@@ -25,38 +25,38 @@
 %token CHARACTER
 %token LITERAL
 
-%token AUTO "auto"
-%token BREAK "break"
-%token CASE "case"
-%token CHAR "char"
-%token CONST "const"
-%token CONTINUE "continue"
-%token DEFAULT "default"
-%token DO "do"
-%token DOUBLE "double"
-%token ELSE "else"
-%token ENUM "enum"
-%token EXTERN "extern"
-%token FLOAT "float"
-%token FOR "for"
-%token GOTO "goto"
-%token IF "if"
-%token INT "int"
-%token LONG "long"
-%token REGISTER "register"
-%token RETURN "return"
-%token SIGNED "signed"
-%token SIZEOF "sizeof"
-%token SHORT "short"
-%token STATIC "static"
-%token STRUCT "struct"
-%token SWITCH "switch"
-%token TYPEDEF "typedef"
-%token UNION "union"
-%token UNSIGNED "unsigned"
-%token VOID "void"
-%token VOLATILE "volatile"
-%token WHILE "while"
+%token KEYWORD_AUTO "auto"
+%token KEYWORD_BREAK "break"
+%token KEYWORD_CASE "case"
+%token KEYWORD_CHAR "char"
+%token KEYWORD_CONST "const"
+%token KEYWORD_CONTINUE "continue"
+%token KEYWORD_DEFAULT "default"
+%token KEYWORD_DO "do"
+%token KEYWORD_DOUBLE "double"
+%token KEYWORD_ELSE "else"
+%token KEYWORD_ENUM "enum"
+%token KEYWORD_EXTERN "extern"
+%token KEYWORD_FLOAT "float"
+%token KEYWORD_FOR "for"
+%token KEYWORD_GOTO "goto"
+%token KEYWORD_IF "if"
+%token KEYWORD_INT "int"
+%token KEYWORD_LONG "long"
+%token KEYWORD_REGISTER "register"
+%token KEYWORD_RETURN "return"
+%token KEYWORD_SHORT "short"
+%token KEYWORD_SIGNED "signed"
+%token KEYWORD_SIZEOF "sizeof"
+%token KEYWORD_STATIC "static"
+%token KEYWORD_STRUCT "struct"
+%token KEYWORD_SWITCH "switch"
+%token KEYWORD_TYPEDEF "typedef"
+%token KEYWORD_UNION "union"
+%token KEYWORD_UNSIGNED "unsigned"
+%token KEYWORD_VOID "void"
+%token KEYWORD_VOLATILE "volatile"
+%token KEYWORD_WHILE "while"
 
 %token LBRK "["
 %token RBRK "]"
@@ -247,38 +247,38 @@ const char* show_token(int token) {
     CASE_TOKEN(INTEGER);
     CASE_TOKEN(CHARACTER);
     CASE_TOKEN(LITERAL);
-    CASE_TOKEN(AUTO);
-    CASE_TOKEN(BREAK);
-    CASE_TOKEN(CASE);
-    CASE_TOKEN(CHAR);
-    CASE_TOKEN(CONST);
-    CASE_TOKEN(CONTINUE);
-    CASE_TOKEN(DEFAULT);
-    CASE_TOKEN(DO);
-    CASE_TOKEN(DOUBLE);
-    CASE_TOKEN(ELSE);
-    CASE_TOKEN(ENUM);
-    CASE_TOKEN(EXTERN);
-    CASE_TOKEN(FLOAT);
-    CASE_TOKEN(FOR);
-    CASE_TOKEN(GOTO);
-    CASE_TOKEN(IF);
-    CASE_TOKEN(INT);
-    CASE_TOKEN(LONG);
-    CASE_TOKEN(REGISTER);
-    CASE_TOKEN(RETURN);
-    CASE_TOKEN(SIGNED);
-    CASE_TOKEN(SIZEOF);
-    CASE_TOKEN(SHORT);
-    CASE_TOKEN(STATIC);
-    CASE_TOKEN(STRUCT);
-    CASE_TOKEN(SWITCH);
-    CASE_TOKEN(TYPEDEF);
-    CASE_TOKEN(UNION);
-    CASE_TOKEN(UNSIGNED);
-    CASE_TOKEN(VOID);
-    CASE_TOKEN(VOLATILE);
-    CASE_TOKEN(WHILE);
+    CASE_TOKEN(KEYWORD_AUTO);
+    CASE_TOKEN(KEYWORD_BREAK);
+    CASE_TOKEN(KEYWORD_CASE);
+    CASE_TOKEN(KEYWORD_CHAR);
+    CASE_TOKEN(KEYWORD_CONST);
+    CASE_TOKEN(KEYWORD_CONTINUE);
+    CASE_TOKEN(KEYWORD_DEFAULT);
+    CASE_TOKEN(KEYWORD_DO);
+    CASE_TOKEN(KEYWORD_DOUBLE);
+    CASE_TOKEN(KEYWORD_ELSE);
+    CASE_TOKEN(KEYWORD_ENUM);
+    CASE_TOKEN(KEYWORD_EXTERN);
+    CASE_TOKEN(KEYWORD_FLOAT);
+    CASE_TOKEN(KEYWORD_FOR);
+    CASE_TOKEN(KEYWORD_GOTO);
+    CASE_TOKEN(KEYWORD_IF);
+    CASE_TOKEN(KEYWORD_INT);
+    CASE_TOKEN(KEYWORD_LONG);
+    CASE_TOKEN(KEYWORD_REGISTER);
+    CASE_TOKEN(KEYWORD_RETURN);
+    CASE_TOKEN(KEYWORD_SIGNED);
+    CASE_TOKEN(KEYWORD_SIZEOF);
+    CASE_TOKEN(KEYWORD_SHORT);
+    CASE_TOKEN(KEYWORD_STATIC);
+    CASE_TOKEN(KEYWORD_STRUCT);
+    CASE_TOKEN(KEYWORD_SWITCH);
+    CASE_TOKEN(KEYWORD_TYPEDEF);
+    CASE_TOKEN(KEYWORD_UNION);
+    CASE_TOKEN(KEYWORD_UNSIGNED);
+    CASE_TOKEN(KEYWORD_VOID);
+    CASE_TOKEN(KEYWORD_VOLATILE);
+    CASE_TOKEN(KEYWORD_WHILE);
     CASE_TOKEN(LPAR);
     CASE_TOKEN(RPAR);
     CASE_TOKEN(LBRK);
