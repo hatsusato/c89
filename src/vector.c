@@ -41,7 +41,7 @@ Vector *vector_new(Alignment a) {
   v->size = v->capacity = 0;
   return v;
 }
-void vector_free(Vector **v) {
+void vector_delete(Vector **v) {
   assert(v && *v);
   free((*v)->data);
   free(*v);

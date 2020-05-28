@@ -7,7 +7,7 @@ struct struct_Vector;
 typedef struct struct_Vector Vector;
 
 Vector *vector_new(Alignment);
-void vector_free(Vector **);
+void vector_delete(Vector **);
 Size vector_length(const Vector *);
 void *vector_back(Vector *);
 void *vector_at(Vector *, Index);
