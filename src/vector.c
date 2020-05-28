@@ -78,7 +78,7 @@ Vector *vector_clone(const Vector *v) {
   w->size = v->size;
   return w;
 }
-void vector_append(Vector *v, void *buf, Size len) {
+void vector_append(Vector *v, const void *buf, Size len) {
   assert(v);
   if (0 == len) {
     return;
