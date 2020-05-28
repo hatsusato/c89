@@ -12,7 +12,6 @@
 #include "lexer.h"
   void yyerror(const char *, yyscan_t);
   const char* show_token(int);
-  void print_token(const char *, const char *);
   void ast_append(yyscan_t);
 }
 
@@ -114,12 +113,12 @@ top: %empty
 | top token { ast_append(scanner); }
 ;
 token
-: keyword { print_token("keyword", $$); }
-| identifier { print_token("identifier", $$); }
+: keyword
+| identifier
 | constant
-| string-literal { print_token("literal", $$); }
-| operator { print_token("punctuator", $$); }
-| punctuator { print_token("punctuator", $$); }
+| string-literal
+| operator
+| punctuator
 ;
 keyword
 : "auto"
@@ -159,10 +158,10 @@ identifier
 : TOKEN_IDENTIFIER
 ;
 constant
-: floating-constant { print_token("floating", $$); }
-| integer-constant { print_token("integer", $$); }
+: floating-constant
+| integer-constant
 /* | enumeration-constant */
-| character-constant { print_token("character", $$); }
+| character-constant
 ;
 floating-constant
 : TOKEN_FLOATING_CONSTANT
@@ -254,9 +253,6 @@ void yyerror(const char* msg, yyscan_t scanner) {
   fprintf(stderr, "%s\n", msg);
 }
 
-void print_token(const char* header, const char* token) {
-  printf("%s: %s\n", header, token);
-}
 void ast_append(yyscan_t scanner){
   Vector *seq = yyget_extra(scanner);
   const char *text = yyget_text(scanner);
