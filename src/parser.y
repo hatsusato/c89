@@ -13,6 +13,7 @@
   void yyerror(const char *, yyscan_t);
   const char* show_token(int);
   void print_token(const char *, const char *);
+  void ast_append(yyscan_t);
 }
 
 %define api.pure full
@@ -110,7 +111,7 @@
 %start top
 %%
 top: %empty
-| top token
+| top token { ast_append(scanner); }
 ;
 token
 : keyword { print_token("keyword", $$); }
@@ -255,4 +256,10 @@ void yyerror(const char* msg, yyscan_t scanner) {
 
 void print_token(const char* header, const char* token) {
   printf("%s: %s\n", header, token);
+}
+void ast_append(yyscan_t scanner){
+  Vector *seq = yyget_extra(scanner);
+  const char *text = yyget_text(scanner);
+  int leng = yyget_leng(scanner);
+  vector_append(seq, text, leng);
 }
