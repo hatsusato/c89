@@ -257,5 +257,5 @@ void ast_append(yyscan_t scanner){
   Vector *seq = yyget_extra(scanner);
   const char *text = yyget_text(scanner);
   int leng = yyget_leng(scanner);
-  vector_append(seq, text, leng);
+  vector_append(seq, text, leng + 1);
 }
