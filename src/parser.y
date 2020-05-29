@@ -16,7 +16,7 @@
 }
 
 %define api.pure full
-%define api.value.type {const char *}
+%define api.value.type {int}
 %param {yyscan_t scanner}
 
 %token TOKEN_IDENTIFIER
