@@ -13,19 +13,25 @@ const char *consume_text(const char **text) {
   *text += strlen(*text) + 1;
   return head;
 }
+void print_text(const char **text) {
+  int token = consume_id(text);
+  const char *const head = consume_text(text);
+  printf("[%s:%s]", show_token(token), head);
+  switch (token) {
+  case PUNCTUATOR_SEMICOLON:
+  case PUNCTUATOR_LEFT_BRACE:
+  case PUNCTUATOR_RIGHT_BRACE:
+    printf("\n");
+  }
+}
 void print_seq(yyscan_t scanner) {
   Vector *seq = yyget_extra(scanner);
   const char *text = vector_at(seq, 0);
   const char *const end = vector_at(seq, vector_length(seq));
-  int id = 0;
   while (text < end) {
-    id = *(int *)text;
-    printf("%s:", show_token(id));
-    text += sizeof(int);
-    printf("[%s]", text);
-    text += strlen(text) + 1;
+    print_text(&text);
   }
-  printf("\n");
+  printf("length: %d\n", vector_length(seq));
   vector_delete(&seq);
 }
 
