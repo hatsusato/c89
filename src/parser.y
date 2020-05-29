@@ -255,7 +255,9 @@ void yyerror(const char* msg, yyscan_t scanner) {
 
 void ast_append(yyscan_t scanner){
   Vector *seq = yyget_extra(scanner);
+  int* id = yyget_lval(scanner);
   const char *text = yyget_text(scanner);
   int leng = yyget_leng(scanner);
+  vector_append(seq, id, sizeof(int));
   vector_append(seq, text, leng + 1);
 }
