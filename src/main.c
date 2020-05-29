@@ -4,20 +4,16 @@
 #include "parser.tab.h"
 
 void print_seq(yyscan_t scanner) {
-  const char *text = nil;
   Vector *seq = yyget_extra(scanner);
-  int length = vector_length(seq);
-  int i = 0;
+  const char *text = vector_at(seq, 0);
+  const char *const end = vector_at(seq, vector_length(seq));
   int id = 0;
-  while (i < length) {
-    text = vector_at(seq, i);
+  while (text < end) {
     id = *(int *)text;
     printf("%s:", show_token(id));
     text += sizeof(int);
-    i += sizeof(int);
     printf("[%s]", text);
-    i += strlen(text);
-    ++i;
+    text += strlen(text) + 1;
   }
   printf("\n");
   vector_delete(&seq);
