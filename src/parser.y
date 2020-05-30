@@ -111,12 +111,7 @@
 %%
 top
 : %empty
-| top token { ast_append(scanner); }
-;
-token
-: identifier
-| constant
-| string-literal
+| top constant-expression ";"
 ;
 identifier
 : TOKEN_IDENTIFIER
@@ -141,6 +136,123 @@ character-constant
 ;
 string-literal
 : TOKEN_STRING_LITERAL
+;
+primary-expression
+: identifier
+| constant
+| string-literal
+| "(" expression ")"
+;
+postfix-expression
+: primary-expression
+| postfix-expression postfix-operator
+;
+postfix-operator
+: "[" expression "]"
+| "(" argument-expression-list.opt ")"
+| "." identifier
+| "->" identifier
+| "++"
+| "--"
+;
+argument-expression-list.opt
+: %empty
+| argument-expression-list
+;
+argument-expression-list
+: assignment-expression
+| argument-expression-list "," assignment-expression
+;
+unary-expression
+: postfix-expression
+| "++" unary-expression
+| "--" unary-expression
+| unary-operator cast-expression
+| "sizeof" unary-expression
+| "sizeof" "(" type-name ")"
+;
+unary-operator
+: "&" | "*" | "+" | "-" | "~" | "!"
+;
+cast-expression
+: unary-expression
+| "(" type-name ")" cast-expression
+;
+multiplicative-expression
+: cast-expression
+| multiplicative-expression multiplicative-operator cast-expression
+;
+multiplicative-operator
+: "*" | "/" | "%"
+;
+additive-expression
+: multiplicative-expression
+| additive-expression additive-operator multiplicative-expression
+;
+additive-operator
+: "+" | "-"
+;
+shift-expression
+: additive-expression
+| shift-expression shift-operator additive-expression
+;
+shift-operator
+: "<<" | ">>"
+;
+relational-expression
+: shift-expression
+| relational-expression relational-operator shift-expression
+;
+relational-operator
+: "<" | ">" | "<=" | ">="
+;
+equality-expression
+: relational-expression
+| equality-expression equality-operator relational-expression
+;
+equality-operator
+: "==" | "!="
+;
+and-expression
+: equality-expression
+| and-expression "&" equality-expression
+;
+exclusive-or-expression
+: and-expression
+| exclusive-or-expression "^" and-expression
+;
+inclusive-or-expression
+: exclusive-or-expression
+| inclusive-or-expression "|" exclusive-or-expression
+;
+logical-and-expression
+: inclusive-or-expression
+| logical-and-expression "&&" inclusive-or-expression
+;
+logical-or-expression
+: logical-and-expression
+| logical-or-expression "||" logical-and-expression
+;
+conditional-expression
+: logical-or-expression
+| logical-or-expression "?" expression ":" conditional-expression
+;
+assignment-expression
+: conditional-expression
+| unary-expression assignment-operator assignment-expression
+;
+assignment-operator
+: "=" | "*=" | "/=" | "%=" | "+=" | "-=" | "<<=" | ">>=" | "&=" | "^=" | "|="
+;
+expression
+: assignment-expression
+| expression "," assignment-expression
+;
+constant-expression
+: conditional-expression
+;
+type-name
+: "int"
 ;
 %%
 
