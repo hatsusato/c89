@@ -157,11 +157,7 @@ postfix-operator
 ;
 argument-expression-list.opt
 : %empty
-| argument-expression-list
-;
-argument-expression-list
-: assignment-expression
-| argument-expression-list "," assignment-expression
+| expression
 ;
 unary-expression
 : postfix-expression
