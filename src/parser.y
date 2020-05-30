@@ -109,50 +109,14 @@
 
 %start top
 %%
-top: %empty
+top
+: %empty
 | top token { ast_append(scanner); }
 ;
 token
-: keyword
-| identifier
+: identifier
 | constant
 | string-literal
-| operator
-| punctuator
-;
-keyword
-: "auto"
-| "break"
-| "case"
-| "char"
-| "const"
-| "continue"
-| "default"
-| "do"
-| "double"
-| "else"
-| "enum"
-| "extern"
-| "float"
-| "for"
-| "goto"
-| "if"
-| "int"
-| "long"
-| "register"
-| "return"
-| "signed"
-| "sizeof"
-| "short"
-| "static"
-| "struct"
-| "switch"
-| "typedef"
-| "union"
-| "unsigned"
-| "void"
-| "volatile"
-| "while"
 ;
 identifier
 : TOKEN_IDENTIFIER
@@ -169,64 +133,14 @@ floating-constant
 integer-constant
 : TOKEN_INTEGER_CONSTANT
 ;
-/* enumeration-constant: */
-/*   TOKEN_IDENTIFIER */
+/* enumeration-constant */
+/* : TOKEN_IDENTIFIER */
 /* ; */
 character-constant
 : TOKEN_CHARACTER_CONSTANT
 ;
 string-literal
 : TOKEN_STRING_LITERAL
-;
-operator
-: "."
-| "->"
-| "++"
-| "--"
-| "&"
-| "*"
-| "+"
-| "-"
-| "~"
-| "!"
-| "/"
-| "%"
-| "<<"
-| ">>"
-| "<"
-| ">"
-| "<="
-| ">="
-| "=="
-| "!="
-| "^"
-| "|"
-| "&&"
-| "||"
-| "?"
-| "="
-| "*="
-| "/="
-| "%="
-| "+="
-| "-="
-| "<<="
-| ">>="
-| "&="
-| "^="
-| "|="
-;
-punctuator
-: "["
-| "]"
-| "("
-| ")"
-| "{"
-| "}"
-| ","
-| ":"
-| ";"
-| "..."
 ;
 %%
 
