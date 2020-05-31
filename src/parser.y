@@ -13,11 +13,11 @@
 #include "lexer.h"
   void yyerror(const char *, yyscan_t);
   const char* show_token(int);
-  void ast_append(yyscan_t);
+  void ast_append(yyscan_t, Vector *);
 }
 
 %define api.pure full
-%define api.value.type {int}
+%define api.value.type {Vector *}
 %param {yyscan_t scanner}
 
 %token TOKEN_IDENTIFIER
@@ -276,11 +276,10 @@ void yyerror(const char* msg, yyscan_t scanner) {
   fprintf(stderr, "%s\n", msg);
 }
 
-void ast_append(yyscan_t scanner){
+void ast_append(yyscan_t scanner, Vector *v) {
   Vector *seq = yyget_extra(scanner);
-  int* id = yyget_lval(scanner);
-  const char *text = yyget_text(scanner);
-  int leng = yyget_leng(scanner);
-  vector_append(seq, id, sizeof(int));
-  vector_append(seq, text, leng + 1);
+  const char *text = vector_at(v, 0);
+  int leng = vector_length(v);
+  vector_append(seq, text, leng);
+  vector_delete(&v);
 }
