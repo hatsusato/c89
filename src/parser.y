@@ -14,6 +14,7 @@
   void yyerror(const char *, yyscan_t);
   const char* show_token(int);
   void ast_append(yyscan_t, Vector *);
+  Vector *ast_new(yyscan_t, int);
 }
 
 %define api.pure full
@@ -112,10 +113,14 @@
 %%
 top
 : %empty
-| top constant-expression ";"
+| top constant-expression ";" {
+  if ($2) {
+    ast_append(scanner, $2);
+  }
+}
 ;
 identifier
-: TOKEN_IDENTIFIER
+: TOKEN_IDENTIFIER { $$ = ast_new(scanner, AST_IDENTIFIER); }
 ;
 constant
 : floating-constant
@@ -124,19 +129,19 @@ constant
 | character-constant
 ;
 floating-constant
-: TOKEN_FLOATING_CONSTANT
+: TOKEN_FLOATING_CONSTANT { $$ = ast_new(scanner, AST_FLOATING_CONSTANT); }
 ;
 integer-constant
-: TOKEN_INTEGER_CONSTANT
+: TOKEN_INTEGER_CONSTANT { $$ = ast_new(scanner, AST_INTEGER_CONSTANT); }
 ;
 /* enumeration-constant */
 /* : TOKEN_IDENTIFIER */
 /* ; */
 character-constant
-: TOKEN_CHARACTER_CONSTANT
+: TOKEN_CHARACTER_CONSTANT { $$ = ast_new(scanner, AST_CHARACTER_CONSTANT); }
 ;
 string-literal
-: TOKEN_STRING_LITERAL
+: TOKEN_STRING_LITERAL { $$ = ast_new(scanner, AST_STRING_LITERAL); }
 ;
 primary-expression
 : identifier
@@ -282,4 +287,12 @@ void ast_append(yyscan_t scanner, Vector *v) {
   int leng = vector_length(v);
   vector_append(seq, text, leng);
   vector_delete(&v);
+}
+Vector *ast_new(yyscan_t scanner, int tag) {
+  Vector *seq = vector_new(1);
+  const char *text = yyget_text(scanner);
+  int leng = yyget_leng(scanner);
+  vector_append(seq, &tag, sizeof(tag));
+  vector_append(seq, text, leng + 1);
+  return seq;
 }

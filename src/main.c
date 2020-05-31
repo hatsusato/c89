@@ -16,7 +16,7 @@ const char *consume_text(const char **text) {
 void print_text(const char **text) {
   int token = consume_id(text);
   const char *const head = consume_text(text);
-  printf("[%s:%s]", show_token(token), head);
+  printf("[%d:%s]", token, head);
   switch (token) {
   case PUNCTUATOR_SEMICOLON:
   case PUNCTUATOR_LEFT_BRACE:
