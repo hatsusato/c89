@@ -1,7 +1,6 @@
 %code top {
 }
 %code requires {
-#include <stdio.h>
 #include "vector.h"
 #ifndef YY_TYPEDEF_YY_SCANNER_T
 #define YY_TYPEDEF_YY_SCANNER_T
@@ -10,7 +9,7 @@
 }
 %code provides {
 #include "lexer.h"
-  void yyerror(const char *, yyscan_t);
+#include "parser.h"
 }
 
 %define api.pure full
@@ -252,7 +251,3 @@ expression
 /* : "int" */
 /* ; */
 %%
-void yyerror(const char* msg, yyscan_t scanner) {
-  (void)scanner;
-  fprintf(stderr, "%s\n", msg);
-}
