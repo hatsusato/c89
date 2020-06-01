@@ -30,12 +30,17 @@ const char *print_ast(const char *cur) {
 }
 void print_seq(yyscan_t scanner) {
   Vector *seq = yyget_extra(scanner);
-  const char *text = vector_at(seq, 0);
-  const char *const end = vector_at(seq, vector_length(seq));
-  while (text < end) {
-    text = print_ast(text);
+  const char *cur = vector_begin(seq);
+  const char *const end = vector_end(seq);
+  while (cur < end) {
+    int length = 0, i = 0;
+    cur = consume_int(cur, &length);
+    printf("length: %d\n", length);
+    for (i = 0; i < length; ++i) {
+      printf("%c", *cur++);
+    }
+    printf("\n");
   }
-  printf("length: %d\n", vector_length(seq));
   vector_delete(&seq);
 }
 
