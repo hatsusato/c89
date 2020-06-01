@@ -18,36 +18,22 @@ void print_text(const char *text, int length) {
     printf("%c", text[i]);
   }
 }
-const char *print_ast(const char *cur) {
-  int arity = 0, tag = 0, i = 0;
+int print_ast(const char *cur) {
+  int offset = 0, tag = 0, length = 0;
   const char *text = nil;
-  cur = consume_int(cur, &arity);
-  cur = consume_int(cur, &tag);
+  offset += ast_get_int(cur, &tag);
+  offset += ast_get_text(cur + offset, &text, &length);
   printf("[%d:", tag);
-  if (arity == 0) {
-    cur = consume_text(cur, &text);
-    printf("%s", text);
-  } else {
-    for (i = 0; i < arity; ++i) {
-      cur = print_ast(cur);
-    }
-  }
-  printf("]");
-  return cur;
+  print_text(text, length);
+  printf("]\n");
+  return offset;
 }
 void print_seq(yyscan_t scanner) {
   Vector *seq = yyget_extra(scanner);
   const char *cur = vector_begin(seq);
   const char *const end = vector_end(seq);
   while (cur < end) {
-    int length = 0, i = 0;
-    const char *text = nil;
-    cur += ast_get_text(cur, &text, &length);
-    printf("[%d:", length);
-    for (i = 0; i < length; ++i) {
-      printf("%c", text[i]);
-    }
-    printf("]\n");
+    cur += print_ast(cur);
   }
   vector_delete(&seq);
 }

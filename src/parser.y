@@ -112,7 +112,7 @@ top
   if ($rhs) {
     const char *text = vector_begin($rhs);
     int leng = vector_length($rhs);
-    ast_set_text($lhs, text, leng);
+    vector_append($lhs, text, leng);
   }
 }
 ;
