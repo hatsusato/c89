@@ -12,22 +12,21 @@ void ast_set_text(Vector* ast, const char* text, int length) {
   ast_set_int(ast, length);
   vector_append(ast, text, length);
 }
-int ast_get_text(const char* ast, const char** text, int* length) {
-  int offset = 0;
+const char* ast_get_text(const char* ast, const char** text, int* length) {
   assert(ast && text && length);
-  offset += ast_get_int(ast, length);
-  *text = ast + offset;
-  offset += *length;
-  return offset;
+  ast = ast_get_int(ast, length);
+  *text = ast;
+  ast += *length;
+  return ast;
 }
 void ast_set_int(Vector* ast, int val) {
   assert(ast);
   vector_append(ast, &val, sizeof(val));
 }
-int ast_get_int(const char* ast, int* val) {
+const char* ast_get_int(const char* ast, int* val) {
   assert(ast && val);
   *val = *(int*)ast;
-  return sizeof(int);
+  return ast += sizeof(int);
 }
 Vector* ast_new_token(int tag, yyscan_t scanner) {
   const char* text = yyget_text(scanner);
