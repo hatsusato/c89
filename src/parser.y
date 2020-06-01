@@ -140,10 +140,22 @@ string-literal
 : TOKEN_STRING_LITERAL { $$ = ast_new_token(AST_STRING_LITERAL, scanner); }
 ;
 primary-expression
-: identifier
-| constant
-| string-literal
-| "(" expression ")"
+: identifier {
+  $$ = ast_new_tag(AST_PRIMARY_EXPRESSION, 1);
+  ast_append($$, $1);
+}
+| constant {
+  $$ = ast_new_tag(AST_PRIMARY_EXPRESSION, 1);
+  ast_append($$, $1);
+}
+| string-literal {
+  $$ = ast_new_tag(AST_PRIMARY_EXPRESSION, 1);
+  ast_append($$, $1);
+}
+| "(" expression ")" {
+  $$ = ast_new_tag(AST_PRIMARY_EXPRESSION, 1);
+  ast_append($$, $2);
+}
 ;
 expression
 : primary-expression

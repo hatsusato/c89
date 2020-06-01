@@ -13,13 +13,21 @@ const char *consume_text(const char *cur, const char **text) {
   return cur + strlen(cur) + 1;
 }
 const char *print_ast(const char *cur) {
-  int tag = 0, length = 0;
+  int tag = 0, arity = 0, length = 0;
   const char *text = nil;
   cur = ast_get_int(cur, &tag);
-  cur = ast_get_text(cur, &text, &length);
+  cur = ast_get_int(cur, &arity);
   printf("[%d:", tag);
-  print_text(text, length);
-  printf("]\n");
+  if (arity == 0) {
+    cur = ast_get_text(cur, &text, &length);
+    print_text(text, length);
+  } else {
+    int i = 0;
+    for (i = 0; i < arity; ++i) {
+      cur = print_ast(cur);
+    }
+  }
+  printf("]");
   return cur;
 }
 void print_seq(yyscan_t scanner) {
@@ -28,6 +36,7 @@ void print_seq(yyscan_t scanner) {
   const char *const end = vector_end(seq);
   while (cur < end) {
     cur = print_ast(cur);
+    printf("\n");
   }
   vector_delete(&seq);
 }
