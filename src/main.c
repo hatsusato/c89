@@ -18,7 +18,7 @@ const char *print_ast(const char *cur) {
   cur = ast_get_int(cur, &tag);
   cur = ast_get_int(cur, &arity);
   printf("[%d:", tag);
-  if (arity == 0) {
+  if (arity < 0) {
     cur = ast_get_text(cur, &text, &length);
     print_text(text, length);
   } else {

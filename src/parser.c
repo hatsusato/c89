@@ -31,7 +31,7 @@ const char* ast_get_int(const char* ast, int* val) {
 Vector* ast_new_token(int tag, yyscan_t scanner) {
   const char* text = yyget_text(scanner);
   int leng = yyget_leng(scanner);
-  Vector* ast = ast_new_tag(tag, 0);
+  Vector* ast = ast_new_tag(tag, -1);
   ast_set_text(ast, text, leng);
   return ast;
 }
