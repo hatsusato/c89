@@ -12,6 +12,12 @@ const char *consume_text(const char *cur, const char **text) {
   *text = cur;
   return cur + strlen(cur) + 1;
 }
+void print_text(const char *text, int length) {
+  int i = 0;
+  for (i = 0; i < length; ++i) {
+    printf("%c", text[i]);
+  }
+}
 const char *print_ast(const char *cur) {
   int arity = 0, tag = 0, i = 0;
   const char *text = nil;
