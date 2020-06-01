@@ -107,8 +107,8 @@
 %start top
 %%
 top
-: %empty
-| top expression ";"
+: %empty { $$ = yyget_extra(scanner); }
+| top[lhs] expression[rhs] ";" { ast_set_top($lhs, $rhs); }
 ;
 identifier
 : TOKEN_IDENTIFIER

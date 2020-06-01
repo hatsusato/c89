@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "parser.h"
 #include "parser.tab.h"
 
 const char *consume_int(const char *cur, int *val) {
@@ -34,23 +35,22 @@ void print_seq(yyscan_t scanner) {
   const char *const end = vector_end(seq);
   while (cur < end) {
     int length = 0, i = 0;
-    cur = consume_int(cur, &length);
-    printf("length: %d\n", length);
+    const char *text = nil;
+    cur = ast_get_top(cur, &length, &text);
+    printf("[%d:", length);
     for (i = 0; i < length; ++i) {
-      printf("%c", *cur++);
+      printf("%c", text[i]);
     }
-    printf("\n");
+    printf("]\n");
   }
   vector_delete(&seq);
 }
 
 int main(void) {
   yyscan_t scanner;
-  int ret = 0;
   yylex_init_extra(vector_new(1), &scanner);
-  ret = yyparse(scanner);
+  printf("return: %d\n", yyparse(scanner));
   print_seq(scanner);
-  printf("return: %d\n", ret);
   yylex_destroy(scanner);
   return 0;
 }
