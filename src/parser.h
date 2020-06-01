@@ -10,5 +10,6 @@ void ast_set_int(Vector*, int);
 const char* ast_get_int(const char*, int*);
 Vector* ast_new_token(int, yyscan_t);
 void ast_append(Vector*, Vector*);
+void print_text(const char*, int);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */
