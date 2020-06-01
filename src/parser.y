@@ -2,7 +2,6 @@
 }
 %code requires {
 #include <stdio.h>
-#include "ast.h"
 #include "vector.h"
 #ifndef YY_TYPEDEF_YY_SCANNER_T
 #define YY_TYPEDEF_YY_SCANNER_T
@@ -12,9 +11,6 @@
 %code provides {
 #include "lexer.h"
   void yyerror(const char *, yyscan_t);
-  const char* show_token(int);
-  void ast_append(yyscan_t, Vector *);
-  Vector *ast_new(yyscan_t, int);
 }
 
 %define api.pure full
@@ -256,42 +252,7 @@ expression
 /* : "int" */
 /* ; */
 %%
-
-const char* show_token(int token) {
-#define CASE_RETURN(name, id) case id: return #name;
-#define HANDLE_TOKEN(name, token) CASE_RETURN(name, token)
-#define HANDLE_KEYWORD(name, keyword) CASE_RETURN(name, keyword)
-#define HANDLE_OPERATOR(name, operator) CASE_RETURN(name, operator)
-#define HANDLE_PUNCTUATOR(name, punctuator) CASE_RETURN(name, punctuator)
-  switch (token) {
-#include "token.h"
-  default:
-    return "UNKNOWN";
-  }
-#undef CASE_RETURN
-#undef HANDLE_TOKEN
-#undef HANDLE_KEYWORD
-#undef HANDLE_OPERATOR
-#undef HANDLE_PUNCTUATOR
-}
-
 void yyerror(const char* msg, yyscan_t scanner) {
   (void)scanner;
   fprintf(stderr, "%s\n", msg);
-}
-
-void ast_append(yyscan_t scanner, Vector *v) {
-  Vector *seq = yyget_extra(scanner);
-  const char *text = vector_at(v, 0);
-  int leng = vector_length(v);
-  vector_append(seq, text, leng);
-  vector_delete(&v);
-}
-Vector *ast_new(yyscan_t scanner, int tag) {
-  Vector *seq = vector_new(1);
-  const char *text = yyget_text(scanner);
-  int leng = yyget_leng(scanner);
-  vector_append(seq, &tag, sizeof(tag));
-  vector_append(seq, text, leng + 1);
-  return seq;
 }
