@@ -3,15 +3,13 @@
 
 #include "parser.tab.h"
 
-int consume_id(const char **text) {
-  int token = *(int *)*text;
-  *text += sizeof(int);
-  return token;
+const char *consume_int(const char *cur, int *val) {
+  *val = *(int *)cur;
+  return cur + sizeof(*val);
 }
-const char *consume_text(const char **text) {
-  const char *head = *text;
-  *text += strlen(*text) + 1;
-  return head;
+const char *consume_text(const char *cur, const char **text) {
+  *text = cur;
+  return cur + strlen(cur) + 1;
 }
 }
 void print_seq(yyscan_t scanner) {
