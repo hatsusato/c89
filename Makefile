@@ -5,7 +5,7 @@ YACC := bison
 target := main.out
 lex_prefix := src/lexer
 yacc_prefix := src/parser
-files := main.c vector.c
+files := main.c parser.c vector.c
 
 ldflags =
 cflags = -Wall -Wextra -ansi -pedantic
@@ -26,6 +26,8 @@ all: release
 release debug: $(target)
 release: cflags += $(release_cflags)
 debug: cflags += $(debug_cflags)
+
+.SUFFIXES:
 
 $(target): $(objs)
 	$(CC) $(ldflags) $^ -o $@
