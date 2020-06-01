@@ -113,14 +113,10 @@
 %%
 top
 : %empty
-| top constant-expression ";" {
-  if ($2) {
-    ast_append(scanner, $2);
-  }
-}
+| top expression ";"
 ;
 identifier
-: TOKEN_IDENTIFIER { $$ = ast_new(scanner, AST_IDENTIFIER); }
+: TOKEN_IDENTIFIER
 ;
 constant
 : floating-constant
@@ -129,19 +125,19 @@ constant
 | character-constant
 ;
 floating-constant
-: TOKEN_FLOATING_CONSTANT { $$ = ast_new(scanner, AST_FLOATING_CONSTANT); }
+: TOKEN_FLOATING_CONSTANT
 ;
 integer-constant
-: TOKEN_INTEGER_CONSTANT { $$ = ast_new(scanner, AST_INTEGER_CONSTANT); }
+: TOKEN_INTEGER_CONSTANT
 ;
 /* enumeration-constant */
 /* : TOKEN_IDENTIFIER */
 /* ; */
 character-constant
-: TOKEN_CHARACTER_CONSTANT { $$ = ast_new(scanner, AST_CHARACTER_CONSTANT); }
+: TOKEN_CHARACTER_CONSTANT
 ;
 string-literal
-: TOKEN_STRING_LITERAL { $$ = ast_new(scanner, AST_STRING_LITERAL); }
+: TOKEN_STRING_LITERAL
 ;
 primary-expression
 : identifier
@@ -149,113 +145,116 @@ primary-expression
 | string-literal
 | "(" expression ")"
 ;
-postfix-expression
-: primary-expression
-| postfix-expression postfix-operator
-;
-postfix-operator
-: "[" expression "]"
-| "(" argument-expression-list.opt ")"
-| "." identifier
-| "->" identifier
-| "++"
-| "--"
-;
-argument-expression-list.opt
-: %empty
-| expression
-;
-unary-expression
-: postfix-expression
-| "++" unary-expression
-| "--" unary-expression
-| unary-operator cast-expression
-| "sizeof" unary-expression
-| "sizeof" "(" type-name ")"
-;
-unary-operator
-: "&" | "*" | "+" | "-" | "~" | "!"
-;
-cast-expression
-: unary-expression
-| "(" type-name ")" cast-expression
-;
-multiplicative-expression
-: cast-expression
-| multiplicative-expression multiplicative-operator cast-expression
-;
-multiplicative-operator
-: "*" | "/" | "%"
-;
-additive-expression
-: multiplicative-expression
-| additive-expression additive-operator multiplicative-expression
-;
-additive-operator
-: "+" | "-"
-;
-shift-expression
-: additive-expression
-| shift-expression shift-operator additive-expression
-;
-shift-operator
-: "<<" | ">>"
-;
-relational-expression
-: shift-expression
-| relational-expression relational-operator shift-expression
-;
-relational-operator
-: "<" | ">" | "<=" | ">="
-;
-equality-expression
-: relational-expression
-| equality-expression equality-operator relational-expression
-;
-equality-operator
-: "==" | "!="
-;
-and-expression
-: equality-expression
-| and-expression "&" equality-expression
-;
-exclusive-or-expression
-: and-expression
-| exclusive-or-expression "^" and-expression
-;
-inclusive-or-expression
-: exclusive-or-expression
-| inclusive-or-expression "|" exclusive-or-expression
-;
-logical-and-expression
-: inclusive-or-expression
-| logical-and-expression "&&" inclusive-or-expression
-;
-logical-or-expression
-: logical-and-expression
-| logical-or-expression "||" logical-and-expression
-;
-conditional-expression
-: logical-or-expression
-| logical-or-expression "?" expression ":" conditional-expression
-;
-assignment-expression
-: conditional-expression
-| unary-expression assignment-operator assignment-expression
-;
-assignment-operator
-: "=" | "*=" | "/=" | "%=" | "+=" | "-=" | "<<=" | ">>=" | "&=" | "^=" | "|="
-;
 expression
-: assignment-expression
-| expression "," assignment-expression
+: primary-expression
 ;
-constant-expression
-: conditional-expression
-;
-type-name
-: "int"
-;
+/* postfix-expression */
+/* : primary-expression */
+/* | postfix-expression postfix-operator */
+/* ; */
+/* postfix-operator */
+/* : "[" expression "]" */
+/* | "(" argument-expression-list.opt ")" */
+/* | "." identifier */
+/* | "->" identifier */
+/* | "++" */
+/* | "--" */
+/* ; */
+/* argument-expression-list.opt */
+/* : %empty */
+/* | expression */
+/* ; */
+/* unary-expression */
+/* : postfix-expression */
+/* | "++" unary-expression */
+/* | "--" unary-expression */
+/* | unary-operator cast-expression */
+/* | "sizeof" unary-expression */
+/* | "sizeof" "(" type-name ")" */
+/* ; */
+/* unary-operator */
+/* : "&" | "*" | "+" | "-" | "~" | "!" */
+/* ; */
+/* cast-expression */
+/* : unary-expression */
+/* | "(" type-name ")" cast-expression */
+/* ; */
+/* multiplicative-expression */
+/* : cast-expression */
+/* | multiplicative-expression multiplicative-operator cast-expression */
+/* ; */
+/* multiplicative-operator */
+/* : "*" | "/" | "%" */
+/* ; */
+/* additive-expression */
+/* : multiplicative-expression */
+/* | additive-expression additive-operator multiplicative-expression */
+/* ; */
+/* additive-operator */
+/* : "+" | "-" */
+/* ; */
+/* shift-expression */
+/* : additive-expression */
+/* | shift-expression shift-operator additive-expression */
+/* ; */
+/* shift-operator */
+/* : "<<" | ">>" */
+/* ; */
+/* relational-expression */
+/* : shift-expression */
+/* | relational-expression relational-operator shift-expression */
+/* ; */
+/* relational-operator */
+/* : "<" | ">" | "<=" | ">=" */
+/* ; */
+/* equality-expression */
+/* : relational-expression */
+/* | equality-expression equality-operator relational-expression */
+/* ; */
+/* equality-operator */
+/* : "==" | "!=" */
+/* ; */
+/* and-expression */
+/* : equality-expression */
+/* | and-expression "&" equality-expression */
+/* ; */
+/* exclusive-or-expression */
+/* : and-expression */
+/* | exclusive-or-expression "^" and-expression */
+/* ; */
+/* inclusive-or-expression */
+/* : exclusive-or-expression */
+/* | inclusive-or-expression "|" exclusive-or-expression */
+/* ; */
+/* logical-and-expression */
+/* : inclusive-or-expression */
+/* | logical-and-expression "&&" inclusive-or-expression */
+/* ; */
+/* logical-or-expression */
+/* : logical-and-expression */
+/* | logical-or-expression "||" logical-and-expression */
+/* ; */
+/* conditional-expression */
+/* : logical-or-expression */
+/* | logical-or-expression "?" expression ":" conditional-expression */
+/* ; */
+/* assignment-expression */
+/* : conditional-expression */
+/* | unary-expression assignment-operator assignment-expression */
+/* ; */
+/* assignment-operator */
+/* : "=" | "*=" | "/=" | "%=" | "+=" | "-=" | "<<=" | ">>=" | "&=" | "^=" | "|=" */
+/* ; */
+/* expression */
+/* : assignment-expression */
+/* | expression "," assignment-expression */
+/* ; */
+/* constant-expression */
+/* : conditional-expression */
+/* ; */
+/* type-name */
+/* : "int" */
+/* ; */
 %%
 
 const char* show_token(int token) {
