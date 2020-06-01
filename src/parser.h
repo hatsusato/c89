@@ -9,6 +9,7 @@ const char* ast_get_text(const char*, const char**, int*);
 void ast_set_int(Vector*, int);
 const char* ast_get_int(const char*, int*);
 Vector* ast_new_token(int, yyscan_t);
+Vector* ast_new_tag(int, int);
 void ast_append(Vector*, Vector*);
 void print_text(const char*, int);
 
