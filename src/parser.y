@@ -157,25 +157,50 @@ primary-expression
   ast_append($$, $2);
 }
 ;
-expression
+postfix-expression
 : primary-expression
+| postfix-expression postfix-operator {
+  $$ = ast_new_tag(AST_POSTFIX_EXPRESSION, 2);
+  ast_append($$, $1);
+  ast_append($$, $2);
+}
 ;
-/* postfix-expression */
-/* : primary-expression */
-/* | postfix-expression postfix-operator */
-/* ; */
-/* postfix-operator */
-/* : "[" expression "]" */
-/* | "(" argument-expression-list.opt ")" */
-/* | "." identifier */
-/* | "->" identifier */
-/* | "++" */
-/* | "--" */
-/* ; */
-/* argument-expression-list.opt */
-/* : %empty */
-/* | expression */
-/* ; */
+postfix-operator
+: "[" expression "]" {
+  $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 1);
+  ast_append($$, $2);
+}
+| "(" argument-expression-list.opt ")" {
+  $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 1);
+  ast_append($$, $2);
+}
+| "." identifier {
+  $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 1);
+  ast_append($$, $2);
+}
+| "->" identifier {
+  $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 1);
+  ast_append($$, $2);
+}
+| "++" {
+  $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 0);
+}
+| "--" {
+  $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 0);
+}
+;
+argument-expression-list.opt
+: %empty {
+  $$ = ast_new_tag(AST_ARGUMENT_EXPRESSION_LIST_OPT, 0);
+}
+| expression {
+  $$ = ast_new_tag(AST_ARGUMENT_EXPRESSION_LIST_OPT, 1);
+  ast_append($$, $1);
+}
+;
+expression
+: postfix-expression
+;
 /* unary-expression */
 /* : postfix-expression */
 /* | "++" unary-expression */
