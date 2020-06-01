@@ -8,6 +8,7 @@
 #endif
 }
 %code provides {
+#include "ast.h"
 #include "lexer.h"
 #include "parser.h"
 }
@@ -110,14 +111,12 @@ top
 : %empty { $$ = yyget_extra(scanner); }
 | top[lhs] expression[rhs] ";" {
   if ($rhs) {
-    const char *text = vector_begin($rhs);
-    int leng = vector_length($rhs);
-    vector_append($lhs, text, leng);
+    vector_append($lhs, vector_begin($rhs), vector_length($rhs));
   }
 }
 ;
 identifier
-: TOKEN_IDENTIFIER
+: TOKEN_IDENTIFIER { $$ = ast_new_token(AST_IDENTIFIER, scanner); }
 ;
 constant
 : floating-constant
@@ -126,19 +125,19 @@ constant
 | character-constant
 ;
 floating-constant
-: TOKEN_FLOATING_CONSTANT
+: TOKEN_FLOATING_CONSTANT { $$ = ast_new_token(AST_FLOATING_CONSTANT, scanner); }
 ;
 integer-constant
-: TOKEN_INTEGER_CONSTANT
+: TOKEN_INTEGER_CONSTANT { $$ = ast_new_token(AST_INTEGER_CONSTANT, scanner); }
 ;
 /* enumeration-constant */
 /* : TOKEN_IDENTIFIER */
 /* ; */
 character-constant
-: TOKEN_CHARACTER_CONSTANT
+: TOKEN_CHARACTER_CONSTANT { $$ = ast_new_token(AST_CHARACTER_CONSTANT, scanner); }
 ;
 string-literal
-: TOKEN_STRING_LITERAL
+: TOKEN_STRING_LITERAL { $$ = ast_new_token(AST_STRING_LITERAL, scanner); }
 ;
 primary-expression
 : identifier
