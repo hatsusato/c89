@@ -36,3 +36,7 @@ Vector* ast_new_token(int tag, yyscan_t scanner) {
   ast_set_text(ast, text, leng);
   return ast;
 }
+void ast_append(Vector* ast, Vector* v) {
+  vector_append(ast, vector_begin(v), vector_length(v));
+  vector_delete(&v);
+}

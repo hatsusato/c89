@@ -111,7 +111,7 @@ top
 : %empty { $$ = yyget_extra(scanner); }
 | top[lhs] expression[rhs] ";" {
   if ($rhs) {
-    vector_append($lhs, vector_begin($rhs), vector_length($rhs));
+    ast_append($lhs, $rhs);
   }
 }
 ;
