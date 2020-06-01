@@ -61,6 +61,14 @@ void *vector_back(Vector *v) {
   v->size += v->align;
   return vector_offset(v, size);
 }
+void *vector_begin(Vector *v) {
+  assert(v);
+  return vector_offset(v, 0);
+}
+void *vector_end(Vector *v) {
+  assert(v);
+  return vector_offset(v, v->size);
+}
 void *vector_at(Vector *v, Index i) {
   assert(v);
   assert(v->align * i < v->size);

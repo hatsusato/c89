@@ -10,6 +10,8 @@ Vector *vector_new(Alignment);
 void vector_delete(Vector **);
 Size vector_length(const Vector *);
 void *vector_back(Vector *);
+void *vector_begin(Vector *);
+void *vector_end(Vector *);
 void *vector_at(Vector *, Index);
 Vector *vector_clone(const Vector *);
 void vector_append(Vector *, const void *, Size);
