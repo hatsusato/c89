@@ -108,7 +108,13 @@
 %%
 top
 : %empty { $$ = yyget_extra(scanner); }
-| top[lhs] expression[rhs] ";" { ast_set_top($lhs, $rhs); }
+| top[lhs] expression[rhs] ";" {
+  if ($rhs) {
+    const char *text = vector_begin($rhs);
+    int leng = vector_length($rhs);
+    ast_set_text($lhs, text, leng);
+  }
+}
 ;
 identifier
 : TOKEN_IDENTIFIER

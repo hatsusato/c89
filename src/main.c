@@ -36,7 +36,7 @@ void print_seq(yyscan_t scanner) {
   while (cur < end) {
     int length = 0, i = 0;
     const char *text = nil;
-    cur = ast_get_top(cur, &length, &text);
+    cur += ast_get_text(cur, &text, &length);
     printf("[%d:", length);
     for (i = 0; i < length; ++i) {
       printf("%c", text[i]);
