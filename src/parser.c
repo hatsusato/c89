@@ -29,3 +29,11 @@ int ast_get_int(const char* ast, int* val) {
   *val = *(int*)ast;
   return sizeof(int);
 }
+Vector* ast_new_token(int tag, yyscan_t scanner) {
+  const char* text = yyget_text(scanner);
+  int leng = yyget_leng(scanner);
+  Vector* ast = vector_new(1);
+  ast_set_int(ast, tag);
+  ast_set_text(ast, text, leng);
+  return ast;
+}
