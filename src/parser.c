@@ -29,7 +29,7 @@ const char* ast_get_top(const char* top, int* length, const char** text) {
 }
 void ast_set_text(Vector* ast, const char* text, int length) {
   assert(ast && text);
-  vector_append(ast, &length, sizeof(length));
+  ast_set_int(ast, length);
   vector_append(ast, text, length);
 }
 int ast_get_text(const char* ast, const char** text, int* length) {
@@ -39,4 +39,13 @@ int ast_get_text(const char* ast, const char** text, int* length) {
   *text = ast + offset;
   offset += *length;
   return offset;
+}
+void ast_set_int(Vector* ast, int val) {
+  assert(ast);
+  vector_append(ast, &val, sizeof(val));
+}
+int ast_get_int(const char* ast, int* val) {
+  assert(ast && val);
+  *val = *(int*)ast;
+  return sizeof(int);
 }
