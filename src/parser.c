@@ -45,7 +45,7 @@ void ast_append(Vector* ast, Vector* v) {
   vector_append(ast, vector_begin(v), vector_length(v));
   vector_delete(&v);
 }
-void print_text(const char* text, int length) {
+void ast_print_text(const char* text, int length) {
   int i = 0;
   for (i = 0; i < length; ++i) {
     printf("%c", text[i]);
