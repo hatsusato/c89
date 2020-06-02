@@ -116,7 +116,7 @@ top
 }
 ;
 identifier
-: TOKEN_IDENTIFIER { $$ = ast_new_token(AST_IDENTIFIER, scanner); }
+: TOKEN_IDENTIFIER { AST_NEW(AST_IDENTIFIER, scanner, $$); }
 ;
 constant
 : floating-constant
@@ -125,19 +125,19 @@ constant
 | character-constant
 ;
 floating-constant
-: TOKEN_FLOATING_CONSTANT { $$ = ast_new_token(AST_FLOATING_CONSTANT, scanner); }
+: TOKEN_FLOATING_CONSTANT { AST_NEW(AST_FLOATING_CONSTANT, scanner, $$); }
 ;
 integer-constant
-: TOKEN_INTEGER_CONSTANT { $$ = ast_new_token(AST_INTEGER_CONSTANT, scanner); }
+: TOKEN_INTEGER_CONSTANT { AST_NEW(AST_INTEGER_CONSTANT, scanner, $$); }
 ;
 /* enumeration-constant */
 /* : TOKEN_IDENTIFIER */
 /* ; */
 character-constant
-: TOKEN_CHARACTER_CONSTANT { $$ = ast_new_token(AST_CHARACTER_CONSTANT, scanner); }
+: TOKEN_CHARACTER_CONSTANT { AST_NEW(AST_CHARACTER_CONSTANT, scanner, $$); }
 ;
 string-literal
-: TOKEN_STRING_LITERAL { $$ = ast_new_token(AST_STRING_LITERAL, scanner); }
+: TOKEN_STRING_LITERAL { AST_NEW(AST_STRING_LITERAL, scanner, $$); }
 ;
 primary-expression
 : identifier

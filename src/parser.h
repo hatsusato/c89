@@ -3,6 +3,11 @@
 
 #include "parser.tab.h"
 
+#define AST_NEW(tag, scanner, x0)     \
+  do {                                \
+    x0 = ast_new_token(tag, scanner); \
+  } while (0)
+
 void yyerror(const char*, yyscan_t);
 void ast_set_text(Vector*, const char*, int);
 const char* ast_get_text(const char*, const char**, int*);
