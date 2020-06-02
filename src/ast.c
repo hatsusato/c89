@@ -44,6 +44,8 @@ const char* ast_show(int tag) {
                         "additive-minus",
                         "shift-expression",
                         "shift-operator",
+                        "shift-left",
+                        "shift-right",
                         "relational-expression",
                         "relational-operator",
                         "equality-expression",

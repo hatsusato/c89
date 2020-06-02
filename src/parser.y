@@ -328,21 +328,33 @@ additive-minus
   ast_append($$, $3);
 }
 ;
+shift-expression
+: additive-expression
+| shift-left
+| shift-right
+;
+shift-left
+: shift-expression "<<" additive-expression {
+  $$ = ast_new_tag(AST_SHIFT_LEFT, 2);
+  ast_append($$, $1);
+  ast_append($$, $3);
+}
+;
+shift-right
+: shift-expression ">>" additive-expression {
+  $$ = ast_new_tag(AST_SHIFT_RIGHT, 2);
+  ast_append($$, $1);
+  ast_append($$, $3);
+}
+;
 type-name
 : "int" {
   $$ = ast_new_tag(AST_TYPE_NAME, 0);
 }
 ;
 expression
-: additive-expression
+: shift-expression
 ;
-/* shift-expression */
-/* : additive-expression */
-/* | shift-expression shift-operator additive-expression */
-/* ; */
-/* shift-operator */
-/* : "<<" | ">>" */
-/* ; */
 /* relational-expression */
 /* : shift-expression */
 /* | relational-expression relational-operator shift-expression */
