@@ -190,72 +190,38 @@ unary-expression
 | unary-sizeof-type
 ;
 unary-incr
-: "++" unary-expression {
-  $$ = ast_new_tag(AST_UNARY_INCR, 1);
-  ast_append($$, $2);
-}
+: "++" unary-expression { AST_APPEND1(AST_UNARY_INCR, $$, $2); }
 ;
 unary-decr
-: "--" unary-expression {
-  $$ = ast_new_tag(AST_UNARY_DECR, 1);
-  ast_append($$, $2);
-}
+: "--" unary-expression { AST_APPEND1(AST_UNARY_DECR, $$, $2); }
 ;
 unary-amper
-: "&" cast-expression {
-  $$ = ast_new_tag(AST_UNARY_AMPER, 1);
-  ast_append($$, $2);
-}
+: "&" cast-expression { AST_APPEND1(AST_UNARY_AMPER, $$, $2); }
 ;
 unary-aster
-: "*" cast-expression {
-  $$ = ast_new_tag(AST_UNARY_ASTER, 1);
-  ast_append($$, $2);
-}
+: "*" cast-expression { AST_APPEND1(AST_UNARY_ASTER, $$, $2); }
 ;
 unary-plus
-: "+" cast-expression {
-  $$ = ast_new_tag(AST_UNARY_PLUS, 1);
-  ast_append($$, $2);
-}
+: "+" cast-expression { AST_APPEND1(AST_UNARY_PLUS, $$, $2); }
 ;
 unary-minus
-: "-" cast-expression {
-  $$ = ast_new_tag(AST_UNARY_MINUS, 1);
-  ast_append($$, $2);
-}
+: "-" cast-expression { AST_APPEND1(AST_UNARY_MINUS, $$, $2); }
 ;
 unary-tilde
-: "~" cast-expression {
-  $$ = ast_new_tag(AST_UNARY_TILDE, 1);
-  ast_append($$, $2);
-}
+: "~" cast-expression { AST_APPEND1(AST_UNARY_TILDE, $$, $2); }
 ;
 unary-excl
-: "!" cast-expression {
-  $$ = ast_new_tag(AST_UNARY_EXCL, 1);
-  ast_append($$, $2);
-}
+: "!" cast-expression { AST_APPEND1(AST_UNARY_EXCL, $$, $2); }
 ;
 unary-sizeof
-: "sizeof" unary-expression {
-  $$ = ast_new_tag(AST_UNARY_SIZEOF, 1);
-  ast_append($$, $2);
-}
+: "sizeof" unary-expression { AST_APPEND1(AST_UNARY_SIZEOF, $$, $2); }
 ;
 unary-sizeof-type
-: "sizeof" "(" type-name ")" {
-  $$ = ast_new_tag(AST_UNARY_SIZEOF_TYPE, 1);
-  ast_append($$, $3);
-}
+: "sizeof" "(" type-name ")" { AST_APPEND1(AST_UNARY_SIZEOF_TYPE, $$, $3); }
 ;
 cast-expression
 : unary-expression
-| "(" type-name ")" cast-expression {
-  $$ = ast_new_tag(AST_CAST_EXPRESSION, 2);
-  ast_append($$, $2);
-  ast_append($$, $4);
-}
+| "(" type-name ")" cast-expression { AST_APPEND2(AST_CAST_EXPRESSION, $$, $2, $4); }
 ;
 multiplicative-expression
 : cast-expression
