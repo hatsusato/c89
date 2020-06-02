@@ -5,7 +5,7 @@ YACC := bison
 target := main.out
 lex_prefix := src/lexer
 yacc_prefix := src/parser
-files := main.c parser.c vector.c
+files := ast main parser vector
 
 ldflags =
 cflags = -Wall -Wextra -ansi -pedantic
@@ -17,7 +17,7 @@ yflags := -d -b $(yacc_prefix)
 lex_intermeds := $(addprefix $(lex_prefix),.c .h)
 yacc_intermeds := $(addprefix $(yacc_prefix),.tab.c .tab.h)
 intermeds := $(lex_intermeds) $(yacc_intermeds)
-srcs := $(addprefix src/,$(files)) $(filter %.c,$(intermeds))
+srcs := $(files:%=src/%.c) $(filter %.c,$(intermeds))
 objs := $(srcs:src/%.c=obj/%.o)
 deps := $(objs:%.o=%.d)
 
