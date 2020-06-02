@@ -22,6 +22,13 @@
     ast_append(x0, x1);              \
     ast_append(x0, x2);              \
   } while (0)
+#define AST_APPEND3(tag, x0, x1, x2, x3) \
+  do {                                   \
+    x0 = ast_new_tag(tag, 2);            \
+    ast_append(x0, x1);                  \
+    ast_append(x0, x2);                  \
+    ast_append(x0, x3);                  \
+  } while (0)
 
 void yyerror(const char*, yyscan_t);
 void ast_set_text(Vector*, const char*, int);
