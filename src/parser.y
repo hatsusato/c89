@@ -328,16 +328,14 @@ assignment-expression
 | unary-expression "^=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_XOR, $$, $1, $3); }
 | unary-expression "|=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_OR, $$, $1, $3); }
 ;
-type-name
-: "int" {
-  $$ = ast_new_tag(AST_TYPE_NAME, 0);
-}
-;
 expression
 : assignment-expression
 | expression "," assignment-expression { AST_APPEND2(AST_EXPRESSION, $$, $1, $3); }
 ;
 constant-expression
 : conditional-expression
+;
+type-name
+: "int" { AST_APPEND0(AST_TYPE_NAME, $$); }
 ;
 %%
