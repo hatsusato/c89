@@ -157,26 +157,50 @@ postfix-expression
 }
 ;
 postfix-operator
+: postfix-array
+| postfix-call
+| postfix-call-args
+| postfix-member
+| postfix-arrow
+| postfix-incr
+| postfix-decr
+;
+postfix-array
 : "[" expression "]" {
-  $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 1);
+  $$ = ast_new_tag(AST_POSTFIX_ARRAY, 1);
   ast_append($$, $2);
 }
+;
+postfix-call
+: "(" ")" {
+  $$ = ast_new_tag(AST_POSTFIX_CALL, 0);
+}
+;
+postfix-call-args
 : "(" argument-expression-list ")" {
-  $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 1);
+  $$ = ast_new_tag(AST_POSTFIX_CALL_ARGS, 1);
   ast_append($$, $2);
 }
-| "." identifier {
-  $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 1);
+;
+postfix-member
+: "." identifier {
+  $$ = ast_new_tag(AST_POSTFIX_MEMBER, 1);
   ast_append($$, $2);
 }
-| "->" identifier {
-  $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 1);
+;
+postfix-arrow
+: "->" identifier {
+  $$ = ast_new_tag(AST_POSTFIX_ARROW, 1);
   ast_append($$, $2);
 }
-| "++" {
-  $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 0);
+;
+postfix-incr
+: "++" {
+  $$ = ast_new_tag(AST_POSTFIX_INCR, 0);
 }
-| "--" {
+;
+postfix-decr
+: "--" {
   $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 0);
 }
 ;
