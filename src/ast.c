@@ -12,7 +12,7 @@ const char* ast_show(int tag) {
                         "primary-expression",
                         "postfix-expression",
                         "postfix-operator",
-                        "argument-expression-list.opt",
+                        "argument-expression-list",
                         "unary-expression",
                         "unary-operator",
                         "cast-expression",

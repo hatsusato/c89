@@ -161,7 +161,7 @@ postfix-operator
   $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 1);
   ast_append($$, $2);
 }
-| "(" argument-expression-list.opt ")" {
+: "(" argument-expression-list ")" {
   $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 1);
   ast_append($$, $2);
 }
@@ -180,12 +180,9 @@ postfix-operator
   $$ = ast_new_tag(AST_POSTFIX_OPERATOR, 0);
 }
 ;
-argument-expression-list.opt
-: %empty {
-  $$ = ast_new_tag(AST_ARGUMENT_EXPRESSION_LIST_OPT, 0);
-}
-| expression {
-  $$ = ast_new_tag(AST_ARGUMENT_EXPRESSION_LIST_OPT, 1);
+argument-expression-list
+: expression {
+  $$ = ast_new_tag(AST_ARGUMENT_EXPRESSION_LIST, 1);
   ast_append($$, $1);
 }
 ;
