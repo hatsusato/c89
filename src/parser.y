@@ -291,21 +291,41 @@ cast-expression
   ast_append($$, $4);
 }
 ;
+multiplicative-expression
+: cast-expression
+| multiplicative-aster
+| multiplicative-slash
+| multiplicative-perc
+;
+multiplicative-aster
+: multiplicative-expression "*" cast-expression {
+  $$ = ast_new_tag(AST_MULTIPLICATIVE_ASTER, 2);
+  ast_append($$, $1);
+  ast_append($$, $3);
+}
+;
+multiplicative-slash
+: multiplicative-expression "/" cast-expression {
+  $$ = ast_new_tag(AST_MULTIPLICATIVE_SLASH, 2);
+  ast_append($$, $1);
+  ast_append($$, $3);
+}
+;
+multiplicative-perc
+: multiplicative-expression "%" cast-expression {
+  $$ = ast_new_tag(AST_MULTIPLICATIVE_PERC, 2);
+  ast_append($$, $1);
+  ast_append($$, $3);
+}
+;
 type-name
 : "int" {
   $$ = ast_new_tag(AST_TYPE_NAME, 0);
 }
 ;
 expression
-: unary-expression
+: multiplicative-expression
 ;
-/* multiplicative-expression */
-/* : cast-expression */
-/* | multiplicative-expression multiplicative-operator cast-expression */
-/* ; */
-/* multiplicative-operator */
-/* : "*" | "/" | "%" */
-/* ; */
 /* additive-expression */
 /* : multiplicative-expression */
 /* | additive-expression additive-operator multiplicative-expression */
