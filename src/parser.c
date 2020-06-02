@@ -51,3 +51,11 @@ void ast_print_text(const char* text, int length) {
     printf("%c", text[i]);
   }
 }
+const char* ast_print_token(const char* cur) {
+  int arity = 0, length = 0;
+  const char* text = nil;
+  cur = ast_get_int(cur, &arity);
+  cur = ast_get_text(cur, &text, &length);
+  ast_print_text(text, length);
+  return cur;
+}
