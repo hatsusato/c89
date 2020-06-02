@@ -318,21 +318,33 @@ multiplicative-perc
   ast_append($$, $3);
 }
 ;
+additive-expression
+: multiplicative-expression
+| additive-plus
+| additive-minus
+;
+additive-plus
+: additive-expression "+" multiplicative-expression {
+  $$ = ast_new_tag(AST_ADDITIVE_PLUS, 2);
+  ast_append($$, $1);
+  ast_append($$, $3);
+}
+;
+additive-minus
+: additive-expression "-" multiplicative-expression {
+  $$ = ast_new_tag(AST_ADDITIVE_MINUS, 2);
+  ast_append($$, $1);
+  ast_append($$, $3);
+}
+;
 type-name
 : "int" {
   $$ = ast_new_tag(AST_TYPE_NAME, 0);
 }
 ;
 expression
-: multiplicative-expression
+: additive-expression
 ;
-/* additive-expression */
-/* : multiplicative-expression */
-/* | additive-expression additive-operator multiplicative-expression */
-/* ; */
-/* additive-operator */
-/* : "+" | "-" */
-/* ; */
 /* shift-expression */
 /* : additive-expression */
 /* | shift-expression shift-operator additive-expression */

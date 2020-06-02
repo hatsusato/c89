@@ -40,6 +40,8 @@ const char* ast_show(int tag) {
                         "multiplicative-perc",
                         "additive-expression",
                         "additive-operator",
+                        "additive-plus",
+                        "additive-minus",
                         "shift-expression",
                         "shift-operator",
                         "relational-expression",
