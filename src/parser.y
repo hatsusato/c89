@@ -298,6 +298,10 @@ exclusive-or-expression
 : and-expression
 | exclusive-or-expression "^" and-expression { AST_APPEND2(AST_EXCLUSIVE_OR_EXPRESSION, $$, $1, $3); }
 ;
+inclusive-or-expression
+: exclusive-or-expression
+| inclusive-or-expression "|" exclusive-or-expression { AST_APPEND2(AST_INCLUSIVE_OR_EXPRESSION, $$, $1, $3); }
+;
 type-name
 : "int" {
   $$ = ast_new_tag(AST_TYPE_NAME, 0);
@@ -306,10 +310,6 @@ type-name
 expression
 : shift-expression
 ;
-/* inclusive-or-expression */
-/* : exclusive-or-expression */
-/* | inclusive-or-expression "|" exclusive-or-expression */
-/* ; */
 /* logical-and-expression */
 /* : inclusive-or-expression */
 /* | logical-and-expression "&&" inclusive-or-expression */
