@@ -40,4 +40,6 @@ enum AstTag {
   AST_TYPE_NAME
 };
 
+const char* ast_show(int);
+
 #endif /* INCLUDE_GUARD_A84E9F8A_C152_4807_9181_80EE16B4DFA5 */
