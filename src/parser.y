@@ -230,25 +230,13 @@ multiplicative-expression
 | multiplicative-perc
 ;
 multiplicative-aster
-: multiplicative-expression "*" cast-expression {
-  $$ = ast_new_tag(AST_MULTIPLICATIVE_ASTER, 2);
-  ast_append($$, $1);
-  ast_append($$, $3);
-}
+: multiplicative-expression "*" cast-expression { AST_APPEND2(AST_MULTIPLICATIVE_ASTER, $$, $1, $3); }
 ;
 multiplicative-slash
-: multiplicative-expression "/" cast-expression {
-  $$ = ast_new_tag(AST_MULTIPLICATIVE_SLASH, 2);
-  ast_append($$, $1);
-  ast_append($$, $3);
-}
+: multiplicative-expression "/" cast-expression { AST_APPEND2(AST_MULTIPLICATIVE_SLASH, $$, $1, $3); }
 ;
 multiplicative-perc
-: multiplicative-expression "%" cast-expression {
-  $$ = ast_new_tag(AST_MULTIPLICATIVE_PERC, 2);
-  ast_append($$, $1);
-  ast_append($$, $3);
-}
+: multiplicative-expression "%" cast-expression { AST_APPEND2(AST_MULTIPLICATIVE_PERC, $$, $1, $3); }
 ;
 additive-expression
 : multiplicative-expression
@@ -256,18 +244,10 @@ additive-expression
 | additive-minus
 ;
 additive-plus
-: additive-expression "+" multiplicative-expression {
-  $$ = ast_new_tag(AST_ADDITIVE_PLUS, 2);
-  ast_append($$, $1);
-  ast_append($$, $3);
-}
+: additive-expression "+" multiplicative-expression { AST_APPEND2(AST_ADDITIVE_PLUS, $$, $1, $3); }
 ;
 additive-minus
-: additive-expression "-" multiplicative-expression {
-  $$ = ast_new_tag(AST_ADDITIVE_MINUS, 2);
-  ast_append($$, $1);
-  ast_append($$, $3);
-}
+: additive-expression "-" multiplicative-expression { AST_APPEND2(AST_ADDITIVE_MINUS, $$, $1, $3); }
 ;
 shift-expression
 : additive-expression
@@ -275,18 +255,10 @@ shift-expression
 | shift-right
 ;
 shift-left
-: shift-expression "<<" additive-expression {
-  $$ = ast_new_tag(AST_SHIFT_LEFT, 2);
-  ast_append($$, $1);
-  ast_append($$, $3);
-}
+: shift-expression "<<" additive-expression { AST_APPEND2(AST_SHIFT_LEFT, $$, $1, $3); }
 ;
 shift-right
-: shift-expression ">>" additive-expression {
-  $$ = ast_new_tag(AST_SHIFT_RIGHT, 2);
-  ast_append($$, $1);
-  ast_append($$, $3);
-}
+: shift-expression ">>" additive-expression { AST_APPEND2(AST_SHIFT_RIGHT, $$, $1, $3); }
 ;
 type-name
 : "int" {
