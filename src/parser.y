@@ -290,6 +290,10 @@ equality-eq
 equality-ne
 : equality-expression "!=" relational-expression { AST_APPEND2(AST_EQUALITY_NE, $$, $1, $3); }
 ;
+and-expression
+: equality-expression
+| and-expression "&" equality-expression { AST_APPEND2(AST_AND_EXPRESSION, $$, $1, $3); }
+;
 type-name
 : "int" {
   $$ = ast_new_tag(AST_TYPE_NAME, 0);
@@ -298,10 +302,6 @@ type-name
 expression
 : shift-expression
 ;
-/* and-expression */
-/* : equality-expression */
-/* | and-expression "&" equality-expression */
-/* ; */
 /* exclusive-or-expression */
 /* : and-expression */
 /* | exclusive-or-expression "^" and-expression */
