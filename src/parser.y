@@ -337,7 +337,7 @@ expression
 : assignment-expression
 | expression "," assignment-expression { AST_APPEND2(AST_EXPRESSION, $$, $1, $3); }
 ;
-/* constant-expression */
-/* : conditional-expression */
-/* ; */
+constant-expression
+: conditional-expression
+;
 %%
