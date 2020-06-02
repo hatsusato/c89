@@ -314,6 +314,20 @@ conditional-expression
 : logical-or-expression
 | logical-or-expression "?" expression ":" conditional-expression { AST_APPEND3(AST_CONDITIONAL_EXPRESSION, $$, $1, $3, $5); }
 ;
+assignment-expression
+: conditional-expression
+| unary-expression "=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_EXPRESSION, $$, $1, $3); }
+| unary-expression "*=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_MUL, $$, $1, $3); }
+| unary-expression "/=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_DIV, $$, $1, $3); }
+| unary-expression "%=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_MOD, $$, $1, $3); }
+| unary-expression "+=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_ADD, $$, $1, $3); }
+| unary-expression "-=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_SUB, $$, $1, $3); }
+| unary-expression "<<=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_LSH, $$, $1, $3); }
+| unary-expression ">>=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_RSH, $$, $1, $3); }
+| unary-expression "&=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_AND, $$, $1, $3); }
+| unary-expression "^=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_XOR, $$, $1, $3); }
+| unary-expression "|=" assignment-expression { AST_APPEND2(AST_ASSIGNMENT_OR, $$, $1, $3); }
+;
 type-name
 : "int" {
   $$ = ast_new_tag(AST_TYPE_NAME, 0);
@@ -322,13 +336,6 @@ type-name
 expression
 : shift-expression
 ;
-/* assignment-expression */
-/* : conditional-expression */
-/* | unary-expression assignment-operator assignment-expression */
-/* ; */
-/* assignment-operator */
-/* : "=" | "*=" | "/=" | "%=" | "+=" | "-=" | "<<=" | ">>=" | "&=" | "^=" | "|=" */
-/* ; */
 /* expression */
 /* : assignment-expression */
 /* | expression "," assignment-expression */
