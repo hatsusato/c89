@@ -3,6 +3,8 @@
 #include <assert.h>
 #include <stdio.h>
 
+#include "ast.h"
+
 void yyerror(const char* msg, yyscan_t scanner) {
   (void)scanner;
   fprintf(stderr, "yyerror: [%s]\n", msg);
@@ -57,5 +59,21 @@ const char* ast_print_token(const char* cur) {
   cur = ast_get_int(cur, &arity);
   cur = ast_get_text(cur, &text, &length);
   ast_print_text(text, length);
+  return cur;
+}
+const char* ast_print(const char* cur) {
+  int tag = 0;
+  cur = ast_get_int(cur, &tag);
+  printf("[%s:", ast_show(tag));
+  if (ast_is_token(tag)) {
+    cur = ast_print_token(cur);
+  } else {
+    int arity = 0;
+    cur = ast_get_int(cur, &arity);
+    for (; 0 < arity; --arity) {
+      cur = ast_print(cur);
+    }
+  }
+  printf("]");
   return cur;
 }

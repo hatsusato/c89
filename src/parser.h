@@ -13,5 +13,6 @@ Vector* ast_new_tag(int, int);
 void ast_append(Vector*, Vector*);
 void ast_print_text(const char*, int);
 const char* ast_print_token(const char*);
+const char* ast_print(const char*);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */
