@@ -54,6 +54,8 @@ const char* ast_show(int tag) {
                         "relational-ge",
                         "equality-expression",
                         "equality-operator",
+                        "equality-eq",
+                        "equality-ne",
                         "and-expression",
                         "exclusive-or-expression",
                         "inclusive-or-expression",

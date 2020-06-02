@@ -279,6 +279,17 @@ relational-le
 relational-ge
 : relational-expression ">=" shift-expression { AST_APPEND2(AST_RELATIONAL_GE, $$, $1, $3); }
 ;
+equality-expression
+: relational-expression
+| equality-eq
+| equality-ne
+;
+equality-eq
+: equality-expression "==" relational-expression { AST_APPEND2(AST_EQUALITY_EQ, $$, $1, $3); }
+;
+equality-ne
+: equality-expression "!=" relational-expression { AST_APPEND2(AST_EQUALITY_NE, $$, $1, $3); }
+;
 type-name
 : "int" {
   $$ = ast_new_tag(AST_TYPE_NAME, 0);
@@ -287,13 +298,6 @@ type-name
 expression
 : shift-expression
 ;
-/* equality-expression */
-/* : relational-expression */
-/* | equality-expression equality-operator relational-expression */
-/* ; */
-/* equality-operator */
-/* : "==" | "!=" */
-/* ; */
 /* and-expression */
 /* : equality-expression */
 /* | and-expression "&" equality-expression */
