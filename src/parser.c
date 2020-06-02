@@ -33,7 +33,8 @@ const char* ast_get_int(const char* ast, int* val) {
 Vector* ast_new_token(int tag, yyscan_t scanner) {
   const char* text = yyget_text(scanner);
   int leng = yyget_leng(scanner);
-  Vector* ast = ast_new_tag(tag, -1);
+  Vector* ast = vector_new(1);
+  ast_set_int(ast, tag);
   ast_set_text(ast, text, leng);
   return ast;
 }
@@ -54,9 +55,8 @@ void ast_print_text(const char* text, int length) {
   }
 }
 const char* ast_print_token(const char* cur) {
-  int arity = 0, length = 0;
+  int length = 0;
   const char* text = nil;
-  cur = ast_get_int(cur, &arity);
   cur = ast_get_text(cur, &text, &length);
   ast_print_text(text, length);
   return cur;
