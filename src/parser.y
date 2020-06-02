@@ -334,12 +334,9 @@ type-name
 }
 ;
 expression
-: shift-expression
+: assignment-expression
+| expression "," assignment-expression { AST_APPEND2(AST_EXPRESSION, $$, $1, $3); }
 ;
-/* expression */
-/* : assignment-expression */
-/* | expression "," assignment-expression */
-/* ; */
 /* constant-expression */
 /* : conditional-expression */
 /* ; */
