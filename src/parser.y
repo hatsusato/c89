@@ -260,6 +260,25 @@ shift-left
 shift-right
 : shift-expression ">>" additive-expression { AST_APPEND2(AST_SHIFT_RIGHT, $$, $1, $3); }
 ;
+relational-expression
+: shift-expression
+| relational-lt
+| relational-gt
+| relational-le
+| relational-ge
+;
+relational-lt
+: relational-expression "<" shift-expression { AST_APPEND2(AST_RELATIONAL_LT, $$, $1, $3); }
+;
+relational-gt
+: relational-expression ">" shift-expression { AST_APPEND2(AST_RELATIONAL_GT, $$, $1, $3); }
+;
+relational-le
+: relational-expression "<=" shift-expression { AST_APPEND2(AST_RELATIONAL_LE, $$, $1, $3); }
+;
+relational-ge
+: relational-expression ">=" shift-expression { AST_APPEND2(AST_RELATIONAL_GE, $$, $1, $3); }
+;
 type-name
 : "int" {
   $$ = ast_new_tag(AST_TYPE_NAME, 0);
@@ -268,13 +287,6 @@ type-name
 expression
 : shift-expression
 ;
-/* relational-expression */
-/* : shift-expression */
-/* | relational-expression relational-operator shift-expression */
-/* ; */
-/* relational-operator */
-/* : "<" | ">" | "<=" | ">=" */
-/* ; */
 /* equality-expression */
 /* : relational-expression */
 /* | equality-expression equality-operator relational-expression */
