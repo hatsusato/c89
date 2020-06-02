@@ -7,6 +7,21 @@
   do {                                \
     x0 = ast_new_token(tag, scanner); \
   } while (0)
+#define AST_APPEND0(tag, x0)  \
+  do {                        \
+    x0 = ast_new_tag(tag, 0); \
+  } while (0)
+#define AST_APPEND1(tag, x0, x1) \
+  do {                           \
+    x0 = ast_new_tag(tag, 1);    \
+    ast_append(x0, x1);          \
+  } while (0)
+#define AST_APPEND2(tag, x0, x1, x2) \
+  do {                               \
+    x0 = ast_new_tag(tag, 2);        \
+    ast_append(x0, x1);              \
+    ast_append(x0, x2);              \
+  } while (0)
 
 void yyerror(const char*, yyscan_t);
 void ast_set_text(Vector*, const char*, int);
