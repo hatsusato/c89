@@ -143,10 +143,7 @@ primary-expression
 : identifier
 | constant
 | string-literal
-| "(" expression ")" {
-  $$ = ast_new_tag(AST_PRIMARY_EXPRESSION, 1);
-  ast_append($$, $expression);
-}
+| "(" expression ")" { $$ = $2; }
 ;
 postfix-expression
 : primary-expression
