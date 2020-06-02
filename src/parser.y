@@ -147,77 +147,26 @@ primary-expression
 ;
 postfix-expression
 : primary-expression
-| postfix-array
-| postfix-call
-| postfix-call-args
-| postfix-member
-| postfix-arrow
-| postfix-incr
-| postfix-decr
-;
-postfix-array
-: postfix-expression "[" expression "]" { AST_APPEND2(AST_POSTFIX_ARRAY, $$, $1, $3); }
-;
-postfix-call
-: postfix-expression "(" ")" { AST_APPEND1(AST_POSTFIX_CALL, $$, $1); }
-;
-postfix-call-args
-: postfix-expression "(" expression ")" { AST_APPEND2(AST_POSTFIX_CALL_ARGS, $$, $1, $3); }
-;
-postfix-member
-: postfix-expression "." identifier { AST_APPEND2(AST_POSTFIX_MEMBER, $$, $1, $3); }
-;
-postfix-arrow
-: postfix-expression "->" identifier { AST_APPEND2(AST_POSTFIX_ARROW, $$, $1, $3); }
-;
-postfix-incr
-: postfix-expression "++" { AST_APPEND1(AST_POSTFIX_INCR, $$, $1); }
-;
-postfix-decr
-: postfix-expression "--" { AST_APPEND1(AST_POSTFIX_DECR, $$, $1); }
+| postfix-expression "[" expression "]" { AST_APPEND2(AST_POSTFIX_ARRAY, $$, $1, $3); }
+| postfix-expression "(" ")" { AST_APPEND1(AST_POSTFIX_CALL, $$, $1); }
+| postfix-expression "(" expression ")" { AST_APPEND2(AST_POSTFIX_CALL_ARGS, $$, $1, $3); }
+| postfix-expression "." identifier { AST_APPEND2(AST_POSTFIX_MEMBER, $$, $1, $3); }
+| postfix-expression "->" identifier { AST_APPEND2(AST_POSTFIX_ARROW, $$, $1, $3); }
+| postfix-expression "++" { AST_APPEND1(AST_POSTFIX_INCR, $$, $1); }
+| postfix-expression "--" { AST_APPEND1(AST_POSTFIX_DECR, $$, $1); }
 ;
 unary-expression
 : postfix-expression
-| unary-incr
-| unary-decr
-| unary-amper
-| unary-aster
-| unary-plus
-| unary-minus
-| unary-tilde
-| unary-excl
-| unary-sizeof
-| unary-sizeof-type
-;
-unary-incr
-: "++" unary-expression { AST_APPEND1(AST_UNARY_INCR, $$, $2); }
-;
-unary-decr
-: "--" unary-expression { AST_APPEND1(AST_UNARY_DECR, $$, $2); }
-;
-unary-amper
-: "&" cast-expression { AST_APPEND1(AST_UNARY_AMPER, $$, $2); }
-;
-unary-aster
-: "*" cast-expression { AST_APPEND1(AST_UNARY_ASTER, $$, $2); }
-;
-unary-plus
-: "+" cast-expression { AST_APPEND1(AST_UNARY_PLUS, $$, $2); }
-;
-unary-minus
-: "-" cast-expression { AST_APPEND1(AST_UNARY_MINUS, $$, $2); }
-;
-unary-tilde
-: "~" cast-expression { AST_APPEND1(AST_UNARY_TILDE, $$, $2); }
-;
-unary-excl
-: "!" cast-expression { AST_APPEND1(AST_UNARY_EXCL, $$, $2); }
-;
-unary-sizeof
-: "sizeof" unary-expression { AST_APPEND1(AST_UNARY_SIZEOF, $$, $2); }
-;
-unary-sizeof-type
-: "sizeof" "(" type-name ")" { AST_APPEND1(AST_UNARY_SIZEOF_TYPE, $$, $3); }
+| "++" unary-expression { AST_APPEND1(AST_UNARY_INCR, $$, $2); }
+| "--" unary-expression { AST_APPEND1(AST_UNARY_DECR, $$, $2); }
+| "&" cast-expression { AST_APPEND1(AST_UNARY_AMPER, $$, $2); }
+| "*" cast-expression { AST_APPEND1(AST_UNARY_ASTER, $$, $2); }
+| "+" cast-expression { AST_APPEND1(AST_UNARY_PLUS, $$, $2); }
+| "-" cast-expression { AST_APPEND1(AST_UNARY_MINUS, $$, $2); }
+| "~" cast-expression { AST_APPEND1(AST_UNARY_TILDE, $$, $2); }
+| "!" cast-expression { AST_APPEND1(AST_UNARY_EXCL, $$, $2); }
+| "sizeof" unary-expression { AST_APPEND1(AST_UNARY_SIZEOF, $$, $2); }
+| "sizeof" "(" type-name ")" { AST_APPEND1(AST_UNARY_SIZEOF_TYPE, $$, $3); }
 ;
 cast-expression
 : unary-expression
@@ -225,70 +174,31 @@ cast-expression
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-aster
-| multiplicative-slash
-| multiplicative-perc
-;
-multiplicative-aster
-: multiplicative-expression "*" cast-expression { AST_APPEND2(AST_MULTIPLICATIVE_ASTER, $$, $1, $3); }
-;
-multiplicative-slash
-: multiplicative-expression "/" cast-expression { AST_APPEND2(AST_MULTIPLICATIVE_SLASH, $$, $1, $3); }
-;
-multiplicative-perc
-: multiplicative-expression "%" cast-expression { AST_APPEND2(AST_MULTIPLICATIVE_PERC, $$, $1, $3); }
+| multiplicative-expression "*" cast-expression { AST_APPEND2(AST_MULTIPLICATIVE_ASTER, $$, $1, $3); }
+| multiplicative-expression "/" cast-expression { AST_APPEND2(AST_MULTIPLICATIVE_SLASH, $$, $1, $3); }
+| multiplicative-expression "%" cast-expression { AST_APPEND2(AST_MULTIPLICATIVE_PERC, $$, $1, $3); }
 ;
 additive-expression
 : multiplicative-expression
-| additive-plus
-| additive-minus
-;
-additive-plus
-: additive-expression "+" multiplicative-expression { AST_APPEND2(AST_ADDITIVE_PLUS, $$, $1, $3); }
-;
-additive-minus
-: additive-expression "-" multiplicative-expression { AST_APPEND2(AST_ADDITIVE_MINUS, $$, $1, $3); }
+| additive-expression "+" multiplicative-expression { AST_APPEND2(AST_ADDITIVE_PLUS, $$, $1, $3); }
+| additive-expression "-" multiplicative-expression { AST_APPEND2(AST_ADDITIVE_MINUS, $$, $1, $3); }
 ;
 shift-expression
 : additive-expression
-| shift-left
-| shift-right
-;
-shift-left
-: shift-expression "<<" additive-expression { AST_APPEND2(AST_SHIFT_LEFT, $$, $1, $3); }
-;
-shift-right
-: shift-expression ">>" additive-expression { AST_APPEND2(AST_SHIFT_RIGHT, $$, $1, $3); }
+| shift-expression "<<" additive-expression { AST_APPEND2(AST_SHIFT_LEFT, $$, $1, $3); }
+| shift-expression ">>" additive-expression { AST_APPEND2(AST_SHIFT_RIGHT, $$, $1, $3); }
 ;
 relational-expression
 : shift-expression
-| relational-lt
-| relational-gt
-| relational-le
-| relational-ge
-;
-relational-lt
-: relational-expression "<" shift-expression { AST_APPEND2(AST_RELATIONAL_LT, $$, $1, $3); }
-;
-relational-gt
-: relational-expression ">" shift-expression { AST_APPEND2(AST_RELATIONAL_GT, $$, $1, $3); }
-;
-relational-le
-: relational-expression "<=" shift-expression { AST_APPEND2(AST_RELATIONAL_LE, $$, $1, $3); }
-;
-relational-ge
-: relational-expression ">=" shift-expression { AST_APPEND2(AST_RELATIONAL_GE, $$, $1, $3); }
+| relational-expression "<" shift-expression { AST_APPEND2(AST_RELATIONAL_LT, $$, $1, $3); }
+| relational-expression ">" shift-expression { AST_APPEND2(AST_RELATIONAL_GT, $$, $1, $3); }
+| relational-expression "<=" shift-expression { AST_APPEND2(AST_RELATIONAL_LE, $$, $1, $3); }
+| relational-expression ">=" shift-expression { AST_APPEND2(AST_RELATIONAL_GE, $$, $1, $3); }
 ;
 equality-expression
 : relational-expression
-| equality-eq
-| equality-ne
-;
-equality-eq
-: equality-expression "==" relational-expression { AST_APPEND2(AST_EQUALITY_EQ, $$, $1, $3); }
-;
-equality-ne
-: equality-expression "!=" relational-expression { AST_APPEND2(AST_EQUALITY_NE, $$, $1, $3); }
+| equality-expression "==" relational-expression { AST_APPEND2(AST_EQUALITY_EQ, $$, $1, $3); }
+| equality-expression "!=" relational-expression { AST_APPEND2(AST_EQUALITY_NE, $$, $1, $3); }
 ;
 and-expression
 : equality-expression
