@@ -139,6 +139,8 @@ character-constant
 string-literal
 : TOKEN_STRING_LITERAL { AST_NEW(AST_STRING_LITERAL, scanner, $$); }
 ;
+
+/* 6.3 Expressions */
 primary-expression
 : identifier
 | constant
@@ -242,6 +244,8 @@ expression
 : assignment-expression
 | expression "," assignment-expression { AST_APPEND2(AST_EXPRESSION, $$, $1, $3); }
 ;
+
+/* 6.4 Constant expressions */
 constant-expression
 : conditional-expression
 ;
