@@ -76,6 +76,11 @@ const char* ast_show(int tag) {
                         "assignment-or",
                         "expression",
                         "constant-expression",
+                        "declaration",
+                        "declaration-init",
+                        "declaration-specifiers",
+                        "init-declarator-list",
+                        "init-declarator",
                         "type-name"};
   return name[tag];
 }

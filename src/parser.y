@@ -109,7 +109,7 @@
 %%
 top
 : %empty { $$ = yyget_extra(scanner); }
-| top[lhs] expression[rhs] ";" {
+| top[lhs] declaration[rhs] {
   if ($rhs) {
     ast_append($lhs, $rhs);
   }
@@ -249,6 +249,33 @@ expression
 constant-expression
 : conditional-expression
 ;
+
+/* 6.5 Declarations */
+declaration
+: declaration-specifiers ";" { AST_APPEND1(AST_DECLARATION, $$, $1); }
+| declaration-specifiers init-declarator-list ";" { AST_APPEND2(AST_DECLARATION_INIT, $$, $1, $2); }
+;
+declaration-specifiers
+: declaration-specifier
+| declaration-specifier declaration-specifiers { AST_APPEND2(AST_DECLARATION_SPECIFIERS, $$, $1, $2); }
+;
+declaration-specifier
+: type-name
+/* : storage-class-specifier */
+/* | type-specifier */
+/* | type-qualifier */
+;
+init-declarator-list
+: init-declarator
+| init-declarator-list "," init-declarator { AST_APPEND2(AST_INIT_DECLARATOR_LIST, $$, $1, $3); }
+;
+init-declarator
+: declarator
+| declarator "=" initializer { AST_APPEND2(AST_INIT_DECLARATOR, $$, $1, $3); }
+;
+
+declarator: identifier;
+initializer: assignment-expression;
 type-name
 : "int" { AST_APPEND0(AST_TYPE_NAME, $$); }
 ;
