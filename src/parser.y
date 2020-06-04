@@ -289,9 +289,42 @@ type-specifier
 | "double" { AST_NEW(AST_DOUBLE, scanner, $$); }
 | "signed" { AST_NEW(AST_SIGNED, scanner, $$); }
 | "unsigned" { AST_NEW(AST_UNSIGNED, scanner, $$); }
-/* | struct-or-union-specifier */
+| struct-or-union-specifier
 /* | enum-specifier */
 /* | typedef-name */
+;
+struct-or-union-specifier
+: struct-or-union "{" struct-declaration-list "}" { AST_APPEND2(AST_STRUCT_ANONYMOUS, $$, $1, $3); }
+| struct-or-union identifier "{" struct-declaration-list "}" { AST_APPEND3(AST_STRUCT_SPECIFIER, $$, $1, $2, $4); }
+| struct-or-union identifier { AST_APPEND2(AST_STRUCT_SPECIFIER_EMPTY, $$, $1, $2); }
+;
+struct-or-union
+: "struct" { AST_NEW(AST_STRUCT, scanner, $$); }
+| "union" { AST_NEW(AST_UNION, scanner, $$); }
+;
+struct-declaration-list
+: struct-declaration
+| struct-declaration-list struct-declaration { AST_APPEND2(AST_STRUCT_DECLARATION_LIST, $$, $1, $2); }
+;
+struct-declaration
+: specifier-qualifier-list struct-declarator-list ";" { AST_APPEND2(AST_STRUCT_DECLARATION, $$, $1, $2); }
+;
+specifier-qualifier-list
+: specifier-qualifier
+| specifier-qualifier-list specifier-qualifier { AST_APPEND2(AST_SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
+;
+specifier-qualifier
+: type-specifier
+/* | type-qualifier */
+;
+struct-declarator-list
+: struct-declarator
+| struct-declarator-list "," struct-declarator { AST_APPEND2(AST_STRUCT_DECLARATOR_LIST, $$, $1, $2); }
+;
+struct-declarator
+: declarator { AST_APPEND1(AST_STRUCT_DECLARATOR, $$, $1); }
+| declarator ":" constant-expression { AST_APPEND2(AST_STRUCT_DECLARATOR_BITFIELD, $$, $1, $2); }
+| ":" constant-expression { AST_APPEND1(AST_STRUCT_DECLARATOR_EMPTY, $$, $1); }
 ;
 
 declarator: identifier;
