@@ -34,4 +34,4 @@ DO_HANDLE(VOID, void)
 DO_HANDLE(VOLATILE, volatile)
 DO_HANDLE(WHILE, while)
 
-#undef DO_HANDLE
+#include "handle-end.def"

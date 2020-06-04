@@ -12,4 +12,4 @@ DO_HANDLE(CHARACTER_CONSTANT, character-constant)
 /* 6.1.4 String literals */
 DO_HANDLE(STRING_LITERAL, string-literal)
 
-#undef DO_HANDLE
+#include "handle-end.def"

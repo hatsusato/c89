@@ -70,4 +70,4 @@ DO_HANDLE(ASSIGNMENT_OR, assignment-or)
 DO_HANDLE(EXPRESSION, expression)
 DO_HANDLE(CONSTANT_EXPRESSION, constant-expression)
 
-#undef DO_HANDLE
+#include "handle-end.def"

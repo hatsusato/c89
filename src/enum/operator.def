@@ -38,4 +38,4 @@ DO_HANDLE(AMPERSAND_ASSIGN, &=)
 DO_HANDLE(CARET_ASSIGN, ^=)
 DO_HANDLE(BAR_ASSIGN, |=)
 
-#undef DO_HANDLE
+#include "handle-end.def"
