@@ -7,6 +7,8 @@ const char* ast_show(int tag) {
 #
 #include "enum/token.def"
 #
+#include "enum/operator.def"
+#
 #include "enum/expressions.def"
 #undef HANDLE
                         "declaration",

@@ -10,6 +10,8 @@ enum AstTag {
 #
 #include "enum/token.def"
 #
+#include "enum/operator.def"
+#
 #include "enum/expressions.def"
 #undef HANDLE
   AST_DECLARATION,
