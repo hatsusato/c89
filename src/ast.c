@@ -12,14 +12,10 @@ const char* ast_show(int tag) {
 #include "enum/punctuator.def"
 #
 #include "enum/expressions.def"
+#
+#include "enum/declaration.def"
 #undef HANDLE
-                        "declaration",
-                        "declaration-init",
-                        "declaration-specifiers",
-                        "init-declarator-list",
-                        "init-declarator",
-                        "type-name",
-                        "tag-end"};
+                        "type-name", "tag-end"};
   return name[tag];
 }
 boolean ast_is_token(int tag) {

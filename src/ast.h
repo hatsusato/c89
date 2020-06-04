@@ -15,12 +15,9 @@ enum AstTag {
 #include "enum/punctuator.def"
 #
 #include "enum/expressions.def"
+#
+#include "enum/declaration.def"
 #undef HANDLE
-  AST_DECLARATION,
-  AST_DECLARATION_INIT,
-  AST_DECLARATION_SPECIFIERS,
-  AST_INIT_DECLARATOR_LIST,
-  AST_INIT_DECLARATOR,
   AST_TYPE_NAME,
   AST_TAG_END
 };
