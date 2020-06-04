@@ -260,8 +260,7 @@ declaration-specifiers
 | declaration-specifier declaration-specifiers { AST_APPEND2(AST_DECLARATION_SPECIFIERS, $$, $1, $2); }
 ;
 declaration-specifier
-: type-name
-/* : storage-class-specifier */
+: storage-class-specifier { AST_APPEND1(AST_STORAGE_CLASS_SPECIFIER, $$, $1); }
 /* | type-specifier */
 /* | type-qualifier */
 ;
@@ -272,6 +271,13 @@ init-declarator-list
 init-declarator
 : declarator
 | declarator "=" initializer { AST_APPEND2(AST_INIT_DECLARATOR, $$, $1, $3); }
+;
+storage-class-specifier
+: "typedef" { AST_NEW(AST_TYPEDEF, scanner, $$); }
+| "extern" { AST_NEW(AST_EXTERN, scanner, $$); }
+| "static" { AST_NEW(AST_STATIC, scanner, $$); }
+| "auto" { AST_NEW(AST_AUTO, scanner, $$); }
+| "register" { AST_NEW(AST_REGISTER, scanner, $$); }
 ;
 
 declarator: identifier;
