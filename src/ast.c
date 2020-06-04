@@ -1,7 +1,7 @@
 #include "ast.h"
 
 const char* ast_show(int tag) {
-  const char* name[] = {"nil",
+  const char* name[] = {"tag-begin",
 #define HANDLE(name, str) str,
 #include "enum/token.def"
 #
@@ -12,7 +12,8 @@ const char* ast_show(int tag) {
                         "declaration-specifiers",
                         "init-declarator-list",
                         "init-declarator",
-                        "type-name"};
+                        "type-name",
+                        "tag-end"};
   return name[tag];
 }
 boolean ast_is_token(int tag) {

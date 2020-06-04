@@ -4,7 +4,7 @@
 #include "utility.h"
 
 enum AstTag {
-  AST_NIL,
+  AST_TAG_BEGIN,
 #define HANDLE(name, str) AST_##name,
 #include "enum/token.def"
 #
@@ -15,7 +15,8 @@ enum AstTag {
   AST_DECLARATION_SPECIFIERS,
   AST_INIT_DECLARATOR_LIST,
   AST_INIT_DECLARATOR,
-  AST_TYPE_NAME
+  AST_TYPE_NAME,
+  AST_TAG_END
 };
 
 const char* ast_show(int);
