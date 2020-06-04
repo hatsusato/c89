@@ -1,1 +1,2 @@
 #undef DO_HANDLE
+#undef STRINGIFY
