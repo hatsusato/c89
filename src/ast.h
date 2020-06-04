@@ -6,6 +6,8 @@
 enum AstTag {
   AST_TAG_BEGIN,
 #define HANDLE(name, str) AST_##name,
+#include "enum/keyword.def"
+#
 #include "enum/token.def"
 #
 #include "enum/expressions.def"
