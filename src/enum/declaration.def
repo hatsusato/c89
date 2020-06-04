@@ -7,5 +7,6 @@ DO_HANDLE(DECLARATION_SPECIFIERS, declaration-specifiers)
 DO_HANDLE(INIT_DECLARATOR_LIST, init-declarator-list)
 DO_HANDLE(INIT_DECLARATOR, init-declarator)
 DO_HANDLE(STORAGE_CLASS_SPECIFIER, storage-class-specifier)
+DO_HANDLE(TYPE_SPECIFIER, type-specifier)
 
 #include "handle-end.def"

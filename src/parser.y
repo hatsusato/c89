@@ -261,7 +261,7 @@ declaration-specifiers
 ;
 declaration-specifier
 : storage-class-specifier { AST_APPEND1(AST_STORAGE_CLASS_SPECIFIER, $$, $1); }
-/* | type-specifier */
+| type-specifier { AST_APPEND1(AST_TYPE_SPECIFIER, $$, $1); }
 /* | type-qualifier */
 ;
 init-declarator-list
@@ -278,6 +278,20 @@ storage-class-specifier
 | "static" { AST_NEW(AST_STATIC, scanner, $$); }
 | "auto" { AST_NEW(AST_AUTO, scanner, $$); }
 | "register" { AST_NEW(AST_REGISTER, scanner, $$); }
+;
+type-specifier
+: "void" { AST_NEW(AST_VOID, scanner, $$); }
+| "char" { AST_NEW(AST_CHAR, scanner, $$); }
+| "short" { AST_NEW(AST_SHORT, scanner, $$); }
+| "int" { AST_NEW(AST_INT, scanner, $$); }
+| "long" { AST_NEW(AST_LONG, scanner, $$); }
+| "float" { AST_NEW(AST_FLOAT, scanner, $$); }
+| "double" { AST_NEW(AST_DOUBLE, scanner, $$); }
+| "signed" { AST_NEW(AST_SIGNED, scanner, $$); }
+| "unsigned" { AST_NEW(AST_UNSIGNED, scanner, $$); }
+/* | struct-or-union-specifier */
+/* | enum-specifier */
+/* | typedef-name */
 ;
 
 declarator: identifier;
