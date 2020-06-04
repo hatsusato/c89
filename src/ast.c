@@ -2,14 +2,9 @@
 
 const char* ast_show(int tag) {
   const char* name[] = {"nil",
-                        "identifier",
-                        "constant",
-                        "floating-constant",
-                        "integer-constant",
-                        "enumeration-constant",
-                        "character-constant",
-                        "string-literal",
 #define HANDLE(name, str) str,
+#include "enum/token.def"
+#
 #include "enum/expressions.def"
 #undef HANDLE
                         "declaration",
@@ -22,13 +17,9 @@ const char* ast_show(int tag) {
 }
 boolean ast_is_token(int tag) {
   switch (tag) {
-  case AST_IDENTIFIER:
-  case AST_CONSTANT:
-  case AST_FLOATING_CONSTANT:
-  case AST_INTEGER_CONSTANT:
-  case AST_ENUMERATION_CONSTANT:
-  case AST_CHARACTER_CONSTANT:
-  case AST_STRING_LITERAL:
+#define HANDLE(name, str) case AST_##name:
+#include "enum/token.def"
+#undef HANDLE
     return true;
   default:
     return false;

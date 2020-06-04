@@ -5,14 +5,9 @@
 
 enum AstTag {
   AST_NIL,
-  AST_IDENTIFIER,
-  AST_CONSTANT,
-  AST_FLOATING_CONSTANT,
-  AST_INTEGER_CONSTANT,
-  AST_ENUMERATION_CONSTANT,
-  AST_CHARACTER_CONSTANT,
-  AST_STRING_LITERAL,
 #define HANDLE(name, str) AST_##name,
+#include "enum/token.def"
+#
 #include "enum/expressions.def"
 #undef HANDLE
   AST_DECLARATION,

@@ -1,0 +1,19 @@
+/* 6.1 Lexical elements */
+#ifdef HANDLE
+#define DO_HANDLE(name, str) HANDLE(name, #str)
+#else
+#define DO_HANDLE(name, str)
+#endif
+
+/* 6.1.2 Identifiers */
+DO_HANDLE(IDENTIFIER, identifier)
+/* 6.1.3 Constants */
+DO_HANDLE(CONSTANT, constant)
+DO_HANDLE(FLOATING_CONSTANT, floating-constant)
+DO_HANDLE(INTEGER_CONSTANT, integer-constant)
+DO_HANDLE(ENUMERATION_CONSTANT, enumeration-constant)
+DO_HANDLE(CHARACTER_CONSTANT, character-constant)
+/* 6.1.4 String literals */
+DO_HANDLE(STRING_LITERAL, string-literal)
+
+#undef DO_HANDLE
