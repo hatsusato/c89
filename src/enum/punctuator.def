@@ -1,0 +1,17 @@
+/* 6.1.6 Punctuators */
+#include "handle.def"
+#undef STRINGIFY
+#define STRINGIFY(x) x
+
+DO_HANDLE(LEFT_BRACKET, "[")
+DO_HANDLE(RIGHT_BRACKET, "]")
+DO_HANDLE(LEFT_PAREN, "(")
+DO_HANDLE(RIGHT_PAREN, ")")
+DO_HANDLE(LEFT_BRACE, "{")
+DO_HANDLE(RIGHT_BRACE, "}")
+DO_HANDLE(COMMA, ",")
+DO_HANDLE(COLON, ":")
+DO_HANDLE(SEMICOLON, ";")
+DO_HANDLE(ELLIPSIS, "...")
+
+#include "handle-end.def"

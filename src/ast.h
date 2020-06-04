@@ -12,6 +12,8 @@ enum AstTag {
 #
 #include "enum/operator.def"
 #
+#include "enum/punctuator.def"
+#
 #include "enum/expressions.def"
 #undef HANDLE
   AST_DECLARATION,
