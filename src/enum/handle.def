@@ -1,0 +1,5 @@
+#ifdef HANDLE
+#define DO_HANDLE(name, str) HANDLE(name, #str)
+#else
+#define DO_HANDLE(name, str)
+#endif

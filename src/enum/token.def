@@ -1,9 +1,5 @@
 /* 6.1 Lexical elements */
-#ifdef HANDLE
-#define DO_HANDLE(name, str) HANDLE(name, #str)
-#else
-#define DO_HANDLE(name, str)
-#endif
+#include "handle.def"
 
 /* 6.1.2 Identifiers */
 DO_HANDLE(IDENTIFIER, identifier)
