@@ -343,21 +343,20 @@ struct-declarator
 | declarator.opt ":" constant-expression { AST_APPEND2(STRUCT_DECLARATOR_BITFIELD, $$, $1, $3); }
 ;
 enum-specifier
-: "enum" "{" enumerator-list "}" { AST_APPEND1(ENUM_SPECIFIER_ANONYMOUS, $$, $3); }
-| "enum" identifier "{" enumerator-list "}" { AST_APPEND2(ENUM_SPECIFIER, $$, $2, $4); }
-| "enum" identifier { AST_APPEND1(ENUM_SPECIFIER_DECL, $$, $2); }
+: "enum" identifier.opt "{" enumerator-list "}" { AST_APPEND2(ENUM_SPECIFIER, $$, $2, $4); }
+| "enum" identifier { AST_APPEND1(ENUM_SPECIFIER_OPAQUE, $$, $2); }
 ;
 enumerator-list
 : enumerator
 | enumerator-list "," enumerator { AST_APPEND2(ENUMERATOR_LIST, $$, $1, $3); }
 ;
 enumerator
-: enumeration-constant { AST_APPEND1(ENUMERATOR, $$, $1); }
-| enumeration-constant "=" constant-expression { AST_APPEND2(ENUMERATOR_INIT, $$, $1, $3); }
+: enumeration-constant
+| enumeration-constant "=" constant-expression { AST_APPEND2(ENUMERATOR, $$, $1, $3); }
 ;
 type-qualifier
-: "const" { AST_NEW(CONST, scanner, $$); }
-| "volatile" { AST_NEW(VOLATILE, scanner, $$); }
+: "const" { AST_TOKEN(TYPE_QUALIFIER, $$, CONST); }
+| "volatile" { AST_TOKEN(TYPE_QUALIFIER, $$, VOLATILE); }
 ;
 declarator.opt
 : empty
