@@ -294,9 +294,9 @@ type-specifier
 /* | typedef-name */
 ;
 struct-or-union-specifier
-: struct-or-union "{" struct-declaration-list "}" { AST_APPEND2(AST_STRUCT_ANONYMOUS, $$, $1, $3); }
+: struct-or-union "{" struct-declaration-list "}" { AST_APPEND2(AST_STRUCT_SPECIFIER_ANONYMOUS, $$, $1, $3); }
 | struct-or-union identifier "{" struct-declaration-list "}" { AST_APPEND3(AST_STRUCT_SPECIFIER, $$, $1, $2, $4); }
-| struct-or-union identifier { AST_APPEND2(AST_STRUCT_SPECIFIER_EMPTY, $$, $1, $2); }
+| struct-or-union identifier { AST_APPEND2(AST_STRUCT_SPECIFIER_DECL, $$, $1, $2); }
 ;
 struct-or-union
 : "struct" { AST_NEW(AST_STRUCT, scanner, $$); }
