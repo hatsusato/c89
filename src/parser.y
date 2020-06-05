@@ -120,10 +120,6 @@ empty
 ;
 
 /* 6.1 Lexical elements */
-identifier.opt
-: empty
-| identifier
-;
 identifier
 : TOKEN_IDENTIFIER { AST_NEW(IDENTIFIER, scanner, $$); }
 ;
@@ -155,15 +151,12 @@ primary-expression
 postfix-expression
 : primary-expression
 | postfix-expression "[" expression "]" { AST_APPEND2(POSTFIX_ARRAY, $$, $1, $3); }
-| postfix-expression "(" argument-expression-list.opt ")" { AST_APPEND2(POSTFIX_CALL, $$, $1, $3); }
+| postfix-expression "(" empty ")" { AST_APPEND2(POSTFIX_CALL, $$, $1, $3); }
+| postfix-expression "(" argument-expression-list ")" { AST_APPEND2(POSTFIX_CALL, $$, $1, $3); }
 | postfix-expression "." identifier { AST_APPEND2(POSTFIX_MEMBER, $$, $1, $3); }
 | postfix-expression "->" identifier { AST_APPEND2(POSTFIX_ARROW, $$, $1, $3); }
 | postfix-expression "++" { AST_APPEND1(POSTFIX_INCR, $$, $1); }
 | postfix-expression "--" { AST_APPEND1(POSTFIX_DECR, $$, $1); }
-;
-argument-expression-list.opt
-: empty
-| argument-expression-list
 ;
 argument-expression-list
 : assignment-expression
@@ -261,30 +254,22 @@ expression
 ;
 
 /* 6.4 Constant expressions */
-constant-expression.opt
-: empty
-| constant-expression
-;
 constant-expression
 : conditional-expression
 ;
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers init-declarator-list.opt ";" { AST_APPEND2(DECLARATION, $$, $1, $2); }
-;
-declaration-specifiers.opt
-: empty
-| declaration-specifiers
+: declaration-specifiers empty ";" { AST_APPEND2(DECLARATION, $$, $1, $2); }
+| declaration-specifiers init-declarator-list ";" { AST_APPEND2(DECLARATION, $$, $1, $2); }
 ;
 declaration-specifiers
-: storage-class-specifier declaration-specifiers.opt { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
-| type-specifier declaration-specifiers.opt { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
-| type-qualifier declaration-specifiers.opt { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
-;
-init-declarator-list.opt
-: empty
-| init-declarator-list
+: storage-class-specifier empty { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
+| storage-class-specifier declaration-specifiers { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
+| type-specifier empty { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
+| type-specifier declaration-specifiers { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
+| type-qualifier empty { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
+| type-qualifier declaration-specifiers { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
 ;
 init-declarator-list
 : init-declarator
@@ -316,7 +301,8 @@ type-specifier
 /* | typedef-name */
 ;
 struct-or-union-specifier
-: struct-or-union identifier.opt "{" struct-declaration-list "}" { AST_APPEND3(STRUCT_OR_UNION_SPECIFIER, $$, $1, $2, $4); }
+: struct-or-union empty "{" struct-declaration-list "}" { AST_APPEND3(STRUCT_OR_UNION_SPECIFIER, $$, $1, $2, $4); }
+| struct-or-union identifier "{" struct-declaration-list "}" { AST_APPEND3(STRUCT_OR_UNION_SPECIFIER, $$, $1, $2, $4); }
 | struct-or-union identifier { AST_APPEND2(STRUCT_OR_UNION_SPECIFIER_OPAQUE, $$, $1, $2); }
 ;
 struct-or-union
@@ -330,13 +316,11 @@ struct-declaration-list
 struct-declaration
 : specifier-qualifier-list struct-declarator-list ";" { AST_APPEND2(STRUCT_DECLARATION, $$, $1, $2); }
 ;
-specifier-qualifier-list.opt
-: empty
-| specifier-qualifier-list
-;
 specifier-qualifier-list
-: type-specifier specifier-qualifier-list.opt { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
-| type-qualifier specifier-qualifier-list.opt { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
+: type-specifier empty { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
+| type-specifier specifier-qualifier-list { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
+| type-qualifier empty { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
+| type-qualifier specifier-qualifier-list { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
 ;
 struct-declarator-list
 : struct-declarator
@@ -344,10 +328,12 @@ struct-declarator-list
 ;
 struct-declarator
 : declarator { AST_APPEND1(STRUCT_DECLARATOR, $$, $1); }
-| declarator.opt ":" constant-expression { AST_APPEND2(STRUCT_DECLARATOR_BITFIELD, $$, $1, $3); }
+| empty ":" constant-expression { AST_APPEND2(STRUCT_DECLARATOR_BITFIELD, $$, $1, $3); }
+| declarator ":" constant-expression { AST_APPEND2(STRUCT_DECLARATOR_BITFIELD, $$, $1, $3); }
 ;
 enum-specifier
-: "enum" identifier.opt "{" enumerator-list "}" { AST_APPEND2(ENUM_SPECIFIER, $$, $2, $4); }
+: "enum" empty "{" enumerator-list "}" { AST_APPEND2(ENUM_SPECIFIER, $$, $2, $4); }
+| "enum" identifier "{" enumerator-list "}" { AST_APPEND2(ENUM_SPECIFIER, $$, $2, $4); }
 | "enum" identifier { AST_APPEND1(ENUM_SPECIFIER_OPAQUE, $$, $2); }
 ;
 enumerator-list
@@ -362,31 +348,24 @@ type-qualifier
 : "const" { AST_TOKEN(TYPE_QUALIFIER, $$, CONST); }
 | "volatile" { AST_TOKEN(TYPE_QUALIFIER, $$, VOLATILE); }
 ;
-declarator.opt
-: empty
-| declarator
-;
 declarator
-: pointer.opt direct-declarator { AST_APPEND2(DECLARATOR, $$, $1, $2); }
+: empty direct-declarator { AST_APPEND2(DECLARATOR, $$, $1, $2); }
+| pointer direct-declarator { AST_APPEND2(DECLARATOR, $$, $1, $2); }
 ;
 direct-declarator
 : identifier { AST_APPEND1(DIRECT_DECLARATOR, $$, $1); }
 | "(" declarator ")" { $$ = $2; }
-| direct-declarator "[" constant-expression.opt "]" { AST_APPEND2(DIRECT_DECLARATOR_ARRAY, $$, $1, $3); }
+| direct-declarator "[" empty "]" { AST_APPEND2(DIRECT_DECLARATOR_ARRAY, $$, $1, $3); }
+| direct-declarator "[" constant-expression "]" { AST_APPEND2(DIRECT_DECLARATOR_ARRAY, $$, $1, $3); }
 | direct-declarator "(" parameter-type-list ")" { AST_APPEND2(DIRECT_DECLARATOR_FUNC, $$, $1, $3); }
-| direct-declarator "(" identifier-list.opt ")" { AST_APPEND2(DIRECT_DECLARATOR_FUNC_OLD, $$, $1, $3); }
-;
-pointer.opt
-: empty
-| pointer
+| direct-declarator "(" empty ")" { AST_APPEND2(DIRECT_DECLARATOR_FUNC_OLD, $$, $1, $3); }
+| direct-declarator "(" identifier-list ")" { AST_APPEND2(DIRECT_DECLARATOR_FUNC_OLD, $$, $1, $3); }
 ;
 pointer
-: "*" type-qualifier-list.opt { AST_APPEND1(POINTER, $$, $2); }
-| "*" type-qualifier-list.opt pointer { AST_APPEND2(POINTERS, $$, $2, $3); }
-;
-type-qualifier-list.opt
-: empty
-| type-qualifier-list
+: "*" empty { AST_APPEND1(POINTER, $$, $2); }
+| "*" type-qualifier-list { AST_APPEND1(POINTER, $$, $2); }
+| "*" empty pointer { AST_APPEND2(POINTERS, $$, $2, $3); }
+| "*" type-qualifier-list pointer { AST_APPEND2(POINTERS, $$, $2, $3); }
 ;
 type-qualifier-list
 : type-qualifier
@@ -403,10 +382,6 @@ parameter-list
 parameter-declaration
 : declaration-specifiers declarator { AST_APPEND2(PARAMETER_DECLARATION, $$, $1, $2); }
 /* | declaration-specifiers abstract-declarator.opt { AST_APPEND2(PARAMETER_DECLARATION, $$, $1, $2); } */
-;
-identifier-list.opt
-: empty
-| identifier-list
 ;
 identifier-list
 : identifier
