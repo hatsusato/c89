@@ -169,14 +169,17 @@ unary-expression
 : postfix-expression
 | "++" unary-expression { AST_APPEND1(UNARY_INCR, $$, $2); }
 | "--" unary-expression { AST_APPEND1(UNARY_DECR, $$, $2); }
-| "&" cast-expression { AST_APPEND1(UNARY_AMPER, $$, $2); }
-| "*" cast-expression { AST_APPEND1(UNARY_ASTER, $$, $2); }
-| "+" cast-expression { AST_APPEND1(UNARY_PLUS, $$, $2); }
-| "-" cast-expression { AST_APPEND1(UNARY_MINUS, $$, $2); }
-| "~" cast-expression { AST_APPEND1(UNARY_TILDE, $$, $2); }
-| "!" cast-expression { AST_APPEND1(UNARY_EXCL, $$, $2); }
+| unary-operator cast-expression { AST_APPEND2(UNARY_EXPRESSION, $$, $1, $2); }
 | "sizeof" unary-expression { AST_APPEND1(UNARY_SIZEOF, $$, $2); }
 | "sizeof" "(" type-name ")" { AST_APPEND1(UNARY_SIZEOF_TYPE, $$, $3); }
+;
+unary-operator
+: "&" { AST_NEW(AMPERSAND, scanner, $$); };
+| "*" { AST_NEW(ASTERISK, scanner, $$); };
+| "+" { AST_NEW(PLUS, scanner, $$); };
+| "-" { AST_NEW(MINUS, scanner, $$); };
+| "~" { AST_NEW(TILDE, scanner, $$); };
+| "!" { AST_NEW(EXCLAMATION, scanner, $$); };
 ;
 cast-expression
 : unary-expression
