@@ -151,12 +151,19 @@ primary-expression
 postfix-expression
 : primary-expression
 | postfix-expression "[" expression "]" { AST_APPEND2(POSTFIX_ARRAY, $$, $1, $3); }
-| postfix-expression "(" ")" { AST_APPEND1(POSTFIX_CALL, $$, $1); }
-| postfix-expression "(" expression ")" { AST_APPEND2(POSTFIX_CALL_ARGS, $$, $1, $3); }
+| postfix-expression "(" argument-expression-list.opt ")" { AST_APPEND2(POSTFIX_CALL, $$, $1, $3); }
 | postfix-expression "." identifier { AST_APPEND2(POSTFIX_MEMBER, $$, $1, $3); }
 | postfix-expression "->" identifier { AST_APPEND2(POSTFIX_ARROW, $$, $1, $3); }
 | postfix-expression "++" { AST_APPEND1(POSTFIX_INCR, $$, $1); }
 | postfix-expression "--" { AST_APPEND1(POSTFIX_DECR, $$, $1); }
+;
+argument-expression-list.opt
+: empty
+| argument-expression-list
+;
+argument-expression-list
+: assignment-expression
+| argument-expression-list "," assignment-expression { AST_APPEND2(ARGUMENT_EXPRESSION_LIST, $$, $1, $3); }
 ;
 unary-expression
 : postfix-expression
