@@ -120,6 +120,10 @@ empty
 ;
 
 /* 6.1 Lexical elements */
+identifier.opt
+: empty
+| identifier
+;
 identifier
 : TOKEN_IDENTIFIER { AST_NEW(IDENTIFIER, scanner, $$); }
 ;
@@ -308,13 +312,12 @@ type-specifier
 /* | typedef-name */
 ;
 struct-or-union-specifier
-: struct-or-union "{" struct-declaration-list "}" { AST_APPEND2(STRUCT_SPECIFIER_ANONYMOUS, $$, $1, $3); }
-| struct-or-union identifier "{" struct-declaration-list "}" { AST_APPEND3(STRUCT_SPECIFIER, $$, $1, $2, $4); }
-| struct-or-union identifier { AST_APPEND2(STRUCT_SPECIFIER_DECL, $$, $1, $2); }
+: struct-or-union identifier.opt "{" struct-declaration-list "}" { AST_APPEND3(STRUCT_OR_UNION_SPECIFIER, $$, $1, $2, $4); }
+| struct-or-union identifier { AST_APPEND2(STRUCT_OR_UNION_SPECIFIER_OPAQUE, $$, $1, $2); }
 ;
 struct-or-union
-: "struct" { AST_NEW(STRUCT, scanner, $$); }
-| "union" { AST_NEW(UNION, scanner, $$); }
+: "struct" { AST_TOKEN(STRUCT_OR_UNION, $$, STRUCT); }
+| "union" { AST_TOKEN(STRUCT_OR_UNION, $$, UNION); }
 ;
 struct-declaration-list
 : struct-declaration
@@ -323,13 +326,13 @@ struct-declaration-list
 struct-declaration
 : specifier-qualifier-list struct-declarator-list ";" { AST_APPEND2(STRUCT_DECLARATION, $$, $1, $2); }
 ;
-specifier-qualifier-list
-: specifier-qualifier
-| specifier-qualifier-list specifier-qualifier { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
+specifier-qualifier-list.opt
+: empty
+| specifier-qualifier-list
 ;
-specifier-qualifier
-: type-specifier { AST_APPEND1(TYPE_SPECIFIER, $$, $1); }
-| type-qualifier { AST_APPEND1(TYPE_QUALIFIER, $$, $1); }
+specifier-qualifier-list
+: type-specifier specifier-qualifier-list.opt { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
+| type-qualifier specifier-qualifier-list.opt { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
 ;
 struct-declarator-list
 : struct-declarator
@@ -337,8 +340,7 @@ struct-declarator-list
 ;
 struct-declarator
 : declarator { AST_APPEND1(STRUCT_DECLARATOR, $$, $1); }
-| declarator ":" constant-expression { AST_APPEND2(STRUCT_DECLARATOR_BITFIELD, $$, $1, $2); }
-| ":" constant-expression { AST_APPEND1(STRUCT_DECLARATOR_EMPTY, $$, $1); }
+| declarator.opt ":" constant-expression { AST_APPEND2(STRUCT_DECLARATOR_BITFIELD, $$, $1, $3); }
 ;
 enum-specifier
 : "enum" "{" enumerator-list "}" { AST_APPEND1(ENUM_SPECIFIER_ANONYMOUS, $$, $3); }
@@ -356,6 +358,10 @@ enumerator
 type-qualifier
 : "const" { AST_NEW(CONST, scanner, $$); }
 | "volatile" { AST_NEW(VOLATILE, scanner, $$); }
+;
+declarator.opt
+: empty
+| declarator
 ;
 declarator
 : direct-declarator { AST_APPEND1(DECLARATOR, $$, $1); }
