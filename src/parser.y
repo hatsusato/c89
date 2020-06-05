@@ -171,12 +171,12 @@ unary-expression
 | "sizeof" "(" type-name ")" { AST_APPEND1(UNARY_SIZEOF_TYPE, $$, $3); }
 ;
 unary-operator
-: "&" { AST_NEW(AMPERSAND, scanner, $$); };
-| "*" { AST_NEW(ASTERISK, scanner, $$); };
-| "+" { AST_NEW(PLUS, scanner, $$); };
-| "-" { AST_NEW(MINUS, scanner, $$); };
-| "~" { AST_NEW(TILDE, scanner, $$); };
-| "!" { AST_NEW(EXCLAMATION, scanner, $$); };
+: "&" { AST_TOKEN(UNARY_OPERATOR, $$, AMPERSAND); };
+| "*" { AST_TOKEN(UNARY_OPERATOR, $$, ASTERISK); };
+| "+" { AST_TOKEN(UNARY_OPERATOR, $$, PLUS); };
+| "-" { AST_TOKEN(UNARY_OPERATOR, $$, MINUS); };
+| "~" { AST_TOKEN(UNARY_OPERATOR, $$, TILDE); };
+| "!" { AST_TOKEN(UNARY_OPERATOR, $$, EXCLAMATION); };
 ;
 cast-expression
 : unary-expression
