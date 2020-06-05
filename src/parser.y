@@ -203,10 +203,10 @@ shift-expression
 ;
 relational-expression
 : shift-expression
-| relational-expression "<" shift-expression { AST_APPEND2(RELATIONAL_LT, $$, $1, $3); }
-| relational-expression ">" shift-expression { AST_APPEND2(RELATIONAL_GT, $$, $1, $3); }
-| relational-expression "<=" shift-expression { AST_APPEND2(RELATIONAL_LE, $$, $1, $3); }
-| relational-expression ">=" shift-expression { AST_APPEND2(RELATIONAL_GE, $$, $1, $3); }
+| relational-expression "<" shift-expression { AST_APPEND2(LT_EXPRESSION, $$, $1, $3); }
+| relational-expression ">" shift-expression { AST_APPEND2(GT_EXPRESSION, $$, $1, $3); }
+| relational-expression "<=" shift-expression { AST_APPEND2(LE_EXPRESSION, $$, $1, $3); }
+| relational-expression ">=" shift-expression { AST_APPEND2(GE_EXPRESSION, $$, $1, $3); }
 ;
 equality-expression
 : relational-expression
