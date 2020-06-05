@@ -130,9 +130,9 @@ floating-constant
 integer-constant
 : TOKEN_INTEGER_CONSTANT { AST_NEW(AST_INTEGER_CONSTANT, scanner, $$); }
 ;
-/* enumeration-constant */
-/* : TOKEN_IDENTIFIER */
-/* ; */
+enumeration-constant
+: TOKEN_IDENTIFIER { AST_NEW(AST_ENUMERATION_CONSTANT, scanner, $$); }
+;
 character-constant
 : TOKEN_CHARACTER_CONSTANT { AST_NEW(AST_CHARACTER_CONSTANT, scanner, $$); }
 ;
@@ -290,7 +290,7 @@ type-specifier
 | "signed" { AST_NEW(AST_SIGNED, scanner, $$); }
 | "unsigned" { AST_NEW(AST_UNSIGNED, scanner, $$); }
 | struct-or-union-specifier
-/* | enum-specifier */
+| enum-specifier
 /* | typedef-name */
 ;
 struct-or-union-specifier
@@ -325,6 +325,19 @@ struct-declarator
 : declarator { AST_APPEND1(AST_STRUCT_DECLARATOR, $$, $1); }
 | declarator ":" constant-expression { AST_APPEND2(AST_STRUCT_DECLARATOR_BITFIELD, $$, $1, $2); }
 | ":" constant-expression { AST_APPEND1(AST_STRUCT_DECLARATOR_EMPTY, $$, $1); }
+;
+enum-specifier
+: "enum" "{" enumerator-list "}" { AST_APPEND1(AST_ENUM_SPECIFIER_ANONYMOUS, $$, $3); }
+| "enum" identifier "{" enumerator-list "}" { AST_APPEND2(AST_ENUM_SPECIFIER, $$, $2, $4); }
+| "enum" identifier { AST_APPEND1(AST_ENUM_SPECIFIER_DECL, $$, $2); }
+;
+enumerator-list
+: enumerator
+| enumerator-list "," enumerator { AST_APPEND2(AST_ENUMERATOR_LIST, $$, $1, $3); }
+;
+enumerator
+: enumeration-constant { AST_APPEND1(AST_ENUMERATOR, $$, $1); }
+| enumeration-constant "=" constant-expression { AST_APPEND2(AST_ENUMERATOR_INIT, $$, $1, $3); }
 ;
 
 declarator: identifier;

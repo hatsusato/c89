@@ -18,5 +18,11 @@ DO_HANDLE(STRUCT_DECLARATOR_LIST, struct-declarator-list)
 DO_HANDLE(STRUCT_DECLARATOR, struct-declarator)
 DO_HANDLE(STRUCT_DECLARATOR_BITFIELD, struct-declarator-bitfield)
 DO_HANDLE(STRUCT_DECLARATOR_EMPTY, struct-declarator-empty)
+DO_HANDLE(ENUM_SPECIFIER_ANONYMOUS, enum-specifier-anonymous)
+DO_HANDLE(ENUM_SPECIFIER, enum-specifier)
+DO_HANDLE(ENUM_SPECIFIER_DECL, enum-specifier-decl)
+DO_HANDLE(ENUMERATOR_LIST, enumerator-list)
+DO_HANDLE(ENUMERATOR, enumerator)
+DO_HANDLE(ENUMERATOR_INIT, enumerator-init)
 
 #include "handle-end.def"
