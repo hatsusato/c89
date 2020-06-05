@@ -258,7 +258,7 @@ declaration-specifiers
 declaration-specifier
 : storage-class-specifier { AST_APPEND1(STORAGE_CLASS_SPECIFIER, $$, $1); }
 | type-specifier { AST_APPEND1(TYPE_SPECIFIER, $$, $1); }
-/* | type-qualifier */
+| type-qualifier { AST_APPEND1(TYPE_QUALIFIER, $$, $1); }
 ;
 init-declarator-list
 : init-declarator
@@ -310,8 +310,8 @@ specifier-qualifier-list
 | specifier-qualifier-list specifier-qualifier { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
 ;
 specifier-qualifier
-: type-specifier
-/* | type-qualifier */
+: type-specifier { AST_APPEND1(TYPE_SPECIFIER, $$, $1); }
+| type-qualifier { AST_APPEND1(TYPE_QUALIFIER, $$, $1); }
 ;
 struct-declarator-list
 : struct-declarator
@@ -334,6 +334,10 @@ enumerator-list
 enumerator
 : enumeration-constant { AST_APPEND1(ENUMERATOR, $$, $1); }
 | enumeration-constant "=" constant-expression { AST_APPEND2(ENUMERATOR_INIT, $$, $1, $3); }
+;
+type-qualifier
+: "const" { AST_NEW(CONST, scanner, $$); }
+| "volatile" { AST_NEW(VOLATILE, scanner, $$); }
 ;
 
 declarator: identifier;

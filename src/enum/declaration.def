@@ -24,5 +24,6 @@ DO_HANDLE(ENUM_SPECIFIER_DECL, enum-specifier-decl)
 DO_HANDLE(ENUMERATOR_LIST, enumerator-list)
 DO_HANDLE(ENUMERATOR, enumerator)
 DO_HANDLE(ENUMERATOR_INIT, enumerator-init)
+DO_HANDLE(TYPE_QUALIFIER, type-qualifier)
 
 #include "handle-end.def"
