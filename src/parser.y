@@ -115,6 +115,9 @@ top
   }
 }
 ;
+empty
+: %empty { AST_APPEND0(NIL, $$); }
+;
 identifier
 : TOKEN_IDENTIFIER { AST_NEW(IDENTIFIER, scanner, $$); }
 ;

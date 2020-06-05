@@ -5,6 +5,7 @@
 
 enum AstTag {
   AST_TAG_BEGIN,
+  AST_NIL,
 #define HANDLE(name, str) AST_##name,
 #include "enum/keyword.def"
 #
