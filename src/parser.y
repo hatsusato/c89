@@ -339,8 +339,45 @@ type-qualifier
 : "const" { AST_NEW(CONST, scanner, $$); }
 | "volatile" { AST_NEW(VOLATILE, scanner, $$); }
 ;
+declarator
+: direct-declarator { AST_APPEND1(DECLARATOR, $$, $1); }
+| pointer direct-declarator { AST_APPEND2(DECLARATOR_POINTER, $$, $1, $2); }
+;
+direct-declarator
+: identifier { AST_APPEND1(DIRECT_DECLARATOR, $$, $1); }
+| "(" declarator ")" { AST_APPEND1(DIRECT_DECLARATOR_PAREN, $$, $2); }
+| direct-declarator "[" constant-expression "]" { AST_APPEND2(DIRECT_DECLARATOR_ARRAY, $$, $1, $3); }
+| direct-declarator "[" "]" { AST_APPEND1(DIRECT_DECLARATOR_ARRAY_EMPTY, $$, $1); }
+| direct-declarator "(" parameter-type-list ")" { AST_APPEND2(DIRECT_DECLARATOR_FUNC, $$, $1, $3); }
+| direct-declarator "(" identifier-list ")" { AST_APPEND2(DIRECT_DECLARATOR_FUNC_OLD, $$, $1, $3); }
+| direct-declarator "(" ")" { AST_APPEND1(DIRECT_DECLARATOR_FUNC_EMPTY, $$, $1); }
+;
+pointer
+: "*" type-qualifier-list { AST_APPEND1(POINTER, $$, $2); }
+| "*" type-qualifier-list pointer { AST_APPEND2(POINTER_LIST, $$, $2, $3); }
+;
+type-qualifier-list
+: %empty { AST_APPEND0(TYPE_QUALIFIER_LIST_EMPTY, $$); }
+| type-qualifier-list type-qualifier { AST_APPEND2(TYPE_QUALIFIER_LIST, $$, $1, $2); }
+;
+parameter-type-list
+: parameter-list
+| parameter-list "," "..." { AST_APPEND1(PARAMETER_TYPE_LIST, $$, $1); }
+;
+parameter-list
+: parameter-declaration
+| parameter-list "," parameter-declaration { AST_APPEND2(PARAMETER_LIST, $$, $1, $3); }
+;
+parameter-declaration
+: declaration-specifiers declarator { AST_APPEND2(PARAMETER_DECLARATION_DECLARATOR, $$, $1, $2); }
+/* | declaration-specifiers abstract-declarator { AST_APPEND2(PARAMETER_DECLARATION_ABSTRACT, $$, $1, $2); } */
+| declaration-specifiers { AST_APPEND1(PARAMETER_DECLARATION, $$, $1); }
+;
+identifier-list
+: identifier
+| identifier-list "," identifier { AST_APPEND2(IDENTIFIER_LIST, $$, $1, $3); }
+;
 
-declarator: identifier;
 initializer: assignment-expression;
 type-name
 : "int" { AST_APPEND0(TYPE_NAME, $$); }
