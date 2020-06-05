@@ -353,8 +353,8 @@ declarator
 | pointer direct-declarator { AST_APPEND2(DECLARATOR, $$, $1, $2); }
 ;
 direct-declarator
-: identifier { AST_APPEND1(DIRECT_DECLARATOR, $$, $1); }
-| "(" declarator ")" { $$ = $2; }
+: identifier
+| "(" declarator ")" { AST_APPEND1(DIRECT_DECLARATOR, $$, $2); }
 | direct-declarator "[" empty "]" { AST_APPEND2(DIRECT_DECLARATOR_ARRAY, $$, $1, $3); }
 | direct-declarator "[" constant-expression "]" { AST_APPEND2(DIRECT_DECLARATOR_ARRAY, $$, $1, $3); }
 | direct-declarator "(" parameter-type-list ")" { AST_APPEND2(DIRECT_DECLARATOR_FUNC, $$, $1, $3); }
