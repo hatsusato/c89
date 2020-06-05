@@ -3,28 +3,28 @@
 
 #include "parser.tab.h"
 
-#define AST_NEW(tag, scanner, x0)     \
-  do {                                \
-    x0 = ast_new_token(tag, scanner); \
+#define AST_NEW(tag, scanner, x0)           \
+  do {                                      \
+    x0 = ast_new_token(AST_##tag, scanner); \
   } while (0)
-#define AST_APPEND0(tag, x0)  \
-  do {                        \
-    x0 = ast_new_tag(tag, 0); \
+#define AST_APPEND0(tag, x0)        \
+  do {                              \
+    x0 = ast_new_tag(AST_##tag, 0); \
   } while (0)
-#define AST_APPEND1(tag, x0, x1) \
-  do {                           \
-    x0 = ast_new_tag(tag, 1);    \
-    ast_append(x0, x1);          \
+#define AST_APPEND1(tag, x0, x1)    \
+  do {                              \
+    x0 = ast_new_tag(AST_##tag, 1); \
+    ast_append(x0, x1);             \
   } while (0)
 #define AST_APPEND2(tag, x0, x1, x2) \
   do {                               \
-    x0 = ast_new_tag(tag, 2);        \
+    x0 = ast_new_tag(AST_##tag, 2);  \
     ast_append(x0, x1);              \
     ast_append(x0, x2);              \
   } while (0)
 #define AST_APPEND3(tag, x0, x1, x2, x3) \
   do {                                   \
-    x0 = ast_new_tag(tag, 3);            \
+    x0 = ast_new_tag(AST_##tag, 3);      \
     ast_append(x0, x1);                  \
     ast_append(x0, x2);                  \
     ast_append(x0, x3);                  \
