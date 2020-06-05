@@ -29,6 +29,8 @@
     ast_append(x0, x2);                  \
     ast_append(x0, x3);                  \
   } while (0)
+#define AST_TOKEN(tag, x0, token) \
+  AST_APPEND1(tag, x0, ast_new_tag(AST_##token, 0))
 
 void yyerror(const char*, yyscan_t);
 void ast_set_text(Vector*, const char*, int);

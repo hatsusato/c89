@@ -2,7 +2,6 @@
 #include "handle.def"
 
 DO_HANDLE(DECLARATION, declaration)
-DO_HANDLE(DECLARATION_INIT, declaration-init)
 DO_HANDLE(DECLARATION_SPECIFIERS, declaration-specifiers)
 DO_HANDLE(INIT_DECLARATOR_LIST, init-declarator-list)
 DO_HANDLE(INIT_DECLARATOR, init-declarator)

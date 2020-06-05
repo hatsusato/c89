@@ -263,17 +263,20 @@ constant-expression
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers ";" { AST_APPEND1(DECLARATION, $$, $1); }
-| declaration-specifiers init-declarator-list ";" { AST_APPEND2(DECLARATION_INIT, $$, $1, $2); }
+: declaration-specifiers init-declarator-list.opt ";" { AST_APPEND2(DECLARATION, $$, $1, $2); }
+;
+declaration-specifiers.opt
+: empty
+| declaration-specifiers
 ;
 declaration-specifiers
-: declaration-specifier
-| declaration-specifier declaration-specifiers { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
+: storage-class-specifier declaration-specifiers.opt { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
+| type-specifier declaration-specifiers.opt { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
+| type-qualifier declaration-specifiers.opt { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
 ;
-declaration-specifier
-: storage-class-specifier { AST_APPEND1(STORAGE_CLASS_SPECIFIER, $$, $1); }
-| type-specifier { AST_APPEND1(TYPE_SPECIFIER, $$, $1); }
-| type-qualifier { AST_APPEND1(TYPE_QUALIFIER, $$, $1); }
+init-declarator-list.opt
+: empty
+| init-declarator-list
 ;
 init-declarator-list
 : init-declarator
@@ -284,22 +287,22 @@ init-declarator
 | declarator "=" initializer { AST_APPEND2(INIT_DECLARATOR, $$, $1, $3); }
 ;
 storage-class-specifier
-: "typedef" { AST_NEW(TYPEDEF, scanner, $$); }
-| "extern" { AST_NEW(EXTERN, scanner, $$); }
-| "static" { AST_NEW(STATIC, scanner, $$); }
-| "auto" { AST_NEW(AUTO, scanner, $$); }
-| "register" { AST_NEW(REGISTER, scanner, $$); }
+: "typedef" { AST_TOKEN(STORAGE_CLASS_SPECIFIER, $$, TYPEDEF); }
+| "extern" { AST_TOKEN(STORAGE_CLASS_SPECIFIER, $$, EXTERN); }
+| "static" { AST_TOKEN(STORAGE_CLASS_SPECIFIER, $$, STATIC); }
+| "auto" { AST_TOKEN(STORAGE_CLASS_SPECIFIER, $$, AUTO); }
+| "register" { AST_TOKEN(STORAGE_CLASS_SPECIFIER, $$, REGISTER); }
 ;
 type-specifier
-: "void" { AST_NEW(VOID, scanner, $$); }
-| "char" { AST_NEW(CHAR, scanner, $$); }
-| "short" { AST_NEW(SHORT, scanner, $$); }
-| "int" { AST_NEW(INT, scanner, $$); }
-| "long" { AST_NEW(LONG, scanner, $$); }
-| "float" { AST_NEW(FLOAT, scanner, $$); }
-| "double" { AST_NEW(DOUBLE, scanner, $$); }
-| "signed" { AST_NEW(SIGNED, scanner, $$); }
-| "unsigned" { AST_NEW(UNSIGNED, scanner, $$); }
+: "void" { AST_TOKEN(TYPE_SPECIFIER, $$, VOID); }
+| "char" { AST_TOKEN(TYPE_SPECIFIER, $$, CHAR); }
+| "short" { AST_TOKEN(TYPE_SPECIFIER, $$, SHORT); }
+| "int" { AST_TOKEN(TYPE_SPECIFIER, $$, INT); }
+| "long" { AST_TOKEN(TYPE_SPECIFIER, $$, LONG); }
+| "float" { AST_TOKEN(TYPE_SPECIFIER, $$, FLOAT); }
+| "double" { AST_TOKEN(TYPE_SPECIFIER, $$, DOUBLE); }
+| "signed" { AST_TOKEN(TYPE_SPECIFIER, $$, SIGNED); }
+| "unsigned" { AST_TOKEN(TYPE_SPECIFIER, $$, UNSIGNED); }
 | struct-or-union-specifier
 | enum-specifier
 /* | typedef-name */
