@@ -210,8 +210,8 @@ relational-expression
 ;
 equality-expression
 : relational-expression
-| equality-expression "==" relational-expression { AST_APPEND2(EQUALITY_EQ, $$, $1, $3); }
-| equality-expression "!=" relational-expression { AST_APPEND2(EQUALITY_NE, $$, $1, $3); }
+| equality-expression "==" relational-expression { AST_APPEND2(EQ_EXPRESSION, $$, $1, $3); }
+| equality-expression "!=" relational-expression { AST_APPEND2(NE_EXPRESSION, $$, $1, $3); }
 ;
 and-expression
 : equality-expression
