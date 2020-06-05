@@ -118,6 +118,8 @@ top
 empty
 : %empty { AST_APPEND0(NIL, $$); }
 ;
+
+/* 6.1 Lexical elements */
 identifier
 : TOKEN_IDENTIFIER { AST_NEW(IDENTIFIER, scanner, $$); }
 ;
