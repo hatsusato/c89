@@ -118,12 +118,6 @@ top
 identifier
 : TOKEN_IDENTIFIER { AST_NEW(AST_IDENTIFIER, scanner, $$); }
 ;
-constant
-: floating-constant
-| integer-constant
-/* | enumeration-constant */
-| character-constant
-;
 floating-constant
 : TOKEN_FLOATING_CONSTANT { AST_NEW(AST_FLOATING_CONSTANT, scanner, $$); }
 ;
@@ -143,7 +137,9 @@ string-literal
 /* 6.3 Expressions */
 primary-expression
 : identifier
-| constant
+| floating-constant
+| integer-constant
+| character-constant
 | string-literal
 | "(" expression ")" { $$ = $2; }
 ;
