@@ -146,7 +146,7 @@ primary-expression
 | integer-constant
 | character-constant
 | string-literal
-| "(" expression ")" { $$ = $2; }
+| "(" expression ")" { AST_APPEND1(PRIMARY_EXPRESSION, $$, $2); }
 ;
 postfix-expression
 : primary-expression
@@ -255,7 +255,7 @@ expression
 
 /* 6.4 Constant expressions */
 constant-expression
-: conditional-expression
+: conditional-expression { AST_APPEND1(CONSTANT_EXPRESSION, $$, $1); }
 ;
 
 /* 6.5 Declarations */

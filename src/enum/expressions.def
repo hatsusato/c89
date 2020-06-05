@@ -2,6 +2,7 @@
 /* 6.4 Constant expressions */
 #include "handle.def"
 
+DO_HANDLE(PRIMARY_EXPRESSION, primary-expression)
 DO_HANDLE(POSTFIX_ARRAY, postfix-array)
 DO_HANDLE(POSTFIX_CALL, postfix-call)
 DO_HANDLE(POSTFIX_MEMBER, postfix-member)
