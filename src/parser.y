@@ -193,8 +193,8 @@ multiplicative-expression
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression "+" multiplicative-expression { AST_APPEND2(ADDITIVE_PLUS, $$, $1, $3); }
-| additive-expression "-" multiplicative-expression { AST_APPEND2(ADDITIVE_MINUS, $$, $1, $3); }
+| additive-expression "+" multiplicative-expression { AST_APPEND2(ADD_EXPRESSION, $$, $1, $3); }
+| additive-expression "-" multiplicative-expression { AST_APPEND2(SUB_EXPRESSION, $$, $1, $3); }
 ;
 shift-expression
 : additive-expression
