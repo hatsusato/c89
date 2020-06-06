@@ -389,6 +389,10 @@ type-qualifier-list
 : type-qualifier
 | type-qualifier-list type-qualifier { AST_APPEND2(TYPE_QUALIFIER_LIST, $$, $1, $2); }
 ;
+parameter-type-list.opt
+: %empty
+| parameter-type-list
+;
 parameter-type-list
 : parameter-list
 | parameter-list "," "..." { AST_APPEND1(PARAMETER_TYPE_LIST, $$, $1); }
@@ -399,7 +403,7 @@ parameter-list
 ;
 parameter-declaration
 : declaration-specifiers declarator { AST_APPEND2(PARAMETER_DECLARATION, $$, $1, $2); }
-/* | declaration-specifiers abstract-declarator.opt { AST_APPEND2(PARAMETER_DECLARATION, $$, $1, $2); } */
+| declaration-specifiers abstract-declarator.opt { AST_APPEND2(PARAMETER_DECLARATION, $$, $1, $2); }
 ;
 identifier-list.opt
 : %empty { AST_APPEND0(NIL, $$); }
@@ -409,9 +413,24 @@ identifier-list
 : identifier
 | identifier-list "," identifier { AST_APPEND2(IDENTIFIER_LIST, $$, $1, $3); }
 ;
+type-name
+: specifier-qualifier-list abstract-declarator.opt { AST_APPEND2(TYPE_NAME, $$, $1, $2); }
+;
+abstract-declarator.opt
+: %empty { AST_APPEND0(NIL, $$); }
+| abstract-declarator
+;
+abstract-declarator
+: pointer
+| pointer.opt direct-abstract-declarator { AST_APPEND2(ABSTRACT_DECLARATOR, $$, $1, $2); }
+;
+direct-abstract-declarator
+: "(" abstract-declarator ")" { AST_APPEND1(DIRECT_ABSTRACT_DECLARATOR, $$, $2); }
+| "[" constant-expression.opt "]" { AST_APPEND1(DIRECT_ABSTRACT_DECLARATOR_ARRAY_SINGLE, $$, $2); }
+| "(" parameter-type-list.opt ")" { AST_APPEND1(DIRECT_ABSTRACT_DECLARATOR_FUNC_SINGLE, $$, $2); }
+| direct-abstract-declarator "[" constant-expression.opt "]" { AST_APPEND2(DIRECT_ABSTRACT_DECLARATOR_ARRAY, $$, $1, $3); }
+| direct-abstract-declarator "(" parameter-type-list.opt ")" { AST_APPEND2(DIRECT_ABSTRACT_DECLARATOR_FUNC, $$, $1, $3); }
+;
 
 initializer: assignment-expression;
-type-name
-: "int" { AST_APPEND0(TYPE_NAME, $$); }
-;
 %%

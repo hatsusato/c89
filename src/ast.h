@@ -19,7 +19,6 @@ enum AstTag {
 #
 #include "enum/declaration.def"
 #undef HANDLE
-  AST_TYPE_NAME,
   AST_TAG_END
 };
 

@@ -15,7 +15,7 @@ const char* ast_show(int tag) {
 #
 #include "enum/declaration.def"
 #undef HANDLE
-                        "type-name", "tag-end"};
+                        "tag-end"};
   return name[tag];
 }
 boolean ast_is_token(int tag) {

@@ -33,5 +33,12 @@ DO_HANDLE(PARAMETER_TYPE_LIST, parameter-type-list)
 DO_HANDLE(PARAMETER_LIST, parameter-list)
 DO_HANDLE(PARAMETER_DECLARATION, parameter-declaration)
 DO_HANDLE(IDENTIFIER_LIST, identifier-list)
+DO_HANDLE(TYPE_NAME, type-name)
+DO_HANDLE(ABSTRACT_DECLARATOR, abstract-declarator)
+DO_HANDLE(DIRECT_ABSTRACT_DECLARATOR, direct-abstract-declarator)
+DO_HANDLE(DIRECT_ABSTRACT_DECLARATOR_ARRAY_SINGLE, direct-abstract-declarator-array-single)
+DO_HANDLE(DIRECT_ABSTRACT_DECLARATOR_FUNC_SINGLE, direct-abstract-declarator-func-single)
+DO_HANDLE(DIRECT_ABSTRACT_DECLARATOR_ARRAY, direct-abstract-declarator-array)
+DO_HANDLE(DIRECT_ABSTRACT_DECLARATOR_FUNC, direct-abstract-declarator-func)
 
 #include "handle-end.def"
