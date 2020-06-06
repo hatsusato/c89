@@ -435,6 +435,13 @@ direct-abstract-declarator
 typedef-name
 : TOKEN_TYPEDEF_NAME { AST_APPEND1(TYPEDEF_NAME, $$, $1); }
 ;
-
-initializer: assignment-expression;
+initializer
+: assignment-expression { AST_APPEND1(INITIALIZER, $$, $1); }
+| "{" initializer-list "}" { AST_APPEND1(INITIALIZER_AGGREGATE, $$, $2); }
+| "{" initializer-list "," "}" { AST_APPEND1(INITIALIZER_AGGREGATE, $$, $2); }
+;
+initializer-list
+: initializer
+| initializer-list "," initializer { AST_APPEND2(INITIALIZER_LIST, $$, $1, $3); }
+;
 %%
