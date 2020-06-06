@@ -3,8 +3,6 @@
 const char* ast_show(int tag) {
   const char* name[] = {"tag-begin", "nil",
 #define HANDLE(name, str) str,
-#include "enum/keyword.def"
-#
 #include "enum/token.def"
 #
 #include "enum/symbol.def"
@@ -19,7 +17,6 @@ const char* ast_show(int tag) {
 boolean ast_is_token(int tag) {
   switch (tag) {
 #define HANDLE(name, str) case AST_##name:
-#include "enum/keyword.def"
 #include "enum/token.def"
 #undef HANDLE
     return true;
