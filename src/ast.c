@@ -7,9 +7,7 @@ const char* ast_show(int tag) {
 #
 #include "enum/token.def"
 #
-#include "enum/operator.def"
-#
-#include "enum/punctuator.def"
+#include "enum/symbol.def"
 #
 #include "enum/expression.def"
 #

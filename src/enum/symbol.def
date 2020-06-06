@@ -1,8 +1,9 @@
-/* 6.1.5 Operators */
+/* 6.1 Lexical elements */
 #include "handle.def"
 #undef STRINGIFY
 #define STRINGIFY(x) x
 
+/* 6.1.5 Operators */
 DO_HANDLE(PERIOD, ".")
 DO_HANDLE(ARROW, "->")
 DO_HANDLE(INCREMENT, "++")
@@ -39,5 +40,16 @@ DO_HANDLE(RIGHT_SHIFT_ASSIGN, ">>=")
 DO_HANDLE(AMPERSAND_ASSIGN, "&=")
 DO_HANDLE(CARET_ASSIGN, "^=")
 DO_HANDLE(BAR_ASSIGN, "|=")
+/* 6.1.6 Punctuators */
+DO_HANDLE(LEFT_BRACKET, "[")
+DO_HANDLE(RIGHT_BRACKET, "]")
+DO_HANDLE(LEFT_PAREN, "(")
+DO_HANDLE(RIGHT_PAREN, ")")
+DO_HANDLE(LEFT_BRACE, "{")
+DO_HANDLE(RIGHT_BRACE, "}")
+DO_HANDLE(COMMA, ",")
+DO_HANDLE(COLON, ":")
+DO_HANDLE(SEMICOLON, ";")
+DO_HANDLE(ELLIPSIS, "...")
 
 #include "handle-end.def"
