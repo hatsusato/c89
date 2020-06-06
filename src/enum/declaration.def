@@ -40,5 +40,6 @@ DO_HANDLE(DIRECT_ABSTRACT_DECLARATOR_ARRAY_SINGLE, direct-abstract-declarator-ar
 DO_HANDLE(DIRECT_ABSTRACT_DECLARATOR_FUNC_SINGLE, direct-abstract-declarator-func-single)
 DO_HANDLE(DIRECT_ABSTRACT_DECLARATOR_ARRAY, direct-abstract-declarator-array)
 DO_HANDLE(DIRECT_ABSTRACT_DECLARATOR_FUNC, direct-abstract-declarator-func)
+DO_HANDLE(TYPEDEF_NAME, typedef-name)
 
 #include "handle-end.def"

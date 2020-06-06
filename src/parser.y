@@ -22,6 +22,7 @@
 %token TOKEN_INTEGER_CONSTANT
 %token TOKEN_CHARACTER_CONSTANT
 %token TOKEN_STRING_LITERAL
+%token TOKEN_TYPEDEF_NAME
 %token TOKEN_UNKNOWN
 
 %token KEYWORD_AUTO "auto"
@@ -310,7 +311,7 @@ type-specifier
 | "unsigned" { AST_TOKEN(TYPE_SPECIFIER, $$, UNSIGNED); }
 | struct-or-union-specifier
 | enum-specifier
-/* | typedef-name */
+| typedef-name
 ;
 struct-or-union-specifier
 : struct-or-union identifier.opt "{" struct-declaration-list "}" { AST_APPEND3(STRUCT_OR_UNION_SPECIFIER, $$, $1, $2, $4); }
@@ -430,6 +431,9 @@ direct-abstract-declarator
 | "(" parameter-type-list.opt ")" { AST_APPEND1(DIRECT_ABSTRACT_DECLARATOR_FUNC_SINGLE, $$, $2); }
 | direct-abstract-declarator "[" constant-expression.opt "]" { AST_APPEND2(DIRECT_ABSTRACT_DECLARATOR_ARRAY, $$, $1, $3); }
 | direct-abstract-declarator "(" parameter-type-list.opt ")" { AST_APPEND2(DIRECT_ABSTRACT_DECLARATOR_FUNC, $$, $1, $3); }
+;
+typedef-name
+: TOKEN_TYPEDEF_NAME { AST_APPEND1(TYPEDEF_NAME, $$, $1); }
 ;
 
 initializer: assignment-expression;
