@@ -2,5 +2,8 @@
 #include "handle.def"
 
 DO_HANDLE(STATEMENT, statement)
+DO_HANDLE(LABELED_STATEMENT, labeled-statement)
+DO_HANDLE(LABELED_STATEMENT_CASE, labeled-statement-case)
+DO_HANDLE(LABELED_STATEMENT_DEFAULT, labeled-statement-default)
 
 #include "handle-end.def"

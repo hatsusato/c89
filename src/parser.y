@@ -447,12 +447,17 @@ initializer-list
 
 /* 6.6 Statements */
 statement
-: declaration { AST_APPEND1(STATEMENT, $$, $1); }
-/* : labeled-statement */
+: labeled-statement { AST_APPEND1(STATEMENT, $$, $1); }
 /* | compound-statement */
 /* | expression-statement */
 /* | selection-statement */
 /* | iteration-statement */
 /* | jump-statement */
+| declaration { AST_APPEND1(STATEMENT, $$, $1); }
+;
+labeled-statement
+: identifier ":" statement { AST_APPEND2(LABELED_STATEMENT, $$, $1, $3); }
+| "case" constant-expression ":" statement { AST_APPEND2(LABELED_STATEMENT_CASE, $$, $2, $4); }
+| "default" ":" statement { AST_APPEND1(LABELED_STATEMENT_DEFAULT, $$, $3); }
 ;
 %%
