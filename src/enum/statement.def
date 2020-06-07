@@ -15,5 +15,9 @@ DO_HANDLE(SELECTION_STATEMENT_SWITCH, selection-statement-switch)
 DO_HANDLE(ITERATION_STATEMENT, iteration-statement)
 DO_HANDLE(ITERATION_STATEMENT_WHILE, iteration-statement-while)
 DO_HANDLE(ITERATION_STATEMENT_FOR, iteration-statement-for)
+DO_HANDLE(JUMP_STATEMENT, jump-statement)
+DO_HANDLE(JUMP_STATEMENT_CONTINUE, jump-statement-continue)
+DO_HANDLE(JUMP_STATEMENT_BREAK, jump-statement-break)
+DO_HANDLE(JUMP_STATEMENT_RETURN, jump-statement-return)
 
 #include "handle-end.def"

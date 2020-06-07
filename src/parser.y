@@ -459,7 +459,7 @@ statement
 | expression-statement { AST_APPEND1(STATEMENT, $$, $1); }
 | selection-statement { AST_APPEND1(STATEMENT, $$, $1); }
 | iteration-statement { AST_APPEND1(STATEMENT, $$, $1); }
-/* | jump-statement */
+| jump-statement { AST_APPEND1(STATEMENT, $$, $1); }
 ;
 labeled-statement
 : identifier ":" statement { AST_APPEND2(LABELED_STATEMENT, $$, $1, $3); }
@@ -497,5 +497,11 @@ iteration-statement
 : "while" "(" expression ")" statement { AST_APPEND2(ITERATION_STATEMENT_WHILE, $$, $3, $5); }
 | "do" statement "while" "(" expression ")" ";" { AST_APPEND2(ITERATION_STATEMENT, $$, $2, $5); }
 | "for" "(" expression.opt ";" expression.opt ";" expression.opt ")" statement { AST_APPEND4(ITERATION_STATEMENT_FOR, $$, $3, $5, $7, $9); }
+;
+jump-statement
+: "goto" identifier ";" { AST_APPEND1(JUMP_STATEMENT, $$, $2); }
+| "continue" ";" { AST_APPEND0(JUMP_STATEMENT_CONTINUE, $$); }
+| "break" ";" { AST_APPEND0(JUMP_STATEMENT_BREAK, $$); }
+| "return" expression.opt ";" { AST_APPEND1(JUMP_STATEMENT_RETURN, $$, $2); }
 ;
 %%
