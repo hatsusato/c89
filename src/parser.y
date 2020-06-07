@@ -458,7 +458,7 @@ statement
 | compound-statement { AST_APPEND1(STATEMENT, $$, $1); }
 | expression-statement { AST_APPEND1(STATEMENT, $$, $1); }
 | selection-statement { AST_APPEND1(STATEMENT, $$, $1); }
-/* | iteration-statement */
+| iteration-statement { AST_APPEND1(STATEMENT, $$, $1); }
 /* | jump-statement */
 ;
 labeled-statement
@@ -492,5 +492,10 @@ selection-statement
 : "if" "(" expression ")" statement %prec THEN { AST_APPEND2(SELECTION_STATEMENT_IF, $$, $3, $5); }
 | "if" "(" expression ")" statement "else" statement { AST_APPEND3(SELECTION_STATEMENT, $$, $3, $5, $7); }
 | "switch" "(" expression ")" statement { AST_APPEND2(SELECTION_STATEMENT_SWITCH, $$, $3, $5); }
+;
+iteration-statement
+: "while" "(" expression ")" statement { AST_APPEND2(ITERATION_STATEMENT_WHILE, $$, $3, $5); }
+| "do" statement "while" "(" expression ")" ";" { AST_APPEND2(ITERATION_STATEMENT, $$, $2, $5); }
+| "for" "(" expression.opt ";" expression.opt ";" expression.opt ")" statement { AST_APPEND4(ITERATION_STATEMENT_FOR, $$, $3, $5, $7, $9); }
 ;
 %%

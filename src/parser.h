@@ -29,6 +29,14 @@
     ast_append(x0, x2);                  \
     ast_append(x0, x3);                  \
   } while (0)
+#define AST_APPEND4(tag, x0, x1, x2, x3, x4) \
+  do {                                       \
+    x0 = ast_new_tag(AST_##tag, 4);          \
+    ast_append(x0, x1);                      \
+    ast_append(x0, x2);                      \
+    ast_append(x0, x3);                      \
+    ast_append(x0, x4);                      \
+  } while (0)
 #define AST_TOKEN(tag, x0, token) \
   AST_APPEND1(tag, x0, ast_new_tag(AST_##token, 0))
 
