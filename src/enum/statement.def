@@ -8,5 +8,6 @@ DO_HANDLE(LABELED_STATEMENT_DEFAULT, labeled-statement-default)
 DO_HANDLE(COMPOUND_STATEMENT, compound-statement)
 DO_HANDLE(DECLARATION_LIST, declaration-list)
 DO_HANDLE(STATEMENT_LIST, statement-list)
+DO_HANDLE(EXPRESSION_STATEMENT, expression-statement)
 
 #include "handle-end.def"

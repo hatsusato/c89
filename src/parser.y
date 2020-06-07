@@ -253,6 +253,10 @@ assignment-expression
 | unary-expression "^=" assignment-expression { AST_APPEND2(ASSIGNMENT_XOR, $$, $1, $3); }
 | unary-expression "|=" assignment-expression { AST_APPEND2(ASSIGNMENT_OR, $$, $1, $3); }
 ;
+expression.opt
+: %empty { AST_APPEND0(NIL, $$); }
+| expression
+;
 expression
 : assignment-expression
 | expression "," assignment-expression { AST_APPEND2(EXPRESSION, $$, $1, $3); }
@@ -449,7 +453,7 @@ initializer-list
 statement
 : labeled-statement { AST_APPEND1(STATEMENT, $$, $1); }
 | compound-statement { AST_APPEND1(STATEMENT, $$, $1); }
-/* | expression-statement */
+| expression-statement { AST_APPEND1(STATEMENT, $$, $1); }
 /* | selection-statement */
 /* | iteration-statement */
 /* | jump-statement */
@@ -477,5 +481,8 @@ statement-list.opt
 statement-list
 : statement
 | statement-list statement { AST_APPEND2(STATEMENT_LIST, $$, $1, $2); }
+;
+expression-statement
+: expression.opt ";" { AST_APPEND1(EXPRESSION_STATEMENT, $$, $1); }
 ;
 %%
