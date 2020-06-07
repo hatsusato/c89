@@ -448,16 +448,34 @@ initializer-list
 /* 6.6 Statements */
 statement
 : labeled-statement { AST_APPEND1(STATEMENT, $$, $1); }
-/* | compound-statement */
+| compound-statement { AST_APPEND1(STATEMENT, $$, $1); }
 /* | expression-statement */
 /* | selection-statement */
 /* | iteration-statement */
 /* | jump-statement */
-| declaration { AST_APPEND1(STATEMENT, $$, $1); }
 ;
 labeled-statement
 : identifier ":" statement { AST_APPEND2(LABELED_STATEMENT, $$, $1, $3); }
 | "case" constant-expression ":" statement { AST_APPEND2(LABELED_STATEMENT_CASE, $$, $2, $4); }
 | "default" ":" statement { AST_APPEND1(LABELED_STATEMENT_DEFAULT, $$, $3); }
+;
+compound-statement
+: "{" declaration-list.opt statement-list.opt "}" { AST_APPEND2(COMPOUND_STATEMENT, $$, $2, $3); }
+;
+declaration-list.opt
+: %empty { AST_APPEND0(NIL, $$); }
+| declaration-list
+;
+declaration-list
+: declaration
+| declaration-list declaration { AST_APPEND2(DECLARATION_LIST, $$, $1, $2); }
+;
+statement-list.opt
+: %empty { AST_APPEND0(NIL, $$); }
+| statement-list
+;
+statement-list
+: statement
+| statement-list statement { AST_APPEND2(STATEMENT_LIST, $$, $1, $2); }
 ;
 %%
