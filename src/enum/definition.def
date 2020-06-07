@@ -3,5 +3,6 @@
 
 DO_HANDLE(EXTERNAL_DECLARATION, external-declaration)
 DO_HANDLE(FUNCTION_DEFINITION, function-definition)
+DO_HANDLE(FUNCTION_DEFINITION_OLD, function-definition)
 
 #include "handle-end.def"

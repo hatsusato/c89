@@ -363,7 +363,8 @@ declarator.opt
 | declarator
 ;
 declarator
-: pointer.opt direct-declarator { AST_APPEND2(DECLARATOR, $$, $1, $2); }
+: direct-declarator
+| pointer direct-declarator { AST_APPEND2(DECLARATOR, $$, $1, $2); }
 ;
 direct-declarator
 : identifier
@@ -371,10 +372,6 @@ direct-declarator
 | direct-declarator "[" constant-expression.opt "]" { AST_APPEND2(DIRECT_DECLARATOR_ARRAY, $$, $1, $3); }
 | direct-declarator "(" parameter-type-list ")" { AST_APPEND2(DIRECT_DECLARATOR_FUNC, $$, $1, $3); }
 | direct-declarator "(" identifier-list.opt ")" { AST_APPEND2(DIRECT_DECLARATOR_FUNC_OLD, $$, $1, $3); }
-;
-pointer.opt
-: %empty { AST_APPEND0(NIL, $$); }
-| pointer
 ;
 pointer
 : "*" type-qualifier-list.opt { AST_APPEND1(POINTER, $$, $2); }
@@ -421,7 +418,8 @@ abstract-declarator.opt
 ;
 abstract-declarator
 : pointer
-| pointer.opt direct-abstract-declarator { AST_APPEND2(ABSTRACT_DECLARATOR, $$, $1, $2); }
+| direct-abstract-declarator
+| pointer direct-abstract-declarator { AST_APPEND2(ABSTRACT_DECLARATOR, $$, $1, $2); }
 ;
 direct-abstract-declarator
 : "(" abstract-declarator ")" { AST_APPEND1(DIRECT_ABSTRACT_DECLARATOR, $$, $2); }
@@ -506,6 +504,7 @@ external-declaration
 | declaration { AST_APPEND1(EXTERNAL_DECLARATION, $$, $1); }
 ;
 function-definition
-: declaration-specifiers.opt declarator declaration-list.opt compound-statement { AST_APPEND4(FUNCTION_DEFINITION, $$, $1, $2, $3, $4); }
+: declarator declaration-list.opt compound-statement { AST_APPEND3(FUNCTION_DEFINITION_OLD, $$, $1, $2, $3); }
+| declaration-specifiers declarator declaration-list.opt compound-statement { AST_APPEND4(FUNCTION_DEFINITION, $$, $1, $2, $3, $4); }
 ;
 %%
