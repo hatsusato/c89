@@ -16,6 +16,8 @@ enum AstTag {
 #include "enum/declaration.def"
 #
 #include "enum/statement.def"
+#
+#include "enum/definition.def"
 #undef HANDLE
   AST_TAG_END
 };

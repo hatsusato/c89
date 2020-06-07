@@ -109,17 +109,8 @@
 %nonassoc THEN
 %nonassoc "else"
 
-%start top
+%start translation-unit
 %%
-top
-: %empty { $$ = yyget_extra(scanner); }
-| top[lhs] statement[rhs] {
-  if ($rhs) {
-    ast_append($lhs, $rhs);
-  }
-}
-;
-
 /* 6.1 Lexical elements */
 identifier.opt
 : %empty { AST_APPEND0(NIL, $$); }
@@ -503,5 +494,18 @@ jump-statement
 | "continue" ";" { AST_APPEND0(JUMP_STATEMENT_CONTINUE, $$); }
 | "break" ";" { AST_APPEND0(JUMP_STATEMENT_BREAK, $$); }
 | "return" expression.opt ";" { AST_APPEND1(JUMP_STATEMENT_RETURN, $$, $2); }
+;
+
+/* 6.7 External definitions */
+translation-unit
+: external-declaration { $$ = yyget_extra(scanner); ast_append($$, $1); }
+| translation-unit external-declaration { ast_append($1, $2); }
+;
+external-declaration
+: function-definition
+| declaration { AST_APPEND1(EXTERNAL_DECLARATION, $$, $1); }
+;
+function-definition
+: declaration-specifiers.opt declarator declaration-list.opt compound-statement { AST_APPEND4(FUNCTION_DEFINITION, $$, $1, $2, $3, $4); }
 ;
 %%

@@ -12,6 +12,8 @@ const char* ast_show(int tag) {
 #include "enum/declaration.def"
 #
 #include "enum/statement.def"
+#
+#include "enum/definition.def"
 #undef HANDLE
                         "tag-end"};
   return name[tag];
