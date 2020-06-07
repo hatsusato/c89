@@ -9,5 +9,8 @@ DO_HANDLE(COMPOUND_STATEMENT, compound-statement)
 DO_HANDLE(DECLARATION_LIST, declaration-list)
 DO_HANDLE(STATEMENT_LIST, statement-list)
 DO_HANDLE(EXPRESSION_STATEMENT, expression-statement)
+DO_HANDLE(SELECTION_STATEMENT, selection-statement)
+DO_HANDLE(SELECTION_STATEMENT_IF, selection-statement-if)
+DO_HANDLE(SELECTION_STATEMENT_SWITCH, selection-statement-switch)
 
 #include "handle-end.def"

@@ -106,6 +106,9 @@
 %token PUNCTUATOR_SEMICOLON ";"
 %token PUNCTUATOR_ELLIPSIS "..."
 
+%nonassoc THEN
+%nonassoc "else"
+
 %start top
 %%
 top
@@ -454,7 +457,7 @@ statement
 : labeled-statement { AST_APPEND1(STATEMENT, $$, $1); }
 | compound-statement { AST_APPEND1(STATEMENT, $$, $1); }
 | expression-statement { AST_APPEND1(STATEMENT, $$, $1); }
-/* | selection-statement */
+| selection-statement { AST_APPEND1(STATEMENT, $$, $1); }
 /* | iteration-statement */
 /* | jump-statement */
 ;
@@ -484,5 +487,10 @@ statement-list
 ;
 expression-statement
 : expression.opt ";" { AST_APPEND1(EXPRESSION_STATEMENT, $$, $1); }
+;
+selection-statement
+: "if" "(" expression ")" statement %prec THEN { AST_APPEND2(SELECTION_STATEMENT_IF, $$, $3, $5); }
+| "if" "(" expression ")" statement "else" statement { AST_APPEND3(SELECTION_STATEMENT, $$, $3, $5, $7); }
+| "switch" "(" expression ")" statement { AST_APPEND2(SELECTION_STATEMENT_SWITCH, $$, $3, $5); }
 ;
 %%
