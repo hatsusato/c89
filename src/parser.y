@@ -110,7 +110,7 @@
 %%
 top
 : %empty { $$ = yyget_extra(scanner); }
-| top[lhs] declaration[rhs] {
+| top[lhs] statement[rhs] {
   if ($rhs) {
     ast_append($lhs, $rhs);
   }
@@ -443,5 +443,16 @@ initializer
 initializer-list
 : initializer
 | initializer-list "," initializer { AST_APPEND2(INITIALIZER_LIST, $$, $1, $3); }
+;
+
+/* 6.6 Statements */
+statement
+: declaration { AST_APPEND1(STATEMENT, $$, $1); }
+/* : labeled-statement */
+/* | compound-statement */
+/* | expression-statement */
+/* | selection-statement */
+/* | iteration-statement */
+/* | jump-statement */
 ;
 %%

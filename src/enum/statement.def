@@ -1,0 +1,6 @@
+/* 6.6 Statements */
+#include "handle.def"
+
+DO_HANDLE(STATEMENT, statement)
+
+#include "handle-end.def"
