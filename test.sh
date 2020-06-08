@@ -4,7 +4,6 @@ print() {
   gcc -Isrc -E -P "$1" | ./main.out
 }
 
-make main.out &>/dev/null
 if (($#)); then
   files=("$@")
 else
