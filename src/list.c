@@ -38,3 +38,8 @@ List *list_new(int tag, void *data) {
   list->node.next = node_new(tag, data, nil);
   return list;
 }
+void list_delete(List *list) {
+  assert(list);
+  node_delete(list->node.next);
+  free(list);
+}
