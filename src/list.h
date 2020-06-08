@@ -12,5 +12,6 @@ Node* list_begin(List*);
 Node* list_end(List*);
 int list_get_tag(Node*);
 void* list_get_data(Node*);
+void list_insert(Node*, List*);
 
 #endif /* INCLUDE_GUARD_A22A8A22_8237_41B8_A841_CCF37171764F */

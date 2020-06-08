@@ -62,3 +62,11 @@ void *list_get_data(Node *node) {
   assert(node && node->next);
   return node->next->data;
 }
+void list_insert(Node *node, List *list) {
+  Node *next = nil;
+  assert(node && list);
+  next = node->next;
+  node->next = list->node.next;
+  list_end(list)->next = next;
+  list->node.next = nil;
+}
