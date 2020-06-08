@@ -22,6 +22,14 @@ Node *node_new(int tag, void *data, Node *next) {
   node->next = next;
   return node;
 }
+void node_delete(Node *node) {
+  Node *next = nil;
+  while (node) {
+    next = node->next;
+    free(node);
+    node = next;
+  }
+}
 
 List *list_new(int tag, void *data) {
   List *list = malloc(sizeof(List));
