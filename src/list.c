@@ -4,8 +4,6 @@
 
 #include "utility.h"
 
-struct struct_Node;
-typedef struct struct_Node Node;
 struct struct_Node {
   int tag;
   void *data;
@@ -42,4 +40,17 @@ void list_delete(List *list) {
   assert(list);
   node_delete(list->node.next);
   free(list);
+}
+Node *list_begin(List *list) {
+  assert(list);
+  return &list->node;
+}
+Node *list_end(List *list) {
+  Node *node = nil;
+  assert(list);
+  node = list_begin(list);
+  while (node->next) {
+    node = node->next;
+  }
+  return node;
 }
