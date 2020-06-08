@@ -54,3 +54,11 @@ Node *list_end(List *list) {
   }
   return node;
 }
+int list_get_tag(Node *node) {
+  assert(node && node->next);
+  return node->next->tag;
+}
+void *list_get_data(Node *node) {
+  assert(node && node->next);
+  return node->next->data;
+}
