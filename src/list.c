@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 
+#include "utility.h"
+
 struct struct_Node;
 typedef struct struct_Node Node;
 struct struct_Node {
@@ -19,4 +21,12 @@ Node *node_new(int tag, void *data, Node *next) {
   node->data = data;
   node->next = next;
   return node;
+}
+
+List *list_new(int tag, void *data) {
+  List *list = malloc(sizeof(List));
+  list->node.tag = 0;
+  list->node.data = nil;
+  list->node.next = node_new(tag, data, nil);
+  return list;
 }
