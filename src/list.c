@@ -39,9 +39,12 @@ List *list_new(int tag, void *data) {
   return list;
 }
 void list_delete(List *list) {
-  assert(list);
-  /* node_delete(list->node.next); */
-  free(list);
+  List *next = nil;
+  while (list) {
+    next = list->next;
+    free(list);
+    list = next;
+  }
 }
 int list_get_tag(Node *node) {
   assert(node && node->next);
