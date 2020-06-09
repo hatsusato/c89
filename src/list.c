@@ -4,32 +4,11 @@
 
 #include "utility.h"
 
-struct struct_Node {
-  int tag;
-  void *data;
-  Node *next;
-};
 struct struct_List {
   int tag;
   void *data;
   List *next;
 };
-
-Node *node_new(int tag, void *data, Node *next) {
-  Node *node = malloc(sizeof(Node));
-  node->tag = tag;
-  node->data = data;
-  node->next = next;
-  return node;
-}
-void node_delete(Node *node) {
-  Node *next = nil;
-  while (node) {
-    next = node->next;
-    free(node);
-    node = next;
-  }
-}
 
 List *list_new(int tag, void *data) {
   List *list = malloc(sizeof(List));
