@@ -10,7 +10,9 @@ struct struct_Node {
   Node *next;
 };
 struct struct_List {
-  Node node;
+  int tag;
+  void *data;
+  List *next;
 };
 
 Node *node_new(int tag, void *data, Node *next) {
@@ -31,14 +33,14 @@ void node_delete(Node *node) {
 
 List *list_new(int tag, void *data) {
   List *list = malloc(sizeof(List));
-  list->node.tag = 0;
-  list->node.data = nil;
-  list->node.next = node_new(tag, data, nil);
+  list->tag = tag;
+  list->data = data;
+  list->next = nil;
   return list;
 }
 void list_delete(List *list) {
   assert(list);
-  node_delete(list->node.next);
+  /* node_delete(list->node.next); */
   free(list);
 }
 int list_get_tag(Node *node) {
