@@ -33,3 +33,7 @@ void *list_data(List *list) {
   assert(list);
   return list->data;
 }
+List *list_next(List *list) {
+  assert(list);
+  return list->next;
+}
