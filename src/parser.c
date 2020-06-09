@@ -85,3 +85,6 @@ List* ast_new_token(int tag, yyscan_t scanner) {
   vector_append(vec, text, leng);
   return list_new(tag, vec);
 }
+List* ast_new_tag(int tag) {
+  return list_new(tag, nil);
+}

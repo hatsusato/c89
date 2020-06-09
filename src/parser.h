@@ -57,5 +57,6 @@ const char *ast_vec_print_token(const char *);
 const char *ast_vec_print(const char *);
 
 List *ast_new_token(int, yyscan_t);
+List *ast_new_tag(int);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */
