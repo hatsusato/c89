@@ -37,3 +37,10 @@ List *list_next(List *list) {
   assert(list);
   return list->next;
 }
+List *list_last(List *list) {
+  assert(list);
+  while (list->next) {
+    list = list->next;
+  }
+  return list;
+}
