@@ -9,7 +9,7 @@ void print_seq(yyscan_t scanner) {
   const char *cur = vector_begin(seq);
   const char *const end = vector_end(seq);
   while (cur < end) {
-    cur = ast_print(cur);
+    cur = ast_vec_print(cur);
     printf("\n");
   }
   vector_delete(&seq);
