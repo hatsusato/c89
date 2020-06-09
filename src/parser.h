@@ -6,6 +6,7 @@
 #define AST_NEW(tag, scanner, x0)                   \
   do {                                              \
     x0.vec = ast_vec_new_token(AST_##tag, scanner); \
+    x0.list = ast_new_token(AST_##tag, scanner);    \
   } while (0)
 #define AST_APPEND0(tag, x0)                \
   do {                                      \
@@ -54,5 +55,7 @@ void ast_vec_append(Vector *, Vector *);
 void ast_vec_print_text(const char *, int);
 const char *ast_vec_print_token(const char *);
 const char *ast_vec_print(const char *);
+
+List *ast_new_token(int, yyscan_t);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */

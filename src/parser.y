@@ -1,6 +1,7 @@
 %code top {
 }
 %code requires {
+#include "list.h"
 #include "vector.h"
 #ifndef YY_TYPEDEF_YY_SCANNER_T
 #define YY_TYPEDEF_YY_SCANNER_T
@@ -14,7 +15,7 @@
 }
 
 %define api.pure full
-%define api.value.type {struct {Vector *vec;}}
+%define api.value.type {struct {Vector *vec; List *list;}}
 %param {yyscan_t scanner}
 
 %token TOKEN_IDENTIFIER
