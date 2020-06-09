@@ -41,19 +41,6 @@ void list_delete(List *list) {
   node_delete(list->node.next);
   free(list);
 }
-Node *list_begin(List *list) {
-  assert(list);
-  return &list->node;
-}
-Node *list_end(List *list) {
-  Node *node = nil;
-  assert(list);
-  node = list_begin(list);
-  while (node->next) {
-    node = node->next;
-  }
-  return node;
-}
 int list_get_tag(Node *node) {
   assert(node && node->next);
   return node->next->tag;
@@ -61,12 +48,4 @@ int list_get_tag(Node *node) {
 void *list_get_data(Node *node) {
   assert(node && node->next);
   return node->next->data;
-}
-void list_insert(Node *node, List *list) {
-  Node *next = nil;
-  assert(node && list);
-  next = node->next;
-  node->next = list->node.next;
-  list_end(list)->next = next;
-  list->node.next = nil;
 }
