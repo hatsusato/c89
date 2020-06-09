@@ -1,7 +1,7 @@
 #include "ast.h"
 
-const char* ast_show(int tag) {
-  const char* name[] = {"tag-begin", "nil",
+const char *ast_show(int tag) {
+  const char *name[] = {"tag-begin", "nil",
 #define HANDLE(name, str) str,
 #include "enum/token.def"
 #

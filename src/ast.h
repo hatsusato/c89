@@ -22,7 +22,7 @@ enum AstTag {
   AST_TAG_END
 };
 
-const char* ast_show(int);
+const char *ast_show(int);
 boolean ast_is_token(int);
 
 #endif /* INCLUDE_GUARD_A84E9F8A_C152_4807_9181_80EE16B4DFA5 */
