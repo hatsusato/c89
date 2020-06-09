@@ -25,11 +25,11 @@ void list_delete(List *list) {
     list = next;
   }
 }
-int list_get_tag(List *list) {
+int list_tag(List *list) {
   assert(list);
   return list->tag;
 }
-void *list_get_data(List *list) {
+void *list_data(List *list) {
   assert(list);
   return list->data;
 }
