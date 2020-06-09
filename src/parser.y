@@ -14,7 +14,7 @@
 }
 
 %define api.pure full
-%define api.value.type {Vector *}
+%define api.value.type {struct {Vector *vec;}}
 %param {yyscan_t scanner}
 
 %token TOKEN_IDENTIFIER
@@ -496,8 +496,8 @@ jump-statement
 
 /* 6.7 External definitions */
 translation-unit
-: external-declaration { $$ = yyget_extra(scanner); ast_append($$, $1); }
-| translation-unit external-declaration { ast_append($1, $2); }
+: external-declaration { $$.vec = yyget_extra(scanner); ast_append($$.vec, $1.vec); }
+| translation-unit external-declaration { ast_append($1.vec, $2.vec); }
 ;
 external-declaration
 : function-definition
