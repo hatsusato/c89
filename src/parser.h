@@ -11,37 +11,54 @@
 #define AST_APPEND0(tag, x0)                \
   do {                                      \
     x0.vec = ast_vec_new_tag(AST_##tag, 0); \
+    x0.list = ast_new_tag(AST_##tag);       \
   } while (0)
 #define AST_APPEND1(tag, x0, x1)            \
   do {                                      \
     x0.vec = ast_vec_new_tag(AST_##tag, 1); \
+    x0.list = ast_new_tag(AST_##tag);       \
     ast_vec_append(x0.vec, x1.vec);         \
+    list_append(x0.list, x1.list);          \
   } while (0)
 #define AST_APPEND2(tag, x0, x1, x2)        \
   do {                                      \
     x0.vec = ast_vec_new_tag(AST_##tag, 2); \
+    x0.list = ast_new_tag(AST_##tag);       \
     ast_vec_append(x0.vec, x1.vec);         \
+    list_append(x0.list, x1.list);          \
     ast_vec_append(x0.vec, x2.vec);         \
+    list_append(x0.list, x2.list);          \
   } while (0)
 #define AST_APPEND3(tag, x0, x1, x2, x3)    \
   do {                                      \
     x0.vec = ast_vec_new_tag(AST_##tag, 3); \
+    x0.list = ast_new_tag(AST_##tag);       \
     ast_vec_append(x0.vec, x1.vec);         \
+    list_append(x0.list, x1.list);          \
     ast_vec_append(x0.vec, x2.vec);         \
+    list_append(x0.list, x2.list);          \
     ast_vec_append(x0.vec, x3.vec);         \
+    list_append(x0.list, x3.list);          \
   } while (0)
 #define AST_APPEND4(tag, x0, x1, x2, x3, x4) \
   do {                                       \
     x0.vec = ast_vec_new_tag(AST_##tag, 4);  \
+    x0.list = ast_new_tag(AST_##tag);        \
     ast_vec_append(x0.vec, x1.vec);          \
+    list_append(x0.list, x1.list);           \
     ast_vec_append(x0.vec, x2.vec);          \
+    list_append(x0.list, x2.list);           \
     ast_vec_append(x0.vec, x3.vec);          \
+    list_append(x0.list, x3.list);           \
     ast_vec_append(x0.vec, x4.vec);          \
+    list_append(x0.list, x4.list);           \
   } while (0)
 #define AST_TOKEN(tag, x0, token)                            \
   do {                                                       \
     x0.vec = ast_vec_new_tag(AST_##tag, 1);                  \
+    x0.list = ast_new_tag(AST_##tag);                        \
     ast_vec_append(x0.vec, ast_vec_new_tag(AST_##token, 0)); \
+    list_append(x0.list, ast_new_tag(AST_##token));          \
   } while (0)
 
 void yyerror(const char *, yyscan_t);
