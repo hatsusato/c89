@@ -5,7 +5,9 @@
 #include "parser.tab.h"
 
 void print_seq(yyscan_t scanner) {
-  Vector *seq = yyget_extra(scanner).vec;
+  YY_EXTRA_TYPE extra = yyget_extra(scanner);
+  Vector *seq = extra.vec;
+  List *list = extra.list;
   const char *cur = vector_begin(seq);
   const char *const end = vector_end(seq);
   while (cur < end) {
@@ -13,12 +15,19 @@ void print_seq(yyscan_t scanner) {
     printf("\n");
   }
   vector_delete(&seq);
+  while (list) {
+    printf("[%s]\n", ast_show(list_tag(list)));
+    free(list_data(list));
+    list = list_next(list);
+  }
+  list_delete(extra.list);
 }
 
 int main(void) {
   yyscan_t scanner;
   YYSTYPE extra = {nil, nil};
   extra.vec = vector_new(1);
+  extra.list = list_new(0, nil);
   yylex_init_extra(extra, &scanner);
   printf("return: %d\n", yyparse(scanner));
   print_seq(scanner);
