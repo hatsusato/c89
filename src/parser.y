@@ -497,7 +497,7 @@ jump-statement
 
 /* 6.7 External definitions */
 translation-unit
-: external-declaration { $$.vec = yyget_extra(scanner); ast_vec_append($$.vec, $1.vec); }
+: external-declaration { $$ = yyget_extra(scanner); ast_vec_append($$.vec, $1.vec); }
 | translation-unit external-declaration { ast_vec_append($1.vec, $2.vec); }
 ;
 external-declaration

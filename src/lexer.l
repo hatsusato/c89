@@ -11,7 +11,7 @@
 %option noyywrap
 %option never-interactive
 %option warn
-%option extra-type="Vector *"
+%option extra-type="YYSTYPE"
 
 space                   [ \t\n\v\f]
 wide-prefix             [L]?
