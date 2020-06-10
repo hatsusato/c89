@@ -41,11 +41,10 @@ Vector *vector_new(Alignment a) {
   v->size = v->capacity = 0;
   return v;
 }
-void vector_delete(Vector **v) {
-  assert(v && *v);
-  free((*v)->data);
-  free(*v);
-  *v = nil;
+void vector_delete(Vector *v) {
+  assert(v);
+  free(v->data);
+  free(v);
 }
 Size vector_length(const Vector *v) {
   assert(v);

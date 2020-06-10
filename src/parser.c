@@ -46,7 +46,7 @@ Vector *ast_vec_new_tag(int tag, int arity) {
 }
 void ast_vec_append(Vector *ast, Vector *v) {
   vector_append(ast, vector_begin(v), vector_length(v));
-  vector_delete(&v);
+  vector_delete(v);
 }
 void ast_vec_print_text(const char *text, int length) {
   int i = 0;

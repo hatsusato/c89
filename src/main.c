@@ -14,10 +14,12 @@ void print_seq(yyscan_t scanner) {
     cur = ast_vec_print(cur);
     printf("\n");
   }
-  vector_delete(&seq);
+  vector_delete(seq);
   while (list) {
     printf("[%s]\n", ast_show(list_tag(list)));
-    free(list_data(list));
+    if (list_data(list)) {
+      vector_delete(list_data(list));
+    }
     list = list_next(list);
   }
   list_delete(extra.list);
