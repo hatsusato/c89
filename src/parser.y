@@ -497,8 +497,18 @@ jump-statement
 
 /* 6.7 External definitions */
 translation-unit
-: external-declaration { $$ = yyget_extra(scanner); ast_vec_append($$.vec, $1.vec); list_append($$.list, $1.list); }
-| translation-unit external-declaration { ast_vec_append($1.vec, $2.vec); list_append($1.list, $2.list); }
+: external-declaration {
+  YY_EXTRA_TYPE extra = yyget_extra(scanner);
+  extra.vec = vector_new(1);
+  ast_vec_append(extra.vec, $1.vec);
+  extra.list = $1.list;
+  yyset_extra(extra, scanner);
+}
+| translation-unit external-declaration {
+  YY_EXTRA_TYPE extra = yyget_extra(scanner);
+  ast_vec_append(extra.vec, $2.vec);
+  list_append(extra.list, $2.list);
+}
 ;
 external-declaration
 : function-definition

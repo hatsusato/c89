@@ -28,8 +28,6 @@ void print_seq(yyscan_t scanner) {
 int main(void) {
   yyscan_t scanner;
   YYSTYPE extra = {nil, nil};
-  extra.vec = vector_new(1);
-  extra.list = list_new(0, nil);
   yylex_init_extra(extra, &scanner);
   printf("return: %d\n", yyparse(scanner));
   print_seq(scanner);
