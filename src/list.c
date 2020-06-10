@@ -17,10 +17,11 @@ List *list_new(int tag, void *data) {
   list->next = nil;
   return list;
 }
-void list_delete(List *list) {
+void list_delete(List *list, void (*deleter)(List *)) {
   List *next = nil;
   while (list) {
     next = list->next;
+    deleter(list);
     free(list);
     list = next;
   }

@@ -4,6 +4,12 @@
 #include "parser.h"
 #include "parser.tab.h"
 
+void ast_list_free(List *list) {
+  void *data = list_data(list);
+  if (data) {
+    vector_delete(data);
+  }
+}
 void print_seq(yyscan_t scanner) {
   YY_EXTRA_TYPE extra = yyget_extra(scanner);
   Vector *seq = extra.vec;
@@ -17,12 +23,9 @@ void print_seq(yyscan_t scanner) {
   vector_delete(seq);
   while (list) {
     printf("[%s]\n", ast_show(list_tag(list)));
-    if (list_data(list)) {
-      vector_delete(list_data(list));
-    }
     list = list_next(list);
   }
-  list_delete(extra.list);
+  list_delete(extra.list, ast_list_free);
 }
 
 int main(void) {

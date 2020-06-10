@@ -5,7 +5,7 @@ struct struct_List;
 typedef struct struct_List List;
 
 List *list_new(int, void *);
-void list_delete(List *);
+void list_delete(List *, void (*)(List *));
 int list_tag(List *);
 void *list_data(List *);
 List *list_next(List *);
