@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_26FC0E3E_05C7_464D_8860_9F5E5E2F9210
 #define INCLUDE_GUARD_26FC0E3E_05C7_464D_8860_9F5E5E2F9210
 
+#include <assert.h>
 #include <stddef.h>
 
 typedef signed char boolean;
