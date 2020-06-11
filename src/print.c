@@ -116,6 +116,15 @@ static List *print_unary(List *list, int indent) {
   print_end();
   return list;
 }
+static List *print_case(List *list, int indent) {
+  print_indent(indent);
+  print_begin();
+  print_tag(list_tag(list));
+  list = list_next(list);
+  list = print_repeat(list, indent + 1, 2);
+  print_end();
+  return list;
+}
 
 void print_all(List *list) {
   while (list) {
@@ -141,6 +150,8 @@ List *print_ast(List *list, int indent) {
     return print_list(list, indent);
   case AST_UNARY_EXPRESSION:
     return print_unary(list, indent);
+  case AST_CAST_EXPRESSION:
+    return print_case(list, indent);
   default:
     print_indent(indent);
     printf("[%s]", ast_show(tag));
