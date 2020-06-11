@@ -6,19 +6,20 @@
 #include "ast.h"
 #include "vector.h"
 
-static void print_begin(void) {
-  printf("[");
-}
-static void print_end(void) {
-  printf("]");
-}
-static void print_newline(void) {
-  printf("\n");
-}
 static void print_indent(int indent) {
   for (; 0 < indent; --indent) {
     printf("  ");
   }
+}
+static void print_begin(int indent) {
+  print_indent(indent);
+  printf("(");
+}
+static void print_end(void) {
+  printf(")");
+}
+static void print_newline(void) {
+  printf("\n");
 }
 static void print_tag(int tag) {
   printf("%s:", ast_show(tag));
@@ -37,16 +38,14 @@ static void print_data(Vector *data) {
   }
 }
 static List *print_token(List *list, int indent) {
-  print_indent(indent);
-  print_begin();
+  print_begin(indent);
   print_tag(list_tag(list));
   print_data(list_data(list));
   print_end();
   return list_next(list);
 }
 static List *print_primary(List *list, int indent) {
-  print_indent(indent);
-  print_begin();
+  print_begin(indent);
   print_tag(list_tag(list));
   print_newline();
   list = list_next(list);
@@ -77,8 +76,7 @@ static int arity_postfix(List *list) {
 }
 static List *print_postfix(List *list, int indent) {
   int repeat = 0;
-  print_indent(indent);
-  print_begin();
+  print_begin(indent);
   print_tag(list_tag(list));
   list = list_next(list);
   print_tag(list_tag(list));
@@ -89,8 +87,7 @@ static List *print_postfix(List *list, int indent) {
   return list;
 }
 static List *print_list(List *list, int indent) {
-  print_indent(indent);
-  print_begin();
+  print_begin(indent);
   print_tag(list_tag(list));
   list = list_next(list);
   while (list) {
@@ -105,8 +102,7 @@ static List *print_list(List *list, int indent) {
   return list;
 }
 static List *print_unary(List *list, int indent) {
-  print_indent(indent);
-  print_begin();
+  print_begin(indent);
   print_tag(list_tag(list));
   list = list_next(list);
   print_tag(list_tag(list));
@@ -117,8 +113,7 @@ static List *print_unary(List *list, int indent) {
   return list;
 }
 static List *print_case(List *list, int indent) {
-  print_indent(indent);
-  print_begin();
+  print_begin(indent);
   print_tag(list_tag(list));
   list = list_next(list);
   list = print_repeat(list, indent + 1, 2);
