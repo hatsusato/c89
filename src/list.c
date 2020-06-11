@@ -47,8 +47,7 @@ List *list_last(List *list) {
 }
 List *list_append(List *dst, List *src) {
   if (dst) {
-    dst = list_last(dst);
-    dst->next = src;
+    list_last(dst)->next = src;
     return dst;
   } else {
     return src;
