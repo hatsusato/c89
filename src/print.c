@@ -6,13 +6,10 @@
 #include "ast.h"
 #include "vector.h"
 
-static void print_indent(int indent) {
+static void print_begin(int indent) {
   for (; 0 < indent; --indent) {
     printf("  ");
   }
-}
-static void print_begin(int indent) {
-  print_indent(indent);
   printf("(");
 }
 static void print_end(void) {
@@ -188,7 +185,6 @@ List *print_ast(List *list, int indent) {
   case AST_CONSTANT_EXPRESSION:
     return print_constant(list, indent);
   default:
-    print_indent(indent);
     printf("[%s]", ast_show(tag));
     return list_next(list);
   }
