@@ -200,10 +200,10 @@ shift-expression
 ;
 relational-expression
 : shift-expression
-| relational-expression "<" shift-expression { AST_APPEND2(LT_EXPRESSION, $$, $1, $3); }
-| relational-expression ">" shift-expression { AST_APPEND2(GT_EXPRESSION, $$, $1, $3); }
-| relational-expression "<=" shift-expression { AST_APPEND2(LE_EXPRESSION, $$, $1, $3); }
-| relational-expression ">=" shift-expression { AST_APPEND2(GE_EXPRESSION, $$, $1, $3); }
+| relational-expression "<" shift-expression {AST_INIT($$); AST_PUSH_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH_TAG($$, LESS_THAN); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| relational-expression ">" shift-expression {AST_INIT($$); AST_PUSH_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH_TAG($$, GREATER_THAN); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| relational-expression "<=" shift-expression {AST_INIT($$); AST_PUSH_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH_TAG($$, LESS_EQUAL); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| relational-expression ">=" shift-expression {AST_INIT($$); AST_PUSH_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH_TAG($$, GREATER_EQUAL); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 equality-expression
 : relational-expression
