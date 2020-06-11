@@ -58,6 +58,32 @@ static List *print_primary(List *list, int indent) {
   print_end();
   return list;
 }
+static List *print_postfix(List *list, int indent) {
+  print_indent(indent);
+  print_begin();
+  print_tag(list_tag(list));
+  list = list_next(list);
+  print_tag(list_tag(list));
+  print_newline();
+  switch (list_tag(list)) {
+  case AST_ARRAY:
+  case AST_CALL:
+  case AST_PERIOD:
+  case AST_ARROW:
+    list = list_next(list);
+    list = print_ast(list, indent + 1);
+    print_newline();
+    list = print_ast(list, indent + 1);
+    break;
+  case AST_INCREMENT:
+  case AST_DECREMENT:
+    list = list_next(list);
+    list = print_ast(list, indent + 1);
+    break;
+  }
+  print_end();
+  return list;
+}
 
 void print_all(List *list) {
   while (list) {
@@ -77,6 +103,8 @@ List *print_ast(List *list, int indent) {
     return print_token(list, indent);
   case AST_PRIMARY_EXPRESSION:
     return print_primary(list, indent);
+  case AST_POSTFIX_EXPRESSION:
+    return print_postfix(list, indent);
   default:
     print_indent(indent);
     printf("[%s]", ast_show(tag));

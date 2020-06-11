@@ -147,12 +147,12 @@ primary-expression
 ;
 postfix-expression
 : primary-expression
-| postfix-expression "[" expression "]" { AST_APPEND2(POSTFIX_ARRAY, $$, $1, $3); }
-| postfix-expression "(" argument-expression-list.opt ")" { AST_APPEND2(POSTFIX_CALL, $$, $1, $3); }
-| postfix-expression "." identifier { AST_APPEND2(POSTFIX_MEMBER, $$, $1, $3); }
-| postfix-expression "->" identifier { AST_APPEND2(POSTFIX_ARROW, $$, $1, $3); }
-| postfix-expression "++" { AST_APPEND1(POSTFIX_INCR, $$, $1); }
-| postfix-expression "--" { AST_APPEND1(POSTFIX_DECR, $$, $1); }
+| postfix-expression "[" expression "]" {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, ARRAY); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| postfix-expression "(" argument-expression-list.opt ")" {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, CALL); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| postfix-expression "." identifier {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, PERIOD); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| postfix-expression "->" identifier {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, ARROW); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| postfix-expression "++" {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $1);}
+| postfix-expression "--" {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $1);}
 ;
 argument-expression-list.opt
 : %empty { AST_APPEND0(NIL, $$); }

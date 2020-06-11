@@ -3,12 +3,7 @@
 #include "handle.def"
 
 DO_HANDLE(PRIMARY_EXPRESSION, primary-expression)
-DO_HANDLE(POSTFIX_ARRAY, postfix-array)
-DO_HANDLE(POSTFIX_CALL, postfix-call)
-DO_HANDLE(POSTFIX_MEMBER, postfix-member)
-DO_HANDLE(POSTFIX_ARROW, postfix-arrow)
-DO_HANDLE(POSTFIX_INCR, postfix-incr)
-DO_HANDLE(POSTFIX_DECR, postfix-decr)
+DO_HANDLE(POSTFIX_EXPRESSION, postfix-expression)
 DO_HANDLE(ARGUMENT_EXPRESSION_LIST, argument-expression-list)
 DO_HANDLE(UNARY_INCR, unary-incr)
 DO_HANDLE(UNARY_DECR, unary-decr)
