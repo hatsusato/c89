@@ -504,10 +504,10 @@ translation-unit
 ;
 external-declaration
 : function-definition
-| declaration { AST_APPEND1(EXTERNAL_DECLARATION, $$, $1); }
+| declaration {AST_INIT($$); AST_PUSH_TAG($$, EXTERNAL_DECLARATION); AST_PUSH($$, $1);}
 ;
 function-definition
-: declarator declaration-list.opt compound-statement { AST_APPEND3(FUNCTION_DEFINITION_OLD, $$, $1, $2, $3); }
-| declaration-specifiers declarator declaration-list.opt compound-statement { AST_APPEND4(FUNCTION_DEFINITION, $$, $1, $2, $3, $4); }
+: declarator declaration-list.opt compound-statement {AST_INIT($$); AST_PUSH_TAG($$, FUNCTION_DEFINITION); AST_PUSH_TAG($$, NIL); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH($$, $3);}
+| declaration-specifiers declarator declaration-list.opt compound-statement {AST_INIT($$); AST_PUSH_TAG($$, FUNCTION_DEFINITION); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH($$, $3); AST_PUSH($$, $4);}
 ;
 %%
