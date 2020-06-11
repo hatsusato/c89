@@ -232,7 +232,7 @@ logical-or-expression
 ;
 conditional-expression
 : logical-or-expression
-| logical-or-expression "?" expression ":" conditional-expression { AST_APPEND3(CONDITIONAL_EXPRESSION, $$, $1, $3, $5); }
+| logical-or-expression "?" expression ":" conditional-expression {AST_INIT($$); AST_PUSH_TAG($$, CONDITIONAL_EXPRESSION); AST_PUSH($$, $1); AST_PUSH($$, $3); AST_PUSH($$, $5);}
 ;
 assignment-expression
 : conditional-expression

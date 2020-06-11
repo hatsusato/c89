@@ -117,6 +117,13 @@ static List *print_binary(List *list, int indent) {
   print_end();
   return list;
 }
+static List *print_conditional(List *list, int indent) {
+  print_begin(indent);
+  list = print_tag(list);
+  list = print_repeat(list, indent + 1, 3);
+  print_end();
+  return list;
+}
 
 void print_all(List *list) {
   while (list) {
@@ -155,6 +162,8 @@ List *print_ast(List *list, int indent) {
   case AST_LOGICAL_AND_EXPRESSION:
   case AST_LOGICAL_OR_EXPRESSION:
     return print_binary(list, indent);
+  case AST_CONDITIONAL_EXPRESSION:
+    return print_conditional(list, indent);
   default:
     print_indent(indent);
     printf("[%s]", ast_show(tag));
