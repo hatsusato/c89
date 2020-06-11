@@ -114,7 +114,7 @@
 %%
 /* 6.1 Lexical elements */
 identifier.opt
-: %empty { AST_APPEND0(NIL, $$); }
+: %empty {AST_EMPTY($$);}
 | identifier
 ;
 identifier

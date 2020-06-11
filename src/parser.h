@@ -54,6 +54,11 @@
   do {                                          \
     dst.list = list_append(dst.list, src.list); \
   } while (0)
+#define AST_EMPTY(dst)      \
+  do {                      \
+    AST_INIT(dst);          \
+    AST_PUSH_TAG(dst, NIL); \
+  } while (0)
 
 void yyerror(const char *, yyscan_t);
 void ast_vec_set_text(Vector *, const char *, int);
