@@ -155,12 +155,12 @@ postfix-expression
 | postfix-expression "--" {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $1);}
 ;
 argument-expression-list.opt
-: %empty { AST_APPEND0(NIL, $$); }
-| argument-expression-list
+: %empty {AST_INIT($$); AST_PUSH_TAG($$, ARGUMENT_EXPRESSION_LIST); AST_PUSH_TAG($$, NIL);}
+| argument-expression-list {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
 ;
 argument-expression-list
-: assignment-expression
-| argument-expression-list "," assignment-expression { AST_APPEND2(ARGUMENT_EXPRESSION_LIST, $$, $1, $3); }
+: assignment-expression {AST_INIT($$); AST_PUSH_TAG($$, ARGUMENT_EXPRESSION_LIST); AST_PUSH($$, $1);}
+| argument-expression-list "," assignment-expression {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 unary-expression
 : postfix-expression
