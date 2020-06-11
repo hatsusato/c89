@@ -54,7 +54,7 @@ static List *print_primary(List *list, int indent) {
   print_tag(list_tag(list));
   print_newline();
   list = list_next(list);
-  print_ast(list, indent + 1);
+  list = print_ast(list, indent + 1);
   print_end();
   return list;
 }
