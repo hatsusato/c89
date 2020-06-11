@@ -64,7 +64,7 @@ static List *print_list(List *list, int indent) {
       list = list_next(list);
       break;
     }
-    list = print_repeat(list, indent, 0, 1);
+    list = print_line(list, indent);
   }
   print_end();
   return list;
