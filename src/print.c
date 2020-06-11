@@ -31,11 +31,18 @@ static void print_data(Vector *data) {
     }
   }
 }
+static List *print_token(List *list) {
+  print_begin();
+  print_tag(list_tag(list));
+  print_data(list_data(list));
+  print_end();
+  print_newline();
+  return list_next(list);
+}
 
 void print_ast(List *list) {
   while (list) {
     int tag = list_tag(list);
-    Vector *data = list_data(list);
     switch (tag) {
     case AST_IDENTIFIER:
     case AST_FLOATING_CONSTANT:
@@ -43,15 +50,11 @@ void print_ast(List *list) {
     case AST_ENUMERATION_CONSTANT:
     case AST_CHARACTER_CONSTANT:
     case AST_STRING_LITERAL:
-      print_begin();
-      print_tag(tag);
-      print_data(data);
-      print_end();
-      print_newline();
+      list = print_token(list);
       break;
     default:
       printf("[%s]\n", ast_show(tag));
+      list = list_next(list);
     }
-    list = list_next(list);
   }
 }
