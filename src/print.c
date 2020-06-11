@@ -18,7 +18,7 @@ static void print_newline(void) {
 static void print_tag(int tag) {
   printf("%s:", ast_show(tag));
 }
-static void print_token(Vector *data) {
+static void print_data(Vector *data) {
   const char *text = vector_begin(data);
   int leng = vector_length(data);
   int i = 0;
@@ -45,7 +45,7 @@ void print_ast(List *list) {
     case AST_STRING_LITERAL:
       print_begin();
       print_tag(tag);
-      print_token(data);
+      print_data(data);
       print_end();
       print_newline();
       break;
