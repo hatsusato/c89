@@ -109,6 +109,14 @@ static List *print_case(List *list, int indent) {
   print_end();
   return list;
 }
+static List *print_binary(List *list, int indent) {
+  print_begin(indent);
+  list = print_tag(list);
+  list = print_tag(list);
+  list = print_repeat(list, indent + 1, 2);
+  print_end();
+  return list;
+}
 
 void print_all(List *list) {
   while (list) {
@@ -136,6 +144,8 @@ List *print_ast(List *list, int indent) {
     return print_unary(list, indent);
   case AST_CAST_EXPRESSION:
     return print_case(list, indent);
+  case AST_MULTIPLICATIVE_EXPRESSION:
+    return print_binary(list, indent);
   default:
     print_indent(indent);
     printf("[%s]", ast_show(tag));

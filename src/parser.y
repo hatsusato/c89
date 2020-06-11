@@ -184,9 +184,9 @@ cast-expression
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression "*" cast-expression { AST_APPEND2(MUL_EXPRESSION, $$, $1, $3); }
-| multiplicative-expression "/" cast-expression { AST_APPEND2(DIV_EXPRESSION, $$, $1, $3); }
-| multiplicative-expression "%" cast-expression { AST_APPEND2(MOD_EXPRESSION, $$, $1, $3); }
+| multiplicative-expression "*" cast-expression {AST_INIT($$); AST_PUSH_TAG($$, MULTIPLICATIVE_EXPRESSION); AST_PUSH_TAG($$, ASTERISK); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| multiplicative-expression "/" cast-expression {AST_INIT($$); AST_PUSH_TAG($$, MULTIPLICATIVE_EXPRESSION); AST_PUSH_TAG($$, SLASH); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| multiplicative-expression "%" cast-expression {AST_INIT($$); AST_PUSH_TAG($$, MULTIPLICATIVE_EXPRESSION); AST_PUSH_TAG($$, PERCENT); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 additive-expression
 : multiplicative-expression
