@@ -42,19 +42,21 @@ static List *print_token(List *list) {
 
 void print_all(List *list) {
   while (list) {
-    int tag = list_tag(list);
-    switch (tag) {
-    case AST_IDENTIFIER:
-    case AST_FLOATING_CONSTANT:
-    case AST_INTEGER_CONSTANT:
-    case AST_ENUMERATION_CONSTANT:
-    case AST_CHARACTER_CONSTANT:
-    case AST_STRING_LITERAL:
-      list = print_token(list);
-      break;
-    default:
-      printf("[%s]\n", ast_show(tag));
-      list = list_next(list);
-    }
+    list = print_ast(list);
+  }
+}
+List *print_ast(List *list) {
+  int tag = list_tag(list);
+  switch (tag) {
+  case AST_IDENTIFIER:
+  case AST_FLOATING_CONSTANT:
+  case AST_INTEGER_CONSTANT:
+  case AST_ENUMERATION_CONSTANT:
+  case AST_CHARACTER_CONSTANT:
+  case AST_STRING_LITERAL:
+    return print_token(list);
+  default:
+    printf("[%s]\n", ast_show(tag));
+    return list_next(list);
   }
 }
