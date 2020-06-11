@@ -499,14 +499,11 @@ jump-statement
 translation-unit
 : external-declaration {
   YY_EXTRA_TYPE extra = yyget_extra(scanner);
-  extra.vec = vector_new(1);
-  ast_vec_append(extra.vec, $1.vec);
   extra.list = $1.list;
   yyset_extra(extra, scanner);
 }
 | translation-unit external-declaration {
   YY_EXTRA_TYPE extra = yyget_extra(scanner);
-  ast_vec_append(extra.vec, $2.vec);
   list_append(extra.list, $2.list);
 }
 ;
