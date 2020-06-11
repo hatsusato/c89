@@ -13,15 +13,7 @@ void ast_list_free(List *list) {
 }
 void print_seq(yyscan_t scanner) {
   YY_EXTRA_TYPE extra = yyget_extra(scanner);
-  Vector *seq = extra.vec;
   List *list = extra.list;
-  const char *cur = vector_begin(seq);
-  const char *const end = vector_end(seq);
-  while (cur < end) {
-    cur = ast_vec_print(cur);
-    printf("\n");
-  }
-  vector_delete(seq);
   print_ast(list);
   list_delete(extra.list, ast_list_free);
 }
