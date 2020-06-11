@@ -42,6 +42,14 @@
     x0.list = ast_new_tag(AST_##tag);               \
     list_append(x0.list, ast_new_tag(AST_##token)); \
   } while (0)
+#define AST_PUSH_TAG(dst, tag)                                \
+  do {                                                        \
+    dst.list = list_append(dst.list, ast_new_tag(AST_##tag)); \
+  } while (0)
+#define AST_PUSH(dst, src)                      \
+  do {                                          \
+    dst.list = list_append(dst.list, src.list); \
+  } while (0)
 
 void yyerror(const char *, yyscan_t);
 void ast_vec_set_text(Vector *, const char *, int);
