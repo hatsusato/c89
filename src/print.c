@@ -40,7 +40,7 @@ static List *print_token(List *list) {
   return list_next(list);
 }
 
-void print_ast(List *list) {
+void print_all(List *list) {
   while (list) {
     int tag = list_tag(list);
     switch (tag) {

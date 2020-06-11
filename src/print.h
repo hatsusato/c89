@@ -3,6 +3,6 @@
 
 #include "list.h"
 
-void print_ast(List *);
+void print_all(List *);
 
 #endif /* INCLUDE_GUARD_D896553D_65DB_40A5_9407_DCA8043F53B0 */

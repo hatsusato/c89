@@ -14,7 +14,7 @@ void ast_list_free(List *list) {
 void print_seq(yyscan_t scanner) {
   YY_EXTRA_TYPE extra = yyget_extra(scanner);
   List *list = extra.list;
-  print_ast(list);
+  print_all(list);
   list_delete(extra.list, ast_list_free);
 }
 
