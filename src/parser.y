@@ -224,11 +224,11 @@ inclusive-or-expression
 ;
 logical-and-expression
 : inclusive-or-expression
-| logical-and-expression "&&" inclusive-or-expression { AST_APPEND2(LOGICAL_AND_EXPRESSION, $$, $1, $3); }
+| logical-and-expression "&&" inclusive-or-expression {AST_INIT($$); AST_PUSH_TAG($$, LOGICAL_AND_EXPRESSION); AST_PUSH_TAG($$, AND); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 logical-or-expression
 : logical-and-expression
-| logical-or-expression "||" logical-and-expression { AST_APPEND2(LOGICAL_OR_EXPRESSION, $$, $1, $3); }
+| logical-or-expression "||" logical-and-expression {AST_INIT($$); AST_PUSH_TAG($$, LOGICAL_OR_EXPRESSION); AST_PUSH_TAG($$, OR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 conditional-expression
 : logical-or-expression
