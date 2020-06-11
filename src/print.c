@@ -58,27 +58,31 @@ static List *print_primary(List *list, int indent) {
   print_end();
   return list;
 }
+static List *print_repeat(List *list, int indent, int repeat) {
+  for (; 0 < repeat; --repeat) {
+    print_newline();
+    list = print_ast(list, indent);
+  }
+  return list;
+}
 static List *print_postfix(List *list, int indent) {
   print_indent(indent);
   print_begin();
   print_tag(list_tag(list));
   list = list_next(list);
   print_tag(list_tag(list));
-  print_newline();
   switch (list_tag(list)) {
   case AST_ARRAY:
   case AST_CALL:
   case AST_PERIOD:
   case AST_ARROW:
     list = list_next(list);
-    list = print_ast(list, indent + 1);
-    print_newline();
-    list = print_ast(list, indent + 1);
+    print_repeat(list, indent + 1, 2);
     break;
   case AST_INCREMENT:
   case AST_DECREMENT:
     list = list_next(list);
-    list = print_ast(list, indent + 1);
+    print_repeat(list, indent + 1, 1);
     break;
   }
   print_end();
