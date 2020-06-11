@@ -212,15 +212,15 @@ equality-expression
 ;
 and-expression
 : equality-expression
-| and-expression "&" equality-expression { AST_APPEND2(AND_EXPRESSION, $$, $1, $3); }
+| and-expression "&" equality-expression {AST_INIT($$); AST_PUSH_TAG($$, AND_EXPRESSION); AST_PUSH_TAG($$, AMPERSAND); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 exclusive-or-expression
 : and-expression
-| exclusive-or-expression "^" and-expression { AST_APPEND2(EXCLUSIVE_OR_EXPRESSION, $$, $1, $3); }
+| exclusive-or-expression "^" and-expression {AST_INIT($$); AST_PUSH_TAG($$, EXCLUSIVE_OR_EXPRESSION); AST_PUSH_TAG($$, CARET); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 inclusive-or-expression
 : exclusive-or-expression
-| inclusive-or-expression "|" exclusive-or-expression { AST_APPEND2(INCLUSIVE_OR_EXPRESSION, $$, $1, $3); }
+| inclusive-or-expression "|" exclusive-or-expression {AST_INIT($$); AST_PUSH_TAG($$, INCLUSIVE_OR_EXPRESSION); AST_PUSH_TAG($$, BAR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 logical-and-expression
 : inclusive-or-expression
