@@ -16,11 +16,7 @@ static void print_newline(void) {
   printf("\n");
 }
 static void print_indent(int indent) {
-  int i = 0;
-  if (indent < 0) {
-    indent = 0;
-  }
-  for (i = 0; i < indent; ++i) {
+  for (; 0 < indent; --indent) {
     printf("  ");
   }
 }
