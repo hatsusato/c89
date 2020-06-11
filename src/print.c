@@ -145,6 +145,7 @@ List *print_ast(List *list, int indent) {
   case AST_CAST_EXPRESSION:
     return print_case(list, indent);
   case AST_MULTIPLICATIVE_EXPRESSION:
+  case AST_ADDITIVE_EXPRESSION:
     return print_binary(list, indent);
   default:
     print_indent(indent);
