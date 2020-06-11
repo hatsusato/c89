@@ -277,11 +277,11 @@ expression
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty { AST_APPEND0(NIL, $$); }
+: %empty {AST_EMPTY($$);}
 | constant-expression
 ;
 constant-expression
-: conditional-expression { AST_APPEND1(CONSTANT_EXPRESSION, $$, $1); }
+: conditional-expression {AST_INIT($$); AST_PUSH_TAG($$, CONSTANT_EXPRESSION); AST_PUSH($$, $1);}
 ;
 
 /* 6.5 Declarations */

@@ -135,6 +135,13 @@ static List *print_expression(List *list, int indent) {
   print_end();
   return list;
 }
+static List *print_constant(List *list, int indent) {
+  print_begin(indent);
+  list = print_tag(list);
+  list = print_repeat(list, indent + 1, 1);
+  print_end();
+  return list;
+}
 
 void print_all(List *list) {
   while (list) {
@@ -178,6 +185,8 @@ List *print_ast(List *list, int indent) {
     return print_conditional(list, indent);
   case AST_EXPRESSION:
     return print_expression(list, indent);
+  case AST_CONSTANT_EXPRESSION:
+    return print_constant(list, indent);
   default:
     print_indent(indent);
     printf("[%s]", ast_show(tag));
