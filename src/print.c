@@ -124,6 +124,17 @@ static List *print_conditional(List *list, int indent) {
   print_end();
   return list;
 }
+static List *print_expression(List *list, int indent) {
+  print_begin(indent);
+  list = print_tag(list);
+  if (AST_COMMA == list_tag(list)) {
+    list = list_next(list);
+    list = print_repeat(list, indent + 1, 1);
+  }
+  list = print_repeat(list, indent + 1, 1);
+  print_end();
+  return list;
+}
 
 void print_all(List *list) {
   while (list) {
@@ -165,6 +176,8 @@ List *print_ast(List *list, int indent) {
     return print_binary(list, indent);
   case AST_CONDITIONAL_EXPRESSION:
     return print_conditional(list, indent);
+  case AST_EXPRESSION:
+    return print_expression(list, indent);
   default:
     print_indent(indent);
     printf("[%s]", ast_show(tag));

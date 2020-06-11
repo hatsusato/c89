@@ -267,12 +267,12 @@ assignment-operator
 | "|=" {AST_INIT($$); AST_PUSH_TAG($$, BAR_ASSIGN);}
 ;
 expression.opt
-: %empty { AST_APPEND0(NIL, $$); }
+: %empty {AST_EMPTY($$);}
 | expression
 ;
 expression
-: assignment-expression
-| expression "," assignment-expression { AST_APPEND2(EXPRESSION, $$, $1, $3); }
+: assignment-expression {AST_INIT($$); AST_PUSH_TAG($$, EXPRESSION); AST_PUSH($$, $1);}
+| expression "," assignment-expression {AST_INIT($$); AST_PUSH_TAG($$, EXPRESSION); AST_PUSH_TAG($$, COMMA); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 
 /* 6.4 Constant expressions */
