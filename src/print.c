@@ -161,6 +161,7 @@ List *print_ast(List *list, int indent) {
   case AST_INCLUSIVE_OR_EXPRESSION:
   case AST_LOGICAL_AND_EXPRESSION:
   case AST_LOGICAL_OR_EXPRESSION:
+  case AST_ASSIGNMENT_EXPRESSION:
     return print_binary(list, indent);
   case AST_CONDITIONAL_EXPRESSION:
     return print_conditional(list, indent);

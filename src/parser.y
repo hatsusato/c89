@@ -251,17 +251,20 @@ conditional-expression
 ;
 assignment-expression
 : conditional-expression
-| unary-expression "=" assignment-expression { AST_APPEND2(ASSIGNMENT_EXPRESSION, $$, $1, $3); }
-| unary-expression "*=" assignment-expression { AST_APPEND2(ASSIGNMENT_MUL, $$, $1, $3); }
-| unary-expression "/=" assignment-expression { AST_APPEND2(ASSIGNMENT_DIV, $$, $1, $3); }
-| unary-expression "%=" assignment-expression { AST_APPEND2(ASSIGNMENT_MOD, $$, $1, $3); }
-| unary-expression "+=" assignment-expression { AST_APPEND2(ASSIGNMENT_ADD, $$, $1, $3); }
-| unary-expression "-=" assignment-expression { AST_APPEND2(ASSIGNMENT_SUB, $$, $1, $3); }
-| unary-expression "<<=" assignment-expression { AST_APPEND2(ASSIGNMENT_LSH, $$, $1, $3); }
-| unary-expression ">>=" assignment-expression { AST_APPEND2(ASSIGNMENT_RSH, $$, $1, $3); }
-| unary-expression "&=" assignment-expression { AST_APPEND2(ASSIGNMENT_AND, $$, $1, $3); }
-| unary-expression "^=" assignment-expression { AST_APPEND2(ASSIGNMENT_XOR, $$, $1, $3); }
-| unary-expression "|=" assignment-expression { AST_APPEND2(ASSIGNMENT_OR, $$, $1, $3); }
+| unary-expression assignment-operator assignment-expression {AST_INIT($$); AST_PUSH_TAG($$, ASSIGNMENT_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+;
+assignment-operator
+: "=" {AST_INIT($$); AST_PUSH_TAG($$, ASSIGN);}
+| "*=" {AST_INIT($$); AST_PUSH_TAG($$, ASTERISK_ASSIGN);}
+| "/=" {AST_INIT($$); AST_PUSH_TAG($$, SLASH_ASSIGN);}
+| "%=" {AST_INIT($$); AST_PUSH_TAG($$, PERCENT_ASSIGN);}
+| "+=" {AST_INIT($$); AST_PUSH_TAG($$, PLUS_ASSIGN);}
+| "-=" {AST_INIT($$); AST_PUSH_TAG($$, MINUS_ASSIGN);}
+| "<<=" {AST_INIT($$); AST_PUSH_TAG($$, LEFT_SHIFT_ASSIGN);}
+| ">>=" {AST_INIT($$); AST_PUSH_TAG($$, RIGHT_SHIFT_ASSIGN);}
+| "&=" {AST_INIT($$); AST_PUSH_TAG($$, AMPERSAND_ASSIGN);}
+| "^=" {AST_INIT($$); AST_PUSH_TAG($$, CARET_ASSIGN);}
+| "|=" {AST_INIT($$); AST_PUSH_TAG($$, BAR_ASSIGN);}
 ;
 expression.opt
 : %empty { AST_APPEND0(NIL, $$); }
