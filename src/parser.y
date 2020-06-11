@@ -497,11 +497,7 @@ jump-statement
 
 /* 6.7 External definitions */
 top
-: translation-unit {
-  $$.list = ast_new_tag(AST_TRANSLATION_UNIT);
-  list_append($$.list, $1.list);
-  yyset_extra($$, scanner);
-}
+: translation-unit {yyset_extra($1, scanner);}
 translation-unit
 : external-declaration
 | translation-unit external-declaration {
