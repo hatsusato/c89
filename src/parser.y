@@ -184,31 +184,46 @@ cast-expression
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression "*" cast-expression {AST_INIT($$); AST_PUSH_TAG($$, MULTIPLICATIVE_EXPRESSION); AST_PUSH_TAG($$, ASTERISK); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| multiplicative-expression "/" cast-expression {AST_INIT($$); AST_PUSH_TAG($$, MULTIPLICATIVE_EXPRESSION); AST_PUSH_TAG($$, SLASH); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| multiplicative-expression "%" cast-expression {AST_INIT($$); AST_PUSH_TAG($$, MULTIPLICATIVE_EXPRESSION); AST_PUSH_TAG($$, PERCENT); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| multiplicative-expression multiplicative-operator cast-expression {AST_INIT($$); AST_PUSH_TAG($$, MULTIPLICATIVE_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+;
+multiplicative-operator
+: "*" {AST_INIT($$); AST_PUSH_TAG($$, ASTERISK);}
+| "/" {AST_INIT($$); AST_PUSH_TAG($$, SLASH);}
+| "%" {AST_INIT($$); AST_PUSH_TAG($$, PERCENT);}
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression "+" multiplicative-expression {AST_INIT($$); AST_PUSH_TAG($$, ADDITIVE_EXPRESSION); AST_PUSH_TAG($$, PLUS); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| additive-expression "-" multiplicative-expression {AST_INIT($$); AST_PUSH_TAG($$, ADDITIVE_EXPRESSION); AST_PUSH_TAG($$, MINUS); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| additive-expression additive-operator multiplicative-expression {AST_INIT($$); AST_PUSH_TAG($$, ADDITIVE_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+;
+additive-operator
+: "+" {AST_INIT($$); AST_PUSH_TAG($$, PLUS);}
+| "-" {AST_INIT($$); AST_PUSH_TAG($$, MINUS);}
 ;
 shift-expression
 : additive-expression
-| shift-expression "<<" additive-expression {AST_INIT($$); AST_PUSH_TAG($$, SHIFT_EXPRESSION); AST_PUSH_TAG($$, LEFT_SHIFT); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| shift-expression ">>" additive-expression {AST_INIT($$); AST_PUSH_TAG($$, SHIFT_EXPRESSION); AST_PUSH_TAG($$, RIGHT_SHIFT); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| shift-expression shift-operator additive-expression {AST_INIT($$); AST_PUSH_TAG($$, SHIFT_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+;
+shift-operator
+: "<<" {AST_INIT($$); AST_PUSH_TAG($$, LEFT_SHIFT);}
+| ">>" {AST_INIT($$); AST_PUSH_TAG($$, RIGHT_SHIFT);}
 ;
 relational-expression
 : shift-expression
-| relational-expression "<" shift-expression {AST_INIT($$); AST_PUSH_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH_TAG($$, LESS_THAN); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| relational-expression ">" shift-expression {AST_INIT($$); AST_PUSH_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH_TAG($$, GREATER_THAN); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| relational-expression "<=" shift-expression {AST_INIT($$); AST_PUSH_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH_TAG($$, LESS_EQUAL); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| relational-expression ">=" shift-expression {AST_INIT($$); AST_PUSH_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH_TAG($$, GREATER_EQUAL); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| relational-expression relational-operator shift-expression {AST_INIT($$); AST_PUSH_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+;
+relational-operator
+: "<" {AST_INIT($$); AST_PUSH_TAG($$, LESS_THAN);}
+| ">" {AST_INIT($$); AST_PUSH_TAG($$, GREATER_THAN);}
+| "<=" {AST_INIT($$); AST_PUSH_TAG($$, LESS_EQUAL);}
+| ">=" {AST_INIT($$); AST_PUSH_TAG($$, GREATER_EQUAL);}
 ;
 equality-expression
 : relational-expression
-| equality-expression "==" relational-expression {AST_INIT($$); AST_PUSH_TAG($$, EQUALITY_EXPRESSION); AST_PUSH_TAG($$, EQUAL); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| equality-expression "!=" relational-expression {AST_INIT($$); AST_PUSH_TAG($$, EQUALITY_EXPRESSION); AST_PUSH_TAG($$, NOT_EQUAL); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| equality-expression equality-operator relational-expression {AST_INIT($$); AST_PUSH_TAG($$, EQUALITY_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+;
+equality-operator
+: "==" {AST_INIT($$); AST_PUSH_TAG($$, EQUAL);}
+| "!=" {AST_INIT($$); AST_PUSH_TAG($$, NOT_EQUAL);}
 ;
 and-expression
 : equality-expression
