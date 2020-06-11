@@ -44,16 +44,19 @@ static List *print_line(List *list, int indent) {
   printf("\n");
   return print_ast(list, indent);
 }
-static List *print_repeat(List *list, int indent, int repeat) {
-  for (; 0 < repeat; --repeat) {
-    list = print_line(list, indent);
+static List *print_repeat(List *list, int indent, int tag_count,
+                          int repeat_count) {
+  for (; 0 < tag_count; --tag_count) {
+    list = print_tag(list);
+  }
+  for (; 0 < repeat_count; --repeat_count) {
+    list = print_line(list, indent + 1);
   }
   return list;
 }
 static List *print_primary(List *list, int indent) {
   print_begin(indent);
-  list = print_tag(list);
-  list = print_repeat(list, indent + 1, 1);
+  list = print_repeat(list, indent, 1, 1);
   print_end();
   return list;
 }
@@ -76,8 +79,7 @@ static List *print_postfix(List *list, int indent) {
     repeat = 0;
     break;
   }
-  list = print_tag(list);
-  list = print_repeat(list, indent + 1, repeat);
+  list = print_repeat(list, indent, 1, repeat);
   print_end();
   return list;
 }
@@ -89,38 +91,32 @@ static List *print_list(List *list, int indent) {
       list = list_next(list);
       break;
     }
-    list = print_repeat(list, indent + 1, 1);
+    list = print_repeat(list, indent, 0, 1);
   }
   print_end();
   return list;
 }
 static List *print_unary(List *list, int indent) {
   print_begin(indent);
-  list = print_tag(list);
-  list = print_tag(list);
-  list = print_repeat(list, indent + 1, 1);
+  list = print_repeat(list, indent, 2, 1);
   print_end();
   return list;
 }
 static List *print_case(List *list, int indent) {
   print_begin(indent);
-  list = print_tag(list);
-  list = print_repeat(list, indent + 1, 2);
+  list = print_repeat(list, indent, 1, 2);
   print_end();
   return list;
 }
 static List *print_binary(List *list, int indent) {
   print_begin(indent);
-  list = print_tag(list);
-  list = print_tag(list);
-  list = print_repeat(list, indent + 1, 2);
+  list = print_repeat(list, indent, 2, 2);
   print_end();
   return list;
 }
 static List *print_conditional(List *list, int indent) {
   print_begin(indent);
-  list = print_tag(list);
-  list = print_repeat(list, indent + 1, 3);
+  list = print_repeat(list, indent, 1, 3);
   print_end();
   return list;
 }
@@ -129,16 +125,15 @@ static List *print_expression(List *list, int indent) {
   list = print_tag(list);
   if (AST_COMMA == list_tag(list)) {
     list = list_next(list);
-    list = print_repeat(list, indent + 1, 1);
+    list = print_repeat(list, indent, 0, 1);
   }
-  list = print_repeat(list, indent + 1, 1);
+  list = print_repeat(list, indent, 0, 1);
   print_end();
   return list;
 }
 static List *print_constant(List *list, int indent) {
   print_begin(indent);
-  list = print_tag(list);
-  list = print_repeat(list, indent + 1, 1);
+  list = print_repeat(list, indent, 1, 1);
   print_end();
   return list;
 }
