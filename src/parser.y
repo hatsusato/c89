@@ -110,7 +110,7 @@
 %nonassoc THEN
 %nonassoc "else"
 
-%start translation-unit
+%start top
 %%
 /* 6.1 Lexical elements */
 identifier.opt
@@ -496,15 +496,17 @@ jump-statement
 ;
 
 /* 6.7 External definitions */
-translation-unit
-: external-declaration {
-  YY_EXTRA_TYPE extra = yyget_extra(scanner);
-  extra.list = $1.list;
-  yyset_extra(extra, scanner);
+top
+: translation-unit {
+  $$.list = ast_new_tag(AST_TRANSLATION_UNIT);
+  list_append($$.list, $1.list);
+  yyset_extra($$, scanner);
 }
+translation-unit
+: external-declaration
 | translation-unit external-declaration {
-  YY_EXTRA_TYPE extra = yyget_extra(scanner);
-  list_append(extra.list, $2.list);
+  list_append($1.list, $2.list);
+  $$ = $1;
 }
 ;
 external-declaration

@@ -1,6 +1,7 @@
 /* 6.7 External definitions */
 #include "handle.def"
 
+DO_HANDLE(TRANSLATION_UNIT, translation-unit)
 DO_HANDLE(EXTERNAL_DECLARATION, external-declaration)
 DO_HANDLE(FUNCTION_DEFINITION, function-definition)
 DO_HANDLE(FUNCTION_DEFINITION_OLD, function-definition)
