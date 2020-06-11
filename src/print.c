@@ -35,7 +35,20 @@ static void print_token(Vector *data) {
 void print_ast(List *list) {
   while (list) {
     int tag = list_tag(list);
+    Vector *data = list_data(list);
     switch (tag) {
+    case AST_IDENTIFIER:
+    case AST_FLOATING_CONSTANT:
+    case AST_INTEGER_CONSTANT:
+    case AST_ENUMERATION_CONSTANT:
+    case AST_CHARACTER_CONSTANT:
+    case AST_STRING_LITERAL:
+      print_begin();
+      print_tag(tag);
+      print_token(data);
+      print_end();
+      print_newline();
+      break;
     default:
       printf("[%s]\n", ast_show(tag));
     }
