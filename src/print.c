@@ -21,9 +21,6 @@ static void print_end(void) {
 static void print_newline(void) {
   printf("\n");
 }
-static void print_tag(int tag) {
-  printf("%s:", ast_show(tag));
-}
 static void print_data(Vector *data) {
   const char *text = vector_begin(data);
   int leng = vector_length(data);
@@ -37,18 +34,22 @@ static void print_data(Vector *data) {
     }
   }
 }
-static List *print_token(List *list, int indent) {
-  print_begin(indent);
-  print_tag(list_tag(list));
-  print_data(list_data(list));
-  print_end();
+static List *print_tag(List *list) {
+  printf("%s:", ast_show(list_tag(list)));
   return list_next(list);
+}
+static List *print_token(List *list, int indent) {
+  Vector *data = list_data(list);
+  print_begin(indent);
+  list = print_tag(list);
+  print_data(data);
+  print_end();
+  return list;
 }
 static List *print_primary(List *list, int indent) {
   print_begin(indent);
-  print_tag(list_tag(list));
+  list = print_tag(list);
   print_newline();
-  list = list_next(list);
   list = print_ast(list, indent + 1);
   print_end();
   return list;
@@ -77,19 +78,16 @@ static int arity_postfix(List *list) {
 static List *print_postfix(List *list, int indent) {
   int repeat = 0;
   print_begin(indent);
-  print_tag(list_tag(list));
-  list = list_next(list);
-  print_tag(list_tag(list));
+  list = print_tag(list);
   repeat = arity_postfix(list);
-  list = list_next(list);
+  list = print_tag(list);
   list = print_repeat(list, indent + 1, repeat);
   print_end();
   return list;
 }
 static List *print_list(List *list, int indent) {
   print_begin(indent);
-  print_tag(list_tag(list));
-  list = list_next(list);
+  list = print_tag(list);
   while (list) {
     if (AST_NIL == list_tag(list)) {
       list = list_next(list);
@@ -103,10 +101,8 @@ static List *print_list(List *list, int indent) {
 }
 static List *print_unary(List *list, int indent) {
   print_begin(indent);
-  print_tag(list_tag(list));
-  list = list_next(list);
-  print_tag(list_tag(list));
-  list = list_next(list);
+  list = print_tag(list);
+  list = print_tag(list);
   print_newline();
   list = print_ast(list, indent + 1);
   print_end();
@@ -114,8 +110,7 @@ static List *print_unary(List *list, int indent) {
 }
 static List *print_case(List *list, int indent) {
   print_begin(indent);
-  print_tag(list_tag(list));
-  list = list_next(list);
+  list = print_tag(list);
   list = print_repeat(list, indent + 1, 2);
   print_end();
   return list;
