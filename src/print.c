@@ -56,10 +56,6 @@ static List *print_repeat(List *list, int indent, int tag_count,
   print_end();
   return list;
 }
-static List *print_primary(List *list, int indent) {
-  list = print_repeat(list, indent, 1, 1);
-  return list;
-}
 static int arity_postfix(List *list) {
   switch (list_tag(list_next(list))) {
   case AST_ARRAY:
@@ -92,22 +88,6 @@ static List *print_list(List *list, int indent) {
   print_end();
   return list;
 }
-static List *print_unary(List *list, int indent) {
-  list = print_repeat(list, indent, 2, 1);
-  return list;
-}
-static List *print_case(List *list, int indent) {
-  list = print_repeat(list, indent, 1, 2);
-  return list;
-}
-static List *print_binary(List *list, int indent) {
-  list = print_repeat(list, indent, 2, 2);
-  return list;
-}
-static List *print_conditional(List *list, int indent) {
-  list = print_repeat(list, indent, 1, 3);
-  return list;
-}
 static int arity_expression(List *list) {
   switch (list_tag(list_next(list))) {
   case AST_COMMA:
@@ -119,10 +99,6 @@ static int arity_expression(List *list) {
 static List *print_expression(List *list, int indent) {
   int arity = arity_expression(list);
   list = print_repeat(list, indent, arity, arity);
-  return list;
-}
-static List *print_constant(List *list, int indent) {
-  list = print_repeat(list, indent, 1, 1);
   return list;
 }
 
@@ -143,15 +119,15 @@ List *print_ast(List *list, int indent) {
   case AST_STRING_LITERAL:
     return print_token(list, indent);
   case AST_PRIMARY_EXPRESSION:
-    return print_primary(list, indent);
+    return print_repeat(list, indent, 1, 1);
   case AST_POSTFIX_EXPRESSION:
     return print_postfix(list, indent);
   case AST_ARGUMENT_EXPRESSION_LIST:
     return print_list(list, indent);
   case AST_UNARY_EXPRESSION:
-    return print_unary(list, indent);
+    return print_repeat(list, indent, 2, 1);
   case AST_CAST_EXPRESSION:
-    return print_case(list, indent);
+    return print_repeat(list, indent, 1, 2);
   case AST_MULTIPLICATIVE_EXPRESSION:
   case AST_ADDITIVE_EXPRESSION:
   case AST_SHIFT_EXPRESSION:
@@ -163,13 +139,13 @@ List *print_ast(List *list, int indent) {
   case AST_LOGICAL_AND_EXPRESSION:
   case AST_LOGICAL_OR_EXPRESSION:
   case AST_ASSIGNMENT_EXPRESSION:
-    return print_binary(list, indent);
+    return print_repeat(list, indent, 2, 2);
   case AST_CONDITIONAL_EXPRESSION:
-    return print_conditional(list, indent);
+    return print_repeat(list, indent, 1, 3);
   case AST_EXPRESSION:
     return print_expression(list, indent);
   case AST_CONSTANT_EXPRESSION:
-    return print_constant(list, indent);
+    return print_repeat(list, indent, 1, 1);
   default:
     printf("[%s]", ast_show(tag));
     return list_next(list);
