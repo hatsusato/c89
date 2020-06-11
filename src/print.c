@@ -118,14 +118,18 @@ static List *print_conditional(List *list, int indent) {
   print_end();
   return list;
 }
-static List *print_expression(List *list, int indent) {
-  print_begin(indent);
-  list = print_tag(list);
-  if (AST_COMMA == list_tag(list)) {
-    list = list_next(list);
-    list = print_repeat(list, indent, 0, 1);
+static int arity_expression(List *list) {
+  switch (list_tag(list_next(list))) {
+  case AST_COMMA:
+    return 2;
+  default:
+    return 1;
   }
-  list = print_repeat(list, indent, 0, 1);
+}
+static List *print_expression(List *list, int indent) {
+  int arity = arity_expression(list);
+  print_begin(indent);
+  list = print_repeat(list, indent, arity, arity);
   print_end();
   return list;
 }
