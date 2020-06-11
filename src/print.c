@@ -15,6 +15,15 @@ static void print_end(void) {
 static void print_newline(void) {
   printf("\n");
 }
+static void print_indent(int indent) {
+  int i = 0;
+  if (indent < 0) {
+    indent = 0;
+  }
+  for (i = 0; i < indent; ++i) {
+    printf("  ");
+  }
+}
 static void print_tag(int tag) {
   printf("%s:", ast_show(tag));
 }
@@ -31,29 +40,32 @@ static void print_data(Vector *data) {
     }
   }
 }
-static List *print_token(List *list) {
+static List *print_token(List *list, int indent) {
+  print_indent(indent);
   print_begin();
   print_tag(list_tag(list));
   print_data(list_data(list));
   print_end();
   return list_next(list);
 }
-static List *print_primary(List *list) {
+static List *print_primary(List *list, int indent) {
+  print_indent(indent);
   print_begin();
   print_tag(list_tag(list));
+  print_newline();
   list = list_next(list);
-  print_ast(list);
+  print_ast(list, indent + 1);
   print_end();
   return list;
 }
 
 void print_all(List *list) {
   while (list) {
-    list = print_ast(list);
+    list = print_ast(list, 0);
     print_newline();
   }
 }
-List *print_ast(List *list) {
+List *print_ast(List *list, int indent) {
   int tag = list_tag(list);
   switch (tag) {
   case AST_IDENTIFIER:
@@ -62,10 +74,11 @@ List *print_ast(List *list) {
   case AST_ENUMERATION_CONSTANT:
   case AST_CHARACTER_CONSTANT:
   case AST_STRING_LITERAL:
-    return print_token(list);
+    return print_token(list, indent);
   case AST_PRIMARY_EXPRESSION:
-    return print_primary(list);
+    return print_primary(list, indent);
   default:
+    print_indent(indent);
     printf("[%s]", ast_show(tag));
     return list_next(list);
   }
