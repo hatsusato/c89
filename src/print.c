@@ -36,7 +36,6 @@ static List *print_token(List *list) {
   print_tag(list_tag(list));
   print_data(list_data(list));
   print_end();
-  print_newline();
   return list_next(list);
 }
 static List *print_primary(List *list) {
@@ -45,13 +44,13 @@ static List *print_primary(List *list) {
   list = list_next(list);
   print_ast(list);
   print_end();
-  print_newline();
   return list;
 }
 
 void print_all(List *list) {
   while (list) {
     list = print_ast(list);
+    print_newline();
   }
 }
 List *print_ast(List *list) {
@@ -67,7 +66,7 @@ List *print_ast(List *list) {
   case AST_PRIMARY_EXPRESSION:
     return print_primary(list);
   default:
-    printf("[%s]\n", ast_show(tag));
+    printf("[%s]", ast_show(tag));
     return list_next(list);
   }
 }
