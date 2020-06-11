@@ -195,8 +195,8 @@ additive-expression
 ;
 shift-expression
 : additive-expression
-| shift-expression "<<" additive-expression { AST_APPEND2(LSH_EXPRESSION, $$, $1, $3); }
-| shift-expression ">>" additive-expression { AST_APPEND2(RSH_EXPRESSION, $$, $1, $3); }
+| shift-expression "<<" additive-expression {AST_INIT($$); AST_PUSH_TAG($$, SHIFT_EXPRESSION); AST_PUSH_TAG($$, LEFT_SHIFT); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| shift-expression ">>" additive-expression {AST_INIT($$); AST_PUSH_TAG($$, SHIFT_EXPRESSION); AST_PUSH_TAG($$, RIGHT_SHIFT); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 relational-expression
 : shift-expression
