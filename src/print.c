@@ -60,26 +60,24 @@ static List *print_primary(List *list, int indent) {
   print_end();
   return list;
 }
-static List *print_postfix(List *list, int indent) {
-  int repeat = 0;
-  print_begin(indent);
-  list = print_tag(list);
-  switch (list_tag(list)) {
+static int arity_postfix(List *list) {
+  switch (list_tag(list_next(list))) {
   case AST_ARRAY:
   case AST_CALL:
   case AST_PERIOD:
   case AST_ARROW:
-    repeat = 2;
-    break;
+    return 2;
   case AST_INCREMENT:
   case AST_DECREMENT:
-    repeat = 1;
-    break;
+    return 1;
   default:
-    repeat = 0;
-    break;
+    return 0;
   }
-  list = print_repeat(list, indent, 1, repeat);
+}
+static List *print_postfix(List *list, int indent) {
+  int arity = arity_postfix(list);
+  print_begin(indent);
+  list = print_repeat(list, indent, 2, arity);
   print_end();
   return list;
 }
