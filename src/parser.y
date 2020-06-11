@@ -499,11 +499,8 @@ jump-statement
 top
 : translation-unit {yyset_extra($1, scanner);}
 translation-unit
-: external-declaration
-| translation-unit external-declaration {
-  list_append($1.list, $2.list);
-  $$ = $1;
-}
+: external-declaration {AST_INIT($$); AST_PUSH_TAG($$, TRANSLATION_UNIT); AST_PUSH($$, $1);}
+| translation-unit external-declaration {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH($$, $2);}
 ;
 external-declaration
 : function-definition
