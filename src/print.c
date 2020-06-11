@@ -40,10 +40,13 @@ static List *print_token(List *list, int indent) {
   print_end();
   return list;
 }
+static List *print_line(List *list, int indent) {
+  printf("\n");
+  return print_ast(list, indent);
+}
 static List *print_repeat(List *list, int indent, int repeat) {
   for (; 0 < repeat; --repeat) {
-    printf("\n");
-    list = print_ast(list, indent);
+    list = print_line(list, indent);
   }
   return list;
 }
