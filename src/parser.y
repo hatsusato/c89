@@ -164,19 +164,19 @@ argument-expression-list
 ;
 unary-expression
 : postfix-expression
-| "++" unary-expression { AST_APPEND1(UNARY_INCR, $$, $2); }
-| "--" unary-expression { AST_APPEND1(UNARY_DECR, $$, $2); }
-| unary-operator cast-expression { AST_APPEND2(UNARY_EXPRESSION, $$, $1, $2); }
-| "sizeof" unary-expression { AST_APPEND1(UNARY_SIZEOF, $$, $2); }
-| "sizeof" "(" type-name ")" { AST_APPEND1(UNARY_SIZEOF_TYPE, $$, $3); }
+| "++" unary-expression {AST_INIT($$); AST_PUSH_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $2);}
+| "--" unary-expression {AST_INIT($$); AST_PUSH_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $2);}
+| unary-operator cast-expression {AST_INIT($$); AST_PUSH_TAG($$, UNARY_EXPRESSION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
+| "sizeof" unary-expression {AST_INIT($$); AST_PUSH_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $2);}
+| "sizeof" "(" type-name ")" {AST_INIT($$); AST_PUSH_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $3);}
 ;
 unary-operator
-: "&" { AST_TOKEN(UNARY_OPERATOR, $$, AMPERSAND); };
-| "*" { AST_TOKEN(UNARY_OPERATOR, $$, ASTERISK); };
-| "+" { AST_TOKEN(UNARY_OPERATOR, $$, PLUS); };
-| "-" { AST_TOKEN(UNARY_OPERATOR, $$, MINUS); };
-| "~" { AST_TOKEN(UNARY_OPERATOR, $$, TILDE); };
-| "!" { AST_TOKEN(UNARY_OPERATOR, $$, EXCLAMATION); };
+: "&" {AST_INIT($$); AST_PUSH_TAG($$, AMPERSAND);}
+| "*" {AST_INIT($$); AST_PUSH_TAG($$, ASTERISK);};
+| "+" {AST_INIT($$); AST_PUSH_TAG($$, PLUS);};
+| "-" {AST_INIT($$); AST_PUSH_TAG($$, MINUS);};
+| "~" {AST_INIT($$); AST_PUSH_TAG($$, TILDE);};
+| "!" {AST_INIT($$); AST_PUSH_TAG($$, EXCLAMATION);};
 ;
 cast-expression
 : unary-expression
