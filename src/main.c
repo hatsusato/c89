@@ -3,6 +3,7 @@
 
 #include "parser.h"
 #include "parser.tab.h"
+#include "print.h"
 
 void ast_list_free(List *list) {
   void *data = list_data(list);
@@ -21,10 +22,7 @@ void print_seq(yyscan_t scanner) {
     printf("\n");
   }
   vector_delete(seq);
-  while (list) {
-    printf("[%s]\n", ast_show(list_tag(list)));
-    list = list_next(list);
-  }
+  print_ast(list);
   list_delete(extra.list, ast_list_free);
 }
 
