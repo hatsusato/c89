@@ -18,9 +18,6 @@ static void print_begin(int indent) {
 static void print_end(void) {
   printf(")");
 }
-static void print_newline(void) {
-  printf("\n");
-}
 static void print_data(Vector *data) {
   const char *text = vector_begin(data);
   int leng = vector_length(data);
@@ -46,19 +43,18 @@ static List *print_token(List *list, int indent) {
   print_end();
   return list;
 }
+static List *print_repeat(List *list, int indent, int repeat) {
+  for (; 0 < repeat; --repeat) {
+    printf("\n");
+    list = print_ast(list, indent);
+  }
+  return list;
+}
 static List *print_primary(List *list, int indent) {
   print_begin(indent);
   list = print_tag(list);
-  print_newline();
-  list = print_ast(list, indent + 1);
+  list = print_repeat(list, indent + 1, 1);
   print_end();
-  return list;
-}
-static List *print_repeat(List *list, int indent, int repeat) {
-  for (; 0 < repeat; --repeat) {
-    print_newline();
-    list = print_ast(list, indent);
-  }
   return list;
 }
 static int arity_postfix(List *list) {
@@ -93,8 +89,7 @@ static List *print_list(List *list, int indent) {
       list = list_next(list);
       break;
     }
-    print_newline();
-    list = print_ast(list, indent + 1);
+    list = print_repeat(list, indent + 1, 1);
   }
   print_end();
   return list;
@@ -103,8 +98,7 @@ static List *print_unary(List *list, int indent) {
   print_begin(indent);
   list = print_tag(list);
   list = print_tag(list);
-  print_newline();
-  list = print_ast(list, indent + 1);
+  list = print_repeat(list, indent + 1, 1);
   print_end();
   return list;
 }
@@ -119,7 +113,7 @@ static List *print_case(List *list, int indent) {
 void print_all(List *list) {
   while (list) {
     list = print_ast(list, 0);
-    print_newline();
+    printf("\n");
   }
 }
 List *print_ast(List *list, int indent) {
