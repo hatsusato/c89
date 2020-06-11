@@ -148,6 +148,7 @@ List *print_ast(List *list, int indent) {
   case AST_ADDITIVE_EXPRESSION:
   case AST_SHIFT_EXPRESSION:
   case AST_RELATIONAL_EXPRESSION:
+  case AST_EQUALITY_EXPRESSION:
     return print_binary(list, indent);
   default:
     print_indent(indent);
