@@ -73,22 +73,6 @@ static List *print_list(List *list, int indent) {
   print_end();
   return list;
 }
-static List *print_postfix(List *list, int indent) {
-  int arity = 0;
-  switch (list_tag(list_next(list))) {
-  case AST_ARRAY:
-  case AST_CALL:
-  case AST_PERIOD:
-  case AST_ARROW:
-    arity = 2;
-    break;
-  case AST_INCREMENT:
-  case AST_DECREMENT:
-    arity = 1;
-    break;
-  }
-  return print_repeat(list, indent, 2, arity);
-}
 static List *print_expression(List *list, int indent) {
   int arity = 1;
   switch (list_tag(list_next(list))) {
@@ -130,7 +114,7 @@ List *print_ast(List *list, int indent) {
   case AST_PRIMARY_EXPRESSION:
     return print_repeat(list, indent, 1, 1);
   case AST_POSTFIX_EXPRESSION:
-    return print_postfix(list, indent);
+    return print_repeat(list, indent, 2, 2);
   case AST_UNARY_EXPRESSION:
     return print_repeat(list, indent, 2, 1);
   case AST_CAST_EXPRESSION:

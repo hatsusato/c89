@@ -154,8 +154,8 @@ postfix-expression
 | postfix-expression "(" argument-expression-list.opt ")" {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, CALL); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 | postfix-expression "." identifier {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, PERIOD); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 | postfix-expression "->" identifier {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, ARROW); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| postfix-expression "++" {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $1);}
-| postfix-expression "--" {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $1);}
+| postfix-expression "++" {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
+| postfix-expression "--" {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
 ;
 argument-expression-list.opt
 : %empty {AST_TAG($$, ARGUMENT_EXPRESSION_LIST); AST_PUSH_TAG($$, NIL);}
