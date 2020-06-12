@@ -63,6 +63,25 @@
     AST_INIT(dst);          \
     AST_PUSH_TAG(dst, NIL); \
   } while (0)
+#define AST_CONS(dst, car, cdr) \
+  do {                          \
+    AST_INIT(dst);              \
+    AST_PUSH(dst, car);         \
+    AST_PUSH(dst, cdr);         \
+  } while (0)
+#define AST_LIST_EMPTY(dst, tag) \
+  do {                           \
+    AST_TAG(dst, LIST);          \
+    AST_PUSH_TAG(dst, tag);      \
+    AST_PUSH_TAG(dst, NIL);      \
+  } while (0)
+#define AST_LIST_EXIST(dst, tag, src) \
+  do {                                \
+    AST_TAG(dst, LIST);               \
+    AST_PUSH_TAG(dst, tag);           \
+    AST_PUSH(dst, src);               \
+    AST_PUSH_TAG(dst, NIL);           \
+  } while (0)
 
 void yyerror(const char *, yyscan_t);
 void ast_vec_set_text(Vector *, const char *, int);
