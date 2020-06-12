@@ -43,19 +43,16 @@ static List *print_line(List *list, int indent) {
   printf("\n");
   return print_ast(list, indent);
 }
-static List *print_repeat(List *list, int indent, int tag_count,
-                          int repeat_count) {
-  for (; 0 < tag_count; --tag_count) {
-    list = print_tag(list);
-  }
-  for (; 0 < repeat_count; --repeat_count) {
+static List *print_repeat(List *list, int indent, int repeat) {
+  list = print_tag(list);
+  for (; 0 < repeat; --repeat) {
     list = print_line(list, indent + 1);
   }
   print_end();
   return list;
 }
-static List *print_nil(List *list, int indent) {
-  print_repeat(list, indent, 0, 0);
+static List *print_nil(List *list) {
+  print_end();
   return list_next(list);
 }
 static List *print_list(List *list, int indent) {
@@ -87,7 +84,7 @@ List *print_ast(List *list, int indent) {
 #define HANDLE(name, str) case AST_##name:
 #include "enum/keyword.def"
 #undef HANDLE
-    return print_repeat(list, indent, 1, 0);
+    return print_repeat(list, indent, 0);
   case AST_IDENTIFIER:
   case AST_FLOATING_CONSTANT:
   case AST_INTEGER_CONSTANT:
@@ -99,16 +96,18 @@ List *print_ast(List *list, int indent) {
   case AST_LIST:
     return print_list(list, indent);
   case AST_NIL:
-    return print_nil(list, indent);
+    return print_nil(list);
     /* Expressions */
   case AST_PRIMARY_EXPRESSION:
-    return print_repeat(list, indent, 1, 1);
+    return print_repeat(list, indent, 1);
   case AST_POSTFIX_EXPRESSION:
-    return print_repeat(list, indent, 2, 2);
+    list = print_tag(list);
+    return print_repeat(list, indent, 2);
   case AST_UNARY_EXPRESSION:
-    return print_repeat(list, indent, 2, 1);
+    list = print_tag(list);
+    return print_repeat(list, indent, 1);
   case AST_CAST_EXPRESSION:
-    return print_repeat(list, indent, 1, 2);
+    return print_repeat(list, indent, 2);
   case AST_MULTIPLICATIVE_EXPRESSION:
   case AST_ADDITIVE_EXPRESSION:
   case AST_SHIFT_EXPRESSION:
@@ -119,24 +118,26 @@ List *print_ast(List *list, int indent) {
   case AST_INCLUSIVE_OR_EXPRESSION:
   case AST_LOGICAL_AND_EXPRESSION:
   case AST_LOGICAL_OR_EXPRESSION:
-    return print_repeat(list, indent, 2, 2);
+    list = print_tag(list);
+    return print_repeat(list, indent, 2);
   case AST_CONDITIONAL_EXPRESSION:
-    return print_repeat(list, indent, 1, 3);
+    return print_repeat(list, indent, 3);
   case AST_ASSIGNMENT_EXPRESSION:
-    return print_repeat(list, indent, 2, 2);
+    list = print_tag(list);
+    return print_repeat(list, indent, 2);
   case AST_EXPRESSION:
-    return print_repeat(list, indent, 1, 2);
+    return print_repeat(list, indent, 2);
   case AST_CONSTANT_EXPRESSION:
-    return print_repeat(list, indent, 1, 1);
+    return print_repeat(list, indent, 1);
     /* Declarations */
   case AST_DECLARATION:
-    return print_repeat(list, indent, 1, 2);
+    return print_repeat(list, indent, 2);
   case AST_INIT_DECLARATOR:
-    return print_repeat(list, indent, 1, 2);
+    return print_repeat(list, indent, 2);
   case AST_STORAGE_CLASS_SPECIFIER:
-    return print_repeat(list, indent, 1, 1);
+    return print_repeat(list, indent, 1);
   case AST_TYPE_SPECIFIER:
-    return print_repeat(list, indent, 1, 1);
+    return print_repeat(list, indent, 1);
   default:
     printf("[%s])", ast_show(list_tag(list)));
     return list_next(list);
