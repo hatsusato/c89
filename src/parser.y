@@ -138,141 +138,141 @@ string-literal
 
 /* 6.3 Expressions */
 primary-expression
-: identifier {AST_INIT($$); AST_PUSH_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
-| floating-constant {AST_INIT($$); AST_PUSH_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
-| integer-constant {AST_INIT($$); AST_PUSH_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
-| character-constant {AST_INIT($$); AST_PUSH_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
-| string-literal {AST_INIT($$); AST_PUSH_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
-| "(" expression ")" {AST_INIT($$); AST_PUSH_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $2);}
+: identifier {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
+| floating-constant {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
+| integer-constant {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
+| character-constant {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
+| string-literal {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
+| "(" expression ")" {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $2);}
 ;
 postfix-expression
 : primary-expression
-| postfix-expression "[" expression "]" {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, ARRAY); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| postfix-expression "(" argument-expression-list.opt ")" {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, CALL); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| postfix-expression "." identifier {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, PERIOD); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| postfix-expression "->" identifier {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, ARROW); AST_PUSH($$, $1); AST_PUSH($$, $3);}
-| postfix-expression "++" {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $1);}
-| postfix-expression "--" {AST_INIT($$); AST_PUSH_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $1);}
+| postfix-expression "[" expression "]" {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, ARRAY); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| postfix-expression "(" argument-expression-list.opt ")" {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, CALL); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| postfix-expression "." identifier {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, PERIOD); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| postfix-expression "->" identifier {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, ARROW); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| postfix-expression "++" {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $1);}
+| postfix-expression "--" {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $1);}
 ;
 argument-expression-list.opt
-: %empty {AST_INIT($$); AST_PUSH_TAG($$, ARGUMENT_EXPRESSION_LIST); AST_PUSH_TAG($$, NIL);}
+: %empty {AST_TAG($$, ARGUMENT_EXPRESSION_LIST); AST_PUSH_TAG($$, NIL);}
 | argument-expression-list {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
 ;
 argument-expression-list
-: assignment-expression {AST_INIT($$); AST_PUSH_TAG($$, ARGUMENT_EXPRESSION_LIST); AST_PUSH($$, $1);}
+: assignment-expression {AST_TAG($$, ARGUMENT_EXPRESSION_LIST); AST_PUSH($$, $1);}
 | argument-expression-list "," assignment-expression {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 unary-expression
 : postfix-expression
-| "++" unary-expression {AST_INIT($$); AST_PUSH_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $2);}
-| "--" unary-expression {AST_INIT($$); AST_PUSH_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $2);}
-| unary-operator cast-expression {AST_INIT($$); AST_PUSH_TAG($$, UNARY_EXPRESSION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
-| "sizeof" unary-expression {AST_INIT($$); AST_PUSH_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $2);}
-| "sizeof" "(" type-name ")" {AST_INIT($$); AST_PUSH_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $3);}
+| "++" unary-expression {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $2);}
+| "--" unary-expression {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $2);}
+| unary-operator cast-expression {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
+| "sizeof" unary-expression {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $2);}
+| "sizeof" "(" type-name ")" {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $3);}
 ;
 unary-operator
-: "&" {AST_INIT($$); AST_PUSH_TAG($$, AMPERSAND);}
-| "*" {AST_INIT($$); AST_PUSH_TAG($$, ASTERISK);};
-| "+" {AST_INIT($$); AST_PUSH_TAG($$, PLUS);};
-| "-" {AST_INIT($$); AST_PUSH_TAG($$, MINUS);};
-| "~" {AST_INIT($$); AST_PUSH_TAG($$, TILDE);};
-| "!" {AST_INIT($$); AST_PUSH_TAG($$, EXCLAMATION);};
+: "&" {AST_TAG($$, AMPERSAND);}
+| "*" {AST_TAG($$, ASTERISK);};
+| "+" {AST_TAG($$, PLUS);};
+| "-" {AST_TAG($$, MINUS);};
+| "~" {AST_TAG($$, TILDE);};
+| "!" {AST_TAG($$, EXCLAMATION);};
 ;
 cast-expression
 : unary-expression
-| "(" type-name ")" cast-expression {AST_INIT($$); AST_PUSH_TAG($$, CAST_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $4);}
+| "(" type-name ")" cast-expression {AST_TAG($$, CAST_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $4);}
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression multiplicative-operator cast-expression {AST_INIT($$); AST_PUSH_TAG($$, MULTIPLICATIVE_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| multiplicative-expression multiplicative-operator cast-expression {AST_TAG($$, MULTIPLICATIVE_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 multiplicative-operator
-: "*" {AST_INIT($$); AST_PUSH_TAG($$, ASTERISK);}
-| "/" {AST_INIT($$); AST_PUSH_TAG($$, SLASH);}
-| "%" {AST_INIT($$); AST_PUSH_TAG($$, PERCENT);}
+: "*" {AST_TAG($$, ASTERISK);}
+| "/" {AST_TAG($$, SLASH);}
+| "%" {AST_TAG($$, PERCENT);}
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression additive-operator multiplicative-expression {AST_INIT($$); AST_PUSH_TAG($$, ADDITIVE_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| additive-expression additive-operator multiplicative-expression {AST_TAG($$, ADDITIVE_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 additive-operator
-: "+" {AST_INIT($$); AST_PUSH_TAG($$, PLUS);}
-| "-" {AST_INIT($$); AST_PUSH_TAG($$, MINUS);}
+: "+" {AST_TAG($$, PLUS);}
+| "-" {AST_TAG($$, MINUS);}
 ;
 shift-expression
 : additive-expression
-| shift-expression shift-operator additive-expression {AST_INIT($$); AST_PUSH_TAG($$, SHIFT_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| shift-expression shift-operator additive-expression {AST_TAG($$, SHIFT_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 shift-operator
-: "<<" {AST_INIT($$); AST_PUSH_TAG($$, LEFT_SHIFT);}
-| ">>" {AST_INIT($$); AST_PUSH_TAG($$, RIGHT_SHIFT);}
+: "<<" {AST_TAG($$, LEFT_SHIFT);}
+| ">>" {AST_TAG($$, RIGHT_SHIFT);}
 ;
 relational-expression
 : shift-expression
-| relational-expression relational-operator shift-expression {AST_INIT($$); AST_PUSH_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| relational-expression relational-operator shift-expression {AST_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 relational-operator
-: "<" {AST_INIT($$); AST_PUSH_TAG($$, LESS_THAN);}
-| ">" {AST_INIT($$); AST_PUSH_TAG($$, GREATER_THAN);}
-| "<=" {AST_INIT($$); AST_PUSH_TAG($$, LESS_EQUAL);}
-| ">=" {AST_INIT($$); AST_PUSH_TAG($$, GREATER_EQUAL);}
+: "<" {AST_TAG($$, LESS_THAN);}
+| ">" {AST_TAG($$, GREATER_THAN);}
+| "<=" {AST_TAG($$, LESS_EQUAL);}
+| ">=" {AST_TAG($$, GREATER_EQUAL);}
 ;
 equality-expression
 : relational-expression
-| equality-expression equality-operator relational-expression {AST_INIT($$); AST_PUSH_TAG($$, EQUALITY_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| equality-expression equality-operator relational-expression {AST_TAG($$, EQUALITY_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 equality-operator
-: "==" {AST_INIT($$); AST_PUSH_TAG($$, EQUAL);}
-| "!=" {AST_INIT($$); AST_PUSH_TAG($$, NOT_EQUAL);}
+: "==" {AST_TAG($$, EQUAL);}
+| "!=" {AST_TAG($$, NOT_EQUAL);}
 ;
 and-expression
 : equality-expression
-| and-expression "&" equality-expression {AST_INIT($$); AST_PUSH_TAG($$, AND_EXPRESSION); AST_PUSH_TAG($$, AMPERSAND); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| and-expression "&" equality-expression {AST_TAG($$, AND_EXPRESSION); AST_PUSH_TAG($$, AMPERSAND); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 exclusive-or-expression
 : and-expression
-| exclusive-or-expression "^" and-expression {AST_INIT($$); AST_PUSH_TAG($$, EXCLUSIVE_OR_EXPRESSION); AST_PUSH_TAG($$, CARET); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| exclusive-or-expression "^" and-expression {AST_TAG($$, EXCLUSIVE_OR_EXPRESSION); AST_PUSH_TAG($$, CARET); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 inclusive-or-expression
 : exclusive-or-expression
-| inclusive-or-expression "|" exclusive-or-expression {AST_INIT($$); AST_PUSH_TAG($$, INCLUSIVE_OR_EXPRESSION); AST_PUSH_TAG($$, BAR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| inclusive-or-expression "|" exclusive-or-expression {AST_TAG($$, INCLUSIVE_OR_EXPRESSION); AST_PUSH_TAG($$, BAR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 logical-and-expression
 : inclusive-or-expression
-| logical-and-expression "&&" inclusive-or-expression {AST_INIT($$); AST_PUSH_TAG($$, LOGICAL_AND_EXPRESSION); AST_PUSH_TAG($$, AND); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| logical-and-expression "&&" inclusive-or-expression {AST_TAG($$, LOGICAL_AND_EXPRESSION); AST_PUSH_TAG($$, AND); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 logical-or-expression
 : logical-and-expression
-| logical-or-expression "||" logical-and-expression {AST_INIT($$); AST_PUSH_TAG($$, LOGICAL_OR_EXPRESSION); AST_PUSH_TAG($$, OR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| logical-or-expression "||" logical-and-expression {AST_TAG($$, LOGICAL_OR_EXPRESSION); AST_PUSH_TAG($$, OR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 conditional-expression
 : logical-or-expression
-| logical-or-expression "?" expression ":" conditional-expression {AST_INIT($$); AST_PUSH_TAG($$, CONDITIONAL_EXPRESSION); AST_PUSH($$, $1); AST_PUSH($$, $3); AST_PUSH($$, $5);}
+| logical-or-expression "?" expression ":" conditional-expression {AST_TAG($$, CONDITIONAL_EXPRESSION); AST_PUSH($$, $1); AST_PUSH($$, $3); AST_PUSH($$, $5);}
 ;
 assignment-expression
 : conditional-expression
-| unary-expression assignment-operator assignment-expression {AST_INIT($$); AST_PUSH_TAG($$, ASSIGNMENT_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| unary-expression assignment-operator assignment-expression {AST_TAG($$, ASSIGNMENT_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 assignment-operator
-: "=" {AST_INIT($$); AST_PUSH_TAG($$, ASSIGN);}
-| "*=" {AST_INIT($$); AST_PUSH_TAG($$, ASTERISK_ASSIGN);}
-| "/=" {AST_INIT($$); AST_PUSH_TAG($$, SLASH_ASSIGN);}
-| "%=" {AST_INIT($$); AST_PUSH_TAG($$, PERCENT_ASSIGN);}
-| "+=" {AST_INIT($$); AST_PUSH_TAG($$, PLUS_ASSIGN);}
-| "-=" {AST_INIT($$); AST_PUSH_TAG($$, MINUS_ASSIGN);}
-| "<<=" {AST_INIT($$); AST_PUSH_TAG($$, LEFT_SHIFT_ASSIGN);}
-| ">>=" {AST_INIT($$); AST_PUSH_TAG($$, RIGHT_SHIFT_ASSIGN);}
-| "&=" {AST_INIT($$); AST_PUSH_TAG($$, AMPERSAND_ASSIGN);}
-| "^=" {AST_INIT($$); AST_PUSH_TAG($$, CARET_ASSIGN);}
-| "|=" {AST_INIT($$); AST_PUSH_TAG($$, BAR_ASSIGN);}
+: "=" {AST_TAG($$, ASSIGN);}
+| "*=" {AST_TAG($$, ASTERISK_ASSIGN);}
+| "/=" {AST_TAG($$, SLASH_ASSIGN);}
+| "%=" {AST_TAG($$, PERCENT_ASSIGN);}
+| "+=" {AST_TAG($$, PLUS_ASSIGN);}
+| "-=" {AST_TAG($$, MINUS_ASSIGN);}
+| "<<=" {AST_TAG($$, LEFT_SHIFT_ASSIGN);}
+| ">>=" {AST_TAG($$, RIGHT_SHIFT_ASSIGN);}
+| "&=" {AST_TAG($$, AMPERSAND_ASSIGN);}
+| "^=" {AST_TAG($$, CARET_ASSIGN);}
+| "|=" {AST_TAG($$, BAR_ASSIGN);}
 ;
 expression.opt
 : %empty {AST_EMPTY($$);}
 | expression
 ;
 expression
-: assignment-expression {AST_INIT($$); AST_PUSH_TAG($$, EXPRESSION); AST_PUSH($$, $1);}
-| expression "," assignment-expression {AST_INIT($$); AST_PUSH_TAG($$, EXPRESSION); AST_PUSH_TAG($$, COMMA); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+: assignment-expression {AST_TAG($$, EXPRESSION); AST_PUSH($$, $1);}
+| expression "," assignment-expression {AST_TAG($$, EXPRESSION); AST_PUSH_TAG($$, COMMA); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 
 /* 6.4 Constant expressions */
@@ -281,15 +281,15 @@ constant-expression.opt
 | constant-expression
 ;
 constant-expression
-: conditional-expression {AST_INIT($$); AST_PUSH_TAG($$, CONSTANT_EXPRESSION); AST_PUSH($$, $1);}
+: conditional-expression {AST_TAG($$, CONSTANT_EXPRESSION); AST_PUSH($$, $1);}
 ;
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers init-declarator-list.opt ";" {AST_INIT($$); AST_PUSH_TAG($$, DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
+: declaration-specifiers init-declarator-list.opt ";" {AST_TAG($$, DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
 ;
 declaration-specifiers
-: declaration-specifiers-impl {AST_INIT($$); AST_PUSH_TAG($$, DECLARATION_SPECIFIERS); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
+: declaration-specifiers-impl {AST_TAG($$, DECLARATION_SPECIFIERS); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
 ;
 declaration-specifiers-impl
 : declaration-specifier {AST_INIT($$); AST_PUSH($$, $1);}
@@ -301,40 +301,40 @@ declaration-specifier
 | type-qualifier
 ;
 init-declarator-list.opt
-: %empty {AST_INIT($$); AST_PUSH_TAG($$, INIT_DECLARATOR_LIST); AST_PUSH_TAG($$, NIL);}
+: %empty {AST_TAG($$, INIT_DECLARATOR_LIST); AST_PUSH_TAG($$, NIL);}
 | init-declarator-list
 ;
 init-declarator-list
-: init-declarator-list-impl {AST_INIT($$); AST_PUSH_TAG($$, INIT_DECLARATOR_LIST); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
+: init-declarator-list-impl {AST_TAG($$, INIT_DECLARATOR_LIST); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
 ;
 init-declarator-list-impl
 : init-declarator {AST_INIT($$); AST_PUSH($$, $1);}
 | init-declarator-list-impl "," init-declarator {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 init-declarator
-: declarator {AST_INIT($$); AST_PUSH_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
-| declarator "=" initializer {AST_INIT($$); AST_PUSH_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+: declarator {AST_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
+| declarator "=" initializer {AST_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 storage-class-specifier
-: "typedef" {AST_INIT($$); AST_PUSH_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, TYPEDEF);}
-| "extern" {AST_INIT($$); AST_PUSH_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, EXTERN); }
-| "static" {AST_INIT($$); AST_PUSH_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, STATIC); }
-| "auto" {AST_INIT($$); AST_PUSH_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, AUTO); }
-| "register" {AST_INIT($$); AST_PUSH_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, REGISTER); }
+: "typedef" {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, TYPEDEF);}
+| "extern" {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, EXTERN); }
+| "static" {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, STATIC); }
+| "auto" {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, AUTO); }
+| "register" {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, REGISTER); }
 ;
 type-specifier
-: "void" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, VOID); }
-| "char" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, CHAR); }
-| "short" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, SHORT); }
-| "int" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, INT); }
-| "long" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, LONG); }
-| "float" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, FLOAT); }
-| "double" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, DOUBLE); }
-| "signed" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, SIGNED); }
-| "unsigned" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, UNSIGNED); }
-| struct-or-union-specifier {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
-| enum-specifier {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
-| typedef-name {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
+: "void" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, VOID); }
+| "char" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, CHAR); }
+| "short" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, SHORT); }
+| "int" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, INT); }
+| "long" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, LONG); }
+| "float" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, FLOAT); }
+| "double" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, DOUBLE); }
+| "signed" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, SIGNED); }
+| "unsigned" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, UNSIGNED); }
+| struct-or-union-specifier {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
+| enum-specifier {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
+| typedef-name {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
 ;
 struct-or-union-specifier
 : struct-or-union identifier.opt "{" struct-declaration-list "}" { AST_APPEND3(STRUCT_OR_UNION_SPECIFIER, $$, $1, $2, $4); }
@@ -523,15 +523,15 @@ jump-statement
 top
 : translation-unit {yyset_extra($1, scanner);}
 translation-unit
-: external-declaration {AST_INIT($$); AST_PUSH_TAG($$, TRANSLATION_UNIT); AST_PUSH($$, $1);}
+: external-declaration {AST_TAG($$, TRANSLATION_UNIT); AST_PUSH($$, $1);}
 | translation-unit external-declaration {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH($$, $2);}
 ;
 external-declaration
 : function-definition
-| declaration {AST_INIT($$); AST_PUSH_TAG($$, EXTERNAL_DECLARATION); AST_PUSH($$, $1);}
+| declaration {AST_TAG($$, EXTERNAL_DECLARATION); AST_PUSH($$, $1);}
 ;
 function-definition
-: declarator declaration-list.opt compound-statement {AST_INIT($$); AST_PUSH_TAG($$, FUNCTION_DEFINITION); AST_PUSH_TAG($$, NIL); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH($$, $3);}
-| declaration-specifiers declarator declaration-list.opt compound-statement {AST_INIT($$); AST_PUSH_TAG($$, FUNCTION_DEFINITION); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH($$, $3); AST_PUSH($$, $4);}
+: declarator declaration-list.opt compound-statement {AST_TAG($$, FUNCTION_DEFINITION); AST_PUSH_TAG($$, NIL); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH($$, $3);}
+| declaration-specifiers declarator declaration-list.opt compound-statement {AST_TAG($$, FUNCTION_DEFINITION); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH($$, $3); AST_PUSH($$, $4);}
 ;
 %%

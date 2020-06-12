@@ -46,6 +46,10 @@
   do {                \
     dst.list = nil;   \
   } while (0)
+#define AST_TAG(dst, tag)              \
+  do {                                 \
+    dst.list = ast_new_tag(AST_##tag); \
+  } while (0)
 #define AST_PUSH_TAG(dst, tag)                                \
   do {                                                        \
     dst.list = list_append(dst.list, ast_new_tag(AST_##tag)); \
