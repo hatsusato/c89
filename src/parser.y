@@ -301,12 +301,15 @@ declaration-specifier
 | type-qualifier
 ;
 init-declarator-list.opt
-: %empty { AST_APPEND0(NIL, $$); }
+: %empty {AST_INIT($$); AST_PUSH_TAG($$, INIT_DECLARATOR_LIST); AST_PUSH_TAG($$, NIL);}
 | init-declarator-list
 ;
 init-declarator-list
-: init-declarator
-| init-declarator-list "," init-declarator { AST_APPEND2(INIT_DECLARATOR_LIST, $$, $1, $3); }
+: init-declarator-list-impl {AST_INIT($$); AST_PUSH_TAG($$, INIT_DECLARATOR_LIST); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
+;
+init-declarator-list-impl
+: init-declarator {AST_INIT($$); AST_PUSH($$, $1);}
+| init-declarator-list-impl "," init-declarator {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 init-declarator
 : declarator

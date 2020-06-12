@@ -56,6 +56,10 @@ static List *print_repeat(List *list, int indent, int tag_count,
   print_end();
   return list;
 }
+static List *print_nil(List *list, int indent) {
+  print_repeat(list, indent, 0, 0);
+  return list_next(list);
+}
 static List *print_list(List *list, int indent) {
   print_begin(indent);
   list = print_tag(list);
@@ -114,7 +118,10 @@ List *print_ast(List *list, int indent) {
     /* List */
   case AST_ARGUMENT_EXPRESSION_LIST:
   case AST_DECLARATION_SPECIFIERS:
+  case AST_INIT_DECLARATOR_LIST:
     return print_list(list, indent);
+  case AST_NIL:
+    return print_nil(list, indent);
     /* Expressions */
   case AST_PRIMARY_EXPRESSION:
     return print_repeat(list, indent, 1, 1);
