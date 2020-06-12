@@ -32,9 +32,8 @@ static List *print_tag(List *list) {
   printf("%s:", ast_show(list_tag(list)));
   return list_next(list);
 }
-static List *print_token(List *list, int indent) {
+static List *print_token(List *list) {
   Vector *data = list_data(list);
-  print_begin(indent);
   list = print_tag(list);
   print_data(data);
   print_end();
@@ -46,7 +45,6 @@ static List *print_line(List *list, int indent) {
 }
 static List *print_repeat(List *list, int indent, int tag_count,
                           int repeat_count) {
-  print_begin(indent);
   for (; 0 < tag_count; --tag_count) {
     list = print_tag(list);
   }
@@ -61,7 +59,6 @@ static List *print_nil(List *list, int indent) {
   return list_next(list);
 }
 static List *print_list(List *list, int indent) {
-  print_begin(indent);
   if (AST_LIST == list_tag(list)) {
     list = list_next(list);
   }
@@ -84,6 +81,7 @@ void print_all(List *list) {
   }
 }
 List *print_ast(List *list, int indent) {
+  print_begin(indent);
   switch (list_tag(list)) {
     /* Lexical elements */
 #define HANDLE(name, str) case AST_##name:
@@ -96,7 +94,7 @@ List *print_ast(List *list, int indent) {
   case AST_ENUMERATION_CONSTANT:
   case AST_CHARACTER_CONSTANT:
   case AST_STRING_LITERAL:
-    return print_token(list, indent);
+    return print_token(list);
     /* List */
   case AST_LIST:
     return print_list(list, indent);
@@ -140,7 +138,7 @@ List *print_ast(List *list, int indent) {
   case AST_TYPE_SPECIFIER:
     return print_repeat(list, indent, 1, 1);
   default:
-    printf("[%s]", ast_show(list_tag(list)));
+    printf("[%s])", ast_show(list_tag(list)));
     return list_next(list);
   }
 }
