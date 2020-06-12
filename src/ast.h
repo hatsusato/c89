@@ -5,12 +5,9 @@
 
 enum AstTag {
   AST_TAG_BEGIN,
-  AST_NIL,
-  AST_LIST,
-  AST_ARRAY,
-  AST_CALL,
-  AST_BINARY,
 #define HANDLE(name, str) AST_##name,
+#include "enum/misc.def"
+#
 #include "enum/keyword.def"
 #
 #include "enum/token.def"
