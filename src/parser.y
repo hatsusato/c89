@@ -138,9 +138,9 @@ string-literal
 
 /* 6.3 Expressions */
 primary-expression
-: primary-expression-impl {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
+: primary-expression.impl {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
 ;
-primary-expression-impl
+primary-expression.impl
 : identifier
 | floating-constant
 | integer-constant
@@ -150,9 +150,9 @@ primary-expression-impl
 ;
 postfix-expression
 : primary-expression
-| postfix-expression-impl {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH($$, $1);}
+| postfix-expression.impl {AST_TAG($$, POSTFIX_EXPRESSION); AST_PUSH($$, $1);}
 ;
-postfix-expression-impl
+postfix-expression.impl
 : postfix-expression "[" expression "]" {AST_TAG($$, ARRAY); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 | postfix-expression "(" argument-expression-list.opt ")" {AST_TAG($$, CALL); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 | postfix-expression "." identifier {AST_TAG($$, PERIOD); AST_PUSH($$, $1); AST_PUSH($$, $3);}
@@ -165,17 +165,17 @@ argument-expression-list.opt
 | argument-expression-list
 ;
 argument-expression-list
-: argument-expression-list-impl {AST_LIST_EXIST($$, ARGUMENT_EXPRESSION_LIST, $1);}
+: argument-expression-list.impl {AST_LIST_EXIST($$, ARGUMENT_EXPRESSION_LIST, $1);}
 ;
-argument-expression-list-impl
+argument-expression-list.impl
 : assignment-expression
-| argument-expression-list-impl "," assignment-expression {AST_CONS($$, $1, $3);}
+| argument-expression-list.impl "," assignment-expression {AST_CONS($$, $1, $3);}
 ;
 unary-expression
 : postfix-expression
-| unary-expression-impl {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH($$, $1);}
+| unary-expression.impl {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH($$, $1);}
 ;
-unary-expression-impl
+unary-expression.impl
 : "++" unary-expression {AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $2);}
 | "--" unary-expression {AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $2);}
 | unary-operator cast-expression {AST_CONS($$, $1, $2);}
@@ -301,11 +301,11 @@ declaration
 : declaration-specifiers init-declarator-list.opt ";" {AST_TAG($$, DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
 ;
 declaration-specifiers
-: declaration-specifiers-impl {AST_LIST_EXIST($$, DECLARATION_SPECIFIERS, $1);}
+: declaration-specifiers.impl {AST_LIST_EXIST($$, DECLARATION_SPECIFIERS, $1);}
 ;
-declaration-specifiers-impl
+declaration-specifiers.impl
 : declaration-specifier
-| declaration-specifiers-impl declaration-specifier {AST_CONS($$, $1, $2);}
+| declaration-specifiers.impl declaration-specifier {AST_CONS($$, $1, $2);}
 ;
 declaration-specifier
 : storage-class-specifier
@@ -317,20 +317,20 @@ init-declarator-list.opt
 | init-declarator-list
 ;
 init-declarator-list
-: init-declarator-list-impl {AST_LIST_EXIST($$, INIT_DECLARATOR_LIST, $1);}
+: init-declarator-list.impl {AST_LIST_EXIST($$, INIT_DECLARATOR_LIST, $1);}
 ;
-init-declarator-list-impl
+init-declarator-list.impl
 : init-declarator
-| init-declarator-list-impl "," init-declarator {AST_CONS($$, $1, $3);}
+| init-declarator-list.impl "," init-declarator {AST_CONS($$, $1, $3);}
 ;
 init-declarator
 : declarator {AST_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
 | declarator "=" initializer {AST_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 storage-class-specifier
-: storage-class-specifier-impl {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH($$, $1);}
+: storage-class-specifier.impl {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH($$, $1);}
 ;
-storage-class-specifier-impl
+storage-class-specifier.impl
 : "typedef" {AST_TAG($$, TYPEDEF);}
 | "extern" {AST_TAG($$, EXTERN);}
 | "static" {AST_TAG($$, STATIC);}
@@ -338,9 +338,9 @@ storage-class-specifier-impl
 | "register" {AST_TAG($$, REGISTER);}
 ;
 type-specifier
-: type-specifier-impl {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
+: type-specifier.impl {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
 ;
-type-specifier-impl
+type-specifier.impl
 : "void" {AST_PUSH_TAG($$, VOID);}
 | "char" {AST_PUSH_TAG($$, CHAR);}
 | "short" {AST_PUSH_TAG($$, SHORT);}
