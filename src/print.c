@@ -51,10 +51,6 @@ static List *print_repeat(List *list, int indent, int repeat) {
   print_end();
   return list;
 }
-static List *print_nil(List *list) {
-  print_end();
-  return list_next(list);
-}
 static List *print_list(List *list, int indent) {
   if (AST_LIST == list_tag(list)) {
     list = list_next(list);
@@ -80,6 +76,9 @@ void print_all(List *list) {
 List *print_ast(List *list, int indent) {
   print_begin(indent);
   switch (list_tag(list)) {
+    /* List */
+  case AST_LIST:
+    return print_list(list, indent);
     /* Lexical elements */
 #define HANDLE(name, str) case AST_##name:
 #include "enum/keyword.def"
@@ -92,11 +91,6 @@ List *print_ast(List *list, int indent) {
   case AST_CHARACTER_CONSTANT:
   case AST_STRING_LITERAL:
     return print_token(list);
-    /* List */
-  case AST_LIST:
-    return print_list(list, indent);
-  case AST_NIL:
-    return print_nil(list);
     /* Expressions */
   case AST_PRIMARY_EXPRESSION:
     return print_repeat(list, indent, 1);
