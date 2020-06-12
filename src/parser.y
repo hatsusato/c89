@@ -283,8 +283,8 @@ expression.opt
 | expression
 ;
 expression
-: assignment-expression {AST_TAG($$, EXPRESSION); AST_PUSH($$, $1);}
-| expression "," assignment-expression {AST_TAG($$, EXPRESSION); AST_PUSH_TAG($$, COMMA); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+: assignment-expression
+| expression "," assignment-expression {AST_TAG($$, EXPRESSION); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 
 /* 6.4 Constant expressions */

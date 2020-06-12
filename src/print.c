@@ -76,15 +76,6 @@ static List *print_list(List *list, int indent) {
   print_end();
   return list;
 }
-static List *print_expression(List *list, int indent) {
-  int arity = 1;
-  switch (list_tag(list_next(list))) {
-  case AST_COMMA:
-    arity = 2;
-    break;
-  }
-  return print_repeat(list, indent, arity, arity);
-}
 
 void print_all(List *list) {
   while (list) {
@@ -139,7 +130,7 @@ List *print_ast(List *list, int indent) {
   case AST_ASSIGNMENT_EXPRESSION:
     return print_repeat(list, indent, 2, 2);
   case AST_EXPRESSION:
-    return print_expression(list, indent);
+    return print_repeat(list, indent, 1, 2);
   case AST_CONSTANT_EXPRESSION:
     return print_repeat(list, indent, 1, 1);
     /* Declarations */
