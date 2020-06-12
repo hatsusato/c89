@@ -288,14 +288,17 @@ constant-expression
 declaration
 : declaration-specifiers init-declarator-list.opt ";" {AST_INIT($$); AST_PUSH_TAG($$, DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
 ;
-declaration-specifiers.opt
-: %empty { AST_APPEND0(NIL, $$); }
-| declaration-specifiers
-;
 declaration-specifiers
-: storage-class-specifier declaration-specifiers.opt { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
-| type-specifier declaration-specifiers.opt { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
-| type-qualifier declaration-specifiers.opt { AST_APPEND2(DECLARATION_SPECIFIERS, $$, $1, $2); }
+: declaration-specifiers-impl {AST_INIT($$); AST_PUSH_TAG($$, DECLARATION_SPECIFIERS); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
+;
+declaration-specifiers-impl
+: declaration-specifier {AST_INIT($$); AST_PUSH($$, $1);}
+| declaration-specifiers declaration-specifier {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH($$, $2);}
+;
+declaration-specifier
+: storage-class-specifier
+| type-specifier
+| type-qualifier
 ;
 init-declarator-list.opt
 : %empty { AST_APPEND0(NIL, $$); }

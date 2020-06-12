@@ -113,6 +113,7 @@ List *print_ast(List *list, int indent) {
     return print_token(list, indent);
     /* List */
   case AST_ARGUMENT_EXPRESSION_LIST:
+  case AST_DECLARATION_SPECIFIERS:
     return print_list(list, indent);
     /* Expressions */
   case AST_PRIMARY_EXPRESSION:
