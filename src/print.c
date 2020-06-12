@@ -99,9 +99,6 @@ List *print_ast(List *list, int indent) {
     return print_token(list, indent);
     /* List */
   case AST_LIST:
-  case AST_ARGUMENT_EXPRESSION_LIST:
-  case AST_DECLARATION_SPECIFIERS:
-  case AST_INIT_DECLARATOR_LIST:
     return print_list(list, indent);
   case AST_NIL:
     return print_nil(list, indent);
