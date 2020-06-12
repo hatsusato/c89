@@ -22,13 +22,3 @@ const char *ast_show(int tag) {
                         "tag-end"};
   return name[tag];
 }
-boolean ast_is_token(int tag) {
-  switch (tag) {
-#define HANDLE(name, str) case AST_##name:
-#include "enum/token.def"
-#undef HANDLE
-    return true;
-  default:
-    return false;
-  }
-}
