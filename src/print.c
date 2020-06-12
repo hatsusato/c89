@@ -108,6 +108,10 @@ void print_all(List *list) {
 List *print_ast(List *list, int indent) {
   switch (list_tag(list)) {
     /* Lexical elements */
+#define HANDLE(name, str) case AST_##name:
+#include "enum/keyword.def"
+#undef HANDLE
+    return print_repeat(list, indent, 1, 0);
   case AST_IDENTIFIER:
   case AST_FLOATING_CONSTANT:
   case AST_INTEGER_CONSTANT:
@@ -156,7 +160,7 @@ List *print_ast(List *list, int indent) {
   case AST_INIT_DECLARATOR:
     return print_repeat(list, indent, 1, 2);
   case AST_STORAGE_CLASS_SPECIFIER:
-    return print_repeat(list, indent, 2, 0);
+    return print_repeat(list, indent, 1, 1);
   case AST_TYPE_SPECIFIER:
     return print_repeat(list, indent, 1, 1);
   default:
