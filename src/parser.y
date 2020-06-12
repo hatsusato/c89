@@ -338,18 +338,21 @@ storage-class-specifier-impl
 | "register" {AST_TAG($$, REGISTER);}
 ;
 type-specifier
-: "void" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, VOID); }
-| "char" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, CHAR); }
-| "short" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, SHORT); }
-| "int" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, INT); }
-| "long" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, LONG); }
-| "float" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, FLOAT); }
-| "double" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, DOUBLE); }
-| "signed" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, SIGNED); }
-| "unsigned" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, UNSIGNED); }
-| struct-or-union-specifier {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
-| enum-specifier {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
-| typedef-name {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
+: type-specifier-impl {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
+;
+type-specifier-impl
+: "void" {AST_PUSH_TAG($$, VOID);}
+| "char" {AST_PUSH_TAG($$, CHAR);}
+| "short" {AST_PUSH_TAG($$, SHORT);}
+| "int" {AST_PUSH_TAG($$, INT);}
+| "long" {AST_PUSH_TAG($$, LONG);}
+| "float" {AST_PUSH_TAG($$, FLOAT);}
+| "double" {AST_PUSH_TAG($$, DOUBLE);}
+| "signed" {AST_PUSH_TAG($$, SIGNED);}
+| "unsigned" {AST_PUSH_TAG($$, UNSIGNED);}
+| struct-or-union-specifier
+| enum-specifier
+| typedef-name
 ;
 struct-or-union-specifier
 : struct-or-union identifier.opt "{" struct-declaration-list "}" { AST_APPEND3(STRUCT_OR_UNION_SPECIFIER, $$, $1, $2, $4); }
