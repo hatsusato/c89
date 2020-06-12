@@ -155,6 +155,8 @@ List *print_ast(List *list, int indent) {
     return print_repeat(list, indent, 1, 2);
   case AST_INIT_DECLARATOR:
     return print_repeat(list, indent, 1, 2);
+  case AST_STORAGE_CLASS_SPECIFIER:
+    return print_repeat(list, indent, 2, 0);
   default:
     printf("[%s]", ast_show(list_tag(list)));
     return list_next(list);

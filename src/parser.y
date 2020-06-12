@@ -316,11 +316,11 @@ init-declarator
 | declarator "=" initializer {AST_INIT($$); AST_PUSH_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 storage-class-specifier
-: "typedef" { AST_TOKEN(STORAGE_CLASS_SPECIFIER, $$, TYPEDEF); }
-| "extern" { AST_TOKEN(STORAGE_CLASS_SPECIFIER, $$, EXTERN); }
-| "static" { AST_TOKEN(STORAGE_CLASS_SPECIFIER, $$, STATIC); }
-| "auto" { AST_TOKEN(STORAGE_CLASS_SPECIFIER, $$, AUTO); }
-| "register" { AST_TOKEN(STORAGE_CLASS_SPECIFIER, $$, REGISTER); }
+: "typedef" {AST_INIT($$); AST_PUSH_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, TYPEDEF);}
+| "extern" {AST_INIT($$); AST_PUSH_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, EXTERN); }
+| "static" {AST_INIT($$); AST_PUSH_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, STATIC); }
+| "auto" {AST_INIT($$); AST_PUSH_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, AUTO); }
+| "register" {AST_INIT($$); AST_PUSH_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, REGISTER); }
 ;
 type-specifier
 : "void" { AST_TOKEN(TYPE_SPECIFIER, $$, VOID); }
