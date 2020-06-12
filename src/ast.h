@@ -9,6 +9,8 @@ enum AstTag {
   AST_ARRAY,
   AST_CALL,
 #define HANDLE(name, str) AST_##name,
+#include "enum/keyword.def"
+#
 #include "enum/token.def"
 #
 #include "enum/symbol.def"

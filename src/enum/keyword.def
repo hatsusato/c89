@@ -1,0 +1,38 @@
+/* 6.1 Lexical elements */
+#include "handle.def"
+
+/* 6.1.1 Keywords */
+DO_HANDLE(AUTO, auto)
+DO_HANDLE(BREAK, break)
+DO_HANDLE(CASE, case)
+DO_HANDLE(CHAR, char)
+DO_HANDLE(CONST, const)
+DO_HANDLE(CONTINUE, continue)
+DO_HANDLE(DEFAULT, default)
+DO_HANDLE(DO, do)
+DO_HANDLE(DOUBLE, double)
+DO_HANDLE(ELSE, else)
+DO_HANDLE(ENUM, enum)
+DO_HANDLE(EXTERN, extern)
+DO_HANDLE(FLOAT, float)
+DO_HANDLE(FOR, for)
+DO_HANDLE(GOTO, goto)
+DO_HANDLE(IF, if)
+DO_HANDLE(INT, int)
+DO_HANDLE(LONG, long)
+DO_HANDLE(REGISTER, register)
+DO_HANDLE(RETURN, return)
+DO_HANDLE(SHORT, short)
+DO_HANDLE(SIGNED, signed)
+DO_HANDLE(SIZEOF, sizeof)
+DO_HANDLE(STATIC, static)
+DO_HANDLE(STRUCT, struct)
+DO_HANDLE(SWITCH, switch)
+DO_HANDLE(TYPEDEF, typedef)
+DO_HANDLE(UNION, union)
+DO_HANDLE(UNSIGNED, unsigned)
+DO_HANDLE(VOID, void)
+DO_HANDLE(VOLATILE, volatile)
+DO_HANDLE(WHILE, while)
+
+#include "handle-end.def"
