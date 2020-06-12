@@ -84,17 +84,6 @@
   } while (0)
 
 void yyerror(const char *, yyscan_t);
-void ast_vec_set_text(Vector *, const char *, int);
-const char *ast_vec_get_text(const char *, const char **, int *);
-void ast_vec_set_int(Vector *, int);
-const char *ast_vec_get_int(const char *, int *);
-Vector *ast_vec_new_token(int, yyscan_t);
-Vector *ast_vec_new_tag(int, int);
-void ast_vec_append(Vector *, Vector *);
-void ast_vec_print_text(const char *, int);
-const char *ast_vec_print_token(const char *);
-const char *ast_vec_print(const char *);
-
 List *ast_new_token(int, yyscan_t);
 List *ast_new_tag(int);
 
