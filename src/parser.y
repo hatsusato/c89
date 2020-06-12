@@ -323,18 +323,18 @@ storage-class-specifier
 | "register" {AST_INIT($$); AST_PUSH_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, REGISTER); }
 ;
 type-specifier
-: "void" { AST_TOKEN(TYPE_SPECIFIER, $$, VOID); }
-| "char" { AST_TOKEN(TYPE_SPECIFIER, $$, CHAR); }
-| "short" { AST_TOKEN(TYPE_SPECIFIER, $$, SHORT); }
-| "int" { AST_TOKEN(TYPE_SPECIFIER, $$, INT); }
-| "long" { AST_TOKEN(TYPE_SPECIFIER, $$, LONG); }
-| "float" { AST_TOKEN(TYPE_SPECIFIER, $$, FLOAT); }
-| "double" { AST_TOKEN(TYPE_SPECIFIER, $$, DOUBLE); }
-| "signed" { AST_TOKEN(TYPE_SPECIFIER, $$, SIGNED); }
-| "unsigned" { AST_TOKEN(TYPE_SPECIFIER, $$, UNSIGNED); }
-| struct-or-union-specifier
-| enum-specifier
-| typedef-name
+: "void" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, VOID); }
+| "char" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, CHAR); }
+| "short" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, SHORT); }
+| "int" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, INT); }
+| "long" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, LONG); }
+| "float" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, FLOAT); }
+| "double" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, DOUBLE); }
+| "signed" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, SIGNED); }
+| "unsigned" {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, UNSIGNED); }
+| struct-or-union-specifier {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
+| enum-specifier {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
+| typedef-name {AST_INIT($$); AST_PUSH_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
 ;
 struct-or-union-specifier
 : struct-or-union identifier.opt "{" struct-declaration-list "}" { AST_APPEND3(STRUCT_OR_UNION_SPECIFIER, $$, $1, $2, $4); }
