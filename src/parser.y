@@ -328,11 +328,14 @@ init-declarator
 | declarator "=" initializer {AST_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 storage-class-specifier
-: "typedef" {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, TYPEDEF);}
-| "extern" {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, EXTERN); }
-| "static" {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, STATIC); }
-| "auto" {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, AUTO); }
-| "register" {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH_TAG($$, REGISTER); }
+: storage-class-specifier-impl {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH($$, $1);}
+;
+storage-class-specifier-impl
+: "typedef" {AST_TAG($$, TYPEDEF);}
+| "extern" {AST_TAG($$, EXTERN);}
+| "static" {AST_TAG($$, STATIC);}
+| "auto" {AST_TAG($$, AUTO);}
+| "register" {AST_TAG($$, REGISTER);}
 ;
 type-specifier
 : "void" {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH_TAG($$, VOID); }
