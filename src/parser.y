@@ -286,7 +286,7 @@ constant-expression
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers init-declarator-list.opt ";" { AST_APPEND2(DECLARATION, $$, $1, $2); }
+: declaration-specifiers init-declarator-list.opt ";" {AST_INIT($$); AST_PUSH_TAG($$, DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
 ;
 declaration-specifiers.opt
 : %empty { AST_APPEND0(NIL, $$); }

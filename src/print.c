@@ -142,6 +142,9 @@ List *print_ast(List *list, int indent) {
     return print_expression(list, indent);
   case AST_CONSTANT_EXPRESSION:
     return print_repeat(list, indent, 1, 1);
+    /* Declarations */
+  case AST_DECLARATION:
+    return print_repeat(list, indent, 1, 2);
   default:
     printf("[%s]", ast_show(list_tag(list)));
     return list_next(list);
