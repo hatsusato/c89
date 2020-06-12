@@ -6,6 +6,7 @@
 enum AstTag {
   AST_TAG_BEGIN,
   AST_NIL,
+  AST_LIST,
   AST_ARRAY,
   AST_CALL,
 #define HANDLE(name, str) AST_##name,

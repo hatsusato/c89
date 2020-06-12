@@ -62,6 +62,9 @@ static List *print_nil(List *list, int indent) {
 }
 static List *print_list(List *list, int indent) {
   print_begin(indent);
+  if (AST_LIST == list_tag(list)) {
+    list = list_next(list);
+  }
   list = print_tag(list);
   while (list) {
     if (AST_NIL == list_tag(list)) {
@@ -104,6 +107,7 @@ List *print_ast(List *list, int indent) {
   case AST_STRING_LITERAL:
     return print_token(list, indent);
     /* List */
+  case AST_LIST:
   case AST_ARGUMENT_EXPRESSION_LIST:
   case AST_DECLARATION_SPECIFIERS:
   case AST_INIT_DECLARATOR_LIST:

@@ -1,7 +1,7 @@
 #include "ast.h"
 
 const char *ast_show(int tag) {
-  const char *name[] = {"tag-begin", "nil", "array", "call",
+  const char *name[] = {"tag-begin", "nil", "list", "array", "call",
 #define HANDLE(name, str) str,
 #include "enum/keyword.def"
 #
