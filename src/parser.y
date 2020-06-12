@@ -312,8 +312,8 @@ init-declarator-list-impl
 | init-declarator-list-impl "," init-declarator {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 init-declarator
-: declarator
-| declarator "=" initializer { AST_APPEND2(INIT_DECLARATOR, $$, $1, $3); }
+: declarator {AST_INIT($$); AST_PUSH_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
+| declarator "=" initializer {AST_INIT($$); AST_PUSH_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 storage-class-specifier
 : "typedef" { AST_TOKEN(STORAGE_CLASS_SPECIFIER, $$, TYPEDEF); }
