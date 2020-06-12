@@ -138,12 +138,15 @@ string-literal
 
 /* 6.3 Expressions */
 primary-expression
-: identifier {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
-| floating-constant {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
-| integer-constant {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
-| character-constant {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
-| string-literal {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
-| "(" expression ")" {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $2);}
+: primary-expression-impl {AST_TAG($$, PRIMARY_EXPRESSION); AST_PUSH($$, $1);}
+;
+primary-expression-impl
+: identifier
+| floating-constant
+| integer-constant
+| character-constant
+| string-literal
+| "(" expression ")" {$$ = $2;}
 ;
 postfix-expression
 : primary-expression
