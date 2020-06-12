@@ -9,6 +9,7 @@ enum AstTag {
   AST_LIST,
   AST_ARRAY,
   AST_CALL,
+  AST_BINARY,
 #define HANDLE(name, str) AST_##name,
 #include "enum/keyword.def"
 #

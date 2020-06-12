@@ -102,6 +102,10 @@ List *print_ast(List *list, int indent) {
     return print_repeat(list, indent, 1);
   case AST_CAST_EXPRESSION:
     return print_repeat(list, indent, 2);
+  case AST_BINARY:
+    list = list_next(list);
+    list = print_tag(list);
+    return print_repeat(list, indent, 2);
   case AST_MULTIPLICATIVE_EXPRESSION:
   case AST_ADDITIVE_EXPRESSION:
   case AST_SHIFT_EXPRESSION:
