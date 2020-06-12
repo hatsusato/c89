@@ -173,11 +173,14 @@ argument-expression-list-impl
 ;
 unary-expression
 : postfix-expression
-| "++" unary-expression {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $2);}
-| "--" unary-expression {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $2);}
-| unary-operator cast-expression {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
-| "sizeof" unary-expression {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $2);}
-| "sizeof" "(" type-name ")" {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $3);}
+| unary-expression-impl {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH($$, $1);}
+;
+unary-expression-impl
+: "++" unary-expression {AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $2);}
+| "--" unary-expression {AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $2);}
+| unary-operator cast-expression {AST_CONS($$, $1, $2);}
+| "sizeof" unary-expression {AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $2);}
+| "sizeof" "(" type-name ")" {AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $3);}
 ;
 unary-operator
 : "&" {AST_TAG($$, AMPERSAND);}
