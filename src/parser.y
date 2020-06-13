@@ -384,12 +384,15 @@ specifier-qualifier
 | type-qualifier
 ;
 struct-declarator-list
+: struct-declarator-list.impl {AST_LIST_EXIST($$, STRUCT_DECLARATOR_LIST, $1);}
+;
+struct-declarator-list.impl
 : struct-declarator
-| struct-declarator-list "," struct-declarator { AST_APPEND2(STRUCT_DECLARATOR_LIST, $$, $1, $2); }
+| struct-declarator-list.impl "," struct-declarator {AST_LIST_CONS($$, $1, $3); }
 ;
 struct-declarator
-: declarator { AST_APPEND1(STRUCT_DECLARATOR, $$, $1); }
-| declarator.opt ":" constant-expression { AST_APPEND2(STRUCT_DECLARATOR_BITFIELD, $$, $1, $3); }
+: declarator {AST_TAG($$, STRUCT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
+| declarator.opt ":" constant-expression {AST_TAG($$, STRUCT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 enum-specifier
 : "enum" identifier.opt "{" enumerator-list "}" { AST_APPEND2(ENUM_SPECIFIER, $$, $2, $4); }

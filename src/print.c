@@ -140,6 +140,8 @@ List *print_ast(List *list, int indent) {
     return print_repeat(list, indent, 3);
   case AST_STRUCT_DECLARATION:
     return print_repeat(list, indent, 2);
+  case AST_STRUCT_DECLARATOR:
+    return print_repeat(list, indent, 2);
   default:
     printf("[%s])", ast_show(list_tag(list)));
     return list_next(list);
