@@ -176,11 +176,11 @@ unary-expression
 | unary-expression.impl {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH($$, $1);}
 ;
 unary-expression.impl
-: "++" unary-expression {AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $2);}
-| "--" unary-expression {AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $2);}
+: "++" unary-expression {AST_TAG($$, INCREMENT); AST_PUSH($$, $2);}
+| "--" unary-expression {AST_TAG($$, DECREMENT); AST_PUSH($$, $2);}
 | unary-operator cast-expression {AST_LIST_CONS($$, $1, $2);}
-| "sizeof" unary-expression {AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $2);}
-| "sizeof" "(" type-name ")" {AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $3);}
+| "sizeof" unary-expression {AST_TAG($$, SIZEOF); AST_PUSH($$, $2);}
+| "sizeof" "(" type-name ")" {AST_TAG($$, SIZEOF); AST_PUSH($$, $3);}
 ;
 unary-operator
 : "&" {AST_TAG($$, AMPERSAND);}
@@ -341,15 +341,15 @@ type-specifier
 : type-specifier.impl {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
 ;
 type-specifier.impl
-: "void" {AST_PUSH_TAG($$, VOID);}
-| "char" {AST_PUSH_TAG($$, CHAR);}
-| "short" {AST_PUSH_TAG($$, SHORT);}
-| "int" {AST_PUSH_TAG($$, INT);}
-| "long" {AST_PUSH_TAG($$, LONG);}
-| "float" {AST_PUSH_TAG($$, FLOAT);}
-| "double" {AST_PUSH_TAG($$, DOUBLE);}
-| "signed" {AST_PUSH_TAG($$, SIGNED);}
-| "unsigned" {AST_PUSH_TAG($$, UNSIGNED);}
+: "void" {AST_TAG($$, VOID);}
+| "char" {AST_TAG($$, CHAR);}
+| "short" {AST_TAG($$, SHORT);}
+| "int" {AST_TAG($$, INT);}
+| "long" {AST_TAG($$, LONG);}
+| "float" {AST_TAG($$, FLOAT);}
+| "double" {AST_TAG($$, DOUBLE);}
+| "signed" {AST_TAG($$, SIGNED);}
+| "unsigned" {AST_TAG($$, UNSIGNED);}
 | struct-or-union-specifier
 | enum-specifier
 | typedef-name
