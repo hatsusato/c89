@@ -363,19 +363,25 @@ struct-or-union
 | "union" {AST_TAG($$, UNION);}
 ;
 struct-declaration-list
+: struct-declaration-list.impl {AST_LIST_EXIST($$, STRUCT_DECLARATION_LIST, $1);}
+;
+struct-declaration-list.impl
 : struct-declaration
-| struct-declaration-list struct-declaration { AST_APPEND2(STRUCT_DECLARATION_LIST, $$, $1, $2); }
+| struct-declaration-list.impl struct-declaration {AST_LIST_CONS($$, $1, $2);}
 ;
 struct-declaration
-: specifier-qualifier-list struct-declarator-list ";" { AST_APPEND2(STRUCT_DECLARATION, $$, $1, $2); }
-;
-specifier-qualifier-list.opt
-: %empty { AST_APPEND0(NIL, $$); }
-| specifier-qualifier-list
+: specifier-qualifier-list struct-declarator-list ";" {AST_TAG($$, STRUCT_DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
 ;
 specifier-qualifier-list
-: type-specifier specifier-qualifier-list.opt { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
-| type-qualifier specifier-qualifier-list.opt { AST_APPEND2(SPECIFIER_QUALIFIER_LIST, $$, $1, $2); }
+: specifier-qualifier-list.impl {AST_LIST_EXIST($$, SPECIFIER_QUALIFIER_LIST, $1);}
+;
+specifier-qualifier-list.impl
+: specifier-qualifier
+| specifier-qualifier-list.impl specifier-qualifier {AST_LIST_CONS($$, $1, $2);}
+;
+specifier-qualifier
+: type-specifier
+| type-qualifier
 ;
 struct-declarator-list
 : struct-declarator
