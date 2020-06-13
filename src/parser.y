@@ -355,12 +355,12 @@ type-specifier.impl
 | typedef-name
 ;
 struct-or-union-specifier
-: struct-or-union identifier.opt "{" struct-declaration-list "}" { AST_APPEND3(STRUCT_OR_UNION_SPECIFIER, $$, $1, $2, $4); }
-| struct-or-union identifier { AST_APPEND2(STRUCT_OR_UNION_SPECIFIER_OPAQUE, $$, $1, $2); }
+: struct-or-union identifier.opt "{" struct-declaration-list "}" {AST_TAG($$, STRUCT_OR_UNION_SPECIFIER); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH($$, $4);}
+| struct-or-union identifier {AST_TAG($$, STRUCT_OR_UNION_SPECIFIER); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH_TAG($$, NIL);}
 ;
 struct-or-union
-: "struct" { AST_TOKEN(STRUCT_OR_UNION, $$, STRUCT); }
-| "union" { AST_TOKEN(STRUCT_OR_UNION, $$, UNION); }
+: "struct" {AST_TAG($$, STRUCT);}
+| "union" {AST_TAG($$, UNION);}
 ;
 struct-declaration-list
 : struct-declaration
