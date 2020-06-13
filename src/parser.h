@@ -63,11 +63,11 @@
     AST_INIT(dst);          \
     AST_PUSH_TAG(dst, NIL); \
   } while (0)
-#define AST_CONS(dst, car, cdr) \
-  do {                          \
-    AST_INIT(dst);              \
-    AST_PUSH(dst, car);         \
-    AST_PUSH(dst, cdr);         \
+#define AST_LIST_CONS(dst, car, cdr) \
+  do {                               \
+    AST_INIT(dst);                   \
+    AST_PUSH(dst, car);              \
+    AST_PUSH(dst, cdr);              \
   } while (0)
 #define AST_LIST_EMPTY(dst, tag) \
   do {                           \

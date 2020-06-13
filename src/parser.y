@@ -169,7 +169,7 @@ argument-expression-list
 ;
 argument-expression-list.impl
 : assignment-expression
-| argument-expression-list.impl "," assignment-expression {AST_CONS($$, $1, $3);}
+| argument-expression-list.impl "," assignment-expression {AST_LIST_CONS($$, $1, $3);}
 ;
 unary-expression
 : postfix-expression
@@ -178,7 +178,7 @@ unary-expression
 unary-expression.impl
 : "++" unary-expression {AST_PUSH_TAG($$, INCREMENT); AST_PUSH($$, $2);}
 | "--" unary-expression {AST_PUSH_TAG($$, DECREMENT); AST_PUSH($$, $2);}
-| unary-operator cast-expression {AST_CONS($$, $1, $2);}
+| unary-operator cast-expression {AST_LIST_CONS($$, $1, $2);}
 | "sizeof" unary-expression {AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $2);}
 | "sizeof" "(" type-name ")" {AST_PUSH_TAG($$, SIZEOF); AST_PUSH($$, $3);}
 ;
@@ -305,7 +305,7 @@ declaration-specifiers
 ;
 declaration-specifiers.impl
 : declaration-specifier
-| declaration-specifiers.impl declaration-specifier {AST_CONS($$, $1, $2);}
+| declaration-specifiers.impl declaration-specifier {AST_LIST_CONS($$, $1, $2);}
 ;
 declaration-specifier
 : storage-class-specifier
@@ -321,7 +321,7 @@ init-declarator-list
 ;
 init-declarator-list.impl
 : init-declarator
-| init-declarator-list.impl "," init-declarator {AST_CONS($$, $1, $3);}
+| init-declarator-list.impl "," init-declarator {AST_LIST_CONS($$, $1, $3);}
 ;
 init-declarator
 : declarator {AST_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
