@@ -165,11 +165,11 @@ argument-expression-list.opt
 | argument-expression-list
 ;
 argument-expression-list
-: argument-expression-list.impl {AST_LIST_EXIST($$, ARGUMENT_EXPRESSION_LIST, $1);}
+: argument-expression-list.cons {AST_LIST_EXIST($$, ARGUMENT_EXPRESSION_LIST, $1);}
 ;
-argument-expression-list.impl
+argument-expression-list.cons
 : assignment-expression
-| argument-expression-list.impl "," assignment-expression {AST_LIST_CONS($$, $1, $3);}
+| argument-expression-list.cons "," assignment-expression {AST_LIST_CONS($$, $1, $3);}
 ;
 unary-expression
 : postfix-expression
@@ -301,11 +301,11 @@ declaration
 : declaration-specifiers init-declarator-list.opt ";" {AST_TAG($$, DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
 ;
 declaration-specifiers
-: declaration-specifiers.impl {AST_LIST_EXIST($$, DECLARATION_SPECIFIERS, $1);}
+: declaration-specifiers.cons {AST_LIST_EXIST($$, DECLARATION_SPECIFIERS, $1);}
 ;
-declaration-specifiers.impl
+declaration-specifiers.cons
 : declaration-specifier
-| declaration-specifiers.impl declaration-specifier {AST_LIST_CONS($$, $1, $2);}
+| declaration-specifiers.cons declaration-specifier {AST_LIST_CONS($$, $1, $2);}
 ;
 declaration-specifier
 : storage-class-specifier
@@ -317,11 +317,11 @@ init-declarator-list.opt
 | init-declarator-list
 ;
 init-declarator-list
-: init-declarator-list.impl {AST_LIST_EXIST($$, INIT_DECLARATOR_LIST, $1);}
+: init-declarator-list.cons {AST_LIST_EXIST($$, INIT_DECLARATOR_LIST, $1);}
 ;
-init-declarator-list.impl
+init-declarator-list.cons
 : init-declarator
-| init-declarator-list.impl "," init-declarator {AST_LIST_CONS($$, $1, $3);}
+| init-declarator-list.cons "," init-declarator {AST_LIST_CONS($$, $1, $3);}
 ;
 init-declarator
 : declarator {AST_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
@@ -363,32 +363,32 @@ struct-or-union
 | "union" {AST_TAG($$, UNION);}
 ;
 struct-declaration-list
-: struct-declaration-list.impl {AST_LIST_EXIST($$, STRUCT_DECLARATION_LIST, $1);}
+: struct-declaration-list.cons {AST_LIST_EXIST($$, STRUCT_DECLARATION_LIST, $1);}
 ;
-struct-declaration-list.impl
+struct-declaration-list.cons
 : struct-declaration
-| struct-declaration-list.impl struct-declaration {AST_LIST_CONS($$, $1, $2);}
+| struct-declaration-list.cons struct-declaration {AST_LIST_CONS($$, $1, $2);}
 ;
 struct-declaration
 : specifier-qualifier-list struct-declarator-list ";" {AST_TAG($$, STRUCT_DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
 ;
 specifier-qualifier-list
-: specifier-qualifier-list.impl {AST_LIST_EXIST($$, SPECIFIER_QUALIFIER_LIST, $1);}
+: specifier-qualifier-list.cons {AST_LIST_EXIST($$, SPECIFIER_QUALIFIER_LIST, $1);}
 ;
-specifier-qualifier-list.impl
+specifier-qualifier-list.cons
 : specifier-qualifier
-| specifier-qualifier-list.impl specifier-qualifier {AST_LIST_CONS($$, $1, $2);}
+| specifier-qualifier-list.cons specifier-qualifier {AST_LIST_CONS($$, $1, $2);}
 ;
 specifier-qualifier
 : type-specifier
 | type-qualifier
 ;
 struct-declarator-list
-: struct-declarator-list.impl {AST_LIST_EXIST($$, STRUCT_DECLARATOR_LIST, $1);}
+: struct-declarator-list.cons {AST_LIST_EXIST($$, STRUCT_DECLARATOR_LIST, $1);}
 ;
-struct-declarator-list.impl
+struct-declarator-list.cons
 : struct-declarator
-| struct-declarator-list.impl "," struct-declarator {AST_LIST_CONS($$, $1, $3); }
+| struct-declarator-list.cons "," struct-declarator {AST_LIST_CONS($$, $1, $3); }
 ;
 struct-declarator
 : declarator {AST_TAG($$, STRUCT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
