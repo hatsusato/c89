@@ -410,8 +410,11 @@ enumerator
 | enumeration-constant "=" constant-expression {AST_TAG($$, ENUMERATOR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
 ;
 type-qualifier
-: "const" { AST_TOKEN(TYPE_QUALIFIER, $$, CONST); }
-| "volatile" { AST_TOKEN(TYPE_QUALIFIER, $$, VOLATILE); }
+: type-qualifier.impl {AST_TAG($$, TYPE_QUALIFIER); AST_PUSH($$, $1);}
+;
+type-qualifier.impl
+: "const" {AST_TAG($$, CONST);}
+| "volatile" {AST_TAG($$, VOLATILE);}
 ;
 declarator.opt
 : %empty { AST_APPEND0(NIL, $$); }
