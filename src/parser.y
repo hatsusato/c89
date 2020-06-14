@@ -493,23 +493,36 @@ identifier-list.cons
 | identifier-list.cons "," identifier {AST_LIST_CONS($$, $1, $3);}
 ;
 type-name
-: specifier-qualifier-list abstract-declarator.opt { AST_APPEND2(TYPE_NAME, $$, $1, $2); }
+: specifier-qualifier-list abstract-declarator.opt {AST_TAG($$, TYPE_NAME); AST_PUSH($$, $1); AST_PUSH($$, $2);}
 ;
 abstract-declarator.opt
-: %empty { AST_APPEND0(NIL, $$); }
+: %empty {AST_EMPTY($$);}
 | abstract-declarator
 ;
 abstract-declarator
-: pointer
+: pointer direct-abstract-declarator.opt {AST_TAG($$, ABSTRACT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $2);}
+| direct-abstract-declarator {AST_TAG($$, ABSTRACT_DECLARATOR); AST_PUSH_TAG($$, NIL); AST_PUSH($$, $1);}
+;
+direct-abstract-declarator.opt
+: %empty {AST_EMPTY($$);}
 | direct-abstract-declarator
-| pointer direct-abstract-declarator { AST_APPEND2(ABSTRACT_DECLARATOR, $$, $1, $2); }
 ;
 direct-abstract-declarator
-: "(" abstract-declarator ")" { AST_APPEND1(DIRECT_ABSTRACT_DECLARATOR, $$, $2); }
-| "[" constant-expression.opt "]" { AST_APPEND1(DIRECT_ABSTRACT_DECLARATOR_ARRAY_SINGLE, $$, $2); }
-| "(" parameter-type-list.opt ")" { AST_APPEND1(DIRECT_ABSTRACT_DECLARATOR_FUNC_SINGLE, $$, $2); }
-| direct-abstract-declarator "[" constant-expression.opt "]" { AST_APPEND2(DIRECT_ABSTRACT_DECLARATOR_ARRAY, $$, $1, $3); }
-| direct-abstract-declarator "(" parameter-type-list.opt ")" { AST_APPEND2(DIRECT_ABSTRACT_DECLARATOR_FUNC, $$, $1, $3); }
+: "(" abstract-declarator ")" direct-abstract-declarator.list {AST_TAG($$, DIRECT_ABSTRACT_DECLARATOR); AST_PUSH($$, $2); AST_PUSH($$, $4);}
+;
+direct-abstract-declarator.list
+: direct-abstract-declarator.cons {AST_LIST_EXIST($$, DIRECT_ABSTRACT_DECLARATOR_LIST, $1);}
+;
+direct-abstract-declarator.cons
+: %empty {AST_INIT($$);}
+| direct-abstract-declarator.cons direct-abstract-declarator.suffix {AST_LIST_CONS($$, $1, $2);}
+;
+direct-abstract-declarator.suffix
+: direct-abstract-declarator.suffix.impl {AST_TAG($$, DIRECT_ABSTRACT_DECLARATOR_SUFFIX); AST_PUSH($$, $1);}
+;
+direct-abstract-declarator.suffix.impl
+: "[" constant-expression.opt "]" {AST_TAG($$, ARRAY); AST_PUSH($$, $2);}
+| "(" parameter-type-list.opt ")" {AST_TAG($$, CALL); AST_PUSH($$, $2);}
 ;
 typedef-name
 : TOKEN_TYPEDEF_NAME { AST_APPEND1(TYPEDEF_NAME, $$, $1); }
