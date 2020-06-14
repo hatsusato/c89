@@ -35,7 +35,6 @@ DO_HANDLE(DIRECT_ABSTRACT_DECLARATOR_LIST, direct-abstract-declarator-list)
 DO_HANDLE(DIRECT_ABSTRACT_DECLARATOR_SUFFIX, direct-abstract-declarator-suffix)
 DO_HANDLE(TYPEDEF_NAME, typedef-name)
 DO_HANDLE(INITIALIZER, initializer)
-DO_HANDLE(INITIALIZER_AGGREGATE, initializer-aggregate)
 DO_HANDLE(INITIALIZER_LIST, initializer-list)
 
 #include "handle-end.def"

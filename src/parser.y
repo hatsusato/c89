@@ -528,13 +528,16 @@ typedef-name
 : TOKEN_TYPEDEF_NAME {AST_TAG($$, TYPEDEF_NAME); AST_PUSH($$, $1);}
 ;
 initializer
-: assignment-expression { AST_APPEND1(INITIALIZER, $$, $1); }
-| "{" initializer-list "}" { AST_APPEND1(INITIALIZER_AGGREGATE, $$, $2); }
-| "{" initializer-list "," "}" { AST_APPEND1(INITIALIZER_AGGREGATE, $$, $2); }
+: assignment-expression {AST_TAG($$, INITIALIZER); AST_PUSH($$, $1);}
+| initializer-list {AST_TAG($$, INITIALIZER); AST_PUSH($$, $1); }
 ;
 initializer-list
+: "{" initializer-list.cons "}" {AST_LIST_EXIST($$, INITIALIZER_LIST, $2);}
+| "{" initializer-list.cons "," "}" {AST_LIST_EXIST($$, INITIALIZER_LIST, $2);}
+;
+initializer-list.cons
 : initializer
-| initializer-list "," initializer { AST_APPEND2(INITIALIZER_LIST, $$, $1, $3); }
+| initializer-list.cons "," initializer {AST_LIST_CONS($$, $1, $3);}
 ;
 
 /* 6.6 Statements */
