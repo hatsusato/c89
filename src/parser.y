@@ -463,28 +463,34 @@ type-qualifier-list
 | type-qualifier-list type-qualifier {AST_LIST_CONS($$, $1, $2);}
 ;
 parameter-type-list.opt
-: %empty
+: %empty {AST_LIST_EMPTY($$, PARAMETER_LIST);}
 | parameter-type-list
 ;
 parameter-type-list
-: parameter-list
-| parameter-list "," "..." { AST_APPEND1(PARAMETER_TYPE_LIST, $$, $1); }
+: parameter-list {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
+| parameter-list "," "..." {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH_TAG($$, ELLIPSIS); AST_PUSH_TAG($$, NIL);}
 ;
 parameter-list
-: parameter-declaration
-| parameter-list "," parameter-declaration { AST_APPEND2(PARAMETER_LIST, $$, $1, $3); }
+: parameter-declaration {AST_TAG($$, LIST); AST_PUSH_TAG($$, PARAMETER_LIST); AST_PUSH($$, $1);}
+| parameter-list "," parameter-declaration {AST_LIST_CONS($$, $1, $3);}
 ;
 parameter-declaration
-: declaration-specifiers declarator { AST_APPEND2(PARAMETER_DECLARATION, $$, $1, $2); }
-| declaration-specifiers abstract-declarator.opt { AST_APPEND2(PARAMETER_DECLARATION, $$, $1, $2); }
+: declaration-specifiers parameter-declaration.suffix {AST_TAG($$, PARAMETER_DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
+;
+parameter-declaration.suffix
+: declarator
+| abstract-declarator.opt
 ;
 identifier-list.opt
-: %empty { AST_APPEND0(NIL, $$); }
+: %empty {AST_LIST_EMPTY($$, IDENTIFIER_LIST);}
 | identifier-list
 ;
 identifier-list
+: identifier-list.cons {AST_LIST_EXIST($$, IDENTIFIER_LIST, $1);}
+;
+identifier-list.cons
 : identifier
-| identifier-list "," identifier { AST_APPEND2(IDENTIFIER_LIST, $$, $1, $3); }
+| identifier-list.cons "," identifier {AST_LIST_CONS($$, $1, $3);}
 ;
 type-name
 : specifier-qualifier-list abstract-declarator.opt { AST_APPEND2(TYPE_NAME, $$, $1, $2); }

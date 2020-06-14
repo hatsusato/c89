@@ -82,6 +82,7 @@ List *print_ast(List *list, int indent) {
     /* Lexical elements */
 #define HANDLE(name, str) case AST_##name:
 #include "enum/keyword.def"
+#include "enum/symbol.def"
 #undef HANDLE
     return print_repeat(list, indent, 0);
   case AST_IDENTIFIER:
@@ -155,6 +156,8 @@ List *print_ast(List *list, int indent) {
     return print_repeat(list, indent, 1);
   case AST_POINTER:
     return print_repeat(list, indent, 1);
+  case AST_PARAMETER_DECLARATION:
+    return print_repeat(list, indent, 2);
   default:
     printf("[%s])", ast_show(list_tag(list)));
     return list_next(list);
