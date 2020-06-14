@@ -525,7 +525,7 @@ direct-abstract-declarator.suffix.impl
 | "(" parameter-type-list.opt ")" {AST_TAG($$, CALL); AST_PUSH($$, $2);}
 ;
 typedef-name
-: TOKEN_TYPEDEF_NAME { AST_APPEND1(TYPEDEF_NAME, $$, $1); }
+: TOKEN_TYPEDEF_NAME {AST_TAG($$, TYPEDEF_NAME); AST_PUSH($$, $1);}
 ;
 initializer
 : assignment-expression { AST_APPEND1(INITIALIZER, $$, $1); }

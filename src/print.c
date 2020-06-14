@@ -167,6 +167,8 @@ List *print_ast(List *list, int indent) {
   case AST_DIRECT_ABSTRACT_DECLARATOR_SUFFIX:
     list = print_tag(list);
     return print_repeat(list, indent, 1);
+  case AST_TYPEDEF_NAME:
+    return print_repeat(list, indent, 1);
   default:
     printf("[%s])", ast_show(list_tag(list)));
     return list_next(list);
