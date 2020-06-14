@@ -417,19 +417,32 @@ type-qualifier.impl
 | "volatile" {AST_TAG($$, VOLATILE);}
 ;
 declarator.opt
-: %empty { AST_APPEND0(NIL, $$); }
+: %empty {AST_EMPTY($$);}
 | declarator
 ;
 declarator
-: direct-declarator
-| pointer direct-declarator { AST_APPEND2(DECLARATOR, $$, $1, $2); }
+: declarator.prefix direct-declarator {AST_TAG($$, DECLARATOR); AST_PUSH_TAG($$, NIL); AST_PUSH($$, $1); AST_PUSH($$, $2);}
+| pointer declarator.prefix direct-declarator {AST_TAG($$, DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH($$, $3);}
+;
+declarator.prefix
+: identifier
+| "(" declarator ")" {$$ = $2;}
 ;
 direct-declarator
-: identifier
-| "(" declarator ")" { AST_APPEND1(DIRECT_DECLARATOR, $$, $2); }
-| direct-declarator "[" constant-expression.opt "]" { AST_APPEND2(DIRECT_DECLARATOR_ARRAY, $$, $1, $3); }
-| direct-declarator "(" parameter-type-list ")" { AST_APPEND2(DIRECT_DECLARATOR_FUNC, $$, $1, $3); }
-| direct-declarator "(" identifier-list.opt ")" { AST_APPEND2(DIRECT_DECLARATOR_FUNC_OLD, $$, $1, $3); }
+: %empty {AST_LIST_EMPTY($$, DIRECT_DECLARATOR_LIST);}
+| direct-declarator.cons {AST_LIST_EXIST($$, DIRECT_DECLARATOR_LIST, $1);}
+;
+direct-declarator.cons
+: direct-declarator.suffix
+| direct-declarator.cons direct-declarator.suffix {AST_LIST_CONS($$, $1, $2);}
+;
+direct-declarator.suffix
+: direct-declarator.suffix.impl {AST_TAG($$, DIRECT_DECLARATOR); AST_PUSH($$, $1);}
+;
+direct-declarator.suffix.impl
+: "[" constant-expression.opt "]" {AST_TAG($$, ARRAY); AST_PUSH($$, $2);}
+| "(" parameter-type-list ")" {AST_TAG($$, CALL); AST_PUSH($$, $2);}
+| "(" identifier-list.opt ")" {AST_TAG($$, OLD); AST_PUSH($$, $2);}
 ;
 pointer
 : "*" type-qualifier-list.opt { AST_APPEND1(POINTER, $$, $2); }

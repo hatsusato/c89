@@ -148,6 +148,11 @@ List *print_ast(List *list, int indent) {
     return print_repeat(list, indent, 2);
   case AST_TYPE_QUALIFIER:
     return print_repeat(list, indent, 1);
+  case AST_DECLARATOR:
+    return print_repeat(list, indent, 3);
+  case AST_DIRECT_DECLARATOR:
+    list = print_tag(list);
+    return print_repeat(list, indent, 1);
   default:
     printf("[%s])", ast_show(list_tag(list)));
     return list_next(list);
