@@ -542,12 +542,12 @@ initializer-list.cons
 
 /* 6.6 Statements */
 statement
-: labeled-statement { AST_APPEND1(STATEMENT, $$, $1); }
-| compound-statement { AST_APPEND1(STATEMENT, $$, $1); }
-| expression-statement { AST_APPEND1(STATEMENT, $$, $1); }
-| selection-statement { AST_APPEND1(STATEMENT, $$, $1); }
-| iteration-statement { AST_APPEND1(STATEMENT, $$, $1); }
-| jump-statement { AST_APPEND1(STATEMENT, $$, $1); }
+: labeled-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
+| compound-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
+| expression-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
+| selection-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
+| iteration-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
+| jump-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
 ;
 labeled-statement
 : identifier ":" statement { AST_APPEND2(LABELED_STATEMENT, $$, $1, $3); }
