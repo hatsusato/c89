@@ -3,8 +3,6 @@
 
 DO_HANDLE(STATEMENT, statement)
 DO_HANDLE(LABELED_STATEMENT, labeled-statement)
-DO_HANDLE(LABELED_STATEMENT_CASE, labeled-statement-case)
-DO_HANDLE(LABELED_STATEMENT_DEFAULT, labeled-statement-default)
 DO_HANDLE(COMPOUND_STATEMENT, compound-statement)
 DO_HANDLE(DECLARATION_LIST, declaration-list)
 DO_HANDLE(STATEMENT_LIST, statement-list)

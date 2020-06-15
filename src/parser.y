@@ -550,9 +550,12 @@ statement
 | jump-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
 ;
 labeled-statement
-: identifier ":" statement { AST_APPEND2(LABELED_STATEMENT, $$, $1, $3); }
-| "case" constant-expression ":" statement { AST_APPEND2(LABELED_STATEMENT_CASE, $$, $2, $4); }
-| "default" ":" statement { AST_APPEND1(LABELED_STATEMENT_DEFAULT, $$, $3); }
+: labeled-statement.prefix ":" statement {AST_TAG($$, LABELED_STATEMENT); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+;
+labeled-statement.prefix
+: identifier {AST_TAG($$, ID); AST_PUSH_TAG($$, NIL);}
+| "case" constant-expression {AST_TAG($$, CASE); AST_PUSH($$, $2);}
+| "default" {AST_TAG($$, DEFAULT); AST_PUSH_TAG($$, NIL);}
 ;
 compound-statement
 : "{" declaration-list.opt statement-list.opt "}" { AST_APPEND2(COMPOUND_STATEMENT, $$, $2, $3); }

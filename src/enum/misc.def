@@ -5,6 +5,7 @@ DO_HANDLE(LIST, list)
 DO_HANDLE(ARRAY, array)
 DO_HANDLE(CALL, call)
 DO_HANDLE(OLD, old)
+DO_HANDLE(ID, id)
 DO_HANDLE(BINARY, binary)
 
 #include "handle-end.def"

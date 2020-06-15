@@ -173,6 +173,9 @@ List *print_ast(List *list, int indent) {
     return print_repeat(list, indent, 1);
   case AST_STATEMENT:
     return print_repeat(list, indent, 1);
+  case AST_LABELED_STATEMENT:
+    list = print_tag(list);
+    return print_repeat(list, indent, 2);
   default:
     printf("[%s])", ast_show(list_tag(list)));
     return list_next(list);
