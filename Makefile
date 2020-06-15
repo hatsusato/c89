@@ -9,7 +9,7 @@ files := ast list main parser print vector
 
 ldflags =
 cflags = -Wall -Wextra -ansi -pedantic
-dflags = -MF $@ -MG -MM -MP -MT $@
+dflags = -MF $@ -MG -MM -MP -MT $(@:%.d=%.o)
 release_cflags := -O3 -DNDEBUG
 debug_cflags := -g
 lflags := --header-file=$(lex_prefix).h --outfile=$(lex_prefix).c

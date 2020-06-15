@@ -1,10 +1,5 @@
 #include "ast.h"
 
-#include "parser.tab.h"
-#ifdef nil
-#undef nil
-#endif
-
 const char *ast_show(int tag) {
   const char *name[] = {"tag-begin",
 #define HANDLE(name, str) str,
