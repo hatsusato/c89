@@ -21,9 +21,11 @@ void print_seq(yyscan_t scanner) {
 int main(void) {
   yyscan_t scanner;
   YYSTYPE extra = {nil, nil};
+  int ret = 0;
   yylex_init_extra(extra, &scanner);
-  printf("return: %d\n", yyparse(scanner));
+  ret = yyparse(scanner);
   print_seq(scanner);
+  printf("return: %d\n", ret);
   yylex_destroy(scanner);
   return 0;
 }
