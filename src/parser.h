@@ -50,7 +50,7 @@
   } while (0)
 
 void yyerror(const char *, yyscan_t);
-List *ast_new_token(int, yyscan_t);
+YYSTYPE ast_new_token(int, yyscan_t);
 List *ast_new_tag(int);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */
