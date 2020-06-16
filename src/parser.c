@@ -1,11 +1,15 @@
 #include "parser.h"
 
+static YYSTYPE yystype_init(void) {
+  YYSTYPE init = {nil, nil};
+  return init;
+}
 void yyerror(const char *msg, yyscan_t scanner) {
   (void)scanner;
   fprintf(stderr, "yyerror: [%s]\n", msg);
 }
 YYSTYPE ast_new_token(int tag, yyscan_t scanner) {
-  YYSTYPE ret = {nil, nil};
+  YYSTYPE ret = yystype_init();
   const char *text = yyget_text(scanner);
   int leng = yyget_leng(scanner);
   Vector *vec = vector_new(1);
