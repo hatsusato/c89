@@ -3,11 +3,6 @@
 
 #include "parser.tab.h"
 
-#define AST_TOKEN(tag, x0, token)                       \
-  do {                                                  \
-    x0 = ast_new_tag(AST_##tag);                        \
-    x0 = ast_list_append(x0, ast_new_tag(AST_##token)); \
-  } while (0)
 #define AST_INIT(dst) \
   do {                \
     dst = ast_init(); \
