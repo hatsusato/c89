@@ -586,9 +586,15 @@ expression-statement
 : expression.opt ";" {AST_TAG($$, EXPRESSION_STATEMENT); AST_PUSH($$, $1);}
 ;
 selection-statement
-: "if" "(" expression ")" statement %prec THEN { AST_APPEND2(SELECTION_STATEMENT_IF, $$, $3, $5); }
-| "if" "(" expression ")" statement "else" statement { AST_APPEND3(SELECTION_STATEMENT, $$, $3, $5, $7); }
-| "switch" "(" expression ")" statement { AST_APPEND2(SELECTION_STATEMENT_SWITCH, $$, $3, $5); }
+: "if" selection-statement.if {AST_TAG($$, SELECTION_STATEMENT); AST_PUSH($$, $2);}
+| "switch" selection-statement.switch {AST_TAG($$, SELECTION_STATEMENT); AST_PUSH($$, $2);}
+;
+selection-statement.if
+: "(" expression ")" statement %prec THEN {AST_TAG($$, IF); AST_PUSH($$, $2); AST_PUSH($$, $4); AST_PUSH_TAG($$, NIL);}
+| "(" expression ")" statement "else" statement {AST_TAG($$, IF); AST_PUSH($$, $2); AST_PUSH($$, $4); AST_PUSH($$, $6);}
+;
+selection-statement.switch
+: "(" expression ")" statement {AST_TAG($$, SWITCH); AST_PUSH($$, $2); AST_PUSH($$, $4); AST_PUSH_TAG($$, NIL);}
 ;
 iteration-statement
 : "while" "(" expression ")" statement { AST_APPEND2(ITERATION_STATEMENT_WHILE, $$, $3, $5); }
