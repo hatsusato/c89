@@ -3,22 +3,22 @@
 
 #include "parser.tab.h"
 
-#define AST_TOKEN(tag, x0, token)                   \
-  do {                                              \
-    x0.list = ast_new_tag(AST_##tag);               \
-    list_append(x0.list, ast_new_tag(AST_##token)); \
+#define AST_TOKEN(tag, x0, token)                        \
+  do {                                                   \
+    x0 = ast_new_tag(AST_##tag);                         \
+    list_append(x0.list, ast_new_tag(AST_##token).list); \
   } while (0)
 #define AST_INIT(dst) \
   do {                \
     dst.list = nil;   \
   } while (0)
-#define AST_TAG(dst, tag)              \
-  do {                                 \
-    dst.list = ast_new_tag(AST_##tag); \
+#define AST_TAG(dst, tag)         \
+  do {                            \
+    dst = ast_new_tag(AST_##tag); \
   } while (0)
-#define AST_PUSH_TAG(dst, tag)                                \
-  do {                                                        \
-    dst.list = list_append(dst.list, ast_new_tag(AST_##tag)); \
+#define AST_PUSH_TAG(dst, tag)                                     \
+  do {                                                             \
+    dst.list = list_append(dst.list, ast_new_tag(AST_##tag).list); \
   } while (0)
 #define AST_PUSH(dst, src)                      \
   do {                                          \
@@ -51,6 +51,6 @@
 
 void yyerror(const char *, yyscan_t);
 YYSTYPE ast_new_token(int, yyscan_t);
-List *ast_new_tag(int);
+YYSTYPE ast_new_tag(int);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */

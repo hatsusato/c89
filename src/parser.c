@@ -17,6 +17,8 @@ YYSTYPE ast_new_token(int tag, yyscan_t scanner) {
   ret.list = list_new(tag, vec);
   return ret;
 }
-List *ast_new_tag(int tag) {
-  return list_new(tag, nil);
+YYSTYPE ast_new_tag(int tag) {
+  YYSTYPE ret = yystype_init();
+  ret.list = list_new(tag, nil);
+  return ret;
 }
