@@ -195,8 +195,11 @@ List *print_ast(List *list, int indent) {
     return print_repeat(list, indent, 1);
   case AST_FUNCTION_DEFINITION:
     return print_repeat(list, indent, 4);
+  case AST_NIL:
+    printf(")");
+    return list_next(list);
   default:
-    printf("[%s])", ast_show(list_tag(list)));
+    fprintf(stderr, "[%s]", ast_show(list_tag(list)));
     return list_next(list);
   }
 }
