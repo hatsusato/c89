@@ -191,6 +191,10 @@ List *print_ast(List *list, int indent) {
   case AST_JUMP_STATEMENT:
     list = print_tag(list);
     return print_repeat(list, indent, 1);
+  case AST_EXTERNAL_DECLARATION:
+    return print_repeat(list, indent, 1);
+  case AST_FUNCTION_DEFINITION:
+    return print_repeat(list, indent, 4);
   default:
     printf("[%s])", ast_show(list_tag(list)));
     return list_next(list);
