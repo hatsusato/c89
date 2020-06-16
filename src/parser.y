@@ -622,10 +622,10 @@ jump-statement.impl
 
 /* 6.7 External definitions */
 top
-: translation-unit {yyset_extra($1, scanner);}
+: translation-unit {AST_LIST_EXIST($$, TRANSLATION_UNIT, $1); yyset_extra($$, scanner);}
 translation-unit
-: external-declaration {AST_TAG($$, TRANSLATION_UNIT); AST_PUSH($$, $1);}
-| translation-unit external-declaration {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH($$, $2);}
+: external-declaration
+| translation-unit external-declaration {AST_LIST_CONS($$, $1, $2);}
 ;
 external-declaration
 : function-definition
