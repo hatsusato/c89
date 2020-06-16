@@ -583,7 +583,7 @@ statement-list.cons
 | statement-list.cons statement {AST_LIST_CONS($$, $1, $2);}
 ;
 expression-statement
-: expression.opt ";" { AST_APPEND1(EXPRESSION_STATEMENT, $$, $1); }
+: expression.opt ";" {AST_TAG($$, EXPRESSION_STATEMENT); AST_PUSH($$, $1);}
 ;
 selection-statement
 : "if" "(" expression ")" statement %prec THEN { AST_APPEND2(SELECTION_STATEMENT_IF, $$, $3, $5); }
