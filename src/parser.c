@@ -1,6 +1,6 @@
 #include "parser.h"
 
-static YYSTYPE yystype_init(void) {
+YYSTYPE ast_init(void) {
   YYSTYPE init = {nil, nil};
   return init;
 }
@@ -9,7 +9,7 @@ void yyerror(const char *msg, yyscan_t scanner) {
   fprintf(stderr, "yyerror: [%s]\n", msg);
 }
 YYSTYPE ast_new_token(int tag, yyscan_t scanner) {
-  YYSTYPE ret = yystype_init();
+  YYSTYPE ret = ast_init();
   const char *text = yyget_text(scanner);
   int leng = yyget_leng(scanner);
   Vector *vec = vector_new(1);
@@ -18,7 +18,7 @@ YYSTYPE ast_new_token(int tag, yyscan_t scanner) {
   return ret;
 }
 YYSTYPE ast_new_tag(int tag) {
-  YYSTYPE ret = yystype_init();
+  YYSTYPE ret = ast_init();
   ret.list = list_new(tag, nil);
   return ret;
 }

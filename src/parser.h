@@ -10,7 +10,7 @@
   } while (0)
 #define AST_INIT(dst) \
   do {                \
-    dst.list = nil;   \
+    dst = ast_init(); \
   } while (0)
 #define AST_TAG(dst, tag)         \
   do {                            \
@@ -50,6 +50,7 @@
   } while (0)
 
 void yyerror(const char *, yyscan_t);
+YYSTYPE ast_init(void);
 YYSTYPE ast_new_token(int, yyscan_t);
 YYSTYPE ast_new_tag(int);
 YYSTYPE ast_list_append(YYSTYPE, YYSTYPE);
