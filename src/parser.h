@@ -3,10 +3,10 @@
 
 #include "parser.tab.h"
 
-#define AST_TOKEN(tag, x0, token)                        \
-  do {                                                   \
-    x0 = ast_new_tag(AST_##tag);                         \
-    list_append(x0.list, ast_new_tag(AST_##token).list); \
+#define AST_TOKEN(tag, x0, token)                       \
+  do {                                                  \
+    x0 = ast_new_tag(AST_##tag);                        \
+    x0 = ast_list_append(x0, ast_new_tag(AST_##token)); \
   } while (0)
 #define AST_INIT(dst) \
   do {                \
@@ -16,13 +16,13 @@
   do {                            \
     dst = ast_new_tag(AST_##tag); \
   } while (0)
-#define AST_PUSH_TAG(dst, tag)                                     \
-  do {                                                             \
-    dst.list = list_append(dst.list, ast_new_tag(AST_##tag).list); \
+#define AST_PUSH_TAG(dst, tag)                          \
+  do {                                                  \
+    dst = ast_list_append(dst, ast_new_tag(AST_##tag)); \
   } while (0)
-#define AST_PUSH(dst, src)                      \
-  do {                                          \
-    dst.list = list_append(dst.list, src.list); \
+#define AST_PUSH(dst, src)           \
+  do {                               \
+    dst = ast_list_append(dst, src); \
   } while (0)
 #define AST_EMPTY(dst)      \
   do {                      \
@@ -52,5 +52,6 @@
 void yyerror(const char *, yyscan_t);
 YYSTYPE ast_new_token(int, yyscan_t);
 YYSTYPE ast_new_tag(int);
+YYSTYPE ast_list_append(YYSTYPE, YYSTYPE);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */

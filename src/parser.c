@@ -22,3 +22,7 @@ YYSTYPE ast_new_tag(int tag) {
   ret.list = list_new(tag, nil);
   return ret;
 }
+YYSTYPE ast_list_append(YYSTYPE lhs, YYSTYPE rhs) {
+  lhs.list = list_append(lhs.list, rhs.list);
+  return lhs;
+}
