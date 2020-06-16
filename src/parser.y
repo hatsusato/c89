@@ -611,10 +611,13 @@ iteration-statement.for
 : "(" expression.opt ";" expression.opt ";" expression.opt ")" {AST_TAG($$, ITERATION_STATEMENT_FOR); AST_PUSH($$, $2); AST_PUSH($$, $4); AST_PUSH($$, $6);}
 ;
 jump-statement
-: "goto" identifier ";" { AST_APPEND1(JUMP_STATEMENT, $$, $2); }
-| "continue" ";" { AST_APPEND0(JUMP_STATEMENT_CONTINUE, $$); }
-| "break" ";" { AST_APPEND0(JUMP_STATEMENT_BREAK, $$); }
-| "return" expression.opt ";" { AST_APPEND1(JUMP_STATEMENT_RETURN, $$, $2); }
+: jump-statement.impl {AST_TAG($$, JUMP_STATEMENT); AST_PUSH($$, $1);}
+;
+jump-statement.impl
+: "goto" identifier ";" {AST_TAG($$, GOTO); AST_PUSH($$, $2);}
+| "continue" ";" {AST_TAG($$, CONTINUE); AST_PUSH_TAG($$, NIL);}
+| "break" ";" {AST_TAG($$, BREAK); AST_PUSH_TAG($$, NIL);}
+| "return" expression.opt ";" {AST_TAG($$, RETURN); AST_PUSH($$, $2);}
 ;
 
 /* 6.7 External definitions */
