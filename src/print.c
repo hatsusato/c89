@@ -94,7 +94,7 @@ List *print_ast(List *list, int indent) {
     return print_token(list);
     /* Expressions */
   case AST_PRIMARY_EXPRESSION:
-    return print_repeat(list, indent, 1);
+    return print_tag(list);
   case AST_POSTFIX_EXPRESSION:
     list = print_tag(list);
     return print_repeat(list, indent, 2);
