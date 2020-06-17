@@ -201,6 +201,9 @@ List *print_ast(List *list, int indent) {
   case AST_ARITY1:
     list = list_next(list);
     return print_repeat(list, indent, 1);
+  case AST_ARITY2:
+    list = list_next(list);
+    return print_repeat(list, indent, 2);
   default:
     fprintf(stderr, "[%s]", ast_show(list_tag(list)));
     return list_next(list);

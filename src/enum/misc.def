@@ -8,5 +8,6 @@ DO_HANDLE(OLD, old)
 DO_HANDLE(ID, id)
 DO_HANDLE(BINARY, binary)
 DO_HANDLE(ARITY1, arity1)
+DO_HANDLE(ARITY2, arity2)
 
 #include "handle-end.def"
