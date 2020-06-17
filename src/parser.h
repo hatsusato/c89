@@ -49,5 +49,6 @@ YYSTYPE ast_init(void);
 YYSTYPE ast_new_token(int, yyscan_t);
 YYSTYPE ast_new_tag(int);
 YYSTYPE ast_list_append(YYSTYPE, YYSTYPE);
+YYSTYPE ast_append1(int, YYSTYPE);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */

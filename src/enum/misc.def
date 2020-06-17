@@ -7,5 +7,6 @@ DO_HANDLE(CALL, call)
 DO_HANDLE(OLD, old)
 DO_HANDLE(ID, id)
 DO_HANDLE(BINARY, binary)
+DO_HANDLE(ARITY1, arity1)
 
 #include "handle-end.def"

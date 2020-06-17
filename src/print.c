@@ -198,6 +198,9 @@ List *print_ast(List *list, int indent) {
   case AST_NIL:
     printf(")");
     return list_next(list);
+  case AST_ARITY1:
+    list = list_next(list);
+    return print_repeat(list, indent, 1);
   default:
     fprintf(stderr, "[%s]", ast_show(list_tag(list)));
     return list_next(list);
