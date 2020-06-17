@@ -39,3 +39,11 @@ YYSTYPE ast_append2(int tag, YYSTYPE x1, YYSTYPE x2) {
   x0 = ast_list_append(x0, x2);
   return x0;
 }
+YYSTYPE ast_append3(int tag, YYSTYPE x1, YYSTYPE x2, YYSTYPE x3) {
+  YYSTYPE x0 = ast_new_tag(AST_ARITY3);
+  x0 = ast_list_append(x0, ast_new_tag(tag));
+  x0 = ast_list_append(x0, x1);
+  x0 = ast_list_append(x0, x2);
+  x0 = ast_list_append(x0, x3);
+  return x0;
+}
