@@ -93,7 +93,6 @@ List *print_ast(List *list, int indent) {
   case AST_STRING_LITERAL:
     return print_token(list);
     /* Expressions */
-  case AST_PRIMARY_EXPRESSION:
   case AST_POSTFIX_EXPRESSION:
     return print_tag(list);
   case AST_UNARY_EXPRESSION:
