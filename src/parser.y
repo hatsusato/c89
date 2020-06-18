@@ -218,21 +218,21 @@ shift-operator
 ;
 relational-expression
 : shift-expression
-| relational-expression relational-operator shift-expression {AST_TAG($$, RELATIONAL_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| relational-expression relational-operator shift-expression {$$ = ast_append3(AST_RELATIONAL_EXPRESSION, $2, $1, $3);}
 ;
 relational-operator
-: "<" {AST_TAG($$, LESS_THAN);}
-| ">" {AST_TAG($$, GREATER_THAN);}
-| "<=" {AST_TAG($$, LESS_EQUAL);}
-| ">=" {AST_TAG($$, GREATER_EQUAL);}
+: "<" {$$ = ast_arity0(AST_LESS_THAN);}
+| ">" {$$ = ast_arity0(AST_GREATER_THAN);}
+| "<=" {$$ = ast_arity0(AST_LESS_EQUAL);}
+| ">=" {$$ = ast_arity0(AST_GREATER_EQUAL);}
 ;
 equality-expression
 : relational-expression
-| equality-expression equality-operator relational-expression {AST_TAG($$, EQUALITY_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| equality-expression equality-operator relational-expression {$$ = ast_append3(AST_EQUALITY_EXPRESSION, $2, $1, $3);}
 ;
 equality-operator
-: "==" {AST_TAG($$, EQUAL);}
-| "!=" {AST_TAG($$, NOT_EQUAL);}
+: "==" {$$ = ast_arity0(AST_EQUAL);}
+| "!=" {$$ = ast_arity0(AST_NOT_EQUAL);}
 ;
 and-expression
 : equality-expression
