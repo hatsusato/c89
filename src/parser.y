@@ -193,7 +193,7 @@ cast-expression
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression multiplicative-operator cast-expression {$$ = ast_append3(AST_MULTIPLICATIVE_EXPRESSION, $2, $1, $3);}
+| multiplicative-expression multiplicative-operator cast-expression {$$ = ast_binary($1, $2, $3);}
 ;
 multiplicative-operator
 : "*" {$$ = ast_arity0(AST_ASTERISK);}
@@ -202,7 +202,7 @@ multiplicative-operator
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression additive-operator multiplicative-expression {$$ = ast_append3(AST_ADDITIVE_EXPRESSION, $2, $1, $3);}
+| additive-expression additive-operator multiplicative-expression {$$ = ast_binary($1, $2, $3);}
 ;
 additive-operator
 : "+" {$$ = ast_arity0(AST_PLUS);}
@@ -210,7 +210,7 @@ additive-operator
 ;
 shift-expression
 : additive-expression
-| shift-expression shift-operator additive-expression {$$ = ast_append3(AST_SHIFT_EXPRESSION, $2, $1, $3);}
+| shift-expression shift-operator additive-expression {$$ = ast_binary($1, $2, $3);}
 ;
 shift-operator
 : "<<" {$$ = ast_arity0(AST_LEFT_SHIFT);}
@@ -218,7 +218,7 @@ shift-operator
 ;
 relational-expression
 : shift-expression
-| relational-expression relational-operator shift-expression {$$ = ast_append3(AST_RELATIONAL_EXPRESSION, $2, $1, $3);}
+| relational-expression relational-operator shift-expression {$$ = ast_binary($1, $2, $3);}
 ;
 relational-operator
 : "<" {$$ = ast_arity0(AST_LESS_THAN);}
@@ -228,7 +228,7 @@ relational-operator
 ;
 equality-expression
 : relational-expression
-| equality-expression equality-operator relational-expression {$$ = ast_append3(AST_EQUALITY_EXPRESSION, $2, $1, $3);}
+| equality-expression equality-operator relational-expression {$$ = ast_binary($1, $2, $3);}
 ;
 equality-operator
 : "==" {$$ = ast_arity0(AST_EQUAL);}

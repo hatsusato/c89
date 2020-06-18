@@ -62,3 +62,6 @@ YYSTYPE ast_arity2(int tag) {
 YYSTYPE ast_arity3(int tag) {
   return ast_list_append(ast_new_tag(AST_ARITY3), ast_new_tag(tag));
 }
+YYSTYPE ast_binary(YYSTYPE x1, YYSTYPE x2, YYSTYPE x3) {
+  return ast_append3(AST_BINARY, x2, x1, x3);
+}
