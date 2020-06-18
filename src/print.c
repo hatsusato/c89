@@ -92,37 +92,6 @@ List *print_ast(List *list, int indent) {
   case AST_CHARACTER_CONSTANT:
   case AST_STRING_LITERAL:
     return print_token(list);
-    /* Expressions */
-  case AST_UNARY_EXPRESSION:
-    list = print_tag(list);
-    return print_repeat(list, indent, 1);
-  case AST_CAST_EXPRESSION:
-    return print_repeat(list, indent, 2);
-  case AST_BINARY:
-    list = list_next(list);
-    list = print_tag(list);
-    return print_repeat(list, indent, 2);
-  case AST_MULTIPLICATIVE_EXPRESSION:
-  case AST_ADDITIVE_EXPRESSION:
-  case AST_SHIFT_EXPRESSION:
-  case AST_RELATIONAL_EXPRESSION:
-  case AST_EQUALITY_EXPRESSION:
-  case AST_AND_EXPRESSION:
-  case AST_EXCLUSIVE_OR_EXPRESSION:
-  case AST_INCLUSIVE_OR_EXPRESSION:
-  case AST_LOGICAL_AND_EXPRESSION:
-  case AST_LOGICAL_OR_EXPRESSION:
-    list = print_tag(list);
-    return print_repeat(list, indent, 2);
-  case AST_CONDITIONAL_EXPRESSION:
-    return print_repeat(list, indent, 3);
-  case AST_ASSIGNMENT_EXPRESSION:
-    list = print_tag(list);
-    return print_repeat(list, indent, 2);
-  case AST_EXPRESSION:
-    return print_repeat(list, indent, 2);
-  case AST_CONSTANT_EXPRESSION:
-    return print_repeat(list, indent, 1);
     /* Declarations */
   case AST_DECLARATION:
     return print_repeat(list, indent, 2);
