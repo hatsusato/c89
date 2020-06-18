@@ -291,12 +291,15 @@ assignment-operator
 | "|=" {$$ = ast_arity0(AST_BAR_ASSIGN);}
 ;
 expression.opt
-: %empty {AST_EMPTY($$);}
+: %empty {$$ = ast_arity0(AST_NIL);}
 | expression
 ;
 expression
 : assignment-expression
-| expression "," assignment-expression {AST_TAG($$, EXPRESSION); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| expression comma-operator assignment-expression {$$ = ast_binary($1, $2, $3);}
+;
+comma-operator
+: "," {$$ = ast_arity0(AST_COMMA);}
 ;
 
 /* 6.4 Constant expressions */
