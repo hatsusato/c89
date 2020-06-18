@@ -54,5 +54,9 @@ YYSTYPE ast_append2(int, YYSTYPE, YYSTYPE);
 YYSTYPE ast_append3(int, YYSTYPE, YYSTYPE, YYSTYPE);
 YYSTYPE ast_push(YYSTYPE, YYSTYPE);
 YYSTYPE ast_push_tag(YYSTYPE, int);
+YYSTYPE ast_arity0(int);
+YYSTYPE ast_arity1(int);
+YYSTYPE ast_arity2(int);
+YYSTYPE ast_arity3(int);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */

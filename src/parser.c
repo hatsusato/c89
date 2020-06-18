@@ -53,3 +53,15 @@ YYSTYPE ast_push(YYSTYPE x0, YYSTYPE x1) {
 YYSTYPE ast_push_tag(YYSTYPE x0, int tag) {
   return ast_push(x0, ast_new_tag(tag));
 }
+YYSTYPE ast_arity0(int tag) {
+  return ast_list_append(ast_new_tag(AST_ARITY0), ast_new_tag(tag));
+}
+YYSTYPE ast_arity1(int tag) {
+  return ast_list_append(ast_new_tag(AST_ARITY1), ast_new_tag(tag));
+}
+YYSTYPE ast_arity2(int tag) {
+  return ast_list_append(ast_new_tag(AST_ARITY2), ast_new_tag(tag));
+}
+YYSTYPE ast_arity3(int tag) {
+  return ast_list_append(ast_new_tag(AST_ARITY3), ast_new_tag(tag));
+}
