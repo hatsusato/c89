@@ -170,22 +170,22 @@ argument-expression-list.cons
 ;
 unary-expression
 : postfix-expression
-| unary-expression.prefix {$$ = ast_arity1(AST_UNARY_EXPRESSION); $$ = ast_push($$, $1);}
+| unary-expression.prefix {$$ = ast_arity2(AST_UNARY_EXPRESSION); $$ = ast_push($$, $1);}
 ;
 unary-expression.prefix
-: "++" unary-expression {$$ = ast_arity1(AST_INCREMENT); $$ = ast_push($$, $2);}
-| "--" unary-expression {$$ = ast_arity1(AST_DECREMENT); $$ = ast_push($$, $2);}
+: "++" unary-expression {$$ = ast_arity0(AST_INCREMENT); $$ = ast_push($$, $2);}
+| "--" unary-expression {$$ = ast_arity0(AST_DECREMENT); $$ = ast_push($$, $2);}
 | unary-operator cast-expression {$$ = ast_push($1, $2);}
-| "sizeof" unary-expression {$$ = ast_arity1(AST_SIZEOF); $$ = ast_push($$, $2);}
-| "sizeof" "(" type-name ")" {$$ = ast_arity1(AST_SIZEOF); $$ = ast_push($$, $3);}
+| "sizeof" unary-expression {$$ = ast_arity0(AST_SIZEOF); $$ = ast_push($$, $2);}
+| "sizeof" "(" type-name ")" {$$ = ast_arity0(AST_SIZEOF); $$ = ast_push($$, $3);}
 ;
 unary-operator
-: "&" {$$ = ast_arity1(AST_AMPERSAND);}
-| "*" {$$ = ast_arity1(AST_ASTERISK);};
-| "+" {$$ = ast_arity1(AST_PLUS);};
-| "-" {$$ = ast_arity1(AST_MINUS);};
-| "~" {$$ = ast_arity1(AST_TILDE);};
-| "!" {$$ = ast_arity1(AST_EXCLAMATION);};
+: "&" {$$ = ast_arity0(AST_AMPERSAND);}
+| "*" {$$ = ast_arity0(AST_ASTERISK);};
+| "+" {$$ = ast_arity0(AST_PLUS);};
+| "-" {$$ = ast_arity0(AST_MINUS);};
+| "~" {$$ = ast_arity0(AST_TILDE);};
+| "!" {$$ = ast_arity0(AST_EXCLAMATION);};
 ;
 cast-expression
 : unary-expression
