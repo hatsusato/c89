@@ -275,20 +275,20 @@ conditional-expression
 ;
 assignment-expression
 : conditional-expression
-| unary-expression assignment-operator assignment-expression {AST_TAG($$, ASSIGNMENT_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| unary-expression assignment-operator assignment-expression {$$ = ast_binary($1, $2, $3);}
 ;
 assignment-operator
-: "=" {AST_TAG($$, ASSIGN);}
-| "*=" {AST_TAG($$, ASTERISK_ASSIGN);}
-| "/=" {AST_TAG($$, SLASH_ASSIGN);}
-| "%=" {AST_TAG($$, PERCENT_ASSIGN);}
-| "+=" {AST_TAG($$, PLUS_ASSIGN);}
-| "-=" {AST_TAG($$, MINUS_ASSIGN);}
-| "<<=" {AST_TAG($$, LEFT_SHIFT_ASSIGN);}
-| ">>=" {AST_TAG($$, RIGHT_SHIFT_ASSIGN);}
-| "&=" {AST_TAG($$, AMPERSAND_ASSIGN);}
-| "^=" {AST_TAG($$, CARET_ASSIGN);}
-| "|=" {AST_TAG($$, BAR_ASSIGN);}
+: "=" {$$ = ast_arity0(AST_ASSIGN);}
+| "*=" {$$ = ast_arity0(AST_ASTERISK_ASSIGN);}
+| "/=" {$$ = ast_arity0(AST_SLASH_ASSIGN);}
+| "%=" {$$ = ast_arity0(AST_PERCENT_ASSIGN);}
+| "+=" {$$ = ast_arity0(AST_PLUS_ASSIGN);}
+| "-=" {$$ = ast_arity0(AST_MINUS_ASSIGN);}
+| "<<=" {$$ = ast_arity0(AST_LEFT_SHIFT_ASSIGN);}
+| ">>=" {$$ = ast_arity0(AST_RIGHT_SHIFT_ASSIGN);}
+| "&=" {$$ = ast_arity0(AST_AMPERSAND_ASSIGN);}
+| "^=" {$$ = ast_arity0(AST_CARET_ASSIGN);}
+| "|=" {$$ = ast_arity0(AST_BAR_ASSIGN);}
 ;
 expression.opt
 : %empty {AST_EMPTY($$);}
