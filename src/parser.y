@@ -257,11 +257,17 @@ inclusive-or-operator
 ;
 logical-and-expression
 : inclusive-or-expression
-| logical-and-expression "&&" inclusive-or-expression {AST_TAG($$, LOGICAL_AND_EXPRESSION); AST_PUSH_TAG($$, AND); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| logical-and-expression logical-and-operator inclusive-or-expression {$$ = ast_binary($1, $2, $3);}
+;
+logical-and-operator
+: "&&" {$$ = ast_arity0(AST_AND);}
 ;
 logical-or-expression
 : logical-and-expression
-| logical-or-expression "||" logical-and-expression {AST_TAG($$, LOGICAL_OR_EXPRESSION); AST_PUSH_TAG($$, OR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| logical-or-expression logical-or-operator logical-and-expression {$$ = ast_binary($1, $2, $3);}
+;
+logical-or-operator
+: "||" {$$ = ast_arity0(AST_OR);}
 ;
 conditional-expression
 : logical-or-expression
