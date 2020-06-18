@@ -198,18 +198,26 @@ List *print_ast(List *list, int indent) {
   case AST_NIL:
     printf(")");
     return list_next(list);
+  case AST_ARITY0:
+    list = list_next(list);
+    list = print_tag(list);
+    print_end();
+    return list;
   case AST_ARITY1:
+    list = list_next(list);
     list = print_tag(list);
     list = print_line(list, indent + 1);
     print_end();
     return list;
   case AST_ARITY2:
+    list = list_next(list);
     list = print_tag(list);
     list = print_line(list, indent + 1);
     list = print_line(list, indent + 1);
     print_end();
     return list;
   case AST_ARITY3:
+    list = list_next(list);
     list = print_tag(list);
     list = print_line(list, indent + 1);
     list = print_line(list, indent + 1);

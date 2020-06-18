@@ -147,15 +147,15 @@ primary-expression
 ;
 postfix-expression
 : primary-expression
-| postfix-expression postfix-expression.suffix {$$ = ast_new_tag(AST_ARITY3); $$ = ast_push_tag($$, AST_POSTFIX_EXPRESSION); $$ = ast_push($$, $1); $$ = ast_push($$, $2);}
+| postfix-expression postfix-expression.suffix {$$ = ast_arity2(AST_POSTFIX_EXPRESSION); $$ = ast_push($$, $1); $$ = ast_push($$, $2);}
 ;
 postfix-expression.suffix
-: "[" expression "]" {$$ = ast_new_tag(AST_ARITY2); $$ = ast_push_tag($$, AST_LEFT_BRACKET); $$ = ast_push($$, $2);}
-| "(" argument-expression-list.opt ")" {$$ = ast_new_tag(AST_ARITY2); $$ = ast_push_tag($$, AST_LEFT_PAREN); $$ = ast_push($$, $2);}
-| "." identifier {$$ = ast_new_tag(AST_ARITY2); $$ = ast_push_tag($$, AST_PERIOD); $$ = ast_push($$, $2);}
-| "->" identifier {$$ = ast_new_tag(AST_ARITY2); $$ = ast_push_tag($$, AST_ARROW); $$ = ast_push($$, $2);}
-| "++" {$$ = ast_new_tag(AST_ARITY1); $$ = ast_push_tag($$, AST_INCREMENT);}
-| "--" {$$ = ast_new_tag(AST_ARITY1); $$ = ast_push_tag($$, AST_DECREMENT);}
+: "[" expression "]" {$$ = ast_arity1(AST_ARRAY); $$ = ast_push($$, $2);}
+| "(" argument-expression-list.opt ")" {$$ = ast_arity1(AST_CALL); $$ = ast_push($$, $2);}
+| "." identifier {$$ = ast_arity1(AST_PERIOD); $$ = ast_push($$, $2);}
+| "->" identifier {$$ = ast_arity1(AST_ARROW); $$ = ast_push($$, $2);}
+| "++" {$$ = ast_arity0(AST_INCREMENT);}
+| "--" {$$ = ast_arity0(AST_DECREMENT);}
 ;
 argument-expression-list.opt
 : %empty {AST_LIST_EMPTY($$, ARGUMENT_EXPRESSION_LIST);}
