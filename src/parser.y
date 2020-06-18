@@ -147,13 +147,13 @@ primary-expression
 ;
 postfix-expression
 : primary-expression
-| postfix-expression postfix-expression.suffix {$$ = ast_arity2(AST_POSTFIX_EXPRESSION); $$ = ast_push($$, $1); $$ = ast_push($$, $2);}
+| postfix-expression postfix-expression.suffix {$$ = ast_append2(AST_POSTFIX_EXPRESSION, $1, $2);}
 ;
 postfix-expression.suffix
-: "[" expression "]" {$$ = ast_arity1(AST_ARRAY); $$ = ast_push($$, $2);}
-| "(" argument-expression-list.opt ")" {$$ = ast_arity1(AST_CALL); $$ = ast_push($$, $2);}
-| "." identifier {$$ = ast_arity1(AST_PERIOD); $$ = ast_push($$, $2);}
-| "->" identifier {$$ = ast_arity1(AST_ARROW); $$ = ast_push($$, $2);}
+: "[" expression "]" {$$ = ast_append1(AST_ARRAY, $2);}
+| "(" argument-expression-list.opt ")" {$$ = ast_append1(AST_CALL, $2);}
+| "." identifier {$$ = ast_append1(AST_PERIOD, $2);}
+| "->" identifier {$$ = ast_append1(AST_ARROW, $2);}
 | "++" {$$ = ast_arity0(AST_INCREMENT);}
 | "--" {$$ = ast_arity0(AST_DECREMENT);}
 ;
@@ -189,11 +189,11 @@ unary-operator
 ;
 cast-expression
 : unary-expression
-| "(" type-name ")" cast-expression {$$ = ast_arity2(AST_CAST_EXPRESSION); $$ = ast_push($$, $2); $$ = ast_push($$, $4);}
+| "(" type-name ")" cast-expression {$$ = ast_append2(AST_CAST_EXPRESSION, $2, $4);}
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression multiplicative-operator cast-expression {$$ = ast_arity3(AST_MULTIPLICATIVE_EXPRESSION); $$ = ast_push($$, $2); $$ = ast_push($$, $1); $$ = ast_push($$, $3);}
+| multiplicative-expression multiplicative-operator cast-expression {$$ = ast_append3(AST_MULTIPLICATIVE_EXPRESSION, $2, $1, $3);}
 ;
 multiplicative-operator
 : "*" {$$ = ast_arity0(AST_ASTERISK);}
@@ -202,7 +202,7 @@ multiplicative-operator
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression additive-operator multiplicative-expression {$$ = ast_arity3(AST_ADDITIVE_EXPRESSION); $$ = ast_push($$, $2); $$ = ast_push($$, $1); $$ = ast_push($$, $3);}
+| additive-expression additive-operator multiplicative-expression {$$ = ast_append3(AST_ADDITIVE_EXPRESSION, $2, $1, $3);}
 ;
 additive-operator
 : "+" {$$ = ast_arity0(AST_PLUS);}

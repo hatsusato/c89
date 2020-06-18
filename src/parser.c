@@ -27,24 +27,21 @@ YYSTYPE ast_list_append(YYSTYPE lhs, YYSTYPE rhs) {
   return lhs;
 }
 YYSTYPE ast_append1(int tag, YYSTYPE x1) {
-  YYSTYPE x0 = ast_new_tag(AST_ARITY1);
-  x0 = ast_list_append(x0, ast_new_tag(tag));
-  x0 = ast_list_append(x0, x1);
+  YYSTYPE x0 = ast_arity1(tag);
+  x0 = ast_push(x0, x1);
   return x0;
 }
 YYSTYPE ast_append2(int tag, YYSTYPE x1, YYSTYPE x2) {
-  YYSTYPE x0 = ast_new_tag(AST_ARITY2);
-  x0 = ast_list_append(x0, ast_new_tag(tag));
-  x0 = ast_list_append(x0, x1);
-  x0 = ast_list_append(x0, x2);
+  YYSTYPE x0 = ast_arity2(tag);
+  x0 = ast_push(x0, x1);
+  x0 = ast_push(x0, x2);
   return x0;
 }
 YYSTYPE ast_append3(int tag, YYSTYPE x1, YYSTYPE x2, YYSTYPE x3) {
-  YYSTYPE x0 = ast_new_tag(AST_ARITY3);
-  x0 = ast_list_append(x0, ast_new_tag(tag));
-  x0 = ast_list_append(x0, x1);
-  x0 = ast_list_append(x0, x2);
-  x0 = ast_list_append(x0, x3);
+  YYSTYPE x0 = ast_arity3(tag);
+  x0 = ast_push(x0, x1);
+  x0 = ast_push(x0, x2);
+  x0 = ast_push(x0, x3);
   return x0;
 }
 YYSTYPE ast_push(YYSTYPE x0, YYSTYPE x1) {
