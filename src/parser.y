@@ -236,15 +236,24 @@ equality-operator
 ;
 and-expression
 : equality-expression
-| and-expression "&" equality-expression {AST_TAG($$, AND_EXPRESSION); AST_PUSH_TAG($$, AMPERSAND); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| and-expression and-operator equality-expression {$$ = ast_binary($1, $2, $3);}
+;
+and-operator
+: "&" {$$ = ast_arity0(AST_AMPERSAND);}
 ;
 exclusive-or-expression
 : and-expression
-| exclusive-or-expression "^" and-expression {AST_TAG($$, EXCLUSIVE_OR_EXPRESSION); AST_PUSH_TAG($$, CARET); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| exclusive-or-expression exclusive-or-operator and-expression {$$ = ast_binary($1, $2, $3);}
+;
+exclusive-or-operator
+: "^" {$$ = ast_arity0(AST_CARET);}
 ;
 inclusive-or-expression
 : exclusive-or-expression
-| inclusive-or-expression "|" exclusive-or-expression {AST_TAG($$, INCLUSIVE_OR_EXPRESSION); AST_PUSH_TAG($$, BAR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| inclusive-or-expression inclusive-or-operator exclusive-or-expression {$$ = ast_binary($1, $2, $3);}
+;
+inclusive-or-operator
+: "|" {$$ = ast_arity0(AST_BAR);}
 ;
 logical-and-expression
 : inclusive-or-expression
