@@ -85,9 +85,6 @@ List *print_ast(List *list, int indent) {
 #include "enum/symbol.def"
 #undef HANDLE
     return print_repeat(list, indent, 0);
-  case AST_ARRAY:
-  case AST_CALL:
-    return print_tag(list);
   case AST_IDENTIFIER:
   case AST_FLOATING_CONSTANT:
   case AST_INTEGER_CONSTANT:
@@ -96,8 +93,6 @@ List *print_ast(List *list, int indent) {
   case AST_STRING_LITERAL:
     return print_token(list);
     /* Expressions */
-  case AST_POSTFIX_EXPRESSION:
-    return print_tag(list);
   case AST_UNARY_EXPRESSION:
     list = print_tag(list);
     return print_repeat(list, indent, 1);
@@ -225,7 +220,6 @@ List *print_ast(List *list, int indent) {
     print_end();
     return list;
   default:
-    fprintf(stderr, "[%s]", ast_show(list_tag(list)));
-    return list_next(list);
+    return print_tag(list);
   }
 }
