@@ -170,22 +170,22 @@ argument-expression-list.cons
 ;
 unary-expression
 : postfix-expression
-| unary-expression.impl {AST_TAG($$, UNARY_EXPRESSION); AST_PUSH($$, $1);}
+| unary-expression.prefix {$$ = ast_arity1(AST_UNARY_EXPRESSION); $$ = ast_push($$, $1);}
 ;
-unary-expression.impl
-: "++" unary-expression {AST_TAG($$, INCREMENT); AST_PUSH($$, $2);}
-| "--" unary-expression {AST_TAG($$, DECREMENT); AST_PUSH($$, $2);}
-| unary-operator cast-expression {AST_LIST_CONS($$, $1, $2);}
-| "sizeof" unary-expression {AST_TAG($$, SIZEOF); AST_PUSH($$, $2);}
-| "sizeof" "(" type-name ")" {AST_TAG($$, SIZEOF); AST_PUSH($$, $3);}
+unary-expression.prefix
+: "++" unary-expression {$$ = ast_arity1(AST_INCREMENT); $$ = ast_push($$, $2);}
+| "--" unary-expression {$$ = ast_arity1(AST_DECREMENT); $$ = ast_push($$, $2);}
+| unary-operator cast-expression {$$ = ast_push($1, $2);}
+| "sizeof" unary-expression {$$ = ast_arity1(AST_SIZEOF); $$ = ast_push($$, $2);}
+| "sizeof" "(" type-name ")" {$$ = ast_arity1(AST_SIZEOF); $$ = ast_push($$, $3);}
 ;
 unary-operator
-: "&" {AST_TAG($$, AMPERSAND);}
-| "*" {AST_TAG($$, ASTERISK);};
-| "+" {AST_TAG($$, PLUS);};
-| "-" {AST_TAG($$, MINUS);};
-| "~" {AST_TAG($$, TILDE);};
-| "!" {AST_TAG($$, EXCLAMATION);};
+: "&" {$$ = ast_arity1(AST_AMPERSAND);}
+| "*" {$$ = ast_arity1(AST_ASTERISK);};
+| "+" {$$ = ast_arity1(AST_PLUS);};
+| "-" {$$ = ast_arity1(AST_MINUS);};
+| "~" {$$ = ast_arity1(AST_TILDE);};
+| "!" {$$ = ast_arity1(AST_EXCLAMATION);};
 ;
 cast-expression
 : unary-expression
