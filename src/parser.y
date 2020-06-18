@@ -210,11 +210,11 @@ additive-operator
 ;
 shift-expression
 : additive-expression
-| shift-expression shift-operator additive-expression {AST_TAG($$, SHIFT_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| shift-expression shift-operator additive-expression {$$ = ast_append3(AST_SHIFT_EXPRESSION, $2, $1, $3);}
 ;
 shift-operator
-: "<<" {AST_TAG($$, LEFT_SHIFT);}
-| ">>" {AST_TAG($$, RIGHT_SHIFT);}
+: "<<" {$$ = ast_arity0(AST_LEFT_SHIFT);}
+| ">>" {$$ = ast_arity0(AST_RIGHT_SHIFT);}
 ;
 relational-expression
 : shift-expression
