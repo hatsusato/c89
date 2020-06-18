@@ -193,20 +193,20 @@ cast-expression
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression multiplicative-operator cast-expression {AST_TAG($$, MULTIPLICATIVE_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| multiplicative-expression multiplicative-operator cast-expression {$$ = ast_arity3(AST_MULTIPLICATIVE_EXPRESSION); $$ = ast_push($$, $2); $$ = ast_push($$, $1); $$ = ast_push($$, $3);}
 ;
 multiplicative-operator
-: "*" {AST_TAG($$, ASTERISK);}
-| "/" {AST_TAG($$, SLASH);}
-| "%" {AST_TAG($$, PERCENT);}
+: "*" {$$ = ast_arity0(AST_ASTERISK);}
+| "/" {$$ = ast_arity0(AST_SLASH);}
+| "%" {$$ = ast_arity0(AST_PERCENT);}
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression additive-operator multiplicative-expression {AST_TAG($$, ADDITIVE_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+| additive-expression additive-operator multiplicative-expression {$$ = ast_arity3(AST_ADDITIVE_EXPRESSION); $$ = ast_push($$, $2); $$ = ast_push($$, $1); $$ = ast_push($$, $3);}
 ;
 additive-operator
-: "+" {AST_TAG($$, PLUS);}
-| "-" {AST_TAG($$, MINUS);}
+: "+" {$$ = ast_arity0(AST_PLUS);}
+| "-" {$$ = ast_arity0(AST_MINUS);}
 ;
 shift-expression
 : additive-expression
