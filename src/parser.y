@@ -189,7 +189,7 @@ unary-operator
 ;
 cast-expression
 : unary-expression
-| "(" type-name ")" cast-expression {AST_TAG($$, CAST_EXPRESSION); AST_PUSH($$, $2); AST_PUSH($$, $4);}
+| "(" type-name ")" cast-expression {$$ = ast_arity2(AST_CAST_EXPRESSION); $$ = ast_push($$, $2); $$ = ast_push($$, $4);}
 ;
 multiplicative-expression
 : cast-expression
