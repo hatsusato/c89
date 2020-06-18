@@ -304,11 +304,11 @@ comma-operator
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty {AST_EMPTY($$);}
+: %empty {$$ = ast_arity0(AST_NIL);}
 | constant-expression
 ;
 constant-expression
-: conditional-expression {AST_TAG($$, CONSTANT_EXPRESSION); AST_PUSH($$, $1);}
+: conditional-expression {$$ = ast_append1(AST_CONSTANT_EXPRESSION, $1);}
 ;
 
 /* 6.5 Declarations */
