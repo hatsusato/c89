@@ -271,7 +271,7 @@ logical-or-operator
 ;
 conditional-expression
 : logical-or-expression
-| logical-or-expression "?" expression ":" conditional-expression {AST_TAG($$, CONDITIONAL_EXPRESSION); AST_PUSH($$, $1); AST_PUSH($$, $3); AST_PUSH($$, $5);}
+| logical-or-expression "?" expression ":" conditional-expression {$$ = ast_append3(AST_CONDITIONAL_EXPRESSION, $1, $3, $5);}
 ;
 assignment-expression
 : conditional-expression
