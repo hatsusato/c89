@@ -45,11 +45,7 @@ List *list_last(List *list) {
   }
   return list;
 }
-List *list_append(List *dst, List *src) {
-  if (dst) {
-    list_last(dst)->next = src;
-    return dst;
-  } else {
-    return src;
-  }
+void list_insert(List *dst, List *src) {
+  assert(dst);
+  dst->next = src;
 }

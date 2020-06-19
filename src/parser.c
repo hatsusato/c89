@@ -43,8 +43,8 @@ YYSTYPE ast_append3(int tag, YYSTYPE x1, YYSTYPE x2, YYSTYPE x3) {
   return x0;
 }
 YYSTYPE ast_push(YYSTYPE x0, YYSTYPE x1) {
-  if (x0.list) {
-    x0.list = list_append(x0.list, x1.list);
+  if (x0.last) {
+    list_insert(x0.last, x1.list);
     x0.last = x1.last;
   } else {
     x0 = x1;
