@@ -93,8 +93,6 @@ List *print_ast(List *list, int indent) {
   case AST_STRING_LITERAL:
     return print_token(list);
     /* Declarations */
-  case AST_TYPE_QUALIFIER:
-    return print_repeat(list, indent, 1);
   case AST_DECLARATOR:
     return print_repeat(list, indent, 3);
   case AST_DIRECT_DECLARATOR:
