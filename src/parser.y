@@ -340,28 +340,28 @@ init-declarator
 | declarator "=" initializer {$$ = ast_append2(AST_INIT_DECLARATOR, $1, $3);}
 ;
 storage-class-specifier
-: storage-class-specifier.impl {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH($$, $1);}
+: storage-class-specifier.prefix {$$ = ast_append1(AST_STORAGE_CLASS_SPECIFIER, $1);}
 ;
-storage-class-specifier.impl
-: "typedef" {AST_TAG($$, TYPEDEF);}
-| "extern" {AST_TAG($$, EXTERN);}
-| "static" {AST_TAG($$, STATIC);}
-| "auto" {AST_TAG($$, AUTO);}
-| "register" {AST_TAG($$, REGISTER);}
+storage-class-specifier.prefix
+: "typedef" {$$ = ast_arity0(AST_TYPEDEF);}
+| "extern" {$$ = ast_arity0(AST_EXTERN);}
+| "static" {$$ = ast_arity0(AST_STATIC);}
+| "auto" {$$ = ast_arity0(AST_AUTO);}
+| "register" {$$ = ast_arity0(AST_REGISTER);}
 ;
 type-specifier
-: type-specifier.impl {AST_TAG($$, TYPE_SPECIFIER); AST_PUSH($$, $1);}
+: type-specifier.prefix {$$ = ast_append1(AST_TYPE_SPECIFIER, $1);}
 ;
-type-specifier.impl
-: "void" {AST_TAG($$, VOID);}
-| "char" {AST_TAG($$, CHAR);}
-| "short" {AST_TAG($$, SHORT);}
-| "int" {AST_TAG($$, INT);}
-| "long" {AST_TAG($$, LONG);}
-| "float" {AST_TAG($$, FLOAT);}
-| "double" {AST_TAG($$, DOUBLE);}
-| "signed" {AST_TAG($$, SIGNED);}
-| "unsigned" {AST_TAG($$, UNSIGNED);}
+type-specifier.prefix
+: "void" {$$ = ast_arity0(AST_VOID);}
+| "char" {$$ = ast_arity0(AST_CHAR);}
+| "short" {$$ = ast_arity0(AST_SHORT);}
+| "int" {$$ = ast_arity0(AST_INT);}
+| "long" {$$ = ast_arity0(AST_LONG);}
+| "float" {$$ = ast_arity0(AST_FLOAT);}
+| "double" {$$ = ast_arity0(AST_DOUBLE);}
+| "signed" {$$ = ast_arity0(AST_SIGNED);}
+| "unsigned" {$$ = ast_arity0(AST_UNSIGNED);}
 | struct-or-union-specifier
 | enum-specifier
 | typedef-name
