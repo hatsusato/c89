@@ -16,12 +16,12 @@ YYSTYPE ast_new_token(int tag, yyscan_t scanner) {
   int leng = yyget_leng(scanner);
   Vector *vec = vector_new(1);
   vector_append(vec, text, leng);
-  ret.list = list_new(tag, vec);
+  ret.list = ret.last = list_new(tag, vec);
   return ret;
 }
 YYSTYPE ast_new_tag(int tag) {
   YYSTYPE ret = ast_init();
-  ret.list = list_new(tag, nil);
+  ret.list = ret.last = list_new(tag, nil);
   return ret;
 }
 YYSTYPE ast_append1(int tag, YYSTYPE x1) {
@@ -43,7 +43,12 @@ YYSTYPE ast_append3(int tag, YYSTYPE x1, YYSTYPE x2, YYSTYPE x3) {
   return x0;
 }
 YYSTYPE ast_push(YYSTYPE x0, YYSTYPE x1) {
-  x0.list = list_append(x0.list, x1.list);
+  if (x0.list) {
+    x0.list = list_append(x0.list, x1.list);
+    x0.last = x1.last;
+  } else {
+    x0 = x1;
+  }
   return x0;
 }
 YYSTYPE ast_push_tag(YYSTYPE x0, int tag) {
