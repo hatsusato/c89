@@ -407,8 +407,8 @@ struct-declarator
 | declarator.opt ":" constant-expression {$$ = ast_append2(AST_STRUCT_DECLARATOR, $1, $3);}
 ;
 enum-specifier
-: "enum" identifier.opt "{" enumerator-list "}" {AST_TAG($$, ENUM_SPECIFIER); AST_PUSH($$, $2); AST_PUSH($$, $4); }
-| "enum" identifier {AST_TAG($$, ENUM_SPECIFIER); AST_PUSH($$, $2); AST_PUSH_TAG($$, NIL);}
+: "enum" identifier.opt "{" enumerator-list "}" {$$ = ast_append2(AST_ENUM_SPECIFIER, $2, $4); }
+| "enum" identifier {$$ = ast_append1(AST_ENUM_SPECIFIER, $2); }
 ;
 enumerator-list
 : enumerator-list.cons {AST_LIST_EXIST($$, ENUMERATOR_LIST, $1);}
@@ -418,8 +418,8 @@ enumerator-list.cons
 | enumerator-list.cons "," enumerator {AST_LIST_CONS($$, $1, $3);}
 ;
 enumerator
-: enumeration-constant {AST_TAG($$, ENUMERATOR); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
-| enumeration-constant "=" constant-expression {AST_TAG($$, ENUMERATOR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+: enumeration-constant {$$ = ast_append1(AST_ENUMERATOR, $1);}
+| enumeration-constant "=" constant-expression {$$ = ast_append2(AST_ENUMERATOR, $1, $3);}
 ;
 type-qualifier
 : type-qualifier.impl {AST_TAG($$, TYPE_QUALIFIER); AST_PUSH($$, $1);}
