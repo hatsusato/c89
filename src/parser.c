@@ -72,3 +72,17 @@ YYSTYPE ast_arity3(int tag) {
 YYSTYPE ast_binary(YYSTYPE x1, YYSTYPE x2, YYSTYPE x3) {
   return ast_append3(AST_BINARY, x2, x1, x3);
 }
+YYSTYPE ast_list_empty(int tag) {
+  YYSTYPE ret = ast_push_tag(ast_new_tag(AST_LIST), tag);
+  List *prev = ret.last;
+  ret = ast_push_tag(ret, AST_NIL);
+  list_insert(ret.last, prev);
+  return ret;
+}
+YYSTYPE ast_list_push(YYSTYPE list, YYSTYPE elem) {
+  assert(list_next(last) == list.last);
+  list_insert(list_next(list.last), elem.list);
+  list_insert(elem.last, list.last);
+  list_insert(list.last, elem.last);
+  return list;
+}

@@ -58,5 +58,7 @@ YYSTYPE ast_arity1(int);
 YYSTYPE ast_arity2(int);
 YYSTYPE ast_arity3(int);
 YYSTYPE ast_binary(YYSTYPE, YYSTYPE, YYSTYPE);
+YYSTYPE ast_list_empty(int);
+YYSTYPE ast_list_push(YYSTYPE, YYSTYPE);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */
