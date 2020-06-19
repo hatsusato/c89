@@ -367,12 +367,12 @@ type-specifier.prefix
 | typedef-name
 ;
 struct-or-union-specifier
-: struct-or-union identifier.opt "{" struct-declaration-list "}" {AST_TAG($$, STRUCT_OR_UNION_SPECIFIER); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH($$, $4);}
-| struct-or-union identifier {AST_TAG($$, STRUCT_OR_UNION_SPECIFIER); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH_TAG($$, NIL);}
+: struct-or-union identifier.opt "{" struct-declaration-list "}" {$$ = ast_append3(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2, $4);}
+| struct-or-union identifier {$$ = ast_append2(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2);}
 ;
 struct-or-union
-: "struct" {AST_TAG($$, STRUCT);}
-| "union" {AST_TAG($$, UNION);}
+: "struct" {$$ = ast_arity0(AST_STRUCT);}
+| "union" {$$ = ast_arity0(AST_UNION);}
 ;
 struct-declaration-list
 : struct-declaration-list.cons {AST_LIST_EXIST($$, STRUCT_DECLARATION_LIST, $1);}
@@ -382,7 +382,7 @@ struct-declaration-list.cons
 | struct-declaration-list.cons struct-declaration {AST_LIST_CONS($$, $1, $2);}
 ;
 struct-declaration
-: specifier-qualifier-list struct-declarator-list ";" {AST_TAG($$, STRUCT_DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
+: specifier-qualifier-list struct-declarator-list ";" {$$ = ast_append2(AST_STRUCT_DECLARATION, $1, $2);}
 ;
 specifier-qualifier-list
 : specifier-qualifier-list.cons {AST_LIST_EXIST($$, SPECIFIER_QUALIFIER_LIST, $1);}
@@ -403,8 +403,8 @@ struct-declarator-list.cons
 | struct-declarator-list.cons "," struct-declarator {AST_LIST_CONS($$, $1, $3); }
 ;
 struct-declarator
-: declarator {AST_TAG($$, STRUCT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
-| declarator.opt ":" constant-expression {AST_TAG($$, STRUCT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+: declarator {$$ = ast_append1(AST_STRUCT_DECLARATOR, $1);}
+| declarator.opt ":" constant-expression {$$ = ast_append2(AST_STRUCT_DECLARATOR, $1, $3);}
 ;
 enum-specifier
 : "enum" identifier.opt "{" enumerator-list "}" {AST_TAG($$, ENUM_SPECIFIER); AST_PUSH($$, $2); AST_PUSH($$, $4); }
