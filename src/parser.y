@@ -313,7 +313,8 @@ constant-expression
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers init-declarator-list.opt ";" {AST_TAG($$, DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
+: declaration-specifiers ";" {$$ = ast_append1(AST_DECLARATION, $1);}
+| declaration-specifiers init-declarator-list ";" {$$ = ast_append2(AST_DECLARATION, $1, $2);}
 ;
 declaration-specifiers
 : declaration-specifiers.cons {AST_LIST_EXIST($$, DECLARATION_SPECIFIERS, $1);}
@@ -327,10 +328,6 @@ declaration-specifier
 | type-specifier
 | type-qualifier
 ;
-init-declarator-list.opt
-: %empty {AST_LIST_EMPTY($$, INIT_DECLARATOR_LIST);}
-| init-declarator-list
-;
 init-declarator-list
 : init-declarator-list.cons {AST_LIST_EXIST($$, INIT_DECLARATOR_LIST, $1);}
 ;
@@ -339,8 +336,8 @@ init-declarator-list.cons
 | init-declarator-list.cons "," init-declarator {AST_LIST_CONS($$, $1, $3);}
 ;
 init-declarator
-: declarator {AST_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
-| declarator "=" initializer {AST_TAG($$, INIT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+: declarator {$$ = ast_append1(AST_INIT_DECLARATOR, $1);}
+| declarator "=" initializer {$$ = ast_append2(AST_INIT_DECLARATOR, $1, $3);}
 ;
 storage-class-specifier
 : storage-class-specifier.impl {AST_TAG($$, STORAGE_CLASS_SPECIFIER); AST_PUSH($$, $1);}
