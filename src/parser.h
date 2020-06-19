@@ -11,13 +11,13 @@
   do {                            \
     dst = ast_new_tag(AST_##tag); \
   } while (0)
-#define AST_PUSH_TAG(dst, tag)                          \
-  do {                                                  \
-    dst = ast_list_append(dst, ast_new_tag(AST_##tag)); \
+#define AST_PUSH_TAG(dst, tag)          \
+  do {                                  \
+    dst = ast_push_tag(dst, AST_##tag); \
   } while (0)
-#define AST_PUSH(dst, src)           \
-  do {                               \
-    dst = ast_list_append(dst, src); \
+#define AST_PUSH(dst, src)    \
+  do {                        \
+    dst = ast_push(dst, src); \
   } while (0)
 #define AST_EMPTY(dst)      \
   do {                      \
@@ -48,7 +48,6 @@ void yyerror(const char *, yyscan_t);
 YYSTYPE ast_init(void);
 YYSTYPE ast_new_token(int, yyscan_t);
 YYSTYPE ast_new_tag(int);
-YYSTYPE ast_list_append(YYSTYPE, YYSTYPE);
 YYSTYPE ast_append1(int, YYSTYPE);
 YYSTYPE ast_append2(int, YYSTYPE, YYSTYPE);
 YYSTYPE ast_append3(int, YYSTYPE, YYSTYPE, YYSTYPE);
