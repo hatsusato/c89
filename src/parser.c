@@ -1,5 +1,7 @@
 #include "parser.h"
 
+#include "vector.h"
+
 YYSTYPE ast_init(void) {
   YYSTYPE init = {nil, nil};
   return init;

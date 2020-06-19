@@ -4,6 +4,7 @@
 #include "parser.h"
 #include "parser.tab.h"
 #include "print.h"
+#include "vector.h"
 
 void ast_list_free(List *list) {
   void *data = list_data(list);
@@ -20,7 +21,7 @@ void print_seq(yyscan_t scanner) {
 
 int main(void) {
   yyscan_t scanner;
-  YYSTYPE extra = {nil, nil};
+  YYSTYPE extra = ast_init();
   int ret = 0;
   yylex_init_extra(extra, &scanner);
   ret = yyparse(scanner);
