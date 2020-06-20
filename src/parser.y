@@ -137,6 +137,9 @@ string-literal
 
 /* 6.3 Expressions */
 primary-expression
+: primary-expression.suffix {$$ = ast_append1(AST_PRIMARY_EXPRESSION, $1);}
+;
+primary-expression.suffix
 : identifier
 | floating-constant
 | integer-constant
