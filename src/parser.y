@@ -515,20 +515,23 @@ initializer-list
 
 /* 6.6 Statements */
 statement
-: labeled-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
-| compound-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
-| expression-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
-| selection-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
-| iteration-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
-| jump-statement {AST_TAG($$, STATEMENT); AST_PUSH($$, $1);}
+: statement.prefix {$$ = ast_append1(AST_STATEMENT, $1);}
+;
+statement.prefix
+: labeled-statement
+| compound-statement
+| expression-statement
+| selection-statement
+| iteration-statement
+| jump-statement
 ;
 labeled-statement
-: labeled-statement.prefix ":" statement {AST_TAG($$, LABELED_STATEMENT); AST_PUSH($$, $1); AST_PUSH($$, $3);}
+: labeled-statement.prefix ":" statement {$$ = ast_append2(AST_LABELED_STATEMENT, $1, $3);}
 ;
 labeled-statement.prefix
-: identifier {AST_TAG($$, ID); AST_PUSH_TAG($$, NIL);}
-| "case" constant-expression {AST_TAG($$, CASE); AST_PUSH($$, $2);}
-| "default" {AST_TAG($$, DEFAULT); AST_PUSH_TAG($$, NIL);}
+: identifier
+| "case" constant-expression {$$ = ast_append1(AST_CASE, $2);}
+| "default" {$$ = ast_append0(AST_DEFAULT);}
 ;
 compound-statement
 : "{" declaration-list.opt statement-list.opt "}" {AST_TAG($$, COMPOUND_STATEMENT); AST_PUSH($$, $2); AST_PUSH($$, $3);}
