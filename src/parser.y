@@ -534,29 +534,23 @@ labeled-statement.prefix
 | "default" {$$ = ast_append0(AST_DEFAULT);}
 ;
 compound-statement
-: "{" declaration-list.opt statement-list.opt "}" {AST_TAG($$, COMPOUND_STATEMENT); AST_PUSH($$, $2); AST_PUSH($$, $3);}
+: "{" declaration-list.opt statement-list.opt "}" {$$ = ast_append2(AST_COMPOUND_STATEMENT, $2, $3);}
 ;
 declaration-list.opt
-: %empty {AST_LIST_EMPTY($$, DECLARATION_LIST);}
+: %empty {$$ = ast_list_empty(AST_DECLARATION_LIST);}
 | declaration-list
 ;
 declaration-list
-: declaration-list.cons {AST_LIST_EXIST($$, DECLARATION_LIST, $1);}
-;
-declaration-list.cons
-: declaration
-| declaration-list.cons declaration {AST_LIST_CONS($$, $1, $2);}
+: declaration {$$ = ast_list_new(AST_DECLARATION_LIST, $1);}
+| declaration-list declaration {$$ = ast_list_push($1, $2);}
 ;
 statement-list.opt
-: %empty {AST_LIST_EMPTY($$, STATEMENT_LIST);}
+: %empty {$$ = ast_list_empty(AST_STATEMENT_LIST);}
 | statement-list
 ;
 statement-list
-: statement-list.cons {AST_LIST_EXIST($$, STATEMENT_LIST, $1);}
-;
-statement-list.cons
-: statement
-| statement-list.cons statement {AST_LIST_CONS($$, $1, $2);}
+: statement {$$ = ast_list_new(AST_STATEMENT_LIST, $1);}
+| statement-list statement {$$ = ast_list_push($1, $2);}
 ;
 expression-statement
 : expression.opt ";" {AST_TAG($$, EXPRESSION_STATEMENT); AST_PUSH($$, $1);}
