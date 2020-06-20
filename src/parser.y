@@ -425,22 +425,19 @@ direct-declarator.suffix
 | "(" identifier-list.opt ")" {$$ = ast_append1(AST_OLD, $2);}
 ;
 pointer
-: pointer.cons {AST_LIST_EXIST($$, POINTER_LIST, $1);}
-;
-pointer.cons
-: pointer.prefix
-| pointer.cons pointer.prefix {AST_LIST_CONS($$, $1, $2);}
+: pointer.prefix {$$ = ast_append1(AST_POINTER, $1);}
+| pointer.prefix pointer {$$ = ast_append2(AST_POINTER, $1, $2);}
 ;
 pointer.prefix
-: "*" type-qualifier-list.opt {AST_TAG($$, POINTER); AST_PUSH($$, $2);}
+: "*" type-qualifier-list.opt {$$ = $2;}
 ;
 type-qualifier-list.opt
-: %empty {AST_LIST_EMPTY($$, TYPE_QUALIFIER_LIST);}
-| type-qualifier-list {AST_LIST_EXIST($$, TYPE_QUALIFIER_LIST, $1);}
+: %empty {$$ = ast_list_empty(AST_TYPE_QUALIFIER_LIST);}
+| type-qualifier-list
 ;
 type-qualifier-list
-: type-qualifier
-| type-qualifier-list type-qualifier {AST_LIST_CONS($$, $1, $2);}
+: type-qualifier {$$ = ast_list_new(AST_TYPE_QUALIFIER_LIST, $1);}
+| type-qualifier-list type-qualifier {$$ = ast_list_push($1, $2);}
 ;
 parameter-type-list.opt
 : %empty {AST_LIST_EMPTY($$, PARAMETER_LIST);}
