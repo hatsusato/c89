@@ -157,15 +157,12 @@ postfix-expression.suffix
 | "--" {$$ = ast_arity0(AST_DECREMENT);}
 ;
 argument-expression-list.opt
-: %empty {AST_LIST_EMPTY($$, ARGUMENT_EXPRESSION_LIST);}
+: %empty {$$ = ast_list_empty(AST_ARGUMENT_EXPRESSION_LIST);}
 | argument-expression-list
 ;
 argument-expression-list
-: argument-expression-list.cons {AST_LIST_EXIST($$, ARGUMENT_EXPRESSION_LIST, $1);}
-;
-argument-expression-list.cons
-: assignment-expression
-| argument-expression-list.cons "," assignment-expression {AST_LIST_CONS($$, $1, $3);}
+: assignment-expression {$$ = ast_list_push(ast_list_empty(AST_ARGUMENT_EXPRESSION_LIST), $1);}
+| argument-expression-list "," assignment-expression {$$ = ast_list_push($1, $3);}
 ;
 unary-expression
 : postfix-expression
