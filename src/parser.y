@@ -553,7 +553,7 @@ statement-list
 | statement-list statement {$$ = ast_list_push($1, $2);}
 ;
 expression-statement
-: expression.opt ";" {AST_TAG($$, EXPRESSION_STATEMENT); AST_PUSH($$, $1);}
+: expression.opt ";" {$$ = ast_append1(AST_EXPRESSION_STATEMENT, $1);}
 ;
 selection-statement
 : "if" selection-statement.if {AST_TAG($$, SELECTION_STATEMENT); AST_PUSH($$, $2);}
