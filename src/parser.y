@@ -486,16 +486,13 @@ typedef-name
 : TOKEN_TYPEDEF_NAME {$$ = ast_append1(AST_TYPEDEF_NAME, $1);}
 ;
 initializer
-: assignment-expression {AST_TAG($$, INITIALIZER); AST_PUSH($$, $1);}
-| initializer-list {AST_TAG($$, INITIALIZER); AST_PUSH($$, $1); }
+: assignment-expression {$$ = ast_append1(AST_INITIALIZER, $1);}
+| "{" initializer-list "}" {$$ = ast_append1(AST_INITIALIZER, $2);}
+| "{" initializer-list "," "}" {$$ = ast_append1(AST_INITIALIZER, $2);}
 ;
 initializer-list
-: "{" initializer-list.cons "}" {AST_LIST_EXIST($$, INITIALIZER_LIST, $2);}
-| "{" initializer-list.cons "," "}" {AST_LIST_EXIST($$, INITIALIZER_LIST, $2);}
-;
-initializer-list.cons
-: initializer
-| initializer-list.cons "," initializer {AST_LIST_CONS($$, $1, $3);}
+: initializer {$$ = ast_list_new(AST_INITIALIZER_LIST, $1);}
+| initializer-list "," initializer {$$ = ast_list_push($1, $3);}
 ;
 
 /* 6.6 Statements */
