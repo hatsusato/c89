@@ -465,39 +465,25 @@ identifier-list
 | identifier-list "," identifier {$$ = ast_list_push($1, $3);}
 ;
 type-name
-: specifier-qualifier-list abstract-declarator.opt {AST_TAG($$, TYPE_NAME); AST_PUSH($$, $1); AST_PUSH($$, $2);}
-;
-abstract-declarator.opt
-: %empty {AST_EMPTY($$);}
-| abstract-declarator
+: specifier-qualifier-list {$$ = ast_append1(AST_TYPE_NAME, $1);}
+| specifier-qualifier-list abstract-declarator {$$ = ast_append2(AST_TYPE_NAME, $1, $2);}
 ;
 abstract-declarator
-: pointer direct-abstract-declarator.opt {AST_TAG($$, ABSTRACT_DECLARATOR); AST_PUSH($$, $1); AST_PUSH($$, $2);}
-| direct-abstract-declarator {AST_TAG($$, ABSTRACT_DECLARATOR); AST_PUSH_TAG($$, NIL); AST_PUSH($$, $1);}
-;
-direct-abstract-declarator.opt
-: %empty {AST_EMPTY($$);}
-| direct-abstract-declarator
+: pointer {$$ = ast_append1(AST_ABSTRACT_DECLARATOR, $1);}
+| direct-abstract-declarator {$$ = ast_append1(AST_ABSTRACT_DECLARATOR, $1);}
+| pointer direct-abstract-declarator {$$ = ast_append2(AST_ABSTRACT_DECLARATOR, $1, $2);}
 ;
 direct-abstract-declarator
-: "(" abstract-declarator ")" direct-abstract-declarator.list {AST_TAG($$, DIRECT_ABSTRACT_DECLARATOR); AST_PUSH($$, $2); AST_PUSH($$, $4);}
-;
-direct-abstract-declarator.list
-: direct-abstract-declarator.cons {AST_LIST_EXIST($$, DIRECT_ABSTRACT_DECLARATOR_LIST, $1);}
-;
-direct-abstract-declarator.cons
-: %empty {AST_INIT($$);}
-| direct-abstract-declarator.cons direct-abstract-declarator.suffix {AST_LIST_CONS($$, $1, $2);}
+: "(" abstract-declarator ")" {$$ = ast_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $2);}
+| direct-abstract-declarator.suffix {$$ = ast_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $1);}
+| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = ast_append2(AST_DIRECT_ABSTRACT_DECLARATOR, $1, $2);}
 ;
 direct-abstract-declarator.suffix
-: direct-abstract-declarator.suffix.impl {AST_TAG($$, DIRECT_ABSTRACT_DECLARATOR_SUFFIX); AST_PUSH($$, $1);}
-;
-direct-abstract-declarator.suffix.impl
-: "[" constant-expression.opt "]" {AST_TAG($$, ARRAY); AST_PUSH($$, $2);}
-| "(" parameter-type-list.opt ")" {AST_TAG($$, CALL); AST_PUSH($$, $2);}
+: "[" constant-expression.opt "]" {$$ = ast_append1(AST_ARRAY, $2);}
+| "(" parameter-type-list.opt ")" {$$ = ast_append1(AST_CALL, $2);}
 ;
 typedef-name
-: TOKEN_TYPEDEF_NAME {AST_TAG($$, TYPEDEF_NAME); AST_PUSH($$, $1);}
+: TOKEN_TYPEDEF_NAME {$$ = ast_append1(AST_TYPEDEF_NAME, $1);}
 ;
 initializer
 : assignment-expression {AST_TAG($$, INITIALIZER); AST_PUSH($$, $1);}
