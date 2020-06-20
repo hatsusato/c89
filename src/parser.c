@@ -79,6 +79,9 @@ YYSTYPE ast_list_empty(int tag) {
   list_insert(ret.last, prev);
   return ret;
 }
+YYSTYPE ast_list_new(int tag, YYSTYPE elem) {
+  return ast_list_push(ast_list_empty(tag), elem);
+}
 YYSTYPE ast_list_push(YYSTYPE list, YYSTYPE elem) {
   assert(list_next(last) == list.last);
   list_insert(list_next(list.last), elem.list);

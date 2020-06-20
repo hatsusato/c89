@@ -161,7 +161,7 @@ argument-expression-list.opt
 | argument-expression-list
 ;
 argument-expression-list
-: assignment-expression {$$ = ast_list_push(ast_list_empty(AST_ARGUMENT_EXPRESSION_LIST), $1);}
+: assignment-expression {$$ = ast_list_new(AST_ARGUMENT_EXPRESSION_LIST, $1);}
 | argument-expression-list "," assignment-expression {$$ = ast_list_push($1, $3);}
 ;
 unary-expression
