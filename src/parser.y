@@ -195,78 +195,78 @@ multiplicative-expression
 | multiplicative-expression multiplicative-operator cast-expression {$$ = ast_binary($1, $2, $3);}
 ;
 multiplicative-operator
-: "*" {$$ = ast_arity0(AST_ASTERISK);}
-| "/" {$$ = ast_arity0(AST_SLASH);}
-| "%" {$$ = ast_arity0(AST_PERCENT);}
+: "*" {$$ = ast_append0(AST_ASTERISK);}
+| "/" {$$ = ast_append0(AST_SLASH);}
+| "%" {$$ = ast_append0(AST_PERCENT);}
 ;
 additive-expression
 : multiplicative-expression
 | additive-expression additive-operator multiplicative-expression {$$ = ast_binary($1, $2, $3);}
 ;
 additive-operator
-: "+" {$$ = ast_arity0(AST_PLUS);}
-| "-" {$$ = ast_arity0(AST_MINUS);}
+: "+" {$$ = ast_append0(AST_PLUS);}
+| "-" {$$ = ast_append0(AST_MINUS);}
 ;
 shift-expression
 : additive-expression
 | shift-expression shift-operator additive-expression {$$ = ast_binary($1, $2, $3);}
 ;
 shift-operator
-: "<<" {$$ = ast_arity0(AST_LEFT_SHIFT);}
-| ">>" {$$ = ast_arity0(AST_RIGHT_SHIFT);}
+: "<<" {$$ = ast_append0(AST_LEFT_SHIFT);}
+| ">>" {$$ = ast_append0(AST_RIGHT_SHIFT);}
 ;
 relational-expression
 : shift-expression
 | relational-expression relational-operator shift-expression {$$ = ast_binary($1, $2, $3);}
 ;
 relational-operator
-: "<" {$$ = ast_arity0(AST_LESS_THAN);}
-| ">" {$$ = ast_arity0(AST_GREATER_THAN);}
-| "<=" {$$ = ast_arity0(AST_LESS_EQUAL);}
-| ">=" {$$ = ast_arity0(AST_GREATER_EQUAL);}
+: "<" {$$ = ast_append0(AST_LESS_THAN);}
+| ">" {$$ = ast_append0(AST_GREATER_THAN);}
+| "<=" {$$ = ast_append0(AST_LESS_EQUAL);}
+| ">=" {$$ = ast_append0(AST_GREATER_EQUAL);}
 ;
 equality-expression
 : relational-expression
 | equality-expression equality-operator relational-expression {$$ = ast_binary($1, $2, $3);}
 ;
 equality-operator
-: "==" {$$ = ast_arity0(AST_EQUAL);}
-| "!=" {$$ = ast_arity0(AST_NOT_EQUAL);}
+: "==" {$$ = ast_append0(AST_EQUAL);}
+| "!=" {$$ = ast_append0(AST_NOT_EQUAL);}
 ;
 and-expression
 : equality-expression
 | and-expression and-operator equality-expression {$$ = ast_binary($1, $2, $3);}
 ;
 and-operator
-: "&" {$$ = ast_arity0(AST_AMPERSAND);}
+: "&" {$$ = ast_append0(AST_AMPERSAND);}
 ;
 exclusive-or-expression
 : and-expression
 | exclusive-or-expression exclusive-or-operator and-expression {$$ = ast_binary($1, $2, $3);}
 ;
 exclusive-or-operator
-: "^" {$$ = ast_arity0(AST_CARET);}
+: "^" {$$ = ast_append0(AST_CARET);}
 ;
 inclusive-or-expression
 : exclusive-or-expression
 | inclusive-or-expression inclusive-or-operator exclusive-or-expression {$$ = ast_binary($1, $2, $3);}
 ;
 inclusive-or-operator
-: "|" {$$ = ast_arity0(AST_BAR);}
+: "|" {$$ = ast_append0(AST_BAR);}
 ;
 logical-and-expression
 : inclusive-or-expression
 | logical-and-expression logical-and-operator inclusive-or-expression {$$ = ast_binary($1, $2, $3);}
 ;
 logical-and-operator
-: "&&" {$$ = ast_arity0(AST_AND);}
+: "&&" {$$ = ast_append0(AST_AND);}
 ;
 logical-or-expression
 : logical-and-expression
 | logical-or-expression logical-or-operator logical-and-expression {$$ = ast_binary($1, $2, $3);}
 ;
 logical-or-operator
-: "||" {$$ = ast_arity0(AST_OR);}
+: "||" {$$ = ast_append0(AST_OR);}
 ;
 conditional-expression
 : logical-or-expression
@@ -277,20 +277,20 @@ assignment-expression
 | unary-expression assignment-operator assignment-expression {$$ = ast_binary($1, $2, $3);}
 ;
 assignment-operator
-: "=" {$$ = ast_arity0(AST_ASSIGN);}
-| "*=" {$$ = ast_arity0(AST_ASTERISK_ASSIGN);}
-| "/=" {$$ = ast_arity0(AST_SLASH_ASSIGN);}
-| "%=" {$$ = ast_arity0(AST_PERCENT_ASSIGN);}
-| "+=" {$$ = ast_arity0(AST_PLUS_ASSIGN);}
-| "-=" {$$ = ast_arity0(AST_MINUS_ASSIGN);}
-| "<<=" {$$ = ast_arity0(AST_LEFT_SHIFT_ASSIGN);}
-| ">>=" {$$ = ast_arity0(AST_RIGHT_SHIFT_ASSIGN);}
-| "&=" {$$ = ast_arity0(AST_AMPERSAND_ASSIGN);}
-| "^=" {$$ = ast_arity0(AST_CARET_ASSIGN);}
-| "|=" {$$ = ast_arity0(AST_BAR_ASSIGN);}
+: "=" {$$ = ast_append0(AST_ASSIGN);}
+| "*=" {$$ = ast_append0(AST_ASTERISK_ASSIGN);}
+| "/=" {$$ = ast_append0(AST_SLASH_ASSIGN);}
+| "%=" {$$ = ast_append0(AST_PERCENT_ASSIGN);}
+| "+=" {$$ = ast_append0(AST_PLUS_ASSIGN);}
+| "-=" {$$ = ast_append0(AST_MINUS_ASSIGN);}
+| "<<=" {$$ = ast_append0(AST_LEFT_SHIFT_ASSIGN);}
+| ">>=" {$$ = ast_append0(AST_RIGHT_SHIFT_ASSIGN);}
+| "&=" {$$ = ast_append0(AST_AMPERSAND_ASSIGN);}
+| "^=" {$$ = ast_append0(AST_CARET_ASSIGN);}
+| "|=" {$$ = ast_append0(AST_BAR_ASSIGN);}
 ;
 expression.opt
-: %empty {$$ = ast_arity0(AST_NIL);}
+: %empty {$$ = ast_append0(AST_NIL);}
 | expression
 ;
 expression
@@ -298,12 +298,12 @@ expression
 | expression comma-operator assignment-expression {$$ = ast_binary($1, $2, $3);}
 ;
 comma-operator
-: "," {$$ = ast_arity0(AST_COMMA);}
+: "," {$$ = ast_append0(AST_COMMA);}
 ;
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty {$$ = ast_arity0(AST_NIL);}
+: %empty {$$ = ast_append0(AST_NIL);}
 | constant-expression
 ;
 constant-expression
@@ -336,25 +336,25 @@ storage-class-specifier
 : storage-class-specifier.prefix {$$ = ast_append1(AST_STORAGE_CLASS_SPECIFIER, $1);}
 ;
 storage-class-specifier.prefix
-: "typedef" {$$ = ast_arity0(AST_TYPEDEF);}
-| "extern" {$$ = ast_arity0(AST_EXTERN);}
-| "static" {$$ = ast_arity0(AST_STATIC);}
-| "auto" {$$ = ast_arity0(AST_AUTO);}
-| "register" {$$ = ast_arity0(AST_REGISTER);}
+: "typedef" {$$ = ast_append0(AST_TYPEDEF);}
+| "extern" {$$ = ast_append0(AST_EXTERN);}
+| "static" {$$ = ast_append0(AST_STATIC);}
+| "auto" {$$ = ast_append0(AST_AUTO);}
+| "register" {$$ = ast_append0(AST_REGISTER);}
 ;
 type-specifier
 : type-specifier.prefix {$$ = ast_append1(AST_TYPE_SPECIFIER, $1);}
 ;
 type-specifier.prefix
-: "void" {$$ = ast_arity0(AST_VOID);}
-| "char" {$$ = ast_arity0(AST_CHAR);}
-| "short" {$$ = ast_arity0(AST_SHORT);}
-| "int" {$$ = ast_arity0(AST_INT);}
-| "long" {$$ = ast_arity0(AST_LONG);}
-| "float" {$$ = ast_arity0(AST_FLOAT);}
-| "double" {$$ = ast_arity0(AST_DOUBLE);}
-| "signed" {$$ = ast_arity0(AST_SIGNED);}
-| "unsigned" {$$ = ast_arity0(AST_UNSIGNED);}
+: "void" {$$ = ast_append0(AST_VOID);}
+| "char" {$$ = ast_append0(AST_CHAR);}
+| "short" {$$ = ast_append0(AST_SHORT);}
+| "int" {$$ = ast_append0(AST_INT);}
+| "long" {$$ = ast_append0(AST_LONG);}
+| "float" {$$ = ast_append0(AST_FLOAT);}
+| "double" {$$ = ast_append0(AST_DOUBLE);}
+| "signed" {$$ = ast_append0(AST_SIGNED);}
+| "unsigned" {$$ = ast_append0(AST_UNSIGNED);}
 | struct-or-union-specifier
 | enum-specifier
 | typedef-name
@@ -364,8 +364,8 @@ struct-or-union-specifier
 | struct-or-union identifier {$$ = ast_append2(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2);}
 ;
 struct-or-union
-: "struct" {$$ = ast_arity0(AST_STRUCT);}
-| "union" {$$ = ast_arity0(AST_UNION);}
+: "struct" {$$ = ast_append0(AST_STRUCT);}
+| "union" {$$ = ast_append0(AST_UNION);}
 ;
 struct-declaration-list
 : struct-declaration {$$ = ast_list_new(AST_STRUCT_DECLARATION_LIST, $1);}
@@ -406,15 +406,15 @@ type-qualifier
 : type-qualifier.prefix {$$ = ast_append1(AST_TYPE_QUALIFIER, $1);}
 ;
 type-qualifier.prefix
-: "const" {$$ = ast_arity0(AST_CONST);}
-| "volatile" {$$ = ast_arity0(AST_VOLATILE);}
+: "const" {$$ = ast_append0(AST_CONST);}
+| "volatile" {$$ = ast_append0(AST_VOLATILE);}
 ;
 declarator.opt
 : %empty {AST_EMPTY($$);}
 | declarator
 ;
 declarator
-: direct-declarator {$$ = ast_append2(AST_DECLARATOR, ast_arity0(AST_NIL), $1);}
+: direct-declarator {$$ = ast_append2(AST_DECLARATOR, ast_append0(AST_NIL), $1);}
 | pointer direct-declarator {$$ = ast_append2(AST_DECLARATOR, $1, $2);}
 ;
 direct-declarator
