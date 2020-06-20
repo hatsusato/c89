@@ -2,6 +2,10 @@
 
 #include "vector.h"
 
+static YYSTYPE ast_arity_aux(int arity, int tag) {
+  return ast_push_tag(ast_new_tag(arity), tag);
+}
+
 YYSTYPE ast_init(void) {
   YYSTYPE init = {nil, nil};
   return init;
@@ -23,6 +27,10 @@ YYSTYPE ast_new_tag(int tag) {
   YYSTYPE ret = ast_init();
   ret.list = ret.last = list_new(tag, nil);
   return ret;
+}
+YYSTYPE ast_append0(int tag) {
+  YYSTYPE x0 = ast_arity_aux(AST_ARITY0, tag);
+  return x0;
 }
 YYSTYPE ast_append1(int tag, YYSTYPE x1) {
   YYSTYPE x0 = ast_arity1(tag);
@@ -53,9 +61,6 @@ YYSTYPE ast_push(YYSTYPE x0, YYSTYPE x1) {
 }
 YYSTYPE ast_push_tag(YYSTYPE x0, int tag) {
   return ast_push(x0, ast_new_tag(tag));
-}
-static YYSTYPE ast_arity_aux(int arity, int tag) {
-  return ast_push_tag(ast_new_tag(arity), tag);
 }
 YYSTYPE ast_arity0(int tag) {
   return ast_arity_aux(AST_ARITY0, tag);
