@@ -15,7 +15,8 @@ void ast_list_free(List *list) {
 void print_seq(yyscan_t scanner) {
   YY_EXTRA_TYPE extra = yyget_extra(scanner);
   List *list = extra.list;
-  print_all(list);
+  print_list(list, 0);
+  printf("\n");
   list_delete(extra.list, ast_list_free);
 }
 
@@ -26,7 +27,6 @@ int main(void) {
   yylex_init_extra(extra, &scanner);
   ret = yyparse(scanner);
   print_seq(scanner);
-  printf("return: %d\n", ret);
   yylex_destroy(scanner);
-  return 0;
+  return ret;
 }

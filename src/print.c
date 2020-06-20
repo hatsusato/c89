@@ -51,7 +51,7 @@ static List *print_repeat(List *list, int indent, int repeat) {
   print_end();
   return list;
 }
-static List *print_list(List *list, int indent) {
+List *print_list(List *list, int indent) {
   if (AST_LIST == list_tag(list)) {
     list = list_next(list);
   }
@@ -65,13 +65,6 @@ static List *print_list(List *list, int indent) {
   }
   print_end();
   return list;
-}
-
-void print_all(List *list) {
-  while (list) {
-    list = print_ast(list, 0);
-    printf("\n");
-  }
 }
 List *print_ast(List *list, int indent) {
   print_begin(indent);
