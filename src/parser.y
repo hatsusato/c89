@@ -440,16 +440,16 @@ type-qualifier-list
 | type-qualifier-list type-qualifier {$$ = ast_list_push($1, $2);}
 ;
 parameter-type-list.opt
-: %empty {AST_LIST_EMPTY($$, PARAMETER_LIST);}
+: %empty {$$ = ast_list_empty(AST_PARAMETER_LIST);}
 | parameter-type-list
 ;
 parameter-type-list
-: parameter-list {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH_TAG($$, NIL);}
-| parameter-list "," "..." {AST_INIT($$); AST_PUSH($$, $1); AST_PUSH_TAG($$, ELLIPSIS); AST_PUSH_TAG($$, NIL);}
+: parameter-list
+| parameter-list "," "..." {$$ = ast_append1(AST_PARAMETER_TYPE_LIST, $1);}
 ;
 parameter-list
-: parameter-declaration {AST_TAG($$, LIST); AST_PUSH_TAG($$, PARAMETER_LIST); AST_PUSH($$, $1);}
-| parameter-list "," parameter-declaration {AST_LIST_CONS($$, $1, $3);}
+: parameter-declaration {$$ = ast_list_new(AST_PARAMETER_LIST, $1);}
+| parameter-list "," parameter-declaration {$$ = ast_list_push($1, $3);}
 ;
 parameter-declaration
 : declaration-specifiers parameter-declaration.suffix {AST_TAG($$, PARAMETER_DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
