@@ -457,15 +457,12 @@ parameter-declaration
 | declaration-specifiers abstract-declarator {$$ = ast_append2(AST_PARAMETER_DECLARATION, $1, $2);}
 ;
 identifier-list.opt
-: %empty {AST_LIST_EMPTY($$, IDENTIFIER_LIST);}
+: %empty {$$ = ast_list_empty(AST_IDENTIFIER_LIST);}
 | identifier-list
 ;
 identifier-list
-: identifier-list.cons {AST_LIST_EXIST($$, IDENTIFIER_LIST, $1);}
-;
-identifier-list.cons
-: identifier
-| identifier-list.cons "," identifier {AST_LIST_CONS($$, $1, $3);}
+: identifier {$$ = ast_list_new(AST_IDENTIFIER_LIST, $1);}
+| identifier-list "," identifier {$$ = ast_list_push($1, $3);}
 ;
 type-name
 : specifier-qualifier-list abstract-declarator.opt {AST_TAG($$, TYPE_NAME); AST_PUSH($$, $1); AST_PUSH($$, $2);}
