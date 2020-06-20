@@ -556,15 +556,18 @@ expression-statement
 : expression.opt ";" {$$ = ast_append1(AST_EXPRESSION_STATEMENT, $1);}
 ;
 selection-statement
-: "if" selection-statement.if {AST_TAG($$, SELECTION_STATEMENT); AST_PUSH($$, $2);}
-| "switch" selection-statement.switch {AST_TAG($$, SELECTION_STATEMENT); AST_PUSH($$, $2);}
+: selection-statement.suffix {$$ = ast_append1(AST_SELECTION_STATEMENT, $1);}
+;
+selection-statement.suffix
+: "if" selection-statement.if {$$ = $2;}
+| "switch" selection-statement.switch {$$ = $2;}
 ;
 selection-statement.if
-: "(" expression ")" statement %prec THEN {AST_TAG($$, IF); AST_PUSH($$, $2); AST_PUSH($$, $4); AST_PUSH_TAG($$, NIL);}
-| "(" expression ")" statement "else" statement {AST_TAG($$, IF); AST_PUSH($$, $2); AST_PUSH($$, $4); AST_PUSH($$, $6);}
+: "(" expression ")" statement %prec THEN {$$ = ast_append2(AST_IF, $2, $4);}
+| "(" expression ")" statement "else" statement {$$ = ast_append3(AST_IF, $2, $4, $6);}
 ;
 selection-statement.switch
-: "(" expression ")" statement {AST_TAG($$, SWITCH); AST_PUSH($$, $2); AST_PUSH($$, $4); AST_PUSH_TAG($$, NIL);}
+: "(" expression ")" statement {$$ = ast_append2(AST_SWITCH, $2, $4);}
 ;
 iteration-statement
 : "while" iteration-statement.while statement {AST_TAG($$, ITERATION_STATEMENT); AST_PUSH_TAG($$, WHILE); AST_PUSH($$, $2); AST_PUSH($$, $3);}
