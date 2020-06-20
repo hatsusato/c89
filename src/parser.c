@@ -3,7 +3,9 @@
 #include "vector.h"
 
 static YYSTYPE ast_arity_aux(int arity, int tag) {
-  return ast_push_tag(ast_new_tag(arity), tag);
+  YYSTYPE x0 = ast_new_tag(arity);
+  x0 = ast_push_tag(x0, tag);
+  return x0;
 }
 
 YYSTYPE ast_init(void) {
@@ -33,18 +35,18 @@ YYSTYPE ast_append0(int tag) {
   return x0;
 }
 YYSTYPE ast_append1(int tag, YYSTYPE x1) {
-  YYSTYPE x0 = ast_arity1(tag);
+  YYSTYPE x0 = ast_arity_aux(AST_ARITY1, tag);
   x0 = ast_push(x0, x1);
   return x0;
 }
 YYSTYPE ast_append2(int tag, YYSTYPE x1, YYSTYPE x2) {
-  YYSTYPE x0 = ast_arity2(tag);
+  YYSTYPE x0 = ast_arity_aux(AST_ARITY2, tag);
   x0 = ast_push(x0, x1);
   x0 = ast_push(x0, x2);
   return x0;
 }
 YYSTYPE ast_append3(int tag, YYSTYPE x1, YYSTYPE x2, YYSTYPE x3) {
-  YYSTYPE x0 = ast_arity3(tag);
+  YYSTYPE x0 = ast_arity_aux(AST_ARITY3, tag);
   x0 = ast_push(x0, x1);
   x0 = ast_push(x0, x2);
   x0 = ast_push(x0, x3);
