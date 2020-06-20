@@ -86,11 +86,6 @@ List *print_ast(List *list, int indent) {
   case AST_STRING_LITERAL:
     return print_token(list);
     /* Declarations */
-  case AST_ITERATION_STATEMENT:
-    list = print_tag(list);
-    return print_repeat(list, indent, 2);
-  case AST_ITERATION_STATEMENT_FOR:
-    return print_repeat(list, indent, 3);
   case AST_JUMP_STATEMENT:
     list = print_tag(list);
     return print_repeat(list, indent, 1);

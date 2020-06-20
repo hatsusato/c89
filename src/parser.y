@@ -570,18 +570,21 @@ selection-statement.switch
 : "(" expression ")" statement {$$ = ast_append2(AST_SWITCH, $2, $4);}
 ;
 iteration-statement
-: "while" iteration-statement.while statement {AST_TAG($$, ITERATION_STATEMENT); AST_PUSH_TAG($$, WHILE); AST_PUSH($$, $2); AST_PUSH($$, $3);}
-| "do" statement iteration-statement.do {AST_TAG($$, ITERATION_STATEMENT); AST_PUSH_TAG($$, DO); AST_PUSH($$, $2); AST_PUSH($$, $3);}
-| "for" iteration-statement.for statement {AST_TAG($$, ITERATION_STATEMENT); AST_PUSH_TAG($$, FOR); AST_PUSH($$, $2); AST_PUSH($$, $3);}
+: iteration-statement.suffix {$$ = ast_append1(AST_ITERATION_STATEMENT, $1);}
+;
+iteration-statement.suffix
+: "while" iteration-statement.while {$$ = $2;}
+| "do" iteration-statement.do {$$ = $2;}
+| "for" iteration-statement.for {$$ = $2;}
 ;
 iteration-statement.while
-: "(" expression ")" {$$ = $2;}
+: "(" expression ")" statement {$$ = ast_append2(AST_WHILE, $2, $4);}
 ;
 iteration-statement.do
-: "while" "(" expression ")" ";" {$$ = $3;}
+: statement "while" "(" expression ")" ";" {$$ = ast_append2(AST_DO, $1, $4);}
 ;
 iteration-statement.for
-: "(" expression.opt ";" expression.opt ";" expression.opt ")" {AST_TAG($$, ITERATION_STATEMENT_FOR); AST_PUSH($$, $2); AST_PUSH($$, $4); AST_PUSH($$, $6);}
+: "(" expression.opt ";" expression.opt ";" expression.opt ")" statement {$$ = ast_append4(AST_FOR, $2, $4, $6, $8);}
 ;
 jump-statement
 : jump-statement.impl {AST_TAG($$, JUMP_STATEMENT); AST_PUSH($$, $1);}
