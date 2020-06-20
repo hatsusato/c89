@@ -11,5 +11,6 @@ DO_HANDLE(ARITY0, arity0)
 DO_HANDLE(ARITY1, arity1)
 DO_HANDLE(ARITY2, arity2)
 DO_HANDLE(ARITY3, arity3)
+DO_HANDLE(ARITY4, arity4)
 
 #include "handle-end.def"

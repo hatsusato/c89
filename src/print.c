@@ -127,6 +127,15 @@ List *print_ast(List *list, int indent) {
     list = print_line(list, indent + 1);
     print_end();
     return list;
+  case AST_ARITY4:
+    list = list_next(list);
+    list = print_tag(list);
+    list = print_line(list, indent + 1);
+    list = print_line(list, indent + 1);
+    list = print_line(list, indent + 1);
+    list = print_line(list, indent + 1);
+    print_end();
+    return list;
   default:
     return print_tag(list);
   }

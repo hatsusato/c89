@@ -52,6 +52,14 @@ YYSTYPE ast_append3(int tag, YYSTYPE x1, YYSTYPE x2, YYSTYPE x3) {
   x0 = ast_push(x0, x3);
   return x0;
 }
+YYSTYPE ast_append4(int tag, YYSTYPE x1, YYSTYPE x2, YYSTYPE x3, YYSTYPE x4) {
+  YYSTYPE x0 = ast_arity_aux(AST_ARITY4, tag);
+  x0 = ast_push(x0, x1);
+  x0 = ast_push(x0, x2);
+  x0 = ast_push(x0, x3);
+  x0 = ast_push(x0, x4);
+  return x0;
+}
 YYSTYPE ast_push(YYSTYPE x0, YYSTYPE x1) {
   if (x0.last) {
     list_insert(x0.last, x1.list);
