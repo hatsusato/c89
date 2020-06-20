@@ -452,11 +452,9 @@ parameter-list
 | parameter-list "," parameter-declaration {$$ = ast_list_push($1, $3);}
 ;
 parameter-declaration
-: declaration-specifiers parameter-declaration.suffix {AST_TAG($$, PARAMETER_DECLARATION); AST_PUSH($$, $1); AST_PUSH($$, $2);}
-;
-parameter-declaration.suffix
-: declarator
-| abstract-declarator.opt
+: declaration-specifiers {$$ = ast_append1(AST_PARAMETER_DECLARATION, $1);}
+| declaration-specifiers declarator {$$ = ast_append2(AST_PARAMETER_DECLARATION, $1, $2);}
+| declaration-specifiers abstract-declarator {$$ = ast_append2(AST_PARAMETER_DECLARATION, $1, $2);}
 ;
 identifier-list.opt
 : %empty {AST_LIST_EMPTY($$, IDENTIFIER_LIST);}
