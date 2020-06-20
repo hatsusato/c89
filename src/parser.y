@@ -156,8 +156,8 @@ postfix-expression.suffix
 | "(" argument-expression-list.opt ")" {$$ = ast_append1(AST_CALL, $2);}
 | "." identifier {$$ = ast_append1(AST_PERIOD, $2);}
 | "->" identifier {$$ = ast_append1(AST_ARROW, $2);}
-| "++" {$$ = ast_arity0(AST_INCREMENT);}
-| "--" {$$ = ast_arity0(AST_DECREMENT);}
+| "++" {$$ = ast_append0(AST_INCREMENT);}
+| "--" {$$ = ast_append0(AST_DECREMENT);}
 ;
 argument-expression-list.opt
 : %empty {$$ = ast_list_empty(AST_ARGUMENT_EXPRESSION_LIST);}
@@ -169,22 +169,22 @@ argument-expression-list
 ;
 unary-expression
 : postfix-expression
-| unary-expression.prefix {$$ = ast_arity2(AST_UNARY_EXPRESSION); $$ = ast_push($$, $1);}
+| unary-expression.prefix unary-expression {$$ = ast_append2(AST_UNARY_EXPRESSION, $1, $2);}
+| "sizeof" unary-expression {$$ = ast_append2(AST_UNARY_EXPRESSION, ast_append0(AST_SIZEOF), $2);}
+| "sizeof" "(" type-name ")" {$$ = ast_append1(AST_UNARY_EXPRESSION, ast_append1(AST_SIZEOF, $3));}
+| unary-operator cast-expression {$$ = ast_append2(AST_UNARY_EXPRESSION, $1, $2);}
 ;
 unary-expression.prefix
-: "++" unary-expression {$$ = ast_arity0(AST_INCREMENT); $$ = ast_push($$, $2);}
-| "--" unary-expression {$$ = ast_arity0(AST_DECREMENT); $$ = ast_push($$, $2);}
-| unary-operator cast-expression {$$ = ast_push($1, $2);}
-| "sizeof" unary-expression {$$ = ast_arity0(AST_SIZEOF); $$ = ast_push($$, $2);}
-| "sizeof" "(" type-name ")" {$$ = ast_arity0(AST_SIZEOF); $$ = ast_push($$, $3);}
+: "++" {$$ = ast_append0(AST_INCREMENT);}
+| "--" {$$ = ast_append0(AST_DECREMENT);}
 ;
 unary-operator
-: "&" {$$ = ast_arity0(AST_AMPERSAND);}
-| "*" {$$ = ast_arity0(AST_ASTERISK);};
-| "+" {$$ = ast_arity0(AST_PLUS);};
-| "-" {$$ = ast_arity0(AST_MINUS);};
-| "~" {$$ = ast_arity0(AST_TILDE);};
-| "!" {$$ = ast_arity0(AST_EXCLAMATION);};
+: "&" {$$ = ast_append0(AST_AMPERSAND);}
+| "*" {$$ = ast_append0(AST_ASTERISK);};
+| "+" {$$ = ast_append0(AST_PLUS);};
+| "-" {$$ = ast_append0(AST_MINUS);};
+| "~" {$$ = ast_append0(AST_TILDE);};
+| "!" {$$ = ast_append0(AST_EXCLAMATION);};
 ;
 cast-expression
 : unary-expression
