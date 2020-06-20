@@ -414,13 +414,16 @@ declarator.opt
 | declarator
 ;
 declarator
-: direct-declarator {$$ = ast_append2(AST_DECLARATOR, ast_append0(AST_NIL), $1);}
+: direct-declarator {$$ = ast_append1(AST_DECLARATOR, $1);}
 | pointer direct-declarator {$$ = ast_append2(AST_DECLARATOR, $1, $2);}
 ;
 direct-declarator
-: identifier {$$ = ast_append1(AST_DIRECT_DECLARATOR, $1);}
-| "(" declarator ")" {$$ = ast_append1(AST_DIRECT_DECLARATOR, $2);}
+: direct-declarator.prefix {$$ = ast_append1(AST_DIRECT_DECLARATOR, $1);}
 | direct-declarator direct-declarator.suffix {$$ = ast_append2(AST_DIRECT_DECLARATOR, $1, $2);}
+;
+direct-declarator.prefix
+: identifier
+| "(" declarator ")" {$$ = $2;}
 ;
 direct-declarator.suffix
 : "[" constant-expression.opt "]" {$$ = ast_append1(AST_ARRAY, $2);}
@@ -456,8 +459,11 @@ parameter-list
 ;
 parameter-declaration
 : declaration-specifiers {$$ = ast_append1(AST_PARAMETER_DECLARATION, $1);}
-| declaration-specifiers declarator {$$ = ast_append2(AST_PARAMETER_DECLARATION, $1, $2);}
-| declaration-specifiers abstract-declarator {$$ = ast_append2(AST_PARAMETER_DECLARATION, $1, $2);}
+| declaration-specifiers parameter-declaration.suffix {$$ = ast_append2(AST_PARAMETER_DECLARATION, $1, $2);}
+;
+parameter-declaration.suffix
+: declarator
+| abstract-declarator
 ;
 identifier-list.opt
 : %empty {$$ = ast_list_empty(AST_IDENTIFIER_LIST);}
@@ -472,14 +478,20 @@ type-name
 | specifier-qualifier-list abstract-declarator {$$ = ast_append2(AST_TYPE_NAME, $1, $2);}
 ;
 abstract-declarator
-: pointer {$$ = ast_append1(AST_ABSTRACT_DECLARATOR, $1);}
-| direct-abstract-declarator {$$ = ast_append1(AST_ABSTRACT_DECLARATOR, $1);}
+: abstract-declarator.prefix {$$ = ast_append1(AST_ABSTRACT_DECLARATOR, $1);}
 | pointer direct-abstract-declarator {$$ = ast_append2(AST_ABSTRACT_DECLARATOR, $1, $2);}
 ;
+abstract-declarator.prefix
+: pointer
+| direct-abstract-declarator
+;
 direct-abstract-declarator
-: "(" abstract-declarator ")" {$$ = ast_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $2);}
-| direct-abstract-declarator.suffix {$$ = ast_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $1);}
+: direct-abstract-declarator.prefix {$$ = ast_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $1);}
 | direct-abstract-declarator direct-abstract-declarator.suffix {$$ = ast_append2(AST_DIRECT_ABSTRACT_DECLARATOR, $1, $2);}
+;
+direct-abstract-declarator.prefix
+: "(" abstract-declarator ")" {$$ = $2;}
+| direct-abstract-declarator.suffix {$$ = $1;}
 ;
 direct-abstract-declarator.suffix
 : "[" constant-expression.opt "]" {$$ = ast_append1(AST_ARRAY, $2);}
@@ -489,9 +501,12 @@ typedef-name
 : TOKEN_TYPEDEF_NAME {$$ = ast_append1(AST_TYPEDEF_NAME, $1);}
 ;
 initializer
-: assignment-expression {$$ = ast_append1(AST_INITIALIZER, $1);}
-| "{" initializer-list "}" {$$ = ast_append1(AST_INITIALIZER, $2);}
-| "{" initializer-list "," "}" {$$ = ast_append1(AST_INITIALIZER, $2);}
+: initializer.suffix {$$ = ast_append1(AST_INITIALIZER, $1);}
+;
+initializer.suffix
+: assignment-expression
+| "{" initializer-list "}" {$$ = $2;}
+| "{" initializer-list "," "}" {$$ = $2;}
 ;
 initializer-list
 : initializer {$$ = ast_list_new(AST_INITIALIZER_LIST, $1);}
