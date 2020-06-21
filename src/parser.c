@@ -8,12 +8,9 @@ static YYSTYPE ast_new(int tag, void *data) {
   return ret;
 }
 static YYSTYPE ast_push(YYSTYPE x0, YYSTYPE x1) {
-  if (x0.last) {
-    list_insert(x0.last, x1.list);
-    x0.last = x1.last;
-  } else {
-    x0 = x1;
-  }
+  assert(x0.list && x0.last);
+  list_insert(x0.last, x1.list);
+  x0.last = x1.last;
   return x0;
 }
 static YYSTYPE ast_push_tag(YYSTYPE x0, int tag) {
