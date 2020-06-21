@@ -44,7 +44,6 @@ static List *print_token(List *list) {
   return list_next(list);
 }
 static List *print_list(List *list, int indent) {
-  list = print_tag(list);
   while (AST_NIL != list_tag(list)) {
     list = print_ast(list, indent + 1);
   }
@@ -54,6 +53,7 @@ List *print_ast(List *list, int indent) {
   int tag = list_tag(list);
   list = list_next(list);
   print_begin(tag, indent);
+  list = print_tag(list);
   switch (tag) {
   case AST_TOKEN:
     list = print_token(list);
@@ -62,25 +62,20 @@ List *print_ast(List *list, int indent) {
     list = print_list(list, indent);
     break;
   case AST_ARITY0:
-    list = print_tag(list);
     break;
   case AST_ARITY1:
-    list = print_tag(list);
     list = print_ast(list, indent + 1);
     break;
   case AST_ARITY2:
-    list = print_tag(list);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
     break;
   case AST_ARITY3:
-    list = print_tag(list);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
     break;
   case AST_ARITY4:
-    list = print_tag(list);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
