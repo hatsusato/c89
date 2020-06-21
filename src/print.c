@@ -55,25 +55,27 @@ List *print_ast(List *list, int indent) {
   list = list_next(list);
   switch (tag) {
   case AST_TOKEN:
-    return print_token(list, indent);
+    list = print_token(list, indent);
+    break;
   case AST_LIST:
-    return print_list(list, indent);
+    list = print_list(list, indent);
+    break;
   case AST_ARITY0:
     list = print_tag(list);
-    return list;
+    break;
   case AST_ARITY1:
     print_begin(indent);
     list = print_tag(list);
     list = print_ast(list, indent + 1);
     print_end();
-    return list;
+    break;
   case AST_ARITY2:
     print_begin(indent);
     list = print_tag(list);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
     print_end();
-    return list;
+    break;
   case AST_ARITY3:
     print_begin(indent);
     list = print_tag(list);
@@ -81,7 +83,7 @@ List *print_ast(List *list, int indent) {
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
     print_end();
-    return list;
+    break;
   case AST_ARITY4:
     print_begin(indent);
     list = print_tag(list);
@@ -90,8 +92,9 @@ List *print_ast(List *list, int indent) {
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
     print_end();
-    return list;
+    break;
   default:
-    return print_tag(list);
+    assert(0);
   }
+  return list;
 }
