@@ -69,14 +69,12 @@ List *print_list(List *list, int indent) {
 List *print_ast(List *list, int indent) {
   print_begin(indent);
   switch (list_tag(list)) {
-    /* List */
-  case AST_LIST:
-    return print_list(list, indent);
 #define HANDLE(name, str) case AST_##name:
 #include "enum/token.def"
 #undef HANDLE
     return print_token(list);
-    /* Declarations */
+  case AST_LIST:
+    return print_list(list, indent);
   case AST_ARITY0:
     list = list_next(list);
     list = print_tag(list);
