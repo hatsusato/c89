@@ -2,6 +2,11 @@
 
 #include "vector.h"
 
+static YYSTYPE ast_new(int tag, void *data) {
+  YYSTYPE ret = ast_init();
+  ret.list = ret.last = list_new(tag, data);
+  return ret;
+}
 static YYSTYPE ast_push(YYSTYPE x0, YYSTYPE x1) {
   if (x0.last) {
     list_insert(x0.last, x1.list);
@@ -29,18 +34,14 @@ YYSTYPE ast_init(void) {
   return init;
 }
 YYSTYPE ast_new_token(int tag, yyscan_t scanner) {
-  YYSTYPE ret = ast_init();
   const char *text = yyget_text(scanner);
   int leng = yyget_leng(scanner);
   Vector *vec = vector_new(1);
   vector_append(vec, text, leng);
-  ret.list = ret.last = list_new(tag, vec);
-  return ret;
+  return ast_new(tag, vec);
 }
 YYSTYPE ast_new_tag(int tag) {
-  YYSTYPE ret = ast_init();
-  ret.list = ret.last = list_new(tag, nil);
-  return ret;
+  return ast_new(tag, nil);
 }
 YYSTYPE ast_append0(int tag) {
   YYSTYPE x0 = ast_arity(AST_ARITY0, tag);
