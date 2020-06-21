@@ -40,7 +40,7 @@ static List *print_token(List *list) {
   print_end();
   return list;
 }
-List *print_list(List *list, int indent) {
+static List *print_list(List *list, int indent) {
   if (AST_LIST == list_tag(list)) {
     list = list_next(list);
   }
