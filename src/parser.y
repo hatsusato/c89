@@ -113,34 +113,34 @@
 %%
 /* 6.1 Lexical elements */
 identifier.opt
-: %empty {$$ = ast_empty();}
+: %empty {$$ = parser_empty();}
 | identifier
 ;
 identifier
-: TOKEN_IDENTIFIER {$$ = ast_token(AST_IDENTIFIER, scanner);}
+: TOKEN_IDENTIFIER {$$ = parser_token(AST_IDENTIFIER, scanner);}
 ;
 typedef-identifier
-: TOKEN_TYPEDEF_IDENTIFIER {$$ = ast_token(AST_TYPEDEF_IDENTIFIER, scanner);}
+: TOKEN_TYPEDEF_IDENTIFIER {$$ = parser_token(AST_TYPEDEF_IDENTIFIER, scanner);}
 ;
 floating-constant
-: TOKEN_FLOATING_CONSTANT {$$ = ast_token(AST_FLOATING_CONSTANT, scanner);}
+: TOKEN_FLOATING_CONSTANT {$$ = parser_token(AST_FLOATING_CONSTANT, scanner);}
 ;
 integer-constant
-: TOKEN_INTEGER_CONSTANT {$$ = ast_token(AST_INTEGER_CONSTANT, scanner);}
+: TOKEN_INTEGER_CONSTANT {$$ = parser_token(AST_INTEGER_CONSTANT, scanner);}
 ;
 enumeration-constant
-: TOKEN_IDENTIFIER {$$ = ast_token(AST_ENUMERATION_CONSTANT, scanner);}
+: TOKEN_IDENTIFIER {$$ = parser_token(AST_ENUMERATION_CONSTANT, scanner);}
 ;
 character-constant
-: TOKEN_CHARACTER_CONSTANT {$$ = ast_token(AST_CHARACTER_CONSTANT, scanner);}
+: TOKEN_CHARACTER_CONSTANT {$$ = parser_token(AST_CHARACTER_CONSTANT, scanner);}
 ;
 string-literal
-: TOKEN_STRING_LITERAL {$$ = ast_token(AST_STRING_LITERAL, scanner);}
+: TOKEN_STRING_LITERAL {$$ = parser_token(AST_STRING_LITERAL, scanner);}
 ;
 
 /* 6.3 Expressions */
 primary-expression
-: primary-expression.suffix {$$ = ast_append1(AST_PRIMARY_EXPRESSION, $1);}
+: primary-expression.suffix {$$ = parser_append1(AST_PRIMARY_EXPRESSION, $1);}
 ;
 primary-expression.suffix
 : identifier
@@ -152,175 +152,175 @@ primary-expression.suffix
 ;
 postfix-expression
 : primary-expression
-| postfix-expression postfix-expression.suffix {$$ = ast_append2(AST_POSTFIX_EXPRESSION, $1, $2);}
+| postfix-expression postfix-expression.suffix {$$ = parser_append2(AST_POSTFIX_EXPRESSION, $1, $2);}
 ;
 postfix-expression.suffix
-: "[" expression "]" {$$ = ast_append1(AST_ARRAY, $2);}
-| "(" argument-expression-list.opt ")" {$$ = ast_append1(AST_CALL, $2);}
-| "." identifier {$$ = ast_append1(AST_PERIOD, $2);}
-| "->" identifier {$$ = ast_append1(AST_ARROW, $2);}
-| "++" {$$ = ast_append0(AST_INCREMENT);}
-| "--" {$$ = ast_append0(AST_DECREMENT);}
+: "[" expression "]" {$$ = parser_append1(AST_ARRAY, $2);}
+| "(" argument-expression-list.opt ")" {$$ = parser_append1(AST_CALL, $2);}
+| "." identifier {$$ = parser_append1(AST_PERIOD, $2);}
+| "->" identifier {$$ = parser_append1(AST_ARROW, $2);}
+| "++" {$$ = parser_append0(AST_INCREMENT);}
+| "--" {$$ = parser_append0(AST_DECREMENT);}
 ;
 argument-expression-list.opt
-: %empty {$$ = ast_list_empty(AST_ARGUMENT_EXPRESSION_LIST);}
+: %empty {$$ = parser_list_empty(AST_ARGUMENT_EXPRESSION_LIST);}
 | argument-expression-list
 ;
 argument-expression-list
-: assignment-expression {$$ = ast_list_new(AST_ARGUMENT_EXPRESSION_LIST, $1);}
-| argument-expression-list "," assignment-expression {$$ = ast_list_push($1, $3);}
+: assignment-expression {$$ = parser_list_new(AST_ARGUMENT_EXPRESSION_LIST, $1);}
+| argument-expression-list "," assignment-expression {$$ = parser_list_push($1, $3);}
 ;
 unary-expression
 : postfix-expression
-| unary-expression.prefix unary-expression {$$ = ast_append2(AST_UNARY_EXPRESSION, $1, $2);}
-| "sizeof" unary-expression {$$ = ast_append2(AST_UNARY_EXPRESSION, ast_append0(AST_SIZEOF), $2);}
-| "sizeof" "(" type-name ")" {$$ = ast_append1(AST_UNARY_EXPRESSION, ast_append1(AST_SIZEOF, $3));}
-| unary-operator cast-expression {$$ = ast_append2(AST_UNARY_EXPRESSION, $1, $2);}
+| unary-expression.prefix unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2);}
+| "sizeof" unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, parser_append0(AST_SIZEOF), $2);}
+| "sizeof" "(" type-name ")" {$$ = parser_append1(AST_UNARY_EXPRESSION, parser_append1(AST_SIZEOF, $3));}
+| unary-operator cast-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2);}
 ;
 unary-expression.prefix
-: "++" {$$ = ast_append0(AST_INCREMENT);}
-| "--" {$$ = ast_append0(AST_DECREMENT);}
+: "++" {$$ = parser_append0(AST_INCREMENT);}
+| "--" {$$ = parser_append0(AST_DECREMENT);}
 ;
 unary-operator
-: "&" {$$ = ast_append0(AST_AMPERSAND);}
-| "*" {$$ = ast_append0(AST_ASTERISK);};
-| "+" {$$ = ast_append0(AST_PLUS);};
-| "-" {$$ = ast_append0(AST_MINUS);};
-| "~" {$$ = ast_append0(AST_TILDE);};
-| "!" {$$ = ast_append0(AST_EXCLAMATION);};
+: "&" {$$ = parser_append0(AST_AMPERSAND);}
+| "*" {$$ = parser_append0(AST_ASTERISK);};
+| "+" {$$ = parser_append0(AST_PLUS);};
+| "-" {$$ = parser_append0(AST_MINUS);};
+| "~" {$$ = parser_append0(AST_TILDE);};
+| "!" {$$ = parser_append0(AST_EXCLAMATION);};
 ;
 cast-expression
 : unary-expression
-| "(" type-name ")" cast-expression {$$ = ast_append2(AST_CAST_EXPRESSION, $2, $4);}
+| "(" type-name ")" cast-expression {$$ = parser_append2(AST_CAST_EXPRESSION, $2, $4);}
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression multiplicative-operator cast-expression {$$ = ast_binary($1, $2, $3);}
+| multiplicative-expression multiplicative-operator cast-expression {$$ = parser_binary($1, $2, $3);}
 ;
 multiplicative-operator
-: "*" {$$ = ast_append0(AST_ASTERISK);}
-| "/" {$$ = ast_append0(AST_SLASH);}
-| "%" {$$ = ast_append0(AST_PERCENT);}
+: "*" {$$ = parser_append0(AST_ASTERISK);}
+| "/" {$$ = parser_append0(AST_SLASH);}
+| "%" {$$ = parser_append0(AST_PERCENT);}
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression additive-operator multiplicative-expression {$$ = ast_binary($1, $2, $3);}
+| additive-expression additive-operator multiplicative-expression {$$ = parser_binary($1, $2, $3);}
 ;
 additive-operator
-: "+" {$$ = ast_append0(AST_PLUS);}
-| "-" {$$ = ast_append0(AST_MINUS);}
+: "+" {$$ = parser_append0(AST_PLUS);}
+| "-" {$$ = parser_append0(AST_MINUS);}
 ;
 shift-expression
 : additive-expression
-| shift-expression shift-operator additive-expression {$$ = ast_binary($1, $2, $3);}
+| shift-expression shift-operator additive-expression {$$ = parser_binary($1, $2, $3);}
 ;
 shift-operator
-: "<<" {$$ = ast_append0(AST_LEFT_SHIFT);}
-| ">>" {$$ = ast_append0(AST_RIGHT_SHIFT);}
+: "<<" {$$ = parser_append0(AST_LEFT_SHIFT);}
+| ">>" {$$ = parser_append0(AST_RIGHT_SHIFT);}
 ;
 relational-expression
 : shift-expression
-| relational-expression relational-operator shift-expression {$$ = ast_binary($1, $2, $3);}
+| relational-expression relational-operator shift-expression {$$ = parser_binary($1, $2, $3);}
 ;
 relational-operator
-: "<" {$$ = ast_append0(AST_LESS_THAN);}
-| ">" {$$ = ast_append0(AST_GREATER_THAN);}
-| "<=" {$$ = ast_append0(AST_LESS_EQUAL);}
-| ">=" {$$ = ast_append0(AST_GREATER_EQUAL);}
+: "<" {$$ = parser_append0(AST_LESS_THAN);}
+| ">" {$$ = parser_append0(AST_GREATER_THAN);}
+| "<=" {$$ = parser_append0(AST_LESS_EQUAL);}
+| ">=" {$$ = parser_append0(AST_GREATER_EQUAL);}
 ;
 equality-expression
 : relational-expression
-| equality-expression equality-operator relational-expression {$$ = ast_binary($1, $2, $3);}
+| equality-expression equality-operator relational-expression {$$ = parser_binary($1, $2, $3);}
 ;
 equality-operator
-: "==" {$$ = ast_append0(AST_EQUAL);}
-| "!=" {$$ = ast_append0(AST_NOT_EQUAL);}
+: "==" {$$ = parser_append0(AST_EQUAL);}
+| "!=" {$$ = parser_append0(AST_NOT_EQUAL);}
 ;
 and-expression
 : equality-expression
-| and-expression and-operator equality-expression {$$ = ast_binary($1, $2, $3);}
+| and-expression and-operator equality-expression {$$ = parser_binary($1, $2, $3);}
 ;
 and-operator
-: "&" {$$ = ast_append0(AST_AMPERSAND);}
+: "&" {$$ = parser_append0(AST_AMPERSAND);}
 ;
 exclusive-or-expression
 : and-expression
-| exclusive-or-expression exclusive-or-operator and-expression {$$ = ast_binary($1, $2, $3);}
+| exclusive-or-expression exclusive-or-operator and-expression {$$ = parser_binary($1, $2, $3);}
 ;
 exclusive-or-operator
-: "^" {$$ = ast_append0(AST_CARET);}
+: "^" {$$ = parser_append0(AST_CARET);}
 ;
 inclusive-or-expression
 : exclusive-or-expression
-| inclusive-or-expression inclusive-or-operator exclusive-or-expression {$$ = ast_binary($1, $2, $3);}
+| inclusive-or-expression inclusive-or-operator exclusive-or-expression {$$ = parser_binary($1, $2, $3);}
 ;
 inclusive-or-operator
-: "|" {$$ = ast_append0(AST_BAR);}
+: "|" {$$ = parser_append0(AST_BAR);}
 ;
 logical-and-expression
 : inclusive-or-expression
-| logical-and-expression logical-and-operator inclusive-or-expression {$$ = ast_binary($1, $2, $3);}
+| logical-and-expression logical-and-operator inclusive-or-expression {$$ = parser_binary($1, $2, $3);}
 ;
 logical-and-operator
-: "&&" {$$ = ast_append0(AST_AND);}
+: "&&" {$$ = parser_append0(AST_AND);}
 ;
 logical-or-expression
 : logical-and-expression
-| logical-or-expression logical-or-operator logical-and-expression {$$ = ast_binary($1, $2, $3);}
+| logical-or-expression logical-or-operator logical-and-expression {$$ = parser_binary($1, $2, $3);}
 ;
 logical-or-operator
-: "||" {$$ = ast_append0(AST_OR);}
+: "||" {$$ = parser_append0(AST_OR);}
 ;
 conditional-expression
 : logical-or-expression
-| logical-or-expression "?" expression ":" conditional-expression {$$ = ast_append3(AST_CONDITIONAL_EXPRESSION, $1, $3, $5);}
+| logical-or-expression "?" expression ":" conditional-expression {$$ = parser_append3(AST_CONDITIONAL_EXPRESSION, $1, $3, $5);}
 ;
 assignment-expression
 : conditional-expression
-| unary-expression assignment-operator assignment-expression {$$ = ast_binary($1, $2, $3);}
+| unary-expression assignment-operator assignment-expression {$$ = parser_binary($1, $2, $3);}
 ;
 assignment-operator
-: "=" {$$ = ast_append0(AST_ASSIGN);}
-| "*=" {$$ = ast_append0(AST_ASTERISK_ASSIGN);}
-| "/=" {$$ = ast_append0(AST_SLASH_ASSIGN);}
-| "%=" {$$ = ast_append0(AST_PERCENT_ASSIGN);}
-| "+=" {$$ = ast_append0(AST_PLUS_ASSIGN);}
-| "-=" {$$ = ast_append0(AST_MINUS_ASSIGN);}
-| "<<=" {$$ = ast_append0(AST_LEFT_SHIFT_ASSIGN);}
-| ">>=" {$$ = ast_append0(AST_RIGHT_SHIFT_ASSIGN);}
-| "&=" {$$ = ast_append0(AST_AMPERSAND_ASSIGN);}
-| "^=" {$$ = ast_append0(AST_CARET_ASSIGN);}
-| "|=" {$$ = ast_append0(AST_BAR_ASSIGN);}
+: "=" {$$ = parser_append0(AST_ASSIGN);}
+| "*=" {$$ = parser_append0(AST_ASTERISK_ASSIGN);}
+| "/=" {$$ = parser_append0(AST_SLASH_ASSIGN);}
+| "%=" {$$ = parser_append0(AST_PERCENT_ASSIGN);}
+| "+=" {$$ = parser_append0(AST_PLUS_ASSIGN);}
+| "-=" {$$ = parser_append0(AST_MINUS_ASSIGN);}
+| "<<=" {$$ = parser_append0(AST_LEFT_SHIFT_ASSIGN);}
+| ">>=" {$$ = parser_append0(AST_RIGHT_SHIFT_ASSIGN);}
+| "&=" {$$ = parser_append0(AST_AMPERSAND_ASSIGN);}
+| "^=" {$$ = parser_append0(AST_CARET_ASSIGN);}
+| "|=" {$$ = parser_append0(AST_BAR_ASSIGN);}
 ;
 expression.opt
-: %empty {$$ = ast_empty();}
+: %empty {$$ = parser_empty();}
 | expression
 ;
 expression
 : assignment-expression
-| expression comma-operator assignment-expression {$$ = ast_binary($1, $2, $3);}
+| expression comma-operator assignment-expression {$$ = parser_binary($1, $2, $3);}
 ;
 comma-operator
-: "," {$$ = ast_append0(AST_COMMA);}
+: "," {$$ = parser_append0(AST_COMMA);}
 ;
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty {$$ = ast_empty();}
+: %empty {$$ = parser_empty();}
 | constant-expression
 ;
 constant-expression
-: conditional-expression {$$ = ast_append1(AST_CONSTANT_EXPRESSION, $1);}
+: conditional-expression {$$ = parser_append1(AST_CONSTANT_EXPRESSION, $1);}
 ;
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers ";" {$$ = ast_append1(AST_DECLARATION, $1);}
-| declaration-specifiers init-declarator-list ";" {$$ = ast_append2(AST_DECLARATION, $1, $2);}
+: declaration-specifiers ";" {$$ = parser_append1(AST_DECLARATION, $1);}
+| declaration-specifiers init-declarator-list ";" {$$ = parser_append2(AST_DECLARATION, $1, $2);}
 ;
 declaration-specifiers
-: declaration-specifier {$$ = ast_list_new(AST_DECLARATION_SPECIFIERS, $1);}
-| declaration-specifiers declaration-specifier {$$ = ast_list_push($1, $2);}
+: declaration-specifier {$$ = parser_list_new(AST_DECLARATION_SPECIFIERS, $1);}
+| declaration-specifiers declaration-specifier {$$ = parser_list_push($1, $2);}
 ;
 declaration-specifier
 : storage-class-specifier
@@ -328,183 +328,183 @@ declaration-specifier
 | type-qualifier
 ;
 init-declarator-list
-: init-declarator {$$ = ast_list_new(AST_INIT_DECLARATOR_LIST, $1);}
-| init-declarator-list "," init-declarator {$$ = ast_list_push($1, $3);}
+: init-declarator {$$ = parser_list_new(AST_INIT_DECLARATOR_LIST, $1);}
+| init-declarator-list "," init-declarator {$$ = parser_list_push($1, $3);}
 ;
 init-declarator
-: declarator {$$ = ast_append1(AST_INIT_DECLARATOR, $1);}
-| declarator "=" initializer {$$ = ast_append2(AST_INIT_DECLARATOR, $1, $3);}
+: declarator {$$ = parser_append1(AST_INIT_DECLARATOR, $1);}
+| declarator "=" initializer {$$ = parser_append2(AST_INIT_DECLARATOR, $1, $3);}
 ;
 storage-class-specifier
-: storage-class-specifier.prefix {$$ = ast_append1(AST_STORAGE_CLASS_SPECIFIER, $1);}
+: storage-class-specifier.prefix {$$ = parser_append1(AST_STORAGE_CLASS_SPECIFIER, $1);}
 ;
 storage-class-specifier.prefix
-: "typedef" {$$ = ast_append0(AST_TYPEDEF);}
-| "extern" {$$ = ast_append0(AST_EXTERN);}
-| "static" {$$ = ast_append0(AST_STATIC);}
-| "auto" {$$ = ast_append0(AST_AUTO);}
-| "register" {$$ = ast_append0(AST_REGISTER);}
+: "typedef" {$$ = parser_append0(AST_TYPEDEF);}
+| "extern" {$$ = parser_append0(AST_EXTERN);}
+| "static" {$$ = parser_append0(AST_STATIC);}
+| "auto" {$$ = parser_append0(AST_AUTO);}
+| "register" {$$ = parser_append0(AST_REGISTER);}
 ;
 type-specifier
-: type-specifier.prefix {$$ = ast_append1(AST_TYPE_SPECIFIER, $1);}
+: type-specifier.prefix {$$ = parser_append1(AST_TYPE_SPECIFIER, $1);}
 ;
 type-specifier.prefix
-: "void" {$$ = ast_append0(AST_VOID);}
-| "char" {$$ = ast_append0(AST_CHAR);}
-| "short" {$$ = ast_append0(AST_SHORT);}
-| "int" {$$ = ast_append0(AST_INT);}
-| "long" {$$ = ast_append0(AST_LONG);}
-| "float" {$$ = ast_append0(AST_FLOAT);}
-| "double" {$$ = ast_append0(AST_DOUBLE);}
-| "signed" {$$ = ast_append0(AST_SIGNED);}
-| "unsigned" {$$ = ast_append0(AST_UNSIGNED);}
+: "void" {$$ = parser_append0(AST_VOID);}
+| "char" {$$ = parser_append0(AST_CHAR);}
+| "short" {$$ = parser_append0(AST_SHORT);}
+| "int" {$$ = parser_append0(AST_INT);}
+| "long" {$$ = parser_append0(AST_LONG);}
+| "float" {$$ = parser_append0(AST_FLOAT);}
+| "double" {$$ = parser_append0(AST_DOUBLE);}
+| "signed" {$$ = parser_append0(AST_SIGNED);}
+| "unsigned" {$$ = parser_append0(AST_UNSIGNED);}
 | struct-or-union-specifier
 | enum-specifier
 | typedef-name
 ;
 struct-or-union-specifier
-: struct-or-union identifier.opt "{" struct-declaration-list "}" {$$ = ast_append3(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2, $4);}
-| struct-or-union identifier {$$ = ast_append2(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2);}
+: struct-or-union identifier.opt "{" struct-declaration-list "}" {$$ = parser_append3(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2, $4);}
+| struct-or-union identifier {$$ = parser_append2(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2);}
 ;
 struct-or-union
-: "struct" {$$ = ast_append0(AST_STRUCT);}
-| "union" {$$ = ast_append0(AST_UNION);}
+: "struct" {$$ = parser_append0(AST_STRUCT);}
+| "union" {$$ = parser_append0(AST_UNION);}
 ;
 struct-declaration-list
-: struct-declaration {$$ = ast_list_new(AST_STRUCT_DECLARATION_LIST, $1);}
-| struct-declaration-list struct-declaration {$$ = ast_list_push($1, $2);}
+: struct-declaration {$$ = parser_list_new(AST_STRUCT_DECLARATION_LIST, $1);}
+| struct-declaration-list struct-declaration {$$ = parser_list_push($1, $2);}
 ;
 struct-declaration
-: specifier-qualifier-list struct-declarator-list ";" {$$ = ast_append2(AST_STRUCT_DECLARATION, $1, $2);}
+: specifier-qualifier-list struct-declarator-list ";" {$$ = parser_append2(AST_STRUCT_DECLARATION, $1, $2);}
 ;
 specifier-qualifier-list
-: specifier-qualifier {$$ = ast_list_new(AST_SPECIFIER_QUALIFIER_LIST, $1);}
-| specifier-qualifier-list specifier-qualifier {$$ = ast_list_push($1, $2);}
+: specifier-qualifier {$$ = parser_list_new(AST_SPECIFIER_QUALIFIER_LIST, $1);}
+| specifier-qualifier-list specifier-qualifier {$$ = parser_list_push($1, $2);}
 ;
 specifier-qualifier
 : type-specifier
 | type-qualifier
 ;
 struct-declarator-list
-: struct-declarator {$$ = ast_list_new(AST_STRUCT_DECLARATOR_LIST, $1);}
-| struct-declarator-list "," struct-declarator {$$ = ast_list_push($1, $3);}
+: struct-declarator {$$ = parser_list_new(AST_STRUCT_DECLARATOR_LIST, $1);}
+| struct-declarator-list "," struct-declarator {$$ = parser_list_push($1, $3);}
 ;
 struct-declarator
-: declarator {$$ = ast_append1(AST_STRUCT_DECLARATOR, $1);}
-| declarator.opt ":" constant-expression {$$ = ast_append2(AST_STRUCT_DECLARATOR, $1, $3);}
+: declarator {$$ = parser_append1(AST_STRUCT_DECLARATOR, $1);}
+| declarator.opt ":" constant-expression {$$ = parser_append2(AST_STRUCT_DECLARATOR, $1, $3);}
 ;
 enum-specifier
-: "enum" identifier.opt "{" enumerator-list "}" {$$ = ast_append2(AST_ENUM_SPECIFIER, $2, $4); }
-| "enum" identifier {$$ = ast_append1(AST_ENUM_SPECIFIER, $2); }
+: "enum" identifier.opt "{" enumerator-list "}" {$$ = parser_append2(AST_ENUM_SPECIFIER, $2, $4); }
+| "enum" identifier {$$ = parser_append1(AST_ENUM_SPECIFIER, $2); }
 ;
 enumerator-list
-: enumerator {$$ = ast_list_new(AST_ENUMERATOR_LIST, $1);}
-| enumerator-list "," enumerator {$$ = ast_list_push($1, $3);}
+: enumerator {$$ = parser_list_new(AST_ENUMERATOR_LIST, $1);}
+| enumerator-list "," enumerator {$$ = parser_list_push($1, $3);}
 ;
 enumerator
-: enumeration-constant {$$ = ast_append1(AST_ENUMERATOR, $1);}
-| enumeration-constant "=" constant-expression {$$ = ast_append2(AST_ENUMERATOR, $1, $3);}
+: enumeration-constant {$$ = parser_append1(AST_ENUMERATOR, $1);}
+| enumeration-constant "=" constant-expression {$$ = parser_append2(AST_ENUMERATOR, $1, $3);}
 ;
 type-qualifier
-: type-qualifier.prefix {$$ = ast_append1(AST_TYPE_QUALIFIER, $1);}
+: type-qualifier.prefix {$$ = parser_append1(AST_TYPE_QUALIFIER, $1);}
 ;
 type-qualifier.prefix
-: "const" {$$ = ast_append0(AST_CONST);}
-| "volatile" {$$ = ast_append0(AST_VOLATILE);}
+: "const" {$$ = parser_append0(AST_CONST);}
+| "volatile" {$$ = parser_append0(AST_VOLATILE);}
 ;
 declarator.opt
-: %empty {$$ = ast_empty();}
+: %empty {$$ = parser_empty();}
 | declarator
 ;
 declarator
-: direct-declarator {$$ = ast_append1(AST_DECLARATOR, $1);}
-| pointer direct-declarator {$$ = ast_append2(AST_DECLARATOR, $1, $2);}
+: direct-declarator {$$ = parser_append1(AST_DECLARATOR, $1);}
+| pointer direct-declarator {$$ = parser_append2(AST_DECLARATOR, $1, $2);}
 ;
 direct-declarator
-: direct-declarator.prefix {$$ = ast_append1(AST_DIRECT_DECLARATOR, $1);}
-| direct-declarator direct-declarator.suffix {$$ = ast_append2(AST_DIRECT_DECLARATOR, $1, $2);}
+: direct-declarator.prefix {$$ = parser_append1(AST_DIRECT_DECLARATOR, $1);}
+| direct-declarator direct-declarator.suffix {$$ = parser_append2(AST_DIRECT_DECLARATOR, $1, $2);}
 ;
 direct-declarator.prefix
 : identifier
 | "(" declarator ")" {$$ = $2;}
 ;
 direct-declarator.suffix
-: "[" constant-expression.opt "]" {$$ = ast_append1(AST_ARRAY, $2);}
-| "(" parameter-type-list ")" {$$ = ast_append1(AST_CALL, $2);}
-| "(" identifier-list.opt ")" {$$ = ast_append1(AST_OLD, $2);}
+: "[" constant-expression.opt "]" {$$ = parser_append1(AST_ARRAY, $2);}
+| "(" parameter-type-list ")" {$$ = parser_append1(AST_CALL, $2);}
+| "(" identifier-list.opt ")" {$$ = parser_append1(AST_OLD, $2);}
 ;
 pointer
-: pointer.prefix {$$ = ast_append1(AST_POINTER, $1);}
-| pointer.prefix pointer {$$ = ast_append2(AST_POINTER, $1, $2);}
+: pointer.prefix {$$ = parser_append1(AST_POINTER, $1);}
+| pointer.prefix pointer {$$ = parser_append2(AST_POINTER, $1, $2);}
 ;
 pointer.prefix
 : "*" type-qualifier-list.opt {$$ = $2;}
 ;
 type-qualifier-list.opt
-: %empty {$$ = ast_list_empty(AST_TYPE_QUALIFIER_LIST);}
+: %empty {$$ = parser_list_empty(AST_TYPE_QUALIFIER_LIST);}
 | type-qualifier-list
 ;
 type-qualifier-list
-: type-qualifier {$$ = ast_list_new(AST_TYPE_QUALIFIER_LIST, $1);}
-| type-qualifier-list type-qualifier {$$ = ast_list_push($1, $2);}
+: type-qualifier {$$ = parser_list_new(AST_TYPE_QUALIFIER_LIST, $1);}
+| type-qualifier-list type-qualifier {$$ = parser_list_push($1, $2);}
 ;
 parameter-type-list.opt
-: %empty {$$ = ast_list_empty(AST_PARAMETER_LIST);}
+: %empty {$$ = parser_list_empty(AST_PARAMETER_LIST);}
 | parameter-type-list
 ;
 parameter-type-list
 : parameter-list
-| parameter-list "," "..." {$$ = ast_append1(AST_PARAMETER_TYPE_LIST, $1);}
+| parameter-list "," "..." {$$ = parser_append1(AST_PARAMETER_TYPE_LIST, $1);}
 ;
 parameter-list
-: parameter-declaration {$$ = ast_list_new(AST_PARAMETER_LIST, $1);}
-| parameter-list "," parameter-declaration {$$ = ast_list_push($1, $3);}
+: parameter-declaration {$$ = parser_list_new(AST_PARAMETER_LIST, $1);}
+| parameter-list "," parameter-declaration {$$ = parser_list_push($1, $3);}
 ;
 parameter-declaration
-: declaration-specifiers {$$ = ast_append1(AST_PARAMETER_DECLARATION, $1);}
-| declaration-specifiers parameter-declaration.suffix {$$ = ast_append2(AST_PARAMETER_DECLARATION, $1, $2);}
+: declaration-specifiers {$$ = parser_append1(AST_PARAMETER_DECLARATION, $1);}
+| declaration-specifiers parameter-declaration.suffix {$$ = parser_append2(AST_PARAMETER_DECLARATION, $1, $2);}
 ;
 parameter-declaration.suffix
 : declarator
 | abstract-declarator
 ;
 identifier-list.opt
-: %empty {$$ = ast_list_empty(AST_IDENTIFIER_LIST);}
+: %empty {$$ = parser_list_empty(AST_IDENTIFIER_LIST);}
 | identifier-list
 ;
 identifier-list
-: identifier {$$ = ast_list_new(AST_IDENTIFIER_LIST, $1);}
-| identifier-list "," identifier {$$ = ast_list_push($1, $3);}
+: identifier {$$ = parser_list_new(AST_IDENTIFIER_LIST, $1);}
+| identifier-list "," identifier {$$ = parser_list_push($1, $3);}
 ;
 type-name
-: specifier-qualifier-list {$$ = ast_append1(AST_TYPE_NAME, $1);}
-| specifier-qualifier-list abstract-declarator {$$ = ast_append2(AST_TYPE_NAME, $1, $2);}
+: specifier-qualifier-list {$$ = parser_append1(AST_TYPE_NAME, $1);}
+| specifier-qualifier-list abstract-declarator {$$ = parser_append2(AST_TYPE_NAME, $1, $2);}
 ;
 abstract-declarator
-: abstract-declarator.prefix {$$ = ast_append1(AST_ABSTRACT_DECLARATOR, $1);}
-| pointer direct-abstract-declarator {$$ = ast_append2(AST_ABSTRACT_DECLARATOR, $1, $2);}
+: abstract-declarator.prefix {$$ = parser_append1(AST_ABSTRACT_DECLARATOR, $1);}
+| pointer direct-abstract-declarator {$$ = parser_append2(AST_ABSTRACT_DECLARATOR, $1, $2);}
 ;
 abstract-declarator.prefix
 : pointer
 | direct-abstract-declarator
 ;
 direct-abstract-declarator
-: direct-abstract-declarator.prefix {$$ = ast_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $1);}
-| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = ast_append2(AST_DIRECT_ABSTRACT_DECLARATOR, $1, $2);}
+: direct-abstract-declarator.prefix {$$ = parser_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $1);}
+| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = parser_append2(AST_DIRECT_ABSTRACT_DECLARATOR, $1, $2);}
 ;
 direct-abstract-declarator.prefix
 : "(" abstract-declarator ")" {$$ = $2;}
 | direct-abstract-declarator.suffix {$$ = $1;}
 ;
 direct-abstract-declarator.suffix
-: "[" constant-expression.opt "]" {$$ = ast_append1(AST_ARRAY, $2);}
-| "(" parameter-type-list.opt ")" {$$ = ast_append1(AST_CALL, $2);}
+: "[" constant-expression.opt "]" {$$ = parser_append1(AST_ARRAY, $2);}
+| "(" parameter-type-list.opt ")" {$$ = parser_append1(AST_CALL, $2);}
 ;
 typedef-name
-: typedef-identifier {$$ = ast_append1(AST_TYPEDEF_NAME, $1);}
+: typedef-identifier {$$ = parser_append1(AST_TYPEDEF_NAME, $1);}
 ;
 initializer
-: initializer.suffix {$$ = ast_append1(AST_INITIALIZER, $1);}
+: initializer.suffix {$$ = parser_append1(AST_INITIALIZER, $1);}
 ;
 initializer.suffix
 : assignment-expression
@@ -512,13 +512,13 @@ initializer.suffix
 | "{" initializer-list "," "}" {$$ = $2;}
 ;
 initializer-list
-: initializer {$$ = ast_list_new(AST_INITIALIZER_LIST, $1);}
-| initializer-list "," initializer {$$ = ast_list_push($1, $3);}
+: initializer {$$ = parser_list_new(AST_INITIALIZER_LIST, $1);}
+| initializer-list "," initializer {$$ = parser_list_push($1, $3);}
 ;
 
 /* 6.6 Statements */
 statement
-: statement.prefix {$$ = ast_append1(AST_STATEMENT, $1);}
+: statement.prefix {$$ = parser_append1(AST_STATEMENT, $1);}
 ;
 statement.prefix
 : labeled-statement
@@ -529,51 +529,51 @@ statement.prefix
 | jump-statement
 ;
 labeled-statement
-: labeled-statement.prefix ":" statement {$$ = ast_append2(AST_LABELED_STATEMENT, $1, $3);}
+: labeled-statement.prefix ":" statement {$$ = parser_append2(AST_LABELED_STATEMENT, $1, $3);}
 ;
 labeled-statement.prefix
 : identifier
-| "case" constant-expression {$$ = ast_append1(AST_CASE, $2);}
-| "default" {$$ = ast_append0(AST_DEFAULT);}
+| "case" constant-expression {$$ = parser_append1(AST_CASE, $2);}
+| "default" {$$ = parser_append0(AST_DEFAULT);}
 ;
 compound-statement
-: "{" declaration-list.opt statement-list.opt "}" {$$ = ast_append2(AST_COMPOUND_STATEMENT, $2, $3);}
+: "{" declaration-list.opt statement-list.opt "}" {$$ = parser_append2(AST_COMPOUND_STATEMENT, $2, $3);}
 ;
 declaration-list.opt
-: %empty {$$ = ast_list_empty(AST_DECLARATION_LIST);}
+: %empty {$$ = parser_list_empty(AST_DECLARATION_LIST);}
 | declaration-list
 ;
 declaration-list
-: declaration {$$ = ast_list_new(AST_DECLARATION_LIST, $1);}
-| declaration-list declaration {$$ = ast_list_push($1, $2);}
+: declaration {$$ = parser_list_new(AST_DECLARATION_LIST, $1);}
+| declaration-list declaration {$$ = parser_list_push($1, $2);}
 ;
 statement-list.opt
-: %empty {$$ = ast_list_empty(AST_STATEMENT_LIST);}
+: %empty {$$ = parser_list_empty(AST_STATEMENT_LIST);}
 | statement-list
 ;
 statement-list
-: statement {$$ = ast_list_new(AST_STATEMENT_LIST, $1);}
-| statement-list statement {$$ = ast_list_push($1, $2);}
+: statement {$$ = parser_list_new(AST_STATEMENT_LIST, $1);}
+| statement-list statement {$$ = parser_list_push($1, $2);}
 ;
 expression-statement
-: expression.opt ";" {$$ = ast_append1(AST_EXPRESSION_STATEMENT, $1);}
+: expression.opt ";" {$$ = parser_append1(AST_EXPRESSION_STATEMENT, $1);}
 ;
 selection-statement
-: selection-statement.suffix {$$ = ast_append1(AST_SELECTION_STATEMENT, $1);}
+: selection-statement.suffix {$$ = parser_append1(AST_SELECTION_STATEMENT, $1);}
 ;
 selection-statement.suffix
 : "if" selection-statement.if {$$ = $2;}
 | "switch" selection-statement.switch {$$ = $2;}
 ;
 selection-statement.if
-: "(" expression ")" statement %prec THEN {$$ = ast_append2(AST_IF, $2, $4);}
-| "(" expression ")" statement "else" statement {$$ = ast_append3(AST_IF, $2, $4, $6);}
+: "(" expression ")" statement %prec THEN {$$ = parser_append2(AST_IF, $2, $4);}
+| "(" expression ")" statement "else" statement {$$ = parser_append3(AST_IF, $2, $4, $6);}
 ;
 selection-statement.switch
-: "(" expression ")" statement {$$ = ast_append2(AST_SWITCH, $2, $4);}
+: "(" expression ")" statement {$$ = parser_append2(AST_SWITCH, $2, $4);}
 ;
 iteration-statement
-: iteration-statement.suffix {$$ = ast_append1(AST_ITERATION_STATEMENT, $1);}
+: iteration-statement.suffix {$$ = parser_append1(AST_ITERATION_STATEMENT, $1);}
 ;
 iteration-statement.suffix
 : "while" iteration-statement.while {$$ = $2;}
@@ -581,37 +581,37 @@ iteration-statement.suffix
 | "for" iteration-statement.for {$$ = $2;}
 ;
 iteration-statement.while
-: "(" expression ")" statement {$$ = ast_append2(AST_WHILE, $2, $4);}
+: "(" expression ")" statement {$$ = parser_append2(AST_WHILE, $2, $4);}
 ;
 iteration-statement.do
-: statement "while" "(" expression ")" ";" {$$ = ast_append2(AST_DO, $1, $4);}
+: statement "while" "(" expression ")" ";" {$$ = parser_append2(AST_DO, $1, $4);}
 ;
 iteration-statement.for
-: "(" expression.opt ";" expression.opt ";" expression.opt ")" statement {$$ = ast_append4(AST_FOR, $2, $4, $6, $8);}
+: "(" expression.opt ";" expression.opt ";" expression.opt ")" statement {$$ = parser_append4(AST_FOR, $2, $4, $6, $8);}
 ;
 jump-statement
-: jump-statement.suffix {$$ = ast_append1(AST_JUMP_STATEMENT, $1);}
+: jump-statement.suffix {$$ = parser_append1(AST_JUMP_STATEMENT, $1);}
 ;
 jump-statement.suffix
-: "goto" identifier ";" {$$ = ast_append1(AST_GOTO, $2);}
-| "continue" ";" {$$ = ast_append0(AST_CONTINUE);}
-| "break" ";" {$$ = ast_append0(AST_BREAK);}
-| "return" expression.opt ";" {$$ = ast_append1(AST_RETURN, $2);}
+: "goto" identifier ";" {$$ = parser_append1(AST_GOTO, $2);}
+| "continue" ";" {$$ = parser_append0(AST_CONTINUE);}
+| "break" ";" {$$ = parser_append0(AST_BREAK);}
+| "return" expression.opt ";" {$$ = parser_append1(AST_RETURN, $2);}
 ;
 
 /* 6.7 External definitions */
 top
-: translation-unit {$$ = ast_list_finish($1); yyset_extra($$, scanner);}
+: translation-unit {$$ = parser_list_finish($1); yyset_extra($$, scanner);}
 translation-unit
-: external-declaration {$$ = ast_list_new(AST_TRANSLATION_UNIT, $1);}
-| translation-unit external-declaration {$$ = ast_list_push($1, $2);}
+: external-declaration {$$ = parser_list_new(AST_TRANSLATION_UNIT, $1);}
+| translation-unit external-declaration {$$ = parser_list_push($1, $2);}
 ;
 external-declaration
 : function-definition
-| declaration {$$ = ast_append1(AST_EXTERNAL_DECLARATION, $1);}
+| declaration {$$ = parser_append1(AST_EXTERNAL_DECLARATION, $1);}
 ;
 function-definition
-: declarator declaration-list.opt compound-statement {$$ = ast_append3(AST_FUNCTION_DEFINITION, $1, $2, $3);}
-| declaration-specifiers declarator declaration-list.opt compound-statement {$$ = ast_append4(AST_FUNCTION_DEFINITION, $1, $2, $3, $4);}
+: declarator declaration-list.opt compound-statement {$$ = parser_append3(AST_FUNCTION_DEFINITION, $1, $2, $3);}
+| declaration-specifiers declarator declaration-list.opt compound-statement {$$ = parser_append4(AST_FUNCTION_DEFINITION, $1, $2, $3, $4);}
 ;
 %%

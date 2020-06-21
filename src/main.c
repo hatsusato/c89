@@ -22,7 +22,7 @@ void print_seq(yyscan_t scanner) {
 
 int main(void) {
   yyscan_t scanner;
-  YYSTYPE extra = ast_init();
+  YYSTYPE extra = parser_init();
   int ret = 0;
   yylex_init_extra(extra, &scanner);
   ret = yyparse(scanner);
