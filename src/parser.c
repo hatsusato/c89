@@ -104,3 +104,6 @@ YYSTYPE ast_list_push(YYSTYPE list, YYSTYPE elem) {
   list_insert(list.last, elem.last);
   return list;
 }
+void ast_list_finish(YYSTYPE list) {
+  list_insert(list.last, nil);
+}
