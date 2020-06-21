@@ -7,6 +7,7 @@
 #include "vector.h"
 
 static void print_begin(int indent) {
+  printf("\n");
   for (; 0 < indent; --indent) {
     printf("  ");
   }
@@ -39,10 +40,6 @@ static List *print_token(List *list) {
   print_end();
   return list;
 }
-static List *print_line(List *list, int indent) {
-  printf("\n");
-  return print_ast(list, indent);
-}
 List *print_list(List *list, int indent) {
   if (AST_LIST == list_tag(list)) {
     list = list_next(list);
@@ -53,7 +50,7 @@ List *print_list(List *list, int indent) {
       list = list_next(list);
       break;
     }
-    list = print_line(list, indent + 1);
+    list = print_ast(list, indent + 1);
   }
   print_end();
   return list;
@@ -75,31 +72,31 @@ List *print_ast(List *list, int indent) {
   case AST_ARITY1:
     list = list_next(list);
     list = print_tag(list);
-    list = print_line(list, indent + 1);
+    list = print_ast(list, indent + 1);
     print_end();
     return list;
   case AST_ARITY2:
     list = list_next(list);
     list = print_tag(list);
-    list = print_line(list, indent + 1);
-    list = print_line(list, indent + 1);
+    list = print_ast(list, indent + 1);
+    list = print_ast(list, indent + 1);
     print_end();
     return list;
   case AST_ARITY3:
     list = list_next(list);
     list = print_tag(list);
-    list = print_line(list, indent + 1);
-    list = print_line(list, indent + 1);
-    list = print_line(list, indent + 1);
+    list = print_ast(list, indent + 1);
+    list = print_ast(list, indent + 1);
+    list = print_ast(list, indent + 1);
     print_end();
     return list;
   case AST_ARITY4:
     list = list_next(list);
     list = print_tag(list);
-    list = print_line(list, indent + 1);
-    list = print_line(list, indent + 1);
-    list = print_line(list, indent + 1);
-    list = print_line(list, indent + 1);
+    list = print_ast(list, indent + 1);
+    list = print_ast(list, indent + 1);
+    list = print_ast(list, indent + 1);
+    list = print_ast(list, indent + 1);
     print_end();
     return list;
   default:
