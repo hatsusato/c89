@@ -72,12 +72,6 @@ List *print_ast(List *list, int indent) {
     /* List */
   case AST_LIST:
     return print_list(list, indent);
-    /* Lexical elements */
-#define HANDLE(name, str) case AST_##name:
-#include "enum/keyword.def"
-#include "enum/symbol.def"
-#undef HANDLE
-    return print_repeat(list, indent, 0);
 #define HANDLE(name, str) case AST_##name:
 #include "enum/token.def"
 #undef HANDLE
