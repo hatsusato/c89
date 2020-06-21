@@ -79,6 +79,7 @@ List *print_ast(List *list, int indent) {
 #undef HANDLE
     return print_repeat(list, indent, 0);
   case AST_IDENTIFIER:
+  case AST_TYPEDEF_IDENTIFIER:
   case AST_FLOATING_CONSTANT:
   case AST_INTEGER_CONSTANT:
   case AST_ENUMERATION_CONSTANT:

@@ -18,11 +18,11 @@
 %param {yyscan_t scanner}
 
 %token TOKEN_IDENTIFIER
+%token TOKEN_TYPEDEF_IDENTIFIER
 %token TOKEN_FLOATING_CONSTANT
 %token TOKEN_INTEGER_CONSTANT
 %token TOKEN_CHARACTER_CONSTANT
 %token TOKEN_STRING_LITERAL
-%token TOKEN_TYPEDEF_NAME
 %token TOKEN_UNKNOWN
 
 %token KEYWORD_AUTO "auto"
@@ -118,6 +118,9 @@ identifier.opt
 ;
 identifier
 : TOKEN_IDENTIFIER {$$ = ast_token(AST_IDENTIFIER, scanner);}
+;
+typedef-identifier
+: TOKEN_TYPEDEF_IDENTIFIER {$$ = ast_token(AST_TYPEDEF_IDENTIFIER, scanner);}
 ;
 floating-constant
 : TOKEN_FLOATING_CONSTANT {$$ = ast_token(AST_FLOATING_CONSTANT, scanner);}
@@ -498,7 +501,7 @@ direct-abstract-declarator.suffix
 | "(" parameter-type-list.opt ")" {$$ = ast_append1(AST_CALL, $2);}
 ;
 typedef-name
-: TOKEN_TYPEDEF_NAME {$$ = ast_append1(AST_TYPEDEF_NAME, $1);}
+: typedef-identifier {$$ = ast_append1(AST_TYPEDEF_NAME, $1);}
 ;
 initializer
 : initializer.suffix {$$ = ast_append1(AST_INITIALIZER, $1);}

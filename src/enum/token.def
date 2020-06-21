@@ -3,6 +3,7 @@
 
 /* 6.1.2 Identifiers */
 DO_HANDLE(IDENTIFIER, identifier)
+DO_HANDLE(TYPEDEF_IDENTIFIER, typedef-identifier)
 /* 6.1.3 Constants */
 DO_HANDLE(CONSTANT, constant)
 DO_HANDLE(FLOATING_CONSTANT, floating-constant)
