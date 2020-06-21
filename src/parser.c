@@ -14,7 +14,7 @@ static YYSTYPE ast_push(YYSTYPE x0, YYSTYPE x1) {
 static YYSTYPE ast_push_tag(YYSTYPE x0, int tag) {
   return ast_push(x0, ast_new_tag(tag));
 }
-static YYSTYPE ast_arity_aux(int arity, int tag) {
+static YYSTYPE ast_arity(int arity, int tag) {
   YYSTYPE x0 = ast_new_tag(arity);
   x0 = ast_push_tag(x0, tag);
   return x0;
@@ -43,29 +43,29 @@ YYSTYPE ast_new_tag(int tag) {
   return ret;
 }
 YYSTYPE ast_append0(int tag) {
-  YYSTYPE x0 = ast_arity_aux(AST_ARITY0, tag);
+  YYSTYPE x0 = ast_arity(AST_ARITY0, tag);
   return x0;
 }
 YYSTYPE ast_append1(int tag, YYSTYPE x1) {
-  YYSTYPE x0 = ast_arity_aux(AST_ARITY1, tag);
+  YYSTYPE x0 = ast_arity(AST_ARITY1, tag);
   x0 = ast_push(x0, x1);
   return x0;
 }
 YYSTYPE ast_append2(int tag, YYSTYPE x1, YYSTYPE x2) {
-  YYSTYPE x0 = ast_arity_aux(AST_ARITY2, tag);
+  YYSTYPE x0 = ast_arity(AST_ARITY2, tag);
   x0 = ast_push(x0, x1);
   x0 = ast_push(x0, x2);
   return x0;
 }
 YYSTYPE ast_append3(int tag, YYSTYPE x1, YYSTYPE x2, YYSTYPE x3) {
-  YYSTYPE x0 = ast_arity_aux(AST_ARITY3, tag);
+  YYSTYPE x0 = ast_arity(AST_ARITY3, tag);
   x0 = ast_push(x0, x1);
   x0 = ast_push(x0, x2);
   x0 = ast_push(x0, x3);
   return x0;
 }
 YYSTYPE ast_append4(int tag, YYSTYPE x1, YYSTYPE x2, YYSTYPE x3, YYSTYPE x4) {
-  YYSTYPE x0 = ast_arity_aux(AST_ARITY4, tag);
+  YYSTYPE x0 = ast_arity(AST_ARITY4, tag);
   x0 = ast_push(x0, x1);
   x0 = ast_push(x0, x2);
   x0 = ast_push(x0, x3);
