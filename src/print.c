@@ -43,14 +43,6 @@ static List *print_line(List *list, int indent) {
   printf("\n");
   return print_ast(list, indent);
 }
-static List *print_repeat(List *list, int indent, int repeat) {
-  list = print_tag(list);
-  for (; 0 < repeat; --repeat) {
-    list = print_line(list, indent + 1);
-  }
-  print_end();
-  return list;
-}
 List *print_list(List *list, int indent) {
   if (AST_LIST == list_tag(list)) {
     list = list_next(list);
