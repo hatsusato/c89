@@ -5,7 +5,7 @@
 
 void yyerror(const char *, yyscan_t);
 YYSTYPE ast_init(void);
-YYSTYPE ast_new_token(int, yyscan_t);
+YYSTYPE ast_token(int, yyscan_t);
 YYSTYPE ast_append0(int);
 YYSTYPE ast_append1(int, YYSTYPE);
 YYSTYPE ast_append2(int, YYSTYPE, YYSTYPE);

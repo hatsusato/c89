@@ -33,7 +33,7 @@ YYSTYPE ast_init(void) {
   YYSTYPE init = {nil, nil};
   return init;
 }
-YYSTYPE ast_new_token(int tag, yyscan_t scanner) {
+YYSTYPE ast_token(int tag, yyscan_t scanner) {
   const char *text = yyget_text(scanner);
   int leng = yyget_leng(scanner);
   Vector *vec = vector_new(1);
