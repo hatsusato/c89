@@ -16,6 +16,6 @@ YYSTYPE ast_empty(void);
 YYSTYPE ast_list_empty(int);
 YYSTYPE ast_list_new(int, YYSTYPE);
 YYSTYPE ast_list_push(YYSTYPE, YYSTYPE);
-void ast_list_finish(YYSTYPE);
+YYSTYPE ast_list_finish(YYSTYPE);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */

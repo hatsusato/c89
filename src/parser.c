@@ -100,6 +100,7 @@ YYSTYPE ast_list_push(YYSTYPE list, YYSTYPE elem) {
   ast_list_closure(elem.last);
   return list;
 }
-void ast_list_finish(YYSTYPE list) {
-  list_insert(list.last, nil);
+YYSTYPE ast_list_finish(YYSTYPE list) {
+  ast_push(list, ast_init());
+  return list;
 }

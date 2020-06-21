@@ -601,7 +601,7 @@ jump-statement.suffix
 
 /* 6.7 External definitions */
 top
-: translation-unit {ast_list_finish($1); yyset_extra($1, scanner);}
+: translation-unit {$$ = ast_list_finish($1); yyset_extra($$, scanner);}
 translation-unit
 : external-declaration {$$ = ast_list_new(AST_TRANSLATION_UNIT, $1);}
 | translation-unit external-declaration {$$ = ast_list_push($1, $2);}
