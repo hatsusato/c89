@@ -20,13 +20,13 @@ static YYSTYPE ast_arity(int arity, int tag) {
   return x0;
 }
 
-YYSTYPE ast_init(void) {
-  YYSTYPE init = {nil, nil};
-  return init;
-}
 void yyerror(const char *msg, yyscan_t scanner) {
   (void)scanner;
   fprintf(stderr, "yyerror: [%s]\n", msg);
+}
+YYSTYPE ast_init(void) {
+  YYSTYPE init = {nil, nil};
+  return init;
 }
 YYSTYPE ast_new_token(int tag, yyscan_t scanner) {
   YYSTYPE ret = ast_init();
