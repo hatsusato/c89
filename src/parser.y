@@ -113,7 +113,7 @@
 %%
 /* 6.1 Lexical elements */
 identifier.opt
-: %empty {$$ = ast_append0(AST_NIL);}
+: %empty {$$ = ast_empty();}
 | identifier
 ;
 identifier
@@ -293,7 +293,7 @@ assignment-operator
 | "|=" {$$ = ast_append0(AST_BAR_ASSIGN);}
 ;
 expression.opt
-: %empty {$$ = ast_append0(AST_NIL);}
+: %empty {$$ = ast_empty();}
 | expression
 ;
 expression
@@ -306,7 +306,7 @@ comma-operator
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty {$$ = ast_append0(AST_NIL);}
+: %empty {$$ = ast_empty();}
 | constant-expression
 ;
 constant-expression
@@ -413,7 +413,7 @@ type-qualifier.prefix
 | "volatile" {$$ = ast_append0(AST_VOLATILE);}
 ;
 declarator.opt
-: %empty {$$ = ast_append0(AST_NIL);}
+: %empty {$$ = ast_empty();}
 | declarator
 ;
 declarator

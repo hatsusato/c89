@@ -73,6 +73,9 @@ YYSTYPE ast_append4(int tag, YYSTYPE x1, YYSTYPE x2, YYSTYPE x3, YYSTYPE x4) {
 YYSTYPE ast_binary(YYSTYPE x1, YYSTYPE x2, YYSTYPE x3) {
   return ast_append3(AST_BINARY, x2, x1, x3);
 }
+YYSTYPE ast_empty(void) {
+  return ast_append0(AST_NIL);
+}
 YYSTYPE ast_list_empty(int tag) {
   YYSTYPE ret = ast_push_tag(ast_new(AST_LIST, nil), tag);
   List *prev = ret.last;
