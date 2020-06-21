@@ -10,6 +10,7 @@
 %option reentrant
 %option noyywrap
 %option never-interactive
+%option nodefault
 %option warn
 %option extra-type="YYSTYPE"
 
@@ -152,6 +153,5 @@ s-char                  {character-set}|{single-quote}|{escape-sequence}
 {integer-constant}      { EMIT_TOKEN(TOKEN_INTEGER_CONSTANT);   }
 {character-constant}    { EMIT_TOKEN(TOKEN_CHARACTER_CONSTANT); }
 {string-literal}        { EMIT_TOKEN(TOKEN_STRING_LITERAL);     }
-.                       { EMIT_TOKEN(TOKEN_UNKNOWN); }
 
 %%
