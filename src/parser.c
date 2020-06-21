@@ -2,6 +2,18 @@
 
 #include "vector.h"
 
+static YYSTYPE ast_push(YYSTYPE x0, YYSTYPE x1) {
+  if (x0.last) {
+    list_insert(x0.last, x1.list);
+    x0.last = x1.last;
+  } else {
+    x0 = x1;
+  }
+  return x0;
+}
+static YYSTYPE ast_push_tag(YYSTYPE x0, int tag) {
+  return ast_push(x0, ast_new_tag(tag));
+}
 static YYSTYPE ast_arity_aux(int arity, int tag) {
   YYSTYPE x0 = ast_new_tag(arity);
   x0 = ast_push_tag(x0, tag);
@@ -59,18 +71,6 @@ YYSTYPE ast_append4(int tag, YYSTYPE x1, YYSTYPE x2, YYSTYPE x3, YYSTYPE x4) {
   x0 = ast_push(x0, x3);
   x0 = ast_push(x0, x4);
   return x0;
-}
-YYSTYPE ast_push(YYSTYPE x0, YYSTYPE x1) {
-  if (x0.last) {
-    list_insert(x0.last, x1.list);
-    x0.last = x1.last;
-  } else {
-    x0 = x1;
-  }
-  return x0;
-}
-YYSTYPE ast_push_tag(YYSTYPE x0, int tag) {
-  return ast_push(x0, ast_new_tag(tag));
 }
 YYSTYPE ast_binary(YYSTYPE x1, YYSTYPE x2, YYSTYPE x3) {
   return ast_append3(AST_BINARY, x2, x1, x3);

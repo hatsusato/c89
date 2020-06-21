@@ -12,8 +12,6 @@ YYSTYPE ast_append1(int, YYSTYPE);
 YYSTYPE ast_append2(int, YYSTYPE, YYSTYPE);
 YYSTYPE ast_append3(int, YYSTYPE, YYSTYPE, YYSTYPE);
 YYSTYPE ast_append4(int, YYSTYPE, YYSTYPE, YYSTYPE, YYSTYPE);
-YYSTYPE ast_push(YYSTYPE, YYSTYPE);
-YYSTYPE ast_push_tag(YYSTYPE, int);
 YYSTYPE ast_binary(YYSTYPE, YYSTYPE, YYSTYPE);
 YYSTYPE ast_list_empty(int);
 YYSTYPE ast_list_new(int, YYSTYPE);
