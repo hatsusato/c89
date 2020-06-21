@@ -113,7 +113,7 @@
 %%
 /* 6.1 Lexical elements */
 identifier.opt
-: %empty {AST_EMPTY($$);}
+: %empty {$$ = ast_append0(AST_NIL);}
 | identifier
 ;
 identifier
@@ -410,7 +410,7 @@ type-qualifier.prefix
 | "volatile" {$$ = ast_append0(AST_VOLATILE);}
 ;
 declarator.opt
-: %empty {AST_EMPTY($$);}
+: %empty {$$ = ast_append0(AST_NIL);}
 | declarator
 ;
 declarator
