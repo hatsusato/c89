@@ -66,10 +66,8 @@ List *print_ast(List *list, int indent) {
   case AST_LIST:
     return print_list(list, indent);
   case AST_ARITY0:
-    print_begin(indent);
     list = list_next(list);
     list = print_tag(list);
-    print_end();
     return list;
   case AST_ARITY1:
     print_begin(indent);
