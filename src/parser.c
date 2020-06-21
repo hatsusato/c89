@@ -24,6 +24,11 @@ static YYSTYPE ast_arity(int arity, int tag) {
 static void ast_list_closure(List *prev) {
   list_insert(list_next(prev), prev);
 }
+static YYSTYPE ast_list_last(YYSTYPE list) {
+  YYSTYPE last = list;
+  last.list = list.last;
+  return last;
+}
 
 void yyerror(const char *msg, yyscan_t scanner) {
   (void)scanner;
@@ -87,10 +92,12 @@ YYSTYPE ast_list_new(int tag, YYSTYPE elem) {
   return ast_list_push(ast_list_empty(tag), elem);
 }
 YYSTYPE ast_list_push(YYSTYPE list, YYSTYPE elem) {
-  assert(list_next(last) == list.last);
-  list_insert(list_next(list.last), elem.list);
-  list_insert(elem.last, list.last);
-  list_insert(list.last, elem.last);
+  YYSTYPE last = ast_list_last(list);
+  list.last = list_next(list.last);
+  assert(list_next(list.last) == last.list);
+  list = ast_push(list, elem);
+  list = ast_push(list, last);
+  ast_list_closure(elem.last);
   return list;
 }
 void ast_list_finish(YYSTYPE list) {
