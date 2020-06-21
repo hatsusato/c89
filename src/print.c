@@ -39,11 +39,9 @@ static List *print_tag(List *list) {
   printf("%s:", ast_show(list_tag(list)));
   return list_next(list);
 }
-static List *print_token(List *list, int indent) {
-  Vector *data = list_data(list);
-  list = print_tag(list);
-  print_data(data);
-  return list;
+static List *print_token(List *list) {
+  print_data(list_data(list));
+  return list_next(list);
 }
 static List *print_list(List *list, int indent) {
   list = print_tag(list);
@@ -58,7 +56,7 @@ List *print_ast(List *list, int indent) {
   print_begin(tag, indent);
   switch (tag) {
   case AST_TOKEN:
-    list = print_token(list, indent);
+    list = print_token(list);
     break;
   case AST_LIST:
     list = print_list(list, indent);
