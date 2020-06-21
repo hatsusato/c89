@@ -598,17 +598,17 @@ jump-statement.suffix
 
 /* 6.7 External definitions */
 top
-: translation-unit {AST_LIST_EXIST($$, TRANSLATION_UNIT, $1); yyset_extra($$, scanner);}
+: translation-unit {ast_list_finish($1); yyset_extra($1, scanner);}
 translation-unit
-: external-declaration
-| translation-unit external-declaration {AST_LIST_CONS($$, $1, $2);}
+: external-declaration {$$ = ast_list_new(AST_TRANSLATION_UNIT, $1);}
+| translation-unit external-declaration {$$ = ast_list_push($1, $2);}
 ;
 external-declaration
 : function-definition
-| declaration {AST_TAG($$, EXTERNAL_DECLARATION); AST_PUSH($$, $1);}
+| declaration {$$ = ast_append1(AST_EXTERNAL_DECLARATION, $1);}
 ;
 function-definition
-: declarator declaration-list.opt compound-statement {AST_TAG($$, FUNCTION_DEFINITION); AST_PUSH_TAG($$, NIL); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH($$, $3);}
-| declaration-specifiers declarator declaration-list.opt compound-statement {AST_TAG($$, FUNCTION_DEFINITION); AST_PUSH($$, $1); AST_PUSH($$, $2); AST_PUSH($$, $3); AST_PUSH($$, $4);}
+: declarator declaration-list.opt compound-statement {$$ = ast_append3(AST_FUNCTION_DEFINITION, $1, $2, $3);}
+| declaration-specifiers declarator declaration-list.opt compound-statement {$$ = ast_append4(AST_FUNCTION_DEFINITION, $1, $2, $3, $4);}
 ;
 %%
