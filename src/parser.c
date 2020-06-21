@@ -21,6 +21,9 @@ static YYSTYPE ast_arity(int arity, int tag) {
   x0 = ast_push_tag(x0, tag);
   return x0;
 }
+static void ast_list_closure(List *prev) {
+  list_insert(list_next(prev), prev);
+}
 
 void yyerror(const char *msg, yyscan_t scanner) {
   (void)scanner;
@@ -74,10 +77,10 @@ YYSTYPE ast_empty(void) {
   return ast_append0(AST_NIL);
 }
 YYSTYPE ast_list_empty(int tag) {
-  YYSTYPE ret = ast_push_tag(ast_new(AST_LIST, nil), tag);
+  YYSTYPE ret = ast_arity(AST_LIST, tag);
   List *prev = ret.last;
   ret = ast_push_tag(ret, AST_NIL);
-  list_insert(ret.last, prev);
+  ast_list_closure(prev);
   return ret;
 }
 YYSTYPE ast_list_new(int tag, YYSTYPE elem) {
