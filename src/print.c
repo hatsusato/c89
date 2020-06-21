@@ -78,13 +78,9 @@ List *print_ast(List *list, int indent) {
 #include "enum/symbol.def"
 #undef HANDLE
     return print_repeat(list, indent, 0);
-  case AST_IDENTIFIER:
-  case AST_TYPEDEF_IDENTIFIER:
-  case AST_FLOATING_CONSTANT:
-  case AST_INTEGER_CONSTANT:
-  case AST_ENUMERATION_CONSTANT:
-  case AST_CHARACTER_CONSTANT:
-  case AST_STRING_LITERAL:
+#define HANDLE(name, str) case AST_##name:
+#include "enum/token.def"
+#undef HANDLE
     return print_token(list);
     /* Declarations */
   case AST_ARITY0:
