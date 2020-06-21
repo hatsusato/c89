@@ -52,9 +52,8 @@ static List *print_list(List *list, int indent) {
 }
 List *print_ast(List *list, int indent) {
   switch (list_tag(list)) {
-#define HANDLE(name, str) case AST_##name:
-#include "enum/token.def"
-#undef HANDLE
+  case AST_TOKEN:
+    list = list_next(list);
     return print_token(list, indent);
   case AST_LIST:
     list = list_next(list);

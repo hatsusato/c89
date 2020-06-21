@@ -39,11 +39,13 @@ YYSTYPE parser_init(void) {
   return init;
 }
 YYSTYPE parser_token(int tag, yyscan_t scanner) {
+  YYSTYPE ret = parser_new(AST_TOKEN, nil);
   const char *text = yyget_text(scanner);
   int leng = yyget_leng(scanner);
   Vector *vec = vector_new(1);
   vector_append(vec, text, leng);
-  return parser_new(tag, vec);
+  ret = parser_push(ret, parser_new(tag, vec));
+  return ret;
 }
 YYSTYPE parser_append0(int tag) {
   YYSTYPE x0 = parser_arity(AST_ARITY0, tag);
