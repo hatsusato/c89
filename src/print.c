@@ -6,14 +6,20 @@
 #include "ast.h"
 #include "vector.h"
 
-static void print_begin(int indent) {
+static void print_begin(int tag, int indent) {
+  if (AST_ARITY0 == tag) {
+    return;
+  }
   printf("\n");
   for (; 0 < indent; --indent) {
     printf("  ");
   }
   printf("(");
 }
-static void print_end(void) {
+static void print_end(int tag) {
+  if (AST_ARITY0 == tag) {
+    return;
+  }
   printf(")");
 }
 static void print_data(Vector *data) {
@@ -35,24 +41,21 @@ static List *print_tag(List *list) {
 }
 static List *print_token(List *list, int indent) {
   Vector *data = list_data(list);
-  print_begin(indent);
   list = print_tag(list);
   print_data(data);
-  print_end();
   return list;
 }
 static List *print_list(List *list, int indent) {
-  print_begin(indent);
   list = print_tag(list);
   while (AST_NIL != list_tag(list)) {
     list = print_ast(list, indent + 1);
   }
-  print_end();
   return list_next(list);
 }
 List *print_ast(List *list, int indent) {
   int tag = list_tag(list);
   list = list_next(list);
+  print_begin(tag, indent);
   switch (tag) {
   case AST_TOKEN:
     list = print_token(list, indent);
@@ -64,37 +67,30 @@ List *print_ast(List *list, int indent) {
     list = print_tag(list);
     break;
   case AST_ARITY1:
-    print_begin(indent);
     list = print_tag(list);
     list = print_ast(list, indent + 1);
-    print_end();
     break;
   case AST_ARITY2:
-    print_begin(indent);
     list = print_tag(list);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
-    print_end();
     break;
   case AST_ARITY3:
-    print_begin(indent);
     list = print_tag(list);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
-    print_end();
     break;
   case AST_ARITY4:
-    print_begin(indent);
     list = print_tag(list);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
     list = print_ast(list, indent + 1);
-    print_end();
     break;
   default:
     assert(0);
   }
+  print_end(tag);
   return list;
 }
