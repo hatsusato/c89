@@ -175,6 +175,7 @@ static List *print_pretty_binary(List *ast, int indent) {
   return ast;
 }
 static List *print_pretty_arity0(List *ast, int indent) {
+  (void)indent;
   printf("%s", ast_show(list_tag(ast)));
   return list_next(ast);
 }
@@ -400,28 +401,23 @@ static List *print_pretty_arity4(List *ast, int indent) {
 }
 
 List *print_pretty(List *ast, int indent) {
-  switch (list_tag(ast)) {
+  int tag = list_tag(ast);
+  ast = list_next(ast);
+  switch (tag) {
   case AST_TOKEN:
-    ast = list_next(ast);
     ast = list_next(ast);
     return print_token(ast);
   case AST_LIST:
-    ast = list_next(ast);
     return print_pretty_list(ast, indent);
   case AST_ARITY0:
-    ast = list_next(ast);
     return print_pretty_arity0(ast, indent);
   case AST_ARITY1:
-    ast = list_next(ast);
     return print_pretty_arity1(ast, indent);
   case AST_ARITY2:
-    ast = list_next(ast);
     return print_pretty_arity2(ast, indent);
   case AST_ARITY3:
-    ast = list_next(ast);
     return print_pretty_arity3(ast, indent);
   case AST_ARITY4:
-    ast = list_next(ast);
     return print_pretty_arity4(ast, indent);
   default:
     assert(0);
