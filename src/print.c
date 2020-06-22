@@ -161,6 +161,19 @@ static List *print_pretty_list(List *ast, int indent) {
   }
   return list_next(ast);
 }
+static List *print_pretty_binary(List *ast, int indent) {
+  int op = 0;
+  assert(AST_ARITY0 == list_tag(ast));
+  ast = list_next(ast);
+  op = list_tag(ast);
+  ast = list_next(ast);
+  printf("(");
+  ast = print_pretty(ast, indent);
+  printf(" %s ", ast_show(op));
+  ast = print_pretty(ast, indent);
+  printf(")");
+  return ast;
+}
 static List *print_pretty_arity0(List *ast, int indent) {
   printf("%s", ast_show(list_tag(ast)));
   return list_next(ast);
