@@ -125,6 +125,42 @@ static List *print_consume(List *ast) {
   }
   return ast;
 }
+static List *print_pretty_list(List *ast, int indent) {
+  const char *delim = "";
+  switch (list_tag(ast)) {
+  case AST_DECLARATION_SPECIFIERS:
+  case AST_SPECIFIER_QUALIFIER_LIST:
+  case AST_TYPE_QUALIFIER_LIST:
+    delim = " ";
+    break;
+  case AST_ARGUMENT_EXPRESSION_LIST:
+  case AST_INIT_DECLARATOR_LIST:
+  case AST_STRUCT_DECLARATOR_LIST:
+  case AST_ENUMERATOR_LIST:
+  case AST_PARAMETER_LIST:
+  case AST_IDENTIFIER_LIST:
+  case AST_INITIALIZER_LIST:
+    delim = ", ";
+    break;
+  case AST_STRUCT_DECLARATION_LIST:
+  case AST_DECLARATION_LIST:
+  case AST_STATEMENT_LIST:
+  case AST_TRANSLATION_UNIT:
+    delim = "\n";
+    break;
+  default:
+    assert(0);
+  }
+  ast = list_next(ast);
+  if (AST_NIL != list_tag(ast)) {
+    ast = print_pretty(ast, indent);
+  }
+  while (AST_NIL != list_tag(ast)) {
+    printf("%s", delim);
+    ast = print_pretty(ast, indent);
+  }
+  return list_next(ast);
+}
 
 List *print_pretty(List *ast, int indent) {
   switch (list_tag(ast)) {
@@ -134,11 +170,7 @@ List *print_pretty(List *ast, int indent) {
     return print_token(ast);
   case AST_LIST:
     ast = list_next(ast);
-    ast = list_next(ast);
-    while (AST_NIL != list_tag(ast)) {
-      ast = print_pretty(ast, indent);
-    }
-    return list_next(ast);
+    return print_pretty_list(ast, indent);
   case AST_ARITY0:
     ast = list_next(ast);
     return list_next(ast);
