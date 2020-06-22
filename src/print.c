@@ -82,3 +82,43 @@ List *print_ast(List *list, int indent) {
   print_end();
   return list;
 }
+
+static List *print_consume(List *ast) {
+  int tag = list_tag(ast);
+  ast = list_next(ast);
+  ast = list_next(ast);
+  switch (tag) {
+  case AST_TOKEN:
+    ast = list_next(ast);
+    break;
+  case AST_LIST:
+    while (AST_NIL != list_tag(ast)) {
+      ast = print_consume(ast);
+    }
+    ast = list_next(ast);
+    break;
+  case AST_ARITY0:
+    goto case_arity0;
+  case AST_ARITY1:
+    goto case_arity1;
+  case AST_ARITY2:
+    goto case_arity2;
+  case AST_ARITY3:
+    goto case_arity3;
+  case AST_ARITY4:
+    goto case_arity4;
+  case_arity4:
+    ast = print_consume(ast);
+  case_arity3:
+    ast = print_consume(ast);
+  case_arity2:
+    ast = print_consume(ast);
+  case_arity1:
+    ast = print_consume(ast);
+  case_arity0:
+    break;
+  default:
+    assert(0);
+  }
+  return ast;
+}
