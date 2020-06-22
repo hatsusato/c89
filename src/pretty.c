@@ -6,12 +6,12 @@
 #include "ast.h"
 #include "print.h"
 
-static List *print_pretty_token(List *ast, int indent) {
+static List *pretty_token(List *ast, int indent) {
   (void)indent;
   ast = list_next(ast);
   return print_data(ast);
 }
-static List *print_pretty_list(List *ast, int indent) {
+static List *pretty_list(List *ast, int indent) {
   const char *delim = "";
   switch (list_tag(ast)) {
   case AST_DECLARATION_SPECIFIERS:
@@ -39,33 +39,33 @@ static List *print_pretty_list(List *ast, int indent) {
   }
   ast = list_next(ast);
   if (AST_NIL != list_tag(ast)) {
-    ast = print_pretty(ast, indent);
+    ast = pretty_print(ast, indent);
   }
   while (AST_NIL != list_tag(ast)) {
     printf("%s", delim);
-    ast = print_pretty(ast, indent);
+    ast = pretty_print(ast, indent);
   }
   return list_next(ast);
 }
-static List *print_pretty_binary(List *ast, int indent) {
+static List *pretty_binary(List *ast, int indent) {
   int op = 0;
   assert(AST_ARITY0 == list_tag(ast));
   ast = list_next(ast);
   op = list_tag(ast);
   ast = list_next(ast);
   printf("(");
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   printf(" %s ", ast_show(op));
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   printf(")");
   return ast;
 }
-static List *print_pretty_arity0(List *ast, int indent) {
+static List *pretty_arity0(List *ast, int indent) {
   (void)indent;
   printf("%s", ast_show(list_tag(ast)));
   return list_next(ast);
 }
-static List *print_pretty_arity1(List *ast, int indent) {
+static List *pretty_arity1(List *ast, int indent) {
   const char *delims[] = {"", ""};
   switch (list_tag(ast)) {
   case AST_PRIMARY_EXPRESSION:
@@ -141,11 +141,11 @@ static List *print_pretty_arity1(List *ast, int indent) {
   }
   ast = list_next(ast);
   printf("%s", delims[0]);
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   printf("%s", delims[1]);
   return ast;
 }
-static List *print_pretty_arity2(List *ast, int indent) {
+static List *pretty_arity2(List *ast, int indent) {
   const char *delims[] = {"", "", ""};
   switch (list_tag(ast)) {
   case AST_POSTFIX_EXPRESSION:
@@ -212,17 +212,17 @@ static List *print_pretty_arity2(List *ast, int indent) {
   }
   ast = list_next(ast);
   printf("%s", delims[0]);
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   printf("%s", delims[1]);
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   printf("%s", delims[2]);
   return ast;
 }
-static List *print_pretty_arity3(List *ast, int indent) {
+static List *pretty_arity3(List *ast, int indent) {
   const char *delims[] = {"", "", "", ""};
   switch (list_tag(ast)) {
   case AST_BINARY:
-    return print_pretty_binary(list_next(ast), indent);
+    return pretty_binary(list_next(ast), indent);
   case AST_CONDITIONAL_EXPRESSION:
     delims[0] = "(";
     delims[1] = " ? ";
@@ -249,15 +249,15 @@ static List *print_pretty_arity3(List *ast, int indent) {
   }
   ast = list_next(ast);
   printf("%s", delims[0]);
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   printf("%s", delims[1]);
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   printf("%s", delims[2]);
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   printf("%s", delims[3]);
   return ast;
 }
-static List *print_pretty_arity4(List *ast, int indent) {
+static List *pretty_arity4(List *ast, int indent) {
   const char *delims[] = {"", "", "", ""};
   switch (list_tag(ast)) {
   case AST_FOR:
@@ -276,34 +276,34 @@ static List *print_pretty_arity4(List *ast, int indent) {
   }
   ast = list_next(ast);
   printf("%s", delims[0]);
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   printf("%s", delims[1]);
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   printf("%s", delims[2]);
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   printf("%s", delims[3]);
-  ast = print_pretty(ast, indent);
+  ast = pretty_print(ast, indent);
   return ast;
 }
 
-List *print_pretty(List *ast, int indent) {
+List *pretty_print(List *ast, int indent) {
   int tag = list_tag(ast);
   ast = list_next(ast);
   switch (tag) {
   case AST_TOKEN:
-    return print_pretty_token(ast, indent);
+    return pretty_token(ast, indent);
   case AST_LIST:
-    return print_pretty_list(ast, indent);
+    return pretty_list(ast, indent);
   case AST_ARITY0:
-    return print_pretty_arity0(ast, indent);
+    return pretty_arity0(ast, indent);
   case AST_ARITY1:
-    return print_pretty_arity1(ast, indent);
+    return pretty_arity1(ast, indent);
   case AST_ARITY2:
-    return print_pretty_arity2(ast, indent);
+    return pretty_arity2(ast, indent);
   case AST_ARITY3:
-    return print_pretty_arity3(ast, indent);
+    return pretty_arity3(ast, indent);
   case AST_ARITY4:
-    return print_pretty_arity4(ast, indent);
+    return pretty_arity4(ast, indent);
   default:
     assert(0);
   }

@@ -16,7 +16,7 @@ void ast_list_free(List *list) {
 void print_seq(yyscan_t scanner) {
   YY_EXTRA_TYPE extra = yyget_extra(scanner);
   List *list = extra.list;
-  print_pretty(list, 0);
+  pretty_print(list, 0);
   printf("\n");
   print_ast(list, 0);
   printf("\n");
