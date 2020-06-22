@@ -178,6 +178,86 @@ static List *print_pretty_arity0(List *ast, int indent) {
   printf("%s", ast_show(list_tag(ast)));
   return list_next(ast);
 }
+static List *print_pretty_arity1(List *ast, int indent) {
+  const char *delims[] = {"", ""};
+  switch (list_tag(ast)) {
+  case AST_PRIMARY_EXPRESSION:
+  case AST_CALL:
+  case AST_UNARY_EXPRESSION:
+  case AST_CONSTANT_EXPRESSION:
+  case AST_OLD:
+  case AST_POINTER:
+  case AST_PARAMETER_DECLARATION:
+  case AST_TYPE_NAME:
+  case AST_ABSTRACT_DECLARATOR:
+  case AST_DIRECT_ABSTRACT_DECLARATOR:
+  case AST_TYPEDEF_NAME:
+  case AST_STATEMENT:
+  case AST_SELECTION_STATEMENT:
+  case AST_ITERATION_STATEMENT:
+  case AST_EXTERNAL_DECLARATION:
+  case AST_FUNCTION_DEFINITION:
+    delims[0] = "(";
+    delims[1] = ")";
+    break;
+  case AST_ARRAY:
+    delims[0] = "[";
+    delims[1] = "]";
+    break;
+  case AST_PERIOD:
+    delims[0] = ".";
+    break;
+  case AST_ARROW:
+    delims[0] = "->";
+    break;
+  case AST_SIZEOF:
+    delims[0] = "sizeof(";
+    delims[1] = ")";
+    break;
+  case AST_DECLARATION:
+  case AST_EXPRESSION_STATEMENT:
+  case AST_JUMP_STATEMENT:
+    delims[0] = ";\n";
+    break;
+  case AST_INIT_DECLARATOR:
+  case AST_STORAGE_CLASS_SPECIFIER:
+  case AST_TYPE_SPECIFIER:
+  case AST_STRUCT_DECLARATOR:
+  case AST_ENUMERATOR:
+  case AST_TYPE_QUALIFIER:
+  case AST_DECLARATOR:
+  case AST_DIRECT_DECLARATOR:
+    break;
+  case AST_ENUM_SPECIFIER:
+    delims[0] = "enum ";
+    break;
+  case AST_PARAMETER_TYPE_LIST:
+    delims[0] = ", ...";
+    break;
+  case AST_INITIALIZER:
+    delims[0] = "{";
+    delims[1] = "}";
+    break;
+  case AST_CASE:
+    delims[0] = "case ";
+    break;
+  case AST_GOTO:
+    delims[0] = "goto ";
+    delims[1] = ";\n";
+    break;
+  case AST_RETURN:
+    delims[0] = "return ";
+    delims[1] = ";\n";
+    break;
+  default:
+    assert(0);
+  }
+  ast = list_next(ast);
+  printf("%s", delims[0]);
+  ast = print_pretty(ast, indent);
+  printf("%s", delims[1]);
+  return ast;
+}
 static List *print_pretty_arity2(List *ast, int indent) {
   const char *delims[] = {"", "", ""};
   switch (list_tag(ast)) {
@@ -333,8 +413,7 @@ List *print_pretty(List *ast, int indent) {
     return print_pretty_arity0(ast, indent);
   case AST_ARITY1:
     ast = list_next(ast);
-    ast = list_next(ast);
-    return print_pretty(ast, indent);
+    return print_pretty_arity1(ast, indent);
   case AST_ARITY2:
     ast = list_next(ast);
     return print_pretty_arity2(ast, indent);
