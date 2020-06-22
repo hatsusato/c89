@@ -86,7 +86,7 @@ List *print_ast(List *list, int indent) {
   return list;
 }
 
-static List *print_consume(List *ast) {
+List *print_consume(List *ast) {
   int tag = list_tag(ast);
   ast = list_next(ast);
   ast = list_next(ast);
