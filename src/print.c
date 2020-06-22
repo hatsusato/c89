@@ -19,7 +19,8 @@ static void print_begin(int indent) {
 static void print_end(void) {
   printf(")");
 }
-static void print_data(Vector *data) {
+static List *print_data(List *list) {
+  Vector *data = list_data(list);
   const char *text = vector_begin(data);
   int leng = vector_length(data);
   int i = 0;
@@ -31,14 +32,15 @@ static void print_data(Vector *data) {
       printf("\\x%02x", c);
     }
   }
+  return list_next(list);
 }
 static List *print_tag(List *list) {
   printf("%s:", ast_show(list_tag(list)));
   return list_next(list);
 }
 static List *print_token(List *list) {
-  print_data(list_data(list));
-  return list_next(list);
+  assert(AST_DATA == list_tag(list));
+  return print_data(list);
 }
 static List *print_list(List *list, int indent) {
   while (AST_NIL != list_tag(list)) {
