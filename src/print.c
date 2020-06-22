@@ -131,7 +131,7 @@ List *print_pretty(List *ast, int indent) {
   case AST_TOKEN:
     ast = list_next(ast);
     ast = list_next(ast);
-    return list_next(ast);
+    return print_token(ast);
   case AST_LIST:
     ast = list_next(ast);
     ast = list_next(ast);
