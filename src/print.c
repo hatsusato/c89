@@ -19,21 +19,6 @@ static void print_begin(int indent) {
 static void print_end(void) {
   printf(")");
 }
-static List *print_data(List *list) {
-  Vector *data = list_data(list);
-  const char *text = vector_begin(data);
-  int leng = vector_length(data);
-  int i = 0;
-  for (i = 0; i < leng; ++i) {
-    char c = text[i];
-    if (isprint(c)) {
-      printf("%c", c);
-    } else {
-      printf("\\x%02x", c);
-    }
-  }
-  return list_next(list);
-}
 static List *print_tag(List *list) {
   printf("%s:", ast_show(list_tag(list)));
   return list_next(list);
@@ -49,6 +34,21 @@ static List *print_list(List *list, int indent) {
   return list_next(list);
 }
 
+List *print_data(List *list) {
+  Vector *data = list_data(list);
+  const char *text = vector_begin(data);
+  int leng = vector_length(data);
+  int i = 0;
+  for (i = 0; i < leng; ++i) {
+    char c = text[i];
+    if (isprint(c)) {
+      printf("%c", c);
+    } else {
+      printf("\\x%02x", c);
+    }
+  }
+  return list_next(list);
+}
 List *print_ast(List *list, int indent) {
   int tag = list_tag(list);
   list = list_next(list);

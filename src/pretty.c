@@ -1,30 +1,15 @@
 #include "pretty.h"
 
 #include <assert.h>
-#include <ctype.h>
 #include <stdio.h>
 
 #include "ast.h"
-#include "vector.h"
+#include "print.h"
 
-static void print_data(Vector *data) {
-  const char *text = vector_begin(data);
-  int leng = vector_length(data);
-  int i = 0;
-  for (i = 0; i < leng; ++i) {
-    char c = text[i];
-    if (isprint(c)) {
-      printf("%c", c);
-    } else {
-      printf("\\x%02x", c);
-    }
-  }
-}
 static List *print_pretty_token(List *ast, int indent) {
   (void)indent;
   ast = list_next(ast);
-  print_data(list_data(ast));
-  return list_next(ast);
+  return print_data(ast);
 }
 static List *print_pretty_list(List *ast, int indent) {
   const char *delim = "";
