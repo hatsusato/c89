@@ -3,6 +3,7 @@
 
 #include "parser.h"
 #include "parser.tab.h"
+#include "pretty.h"
 #include "print.h"
 #include "vector.h"
 
