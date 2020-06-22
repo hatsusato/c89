@@ -614,7 +614,12 @@ external-declaration
 | declaration {$$ = parser_append1(AST_EXTERNAL_DECLARATION, $1);}
 ;
 function-definition
-: declarator declaration-list.opt compound-statement {$$ = parser_append3(AST_FUNCTION_DEFINITION, $1, $2, $3);}
-| declaration-specifiers declarator declaration-list.opt compound-statement {$$ = parser_append4(AST_FUNCTION_DEFINITION, $1, $2, $3, $4);}
+: function-definition.old {$$ = parser_append1(AST_FUNCTION_DEFINITION, $1);}
+| declaration-specifiers declarator compound-statement {$$ = parser_append3(AST_FUNCTION_DEFINITION, $1, $2, $3);}
+;
+function-definition.old
+: declarator compound-statement {$$ = parser_append2(AST_OLD, $1, $2);}
+| declarator declaration-list compound-statement {$$ = parser_append3(AST_OLD, $1, $2, $3);}
+| declaration-specifiers declarator declaration-list compound-statement {$$ = parser_append4(AST_OLD, $1, $2, $3, $4);}
 ;
 %%
