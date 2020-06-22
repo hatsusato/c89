@@ -178,6 +178,45 @@ static List *print_pretty_arity0(List *ast, int indent) {
   printf("%s", ast_show(list_tag(ast)));
   return list_next(ast);
 }
+static List *print_pretty_arity3(List *ast, int indent) {
+  const char *delims[] = {"", "", "", ""};
+  switch (list_tag(ast)) {
+  case AST_BINARY:
+    return print_pretty_binary(list_next(ast), indent);
+  case AST_CONDITIONAL_EXPRESSION:
+    delims[0] = "(";
+    delims[1] = " ? ";
+    delims[2] = " : ";
+    delims[3] = ")";
+    break;
+  case AST_STRUCT_OR_UNION_SPECIFIER:
+    delims[1] = " ";
+    delims[2] = " {\n";
+    delims[3] = "\n}";
+    break;
+  case AST_IF:
+    delims[0] = "(";
+    delims[1] = ") ";
+    delims[2] = " else ";
+    break;
+  case AST_FUNCTION_DEFINITION:
+  case AST_OLD:
+    delims[1] = " ";
+    delims[2] = " ";
+    break;
+  default:
+    assert(0);
+  }
+  ast = list_next(ast);
+  printf("%s", delims[0]);
+  ast = print_pretty(ast, indent);
+  printf("%s", delims[1]);
+  ast = print_pretty(ast, indent);
+  printf("%s", delims[2]);
+  ast = print_pretty(ast, indent);
+  printf("%s", delims[3]);
+  return ast;
+}
 static List *print_pretty_arity4(List *ast, int indent) {
   const char *delims[] = {"", "", "", ""};
   switch (list_tag(ast)) {
@@ -230,10 +269,7 @@ List *print_pretty(List *ast, int indent) {
     return print_pretty(ast, indent);
   case AST_ARITY3:
     ast = list_next(ast);
-    ast = list_next(ast);
-    ast = print_pretty(ast, indent);
-    ast = print_pretty(ast, indent);
-    return print_pretty(ast, indent);
+    return print_pretty_arity3(ast, indent);
   case AST_ARITY4:
     ast = list_next(ast);
     return print_pretty_arity4(ast, indent);
