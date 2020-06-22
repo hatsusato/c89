@@ -161,6 +161,34 @@ static List *print_pretty_list(List *ast, int indent) {
   }
   return list_next(ast);
 }
+static List *print_pretty_arity4(List *ast, int indent) {
+  const char *delims[] = {"", "", "", ""};
+  switch (list_tag(ast)) {
+  case AST_FOR:
+    delims[0] = "(";
+    delims[1] = "; ";
+    delims[2] = "; ";
+    delims[3] = ")";
+    break;
+  case AST_FUNCTION_DEFINITION:
+    delims[1] = " ";
+    delims[2] = " ";
+    delims[3] = " ";
+    break;
+  default:
+    assert(0);
+  }
+  ast = list_next(ast);
+  printf("%s", delims[0]);
+  ast = print_pretty(ast, indent);
+  printf("%s", delims[1]);
+  ast = print_pretty(ast, indent);
+  printf("%s", delims[2]);
+  ast = print_pretty(ast, indent);
+  printf("%s", delims[3]);
+  ast = print_pretty(ast, indent);
+  return ast;
+}
 
 List *print_pretty(List *ast, int indent) {
   switch (list_tag(ast)) {
@@ -191,11 +219,7 @@ List *print_pretty(List *ast, int indent) {
     return print_pretty(ast, indent);
   case AST_ARITY4:
     ast = list_next(ast);
-    ast = list_next(ast);
-    ast = print_pretty(ast, indent);
-    ast = print_pretty(ast, indent);
-    ast = print_pretty(ast, indent);
-    return print_pretty(ast, indent);
+    return print_pretty_arity4(ast, indent);
   default:
     assert(0);
   }
