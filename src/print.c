@@ -125,6 +125,12 @@ List *print_consume(List *ast) {
   }
   return ast;
 }
+static List *print_pretty_token(List *ast, int indent) {
+  (void)indent;
+  ast = list_next(ast);
+  print_data(list_data(ast));
+  return list_next(ast);
+}
 static List *print_pretty_list(List *ast, int indent) {
   const char *delim = "";
   switch (list_tag(ast)) {
@@ -405,8 +411,7 @@ List *print_pretty(List *ast, int indent) {
   ast = list_next(ast);
   switch (tag) {
   case AST_TOKEN:
-    ast = list_next(ast);
-    return print_token(ast);
+    return print_pretty_token(ast, indent);
   case AST_LIST:
     return print_pretty_list(ast, indent);
   case AST_ARITY0:
