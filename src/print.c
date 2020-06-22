@@ -6,11 +6,14 @@
 #include "ast.h"
 #include "vector.h"
 
-static void print_begin(int indent) {
-  printf("\n");
+static void print_indent(int indent) {
   for (; 0 < indent; --indent) {
     printf("  ");
   }
+}
+static void print_begin(int indent) {
+  printf("\n");
+  print_indent(indent);
   printf("(");
 }
 static void print_end(void) {
