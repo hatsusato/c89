@@ -161,6 +161,10 @@ static List *print_pretty_list(List *ast, int indent) {
   }
   return list_next(ast);
 }
+static List *print_pretty_arity0(List *ast, int indent) {
+  printf("%s", ast_show(list_tag(ast)));
+  return list_next(ast);
+}
 static List *print_pretty_arity4(List *ast, int indent) {
   const char *delims[] = {"", "", "", ""};
   switch (list_tag(ast)) {
@@ -201,7 +205,7 @@ List *print_pretty(List *ast, int indent) {
     return print_pretty_list(ast, indent);
   case AST_ARITY0:
     ast = list_next(ast);
-    return list_next(ast);
+    return print_pretty_arity0(ast, indent);
   case AST_ARITY1:
     ast = list_next(ast);
     ast = list_next(ast);
