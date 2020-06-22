@@ -174,7 +174,7 @@ static List *print_pretty_arity4(List *ast, int indent) {
     delims[2] = "; ";
     delims[3] = ")";
     break;
-  case AST_FUNCTION_DEFINITION:
+  case AST_OLD:
     delims[1] = " ";
     delims[2] = " ";
     delims[3] = " ";
