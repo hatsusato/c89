@@ -178,6 +178,79 @@ static List *print_pretty_arity0(List *ast, int indent) {
   printf("%s", ast_show(list_tag(ast)));
   return list_next(ast);
 }
+static List *print_pretty_arity2(List *ast, int indent) {
+  const char *delims[] = {"", "", ""};
+  switch (list_tag(ast)) {
+  case AST_POSTFIX_EXPRESSION:
+  case AST_UNARY_EXPRESSION:
+    delims[0] = "(";
+    delims[2] = ")";
+    break;
+  case AST_CAST_EXPRESSION:
+    delims[0] = "((";
+    delims[1] = ")";
+    delims[2] = ")";
+    break;
+  case AST_DECLARATION:
+  case AST_STRUCT_DECLARATION:
+    delims[1] = " ";
+    delims[2] = ";";
+    break;
+  case AST_INIT_DECLARATOR:
+    delims[1] = " = ";
+    delims[2] = ";";
+    break;
+  case AST_STRUCT_OR_UNION_SPECIFIER:
+  case AST_DECLARATOR:
+  case AST_DIRECT_DECLARATOR:
+  case AST_POINTER:
+  case AST_PARAMETER_DECLARATION:
+  case AST_TYPE_NAME:
+  case AST_ABSTRACT_DECLARATOR:
+  case AST_DIRECT_ABSTRACT_DECLARATOR:
+  case AST_OLD:
+    delims[1] = " ";
+    break;
+  case AST_STRUCT_DECLARATOR:
+    delims[1] = " : ";
+    break;
+  case AST_ENUM_SPECIFIER:
+    delims[0] = "enum ";
+    delims[1] = " {\n";
+    delims[2] = "\n}";
+    break;
+  case AST_ENUMERATOR:
+    delims[1] = " = ";
+    break;
+  case AST_LABELED_STATEMENT:
+    delims[1] = ":";
+    delims[2] = "\n";
+    break;
+  case AST_COMPOUND_STATEMENT:
+    delims[0] = "{\n";
+    delims[2] = "\n}";
+    break;
+  case AST_IF:
+  case AST_SWITCH:
+  case AST_WHILE:
+    delims[0] = "(";
+    delims[1] = ")";
+    break;
+  case AST_DO:
+    delims[1] = "while (";
+    delims[2] = ");";
+    break;
+  default:
+    assert(0);
+  }
+  ast = list_next(ast);
+  printf("%s", delims[0]);
+  ast = print_pretty(ast, indent);
+  printf("%s", delims[1]);
+  ast = print_pretty(ast, indent);
+  printf("%s", delims[2]);
+  return ast;
+}
 static List *print_pretty_arity3(List *ast, int indent) {
   const char *delims[] = {"", "", "", ""};
   switch (list_tag(ast)) {
@@ -264,9 +337,7 @@ List *print_pretty(List *ast, int indent) {
     return print_pretty(ast, indent);
   case AST_ARITY2:
     ast = list_next(ast);
-    ast = list_next(ast);
-    ast = print_pretty(ast, indent);
-    return print_pretty(ast, indent);
+    return print_pretty_arity2(ast, indent);
   case AST_ARITY3:
     ast = list_next(ast);
     return print_pretty_arity3(ast, indent);
