@@ -18,17 +18,24 @@ static List *pretty_list(List *ast, int indent) {
   case AST_DECLARATION_SPECIFIERS:
   case AST_SPECIFIER_QUALIFIER_LIST:
   case AST_TYPE_QUALIFIER_LIST:
-  case AST_ARGUMENT_EXPRESSION_LIST:
   case AST_INIT_DECLARATOR_LIST:
   case AST_STRUCT_DECLARATOR_LIST:
   case AST_ENUMERATOR_LIST:
-  case AST_PARAMETER_LIST:
   case AST_IDENTIFIER_LIST:
   case AST_INITIALIZER_LIST:
   case AST_STRUCT_DECLARATION_LIST:
-  case AST_DECLARATION_LIST:
   case AST_STATEMENT_LIST:
   case AST_TRANSLATION_UNIT:
+    break;
+  case AST_DECLARATION_LIST:
+    indents[0] = indent + 1;
+    indents[1] = indent + 1;
+    break;
+  case AST_ARGUMENT_EXPRESSION_LIST:
+  case AST_PARAMETER_LIST:
+    delims[0] = "(";
+    delims[1] = ", ";
+    delims[2] = ")";
     break;
   default:
     assert(0);
@@ -69,7 +76,6 @@ static List *pretty_arity1(List *ast, int indent) {
   case AST_UNARY_EXPRESSION:
   case AST_CONSTANT_EXPRESSION:
   case AST_OLD:
-  case AST_POINTER:
   case AST_PARAMETER_DECLARATION:
   case AST_TYPE_NAME:
   case AST_ABSTRACT_DECLARATOR:
@@ -81,7 +87,6 @@ static List *pretty_arity1(List *ast, int indent) {
   case AST_EXTERNAL_DECLARATION:
   case AST_FUNCTION_DEFINITION:
   case AST_ARRAY:
-  case AST_PERIOD:
   case AST_ARROW:
   case AST_SIZEOF:
   case AST_DECLARATION:
@@ -92,7 +97,6 @@ static List *pretty_arity1(List *ast, int indent) {
   case AST_TYPE_SPECIFIER:
   case AST_STRUCT_DECLARATOR:
   case AST_ENUMERATOR:
-  case AST_TYPE_QUALIFIER:
   case AST_DECLARATOR:
   case AST_DIRECT_DECLARATOR:
   case AST_ENUM_SPECIFIER:
@@ -101,6 +105,15 @@ static List *pretty_arity1(List *ast, int indent) {
   case AST_CASE:
   case AST_GOTO:
   case AST_RETURN:
+    break;
+  case AST_TYPE_QUALIFIER:
+    delims[1] = " ";
+    break;
+  case AST_PERIOD:
+    delims[0] = ".";
+    break;
+  case AST_POINTER:
+    delims[0] = "*";
     break;
   default:
     assert(0);
@@ -118,14 +131,11 @@ static List *pretty_arity2(List *ast, int indent) {
   case AST_POSTFIX_EXPRESSION:
   case AST_UNARY_EXPRESSION:
   case AST_CAST_EXPRESSION:
-  case AST_DECLARATION:
   case AST_STRUCT_DECLARATION:
-  case AST_INIT_DECLARATOR:
   case AST_STRUCT_OR_UNION_SPECIFIER:
   case AST_DECLARATOR:
   case AST_DIRECT_DECLARATOR:
   case AST_POINTER:
-  case AST_PARAMETER_DECLARATION:
   case AST_TYPE_NAME:
   case AST_ABSTRACT_DECLARATOR:
   case AST_DIRECT_ABSTRACT_DECLARATOR:
@@ -134,11 +144,26 @@ static List *pretty_arity2(List *ast, int indent) {
   case AST_ENUM_SPECIFIER:
   case AST_ENUMERATOR:
   case AST_LABELED_STATEMENT:
-  case AST_COMPOUND_STATEMENT:
   case AST_IF:
   case AST_SWITCH:
   case AST_WHILE:
   case AST_DO:
+    break;
+  case AST_INIT_DECLARATOR:
+    delims[1] = " = ";
+    break;
+  case AST_DECLARATION:
+    delims[1] = " ";
+    delims[2] = ";\n";
+    break;
+  case AST_PARAMETER_DECLARATION:
+    delims[1] = " ";
+    break;
+  case AST_COMPOUND_STATEMENT:
+    delims[0] = "{\n";
+    indents[0] = indent;
+    indents[1] = indent;
+    delims[2] = "}";
     break;
   default:
     assert(0);
@@ -160,8 +185,11 @@ static List *pretty_arity3(List *ast, int indent) {
   case AST_CONDITIONAL_EXPRESSION:
   case AST_STRUCT_OR_UNION_SPECIFIER:
   case AST_IF:
-  case AST_FUNCTION_DEFINITION:
   case AST_OLD:
+    break;
+  case AST_FUNCTION_DEFINITION:
+    delims[1] = " ";
+    delims[2] = " ";
     break;
   default:
     assert(0);
@@ -199,6 +227,7 @@ static List *pretty_arity4(List *ast, int indent) {
 }
 
 List *pretty_print(List *ast, int indent) {
+  print_indent(indent);
   int tag = list_tag(ast);
   ast = list_next(ast);
   switch (tag) {
