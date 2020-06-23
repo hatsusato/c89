@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "utility.h"
-
 struct struct_String {
   char* data;
   Size size, capacity;
@@ -23,4 +21,7 @@ void string_delete(String* s) {
   assert(s);
   free(s->data);
   free(s);
+}
+Size string_length(String* s) {
+  return s->size;
 }
