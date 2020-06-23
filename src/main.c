@@ -5,12 +5,12 @@
 #include "parser.tab.h"
 #include "pretty.h"
 #include "print.h"
-#include "vector.h"
+#include "string.h"
 
 void ast_list_free(List *list) {
   void *data = list_data(list);
   if (data) {
-    vector_delete(data);
+    string_delete(data);
   }
 }
 void print_seq(yyscan_t scanner) {

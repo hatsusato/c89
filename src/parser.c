@@ -1,6 +1,6 @@
 #include "parser.h"
 
-#include "vector.h"
+#include "string.h"
 
 static YYSTYPE parser_new(int tag, void *data) {
   YYSTYPE ret = parser_init();
@@ -40,12 +40,9 @@ YYSTYPE parser_init(void) {
 }
 YYSTYPE parser_token(int tag, yyscan_t scanner) {
   YYSTYPE ret = parser_new(AST_TOKEN, nil);
-  const char *text = yyget_text(scanner);
-  int leng = yyget_leng(scanner);
-  Vector *vec = vector_new(1);
-  vector_append(vec, text, leng);
+  String *str = string_new(yyget_text(scanner));
   ret = parser_push_tag(ret, tag);
-  ret = parser_push(ret, parser_new(AST_DATA, vec));
+  ret = parser_push(ret, parser_new(AST_DATA, str));
   return ret;
 }
 YYSTYPE parser_append0(int tag) {

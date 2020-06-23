@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "ast.h"
-#include "vector.h"
+#include "string.h"
 
 static void print_begin(int indent) {
   printf("\n");
@@ -35,9 +35,9 @@ void print_indent(int indent) {
   }
 }
 List *print_data(List *list) {
-  Vector *data = list_data(list);
-  const char *text = vector_begin(data);
-  int leng = vector_length(data);
+  String *data = list_data(list);
+  const char *text = string_begin(data);
+  int leng = string_length(data);
   int i = 0;
   for (i = 0; i < leng; ++i) {
     char c = text[i];
