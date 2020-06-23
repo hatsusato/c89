@@ -25,3 +25,9 @@ void string_delete(String* s) {
 Size string_length(String* s) {
   return s->size;
 }
+char* string_begin(String* s) {
+  return s->data;
+}
+char* string_end(String* s) {
+  return &s->data[s->size];
+}
