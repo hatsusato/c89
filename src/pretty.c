@@ -9,6 +9,12 @@
 static void pretty_string(const char *s) {
   printf("%s", s);
 }
+static void pretty_blank(void) {
+  pretty_string(" ");
+}
+static void pretty_newline(void) {
+  pretty_string("\n");
+}
 static void pretty_tag(int tag) {
   pretty_string(ast_show(tag));
 }
@@ -89,9 +95,9 @@ static List *pretty_binary(List *ast, int indent) {
   op = list_tag(ast);
   ast = list_next(ast);
   ast = pretty_print(ast, indent);
-  pretty_string(" ");
+  pretty_blank();
   pretty_tag(op);
-  pretty_string(" ");
+  pretty_blank();
   ast = pretty_print(ast, indent);
   return ast;
 }
@@ -207,33 +213,33 @@ List *pretty_ast(List *ast, int indent, int arity) {
     print_indent(indent);
     ast = pretty_print2(ast, indent, "");
     pretty_tag(AST_SEMICOLON);
-    pretty_string("\n");
+    pretty_newline();
     return ast;
   case AST_INIT_DECLARATOR:
-    pretty_string(" ");
+    pretty_blank();
     return pretty_print2(ast, indent, " = ");
   case AST_STRUCT_DECLARATION:
     print_indent(indent);
     ast = pretty_print2(ast, indent, " ");
     pretty_tag(AST_SEMICOLON);
-    pretty_string("\n");
+    pretty_newline();
     return ast;
   case AST_STRUCT_DECLARATOR:
     return pretty_print2(ast, indent, " : ");
   case AST_ENUM_SPECIFIER:
     pretty_tag(AST_ENUM);
-    pretty_string(" ");
+    pretty_blank();
     ast = pretty_print2(ast, indent, " {");
     pretty_tag(AST_RIGHT_BRACE);
     return ast;
   case AST_ENUMERATOR:
-    pretty_string(" ");
+    pretty_blank();
     return pretty_print2(ast, indent, " = ");
   case AST_POINTER:
     pretty_tag(AST_ASTERISK);
     return pretty_print2(ast, indent, "");
   case AST_PARAMETER_DECLARATION:
-    pretty_string(" ");
+    pretty_blank();
     return pretty_print2(ast, indent, "");
   case AST_LABELED_STATEMENT:
     print_indent(indent - 1);
@@ -246,12 +252,12 @@ List *pretty_ast(List *ast, int indent, int arity) {
     return ast;
   case AST_SWITCH:
     pretty_tag(AST_SWITCH);
-    pretty_string(" ");
+    pretty_blank();
     pretty_tag(AST_LEFT_PAREN);
     return pretty_print2(ast, indent, ") ");
   case AST_WHILE:
     pretty_tag(AST_WHILE);
-    pretty_string(" ");
+    pretty_blank();
     pretty_tag(AST_LEFT_PAREN);
     return pretty_print2(ast, indent, ") ");
   case AST_DO:
@@ -277,12 +283,12 @@ List *pretty_ast(List *ast, int indent, int arity) {
     switch (arity) {
     case 2:
       pretty_tag(AST_IF);
-      pretty_string(" ");
+      pretty_blank();
       pretty_tag(AST_LEFT_PAREN);
       return pretty_print2(ast, indent, ") ");
     case 3:
       pretty_tag(AST_IF);
-      pretty_string(" ");
+      pretty_blank();
       pretty_tag(AST_LEFT_PAREN);
       return pretty_print3(ast, indent, ") ", " else ");
     default:
@@ -304,7 +310,7 @@ List *pretty_ast(List *ast, int indent, int arity) {
     }
   case AST_FOR:
     pretty_tag(AST_FOR);
-    pretty_string(" ");
+    pretty_blank();
     pretty_tag(AST_LEFT_PAREN);
     return pretty_print4(ast, indent, "; ", "; ", ") ");
   case AST_OLD:
