@@ -6,6 +6,20 @@
 #include "ast.h"
 #include "print.h"
 
+static void pretty_string(const char *s) {
+  printf("%s", s);
+}
+static List *pretty_print4(List *ast, int indent, const char *delim1,
+                           const char *delim2, const char *delim3) {
+  ast = pretty_print(ast, indent);
+  pretty_string(delim1);
+  ast = pretty_print(ast, indent);
+  pretty_string(delim2);
+  ast = pretty_print(ast, indent);
+  pretty_string(delim3);
+  ast = pretty_print(ast, indent);
+  return ast;
+}
 static List *pretty_token(List *ast, int indent) {
   (void)indent;
   ast = list_next(ast);
@@ -292,29 +306,18 @@ static List *pretty_arity3(List *ast, int indent) {
   return ast;
 }
 static List *pretty_arity4(List *ast, int indent) {
-  const char *delims[] = {"", "", "", ""};
   switch (list_tag(ast)) {
   case AST_FOR:
-    delims[0] = "for (";
-    delims[1] = "; ";
-    delims[2] = "; ";
-    delims[3] = ") ";
-    break;
+    ast = list_next(ast);
+    pretty_string("for");
+    pretty_string(" (");
+    return pretty_print4(ast, indent, "; ", "; ", ") ");
   case AST_OLD:
-    delims[1] = " ";
-    break;
+    ast = list_next(ast);
+    return pretty_print4(ast, indent, " ", "", "");
   default:
     assert(0);
   }
-  ast = list_next(ast);
-  printf("%s", delims[0]);
-  ast = pretty_print(ast, indent);
-  printf("%s", delims[1]);
-  ast = pretty_print(ast, indent);
-  printf("%s", delims[2]);
-  ast = pretty_print(ast, indent);
-  printf("%s", delims[3]);
-  ast = pretty_print(ast, indent);
   return ast;
 }
 
