@@ -81,7 +81,6 @@ static List *pretty_arity1(List *ast, int indent) {
   const char *delims[] = {"", ""};
   int indents[] = {0, 0};
   switch (list_tag(ast)) {
-  case AST_PRIMARY_EXPRESSION:
   case AST_CALL:
   case AST_UNARY_EXPRESSION:
   case AST_CONSTANT_EXPRESSION:
@@ -89,7 +88,6 @@ static List *pretty_arity1(List *ast, int indent) {
   case AST_PARAMETER_DECLARATION:
   case AST_TYPE_NAME:
   case AST_ABSTRACT_DECLARATOR:
-  case AST_DIRECT_ABSTRACT_DECLARATOR:
   case AST_TYPEDEF_NAME:
   case AST_STATEMENT:
   case AST_EXTERNAL_DECLARATION:
@@ -102,11 +100,16 @@ static List *pretty_arity1(List *ast, int indent) {
   case AST_STRUCT_DECLARATOR:
   case AST_ENUMERATOR:
   case AST_DECLARATOR:
-  case AST_DIRECT_DECLARATOR:
   case AST_ENUM_SPECIFIER:
   case AST_PARAMETER_TYPE_LIST:
   case AST_INITIALIZER:
   case AST_GOTO:
+    break;
+  case AST_DIRECT_ABSTRACT_DECLARATOR:
+  case AST_DIRECT_DECLARATOR:
+  case AST_PRIMARY_EXPRESSION:
+    delims[0] = "(";
+    delims[1] = ")";
     break;
   case AST_CASE:
     delims[0] = "case ";

@@ -143,15 +143,12 @@ string-literal
 
 /* 6.3 Expressions */
 primary-expression
-: primary-expression.suffix {$$ = parser_append1(AST_PRIMARY_EXPRESSION, $1);}
-;
-primary-expression.suffix
 : identifier
 | floating-constant
 | integer-constant
 | character-constant
 | string-literal
-| "(" expression ")" {$$ = $2;}
+| "(" expression ")" {$$ = parser_append1(AST_PRIMARY_EXPRESSION, $2);}
 ;
 postfix-expression
 : primary-expression
@@ -424,12 +421,12 @@ declarator
 | pointer direct-declarator {$$ = parser_append2(AST_DECLARATOR, $1, $2);}
 ;
 direct-declarator
-: direct-declarator.prefix {$$ = parser_append1(AST_DIRECT_DECLARATOR, $1);}
+: direct-declarator.prefix
 | direct-declarator direct-declarator.suffix {$$ = parser_append2(AST_DIRECT_DECLARATOR, $1, $2);}
 ;
 direct-declarator.prefix
 : identifier
-| "(" declarator ")" {$$ = $2;}
+| "(" declarator ")" {$$ = parser_append1(AST_DIRECT_DECLARATOR, $2);}
 ;
 direct-declarator.suffix
 : "[" constant-expression.opt "]" {$$ = parser_append1(AST_ARRAY, $2);}
@@ -492,12 +489,9 @@ abstract-declarator.prefix
 | direct-abstract-declarator
 ;
 direct-abstract-declarator
-: direct-abstract-declarator.prefix {$$ = parser_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $1);}
+: "(" abstract-declarator ")" {$$ = parser_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $2);}
+| direct-abstract-declarator.suffix
 | direct-abstract-declarator direct-abstract-declarator.suffix {$$ = parser_append2(AST_DIRECT_ABSTRACT_DECLARATOR, $1, $2);}
-;
-direct-abstract-declarator.prefix
-: "(" abstract-declarator ")" {$$ = $2;}
-| direct-abstract-declarator.suffix {$$ = $1;}
 ;
 direct-abstract-declarator.suffix
 : "[" constant-expression.opt "]" {$$ = parser_append1(AST_ARRAY, $2);}
