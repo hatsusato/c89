@@ -9,16 +9,22 @@
 static void pretty_string(const char *s) {
   printf("%s", s);
 }
-static List *pretty_print4(List *ast, int indent, const char *delim1,
-                           const char *delim2, const char *delim3) {
+static List *pretty_print2(List *ast, int indent, const char *delim1) {
   ast = pretty_print(ast, indent);
   pretty_string(delim1);
-  ast = pretty_print(ast, indent);
+  return pretty_print(ast, indent);
+}
+static List *pretty_print3(List *ast, int indent, const char *delim1,
+                           const char *delim2) {
+  ast = pretty_print2(ast, indent, delim1);
   pretty_string(delim2);
-  ast = pretty_print(ast, indent);
+  return pretty_print(ast, indent);
+}
+static List *pretty_print4(List *ast, int indent, const char *delim1,
+                           const char *delim2, const char *delim3) {
+  ast = pretty_print3(ast, indent, delim1, delim2);
   pretty_string(delim3);
-  ast = pretty_print(ast, indent);
-  return ast;
+  return pretty_print(ast, indent);
 }
 static List *pretty_token(List *ast, int indent) {
   (void)indent;
@@ -315,11 +321,21 @@ List *pretty_ast(List *ast, int indent, int arity) {
     pretty_string(" (");
     return pretty_print4(ast, indent, "; ", "; ", ") ");
   case AST_OLD:
-    return pretty_print4(ast, indent, " ", "", "");
+    switch (arity) {
+    case 2:
+      return pretty_print2(ast, indent, "");
+    case 3:
+      return pretty_print3(ast, indent, "", "");
+    case 4:
+      return pretty_print4(ast, indent, " ", "", "");
+    default:
+      assert(0);
+      return ast;
+    }
   default:
     assert(0);
+    return ast;
   }
-  return ast;
 }
 
 List *pretty_print(List *ast, int indent) {
