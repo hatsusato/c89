@@ -70,6 +70,7 @@ static List *pretty_arity0(List *ast, int indent) {
 }
 static List *pretty_arity1(List *ast, int indent) {
   const char *delims[] = {"", ""};
+  int indents[] = {0};
   switch (list_tag(ast)) {
   case AST_PRIMARY_EXPRESSION:
   case AST_CALL:
@@ -120,7 +121,7 @@ static List *pretty_arity1(List *ast, int indent) {
   }
   ast = list_next(ast);
   printf("%s", delims[0]);
-  ast = pretty_print(ast, indent);
+  ast = pretty_print(ast, indents[0]);
   printf("%s", delims[1]);
   return ast;
 }
@@ -146,8 +147,11 @@ static List *pretty_arity2(List *ast, int indent) {
   case AST_LABELED_STATEMENT:
   case AST_IF:
   case AST_SWITCH:
-  case AST_WHILE:
   case AST_DO:
+    break;
+  case AST_WHILE:
+    delims[0] = "while (";
+    delims[1] = ") ";
     break;
   case AST_INIT_DECLARATOR:
     delims[1] = " = ";

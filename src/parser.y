@@ -507,11 +507,11 @@ typedef-name
 : typedef-identifier {$$ = parser_append1(AST_TYPEDEF_NAME, $1);}
 ;
 initializer
-: initializer.suffix {$$ = parser_append1(AST_INITIALIZER, $1);}
+: assignment-expression
+| initializer.suffix {$$ = parser_append1(AST_INITIALIZER, $1);}
 ;
 initializer.suffix
-: assignment-expression
-| "{" initializer-list "}" {$$ = $2;}
+: "{" initializer-list "}" {$$ = $2;}
 | "{" initializer-list "," "}" {$$ = $2;}
 ;
 initializer-list
