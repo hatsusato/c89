@@ -41,6 +41,7 @@ $(yacc_intermeds): $(yacc_prefix).y
 $(objs): obj/%.o: src/%.c | obj
 	$(CC) $(cflags) -c $< -o $@
 
+obj/parser.tab.d: src/lexer.h
 $(deps): obj/%.d: src/%.c | obj
 	$(CC) $(dflags) $<
 
