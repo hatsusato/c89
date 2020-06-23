@@ -305,15 +305,16 @@ static List *pretty_arity3(List *ast, int indent) {
   printf("%s", delims[3]);
   return ast;
 }
-static List *pretty_arity4(List *ast, int indent) {
-  switch (list_tag(ast)) {
+List *pretty_ast(List *ast, int indent, int arity) {
+  int tag = list_tag(ast);
+  ast = list_next(ast);
+  switch (tag) {
   case AST_FOR:
-    ast = list_next(ast);
+    assert(4 == arity);
     pretty_string("for");
     pretty_string(" (");
     return pretty_print4(ast, indent, "; ", "; ", ") ");
   case AST_OLD:
-    ast = list_next(ast);
     return pretty_print4(ast, indent, " ", "", "");
   default:
     assert(0);
@@ -338,7 +339,7 @@ List *pretty_print(List *ast, int indent) {
   case AST_ARITY3:
     return pretty_arity3(ast, indent);
   case AST_ARITY4:
-    return pretty_arity4(ast, indent);
+    return pretty_ast(ast, indent, 4);
   default:
     assert(0);
   }
