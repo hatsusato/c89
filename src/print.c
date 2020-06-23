@@ -6,11 +6,6 @@
 #include "ast.h"
 #include "vector.h"
 
-static void print_indent(int indent) {
-  for (; 0 < indent; --indent) {
-    printf("  ");
-  }
-}
 static void print_begin(int indent) {
   printf("\n");
   print_indent(indent);
@@ -34,6 +29,11 @@ static List *print_list(List *list, int indent) {
   return list_next(list);
 }
 
+void print_indent(int indent) {
+  for (; 0 < indent; --indent) {
+    printf("  ");
+  }
+}
 List *print_data(List *list) {
   Vector *data = list_data(list);
   const char *text = vector_begin(data);

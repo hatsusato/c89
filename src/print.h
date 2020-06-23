@@ -3,6 +3,7 @@
 
 #include "list.h"
 
+void print_indent(int);
 List *print_data(List *);
 List *print_ast(List *, int);
 List *print_consume(List *);
