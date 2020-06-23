@@ -9,6 +9,9 @@
 static void pretty_string(const char *s) {
   printf("%s", s);
 }
+static void pretty_tag(int tag) {
+  pretty_string(ast_show(tag));
+}
 static List *pretty_print2(List *ast, int indent, const char *delim1) {
   ast = pretty_print(ast, indent);
   pretty_string(delim1);
@@ -316,8 +319,7 @@ List *pretty_ast(List *ast, int indent, int arity) {
   ast = list_next(ast);
   switch (tag) {
   case AST_FOR:
-    assert(4 == arity);
-    pretty_string("for");
+    pretty_tag(AST_FOR);
     pretty_string(" (");
     return pretty_print4(ast, indent, "; ", "; ", ") ");
   case AST_OLD:
