@@ -14,20 +14,12 @@ static List *pretty_token(List *ast, int indent) {
 static List *pretty_list(List *ast, int indent) {
   const char *delims[] = {"", "", ""};
   switch (list_tag(ast)) {
-  case AST_DECLARATION_SPECIFIERS:
   case AST_SPECIFIER_QUALIFIER_LIST:
   case AST_TYPE_QUALIFIER_LIST:
-  case AST_ENUMERATOR_LIST:
   case AST_STATEMENT_LIST:
     break;
-  case AST_INIT_DECLARATOR_LIST:
-  case AST_STRUCT_DECLARATOR_LIST:
-    delims[1] = ", ";
-    break;
-  case AST_INITIALIZER_LIST:
-    delims[0] = "{";
-    delims[1] = ", ";
-    delims[2] = "}";
+  case AST_DECLARATION_SPECIFIERS:
+    delims[1] = " ";
     break;
   case AST_STRUCT_DECLARATION_LIST:
     ++indent;
@@ -40,11 +32,17 @@ static List *pretty_list(List *ast, int indent) {
     delims[1] = "\n";
     break;
   case AST_IDENTIFIER_LIST:
-  case AST_ARGUMENT_EXPRESSION_LIST:
-  case AST_PARAMETER_LIST:
     delims[0] = "(";
     delims[1] = ", ";
     delims[2] = ")";
+    break;
+  case AST_ENUMERATOR_LIST:
+  case AST_INIT_DECLARATOR_LIST:
+  case AST_STRUCT_DECLARATOR_LIST:
+  case AST_INITIALIZER_LIST:
+  case AST_ARGUMENT_EXPRESSION_LIST:
+  case AST_PARAMETER_LIST:
+    delims[1] = ", ";
     break;
   default:
     assert(0);
@@ -75,13 +73,15 @@ static List *pretty_binary(List *ast, int indent) {
 static List *pretty_arity0(List *ast, int indent) {
   (void)indent;
   printf("%s", ast_show(list_tag(ast)));
+  if (AST_COMMA == list_tag(ast)) {
+    printf(" ");
+  }
   return list_next(ast);
 }
 static List *pretty_arity1(List *ast, int indent) {
   const char *delims[] = {"", ""};
   int indents[] = {0, 0};
   switch (list_tag(ast)) {
-  case AST_CALL:
   case AST_UNARY_EXPRESSION:
   case AST_CONSTANT_EXPRESSION:
   case AST_OLD:
@@ -92,20 +92,36 @@ static List *pretty_arity1(List *ast, int indent) {
   case AST_STATEMENT:
   case AST_EXTERNAL_DECLARATION:
   case AST_FUNCTION_DEFINITION:
-  case AST_ARRAY:
-  case AST_ARROW:
-  case AST_INIT_DECLARATOR:
   case AST_STORAGE_CLASS_SPECIFIER:
   case AST_TYPE_SPECIFIER:
   case AST_STRUCT_DECLARATOR:
   case AST_ENUMERATOR:
   case AST_DECLARATOR:
-  case AST_ENUM_SPECIFIER:
-  case AST_PARAMETER_TYPE_LIST:
-  case AST_INITIALIZER:
   case AST_GOTO:
+  case AST_TYPE_QUALIFIER:
+    break;
+  case AST_INIT_DECLARATOR:
+    delims[0] = " ";
+    break;
+  case AST_INITIALIZER:
+    delims[0] = "{";
+    delims[1] = "}";
+    break;
+  case AST_PARAMETER_TYPE_LIST:
+    delims[1] = ", ...";
+    break;
+  case AST_ENUM_SPECIFIER:
+    delims[0] = "enum ";
+    break;
+  case AST_ARROW:
+    delims[0] = "->";
+    break;
+  case AST_ARRAY:
+    delims[0] = "[";
+    delims[1] = "]";
     break;
   case AST_DIRECT_ABSTRACT_DECLARATOR:
+  case AST_CALL:
   case AST_DIRECT_DECLARATOR:
   case AST_PRIMARY_EXPRESSION:
     delims[0] = "(";
@@ -138,9 +154,6 @@ static List *pretty_arity1(List *ast, int indent) {
     indents[0] = indent;
     delims[1] = ";\n";
     break;
-  case AST_TYPE_QUALIFIER:
-    delims[1] = " ";
-    break;
   case AST_PERIOD:
     delims[0] = ".";
     break;
@@ -164,18 +177,23 @@ static List *pretty_arity2(List *ast, int indent) {
   switch (list_tag(ast)) {
   case AST_POSTFIX_EXPRESSION:
   case AST_UNARY_EXPRESSION:
-  case AST_CAST_EXPRESSION:
-  case AST_STRUCT_OR_UNION_SPECIFIER:
   case AST_DECLARATOR:
   case AST_DIRECT_DECLARATOR:
   case AST_TYPE_NAME:
   case AST_ABSTRACT_DECLARATOR:
   case AST_DIRECT_ABSTRACT_DECLARATOR:
   case AST_OLD:
-  case AST_ENUM_SPECIFIER:
-  case AST_ENUMERATOR:
   case AST_IF:
   case AST_DO:
+    break;
+  case AST_ENUM_SPECIFIER:
+    delims[0] = "enum ";
+    delims[1] = " {";
+    delims[2] = "}";
+    break;
+  case AST_CAST_EXPRESSION:
+    delims[0] = "(";
+    delims[1] = ")";
     break;
   case AST_LABELED_STATEMENT:
     indents[0] = indent - 1;
@@ -200,14 +218,16 @@ static List *pretty_arity2(List *ast, int indent) {
     delims[0] = "while (";
     delims[1] = ") ";
     break;
+  case AST_ENUMERATOR:
   case AST_INIT_DECLARATOR:
+    delims[0] = " ";
     delims[1] = " = ";
     break;
   case AST_DECLARATION:
     indents[0] = indent;
-    delims[1] = " ";
     delims[2] = ";\n";
     break;
+  case AST_STRUCT_OR_UNION_SPECIFIER:
   case AST_PARAMETER_DECLARATION:
     delims[1] = " ";
     break;
@@ -238,6 +258,9 @@ static List *pretty_arity3(List *ast, int indent) {
   case AST_BINARY:
     return pretty_binary(list_next(ast), indent);
   case AST_CONDITIONAL_EXPRESSION:
+    delims[1] = " ? ";
+    delims[2] = " : ";
+    break;
   case AST_IF:
   case AST_OLD:
     break;
