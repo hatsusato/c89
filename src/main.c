@@ -18,7 +18,7 @@ void print_seq(yyscan_t scanner) {
   List *list = extra.list;
   print_ast(list, 0);
   printf("\n");
-  pretty_print(list, 0);
+  pretty_print(list);
   list_delete(extra.list, ast_list_free);
 }
 

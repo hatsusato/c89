@@ -432,9 +432,9 @@ static void pretty_print_ast(List *ast) {
   }
 }
 
-List *pretty_print(List *ast, int indent) {
+void pretty_print(List *ast) {
   Pretty pretty = {nil, nil};
-  ast = pretty_convert(&pretty, ast, indent);
+  ast = pretty_convert(&pretty, ast, 0);
   assert(!ast);
   ast = pretty.head;
   while (ast) {
@@ -442,5 +442,4 @@ List *pretty_print(List *ast, int indent) {
     ast = list_next(ast);
   }
   list_delete(pretty.head, nil);
-  return ast;
 }

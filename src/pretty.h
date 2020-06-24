@@ -3,6 +3,6 @@
 
 #include "list.h"
 
-List *pretty_print(List *, int);
+void pretty_print(List *);
 
 #endif /* INCLUDE_GUARD_3E3EE0A2_A0DB_4AA6_9626_7E847D8B9044 */
