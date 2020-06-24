@@ -1,5 +1,7 @@
 #include "ast.h"
 
+#include <assert.h>
+
 const char *ast_show(int tag) {
   const char *name[] = {"tag-begin",
 #define HANDLE(name, str) str,
@@ -20,5 +22,6 @@ const char *ast_show(int tag) {
 #include "enum/definition.def"
 #undef HANDLE
                         "tag-end"};
+  assert(AST_TAG_BEGIN < tag && tag < AST_TAG_END);
   return name[tag];
 }
