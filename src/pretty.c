@@ -373,3 +373,9 @@ void pretty_push_tag(Pretty *pretty, int tag) {
   assert(pretty);
   pretty_push(pretty, tag, nil);
 }
+List *pretty_convert_token(Pretty *pretty, List *ast) {
+  assert(pretty);
+  ast = list_next(ast);
+  pretty_push(pretty, list_tag(ast), list_data(ast));
+  return list_next(ast);
+}
