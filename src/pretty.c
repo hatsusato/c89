@@ -428,6 +428,103 @@ List *pretty_convert_arity0(Pretty *pretty, List *ast) {
   pretty_push_tag(pretty, list_tag(ast));
   return list_next(ast);
 }
+List *pretty_convert_arity1(Pretty *pretty, List *ast, int indent) {
+  int tag = list_tag(ast);
+  ast = list_next(ast);
+  switch (tag) {
+  case AST_PRIMARY_EXPRESSION:
+  case AST_CALL:
+  case AST_SIZEOF:
+  case AST_DIRECT_DECLARATOR:
+  case AST_OLD:
+  case AST_DIRECT_ABSTRACT_DECLARATOR:
+    pretty_push_tag(pretty, AST_LEFT_PAREN);
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_RIGHT_PAREN);
+    return ast;
+  case AST_ARRAY:
+    pretty_push_tag(pretty, AST_LEFT_BRACKET);
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_RIGHT_BRACKET);
+    return ast;
+  case AST_PERIOD:
+  case AST_ARROW:
+    pretty_push_tag(pretty, tag);
+    ast = pretty_convert(pretty, ast, indent);
+    return ast;
+  case AST_UNARY_EXPRESSION:
+    pretty_push_tag(pretty, AST_SIZEOF);
+    ast = pretty_convert(pretty, ast, indent);
+    return ast;
+  case AST_DECLARATION:
+    pretty_push_tag(pretty, AST_TAB);
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_SEMICOLON);
+    pretty_push_tag(pretty, AST_NEWLINE);
+    return ast;
+  case AST_INIT_DECLARATOR:
+    pretty_push_tag(pretty, AST_BLANK);
+    ast = pretty_convert(pretty, ast, indent);
+    return ast;
+  case AST_ENUM_SPECIFIER:
+    pretty_push_tag(pretty, AST_ENUM);
+    pretty_push_tag(pretty, AST_BLANK);
+    ast = pretty_convert(pretty, ast, indent);
+    return ast;
+  case AST_POINTER:
+    pretty_push_tag(pretty, AST_ASTERISK);
+    ast = pretty_convert(pretty, ast, indent);
+    return ast;
+  case AST_PARAMETER_TYPE_LIST:
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_COMMA);
+    pretty_push_tag(pretty, AST_ELLIPSIS);
+    return ast;
+  case AST_INITIALIZER:
+    pretty_push_tag(pretty, AST_LEFT_BRACE);
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_RIGHT_BRACE);
+    return ast;
+  case AST_EXPRESSION_STATEMENT:
+  case AST_JUMP_STATEMENT:
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_SEMICOLON);
+    pretty_push_tag(pretty, AST_NEWLINE);
+    return ast;
+  case AST_SELECTION_STATEMENT:
+  case AST_ITERATION_STATEMENT:
+    pretty_push_tag(pretty, AST_TAB);
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_NEWLINE);
+    return ast;
+  case AST_CASE:
+  case AST_GOTO:
+  case AST_RETURN:
+    pretty_push_tag(pretty, tag);
+    pretty_push_tag(pretty, AST_BLANK);
+    ast = pretty_convert(pretty, ast, indent);
+    return ast;
+  case AST_CONSTANT_EXPRESSION:
+  case AST_STORAGE_CLASS_SPECIFIER:
+  case AST_TYPE_SPECIFIER:
+  case AST_STRUCT_DECLARATOR:
+  case AST_ENUMERATOR:
+  case AST_TYPE_QUALIFIER:
+  case AST_DECLARATOR:
+  case AST_PARAMETER_DECLARATION:
+  case AST_TYPE_NAME:
+  case AST_ABSTRACT_DECLARATOR:
+  case AST_TYPEDEF_NAME:
+  case AST_STATEMENT:
+  case AST_EXTERNAL_DECLARATION:
+  case AST_FUNCTION_DEFINITION:
+    ast = pretty_convert(pretty, ast, indent);
+    return ast;
+  default:
+    assert(0);
+    return ast;
+  }
+}
 List *pretty_convert(Pretty *pretty, List *ast, int indent) {
   int tag = list_tag(ast);
   ast = list_next(ast);
@@ -439,7 +536,7 @@ List *pretty_convert(Pretty *pretty, List *ast, int indent) {
   case AST_ARITY0:
     return pretty_convert_arity0(pretty, ast);
   case AST_ARITY1:
-    return ast;
+    return pretty_convert_arity1(pretty, ast, indent);
   case AST_ARITY2:
     return ast;
   case AST_ARITY3:
