@@ -11,6 +11,8 @@ typedef struct {
   List *head, *tail;
 } Pretty;
 
+List *pretty_convert(Pretty *pretty, List *ast, int indent);
+
 static void pretty_string(const char *s) {
   printf("%s", s);
 }
@@ -378,4 +380,17 @@ List *pretty_convert_token(Pretty *pretty, List *ast) {
   ast = list_next(ast);
   pretty_push(pretty, list_tag(ast), list_data(ast));
   return list_next(ast);
+}
+List *pretty_convert_list(Pretty *pretty, List *ast, int indent, int delim) {
+  assert(pretty);
+  if (AST_NIL != list_tag(ast)) {
+    ast = pretty_convert(pretty, ast, indent);
+  }
+  while (AST_NIL != list_tag(ast)) {
+    if (AST_NIL != delim) {
+      pretty_push_tag(pretty, delim);
+    }
+    ast = pretty_convert(pretty, ast, indent);
+  }
+  return ast;
 }
