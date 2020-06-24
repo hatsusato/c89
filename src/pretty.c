@@ -388,9 +388,11 @@ List *pretty_convert_token(Pretty *pretty, List *ast) {
   return list_next(ast);
 }
 List *pretty_convert_list(Pretty *pretty, List *ast, int indent) {
+  int tag = list_tag(ast);
   int delim = AST_NIL;
+  ast = list_next(ast);
   assert(pretty);
-  switch (list_tag(ast)) {
+  switch (tag) {
   case AST_DECLARATION_SPECIFIERS:
     delim = AST_BLANK;
     break;
@@ -428,7 +430,7 @@ List *pretty_convert_list(Pretty *pretty, List *ast, int indent) {
     }
     ast = pretty_convert(pretty, ast, indent);
   }
-  return ast;
+  return list_next(ast);
 }
 List *pretty_convert_arity0(Pretty *pretty, List *ast) {
   pretty_push_tag(pretty, list_tag(ast));
