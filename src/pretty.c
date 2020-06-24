@@ -399,7 +399,7 @@ List *pretty_convert(Pretty *pretty, List *ast, int indent) {
   ast = list_next(ast);
   switch (tag) {
   case AST_TOKEN:
-    return ast;
+    return pretty_convert_token(pretty, ast);
   case AST_LIST:
     return ast;
   case AST_ARITY0:
