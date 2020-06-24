@@ -412,6 +412,58 @@ static List *pretty_convert(Pretty *pretty, List *ast, int indent) {
     return ast;
   }
 }
+static void pretty_print_ast(List *ast) {
+  int tag = list_tag(ast);
+  switch (tag) {
+  case AST_BLANK:
+    printf(" ");
+    break;
+  case AST_TAB:
+    printf("  ");
+    break;
+  case AST_NEWLINE:
+    printf("\n");
+    break;
+  case AST_DATA:
+    print_data(ast);
+    break;
+  case AST_SLASH:
+  case AST_PERCENT:
+  case AST_LEFT_SHIFT:
+  case AST_RIGHT_SHIFT:
+  case AST_LESS_THAN:
+  case AST_GREATER_THAN:
+  case AST_LESS_EQUAL:
+  case AST_GREATER_EQUAL:
+  case AST_EQUAL:
+  case AST_NOT_EQUAL:
+  case AST_CARET:
+  case AST_BAR:
+  case AST_AND:
+  case AST_OR:
+  case AST_QUESTION:
+  case AST_ASSIGN:
+  case AST_ASTERISK_ASSIGN:
+  case AST_SLASH_ASSIGN:
+  case AST_PERCENT_ASSIGN:
+  case AST_PLUS_ASSIGN:
+  case AST_MINUS_ASSIGN:
+  case AST_LEFT_SHIFT_ASSIGN:
+  case AST_RIGHT_SHIFT_ASSIGN:
+  case AST_AMPERSAND_ASSIGN:
+  case AST_CARET_ASSIGN:
+  case AST_BAR_ASSIGN:
+  case AST_COLON:
+    printf(" %s ", ast_show(tag));
+    break;
+  case AST_COMMA:
+    printf(", ");
+    break;
+  default:
+    printf("%s", ast_show(tag));
+    break;
+  }
+}
 
 List *pretty_print(List *ast, int indent) {
   Pretty pretty = {nil, nil};
@@ -419,24 +471,7 @@ List *pretty_print(List *ast, int indent) {
   assert(!ast);
   ast = pretty.head;
   while (ast) {
-    int tag = list_tag(ast);
-    switch (tag) {
-    case AST_BLANK:
-      printf(" ");
-      break;
-    case AST_TAB:
-      printf("  ");
-      break;
-    case AST_NEWLINE:
-      printf("\n");
-      break;
-    case AST_DATA:
-      print_data(ast);
-      break;
-    default:
-      printf("%s", ast_show(tag));
-      break;
-    }
+    pretty_print_ast(ast);
     ast = list_next(ast);
   }
   list_delete(pretty.head, nil);
