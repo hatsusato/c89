@@ -394,3 +394,26 @@ List *pretty_convert_list(Pretty *pretty, List *ast, int indent, int delim) {
   }
   return ast;
 }
+List *pretty_convert(Pretty *pretty, List *ast, int indent) {
+  int tag = list_tag(ast);
+  ast = list_next(ast);
+  switch (tag) {
+  case AST_TOKEN:
+    return ast;
+  case AST_LIST:
+    return ast;
+  case AST_ARITY0:
+    return ast;
+  case AST_ARITY1:
+    return ast;
+  case AST_ARITY2:
+    return ast;
+  case AST_ARITY3:
+    return ast;
+  case AST_ARITY4:
+    return ast;
+  default:
+    assert(0);
+    return ast;
+  }
+}
