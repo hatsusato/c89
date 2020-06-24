@@ -73,6 +73,17 @@ static List *pretty_convert_list(Pretty *pretty, List *ast, int indent) {
   }
   return list_next(ast);
 }
+static List *pretty_convert_binary(Pretty *pretty, List *ast, int indent) {
+  int op = 0;
+  assert(AST_ARITY0 == list_tag(ast));
+  ast = list_next(ast);
+  op = list_tag(ast);
+  ast = list_next(ast);
+  ast = pretty_convert(pretty, ast, indent);
+  pretty_push_tag(pretty, op);
+  ast = pretty_convert(pretty, ast, indent);
+  return ast;
+}
 static List *pretty_convert_arity0(Pretty *pretty, List *ast) {
   pretty_push_tag(pretty, list_tag(ast));
   return list_next(ast);
@@ -264,17 +275,9 @@ static List *pretty_convert_arity3(Pretty *pretty, List *ast, int indent) {
   int tag = list_tag(ast);
   ast = list_next(ast);
   switch (tag) {
-  case AST_BINARY: {
-    int op = 0;
-    assert(AST_ARITY0 == list_tag(ast));
-    ast = list_next(ast);
-    op = list_tag(ast);
-    ast = list_next(ast);
-    ast = pretty_convert(pretty, ast, indent);
-    pretty_push_tag(pretty, op);
-    ast = pretty_convert(pretty, ast, indent);
+  case AST_BINARY:
+    ast = pretty_convert_binary(pretty, ast, indent);
     return ast;
-  }
   case AST_CONDITIONAL_EXPRESSION:
     ast = pretty_convert(pretty, ast, indent);
     pretty_push_tag(pretty, AST_QUESTION);
