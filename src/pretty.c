@@ -655,6 +655,17 @@ List *pretty_convert_arity3(Pretty *pretty, List *ast, int indent) {
   int tag = list_tag(ast);
   ast = list_next(ast);
   switch (tag) {
+  case AST_BINARY: {
+    int op = 0;
+    assert(AST_ARITY0 == list_tag(ast));
+    ast = list_next(ast);
+    op = list_tag(ast);
+    ast = list_next(ast);
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, op);
+    ast = pretty_convert(pretty, ast, indent);
+    return ast;
+  }
   case AST_CONDITIONAL_EXPRESSION:
     ast = pretty_convert(pretty, ast, indent);
     pretty_push_tag(pretty, AST_QUESTION);
