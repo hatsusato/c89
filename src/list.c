@@ -21,7 +21,9 @@ void list_delete(List *list, void (*deleter)(List *)) {
   List *next = nil;
   while (list) {
     next = list->next;
-    deleter(list);
+    if (deleter) {
+      deleter(list);
+    }
     free(list);
     list = next;
   }

@@ -338,30 +338,6 @@ List *pretty_ast(List *ast, int indent, int arity) {
   }
 }
 
-List *pretty_print(List *ast, int indent) {
-  int tag = list_tag(ast);
-  ast = list_next(ast);
-  switch (tag) {
-  case AST_TOKEN:
-    return pretty_token(ast, indent);
-  case AST_LIST:
-    return pretty_list(ast, indent);
-  case AST_ARITY0:
-    return pretty_arity0(ast, indent);
-  case AST_ARITY1:
-    return pretty_arity1(ast, indent);
-  case AST_ARITY2:
-    return pretty_ast(ast, indent, 2);
-  case AST_ARITY3:
-    return pretty_ast(ast, indent, 3);
-  case AST_ARITY4:
-    return pretty_ast(ast, indent, 4);
-  default:
-    assert(0);
-  }
-  return ast;
-}
-
 void pretty_push(Pretty *pretty, int tag, void *data) {
   assert(pretty);
   if (pretty->tail) {
@@ -765,4 +741,34 @@ List *pretty_convert(Pretty *pretty, List *ast, int indent) {
     assert(0);
     return ast;
   }
+}
+
+List *pretty_print(List *ast, int indent) {
+  Pretty pretty = {nil, nil};
+  ast = pretty_convert(&pretty, ast, indent);
+  assert(!ast);
+  ast = pretty.head;
+  while (ast) {
+    int tag = list_tag(ast);
+    switch (tag) {
+    case AST_BLANK:
+      printf(" ");
+      break;
+    case AST_TAB:
+      printf("  ");
+      break;
+    case AST_NEWLINE:
+      printf("\n");
+      break;
+    case AST_DATA:
+      print_data(ast);
+      break;
+    default:
+      printf("%s", ast_show(tag));
+      break;
+    }
+    ast = list_next(ast);
+  }
+  list_delete(pretty.head, nil);
+  return ast;
 }
