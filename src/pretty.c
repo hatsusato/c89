@@ -5,6 +5,7 @@
 
 #include "ast.h"
 #include "print.h"
+#include "utility.h"
 
 typedef struct {
   List *head, *tail;
@@ -357,4 +358,18 @@ List *pretty_print(List *ast, int indent) {
     assert(0);
   }
   return ast;
+}
+
+void pretty_push(Pretty *pretty, int tag, void *data) {
+  assert(pretty);
+  if (pretty->tail) {
+    list_insert(pretty->tail, list_new(tag, data));
+    pretty->tail = list_next(pretty->tail);
+  } else {
+    pretty->head = pretty->tail = list_new(tag, data);
+  }
+}
+void pretty_push_tag(Pretty *pretty, int tag) {
+  assert(pretty);
+  pretty_push(pretty, tag, nil);
 }
