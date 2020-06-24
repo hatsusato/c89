@@ -390,7 +390,8 @@ List *pretty_convert_list(Pretty *pretty, List *ast, int indent) {
     break;
   case AST_STRUCT_DECLARATION_LIST:
     ++indent;
-    /* FALLTHROUGH */
+    delim = AST_NEWLINE;
+    break;
   case AST_DECLARATION_LIST:
   case AST_TRANSLATION_UNIT:
     delim = AST_NEWLINE;
