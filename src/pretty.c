@@ -381,8 +381,37 @@ List *pretty_convert_token(Pretty *pretty, List *ast) {
   pretty_push(pretty, list_tag(ast), list_data(ast));
   return list_next(ast);
 }
-List *pretty_convert_list(Pretty *pretty, List *ast, int indent, int delim) {
+List *pretty_convert_list(Pretty *pretty, List *ast, int indent) {
+  int delim = AST_NIL;
   assert(pretty);
+  switch (list_tag(ast)) {
+  case AST_DECLARATION_SPECIFIERS:
+    delim = AST_BLANK;
+    break;
+  case AST_STRUCT_DECLARATION_LIST:
+    ++indent;
+    /* FALLTHROUGH */
+  case AST_DECLARATION_LIST:
+  case AST_TRANSLATION_UNIT:
+    delim = AST_NEWLINE;
+    break;
+  case AST_ARGUMENT_EXPRESSION_LIST:
+  case AST_INIT_DECLARATOR_LIST:
+  case AST_STRUCT_DECLARATOR_LIST:
+  case AST_ENUMERATOR_LIST:
+  case AST_PARAMETER_LIST:
+  case AST_IDENTIFIER_LIST:
+  case AST_INITIALIZER_LIST:
+    delim = AST_COMMA;
+    break;
+  case AST_SPECIFIER_QUALIFIER_LIST:
+  case AST_TYPE_QUALIFIER_LIST:
+  case AST_STATEMENT_LIST:
+    break;
+  default:
+    assert(0);
+    return ast;
+  }
   if (AST_NIL != list_tag(ast)) {
     ast = pretty_convert(pretty, ast, indent);
   }
@@ -401,7 +430,7 @@ List *pretty_convert(Pretty *pretty, List *ast, int indent) {
   case AST_TOKEN:
     return pretty_convert_token(pretty, ast);
   case AST_LIST:
-    return ast;
+    return pretty_convert_list(pretty, ast, indent);
   case AST_ARITY0:
     return ast;
   case AST_ARITY1:
