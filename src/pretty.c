@@ -11,10 +11,9 @@ typedef struct {
   List *head, *tail;
 } Pretty;
 
-List *pretty_convert(Pretty *pretty, List *ast, int indent);
+static List *pretty_convert(Pretty *pretty, List *ast, int indent);
 
-void pretty_push(Pretty *pretty, int tag, void *data) {
-  assert(pretty);
+static void pretty_push(Pretty *pretty, int tag, void *data) {
   if (pretty->tail) {
     list_insert(pretty->tail, list_new(tag, data));
     pretty->tail = list_next(pretty->tail);
@@ -22,27 +21,23 @@ void pretty_push(Pretty *pretty, int tag, void *data) {
     pretty->head = pretty->tail = list_new(tag, data);
   }
 }
-void pretty_push_tag(Pretty *pretty, int tag) {
-  assert(pretty);
+static void pretty_push_tag(Pretty *pretty, int tag) {
   pretty_push(pretty, tag, nil);
 }
-void pretty_push_indent(Pretty *pretty, int indent) {
-  assert(pretty);
+static void pretty_push_indent(Pretty *pretty, int indent) {
   for (; 0 < indent; --indent) {
     pretty_push_tag(pretty, AST_TAB);
   }
 }
-List *pretty_convert_token(Pretty *pretty, List *ast) {
-  assert(pretty);
+static List *pretty_convert_token(Pretty *pretty, List *ast) {
   ast = list_next(ast);
   pretty_push(pretty, list_tag(ast), list_data(ast));
   return list_next(ast);
 }
-List *pretty_convert_list(Pretty *pretty, List *ast, int indent) {
+static List *pretty_convert_list(Pretty *pretty, List *ast, int indent) {
   int tag = list_tag(ast);
   int delim = AST_NIL;
   ast = list_next(ast);
-  assert(pretty);
   switch (tag) {
   case AST_DECLARATION_SPECIFIERS:
     delim = AST_BLANK;
@@ -83,11 +78,11 @@ List *pretty_convert_list(Pretty *pretty, List *ast, int indent) {
   }
   return list_next(ast);
 }
-List *pretty_convert_arity0(Pretty *pretty, List *ast) {
+static List *pretty_convert_arity0(Pretty *pretty, List *ast) {
   pretty_push_tag(pretty, list_tag(ast));
   return list_next(ast);
 }
-List *pretty_convert_arity1(Pretty *pretty, List *ast, int indent) {
+static List *pretty_convert_arity1(Pretty *pretty, List *ast, int indent) {
   int tag = list_tag(ast);
   ast = list_next(ast);
   switch (tag) {
@@ -184,7 +179,7 @@ List *pretty_convert_arity1(Pretty *pretty, List *ast, int indent) {
     return ast;
   }
 }
-List *pretty_convert_arity2(Pretty *pretty, List *ast, int indent) {
+static List *pretty_convert_arity2(Pretty *pretty, List *ast, int indent) {
   int tag = list_tag(ast);
   ast = list_next(ast);
   switch (tag) {
@@ -302,7 +297,7 @@ List *pretty_convert_arity2(Pretty *pretty, List *ast, int indent) {
     return ast;
   }
 }
-List *pretty_convert_arity3(Pretty *pretty, List *ast, int indent) {
+static List *pretty_convert_arity3(Pretty *pretty, List *ast, int indent) {
   int tag = list_tag(ast);
   ast = list_next(ast);
   switch (tag) {
@@ -363,7 +358,7 @@ List *pretty_convert_arity3(Pretty *pretty, List *ast, int indent) {
     return ast;
   }
 }
-List *pretty_convert_arity4(Pretty *pretty, List *ast, int indent) {
+static List *pretty_convert_arity4(Pretty *pretty, List *ast, int indent) {
   int tag = list_tag(ast);
   ast = list_next(ast);
   switch (tag) {
@@ -394,7 +389,7 @@ List *pretty_convert_arity4(Pretty *pretty, List *ast, int indent) {
     return ast;
   }
 }
-List *pretty_convert(Pretty *pretty, List *ast, int indent) {
+static List *pretty_convert(Pretty *pretty, List *ast, int indent) {
   int tag = list_tag(ast);
   ast = list_next(ast);
   switch (tag) {
