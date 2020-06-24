@@ -39,9 +39,6 @@ static List *pretty_convert_list(Pretty *pretty, List *ast, int indent) {
   int delim = AST_NIL;
   ast = list_next(ast);
   switch (tag) {
-  case AST_TRANSLATION_UNIT:
-    delim = AST_NEWLINE;
-    break;
   case AST_ARGUMENT_EXPRESSION_LIST:
   case AST_INIT_DECLARATOR_LIST:
   case AST_STRUCT_DECLARATOR_LIST:
@@ -57,6 +54,7 @@ static List *pretty_convert_list(Pretty *pretty, List *ast, int indent) {
   case AST_TYPE_QUALIFIER_LIST:
   case AST_DECLARATION_LIST:
   case AST_STATEMENT_LIST:
+  case AST_TRANSLATION_UNIT:
     break;
   default:
     assert(0);
@@ -154,6 +152,11 @@ static List *pretty_convert_arity1(Pretty *pretty, List *ast, int indent) {
     pretty_push_tag(pretty, tag);
     ast = pretty_convert(pretty, ast, indent);
     return ast;
+  case AST_EXTERNAL_DECLARATION:
+  case AST_FUNCTION_DEFINITION:
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_NEWLINE);
+    return ast;
   case AST_CONSTANT_EXPRESSION:
   case AST_INIT_DECLARATOR:
   case AST_STORAGE_CLASS_SPECIFIER:
@@ -167,8 +170,6 @@ static List *pretty_convert_arity1(Pretty *pretty, List *ast, int indent) {
   case AST_ABSTRACT_DECLARATOR:
   case AST_TYPEDEF_NAME:
   case AST_STATEMENT:
-  case AST_EXTERNAL_DECLARATION:
-  case AST_FUNCTION_DEFINITION:
     ast = pretty_convert(pretty, ast, indent);
     return ast;
   default:
@@ -311,6 +312,7 @@ static List *pretty_convert_arity3(Pretty *pretty, List *ast, int indent) {
     ast = pretty_convert(pretty, ast, indent);
     pretty_push_tag(pretty, AST_BLANK);
     ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_NEWLINE);
     return ast;
   case AST_OLD:
     ast = pretty_convert(pretty, ast, indent);
