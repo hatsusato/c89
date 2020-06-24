@@ -6,6 +6,10 @@
 #include "ast.h"
 #include "print.h"
 
+typedef struct {
+  List *head, *tail;
+} Pretty;
+
 static void pretty_string(const char *s) {
   printf("%s", s);
 }
