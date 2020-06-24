@@ -699,6 +699,37 @@ List *pretty_convert_arity3(Pretty *pretty, List *ast, int indent) {
     return ast;
   }
 }
+List *pretty_convert_arity4(Pretty *pretty, List *ast, int indent) {
+  int tag = list_tag(ast);
+  ast = list_next(ast);
+  switch (tag) {
+  case AST_FOR:
+    pretty_push_tag(pretty, tag);
+    pretty_push_tag(pretty, AST_BLANK);
+    pretty_push_tag(pretty, AST_LEFT_PAREN);
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_SEMICOLON);
+    pretty_push_tag(pretty, AST_BLANK);
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_SEMICOLON);
+    pretty_push_tag(pretty, AST_BLANK);
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_RIGHT_PAREN);
+    pretty_push_tag(pretty, AST_BLANK);
+    ast = pretty_convert(pretty, ast, indent);
+    return ast;
+  case AST_OLD:
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_BLANK);
+    ast = pretty_convert(pretty, ast, indent);
+    ast = pretty_convert(pretty, ast, indent);
+    ast = pretty_convert(pretty, ast, indent);
+    return ast;
+  default:
+    assert(0);
+    return ast;
+  }
+}
 List *pretty_convert(Pretty *pretty, List *ast, int indent) {
   int tag = list_tag(ast);
   ast = list_next(ast);
@@ -716,7 +747,7 @@ List *pretty_convert(Pretty *pretty, List *ast, int indent) {
   case AST_ARITY3:
     return pretty_convert_arity3(pretty, ast, indent);
   case AST_ARITY4:
-    return ast;
+    return pretty_convert_arity4(pretty, ast, indent);
   default:
     assert(0);
     return ast;
