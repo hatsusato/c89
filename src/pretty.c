@@ -78,7 +78,9 @@ static List *pretty_convert_binary(Pretty *pretty, List *ast, int indent) {
   op = list_tag(ast);
   ast = list_next(ast);
   ast = pretty_convert(pretty, ast, indent);
+  pretty_push_tag(pretty, AST_BLANK);
   pretty_push_tag(pretty, op);
+  pretty_push_tag(pretty, AST_BLANK);
   ast = pretty_convert(pretty, ast, indent);
   return ast;
 }
@@ -198,12 +200,16 @@ static List *pretty_convert_arity2(Pretty *pretty, List *ast, int indent) {
   case AST_INIT_DECLARATOR:
   case AST_ENUMERATOR:
     ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_BLANK);
     pretty_push_tag(pretty, AST_ASSIGN);
+    pretty_push_tag(pretty, AST_BLANK);
     ast = pretty_convert(pretty, ast, indent);
     return ast;
   case AST_STRUCT_DECLARATOR:
     ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_BLANK);
     pretty_push_tag(pretty, AST_COLON);
+    pretty_push_tag(pretty, AST_BLANK);
     ast = pretty_convert(pretty, ast, indent);
     return ast;
   case AST_ENUM_SPECIFIER:
@@ -283,7 +289,9 @@ static List *pretty_convert_arity3(Pretty *pretty, List *ast, int indent) {
     ast = pretty_convert(pretty, ast, indent);
     pretty_push_tag(pretty, AST_QUESTION);
     ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_BLANK);
     pretty_push_tag(pretty, AST_COLON);
+    pretty_push_tag(pretty, AST_BLANK);
     ast = pretty_convert(pretty, ast, indent);
     return ast;
   case AST_STRUCT_OR_UNION_SPECIFIER:
@@ -379,6 +387,9 @@ static List *pretty_convert(Pretty *pretty, List *ast, int indent) {
 static void pretty_print_ast(List *ast) {
   int tag = list_tag(ast);
   switch (tag) {
+  case AST_DATA:
+    print_data(ast);
+    break;
   case AST_BLANK:
     printf(" ");
     break;
@@ -387,38 +398,6 @@ static void pretty_print_ast(List *ast) {
     break;
   case AST_NEWLINE:
     printf("\n");
-    break;
-  case AST_DATA:
-    print_data(ast);
-    break;
-  case AST_SLASH:
-  case AST_PERCENT:
-  case AST_LEFT_SHIFT:
-  case AST_RIGHT_SHIFT:
-  case AST_LESS_THAN:
-  case AST_GREATER_THAN:
-  case AST_LESS_EQUAL:
-  case AST_GREATER_EQUAL:
-  case AST_EQUAL:
-  case AST_NOT_EQUAL:
-  case AST_CARET:
-  case AST_BAR:
-  case AST_AND:
-  case AST_OR:
-  case AST_QUESTION:
-  case AST_ASSIGN:
-  case AST_ASTERISK_ASSIGN:
-  case AST_SLASH_ASSIGN:
-  case AST_PERCENT_ASSIGN:
-  case AST_PLUS_ASSIGN:
-  case AST_MINUS_ASSIGN:
-  case AST_LEFT_SHIFT_ASSIGN:
-  case AST_RIGHT_SHIFT_ASSIGN:
-  case AST_AMPERSAND_ASSIGN:
-  case AST_CARET_ASSIGN:
-  case AST_BAR_ASSIGN:
-  case AST_COLON:
-    printf(" %s ", ast_show(tag));
     break;
   case AST_COMMA:
 #define HANDLE(name, str) case AST_##name:
