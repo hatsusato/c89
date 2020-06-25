@@ -587,13 +587,13 @@ iteration-statement.for
 : "(" expression.opt ";" expression.opt ";" expression.opt ")" statement {$$ = parser_append4(AST_FOR, $2, $4, $6, $8);}
 ;
 jump-statement
-: jump-statement.suffix {$$ = parser_append1(AST_JUMP_STATEMENT, $1);}
+: jump-statement.suffix ";" {$$ = parser_append1(AST_JUMP_STATEMENT, $1);}
 ;
 jump-statement.suffix
-: "goto" identifier ";" {$$ = parser_append1(AST_GOTO, $2);}
-| "continue" ";" {$$ = parser_append0(AST_CONTINUE);}
-| "break" ";" {$$ = parser_append0(AST_BREAK);}
-| "return" expression.opt ";" {$$ = parser_append1(AST_RETURN, $2);}
+: "goto" identifier {$$ = parser_append1(AST_GOTO, $2);}
+| "continue" {$$ = parser_append0(AST_CONTINUE);}
+| "break" {$$ = parser_append0(AST_BREAK);}
+| "return" expression.opt {$$ = parser_append1(AST_RETURN, $2);}
 ;
 
 /* 6.7 External definitions */
