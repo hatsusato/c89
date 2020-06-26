@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 #include "parser.tab.h"
-#include "utility.h"
 
 void yyerror(const char *msg, yyscan_t scanner) {
   (void)scanner;
@@ -34,4 +33,9 @@ void scanner_insert_symbol(yyscan_t scanner, const char *str) {
   Result *result = yyget_extra(scanner);
   Set *symbols = result_get_symbols(result);
   set_string_insert(symbols, str);
+}
+Bool scanner_contains_symbol(yyscan_t scanner, const char *str) {
+  Result *result = yyget_extra(scanner);
+  Set *symbols = result_get_symbols(result);
+  return set_string_contains(symbols, str);
 }
