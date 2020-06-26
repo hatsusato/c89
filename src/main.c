@@ -23,12 +23,10 @@ void print_seq(yyscan_t scanner) {
 }
 
 int main(void) {
-  yyscan_t scanner;
-  YYSTYPE extra = parser_init();
+  yyscan_t scanner = scanner_new();
   int ret = 0;
-  yylex_init_extra(extra, &scanner);
   ret = yyparse(scanner);
   print_seq(scanner);
-  yylex_destroy(scanner);
+  scanner_delete(scanner);
   return ret;
 }
