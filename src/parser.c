@@ -36,7 +36,7 @@ AstList parser_init(void) {
 }
 AstList parser_token(int tag, yyscan_t scanner) {
   AstList ret = parser_new(AST_TOKEN, nil);
-  String *str = string_new(yyget_text(scanner));
+  String *str = string_new(scanner_get_text(scanner));
   ret = parser_push_tag(ret, tag);
   ret = parser_push(ret, parser_new(AST_DATA, str));
   return ret;

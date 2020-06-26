@@ -23,7 +23,7 @@ void print_seq(yyscan_t scanner) {
 int main(void) {
   yyscan_t scanner = scanner_new();
   int ret = 0;
-  ret = yyparse(scanner);
+  ret = scanner_parse(scanner);
   print_seq(scanner);
   scanner_delete(scanner);
   return ret;

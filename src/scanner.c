@@ -30,6 +30,9 @@ void scanner_delete(yyscan_t scanner) {
   extra_delete(yyget_extra(scanner));
   yylex_destroy(scanner);
 }
+int scanner_parse(yyscan_t scanner) {
+  return yyparse(scanner);
+}
 List *scanner_get_ast(yyscan_t scanner) {
   Extra *extra = yyget_extra(scanner);
   assert(extra);
@@ -40,4 +43,7 @@ void scanner_set_ast(yyscan_t scanner, AstList ast) {
   assert(extra);
   extra->ast = ast.list;
   yyset_extra(extra, scanner);
+}
+const char *scanner_get_text(yyscan_t scanner) {
+  return yyget_text(scanner);
 }
