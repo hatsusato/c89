@@ -2,7 +2,6 @@
 #include <string.h>
 
 #include "parser.h"
-#include "parser.tab.h"
 #include "pretty.h"
 #include "print.h"
 #include "result.h"
@@ -25,7 +24,7 @@ void print_seq(Result *result) {
 Result *parse() {
   Result *result = result_new();
   yyscan_t scanner = scanner_new(result);
-  yyparse(scanner);
+  scanner_parse(scanner);
   scanner_delete(scanner);
   return result;
 }
