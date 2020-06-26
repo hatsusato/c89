@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <stddef.h>
 
-typedef signed char boolean;
+typedef int Bool;
 #define true (1)
 #define false (0)
 #define nil (NULL)

@@ -38,7 +38,7 @@ void set_delete(Set *set) {
   vector_delete(set->data);
   free(set);
 }
-boolean set_string_contains(const Set *set, const char *str) {
+Bool set_string_contains(const Set *set, const char *str) {
   assert(set);
   return set_find(set, str, set_string_compare) != nil;
 }
