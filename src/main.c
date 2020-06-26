@@ -5,20 +5,12 @@
 #include "print.h"
 #include "result.h"
 #include "scanner.h"
-#include "string.h"
 
-void ast_list_free(List *list) {
-  void *data = list_data(list);
-  if (data) {
-    string_delete(data);
-  }
-}
 void print_seq(Result *result) {
   List *ast = result_get_ast(result);
   print_ast(ast, 0);
   printf("\n");
   pretty_print(ast);
-  list_delete(ast, ast_list_free);
 }
 
 Result *parse() {
