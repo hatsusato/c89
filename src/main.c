@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "parser.h"
 #include "pretty.h"
 #include "print.h"
 #include "result.h"
+#include "scanner.h"
 #include "string.h"
 
 void ast_list_free(List *list) {
