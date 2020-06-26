@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "vector.h"
 
@@ -11,6 +12,11 @@ struct struct_Set {
   Vector *data;
 };
 
+static int set_string_compare(const void *lhs, const void *rhs) {
+  const char *const *l = lhs;
+  const char *const *r = rhs;
+  return strcmp(*l, *r);
+}
 static void *set_find(const Set *set, const void *key,
                       int (*cmp)(const void *, const void *)) {
   const void *const *data = vector_begin(set->data);
@@ -27,4 +33,8 @@ void set_delete(Set *set) {
   assert(set);
   vector_delete(set->data);
   free(set);
+}
+boolean set_string_contains(const Set *set, const char *str) {
+  assert(set);
+  return set_find(set, str, set_string_compare) != nil;
 }
