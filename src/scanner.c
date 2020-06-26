@@ -22,10 +22,6 @@ void scanner_delete(yyscan_t scanner) {
 int scanner_parse(yyscan_t scanner) {
   return yyparse(scanner);
 }
-List *scanner_get_ast(yyscan_t scanner) {
-  Result *result = yyget_extra(scanner);
-  return result_get_ast(result);
-}
 void scanner_set_ast(yyscan_t scanner, AstList ast) {
   Result *result = yyget_extra(scanner);
   result_set_ast(result, ast.list);
