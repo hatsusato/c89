@@ -8,12 +8,12 @@
 typedef void *yyscan_t;
 #endif
 
-struct struct_Extra;
-typedef struct struct_Extra Extra;
+struct struct_Result;
+typedef struct struct_Result Result;
 
 void yyerror(const char *, yyscan_t);
-Extra *extra_new(void);
-void extra_delete(Extra *);
+Result *result_new(void);
+void result_delete(Result *);
 yyscan_t scanner_new(void);
 void scanner_delete(yyscan_t);
 int scanner_parse(yyscan_t);

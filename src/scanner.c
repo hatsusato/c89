@@ -6,7 +6,7 @@
 #include "parser.tab.h"
 #include "utility.h"
 
-struct struct_Extra {
+struct struct_Result {
   List *ast;
 };
 
@@ -15,39 +15,39 @@ void yyerror(const char *msg, yyscan_t scanner) {
   fprintf(stderr, "yyerror: [%s]\n", msg);
 }
 
-Extra *extra_new(void) {
-  Extra *extra = malloc(sizeof(Extra));
-  extra->ast = nil;
-  return extra;
+Result *result_new(void) {
+  Result *result = malloc(sizeof(Result));
+  result->ast = nil;
+  return result;
 }
-void extra_delete(Extra *extra) {
-  assert(extra);
-  free(extra);
+void result_delete(Result *result) {
+  assert(result);
+  free(result);
 }
 
 yyscan_t scanner_new(void) {
   yyscan_t scanner = nil;
-  int ret = yylex_init_extra(extra_new(), &scanner);
+  int ret = yylex_init_extra(result_new(), &scanner);
   assert(ret == 0);
   return scanner;
 }
 void scanner_delete(yyscan_t scanner) {
-  extra_delete(yyget_extra(scanner));
+  result_delete(yyget_extra(scanner));
   yylex_destroy(scanner);
 }
 int scanner_parse(yyscan_t scanner) {
   return yyparse(scanner);
 }
 List *scanner_get_ast(yyscan_t scanner) {
-  Extra *extra = yyget_extra(scanner);
-  assert(extra);
-  return extra->ast;
+  Result *result = yyget_extra(scanner);
+  assert(result);
+  return result->ast;
 }
 void scanner_set_ast(yyscan_t scanner, AstList ast) {
-  Extra *extra = yyget_extra(scanner);
-  assert(extra);
-  extra->ast = ast.list;
-  yyset_extra(extra, scanner);
+  Result *result = yyget_extra(scanner);
+  assert(result);
+  result->ast = ast.list;
+  yyset_extra(result, scanner);
 }
 const char *scanner_get_text(yyscan_t scanner) {
   return yyget_text(scanner);
