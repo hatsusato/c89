@@ -67,3 +67,13 @@ static List *typedef_parse_init_declarator(yyscan_t scanner, List *ast) {
     return ast;
   }
 }
+static Bool typedef_in_range(AstList ast) {
+  List *list = ast.list;
+  while (list != ast.last) {
+    if (AST_TYPEDEF == list_tag(list)) {
+      return true;
+    }
+    list = list_next(list);
+  }
+  return false;
+}
