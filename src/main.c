@@ -2,8 +2,10 @@
 #include <string.h>
 
 #include "parser.h"
+#include "parser.tab.h"
 #include "pretty.h"
 #include "print.h"
+#include "result.h"
 #include "string.h"
 
 void ast_list_free(List *list) {
@@ -18,6 +20,16 @@ void print_seq(yyscan_t scanner) {
   printf("\n");
   pretty_print(ast);
   list_delete(ast, ast_list_free);
+}
+
+Result *parse() {
+  Result *result = result_new();
+  yyscan_t scanner = nil;
+  int ret = yylex_init_extra(result, &scanner);
+  assert(ret == 0);
+  yyparse(scanner);
+  yylex_destroy(scanner);
+  return result;
 }
 
 int main(void) {
