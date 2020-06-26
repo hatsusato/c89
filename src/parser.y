@@ -12,6 +12,7 @@
 %code provides {
 #include "lexer.h"
 #include "parser.h"
+#include "typedef.h"
 }
 
 /* 6.1 Lexical elements */
@@ -313,7 +314,7 @@ constant-expression
 /* 6.5 Declarations */
 declaration
 : declaration-specifiers ";" {$$ = parser_append1(AST_DECLARATION, $1);}
-| declaration-specifiers init-declarator-list ";" {$$ = parser_append2(AST_DECLARATION, $1, $2);}
+| declaration-specifiers init-declarator-list ";" {typedef_register(scanner, $1, $2); $$ = parser_append2(AST_DECLARATION, $1, $2);}
 ;
 declaration-specifiers
 : declaration-specifier {$$ = parser_list_new(AST_DECLARATION_SPECIFIERS, $1);}
