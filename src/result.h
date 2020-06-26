@@ -8,6 +8,7 @@ typedef struct struct_Result Result;
 
 Result *result_new(void);
 void result_delete(Result *);
+int result_parse(Result *);
 List *result_get_ast(Result *);
 void result_set_ast(Result *, List *);
 

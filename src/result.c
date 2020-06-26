@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+#include "scanner.h"
 #include "string.h"
 #include "utility.h"
 
@@ -25,6 +26,12 @@ void result_delete(Result *result) {
   assert(result);
   list_delete(result->ast, result_ast_data_free);
   free(result);
+}
+int result_parse(Result *result) {
+  yyscan_t scanner = scanner_new(result);
+  int ret = scanner_parse(scanner);
+  scanner_delete(scanner);
+  return ret;
 }
 List *result_get_ast(Result *result) {
   assert(result);
