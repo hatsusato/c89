@@ -1,6 +1,5 @@
 #include "pretty.h"
 
-#include <assert.h>
 #include <stdio.h>
 
 #include "ast.h"

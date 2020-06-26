@@ -1,6 +1,6 @@
 #include "ast.h"
 
-#include <assert.h>
+#include "utility.h"
 
 const char *ast_show(int tag) {
   const char *name[] = {"tag-begin",
