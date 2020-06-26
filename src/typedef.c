@@ -2,7 +2,6 @@
 
 #include "list.h"
 #include "parser.h"
-#include "scanner.h"
 #include "string.h"
 #include "utility.h"
 
@@ -76,4 +75,16 @@ static Bool typedef_in_range(AstList ast) {
     list = list_next(list);
   }
   return false;
+}
+void typedef_register(yyscan_t scanner, AstList declaration_specifiers,
+                      AstList init_declarator_list) {
+  if (typedef_in_range(declaration_specifiers)) {
+    List *last = init_declarator_list.last;
+    List *ast = init_declarator_list.list;
+    ast = typedef_next(ast, AST_LIST);
+    ast = typedef_next(ast, AST_INIT_DECLARATOR_LIST);
+    while (ast != last) {
+      ast = typedef_parse_init_declarator(scanner, ast);
+    }
+  }
 }
