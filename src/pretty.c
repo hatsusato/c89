@@ -404,6 +404,8 @@ static void pretty_print_ast(List *ast) {
 #undef HANDLE
     printf("%s ", ast_show(tag));
     break;
+  case AST_NIL:
+    break;
   default:
     printf("%s", ast_show(tag));
     break;
