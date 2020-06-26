@@ -2,9 +2,9 @@
 
 #include "utility.h"
 
-struct struct_Extra {
+typedef struct {
   List *ast;
-};
+} Extra;
 
 void yyerror(const char *msg, yyscan_t scanner) {
   (void)scanner;

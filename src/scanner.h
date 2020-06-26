@@ -4,9 +4,6 @@
 #include "list.h"
 #include "parser.tab.h"
 
-struct struct_Extra;
-typedef struct struct_Extra Extra;
-
 void yyerror(const char *, yyscan_t);
 yyscan_t scanner_new(void);
 void scanner_delete(yyscan_t);
