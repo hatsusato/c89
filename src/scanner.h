@@ -8,14 +8,7 @@
 typedef void *yyscan_t;
 #endif
 
-struct struct_Result;
-typedef struct struct_Result Result;
-
 void yyerror(const char *, yyscan_t);
-Result *result_new(void);
-void result_delete(Result *);
-List *result_get_ast(Result *);
-void result_set_ast(Result *, List *);
 yyscan_t scanner_new(void);
 void scanner_delete(yyscan_t);
 int scanner_parse(yyscan_t);
