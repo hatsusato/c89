@@ -24,6 +24,14 @@ void result_delete(Result *result) {
   assert(result);
   free(result);
 }
+List *result_get_ast(Result *result) {
+  assert(result);
+  return result->ast;
+}
+void result_set_ast(Result *result, List *ast) {
+  assert(result);
+  result->ast = ast;
+}
 
 yyscan_t scanner_new(void) {
   yyscan_t scanner = nil;
@@ -40,13 +48,11 @@ int scanner_parse(yyscan_t scanner) {
 }
 List *scanner_get_ast(yyscan_t scanner) {
   Result *result = yyget_extra(scanner);
-  assert(result);
-  return result->ast;
+  return result_get_ast(result);
 }
 void scanner_set_ast(yyscan_t scanner, AstList ast) {
   Result *result = yyget_extra(scanner);
-  assert(result);
-  result->ast = ast.list;
+  result_set_ast(result, ast.list);
   yyset_extra(result, scanner);
 }
 const char *scanner_get_text(yyscan_t scanner) {
