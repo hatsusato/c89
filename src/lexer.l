@@ -149,7 +149,13 @@ s-char                  {character-set}|{single-quote}|{escape-sequence}
 ";"     { EMIT_TOKEN(TOKEN_SEMICOLON);     }
 "..."   { EMIT_TOKEN(TOKEN_ELLIPSIS);      }
 
-{identifier}            { EMIT_TOKEN(TOKEN_IDENTIFIER);         }
+{identifier} {
+  if (scanner_contains_symbol(yyscanner, yytext)) {
+    EMIT_TOKEN(TOKEN_TYPEDEF_IDENTIFIER);
+  } else {
+    EMIT_TOKEN(TOKEN_IDENTIFIER);
+  }
+}
 {floating-constant}     { EMIT_TOKEN(TOKEN_FLOATING_CONSTANT);  }
 {integer-constant}      { EMIT_TOKEN(TOKEN_INTEGER_CONSTANT);   }
 {character-constant}    { EMIT_TOKEN(TOKEN_CHARACTER_CONSTANT); }
