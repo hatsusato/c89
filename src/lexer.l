@@ -12,7 +12,7 @@
 %option never-interactive
 %option nodefault
 %option warn
-%option extra-type="YYSTYPE"
+%option extra-type="void *"
 
 space                   [ \t\n\v\f]
 wide-prefix             [L]?
