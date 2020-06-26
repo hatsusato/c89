@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #include "scanner.h"
-#include "set.h"
 #include "string.h"
 #include "utility.h"
 
@@ -44,4 +43,8 @@ List *result_get_ast(Result *result) {
 void result_set_ast(Result *result, List *ast) {
   assert(result);
   result->ast = ast;
+}
+Set *result_get_symbols(Result *result) {
+  assert(result);
+  return result->symbols;
 }
