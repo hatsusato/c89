@@ -3,7 +3,6 @@
 
 #include "parser.tab.h"
 
-void yyerror(const char *, yyscan_t);
 YYSTYPE parser_init(void);
 YYSTYPE parser_token(int, yyscan_t);
 YYSTYPE parser_append0(int);

@@ -30,10 +30,6 @@ static YYSTYPE parser_list_last(YYSTYPE list) {
   return last;
 }
 
-void yyerror(const char *msg, yyscan_t scanner) {
-  (void)scanner;
-  fprintf(stderr, "yyerror: [%s]\n", msg);
-}
 YYSTYPE parser_init(void) {
   YYSTYPE init = {nil, nil};
   return init;

@@ -11,6 +11,7 @@
 #include "ast.h"
 #include "lexer.h"
 #include "parser.h"
+#include "scanner.h"
 }
 
 %define api.pure full
