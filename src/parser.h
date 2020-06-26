@@ -17,5 +17,6 @@ AstList parser_list_empty(int);
 AstList parser_list_new(int, AstList);
 AstList parser_list_push(AstList, AstList);
 AstList parser_list_finish(AstList);
+List *parser_consume(List *);
 
 #endif /* INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC */

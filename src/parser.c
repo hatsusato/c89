@@ -101,3 +101,40 @@ AstList parser_list_finish(AstList list) {
   parser_push(list, parser_init());
   return list;
 }
+List *parser_consume(List *ast) {
+  int tag = list_tag(ast);
+  ast = list_next(ast);
+  ast = list_next(ast);
+  switch (tag) {
+  case AST_TOKEN:
+    return list_next(ast);
+  case AST_LIST:
+    while (AST_NIL != list_tag(ast)) {
+      ast = parser_consume(ast);
+    }
+    return list_next(ast);
+  case AST_ARITY0:
+    goto case_arity0;
+  case AST_ARITY1:
+    goto case_arity1;
+  case AST_ARITY2:
+    goto case_arity2;
+  case AST_ARITY3:
+    goto case_arity3;
+  case AST_ARITY4:
+    goto case_arity4;
+  case_arity4:
+    ast = parser_consume(ast);
+  case_arity3:
+    ast = parser_consume(ast);
+  case_arity2:
+    ast = parser_consume(ast);
+  case_arity1:
+    ast = parser_consume(ast);
+  case_arity0:
+    return ast;
+  default:
+    assert(0);
+    return ast;
+  }
+}
