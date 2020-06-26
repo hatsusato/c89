@@ -35,7 +35,7 @@ List *scanner_get_ast(yyscan_t scanner) {
   assert(extra);
   return extra->ast;
 }
-void scanner_set_ast(yyscan_t scanner, YYSTYPE ast) {
+void scanner_set_ast(yyscan_t scanner, AstList ast) {
   Extra *extra = yyget_extra(scanner);
   assert(extra);
   extra->ast = ast.list;

@@ -1,22 +1,22 @@
 %code top {
 }
 %code requires {
-#include "list.h"
+#include "ast.h"
 #ifndef YY_TYPEDEF_YY_SCANNER_T
 #define YY_TYPEDEF_YY_SCANNER_T
   typedef void* yyscan_t;
 #endif
 }
+
+%define api.pure full
+%define api.value.type {AstList}
+%param {yyscan_t scanner}
+
 %code provides {
-#include "ast.h"
 #include "lexer.h"
 #include "parser.h"
 #include "scanner.h"
 }
-
-%define api.pure full
-%define api.value.type {struct {List *list; List *last;}}
-%param {yyscan_t scanner}
 
 /* 6.1 Lexical elements */
 /* 6.1.1 Keywords */

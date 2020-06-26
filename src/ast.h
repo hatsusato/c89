@@ -1,6 +1,12 @@
 #ifndef INCLUDE_GUARD_A84E9F8A_C152_4807_9181_80EE16B4DFA5
 #define INCLUDE_GUARD_A84E9F8A_C152_4807_9181_80EE16B4DFA5
 
+#include "list.h"
+
+typedef struct {
+  List *list, *last;
+} AstList;
+
 enum AstTag {
   AST_TAG_BEGIN,
 #define HANDLE(name, str) AST_##name,
