@@ -24,11 +24,9 @@ void print_seq(Result *result) {
 
 Result *parse() {
   Result *result = result_new();
-  yyscan_t scanner = nil;
-  int ret = yylex_init_extra(result, &scanner);
-  assert(ret == 0);
+  yyscan_t scanner = scanner_new(result);
   yyparse(scanner);
-  yylex_destroy(scanner);
+  scanner_delete(scanner);
   return result;
 }
 
