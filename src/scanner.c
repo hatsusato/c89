@@ -1,6 +1,5 @@
 #include "scanner.h"
 
-#include "list.h"
 #include "utility.h"
 
 struct struct_Extra {
@@ -20,6 +19,10 @@ yyscan_t scanner_new(void) {
 }
 void scanner_delete(yyscan_t scanner) {
   yylex_destroy(scanner);
+}
+List *scanner_get_ast(yyscan_t scanner) {
+  YY_EXTRA_TYPE extra = yyget_extra(scanner);
+  return extra.list;
 }
 void scanner_set_ast(yyscan_t scanner, YYSTYPE ast) {
   yyset_extra(ast, scanner);

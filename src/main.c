@@ -2,7 +2,6 @@
 #include <string.h>
 
 #include "parser.h"
-#include "parser.tab.h"
 #include "pretty.h"
 #include "print.h"
 #include "string.h"
@@ -14,12 +13,11 @@ void ast_list_free(List *list) {
   }
 }
 void print_seq(yyscan_t scanner) {
-  YY_EXTRA_TYPE extra = yyget_extra(scanner);
-  List *list = extra.list;
-  print_ast(list, 0);
+  List *ast = scanner_get_ast(scanner);
+  print_ast(ast, 0);
   printf("\n");
-  pretty_print(list);
-  list_delete(extra.list, ast_list_free);
+  pretty_print(ast);
+  list_delete(ast, ast_list_free);
 }
 
 int main(void) {
