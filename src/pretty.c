@@ -158,6 +158,10 @@ static List *pretty_convert_arity1(Pretty *pretty, List *ast, int indent) {
     ast = pretty_convert(pretty, ast, indent);
     pretty_push_tag(pretty, AST_NEWLINE);
     return ast;
+  case AST_TYPEDEF_NAME:
+    ast = pretty_convert(pretty, ast, indent);
+    pretty_push_tag(pretty, AST_BLANK);
+    return ast;
   case AST_CONSTANT_EXPRESSION:
   case AST_INIT_DECLARATOR:
   case AST_STORAGE_CLASS_SPECIFIER:
@@ -169,7 +173,6 @@ static List *pretty_convert_arity1(Pretty *pretty, List *ast, int indent) {
   case AST_PARAMETER_DECLARATION:
   case AST_TYPE_NAME:
   case AST_ABSTRACT_DECLARATOR:
-  case AST_TYPEDEF_NAME:
   case AST_STATEMENT:
     ast = pretty_convert(pretty, ast, indent);
     return ast;
