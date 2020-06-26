@@ -23,6 +23,11 @@ static void *set_find(const Set *set, const void *key,
   size_t count = vector_length(set->data);
   return bsearch(&key, data, count, SET_ALIGNMENT, cmp);
 }
+static void set_sort(Set *set, int (*cmp)(const void *, const void *)) {
+  const void **data = vector_begin(set->data);
+  size_t count = vector_length(set->data);
+  qsort(data, count, SET_ALIGNMENT, cmp);
+}
 
 Set *set_new(void) {
   Set *set = malloc(sizeof(Set));
@@ -37,4 +42,9 @@ void set_delete(Set *set) {
 boolean set_string_contains(const Set *set, const char *str) {
   assert(set);
   return set_find(set, str, set_string_compare) != nil;
+}
+void set_string_insert(Set *set, const char *str) {
+  assert(set);
+  *(const char **)vector_back(set->data) = str;
+  set_sort(set, set_string_compare);
 }
