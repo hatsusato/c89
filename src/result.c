@@ -3,11 +3,13 @@
 #include <stdlib.h>
 
 #include "scanner.h"
+#include "set.h"
 #include "string.h"
 #include "utility.h"
 
 struct struct_Result {
   List *ast;
+  Set *symbols;
 };
 
 static void result_ast_data_free(List *ast) {
@@ -20,11 +22,13 @@ static void result_ast_data_free(List *ast) {
 Result *result_new(void) {
   Result *result = malloc(sizeof(Result));
   result->ast = nil;
+  result->symbols = set_new();
   return result;
 }
 void result_delete(Result *result) {
   assert(result);
   list_delete(result->ast, result_ast_data_free);
+  set_delete(result->symbols);
   free(result);
 }
 int result_parse(Result *result) {
