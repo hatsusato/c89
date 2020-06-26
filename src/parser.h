@@ -2,7 +2,7 @@
 #define INCLUDE_GUARD_CB25BAC5_5782_4FB4_A66E_3FFFB7B099AC
 
 #include "ast.h"
-#include "parser.tab.h"
+#include "scanner.h"
 
 AstList parser_init(void);
 AstList parser_token(int, yyscan_t);

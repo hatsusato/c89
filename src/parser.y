@@ -2,10 +2,7 @@
 }
 %code requires {
 #include "ast.h"
-#ifndef YY_TYPEDEF_YY_SCANNER_T
-#define YY_TYPEDEF_YY_SCANNER_T
-  typedef void* yyscan_t;
-#endif
+#include "scanner.h"
 }
 
 %define api.pure full
@@ -15,7 +12,6 @@
 %code provides {
 #include "lexer.h"
 #include "parser.h"
-#include "scanner.h"
 }
 
 /* 6.1 Lexical elements */
