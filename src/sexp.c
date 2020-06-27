@@ -15,14 +15,14 @@ struct struct_Sexp {
 };
 
 Sexp *sexp_cons(Sexp *car, Sexp *cdr) {
-  Sexp *sexp = malloc(sizeof(Sexp));
+  struct struct_Sexp *sexp = malloc(sizeof(Sexp));
   sexp->kind = SEXP_PAIR;
   sexp->data.pair.car = car;
   sexp->data.pair.cdr = cdr;
   return sexp;
 }
 Sexp *sexp_symbol(const char *symbol) {
-  Sexp *sexp = malloc(sizeof(Sexp));
+  struct struct_Sexp *sexp = malloc(sizeof(Sexp));
   sexp->kind = SEXP_SYMBOL;
   sexp->data.symbol = symbol;
   return sexp;
