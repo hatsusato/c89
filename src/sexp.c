@@ -59,3 +59,11 @@ Bool sexp_is_symbol(Sexp *sexp) {
 Bool sexp_is_string(Sexp *sexp) {
   return SEXP_STRING == sexp->kind;
 }
+Sexp *sexp_car(Sexp *sexp) {
+  assert(sexp_is_pair(sexp));
+  return sexp->data.pair.car;
+}
+Sexp *sexp_cdr(Sexp *sexp) {
+  assert(sexp_is_pair(sexp));
+  return sexp->data.pair.cdr;
+}

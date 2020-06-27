@@ -13,5 +13,7 @@ void sexp_delete(Sexp*);
 Bool sexp_is_pair(Sexp*);
 Bool sexp_is_symbol(Sexp*);
 Bool sexp_is_string(Sexp*);
+Sexp* sexp_car(Sexp*);
+Sexp* sexp_cdr(Sexp*);
 
 #endif /* INCLUDE_GUARD_3397EB56_FB26_40B7_AD9E_F7B3DA519335 */
