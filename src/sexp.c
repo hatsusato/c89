@@ -36,3 +36,17 @@ Sexp *sexp_string(const char *text, int leng) {
   sexp->data.string = string_new_s(text, leng);
   return sexp;
 }
+void sexp_delete(Sexp *sexp) {
+  switch (sexp->kind) {
+  case SEXP_PAIR:
+    sexp_delete(sexp->data.pair.car);
+    sexp_delete(sexp->data.pair.cdr);
+    break;
+  case SEXP_STRING:
+    string_delete((String *)sexp->data.string);
+    break;
+  default:
+    break;
+  }
+  free((void *)sexp);
+}
