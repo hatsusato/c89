@@ -1,12 +1,22 @@
 #include "scanner.h"
 
+#include <ctype.h>
 #include <stdio.h>
 
 #include "parser.tab.h"
 
-void yyerror(const char *msg, yyscan_t scanner) {
-  (void)scanner;
-  fprintf(stderr, "yyerror: [%s]\n", msg);
+void yyerror(yyscan_t scanner, const char *msg) {
+  fprintf(stderr, "yyerror: %s: ", msg);
+  msg = yyget_text(scanner);
+  while (msg && *msg) {
+    char c = *msg++;
+    if (isprint(c)) {
+      fprintf(stderr, "%c", c);
+    } else {
+      fprintf(stderr, "\\x%02x", (unsigned char)c);
+    }
+  }
+  fprintf(stderr, "\n");
 }
 
 yyscan_t scanner_new(Result *result) {

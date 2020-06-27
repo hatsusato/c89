@@ -160,5 +160,5 @@ s-char                  {character-set}|{single-quote}|{escape-sequence}
 {integer-constant}      { EMIT_TOKEN(TOKEN_INTEGER_CONSTANT);   }
 {character-constant}    { EMIT_TOKEN(TOKEN_CHARACTER_CONSTANT); }
 {string-literal}        { EMIT_TOKEN(TOKEN_STRING_LITERAL);     }
-. { yyerror(yytext, yyscanner); }
+. { yyerror(yyscanner, "unknown token"); }
 %%
