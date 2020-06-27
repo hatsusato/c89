@@ -11,6 +11,7 @@ Sexp* sexp_cons(Sexp*, Sexp*);
 Sexp* sexp_symbol(const char*);
 Sexp* sexp_string(const char*, int);
 void sexp_delete(Sexp*);
+Bool sexp_is_nil(Sexp*);
 Bool sexp_is_pair(Sexp*);
 Bool sexp_is_symbol(Sexp*);
 Bool sexp_is_string(Sexp*);

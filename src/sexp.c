@@ -59,6 +59,9 @@ void sexp_delete(Sexp *sexp) {
   }
   free((void *)sexp);
 }
+Bool sexp_is_nil(Sexp *sexp) {
+  return SEXP_NIL == sexp_kind(sexp);
+}
 Bool sexp_is_pair(Sexp *sexp) {
   return SEXP_PAIR == sexp_kind(sexp);
 }
