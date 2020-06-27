@@ -1,6 +1,7 @@
 #include "sexp.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "string.h"
 
@@ -78,4 +79,8 @@ Sexp *sexp_car(Sexp *sexp) {
 Sexp *sexp_cdr(Sexp *sexp) {
   assert(sexp_is_pair(sexp));
   return sexp->data.pair.cdr;
+}
+Bool sexp_eq(Sexp *sexp, const char *symbol) {
+  assert(sexp_is_symbol(sexp));
+  return 0 == strcmp(sexp->data.symbol, symbol);
 }
