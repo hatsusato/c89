@@ -1,0 +1,17 @@
+#ifdef HANDLE
+#define DO_HANDLE(name) HANDLE(__##name)
+#else
+#define DO_HANDLE(name)
+#endif
+
+DO_HANDLE(builtin_va_list)
+DO_HANDLE(int8_t)
+DO_HANDLE(uint8_t)
+DO_HANDLE(int16_t)
+DO_HANDLE(uint16_t)
+DO_HANDLE(int32_t)
+DO_HANDLE(uint32_t)
+DO_HANDLE(int64_t)
+DO_HANDLE(uint64_t)
+
+#undef DO_HANDLE
