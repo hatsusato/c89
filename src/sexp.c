@@ -84,3 +84,13 @@ Bool sexp_eq(Sexp *sexp, const char *symbol) {
   assert(sexp_is_symbol(sexp));
   return 0 == strcmp(sexp->data.symbol, symbol);
 }
+const char *sexp_get_string(Sexp *sexp) {
+  if (sexp_is_string(sexp)) {
+    return string_begin((String *)sexp->data.string);
+  } else if (sexp_is_symbol(sexp)) {
+    return sexp->data.symbol;
+  } else {
+    assert(0);
+    return nil;
+  }
+}

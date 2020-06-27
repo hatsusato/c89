@@ -18,5 +18,6 @@ Bool sexp_is_string(Sexp*);
 Sexp* sexp_car(Sexp*);
 Sexp* sexp_cdr(Sexp*);
 Bool sexp_eq(Sexp*, const char*);
+const char* sexp_get_string(Sexp*);
 
 #endif /* INCLUDE_GUARD_3397EB56_FB26_40B7_AD9E_F7B3DA519335 */
