@@ -21,8 +21,18 @@ void yyerror(yyscan_t scanner, const char *msg) {
 
 yyscan_t scanner_new(Result *result) {
   yyscan_t scanner = nil;
+  const char *builtin_types[] = {
+#define HANDLE(name) #name,
+#include "enum/builtin.def"
+#undef HANDLE
+      nil};
+  const char **it = builtin_types;
+  Set *symbols = result_get_symbols(result);
   int ret = yylex_init_extra(result, &scanner);
   assert(ret == 0);
+  while (it && *it) {
+    set_string_insert(symbols, *it++);
+  }
   return scanner;
 }
 void scanner_delete(yyscan_t scanner) {
