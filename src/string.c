@@ -9,12 +9,14 @@ struct struct_String {
 };
 
 String* string_new(const char* init) {
+  return string_new_s(init, strlen(init));
+}
+String* string_new_s(const char* text, int leng) {
   String* s = malloc(sizeof(String));
-  Size cap = strlen(init) + 1;
-  s->data = malloc(cap);
-  s->size = cap - 1;
-  s->capacity = cap;
-  memcpy(s->data, init, s->capacity);
+  s->data = malloc(leng + 1);
+  s->size = leng;
+  s->capacity = leng + 1;
+  memcpy(s->data, text, s->capacity);
   return s;
 }
 void string_delete(String* s) {

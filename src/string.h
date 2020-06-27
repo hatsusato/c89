@@ -7,6 +7,7 @@ struct struct_String;
 typedef struct struct_String String;
 
 String* string_new(const char*);
+String* string_new_s(const char*, int);
 void string_delete(String*);
 Size string_length(String* s);
 char* string_begin(String* s);
