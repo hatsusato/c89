@@ -17,6 +17,9 @@ struct struct_Sexp {
   } data;
 };
 
+Sexp *sexp_nil(void) {
+  return nil;
+}
 Sexp *sexp_cons(Sexp *car, Sexp *cdr) {
   struct struct_Sexp *sexp = malloc(sizeof(Sexp));
   sexp->kind = SEXP_PAIR;
