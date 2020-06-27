@@ -50,3 +50,12 @@ void sexp_delete(Sexp *sexp) {
   }
   free((void *)sexp);
 }
+Bool sexp_is_pair(Sexp *sexp) {
+  return SEXP_PAIR == sexp->kind;
+}
+Bool sexp_is_symbol(Sexp *sexp) {
+  return SEXP_SYMBOL == sexp->kind;
+}
+Bool sexp_is_string(Sexp *sexp) {
+  return SEXP_STRING == sexp->kind;
+}
