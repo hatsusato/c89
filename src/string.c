@@ -5,7 +5,7 @@
 
 struct struct_String {
   char* data;
-  Size size, capacity;
+  Size size;
 };
 
 String* string_new(const char* init) {
@@ -13,10 +13,11 @@ String* string_new(const char* init) {
 }
 String* string_new_s(const char* text, int leng) {
   String* s = malloc(sizeof(String));
+  assert(0 <= leng);
   s->data = malloc(leng + 1);
   s->size = leng;
-  s->capacity = leng + 1;
-  memcpy(s->data, text, s->capacity);
+  memcpy(s->data, text, leng);
+  s->data[leng] = 0;
   return s;
 }
 void string_delete(String* s) {
