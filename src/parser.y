@@ -143,6 +143,8 @@ auto: "auto" {$$.sexp = sexp_symbol("auto");}
 ;
 char: "char" {$$.sexp = sexp_symbol("char");}
 ;
+const: "const" {$$.sexp = sexp_symbol("const");}
+;
 double: "double" {$$.sexp = sexp_symbol("double");}
 ;
 enum: "enum" {$$.sexp = sexp_symbol("enum");}
@@ -174,6 +176,8 @@ union: "union" {$$.sexp = sexp_symbol("union");}
 unsigned: "unsigned" {$$.sexp = sexp_symbol("unsigned");}
 ;
 void: "void" {$$.sexp = sexp_symbol("void");}
+;
+volatile: "volatile" {$$.sexp = sexp_symbol("volatile");}
 ;
 
 period: "." {$$.sexp = sexp_symbol(".");}
@@ -533,11 +537,11 @@ enumerator
 | enumeration-constant assign constant-expression {$$ = parser_append2(AST_ENUMERATOR, $1, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 type-qualifier
-: type-qualifier.prefix {$$ = parser_append1(AST_TYPE_QUALIFIER, $1);}
+: type-qualifier.prefix {$$ = parser_append1(AST_TYPE_QUALIFIER, $1); $$.sexp = $1.sexp;}
 ;
 type-qualifier.prefix
-: "const" {$$ = parser_append0(AST_CONST); $$.sexp = sexp_symbol("const");}
-| "volatile" {$$ = parser_append0(AST_VOLATILE); $$.sexp = sexp_symbol("volatile");}
+: const {$$ = parser_append0(AST_CONST); $$.sexp = $1.sexp;}
+| volatile {$$ = parser_append0(AST_VOLATILE); $$.sexp = $1.sexp;}
 ;
 declarator.opt
 : %empty {$$ = parser_empty();}
