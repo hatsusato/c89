@@ -138,13 +138,3 @@ List *parser_consume(List *ast) {
     return ast;
   }
 }
-
-Sexp *parser_sexp_list1(Sexp *sexp0) {
-  return sexp_cons(sexp0, sexp_nil());
-}
-Sexp *parser_sexp_list2(Sexp *sexp0, Sexp *sexp1) {
-  return sexp_cons(sexp0, sexp_cons(sexp1, sexp_nil()));
-}
-Sexp *parser_sexp_list3(Sexp *sexp0, Sexp *sexp1, Sexp *sexp2) {
-  return sexp_cons(sexp0, sexp_cons(sexp1, sexp_cons(sexp2, sexp_nil())));
-}
