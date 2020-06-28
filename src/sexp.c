@@ -132,3 +132,7 @@ Sexp *sexp_list5(Sexp *sexp0, Sexp *sexp1, Sexp *sexp2, Sexp *sexp3,
                  Sexp *sexp4) {
   return sexp_cons(sexp0, sexp_list4(sexp1, sexp2, sexp3, sexp4));
 }
+Sexp *sexp_list6(Sexp *sexp0, Sexp *sexp1, Sexp *sexp2, Sexp *sexp3,
+                 Sexp *sexp4, Sexp *sexp5) {
+  return sexp_cons(sexp0, sexp_list5(sexp1, sexp2, sexp3, sexp4, sexp5));
+}
