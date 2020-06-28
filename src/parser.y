@@ -145,6 +145,8 @@ char: "char" {$$.sexp = sexp_symbol("char");}
 ;
 double: "double" {$$.sexp = sexp_symbol("double");}
 ;
+enum: "enum" {$$.sexp = sexp_symbol("enum");}
+;
 extern: "extern" {$$.sexp = sexp_symbol("extern");}
 ;
 float: "float" {$$.sexp = sexp_symbol("float");}
@@ -519,16 +521,16 @@ struct-declarator
 | declarator.opt colon constant-expression {$$ = parser_append2(AST_STRUCT_DECLARATOR, $1, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 enum-specifier
-: "enum" identifier.opt "{" enumerator-list "}" {$$ = parser_append2(AST_ENUM_SPECIFIER, $2, $4); }
-| "enum" identifier {$$ = parser_append1(AST_ENUM_SPECIFIER, $2); }
+: enum identifier.opt left-brace enumerator-list right-brace {$$ = parser_append2(AST_ENUM_SPECIFIER, $2, $4); $$.sexp = sexp_list5($1.sexp, $2.sexp, $3.sexp, $4.sexp, $5.sexp);}
+| enum identifier {$$ = parser_append1(AST_ENUM_SPECIFIER, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 enumerator-list
-: enumerator {$$ = parser_list_new(AST_ENUMERATOR_LIST, $1);}
-| enumerator-list "," enumerator {$$ = parser_list_push($1, $3);}
+: enumerator {$$ = parser_list_new(AST_ENUMERATOR_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
+| enumerator-list comma enumerator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
 ;
 enumerator
-: enumeration-constant {$$ = parser_append1(AST_ENUMERATOR, $1);}
-| enumeration-constant "=" constant-expression {$$ = parser_append2(AST_ENUMERATOR, $1, $3);}
+: enumeration-constant {$$ = parser_append1(AST_ENUMERATOR, $1); $$.sexp = $1.sexp;}
+| enumeration-constant assign constant-expression {$$ = parser_append2(AST_ENUMERATOR, $1, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 type-qualifier
 : type-qualifier.prefix {$$ = parser_append1(AST_TYPE_QUALIFIER, $1);}
