@@ -193,7 +193,7 @@ cast-expression
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression multiplicative-operator cast-expression {$$ = parser_binary($1, $2, $3);}
+| multiplicative-expression multiplicative-operator cast-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 multiplicative-operator
 : "*" {$$ = parser_append0(AST_ASTERISK); $$.sexp = sexp_symbol("*");}
@@ -202,7 +202,7 @@ multiplicative-operator
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression additive-operator multiplicative-expression {$$ = parser_binary($1, $2, $3);}
+| additive-expression additive-operator multiplicative-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 additive-operator
 : "+" {$$ = parser_append0(AST_PLUS); $$.sexp = sexp_symbol("+");}
@@ -210,7 +210,7 @@ additive-operator
 ;
 shift-expression
 : additive-expression
-| shift-expression shift-operator additive-expression {$$ = parser_binary($1, $2, $3);}
+| shift-expression shift-operator additive-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 shift-operator
 : "<<" {$$ = parser_append0(AST_LEFT_SHIFT); $$.sexp = sexp_symbol("<<");}
@@ -218,7 +218,7 @@ shift-operator
 ;
 relational-expression
 : shift-expression
-| relational-expression relational-operator shift-expression {$$ = parser_binary($1, $2, $3);}
+| relational-expression relational-operator shift-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 relational-operator
 : "<" {$$ = parser_append0(AST_LESS_THAN); $$.sexp = sexp_symbol("<");}
@@ -228,7 +228,7 @@ relational-operator
 ;
 equality-expression
 : relational-expression
-| equality-expression equality-operator relational-expression {$$ = parser_binary($1, $2, $3);}
+| equality-expression equality-operator relational-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 equality-operator
 : "==" {$$ = parser_append0(AST_EQUAL); $$.sexp = sexp_symbol("==");}
@@ -236,35 +236,35 @@ equality-operator
 ;
 and-expression
 : equality-expression
-| and-expression and-operator equality-expression {$$ = parser_binary($1, $2, $3);}
+| and-expression and-operator equality-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 and-operator
 : "&" {$$ = parser_append0(AST_AMPERSAND); $$.sexp = sexp_symbol("&");}
 ;
 exclusive-or-expression
 : and-expression
-| exclusive-or-expression exclusive-or-operator and-expression {$$ = parser_binary($1, $2, $3);}
+| exclusive-or-expression exclusive-or-operator and-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 exclusive-or-operator
 : "^" {$$ = parser_append0(AST_CARET); $$.sexp = sexp_symbol("^");}
 ;
 inclusive-or-expression
 : exclusive-or-expression
-| inclusive-or-expression inclusive-or-operator exclusive-or-expression {$$ = parser_binary($1, $2, $3);}
+| inclusive-or-expression inclusive-or-operator exclusive-or-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 inclusive-or-operator
 : "|" {$$ = parser_append0(AST_BAR); $$.sexp = sexp_symbol("|");}
 ;
 logical-and-expression
 : inclusive-or-expression
-| logical-and-expression logical-and-operator inclusive-or-expression {$$ = parser_binary($1, $2, $3);}
+| logical-and-expression logical-and-operator inclusive-or-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 logical-and-operator
 : "&&" {$$ = parser_append0(AST_AND); $$.sexp = sexp_symbol("&&");}
 ;
 logical-or-expression
 : logical-and-expression
-| logical-or-expression logical-or-operator logical-and-expression {$$ = parser_binary($1, $2, $3);}
+| logical-or-expression logical-or-operator logical-and-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 logical-or-operator
 : "||" {$$ = parser_append0(AST_OR); $$.sexp = sexp_symbol("||");}
