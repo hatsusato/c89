@@ -313,12 +313,12 @@ constant-expression
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers ";" {$$ = parser_append1(AST_DECLARATION, $1);}
-| declaration-specifiers init-declarator-list ";" {typedef_register(scanner, $1, $2); $$ = parser_append2(AST_DECLARATION, $1, $2);}
+: declaration-specifiers ";" {$$ = parser_append1(AST_DECLARATION, $1); $$.sexp = sexp_list2($1.sexp, sexp_symbol(";"));}
+| declaration-specifiers init-declarator-list ";" {typedef_register(scanner, $1, $2); $$ = parser_append2(AST_DECLARATION, $1, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, sexp_symbol(";"));}
 ;
 declaration-specifiers
-: declaration-specifier {$$ = parser_list_new(AST_DECLARATION_SPECIFIERS, $1);}
-| declaration-specifiers declaration-specifier {$$ = parser_list_push($1, $2);}
+: declaration-specifier {$$ = parser_list_new(AST_DECLARATION_SPECIFIERS, $1); $$.sexp = sexp_list1($1.sexp);}
+| declaration-specifiers declaration-specifier {$$ = parser_list_push($1, $2); $$.sexp = sexp_snoc($1.sexp, $2.sexp);}
 ;
 declaration-specifier
 : storage-class-specifier
@@ -326,12 +326,12 @@ declaration-specifier
 | type-qualifier
 ;
 init-declarator-list
-: init-declarator {$$ = parser_list_new(AST_INIT_DECLARATOR_LIST, $1);}
-| init-declarator-list "," init-declarator {$$ = parser_list_push($1, $3);}
+: init-declarator {$$ = parser_list_new(AST_INIT_DECLARATOR_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
+| init-declarator-list "," init-declarator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2(sexp_symbol(","), $3.sexp));}
 ;
 init-declarator
-: declarator {$$ = parser_append1(AST_INIT_DECLARATOR, $1);}
-| declarator "=" initializer {$$ = parser_append2(AST_INIT_DECLARATOR, $1, $3);}
+: declarator {$$ = parser_append1(AST_INIT_DECLARATOR, $1); $$.sexp = $1.sexp;}
+| declarator "=" initializer {$$ = parser_append2(AST_INIT_DECLARATOR, $1, $3); $$.sexp = sexp_list3($1.sexp, sexp_symbol("="), $3.sexp);}
 ;
 storage-class-specifier
 : storage-class-specifier.prefix {$$ = parser_append1(AST_STORAGE_CLASS_SPECIFIER, $1);}
