@@ -103,6 +103,19 @@ const char *sexp_get_string(Sexp *sexp) {
     return nil;
   }
 }
+Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
+  if (sexp_is_pair(xs)) {
+    Sexp *cdr = sexp_cdr(xs);
+    if (sexp_is_pair(cdr)) {
+      sexp_snoc(cdr, x);
+    } else {
+      sexp_set_cdr(xs, sexp_cons(x, cdr));
+    }
+    return xs;
+  } else {
+    return sexp_cons(x, xs);
+  }
+}
 Sexp *sexp_list1(Sexp *sexp0) {
   return sexp_cons(sexp0, sexp_nil());
 }

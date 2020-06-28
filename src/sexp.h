@@ -19,6 +19,7 @@ Sexp* sexp_car(Sexp*);
 Sexp* sexp_cdr(Sexp*);
 Bool sexp_eq(Sexp*, const char*);
 const char* sexp_get_string(Sexp*);
+Sexp* sexp_snoc(Sexp*, Sexp*);
 Sexp* sexp_list1(Sexp*);
 Sexp* sexp_list2(Sexp*, Sexp*);
 Sexp* sexp_list3(Sexp*, Sexp*, Sexp*);
