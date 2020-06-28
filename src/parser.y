@@ -170,10 +170,10 @@ argument-expression-list
 ;
 unary-expression
 : postfix-expression
-| unary-expression.prefix unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2);}
-| "sizeof" unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, parser_append0(AST_SIZEOF), $2);}
-| "sizeof" "(" type-name ")" {$$ = parser_append1(AST_UNARY_EXPRESSION, parser_append1(AST_SIZEOF, $3));}
-| unary-operator cast-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2);}
+| unary-expression.prefix unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| "sizeof" unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, parser_append0(AST_SIZEOF), $2); $$.sexp = sexp_list2(sexp_symbol("sizeof"), $2.sexp);}
+| "sizeof" "(" type-name ")" {$$ = parser_append1(AST_UNARY_EXPRESSION, parser_append1(AST_SIZEOF, $3)); $$.sexp = sexp_list4(sexp_symbol("sizeof"), sexp_symbol("("), $3.sexp, sexp_symbol(")"));}
+| unary-operator cast-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 unary-expression.prefix
 : "++" {$$ = parser_append0(AST_INCREMENT); $$.sexp = sexp_symbol("++");}
@@ -189,7 +189,7 @@ unary-operator
 ;
 cast-expression
 : unary-expression
-| "(" type-name ")" cast-expression {$$ = parser_append2(AST_CAST_EXPRESSION, $2, $4);}
+| "(" type-name ")" cast-expression {$$ = parser_append2(AST_CAST_EXPRESSION, $2, $4); $$.sexp = sexp_list4(sexp_symbol("("), $2.sexp, sexp_symbol(")"), $4.sexp);}
 ;
 multiplicative-expression
 : cast-expression
