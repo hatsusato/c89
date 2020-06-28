@@ -139,6 +139,9 @@ string-literal
 : TOKEN_STRING_LITERAL {$$ = parser_token(AST_STRING_LITERAL, scanner); $$.sexp = sexp_list2(sexp_symbol("string-literal"), scanner_token(scanner));}
 ;
 
+sizeof: "sizeof" {$$.sexp = sexp_symbol("sizeof");}
+;
+
 period: "." {$$.sexp = sexp_symbol(".");}
 ;
 arrow: "->" {$$.sexp = sexp_symbol("->");}
@@ -146,6 +149,18 @@ arrow: "->" {$$.sexp = sexp_symbol("->");}
 increment: "++" {$$.sexp = sexp_symbol("++");}
 ;
 decrement: "--" {$$.sexp = sexp_symbol("--");}
+;
+ampersand: "&" {$$.sexp = sexp_symbol("&");}
+;
+asterisk: "*" {$$.sexp = sexp_symbol("*");}
+;
+plus: "+" {$$.sexp = sexp_symbol("+");}
+;
+minus: "-" {$$.sexp = sexp_symbol("-");}
+;
+tilde: "~" {$$.sexp = sexp_symbol("~");}
+;
+exclamation: "!" {$$.sexp = sexp_symbol("!");}
 ;
 left-bracket: "[" {$$.sexp = sexp_symbol("[");}
 ;
@@ -190,25 +205,25 @@ argument-expression-list
 unary-expression
 : postfix-expression
 | unary-expression.prefix unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
-| "sizeof" unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, parser_append0(AST_SIZEOF), $2); $$.sexp = sexp_list2(sexp_symbol("sizeof"), $2.sexp);}
-| "sizeof" "(" type-name ")" {$$ = parser_append1(AST_UNARY_EXPRESSION, parser_append1(AST_SIZEOF, $3)); $$.sexp = sexp_list4(sexp_symbol("sizeof"), sexp_symbol("("), $3.sexp, sexp_symbol(")"));}
+| sizeof unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, parser_append0(AST_SIZEOF), $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| sizeof left-paren type-name right-paren {$$ = parser_append1(AST_UNARY_EXPRESSION, parser_append1(AST_SIZEOF, $3)); $$.sexp = sexp_list4($1.sexp, $2.sexp, $3.sexp, $4.sexp);}
 | unary-operator cast-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 unary-expression.prefix
-: "++" {$$ = parser_append0(AST_INCREMENT); $$.sexp = sexp_symbol("++");}
-| "--" {$$ = parser_append0(AST_DECREMENT); $$.sexp = sexp_symbol("--");}
+: increment {$$ = parser_append0(AST_INCREMENT); $$.sexp = $1.sexp;}
+| decrement {$$ = parser_append0(AST_DECREMENT); $$.sexp = $1.sexp;}
 ;
 unary-operator
-: "&" {$$ = parser_append0(AST_AMPERSAND); $$.sexp = sexp_symbol("&");}
-| "*" {$$ = parser_append0(AST_ASTERISK); $$.sexp = sexp_symbol("*");};
-| "+" {$$ = parser_append0(AST_PLUS); $$.sexp = sexp_symbol("+");};
-| "-" {$$ = parser_append0(AST_MINUS); $$.sexp = sexp_symbol("-");};
-| "~" {$$ = parser_append0(AST_TILDE); $$.sexp = sexp_symbol("~");};
-| "!" {$$ = parser_append0(AST_EXCLAMATION); $$.sexp = sexp_symbol("!");};
+: ampersand {$$ = parser_append0(AST_AMPERSAND); $$.sexp = $1.sexp;}
+| asterisk {$$ = parser_append0(AST_ASTERISK); $$.sexp = $1.sexp;};
+| plus {$$ = parser_append0(AST_PLUS); $$.sexp = $1.sexp;};
+| minus {$$ = parser_append0(AST_MINUS); $$.sexp = $1.sexp;};
+| tilde {$$ = parser_append0(AST_TILDE); $$.sexp = $1.sexp;};
+| exclamation {$$ = parser_append0(AST_EXCLAMATION); $$.sexp = $1.sexp;};
 ;
 cast-expression
 : unary-expression
-| "(" type-name ")" cast-expression {$$ = parser_append2(AST_CAST_EXPRESSION, $2, $4); $$.sexp = sexp_list4(sexp_symbol("("), $2.sexp, sexp_symbol(")"), $4.sexp);}
+| left-paren type-name right-paren cast-expression {$$ = parser_append2(AST_CAST_EXPRESSION, $2, $4); $$.sexp = sexp_list4($1.sexp, $2.sexp, $3.sexp, $4.sexp);}
 ;
 multiplicative-expression
 : cast-expression
