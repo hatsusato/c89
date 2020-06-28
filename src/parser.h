@@ -5,6 +5,8 @@
 #include "scanner.h"
 #include "sexp.h"
 
+#define PARSER_LIST4(x0, x1, x2, x3) \
+  sexp_list5(x0.sexp, x1.sexp, x2.sexp, x3.sexp)
 #define PARSER_LIST5(x0, x1, x2, x3, x4) \
   sexp_list5(x0.sexp, x1.sexp, x2.sexp, x3.sexp, x4.sexp)
 

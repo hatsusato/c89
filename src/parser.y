@@ -307,7 +307,7 @@ unary-expression
 : postfix-expression
 | unary-expression.prefix unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 | sizeof unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, parser_append0(AST_SIZEOF), $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
-| sizeof left-paren type-name right-paren {$$ = parser_append1(AST_UNARY_EXPRESSION, parser_append1(AST_SIZEOF, $3)); $$.sexp = sexp_list4($1.sexp, $2.sexp, $3.sexp, $4.sexp);}
+| sizeof left-paren type-name right-paren {$$ = parser_append1(AST_UNARY_EXPRESSION, parser_append1(AST_SIZEOF, $3)); $$.sexp = PARSER_LIST4($1, $2, $3, $4);}
 | unary-operator cast-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 unary-expression.prefix
@@ -324,7 +324,7 @@ unary-operator
 ;
 cast-expression
 : unary-expression
-| left-paren type-name right-paren cast-expression {$$ = parser_append2(AST_CAST_EXPRESSION, $2, $4); $$.sexp = sexp_list4($1.sexp, $2.sexp, $3.sexp, $4.sexp);}
+| left-paren type-name right-paren cast-expression {$$ = parser_append2(AST_CAST_EXPRESSION, $2, $4); $$.sexp = PARSER_LIST4($1, $2, $3, $4);}
 ;
 multiplicative-expression
 : cast-expression
