@@ -165,8 +165,8 @@ argument-expression-list.opt
 | argument-expression-list
 ;
 argument-expression-list
-: assignment-expression {$$ = parser_list_new(AST_ARGUMENT_EXPRESSION_LIST, $1); $$.sexp = sexp_cons(sexp_nil(), $1.sexp);}
-| argument-expression-list "," assignment-expression {$$ = parser_list_push($1, $3); $$.sexp = sexp_list3($1.sexp, sexp_symbol(","), $3.sexp);}
+: assignment-expression {$$ = parser_list_new(AST_ARGUMENT_EXPRESSION_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
+| argument-expression-list "," assignment-expression {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2(sexp_symbol(","), $3.sexp));}
 ;
 unary-expression
 : postfix-expression
