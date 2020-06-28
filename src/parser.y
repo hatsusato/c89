@@ -758,20 +758,20 @@ top
 : translation-unit {scanner_set_ast(scanner, parser_list_finish($1));}
 ;
 translation-unit
-: external-declaration {$$ = parser_list_new(AST_TRANSLATION_UNIT, $1);}
-| translation-unit external-declaration {$$ = parser_list_push($1, $2);}
+: external-declaration {$$ = parser_list_new(AST_TRANSLATION_UNIT, $1); $$.sexp = PARSER_LIST1($1);}
+| translation-unit external-declaration {$$ = parser_list_push($1, $2); $$.sexp = sexp_snoc($1.sexp, $2.sexp);}
 ;
 external-declaration
 : function-definition
-| declaration {$$ = parser_append1(AST_EXTERNAL_DECLARATION, $1);}
+| declaration {$$ = parser_append1(AST_EXTERNAL_DECLARATION, $1); $$.sexp = $1.sexp;}
 ;
 function-definition
-: function-definition.old {$$ = parser_append1(AST_FUNCTION_DEFINITION, $1);}
-| declaration-specifiers declarator compound-statement {$$ = parser_append3(AST_FUNCTION_DEFINITION, $1, $2, $3);}
+: function-definition.old {$$ = parser_append1(AST_FUNCTION_DEFINITION, $1); $$.sexp = $1.sexp;}
+| declaration-specifiers declarator compound-statement {$$ = parser_append3(AST_FUNCTION_DEFINITION, $1, $2, $3); $$.sexp = PARSER_LIST3($1, $2, $3);}
 ;
 function-definition.old
-: declarator compound-statement {$$ = parser_append2(AST_OLD, $1, $2);}
-| declarator declaration-list compound-statement {$$ = parser_append3(AST_OLD, $1, $2, $3);}
-| declaration-specifiers declarator declaration-list compound-statement {$$ = parser_append4(AST_OLD, $1, $2, $3, $4);}
+: declarator compound-statement {$$ = parser_append2(AST_OLD, $1, $2); $$.sexp = PARSER_LIST2($1, $2);}
+| declarator declaration-list compound-statement {$$ = parser_append3(AST_OLD, $1, $2, $3); $$.sexp = PARSER_LIST3($1, $2, $3);}
+| declaration-specifiers declarator declaration-list compound-statement {$$ = parser_append4(AST_OLD, $1, $2, $3, $4); $$.sexp = PARSER_LIST4($1, $2, $3, $4);}
 ;
 %%
