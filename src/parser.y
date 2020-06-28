@@ -610,28 +610,28 @@ identifier-list
 | identifier-list comma identifier {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
 ;
 type-name
-: specifier-qualifier-list {$$ = parser_append1(AST_TYPE_NAME, $1);}
-| specifier-qualifier-list abstract-declarator {$$ = parser_append2(AST_TYPE_NAME, $1, $2);}
+: specifier-qualifier-list {$$ = parser_append1(AST_TYPE_NAME, $1); $$.sexp = $1.sexp;}
+| specifier-qualifier-list abstract-declarator {$$ = parser_append2(AST_TYPE_NAME, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 abstract-declarator
-: abstract-declarator.prefix {$$ = parser_append1(AST_ABSTRACT_DECLARATOR, $1);}
-| pointer direct-abstract-declarator {$$ = parser_append2(AST_ABSTRACT_DECLARATOR, $1, $2);}
+: abstract-declarator.prefix {$$ = parser_append1(AST_ABSTRACT_DECLARATOR, $1); $$.sexp = $1.sexp;}
+| pointer direct-abstract-declarator {$$ = parser_append2(AST_ABSTRACT_DECLARATOR, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 abstract-declarator.prefix
 : pointer
 | direct-abstract-declarator
 ;
 direct-abstract-declarator
-: "(" abstract-declarator ")" {$$ = parser_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $2);}
+: "(" abstract-declarator ")" {$$ = parser_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $2); $$.sexp = sexp_list3(sexp_symbol("("), $2.sexp, sexp_symbol(")"));}
 | direct-abstract-declarator.suffix
-| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = parser_append2(AST_DIRECT_ABSTRACT_DECLARATOR, $1, $2);}
+| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = parser_append2(AST_DIRECT_ABSTRACT_DECLARATOR, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 direct-abstract-declarator.suffix
-: "[" constant-expression.opt "]" {$$ = parser_append1(AST_ARRAY, $2);}
-| "(" parameter-type-list.opt ")" {$$ = parser_append1(AST_CALL, $2);}
+: left-bracket constant-expression.opt right-bracket {$$ = parser_append1(AST_ARRAY, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
+| left-paren parameter-type-list.opt right-paren {$$ = parser_append1(AST_CALL, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 typedef-name
-: typedef-identifier {$$ = parser_append1(AST_TYPEDEF_NAME, $1);}
+: typedef-identifier {$$ = parser_append1(AST_TYPEDEF_NAME, $1); $$.sexp = $1.sexp;}
 ;
 initializer
 : assignment-expression
