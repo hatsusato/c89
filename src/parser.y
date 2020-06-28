@@ -406,7 +406,7 @@ logical-or-operator
 ;
 conditional-expression
 : logical-or-expression
-| logical-or-expression question expression colon conditional-expression {$$ = parser_append3(AST_CONDITIONAL_EXPRESSION, $1, $3, $5); $$.sexp = sexp_list5($1.sexp, $2.sexp, $3.sexp, $4.sexp, $5.sexp);}
+| logical-or-expression question expression colon conditional-expression {$$ = parser_append3(AST_CONDITIONAL_EXPRESSION, $1, $3, $5); $$.sexp = PARSER_LIST5($1, $2, $3, $4, $5);}
 ;
 assignment-expression
 : conditional-expression
@@ -496,7 +496,7 @@ type-specifier.prefix
 | typedef-name
 ;
 struct-or-union-specifier
-: struct-or-union identifier.opt left-brace struct-declaration-list right-brace {$$ = parser_append3(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2, $4); $$.sexp = sexp_list5($1.sexp, $2.sexp, $3.sexp, $4.sexp, $5.sexp);}
+: struct-or-union identifier.opt left-brace struct-declaration-list right-brace {$$ = parser_append3(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2, $4); $$.sexp = PARSER_LIST5($1, $2, $3, $4, $5);}
 | struct-or-union identifier {$$ = parser_append2(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 struct-or-union
@@ -527,7 +527,7 @@ struct-declarator
 | declarator.opt colon constant-expression {$$ = parser_append2(AST_STRUCT_DECLARATOR, $1, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 enum-specifier
-: enum identifier.opt left-brace enumerator-list right-brace {$$ = parser_append2(AST_ENUM_SPECIFIER, $2, $4); $$.sexp = sexp_list5($1.sexp, $2.sexp, $3.sexp, $4.sexp, $5.sexp);}
+: enum identifier.opt left-brace enumerator-list right-brace {$$ = parser_append2(AST_ENUM_SPECIFIER, $2, $4); $$.sexp = PARSER_LIST5($1, $2, $3, $4, $5);}
 | enum identifier {$$ = parser_append1(AST_ENUM_SPECIFIER, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 enumerator-list
