@@ -291,7 +291,7 @@ postfix-expression.suffix
 : left-bracket expression right-bracket {$$ = parser_append1(AST_ARRAY, $2); $$.sexp = PARSER_LIST3($1, $2, $3);}
 | left-paren argument-expression-list.opt right-paren {$$ = parser_append1(AST_CALL, $2); $$.sexp = PARSER_LIST3($1, $2, $3);}
 | period identifier {$$ = parser_append1(AST_PERIOD, $2); $$.sexp = PARSER_LIST2($1, $2);}
-| arrow identifier {$$ = parser_append1(AST_ARROW, $2); $$.sexp = sexp_list2($2.sexp, $2.sexp);}
+| arrow identifier {$$ = parser_append1(AST_ARROW, $2); $$.sexp = PARSER_LIST2($1, $2);}
 | increment {$$ = parser_append0(AST_INCREMENT); $$.sexp = PARSER_LIST1($1);}
 | decrement {$$ = parser_append0(AST_DECREMENT); $$.sexp = PARSER_LIST1($1);}
 ;
@@ -301,7 +301,7 @@ argument-expression-list.opt
 ;
 argument-expression-list
 : assignment-expression {$$ = parser_list_new(AST_ARGUMENT_EXPRESSION_LIST, $1); $$.sexp = PARSER_LIST1($1);}
-| argument-expression-list comma assignment-expression {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
+| argument-expression-list comma assignment-expression {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
 ;
 unary-expression
 : postfix-expression
@@ -462,7 +462,7 @@ declaration-specifier
 ;
 init-declarator-list
 : init-declarator {$$ = parser_list_new(AST_INIT_DECLARATOR_LIST, $1); $$.sexp = PARSER_LIST1($1);}
-| init-declarator-list comma init-declarator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
+| init-declarator-list comma init-declarator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
 ;
 init-declarator
 : declarator {$$ = parser_append1(AST_INIT_DECLARATOR, $1); $$.sexp = $1.sexp;}
@@ -520,7 +520,7 @@ specifier-qualifier
 ;
 struct-declarator-list
 : struct-declarator {$$ = parser_list_new(AST_STRUCT_DECLARATOR_LIST, $1); $$.sexp = PARSER_LIST1($1);}
-| struct-declarator-list comma struct-declarator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
+| struct-declarator-list comma struct-declarator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
 ;
 struct-declarator
 : declarator {$$ = parser_append1(AST_STRUCT_DECLARATOR, $1); $$.sexp = $1.sexp;}
@@ -532,7 +532,7 @@ enum-specifier
 ;
 enumerator-list
 : enumerator {$$ = parser_list_new(AST_ENUMERATOR_LIST, $1); $$.sexp = PARSER_LIST1($1);}
-| enumerator-list comma enumerator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
+| enumerator-list comma enumerator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
 ;
 enumerator
 : enumeration-constant {$$ = parser_append1(AST_ENUMERATOR, $1); $$.sexp = $1.sexp;}
@@ -591,7 +591,7 @@ parameter-type-list
 ;
 parameter-list
 : parameter-declaration {$$ = parser_list_new(AST_PARAMETER_LIST, $1); $$.sexp = PARSER_LIST1($1);}
-| parameter-list comma parameter-declaration {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
+| parameter-list comma parameter-declaration {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
 ;
 parameter-declaration
 : declaration-specifiers {$$ = parser_append1(AST_PARAMETER_DECLARATION, $1); $$.sexp = $1.sexp;}
@@ -607,7 +607,7 @@ identifier-list.opt
 ;
 identifier-list
 : identifier {$$ = parser_list_new(AST_IDENTIFIER_LIST, $1); $$.sexp = PARSER_LIST1($1);}
-| identifier-list comma identifier {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
+| identifier-list comma identifier {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
 ;
 type-name
 : specifier-qualifier-list {$$ = parser_append1(AST_TYPE_NAME, $1); $$.sexp = $1.sexp;}
@@ -643,7 +643,7 @@ initializer.suffix
 ;
 initializer-list
 : initializer {$$ = parser_list_new(AST_INITIALIZER_LIST, $1); $$.sexp = PARSER_LIST1($1);}
-| initializer-list comma initializer {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
+| initializer-list comma initializer {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
 ;
 
 /* 6.6 Statements */
