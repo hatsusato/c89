@@ -334,7 +334,7 @@ init-declarator
 | declarator "=" initializer {$$ = parser_append2(AST_INIT_DECLARATOR, $1, $3); $$.sexp = sexp_list3($1.sexp, sexp_symbol("="), $3.sexp);}
 ;
 storage-class-specifier
-: storage-class-specifier.prefix {$$ = parser_append1(AST_STORAGE_CLASS_SPECIFIER, $1);}
+: storage-class-specifier.prefix {$$ = parser_append1(AST_STORAGE_CLASS_SPECIFIER, $1); $$.sexp = $1.sexp;}
 ;
 storage-class-specifier.prefix
 : "typedef" {$$ = parser_append0(AST_TYPEDEF); $$.sexp = sexp_symbol("typedef");}
@@ -344,7 +344,7 @@ storage-class-specifier.prefix
 | "register" {$$ = parser_append0(AST_REGISTER); $$.sexp = sexp_symbol("register");}
 ;
 type-specifier
-: type-specifier.prefix {$$ = parser_append1(AST_TYPE_SPECIFIER, $1);}
+: type-specifier.prefix {$$ = parser_append1(AST_TYPE_SPECIFIER, $1); $$.sexp = $1.sexp;}
 ;
 type-specifier.prefix
 : "void" {$$ = parser_append0(AST_VOID); $$.sexp = sexp_symbol("void");}
