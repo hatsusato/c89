@@ -157,8 +157,8 @@ postfix-expression.suffix
 | "(" argument-expression-list.opt ")" {$$ = parser_append1(AST_CALL, $2);}
 | "." identifier {$$ = parser_append1(AST_PERIOD, $2);}
 | "->" identifier {$$ = parser_append1(AST_ARROW, $2);}
-| "++" {$$ = parser_append0(AST_INCREMENT);}
-| "--" {$$ = parser_append0(AST_DECREMENT);}
+| "++" {$$ = parser_append0(AST_INCREMENT); $$.sexp = sexp_symbol("++");}
+| "--" {$$ = parser_append0(AST_DECREMENT); $$.sexp = sexp_symbol("--");}
 ;
 argument-expression-list.opt
 : %empty {$$ = parser_list_empty(AST_ARGUMENT_EXPRESSION_LIST);}
@@ -176,16 +176,16 @@ unary-expression
 | unary-operator cast-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2);}
 ;
 unary-expression.prefix
-: "++" {$$ = parser_append0(AST_INCREMENT);}
-| "--" {$$ = parser_append0(AST_DECREMENT);}
+: "++" {$$ = parser_append0(AST_INCREMENT); $$.sexp = sexp_symbol("++");}
+| "--" {$$ = parser_append0(AST_DECREMENT); $$.sexp = sexp_symbol("--");}
 ;
 unary-operator
-: "&" {$$ = parser_append0(AST_AMPERSAND);}
-| "*" {$$ = parser_append0(AST_ASTERISK);};
-| "+" {$$ = parser_append0(AST_PLUS);};
-| "-" {$$ = parser_append0(AST_MINUS);};
-| "~" {$$ = parser_append0(AST_TILDE);};
-| "!" {$$ = parser_append0(AST_EXCLAMATION);};
+: "&" {$$ = parser_append0(AST_AMPERSAND); $$.sexp = sexp_symbol("&");}
+| "*" {$$ = parser_append0(AST_ASTERISK); $$.sexp = sexp_symbol("*");};
+| "+" {$$ = parser_append0(AST_PLUS); $$.sexp = sexp_symbol("+");};
+| "-" {$$ = parser_append0(AST_MINUS); $$.sexp = sexp_symbol("-");};
+| "~" {$$ = parser_append0(AST_TILDE); $$.sexp = sexp_symbol("~");};
+| "!" {$$ = parser_append0(AST_EXCLAMATION); $$.sexp = sexp_symbol("!");};
 ;
 cast-expression
 : unary-expression
@@ -196,78 +196,78 @@ multiplicative-expression
 | multiplicative-expression multiplicative-operator cast-expression {$$ = parser_binary($1, $2, $3);}
 ;
 multiplicative-operator
-: "*" {$$ = parser_append0(AST_ASTERISK);}
-| "/" {$$ = parser_append0(AST_SLASH);}
-| "%" {$$ = parser_append0(AST_PERCENT);}
+: "*" {$$ = parser_append0(AST_ASTERISK); $$.sexp = sexp_symbol("*");}
+| "/" {$$ = parser_append0(AST_SLASH); $$.sexp = sexp_symbol("/");}
+| "%" {$$ = parser_append0(AST_PERCENT); $$.sexp = sexp_symbol("%");}
 ;
 additive-expression
 : multiplicative-expression
 | additive-expression additive-operator multiplicative-expression {$$ = parser_binary($1, $2, $3);}
 ;
 additive-operator
-: "+" {$$ = parser_append0(AST_PLUS);}
-| "-" {$$ = parser_append0(AST_MINUS);}
+: "+" {$$ = parser_append0(AST_PLUS); $$.sexp = sexp_symbol("+");}
+| "-" {$$ = parser_append0(AST_MINUS); $$.sexp = sexp_symbol("-");}
 ;
 shift-expression
 : additive-expression
 | shift-expression shift-operator additive-expression {$$ = parser_binary($1, $2, $3);}
 ;
 shift-operator
-: "<<" {$$ = parser_append0(AST_LEFT_SHIFT);}
-| ">>" {$$ = parser_append0(AST_RIGHT_SHIFT);}
+: "<<" {$$ = parser_append0(AST_LEFT_SHIFT); $$.sexp = sexp_symbol("<<");}
+| ">>" {$$ = parser_append0(AST_RIGHT_SHIFT); $$.sexp = sexp_symbol(">>");}
 ;
 relational-expression
 : shift-expression
 | relational-expression relational-operator shift-expression {$$ = parser_binary($1, $2, $3);}
 ;
 relational-operator
-: "<" {$$ = parser_append0(AST_LESS_THAN);}
-| ">" {$$ = parser_append0(AST_GREATER_THAN);}
-| "<=" {$$ = parser_append0(AST_LESS_EQUAL);}
-| ">=" {$$ = parser_append0(AST_GREATER_EQUAL);}
+: "<" {$$ = parser_append0(AST_LESS_THAN); $$.sexp = sexp_symbol("<");}
+| ">" {$$ = parser_append0(AST_GREATER_THAN); $$.sexp = sexp_symbol(">");}
+| "<=" {$$ = parser_append0(AST_LESS_EQUAL); $$.sexp = sexp_symbol("<=");}
+| ">=" {$$ = parser_append0(AST_GREATER_EQUAL); $$.sexp = sexp_symbol(">=");}
 ;
 equality-expression
 : relational-expression
 | equality-expression equality-operator relational-expression {$$ = parser_binary($1, $2, $3);}
 ;
 equality-operator
-: "==" {$$ = parser_append0(AST_EQUAL);}
-| "!=" {$$ = parser_append0(AST_NOT_EQUAL);}
+: "==" {$$ = parser_append0(AST_EQUAL); $$.sexp = sexp_symbol("==");}
+| "!=" {$$ = parser_append0(AST_NOT_EQUAL); $$.sexp = sexp_symbol("!=");}
 ;
 and-expression
 : equality-expression
 | and-expression and-operator equality-expression {$$ = parser_binary($1, $2, $3);}
 ;
 and-operator
-: "&" {$$ = parser_append0(AST_AMPERSAND);}
+: "&" {$$ = parser_append0(AST_AMPERSAND); $$.sexp = sexp_symbol("&");}
 ;
 exclusive-or-expression
 : and-expression
 | exclusive-or-expression exclusive-or-operator and-expression {$$ = parser_binary($1, $2, $3);}
 ;
 exclusive-or-operator
-: "^" {$$ = parser_append0(AST_CARET);}
+: "^" {$$ = parser_append0(AST_CARET); $$.sexp = sexp_symbol("^");}
 ;
 inclusive-or-expression
 : exclusive-or-expression
 | inclusive-or-expression inclusive-or-operator exclusive-or-expression {$$ = parser_binary($1, $2, $3);}
 ;
 inclusive-or-operator
-: "|" {$$ = parser_append0(AST_BAR);}
+: "|" {$$ = parser_append0(AST_BAR); $$.sexp = sexp_symbol("|");}
 ;
 logical-and-expression
 : inclusive-or-expression
 | logical-and-expression logical-and-operator inclusive-or-expression {$$ = parser_binary($1, $2, $3);}
 ;
 logical-and-operator
-: "&&" {$$ = parser_append0(AST_AND);}
+: "&&" {$$ = parser_append0(AST_AND); $$.sexp = sexp_symbol("&&");}
 ;
 logical-or-expression
 : logical-and-expression
 | logical-or-expression logical-or-operator logical-and-expression {$$ = parser_binary($1, $2, $3);}
 ;
 logical-or-operator
-: "||" {$$ = parser_append0(AST_OR);}
+: "||" {$$ = parser_append0(AST_OR); $$.sexp = sexp_symbol("||");}
 ;
 conditional-expression
 : logical-or-expression
@@ -278,17 +278,17 @@ assignment-expression
 | unary-expression assignment-operator assignment-expression {$$ = parser_binary($1, $2, $3);}
 ;
 assignment-operator
-: "=" {$$ = parser_append0(AST_ASSIGN);}
-| "*=" {$$ = parser_append0(AST_ASTERISK_ASSIGN);}
-| "/=" {$$ = parser_append0(AST_SLASH_ASSIGN);}
-| "%=" {$$ = parser_append0(AST_PERCENT_ASSIGN);}
-| "+=" {$$ = parser_append0(AST_PLUS_ASSIGN);}
-| "-=" {$$ = parser_append0(AST_MINUS_ASSIGN);}
-| "<<=" {$$ = parser_append0(AST_LEFT_SHIFT_ASSIGN);}
-| ">>=" {$$ = parser_append0(AST_RIGHT_SHIFT_ASSIGN);}
-| "&=" {$$ = parser_append0(AST_AMPERSAND_ASSIGN);}
-| "^=" {$$ = parser_append0(AST_CARET_ASSIGN);}
-| "|=" {$$ = parser_append0(AST_BAR_ASSIGN);}
+: "=" {$$ = parser_append0(AST_ASSIGN); $$.sexp = sexp_symbol("=");}
+| "*=" {$$ = parser_append0(AST_ASTERISK_ASSIGN); $$.sexp = sexp_symbol("*=");}
+| "/=" {$$ = parser_append0(AST_SLASH_ASSIGN); $$.sexp = sexp_symbol("/=");}
+| "%=" {$$ = parser_append0(AST_PERCENT_ASSIGN); $$.sexp = sexp_symbol("%=");}
+| "+=" {$$ = parser_append0(AST_PLUS_ASSIGN); $$.sexp = sexp_symbol("+=");}
+| "-=" {$$ = parser_append0(AST_MINUS_ASSIGN); $$.sexp = sexp_symbol("-=");}
+| "<<=" {$$ = parser_append0(AST_LEFT_SHIFT_ASSIGN); $$.sexp = sexp_symbol("<<=");}
+| ">>=" {$$ = parser_append0(AST_RIGHT_SHIFT_ASSIGN); $$.sexp = sexp_symbol(">>=");}
+| "&=" {$$ = parser_append0(AST_AMPERSAND_ASSIGN); $$.sexp = sexp_symbol("&=");}
+| "^=" {$$ = parser_append0(AST_CARET_ASSIGN); $$.sexp = sexp_symbol("^=");}
+| "|=" {$$ = parser_append0(AST_BAR_ASSIGN); $$.sexp = sexp_symbol("|=");}
 ;
 expression.opt
 : %empty {$$ = parser_empty();}
@@ -299,7 +299,7 @@ expression
 | expression comma-operator assignment-expression {$$ = parser_binary($1, $2, $3);}
 ;
 comma-operator
-: "," {$$ = parser_append0(AST_COMMA);}
+: "," {$$ = parser_append0(AST_COMMA); $$.sexp = sexp_symbol(",");}
 ;
 
 /* 6.4 Constant expressions */
@@ -337,25 +337,25 @@ storage-class-specifier
 : storage-class-specifier.prefix {$$ = parser_append1(AST_STORAGE_CLASS_SPECIFIER, $1);}
 ;
 storage-class-specifier.prefix
-: "typedef" {$$ = parser_append0(AST_TYPEDEF);}
-| "extern" {$$ = parser_append0(AST_EXTERN);}
-| "static" {$$ = parser_append0(AST_STATIC);}
-| "auto" {$$ = parser_append0(AST_AUTO);}
-| "register" {$$ = parser_append0(AST_REGISTER);}
+: "typedef" {$$ = parser_append0(AST_TYPEDEF); $$.sexp = sexp_symbol("typedef");}
+| "extern" {$$ = parser_append0(AST_EXTERN); $$.sexp = sexp_symbol("extern");}
+| "static" {$$ = parser_append0(AST_STATIC); $$.sexp = sexp_symbol("static");}
+| "auto" {$$ = parser_append0(AST_AUTO); $$.sexp = sexp_symbol("auto");}
+| "register" {$$ = parser_append0(AST_REGISTER); $$.sexp = sexp_symbol("register");}
 ;
 type-specifier
 : type-specifier.prefix {$$ = parser_append1(AST_TYPE_SPECIFIER, $1);}
 ;
 type-specifier.prefix
-: "void" {$$ = parser_append0(AST_VOID);}
-| "char" {$$ = parser_append0(AST_CHAR);}
-| "short" {$$ = parser_append0(AST_SHORT);}
-| "int" {$$ = parser_append0(AST_INT);}
-| "long" {$$ = parser_append0(AST_LONG);}
-| "float" {$$ = parser_append0(AST_FLOAT);}
-| "double" {$$ = parser_append0(AST_DOUBLE);}
-| "signed" {$$ = parser_append0(AST_SIGNED);}
-| "unsigned" {$$ = parser_append0(AST_UNSIGNED);}
+: "void" {$$ = parser_append0(AST_VOID); $$.sexp = sexp_symbol("void");}
+| "char" {$$ = parser_append0(AST_CHAR); $$.sexp = sexp_symbol("char");}
+| "short" {$$ = parser_append0(AST_SHORT); $$.sexp = sexp_symbol("short");}
+| "int" {$$ = parser_append0(AST_INT); $$.sexp = sexp_symbol("int");}
+| "long" {$$ = parser_append0(AST_LONG); $$.sexp = sexp_symbol("long");}
+| "float" {$$ = parser_append0(AST_FLOAT); $$.sexp = sexp_symbol("float");}
+| "double" {$$ = parser_append0(AST_DOUBLE); $$.sexp = sexp_symbol("double");}
+| "signed" {$$ = parser_append0(AST_SIGNED); $$.sexp = sexp_symbol("signed");}
+| "unsigned" {$$ = parser_append0(AST_UNSIGNED); $$.sexp = sexp_symbol("unsigned");}
 | struct-or-union-specifier
 | enum-specifier
 | typedef-name
@@ -365,8 +365,8 @@ struct-or-union-specifier
 | struct-or-union identifier {$$ = parser_append2(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2);}
 ;
 struct-or-union
-: "struct" {$$ = parser_append0(AST_STRUCT);}
-| "union" {$$ = parser_append0(AST_UNION);}
+: "struct" {$$ = parser_append0(AST_STRUCT); $$.sexp = sexp_symbol("struct");}
+| "union" {$$ = parser_append0(AST_UNION); $$.sexp = sexp_symbol("union");}
 ;
 struct-declaration-list
 : struct-declaration {$$ = parser_list_new(AST_STRUCT_DECLARATION_LIST, $1);}
@@ -407,8 +407,8 @@ type-qualifier
 : type-qualifier.prefix {$$ = parser_append1(AST_TYPE_QUALIFIER, $1);}
 ;
 type-qualifier.prefix
-: "const" {$$ = parser_append0(AST_CONST);}
-| "volatile" {$$ = parser_append0(AST_VOLATILE);}
+: "const" {$$ = parser_append0(AST_CONST); $$.sexp = sexp_symbol("const");}
+| "volatile" {$$ = parser_append0(AST_VOLATILE); $$.sexp = sexp_symbol("volatile");}
 ;
 declarator.opt
 : %empty {$$ = parser_empty();}
@@ -529,7 +529,7 @@ labeled-statement
 labeled-statement.prefix
 : identifier
 | "case" constant-expression {$$ = parser_append1(AST_CASE, $2);}
-| "default" {$$ = parser_append0(AST_DEFAULT);}
+| "default" {$$ = parser_append0(AST_DEFAULT); $$.sexp = sexp_symbol("default");}
 ;
 compound-statement
 : "{" declaration-list.opt statement-list.opt "}" {$$ = parser_append2(AST_COMPOUND_STATEMENT, $2, $3);}
@@ -589,8 +589,8 @@ jump-statement
 ;
 jump-statement.suffix
 : "goto" identifier {$$ = parser_append1(AST_GOTO, $2);}
-| "continue" {$$ = parser_append0(AST_CONTINUE);}
-| "break" {$$ = parser_append0(AST_BREAK);}
+| "continue" {$$ = parser_append0(AST_CONTINUE); $$.sexp = sexp_symbol("continue");}
+| "break" {$$ = parser_append0(AST_BREAK); $$.sexp = sexp_symbol("break");}
 | "return" expression.opt {$$ = parser_append1(AST_RETURN, $2);}
 ;
 
