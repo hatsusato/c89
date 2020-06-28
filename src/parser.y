@@ -271,11 +271,11 @@ logical-or-operator
 ;
 conditional-expression
 : logical-or-expression
-| logical-or-expression "?" expression ":" conditional-expression {$$ = parser_append3(AST_CONDITIONAL_EXPRESSION, $1, $3, $5);}
+| logical-or-expression "?" expression ":" conditional-expression {$$ = parser_append3(AST_CONDITIONAL_EXPRESSION, $1, $3, $5); $$.sexp = sexp_list5($1.sexp, sexp_symbol("?"), $3.sexp, sexp_symbol(":"), $5.sexp);}
 ;
 assignment-expression
 : conditional-expression
-| unary-expression assignment-operator assignment-expression {$$ = parser_binary($1, $2, $3);}
+| unary-expression assignment-operator assignment-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 assignment-operator
 : "=" {$$ = parser_append0(AST_ASSIGN); $$.sexp = sexp_symbol("=");}
