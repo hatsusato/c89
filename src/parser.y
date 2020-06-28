@@ -291,12 +291,12 @@ assignment-operator
 | "|=" {$$ = parser_append0(AST_BAR_ASSIGN); $$.sexp = sexp_symbol("|=");}
 ;
 expression.opt
-: %empty {$$ = parser_empty();}
+: %empty {$$ = parser_empty(); $$.sexp = sexp_nil();}
 | expression
 ;
 expression
 : assignment-expression
-| expression comma-operator assignment-expression {$$ = parser_binary($1, $2, $3);}
+| expression comma-operator assignment-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 comma-operator
 : "," {$$ = parser_append0(AST_COMMA); $$.sexp = sexp_symbol(",");}
@@ -304,7 +304,7 @@ comma-operator
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty {$$ = parser_empty();}
+: %empty {$$ = parser_empty(); $$.sexp = sexp_nil();}
 | constant-expression
 ;
 constant-expression
