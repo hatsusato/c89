@@ -271,6 +271,8 @@ colon: ":" {$$.sexp = sexp_symbol(":");}
 ;
 semicolon: ";" {$$.sexp = sexp_symbol(";");}
 ;
+ellipsis: "..." {$$.sexp = sexp_symbol("...");}
+;
 
 /* 6.3 Expressions */
 primary-expression
@@ -544,68 +546,68 @@ type-qualifier.prefix
 | volatile {$$ = parser_append0(AST_VOLATILE); $$.sexp = $1.sexp;}
 ;
 declarator.opt
-: %empty {$$ = parser_empty();}
+: %empty {$$ = parser_empty(); $$.sexp = sexp_nil();}
 | declarator
 ;
 declarator
-: direct-declarator {$$ = parser_append1(AST_DECLARATOR, $1);}
-| pointer direct-declarator {$$ = parser_append2(AST_DECLARATOR, $1, $2);}
+: direct-declarator {$$ = parser_append1(AST_DECLARATOR, $1); $$.sexp = sexp_list2(sexp_nil(), $1.sexp);}
+| pointer direct-declarator {$$ = parser_append2(AST_DECLARATOR, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 direct-declarator
 : direct-declarator.prefix
-| direct-declarator direct-declarator.suffix {$$ = parser_append2(AST_DIRECT_DECLARATOR, $1, $2);}
+| direct-declarator direct-declarator.suffix {$$ = parser_append2(AST_DIRECT_DECLARATOR, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 direct-declarator.prefix
 : identifier
-| "(" declarator ")" {$$ = parser_append1(AST_DIRECT_DECLARATOR, $2);}
+| "(" declarator ")" {$$ = parser_append1(AST_DIRECT_DECLARATOR, $2); sexp_list3(sexp_symbol("("), $2.sexp, sexp_symbol(")"));}
 ;
 direct-declarator.suffix
-: "[" constant-expression.opt "]" {$$ = parser_append1(AST_ARRAY, $2);}
-| "(" parameter-type-list ")" {$$ = parser_append1(AST_CALL, $2);}
-| "(" identifier-list.opt ")" {$$ = parser_append1(AST_OLD, $2);}
+: left-bracket constant-expression.opt right-bracket {$$ = parser_append1(AST_ARRAY, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
+| left-paren parameter-type-list right-paren {$$ = parser_append1(AST_CALL, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
+| left-paren identifier-list.opt right-paren {$$ = parser_append1(AST_OLD, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 pointer
-: pointer.prefix {$$ = parser_append1(AST_POINTER, $1);}
-| pointer.prefix pointer {$$ = parser_append2(AST_POINTER, $1, $2);}
+: pointer.prefix {$$ = parser_append1(AST_POINTER, $1); $$.sexp = $1.sexp;}
+| pointer.prefix pointer {$$ = parser_append2(AST_POINTER, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 pointer.prefix
-: "*" type-qualifier-list.opt {$$ = $2;}
+: asterisk type-qualifier-list.opt {$$ = $2; $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 type-qualifier-list.opt
-: %empty {$$ = parser_list_empty(AST_TYPE_QUALIFIER_LIST);}
+: %empty {$$ = parser_list_empty(AST_TYPE_QUALIFIER_LIST); $$.sexp = sexp_nil();}
 | type-qualifier-list
 ;
 type-qualifier-list
-: type-qualifier {$$ = parser_list_new(AST_TYPE_QUALIFIER_LIST, $1);}
-| type-qualifier-list type-qualifier {$$ = parser_list_push($1, $2);}
+: type-qualifier {$$ = parser_list_new(AST_TYPE_QUALIFIER_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
+| type-qualifier-list type-qualifier {$$ = parser_list_push($1, $2); $$.sexp = sexp_snoc($1.sexp, $2.sexp);}
 ;
 parameter-type-list.opt
-: %empty {$$ = parser_list_empty(AST_PARAMETER_LIST);}
+: %empty {$$ = parser_list_empty(AST_PARAMETER_LIST); $$.sexp = sexp_nil();}
 | parameter-type-list
 ;
 parameter-type-list
 : parameter-list
-| parameter-list "," "..." {$$ = parser_append1(AST_PARAMETER_TYPE_LIST, $1);}
+| parameter-list comma ellipsis {$$ = parser_append1(AST_PARAMETER_TYPE_LIST, $1); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 parameter-list
-: parameter-declaration {$$ = parser_list_new(AST_PARAMETER_LIST, $1);}
-| parameter-list "," parameter-declaration {$$ = parser_list_push($1, $3);}
+: parameter-declaration {$$ = parser_list_new(AST_PARAMETER_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
+| parameter-list comma parameter-declaration {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
 ;
 parameter-declaration
-: declaration-specifiers {$$ = parser_append1(AST_PARAMETER_DECLARATION, $1);}
-| declaration-specifiers parameter-declaration.suffix {$$ = parser_append2(AST_PARAMETER_DECLARATION, $1, $2);}
+: declaration-specifiers {$$ = parser_append1(AST_PARAMETER_DECLARATION, $1); $$.sexp = $1.sexp;}
+| declaration-specifiers parameter-declaration.suffix {$$ = parser_append2(AST_PARAMETER_DECLARATION, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 parameter-declaration.suffix
 : declarator
 | abstract-declarator
 ;
 identifier-list.opt
-: %empty {$$ = parser_list_empty(AST_IDENTIFIER_LIST);}
+: %empty {$$ = parser_list_empty(AST_IDENTIFIER_LIST); $$.sexp = sexp_nil();}
 | identifier-list
 ;
 identifier-list
-: identifier {$$ = parser_list_new(AST_IDENTIFIER_LIST, $1);}
-| identifier-list "," identifier {$$ = parser_list_push($1, $3);}
+: identifier {$$ = parser_list_new(AST_IDENTIFIER_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
+| identifier-list comma identifier {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
 ;
 type-name
 : specifier-qualifier-list {$$ = parser_append1(AST_TYPE_NAME, $1);}
