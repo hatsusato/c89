@@ -12,6 +12,8 @@
   sexp_list4(x0.sexp, x1.sexp, x2.sexp, x3.sexp)
 #define PARSER_LIST5(x0, x1, x2, x3, x4) \
   sexp_list5(x0.sexp, x1.sexp, x2.sexp, x3.sexp, x4.sexp)
+#define PARSER_LIST6(x0, x1, x2, x3, x4, x5) \
+  sexp_list6(x0.sexp, x1.sexp, x2.sexp, x3.sexp, x4.sexp, x5.sexp)
 
 AstList parser_init(void);
 AstList parser_token(int, yyscan_t);

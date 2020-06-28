@@ -141,15 +141,23 @@ string-literal
 
 auto: "auto" {$$.sexp = sexp_symbol("auto");}
 ;
+break: "break" {$$.sexp = sexp_symbol("break");}
+;
 case: "case" {$$.sexp = sexp_symbol("case");}
 ;
 char: "char" {$$.sexp = sexp_symbol("char");}
 ;
 const: "const" {$$.sexp = sexp_symbol("const");}
 ;
+continue: "continue" {$$.sexp = sexp_symbol("continue");}
+;
 default: "default" {$$.sexp = sexp_symbol("default");}
 ;
+do: "do" {$$.sexp = sexp_symbol("do");}
+;
 double: "double" {$$.sexp = sexp_symbol("double");}
+;
+else: "else" {$$.sexp = sexp_symbol("else");}
 ;
 enum: "enum" {$$.sexp = sexp_symbol("enum");}
 ;
@@ -157,11 +165,19 @@ extern: "extern" {$$.sexp = sexp_symbol("extern");}
 ;
 float: "float" {$$.sexp = sexp_symbol("float");}
 ;
+for: "for" {$$.sexp = sexp_symbol("for");}
+;
+goto: "goto" {$$.sexp = sexp_symbol("goto");}
+;
+if: "if" {$$.sexp = sexp_symbol("if");}
+;
 int: "int" {$$.sexp = sexp_symbol("int");}
 ;
 long: "long" {$$.sexp = sexp_symbol("long");}
 ;
 register: "register" {$$.sexp = sexp_symbol("register");}
+;
+return: "return" {$$.sexp = sexp_symbol("return");}
 ;
 short: "short" {$$.sexp = sexp_symbol("short");}
 ;
@@ -173,6 +189,8 @@ static: "static" {$$.sexp = sexp_symbol("static");}
 ;
 struct: "struct" {$$.sexp = sexp_symbol("struct");}
 ;
+switch: "switch" {$$.sexp = sexp_symbol("switch");}
+;
 typedef: "typedef" {$$.sexp = sexp_symbol("typedef");}
 ;
 union: "union" {$$.sexp = sexp_symbol("union");}
@@ -182,6 +200,8 @@ unsigned: "unsigned" {$$.sexp = sexp_symbol("unsigned");}
 void: "void" {$$.sexp = sexp_symbol("void");}
 ;
 volatile: "volatile" {$$.sexp = sexp_symbol("volatile");}
+;
+while: "while" {$$.sexp = sexp_symbol("while");}
 ;
 
 period: "." {$$.sexp = sexp_symbol(".");}
@@ -693,44 +713,44 @@ expression-statement
 : expression.opt semicolon {$$ = parser_append1(AST_EXPRESSION_STATEMENT, $1); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 selection-statement
-: selection-statement.suffix {$$ = parser_append1(AST_SELECTION_STATEMENT, $1);}
+: selection-statement.suffix {$$ = parser_append1(AST_SELECTION_STATEMENT, $1); $$.sexp = $1.sexp;}
 ;
 selection-statement.suffix
-: "if" selection-statement.if {$$ = $2;}
-| "switch" selection-statement.switch {$$ = $2;}
+: if selection-statement.if {$$ = $2; $$.sexp = sexp_cons($1.sexp, $2.sexp);}
+| switch selection-statement.switch {$$ = $2; $$.sexp = sexp_cons($1.sexp, $2.sexp);}
 ;
 selection-statement.if
-: "(" expression ")" statement %prec THEN {$$ = parser_append2(AST_IF, $2, $4);}
-| "(" expression ")" statement "else" statement {$$ = parser_append3(AST_IF, $2, $4, $6);}
+: "(" expression ")" statement %prec THEN {$$ = parser_append2(AST_IF, $2, $4); $$.sexp = sexp_list4(sexp_symbol("("), $2.sexp, sexp_symbol(")"), $4.sexp);}
+| "(" expression ")" statement else statement {$$ = parser_append3(AST_IF, $2, $4, $6); $$.sexp = sexp_list6(sexp_symbol("("), $2.sexp, sexp_symbol(")"), $4.sexp, $5.sexp, $6.sexp);}
 ;
 selection-statement.switch
-: "(" expression ")" statement {$$ = parser_append2(AST_SWITCH, $2, $4);}
+: left-paren expression right-paren statement {$$ = parser_append2(AST_SWITCH, $2, $4); $$.sexp = PARSER_LIST4($1, $2, $3, $4);}
 ;
 iteration-statement
-: iteration-statement.suffix {$$ = parser_append1(AST_ITERATION_STATEMENT, $1);}
+: iteration-statement.suffix {$$ = parser_append1(AST_ITERATION_STATEMENT, $1); $$.sexp = $1.sexp;}
 ;
 iteration-statement.suffix
-: "while" iteration-statement.while {$$ = $2;}
-| "do" iteration-statement.do {$$ = $2;}
-| "for" iteration-statement.for {$$ = $2;}
+: while iteration-statement.while {$$ = $2; $$.sexp = sexp_cons($1.sexp, $2.sexp);}
+| do iteration-statement.do {$$ = $2; $$.sexp = sexp_cons($1.sexp, $2.sexp);}
+| for iteration-statement.for {$$ = $2; $$.sexp = sexp_cons($1.sexp, $2.sexp);}
 ;
 iteration-statement.while
-: "(" expression ")" statement {$$ = parser_append2(AST_WHILE, $2, $4);}
+: left-paren expression right-paren statement {$$ = parser_append2(AST_WHILE, $2, $4); $$.sexp = PARSER_LIST4($1, $2, $3, $4);}
 ;
 iteration-statement.do
-: statement "while" "(" expression ")" ";" {$$ = parser_append2(AST_DO, $1, $4);}
+: statement while left-paren expression right-paren semicolon {$$ = parser_append2(AST_DO, $1, $4); $$.sexp = PARSER_LIST6($1, $2, $3, $4, $5, $6);}
 ;
 iteration-statement.for
-: "(" expression.opt ";" expression.opt ";" expression.opt ")" statement {$$ = parser_append4(AST_FOR, $2, $4, $6, $8);}
+: left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {$$ = parser_append4(AST_FOR, $2, $4, $6, $8); $$.sexp = sexp_list4($1.sexp, PARSER_LIST5($2, $3, $4, $5, $6), $7.sexp, $8.sexp);}
 ;
 jump-statement
-: jump-statement.suffix ";" {$$ = parser_append1(AST_JUMP_STATEMENT, $1);}
+: jump-statement.suffix semicolon {$$ = parser_append1(AST_JUMP_STATEMENT, $1); $$.sexp = sexp_snoc($1.sexp, $2.sexp);}
 ;
 jump-statement.suffix
-: "goto" identifier {$$ = parser_append1(AST_GOTO, $2);}
-| "continue" {$$ = parser_append0(AST_CONTINUE); $$.sexp = sexp_symbol("continue");}
-| "break" {$$ = parser_append0(AST_BREAK); $$.sexp = sexp_symbol("break");}
-| "return" expression.opt {$$ = parser_append1(AST_RETURN, $2);}
+: goto identifier {$$ = parser_append1(AST_GOTO, $2); $$.sexp = PARSER_LIST2($1, $2);}
+| continue {$$ = parser_append0(AST_CONTINUE); $$.sexp = PARSER_LIST1($1);}
+| break {$$ = parser_append0(AST_BREAK); $$.sexp = PARSER_LIST1($1);}
+| return expression.opt {$$ = parser_append1(AST_RETURN, $2); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 
 /* 6.7 External definitions */
