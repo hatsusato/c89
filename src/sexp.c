@@ -94,3 +94,15 @@ const char *sexp_get_string(Sexp *sexp) {
     return nil;
   }
 }
+Sexp *sexp_list1(Sexp *sexp0) {
+  return sexp_cons(sexp0, sexp_nil());
+}
+Sexp *sexp_list2(Sexp *sexp0, Sexp *sexp1) {
+  return sexp_cons(sexp0, sexp_list1(sexp1));
+}
+Sexp *sexp_list3(Sexp *sexp0, Sexp *sexp1, Sexp *sexp2) {
+  return sexp_cons(sexp0, sexp_list2(sexp1, sexp2));
+}
+Sexp *sexp_list4(Sexp *sexp0, Sexp *sexp1, Sexp *sexp2, Sexp *sexp3) {
+  return sexp_cons(sexp0, sexp_list3(sexp1, sexp2, sexp3));
+}
