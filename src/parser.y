@@ -162,6 +162,59 @@ tilde: "~" {$$.sexp = sexp_symbol("~");}
 ;
 exclamation: "!" {$$.sexp = sexp_symbol("!");}
 ;
+slash: "/" {$$.sexp = sexp_symbol("/");}
+;
+percent: "%" {$$.sexp = sexp_symbol("%");}
+;
+left-shift: "<<" {$$.sexp = sexp_symbol("<<");}
+;
+right-shift: ">>" {$$.sexp = sexp_symbol(">>");}
+;
+less-than: "<" {$$.sexp = sexp_symbol("<");}
+;
+greater-than: ">" {$$.sexp = sexp_symbol(">");}
+;
+less-equal: "<=" {$$.sexp = sexp_symbol("<=");}
+;
+greater-equal: ">=" {$$.sexp = sexp_symbol(">=");}
+;
+equal: "==" {$$.sexp = sexp_symbol("==");}
+;
+not-equal: "!=" {$$.sexp = sexp_symbol("!=");}
+;
+caret: "^" {$$.sexp = sexp_symbol("^");}
+;
+bar: "|" {$$.sexp = sexp_symbol("|");}
+;
+and: "&&" {$$.sexp = sexp_symbol("&&");}
+;
+or: "||" {$$.sexp = sexp_symbol("||");}
+;
+question: "?" {$$.sexp = sexp_symbol("?");}
+;
+assign: "=" {$$.sexp = sexp_symbol("=");}
+;
+asterisk-assign: "*=" {$$.sexp = sexp_symbol("*=");}
+;
+slash-assign: "/=" {$$.sexp = sexp_symbol("/=");}
+;
+percent-assign: "%=" {$$.sexp = sexp_symbol("%=");}
+;
+plus-assign: "+=" {$$.sexp = sexp_symbol("+=");}
+;
+minus-assign: "-=" {$$.sexp = sexp_symbol("-=");}
+;
+left-shift-assign: "<<=" {$$.sexp = sexp_symbol("<<=");}
+;
+right-shift-assign: ">>=" {$$.sexp = sexp_symbol(">>=");}
+;
+ampersand-assign: "&=" {$$.sexp = sexp_symbol("&=");}
+;
+caret-assign: "^=" {$$.sexp = sexp_symbol("^=");}
+;
+bar-assign: "|=" {$$.sexp = sexp_symbol("|=");}
+;
+
 left-bracket: "[" {$$.sexp = sexp_symbol("[");}
 ;
 right-bracket: "]" {$$.sexp = sexp_symbol("]");}
@@ -171,6 +224,8 @@ left-paren: "(" {$$.sexp = sexp_symbol("(");}
 right-paren: ")" {$$.sexp = sexp_symbol(")");}
 ;
 comma: "," {$$.sexp = sexp_symbol(",");}
+;
+colon: ":" {$$.sexp = sexp_symbol(":");}
 ;
 
 /* 6.3 Expressions */
@@ -230,99 +285,99 @@ multiplicative-expression
 | multiplicative-expression multiplicative-operator cast-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 multiplicative-operator
-: "*" {$$ = parser_append0(AST_ASTERISK); $$.sexp = sexp_symbol("*");}
-| "/" {$$ = parser_append0(AST_SLASH); $$.sexp = sexp_symbol("/");}
-| "%" {$$ = parser_append0(AST_PERCENT); $$.sexp = sexp_symbol("%");}
+: asterisk {$$ = parser_append0(AST_ASTERISK); $$.sexp = $1.sexp;}
+| slash {$$ = parser_append0(AST_SLASH); $$.sexp = $1.sexp;}
+| percent {$$ = parser_append0(AST_PERCENT); $$.sexp = $1.sexp;}
 ;
 additive-expression
 : multiplicative-expression
 | additive-expression additive-operator multiplicative-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 additive-operator
-: "+" {$$ = parser_append0(AST_PLUS); $$.sexp = sexp_symbol("+");}
-| "-" {$$ = parser_append0(AST_MINUS); $$.sexp = sexp_symbol("-");}
+: plus {$$ = parser_append0(AST_PLUS); $$.sexp = $1.sexp;}
+| minus {$$ = parser_append0(AST_MINUS); $$.sexp = $1.sexp;}
 ;
 shift-expression
 : additive-expression
 | shift-expression shift-operator additive-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 shift-operator
-: "<<" {$$ = parser_append0(AST_LEFT_SHIFT); $$.sexp = sexp_symbol("<<");}
-| ">>" {$$ = parser_append0(AST_RIGHT_SHIFT); $$.sexp = sexp_symbol(">>");}
+: left-shift {$$ = parser_append0(AST_LEFT_SHIFT); $$.sexp = $1.sexp;}
+| right-shift {$$ = parser_append0(AST_RIGHT_SHIFT); $$.sexp = $1.sexp;}
 ;
 relational-expression
 : shift-expression
 | relational-expression relational-operator shift-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 relational-operator
-: "<" {$$ = parser_append0(AST_LESS_THAN); $$.sexp = sexp_symbol("<");}
-| ">" {$$ = parser_append0(AST_GREATER_THAN); $$.sexp = sexp_symbol(">");}
-| "<=" {$$ = parser_append0(AST_LESS_EQUAL); $$.sexp = sexp_symbol("<=");}
-| ">=" {$$ = parser_append0(AST_GREATER_EQUAL); $$.sexp = sexp_symbol(">=");}
+: less-than {$$ = parser_append0(AST_LESS_THAN); $$.sexp = $1.sexp;}
+| greater-than {$$ = parser_append0(AST_GREATER_THAN); $$.sexp = $1.sexp;}
+| less-equal {$$ = parser_append0(AST_LESS_EQUAL); $$.sexp = $1.sexp;}
+| greater-equal {$$ = parser_append0(AST_GREATER_EQUAL); $$.sexp = $1.sexp;}
 ;
 equality-expression
 : relational-expression
 | equality-expression equality-operator relational-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 equality-operator
-: "==" {$$ = parser_append0(AST_EQUAL); $$.sexp = sexp_symbol("==");}
-| "!=" {$$ = parser_append0(AST_NOT_EQUAL); $$.sexp = sexp_symbol("!=");}
+: equal {$$ = parser_append0(AST_EQUAL); $$.sexp = $1.sexp;}
+| not-equal {$$ = parser_append0(AST_NOT_EQUAL); $$.sexp = $1.sexp;}
 ;
 and-expression
 : equality-expression
 | and-expression and-operator equality-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 and-operator
-: "&" {$$ = parser_append0(AST_AMPERSAND); $$.sexp = sexp_symbol("&");}
+: ampersand {$$ = parser_append0(AST_AMPERSAND); $$.sexp = $1.sexp;}
 ;
 exclusive-or-expression
 : and-expression
 | exclusive-or-expression exclusive-or-operator and-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 exclusive-or-operator
-: "^" {$$ = parser_append0(AST_CARET); $$.sexp = sexp_symbol("^");}
+: caret {$$ = parser_append0(AST_CARET); $$.sexp = $1.sexp;}
 ;
 inclusive-or-expression
 : exclusive-or-expression
 | inclusive-or-expression inclusive-or-operator exclusive-or-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 inclusive-or-operator
-: "|" {$$ = parser_append0(AST_BAR); $$.sexp = sexp_symbol("|");}
+: bar {$$ = parser_append0(AST_BAR); $$.sexp = $1.sexp;}
 ;
 logical-and-expression
 : inclusive-or-expression
 | logical-and-expression logical-and-operator inclusive-or-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 logical-and-operator
-: "&&" {$$ = parser_append0(AST_AND); $$.sexp = sexp_symbol("&&");}
+: and {$$ = parser_append0(AST_AND); $$.sexp = $1.sexp;}
 ;
 logical-or-expression
 : logical-and-expression
 | logical-or-expression logical-or-operator logical-and-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 logical-or-operator
-: "||" {$$ = parser_append0(AST_OR); $$.sexp = sexp_symbol("||");}
+: or {$$ = parser_append0(AST_OR); $$.sexp = $1.sexp;}
 ;
 conditional-expression
 : logical-or-expression
-| logical-or-expression "?" expression ":" conditional-expression {$$ = parser_append3(AST_CONDITIONAL_EXPRESSION, $1, $3, $5); $$.sexp = sexp_list5($1.sexp, sexp_symbol("?"), $3.sexp, sexp_symbol(":"), $5.sexp);}
+| logical-or-expression question expression colon conditional-expression {$$ = parser_append3(AST_CONDITIONAL_EXPRESSION, $1, $3, $5); $$.sexp = sexp_list5($1.sexp, $2.sexp, $3.sexp, $4.sexp, $5.sexp);}
 ;
 assignment-expression
 : conditional-expression
 | unary-expression assignment-operator assignment-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 assignment-operator
-: "=" {$$ = parser_append0(AST_ASSIGN); $$.sexp = sexp_symbol("=");}
-| "*=" {$$ = parser_append0(AST_ASTERISK_ASSIGN); $$.sexp = sexp_symbol("*=");}
-| "/=" {$$ = parser_append0(AST_SLASH_ASSIGN); $$.sexp = sexp_symbol("/=");}
-| "%=" {$$ = parser_append0(AST_PERCENT_ASSIGN); $$.sexp = sexp_symbol("%=");}
-| "+=" {$$ = parser_append0(AST_PLUS_ASSIGN); $$.sexp = sexp_symbol("+=");}
-| "-=" {$$ = parser_append0(AST_MINUS_ASSIGN); $$.sexp = sexp_symbol("-=");}
-| "<<=" {$$ = parser_append0(AST_LEFT_SHIFT_ASSIGN); $$.sexp = sexp_symbol("<<=");}
-| ">>=" {$$ = parser_append0(AST_RIGHT_SHIFT_ASSIGN); $$.sexp = sexp_symbol(">>=");}
-| "&=" {$$ = parser_append0(AST_AMPERSAND_ASSIGN); $$.sexp = sexp_symbol("&=");}
-| "^=" {$$ = parser_append0(AST_CARET_ASSIGN); $$.sexp = sexp_symbol("^=");}
-| "|=" {$$ = parser_append0(AST_BAR_ASSIGN); $$.sexp = sexp_symbol("|=");}
+: assign {$$ = parser_append0(AST_ASSIGN); $$.sexp = $1.sexp;}
+| asterisk-assign {$$ = parser_append0(AST_ASTERISK_ASSIGN); $$.sexp = $1.sexp;}
+| slash-assign {$$ = parser_append0(AST_SLASH_ASSIGN); $$.sexp = $1.sexp;}
+| percent-assign {$$ = parser_append0(AST_PERCENT_ASSIGN); $$.sexp = $1.sexp;}
+| plus-assign {$$ = parser_append0(AST_PLUS_ASSIGN); $$.sexp = $1.sexp;}
+| minus-assign {$$ = parser_append0(AST_MINUS_ASSIGN); $$.sexp = $1.sexp;}
+| left-shift-assign {$$ = parser_append0(AST_LEFT_SHIFT_ASSIGN); $$.sexp = $1.sexp;}
+| right-shift-assign {$$ = parser_append0(AST_RIGHT_SHIFT_ASSIGN); $$.sexp = $1.sexp;}
+| ampersand-assign {$$ = parser_append0(AST_AMPERSAND_ASSIGN); $$.sexp = $1.sexp;}
+| caret-assign {$$ = parser_append0(AST_CARET_ASSIGN); $$.sexp = $1.sexp;}
+| bar-assign {$$ = parser_append0(AST_BAR_ASSIGN); $$.sexp = $1.sexp;}
 ;
 expression.opt
 : %empty {$$ = parser_empty(); $$.sexp = sexp_nil();}
@@ -333,7 +388,7 @@ expression
 | expression comma-operator assignment-expression {$$ = parser_binary($1, $2, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 comma-operator
-: "," {$$ = parser_append0(AST_COMMA); $$.sexp = sexp_symbol(",");}
+: comma {$$ = parser_append0(AST_COMMA); $$.sexp = $1.sexp;}
 ;
 
 /* 6.4 Constant expressions */
