@@ -31,7 +31,7 @@ static AstList parser_list_last(AstList list) {
 }
 
 AstList parser_init(void) {
-  AstList init = {nil, nil};
+  AstList init = {nil, nil, nil};
   return init;
 }
 AstList parser_token(int tag, yyscan_t scanner) {
