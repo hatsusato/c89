@@ -141,9 +141,13 @@ string-literal
 
 auto: "auto" {$$.sexp = sexp_symbol("auto");}
 ;
+case: "case" {$$.sexp = sexp_symbol("case");}
+;
 char: "char" {$$.sexp = sexp_symbol("char");}
 ;
 const: "const" {$$.sexp = sexp_symbol("const");}
+;
+default: "default" {$$.sexp = sexp_symbol("default");}
 ;
 double: "double" {$$.sexp = sexp_symbol("double");}
 ;
@@ -648,7 +652,7 @@ initializer-list
 
 /* 6.6 Statements */
 statement
-: statement.prefix {$$ = parser_append1(AST_STATEMENT, $1);}
+: statement.prefix {$$ = parser_append1(AST_STATEMENT, $1); $$.sexp = $1.sexp;}
 ;
 statement.prefix
 : labeled-statement
@@ -659,34 +663,34 @@ statement.prefix
 | jump-statement
 ;
 labeled-statement
-: labeled-statement.prefix ":" statement {$$ = parser_append2(AST_LABELED_STATEMENT, $1, $3);}
+: labeled-statement.prefix colon statement {$$ = parser_append2(AST_LABELED_STATEMENT, $1, $3); $$.sexp = PARSER_LIST3($1, $2, $3);}
 ;
 labeled-statement.prefix
 : identifier
-| "case" constant-expression {$$ = parser_append1(AST_CASE, $2);}
-| "default" {$$ = parser_append0(AST_DEFAULT); $$.sexp = sexp_symbol("default");}
+| case constant-expression {$$ = parser_append1(AST_CASE, $2); $$.sexp = PARSER_LIST2($1, $2);}
+| default {$$ = parser_append0(AST_DEFAULT); $$.sexp = $1.sexp;}
 ;
 compound-statement
-: "{" declaration-list.opt statement-list.opt "}" {$$ = parser_append2(AST_COMPOUND_STATEMENT, $2, $3);}
+: left-brace declaration-list.opt statement-list.opt right-brace {$$ = parser_append2(AST_COMPOUND_STATEMENT, $2, $3); $$.sexp = PARSER_LIST4($1, $2, $3, $4);}
 ;
 declaration-list.opt
-: %empty {$$ = parser_list_empty(AST_DECLARATION_LIST);}
+: %empty {$$ = parser_list_empty(AST_DECLARATION_LIST); $$.sexp = sexp_nil();}
 | declaration-list
 ;
 declaration-list
-: declaration {$$ = parser_list_new(AST_DECLARATION_LIST, $1);}
-| declaration-list declaration {$$ = parser_list_push($1, $2);}
+: declaration {$$ = parser_list_new(AST_DECLARATION_LIST, $1); $$.sexp = PARSER_LIST1($1);}
+| declaration-list declaration {$$ = parser_list_push($1, $2); $$.sexp = sexp_snoc($1.sexp, $2.sexp);}
 ;
 statement-list.opt
-: %empty {$$ = parser_list_empty(AST_STATEMENT_LIST);}
+: %empty {$$ = parser_list_empty(AST_STATEMENT_LIST); $$.sexp = sexp_nil();}
 | statement-list
 ;
 statement-list
-: statement {$$ = parser_list_new(AST_STATEMENT_LIST, $1);}
-| statement-list statement {$$ = parser_list_push($1, $2);}
+: statement {$$ = parser_list_new(AST_STATEMENT_LIST, $1); $$.sexp = PARSER_LIST1($1);}
+| statement-list statement {$$ = parser_list_push($1, $2); $$.sexp = sexp_snoc($1.sexp, $2.sexp);}
 ;
 expression-statement
-: expression.opt ";" {$$ = parser_append1(AST_EXPRESSION_STATEMENT, $1);}
+: expression.opt semicolon {$$ = parser_append1(AST_EXPRESSION_STATEMENT, $1); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 selection-statement
 : selection-statement.suffix {$$ = parser_append1(AST_SELECTION_STATEMENT, $1);}
