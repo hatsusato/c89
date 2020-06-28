@@ -114,7 +114,7 @@
 %%
 /* 6.1 Lexical elements */
 identifier.opt
-: %empty {$$ = parser_empty();}
+: %empty {$$ = parser_empty(); $$.sexp = sexp_nil();}
 | identifier
 ;
 identifier
