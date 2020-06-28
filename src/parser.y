@@ -118,25 +118,25 @@ identifier.opt
 | identifier
 ;
 identifier
-: TOKEN_IDENTIFIER {$$ = parser_token(AST_IDENTIFIER, scanner);}
+: TOKEN_IDENTIFIER {$$ = parser_token(AST_IDENTIFIER, scanner); $$.sexp = PARSER_TOKEN(identifier, scanner);}
 ;
 typedef-identifier
-: TOKEN_TYPEDEF_IDENTIFIER {$$ = parser_token(AST_TYPEDEF_IDENTIFIER, scanner);}
+: TOKEN_TYPEDEF_IDENTIFIER {$$ = parser_token(AST_TYPEDEF_IDENTIFIER, scanner); $$.sexp = PARSER_TOKEN(typedef-identifier, scanner);}
 ;
 floating-constant
-: TOKEN_FLOATING_CONSTANT {$$ = parser_token(AST_FLOATING_CONSTANT, scanner);}
+: TOKEN_FLOATING_CONSTANT {$$ = parser_token(AST_FLOATING_CONSTANT, scanner); $$.sexp = PARSER_TOKEN(floating-constant, scanner);}
 ;
 integer-constant
-: TOKEN_INTEGER_CONSTANT {$$ = parser_token(AST_INTEGER_CONSTANT, scanner);}
+: TOKEN_INTEGER_CONSTANT {$$ = parser_token(AST_INTEGER_CONSTANT, scanner); $$.sexp = PARSER_TOKEN(integer-constant, scanner);}
 ;
 enumeration-constant
-: TOKEN_IDENTIFIER {$$ = parser_token(AST_ENUMERATION_CONSTANT, scanner);}
+: TOKEN_IDENTIFIER {$$ = parser_token(AST_ENUMERATION_CONSTANT, scanner); $$.sexp = PARSER_TOKEN(enumeration-constant, scanner);}
 ;
 character-constant
-: TOKEN_CHARACTER_CONSTANT {$$ = parser_token(AST_CHARACTER_CONSTANT, scanner);}
+: TOKEN_CHARACTER_CONSTANT {$$ = parser_token(AST_CHARACTER_CONSTANT, scanner); $$.sexp = PARSER_TOKEN(character-constant, scanner);}
 ;
 string-literal
-: TOKEN_STRING_LITERAL {$$ = parser_token(AST_STRING_LITERAL, scanner);}
+: TOKEN_STRING_LITERAL {$$ = parser_token(AST_STRING_LITERAL, scanner); $$.sexp = PARSER_TOKEN(string-literal, scanner);}
 ;
 
 /* 6.3 Expressions */
