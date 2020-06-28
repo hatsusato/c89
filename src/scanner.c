@@ -59,3 +59,6 @@ Bool scanner_contains_symbol(yyscan_t scanner, const char *str) {
   Set *symbols = result_get_symbols(result);
   return set_string_contains(symbols, str);
 }
+Sexp *scanner_token(yyscan_t scanner) {
+  return sexp_string(yyget_text(scanner), yyget_leng(scanner));
+}
