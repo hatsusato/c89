@@ -139,7 +139,35 @@ string-literal
 : TOKEN_STRING_LITERAL {$$ = parser_token(AST_STRING_LITERAL, scanner); $$.sexp = sexp_list2(sexp_symbol("string-literal"), scanner_token(scanner));}
 ;
 
+auto: "auto" {$$.sexp = sexp_symbol("auto");}
+;
+char: "char" {$$.sexp = sexp_symbol("char");}
+;
+double: "double" {$$.sexp = sexp_symbol("double");}
+;
+extern: "extern" {$$.sexp = sexp_symbol("extern");}
+;
+float: "float" {$$.sexp = sexp_symbol("float");}
+;
+int: "int" {$$.sexp = sexp_symbol("int");}
+;
+long: "long" {$$.sexp = sexp_symbol("long");}
+;
+register: "register" {$$.sexp = sexp_symbol("register");}
+;
+short: "short" {$$.sexp = sexp_symbol("short");}
+;
+signed: "signed" {$$.sexp = sexp_symbol("signed");}
+;
 sizeof: "sizeof" {$$.sexp = sexp_symbol("sizeof");}
+;
+static: "static" {$$.sexp = sexp_symbol("static");}
+;
+typedef: "typedef" {$$.sexp = sexp_symbol("typedef");}
+;
+unsigned: "unsigned" {$$.sexp = sexp_symbol("unsigned");}
+;
+void: "void" {$$.sexp = sexp_symbol("void");}
 ;
 
 period: "." {$$.sexp = sexp_symbol(".");}
@@ -226,6 +254,8 @@ right-paren: ")" {$$.sexp = sexp_symbol(")");}
 comma: "," {$$.sexp = sexp_symbol(",");}
 ;
 colon: ":" {$$.sexp = sexp_symbol(":");}
+;
+semicolon: ";" {$$.sexp = sexp_symbol(";");}
 ;
 
 /* 6.3 Expressions */
@@ -402,8 +432,8 @@ constant-expression
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers ";" {$$ = parser_append1(AST_DECLARATION, $1); $$.sexp = sexp_list2($1.sexp, sexp_symbol(";"));}
-| declaration-specifiers init-declarator-list ";" {typedef_register(scanner, $1, $2); $$ = parser_append2(AST_DECLARATION, $1, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, sexp_symbol(";"));}
+: declaration-specifiers semicolon {$$ = parser_append1(AST_DECLARATION, $1); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| declaration-specifiers init-declarator-list semicolon {typedef_register(scanner, $1, $2); $$ = parser_append2(AST_DECLARATION, $1, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 declaration-specifiers
 : declaration-specifier {$$ = parser_list_new(AST_DECLARATION_SPECIFIERS, $1); $$.sexp = sexp_list1($1.sexp);}
@@ -416,35 +446,35 @@ declaration-specifier
 ;
 init-declarator-list
 : init-declarator {$$ = parser_list_new(AST_INIT_DECLARATOR_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
-| init-declarator-list "," init-declarator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2(sexp_symbol(","), $3.sexp));}
+| init-declarator-list comma init-declarator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
 ;
 init-declarator
 : declarator {$$ = parser_append1(AST_INIT_DECLARATOR, $1); $$.sexp = $1.sexp;}
-| declarator "=" initializer {$$ = parser_append2(AST_INIT_DECLARATOR, $1, $3); $$.sexp = sexp_list3($1.sexp, sexp_symbol("="), $3.sexp);}
+| declarator assign initializer {$$ = parser_append2(AST_INIT_DECLARATOR, $1, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 storage-class-specifier
 : storage-class-specifier.prefix {$$ = parser_append1(AST_STORAGE_CLASS_SPECIFIER, $1); $$.sexp = $1.sexp;}
 ;
 storage-class-specifier.prefix
-: "typedef" {$$ = parser_append0(AST_TYPEDEF); $$.sexp = sexp_symbol("typedef");}
-| "extern" {$$ = parser_append0(AST_EXTERN); $$.sexp = sexp_symbol("extern");}
-| "static" {$$ = parser_append0(AST_STATIC); $$.sexp = sexp_symbol("static");}
-| "auto" {$$ = parser_append0(AST_AUTO); $$.sexp = sexp_symbol("auto");}
-| "register" {$$ = parser_append0(AST_REGISTER); $$.sexp = sexp_symbol("register");}
+: typedef {$$ = parser_append0(AST_TYPEDEF); $$.sexp = $1.sexp;}
+| extern {$$ = parser_append0(AST_EXTERN); $$.sexp = $1.sexp;}
+| static {$$ = parser_append0(AST_STATIC); $$.sexp = $1.sexp;}
+| auto {$$ = parser_append0(AST_AUTO); $$.sexp = $1.sexp;}
+| register {$$ = parser_append0(AST_REGISTER); $$.sexp = $1.sexp;}
 ;
 type-specifier
 : type-specifier.prefix {$$ = parser_append1(AST_TYPE_SPECIFIER, $1); $$.sexp = $1.sexp;}
 ;
 type-specifier.prefix
-: "void" {$$ = parser_append0(AST_VOID); $$.sexp = sexp_symbol("void");}
-| "char" {$$ = parser_append0(AST_CHAR); $$.sexp = sexp_symbol("char");}
-| "short" {$$ = parser_append0(AST_SHORT); $$.sexp = sexp_symbol("short");}
-| "int" {$$ = parser_append0(AST_INT); $$.sexp = sexp_symbol("int");}
-| "long" {$$ = parser_append0(AST_LONG); $$.sexp = sexp_symbol("long");}
-| "float" {$$ = parser_append0(AST_FLOAT); $$.sexp = sexp_symbol("float");}
-| "double" {$$ = parser_append0(AST_DOUBLE); $$.sexp = sexp_symbol("double");}
-| "signed" {$$ = parser_append0(AST_SIGNED); $$.sexp = sexp_symbol("signed");}
-| "unsigned" {$$ = parser_append0(AST_UNSIGNED); $$.sexp = sexp_symbol("unsigned");}
+: void {$$ = parser_append0(AST_VOID); $$.sexp = $1.sexp;}
+| char {$$ = parser_append0(AST_CHAR); $$.sexp = $1.sexp;}
+| short {$$ = parser_append0(AST_SHORT); $$.sexp = $1.sexp;}
+| int {$$ = parser_append0(AST_INT); $$.sexp = $1.sexp;}
+| long {$$ = parser_append0(AST_LONG); $$.sexp = $1.sexp;}
+| float {$$ = parser_append0(AST_FLOAT); $$.sexp = $1.sexp;}
+| double {$$ = parser_append0(AST_DOUBLE); $$.sexp = $1.sexp;}
+| signed {$$ = parser_append0(AST_SIGNED); $$.sexp = $1.sexp;}
+| unsigned {$$ = parser_append0(AST_UNSIGNED); $$.sexp = $1.sexp;}
 | struct-or-union-specifier
 | enum-specifier
 | typedef-name
