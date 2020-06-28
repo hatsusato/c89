@@ -290,7 +290,7 @@ postfix-expression
 postfix-expression.suffix
 : left-bracket expression right-bracket {$$ = parser_append1(AST_ARRAY, $2); $$.sexp = PARSER_LIST3($1, $2, $3);}
 | left-paren argument-expression-list.opt right-paren {$$ = parser_append1(AST_CALL, $2); $$.sexp = PARSER_LIST3($1, $2, $3);}
-| period identifier {$$ = parser_append1(AST_PERIOD, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| period identifier {$$ = parser_append1(AST_PERIOD, $2); $$.sexp = PARSER_LIST2($1, $2);}
 | arrow identifier {$$ = parser_append1(AST_ARROW, $2); $$.sexp = sexp_list2($2.sexp, $2.sexp);}
 | increment {$$ = parser_append0(AST_INCREMENT); $$.sexp = sexp_list1($1.sexp);}
 | decrement {$$ = parser_append0(AST_DECREMENT); $$.sexp = sexp_list1($1.sexp);}
@@ -305,10 +305,10 @@ argument-expression-list
 ;
 unary-expression
 : postfix-expression
-| unary-expression.prefix unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
-| sizeof unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, parser_append0(AST_SIZEOF), $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| unary-expression.prefix unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2); $$.sexp = PARSER_LIST2($1, $2);}
+| sizeof unary-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, parser_append0(AST_SIZEOF), $2); $$.sexp = PARSER_LIST2($1, $2);}
 | sizeof left-paren type-name right-paren {$$ = parser_append1(AST_UNARY_EXPRESSION, parser_append1(AST_SIZEOF, $3)); $$.sexp = PARSER_LIST4($1, $2, $3, $4);}
-| unary-operator cast-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| unary-operator cast-expression {$$ = parser_append2(AST_UNARY_EXPRESSION, $1, $2); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 unary-expression.prefix
 : increment {$$ = parser_append0(AST_INCREMENT); $$.sexp = $1.sexp;}
@@ -448,7 +448,7 @@ constant-expression
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers semicolon {$$ = parser_append1(AST_DECLARATION, $1); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+: declaration-specifiers semicolon {$$ = parser_append1(AST_DECLARATION, $1); $$.sexp = PARSER_LIST2($1, $2);}
 | declaration-specifiers init-declarator-list semicolon {typedef_register(scanner, $1, $2); $$ = parser_append2(AST_DECLARATION, $1, $2); $$.sexp = PARSER_LIST3($1, $2, $3);}
 ;
 declaration-specifiers
@@ -497,7 +497,7 @@ type-specifier.prefix
 ;
 struct-or-union-specifier
 : struct-or-union identifier.opt left-brace struct-declaration-list right-brace {$$ = parser_append3(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2, $4); $$.sexp = PARSER_LIST5($1, $2, $3, $4, $5);}
-| struct-or-union identifier {$$ = parser_append2(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| struct-or-union identifier {$$ = parser_append2(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 struct-or-union
 : struct {$$ = parser_append0(AST_STRUCT); $$.sexp = $1.sexp;}
@@ -528,7 +528,7 @@ struct-declarator
 ;
 enum-specifier
 : enum identifier.opt left-brace enumerator-list right-brace {$$ = parser_append2(AST_ENUM_SPECIFIER, $2, $4); $$.sexp = PARSER_LIST5($1, $2, $3, $4, $5);}
-| enum identifier {$$ = parser_append1(AST_ENUM_SPECIFIER, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| enum identifier {$$ = parser_append1(AST_ENUM_SPECIFIER, $2); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 enumerator-list
 : enumerator {$$ = parser_list_new(AST_ENUMERATOR_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
@@ -551,11 +551,11 @@ declarator.opt
 ;
 declarator
 : direct-declarator {$$ = parser_append1(AST_DECLARATOR, $1); $$.sexp = sexp_list2(sexp_nil(), $1.sexp);}
-| pointer direct-declarator {$$ = parser_append2(AST_DECLARATOR, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| pointer direct-declarator {$$ = parser_append2(AST_DECLARATOR, $1, $2); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 direct-declarator
 : direct-declarator.prefix
-| direct-declarator direct-declarator.suffix {$$ = parser_append2(AST_DIRECT_DECLARATOR, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| direct-declarator direct-declarator.suffix {$$ = parser_append2(AST_DIRECT_DECLARATOR, $1, $2); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 direct-declarator.prefix
 : identifier
@@ -568,10 +568,10 @@ direct-declarator.suffix
 ;
 pointer
 : pointer.prefix {$$ = parser_append1(AST_POINTER, $1); $$.sexp = $1.sexp;}
-| pointer.prefix pointer {$$ = parser_append2(AST_POINTER, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| pointer.prefix pointer {$$ = parser_append2(AST_POINTER, $1, $2); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 pointer.prefix
-: asterisk type-qualifier-list.opt {$$ = $2; $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+: asterisk type-qualifier-list.opt {$$ = $2; $$.sexp = PARSER_LIST2($1, $2);}
 ;
 type-qualifier-list.opt
 : %empty {$$ = parser_list_empty(AST_TYPE_QUALIFIER_LIST); $$.sexp = sexp_nil();}
@@ -595,7 +595,7 @@ parameter-list
 ;
 parameter-declaration
 : declaration-specifiers {$$ = parser_append1(AST_PARAMETER_DECLARATION, $1); $$.sexp = $1.sexp;}
-| declaration-specifiers parameter-declaration.suffix {$$ = parser_append2(AST_PARAMETER_DECLARATION, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| declaration-specifiers parameter-declaration.suffix {$$ = parser_append2(AST_PARAMETER_DECLARATION, $1, $2); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 parameter-declaration.suffix
 : declarator
@@ -611,11 +611,11 @@ identifier-list
 ;
 type-name
 : specifier-qualifier-list {$$ = parser_append1(AST_TYPE_NAME, $1); $$.sexp = $1.sexp;}
-| specifier-qualifier-list abstract-declarator {$$ = parser_append2(AST_TYPE_NAME, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| specifier-qualifier-list abstract-declarator {$$ = parser_append2(AST_TYPE_NAME, $1, $2); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 abstract-declarator
 : abstract-declarator.prefix {$$ = parser_append1(AST_ABSTRACT_DECLARATOR, $1); $$.sexp = $1.sexp;}
-| pointer direct-abstract-declarator {$$ = parser_append2(AST_ABSTRACT_DECLARATOR, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| pointer direct-abstract-declarator {$$ = parser_append2(AST_ABSTRACT_DECLARATOR, $1, $2); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 abstract-declarator.prefix
 : pointer
@@ -624,7 +624,7 @@ abstract-declarator.prefix
 direct-abstract-declarator
 : "(" abstract-declarator ")" {$$ = parser_append1(AST_DIRECT_ABSTRACT_DECLARATOR, $2); $$.sexp = sexp_list3(sexp_symbol("("), $2.sexp, sexp_symbol(")"));}
 | direct-abstract-declarator.suffix
-| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = parser_append2(AST_DIRECT_ABSTRACT_DECLARATOR, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = parser_append2(AST_DIRECT_ABSTRACT_DECLARATOR, $1, $2); $$.sexp = PARSER_LIST2($1, $2);}
 ;
 direct-abstract-declarator.suffix
 : left-bracket constant-expression.opt right-bracket {$$ = parser_append1(AST_ARRAY, $2); $$.sexp = PARSER_LIST3($1, $2, $3);}
