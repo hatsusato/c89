@@ -635,15 +635,15 @@ typedef-name
 ;
 initializer
 : assignment-expression
-| initializer.suffix {$$ = parser_append1(AST_INITIALIZER, $1);}
+| initializer.suffix {$$ = parser_append1(AST_INITIALIZER, $1); $$.sexp = $1.sexp;}
 ;
 initializer.suffix
-: "{" initializer-list "}" {$$ = $2;}
-| "{" initializer-list "," "}" {$$ = $2;}
+: "{" initializer-list "}" {$$ = $2; $$.sexp = sexp_list3(sexp_symbol("{"), $2.sexp, sexp_symbol("}"));}
+| "{" initializer-list comma "}" {$$ = $2; $$.sexp = sexp_list4(sexp_symbol("{"), $2.sexp, $3.sexp, sexp_symbol("}"));}
 ;
 initializer-list
-: initializer {$$ = parser_list_new(AST_INITIALIZER_LIST, $1);}
-| initializer-list "," initializer {$$ = parser_list_push($1, $3);}
+: initializer {$$ = parser_list_new(AST_INITIALIZER_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
+| initializer-list comma initializer {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
 ;
 
 /* 6.6 Statements */
