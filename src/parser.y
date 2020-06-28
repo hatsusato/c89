@@ -146,27 +146,27 @@ primary-expression
 | integer-constant
 | character-constant
 | string-literal
-| "(" expression ")" {$$ = parser_append1(AST_PRIMARY_EXPRESSION, $2);}
+| "(" expression ")" {$$ = parser_append1(AST_PRIMARY_EXPRESSION, $2); $$.sexp = sexp_list3(sexp_symbol("("), $2.sexp, sexp_symbol(")"));}
 ;
 postfix-expression
 : primary-expression
-| postfix-expression postfix-expression.suffix {$$ = parser_append2(AST_POSTFIX_EXPRESSION, $1, $2);}
+| postfix-expression postfix-expression.suffix {$$ = parser_append2(AST_POSTFIX_EXPRESSION, $1, $2); $$.sexp = sexp_cons($1.sexp, $2.sexp);}
 ;
 postfix-expression.suffix
-: "[" expression "]" {$$ = parser_append1(AST_ARRAY, $2);}
-| "(" argument-expression-list.opt ")" {$$ = parser_append1(AST_CALL, $2);}
-| "." identifier {$$ = parser_append1(AST_PERIOD, $2);}
-| "->" identifier {$$ = parser_append1(AST_ARROW, $2);}
-| "++" {$$ = parser_append0(AST_INCREMENT); $$.sexp = sexp_symbol("++");}
-| "--" {$$ = parser_append0(AST_DECREMENT); $$.sexp = sexp_symbol("--");}
+: "[" expression "]" {$$ = parser_append1(AST_ARRAY, $2); $$.sexp = sexp_list3(sexp_symbol("["), $2.sexp, sexp_symbol("]"));}
+| "(" argument-expression-list.opt ")" {$$ = parser_append1(AST_CALL, $2); $$.sexp = sexp_list3(sexp_symbol("("), $2.sexp, sexp_symbol(")"));}
+| "." identifier {$$ = parser_append1(AST_PERIOD, $2); $$.sexp = sexp_list2(sexp_symbol("."), $2.sexp);}
+| "->" identifier {$$ = parser_append1(AST_ARROW, $2); $$.sexp = sexp_list2(sexp_symbol("->"), $2.sexp);}
+| "++" {$$ = parser_append0(AST_INCREMENT); $$.sexp = sexp_list1(sexp_symbol("++"));}
+| "--" {$$ = parser_append0(AST_DECREMENT); $$.sexp = sexp_list1(sexp_symbol("--"));}
 ;
 argument-expression-list.opt
-: %empty {$$ = parser_list_empty(AST_ARGUMENT_EXPRESSION_LIST);}
+: %empty {$$ = parser_list_empty(AST_ARGUMENT_EXPRESSION_LIST); $$.sexp = sexp_nil();}
 | argument-expression-list
 ;
 argument-expression-list
-: assignment-expression {$$ = parser_list_new(AST_ARGUMENT_EXPRESSION_LIST, $1);}
-| argument-expression-list "," assignment-expression {$$ = parser_list_push($1, $3);}
+: assignment-expression {$$ = parser_list_new(AST_ARGUMENT_EXPRESSION_LIST, $1); $$.sexp = sexp_cons(sexp_nil(), $1.sexp);}
+| argument-expression-list "," assignment-expression {$$ = parser_list_push($1, $3); $$.sexp = sexp_list3($1.sexp, sexp_symbol(","), $3.sexp);}
 ;
 unary-expression
 : postfix-expression
