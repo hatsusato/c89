@@ -163,7 +163,11 @@ sizeof: "sizeof" {$$.sexp = sexp_symbol("sizeof");}
 ;
 static: "static" {$$.sexp = sexp_symbol("static");}
 ;
+struct: "struct" {$$.sexp = sexp_symbol("struct");}
+;
 typedef: "typedef" {$$.sexp = sexp_symbol("typedef");}
+;
+union: "union" {$$.sexp = sexp_symbol("union");}
 ;
 unsigned: "unsigned" {$$.sexp = sexp_symbol("unsigned");}
 ;
@@ -250,6 +254,10 @@ right-bracket: "]" {$$.sexp = sexp_symbol("]");}
 left-paren: "(" {$$.sexp = sexp_symbol("(");}
 ;
 right-paren: ")" {$$.sexp = sexp_symbol(")");}
+;
+left-brace: "{" {$$.sexp = sexp_symbol("{");}
+;
+right-brace: "}" {$$.sexp = sexp_symbol("}");}
 ;
 comma: "," {$$.sexp = sexp_symbol(",");}
 ;
@@ -480,19 +488,19 @@ type-specifier.prefix
 | typedef-name
 ;
 struct-or-union-specifier
-: struct-or-union identifier.opt "{" struct-declaration-list "}" {$$ = parser_append3(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2, $4); $$.sexp = sexp_list5($1.sexp, $2.sexp, sexp_symbol("{"), $4.sexp, sexp_symbol("}"));}
+: struct-or-union identifier.opt left-brace struct-declaration-list right-brace {$$ = parser_append3(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2, $4); $$.sexp = sexp_list5($1.sexp, $2.sexp, $3.sexp, $4.sexp, $5.sexp);}
 | struct-or-union identifier {$$ = parser_append2(AST_STRUCT_OR_UNION_SPECIFIER, $1, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
 ;
 struct-or-union
-: "struct" {$$ = parser_append0(AST_STRUCT); $$.sexp = sexp_symbol("struct");}
-| "union" {$$ = parser_append0(AST_UNION); $$.sexp = sexp_symbol("union");}
+: struct {$$ = parser_append0(AST_STRUCT); $$.sexp = $1.sexp;}
+| union {$$ = parser_append0(AST_UNION); $$.sexp = $1.sexp;}
 ;
 struct-declaration-list
 : struct-declaration {$$ = parser_list_new(AST_STRUCT_DECLARATION_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
 | struct-declaration-list struct-declaration {$$ = parser_list_push($1, $2); $$.sexp = sexp_snoc($1.sexp, $2.sexp);}
 ;
 struct-declaration
-: specifier-qualifier-list struct-declarator-list ";" {$$ = parser_append2(AST_STRUCT_DECLARATION, $1, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, sexp_symbol(";"));}
+: specifier-qualifier-list struct-declarator-list semicolon {$$ = parser_append2(AST_STRUCT_DECLARATION, $1, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 specifier-qualifier-list
 : specifier-qualifier {$$ = parser_list_new(AST_SPECIFIER_QUALIFIER_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
@@ -504,11 +512,11 @@ specifier-qualifier
 ;
 struct-declarator-list
 : struct-declarator {$$ = parser_list_new(AST_STRUCT_DECLARATOR_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
-| struct-declarator-list "," struct-declarator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2(sexp_symbol(","), $3.sexp));}
+| struct-declarator-list comma struct-declarator {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
 ;
 struct-declarator
 : declarator {$$ = parser_append1(AST_STRUCT_DECLARATOR, $1); $$.sexp = $1.sexp;}
-| declarator.opt ":" constant-expression {$$ = parser_append2(AST_STRUCT_DECLARATOR, $1, $3); $$.sexp = sexp_list3($1.sexp, sexp_symbol(":"), $3.sexp);}
+| declarator.opt colon constant-expression {$$ = parser_append2(AST_STRUCT_DECLARATOR, $1, $3); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 enum-specifier
 : "enum" identifier.opt "{" enumerator-list "}" {$$ = parser_append2(AST_ENUM_SPECIFIER, $2, $4); }
