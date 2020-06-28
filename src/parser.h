@@ -9,7 +9,7 @@
 #define PARSER_LIST2(x0, x1) sexp_list2(x0.sexp, x1.sexp)
 #define PARSER_LIST3(x0, x1, x2) sexp_list3(x0.sexp, x1.sexp, x2.sexp)
 #define PARSER_LIST4(x0, x1, x2, x3) \
-  sexp_list5(x0.sexp, x1.sexp, x2.sexp, x3.sexp)
+  sexp_list4(x0.sexp, x1.sexp, x2.sexp, x3.sexp)
 #define PARSER_LIST5(x0, x1, x2, x3, x4) \
   sexp_list5(x0.sexp, x1.sexp, x2.sexp, x3.sexp, x4.sexp)
 
