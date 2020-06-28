@@ -139,6 +139,25 @@ string-literal
 : TOKEN_STRING_LITERAL {$$ = parser_token(AST_STRING_LITERAL, scanner); $$.sexp = sexp_list2(sexp_symbol("string-literal"), scanner_token(scanner));}
 ;
 
+period: "." {$$.sexp = sexp_symbol(".");}
+;
+arrow: "->" {$$.sexp = sexp_symbol("->");}
+;
+increment: "++" {$$.sexp = sexp_symbol("++");}
+;
+decrement: "--" {$$.sexp = sexp_symbol("--");}
+;
+left-bracket: "[" {$$.sexp = sexp_symbol("[");}
+;
+right-bracket: "]" {$$.sexp = sexp_symbol("]");}
+;
+left-paren: "(" {$$.sexp = sexp_symbol("(");}
+;
+right-paren: ")" {$$.sexp = sexp_symbol(")");}
+;
+comma: "," {$$.sexp = sexp_symbol(",");}
+;
+
 /* 6.3 Expressions */
 primary-expression
 : identifier
@@ -146,19 +165,19 @@ primary-expression
 | integer-constant
 | character-constant
 | string-literal
-| "(" expression ")" {$$ = parser_append1(AST_PRIMARY_EXPRESSION, $2); $$.sexp = sexp_list3(sexp_symbol("("), $2.sexp, sexp_symbol(")"));}
+| left-paren expression right-paren {$$ = parser_append1(AST_PRIMARY_EXPRESSION, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
 ;
 postfix-expression
 : primary-expression
 | postfix-expression postfix-expression.suffix {$$ = parser_append2(AST_POSTFIX_EXPRESSION, $1, $2); $$.sexp = sexp_cons($1.sexp, $2.sexp);}
 ;
 postfix-expression.suffix
-: "[" expression "]" {$$ = parser_append1(AST_ARRAY, $2); $$.sexp = sexp_list3(sexp_symbol("["), $2.sexp, sexp_symbol("]"));}
-| "(" argument-expression-list.opt ")" {$$ = parser_append1(AST_CALL, $2); $$.sexp = sexp_list3(sexp_symbol("("), $2.sexp, sexp_symbol(")"));}
-| "." identifier {$$ = parser_append1(AST_PERIOD, $2); $$.sexp = sexp_list2(sexp_symbol("."), $2.sexp);}
-| "->" identifier {$$ = parser_append1(AST_ARROW, $2); $$.sexp = sexp_list2(sexp_symbol("->"), $2.sexp);}
-| "++" {$$ = parser_append0(AST_INCREMENT); $$.sexp = sexp_list1(sexp_symbol("++"));}
-| "--" {$$ = parser_append0(AST_DECREMENT); $$.sexp = sexp_list1(sexp_symbol("--"));}
+: left-bracket expression right-bracket {$$ = parser_append1(AST_ARRAY, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
+| left-paren argument-expression-list.opt right-paren {$$ = parser_append1(AST_CALL, $2); $$.sexp = sexp_list3($1.sexp, $2.sexp, $3.sexp);}
+| period identifier {$$ = parser_append1(AST_PERIOD, $2); $$.sexp = sexp_list2($1.sexp, $2.sexp);}
+| arrow identifier {$$ = parser_append1(AST_ARROW, $2); $$.sexp = sexp_list2($2.sexp, $2.sexp);}
+| increment {$$ = parser_append0(AST_INCREMENT); $$.sexp = sexp_list1($1.sexp);}
+| decrement {$$ = parser_append0(AST_DECREMENT); $$.sexp = sexp_list1($1.sexp);}
 ;
 argument-expression-list.opt
 : %empty {$$ = parser_list_empty(AST_ARGUMENT_EXPRESSION_LIST); $$.sexp = sexp_nil();}
@@ -166,7 +185,7 @@ argument-expression-list.opt
 ;
 argument-expression-list
 : assignment-expression {$$ = parser_list_new(AST_ARGUMENT_EXPRESSION_LIST, $1); $$.sexp = sexp_list1($1.sexp);}
-| argument-expression-list "," assignment-expression {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2(sexp_symbol(","), $3.sexp));}
+| argument-expression-list comma assignment-expression {$$ = parser_list_push($1, $3); $$.sexp = sexp_snoc($1.sexp, sexp_list2($2.sexp, $3.sexp));}
 ;
 unary-expression
 : postfix-expression
