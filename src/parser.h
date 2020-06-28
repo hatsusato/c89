@@ -5,9 +5,6 @@
 #include "scanner.h"
 #include "sexp.h"
 
-#define PARSER_TOKEN(tag, scanner) \
-  sexp_list2(sexp_symbol(#tag), scanner_token(scanner))
-
 AstList parser_init(void);
 AstList parser_token(int, yyscan_t);
 AstList parser_append0(int);

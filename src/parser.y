@@ -118,25 +118,25 @@ identifier.opt
 | identifier
 ;
 identifier
-: TOKEN_IDENTIFIER {$$ = parser_token(AST_IDENTIFIER, scanner); $$.sexp = PARSER_TOKEN(identifier, scanner);}
+: TOKEN_IDENTIFIER {$$ = parser_token(AST_IDENTIFIER, scanner); $$.sexp = sexp_list2(sexp_symbol("identifier"), scanner_token(scanner));}
 ;
 typedef-identifier
-: TOKEN_TYPEDEF_IDENTIFIER {$$ = parser_token(AST_TYPEDEF_IDENTIFIER, scanner); $$.sexp = PARSER_TOKEN(typedef-identifier, scanner);}
+: TOKEN_TYPEDEF_IDENTIFIER {$$ = parser_token(AST_TYPEDEF_IDENTIFIER, scanner); $$.sexp = sexp_list2(sexp_symbol("typedef-identifier"), scanner_token(scanner));}
 ;
 floating-constant
-: TOKEN_FLOATING_CONSTANT {$$ = parser_token(AST_FLOATING_CONSTANT, scanner); $$.sexp = PARSER_TOKEN(floating-constant, scanner);}
+: TOKEN_FLOATING_CONSTANT {$$ = parser_token(AST_FLOATING_CONSTANT, scanner); $$.sexp = sexp_list2(sexp_symbol("floating-constant"), scanner_token(scanner));}
 ;
 integer-constant
-: TOKEN_INTEGER_CONSTANT {$$ = parser_token(AST_INTEGER_CONSTANT, scanner); $$.sexp = PARSER_TOKEN(integer-constant, scanner);}
+: TOKEN_INTEGER_CONSTANT {$$ = parser_token(AST_INTEGER_CONSTANT, scanner); $$.sexp = sexp_list2(sexp_symbol("integer-constant"), scanner_token(scanner));}
 ;
 enumeration-constant
-: TOKEN_IDENTIFIER {$$ = parser_token(AST_ENUMERATION_CONSTANT, scanner); $$.sexp = PARSER_TOKEN(enumeration-constant, scanner);}
+: TOKEN_IDENTIFIER {$$ = parser_token(AST_ENUMERATION_CONSTANT, scanner); $$.sexp = sexp_list2(sexp_symbol("enumeration-constant"), scanner_token(scanner));}
 ;
 character-constant
-: TOKEN_CHARACTER_CONSTANT {$$ = parser_token(AST_CHARACTER_CONSTANT, scanner); $$.sexp = PARSER_TOKEN(character-constant, scanner);}
+: TOKEN_CHARACTER_CONSTANT {$$ = parser_token(AST_CHARACTER_CONSTANT, scanner); $$.sexp = sexp_list2(sexp_symbol("character-constant"), scanner_token(scanner));}
 ;
 string-literal
-: TOKEN_STRING_LITERAL {$$ = parser_token(AST_STRING_LITERAL, scanner); $$.sexp = PARSER_TOKEN(string-literal, scanner);}
+: TOKEN_STRING_LITERAL {$$ = parser_token(AST_STRING_LITERAL, scanner); $$.sexp = sexp_list2(sexp_symbol("string-literal"), scanner_token(scanner));}
 ;
 
 /* 6.3 Expressions */
