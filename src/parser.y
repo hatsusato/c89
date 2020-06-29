@@ -412,10 +412,10 @@ equality-operator
 ;
 and-expression
 : equality-expression
-| and-expression and-operator equality-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| and-expression.tag {$$ = PARSER_TAG(and-expression, $1);}
 ;
-and-operator
-: ampersand {$$ = $1;}
+and-expression.tag
+: and-expression ampersand equality-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 exclusive-or-expression
 : and-expression
