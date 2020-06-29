@@ -347,7 +347,10 @@ unary-operator
 ;
 cast-expression
 : unary-expression
-| left-paren type-name right-paren cast-expression {$$ = PARSER_LIST4($1, $2, $3, $4);}
+| cast-expression.tag {$$ = PARSER_TAG(cast-expression, $1);}
+;
+cast-expression.tag
+: left-paren type-name right-paren cast-expression {$$ = sexp_list4($1, $2, $3, $4);}
 ;
 multiplicative-expression
 : cast-expression
