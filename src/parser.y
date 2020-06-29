@@ -486,11 +486,11 @@ expression.tag
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty {$$ = sexp_nil();}
+: %empty {$$ = PARSER_TAG(constant-expression, sexp_nil());}
 | constant-expression
 ;
 constant-expression
-: conditional-expression {$$ = $1;}
+: conditional-expression {$$ = PARSER_TAG(constant-expression, sexp_list1($1));}
 ;
 
 /* 6.5 Declarations */
