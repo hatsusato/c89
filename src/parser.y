@@ -366,11 +366,14 @@ multiplicative-operator
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression additive-operator multiplicative-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| additive-expression.tag {$$ = PARSER_TAG(additive-expression, $1);}
+;
+additive-expression.tag
+: additive-expression additive-operator multiplicative-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 additive-operator
-: plus {$$ = $1;}
-| minus {$$ = $1;}
+: plus
+| minus
 ;
 shift-expression
 : additive-expression
