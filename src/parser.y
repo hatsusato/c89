@@ -117,25 +117,25 @@ identifier.opt
 | identifier
 ;
 identifier
-: TOKEN_IDENTIFIER {$$ = PARSER_TAG(identifier, scanner_token(scanner));}
+: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(identifier, scanner);}
 ;
 typedef-identifier
-: TOKEN_TYPEDEF_IDENTIFIER {$$ = PARSER_TAG(typedef-identifier, scanner_token(scanner));}
+: TOKEN_TYPEDEF_IDENTIFIER {$$ = PARSER_TOKEN(typedef-identifier, scanner);}
 ;
 floating-constant
-: TOKEN_FLOATING_CONSTANT {$$ = PARSER_TAG(floating-constant, scanner_token(scanner));}
+: TOKEN_FLOATING_CONSTANT {$$ = PARSER_TOKEN(floating-constant, scanner);}
 ;
 integer-constant
-: TOKEN_INTEGER_CONSTANT {$$ = PARSER_TAG(integer-constant, scanner_token(scanner));}
+: TOKEN_INTEGER_CONSTANT {$$ = PARSER_TOKEN(integer-constant, scanner);}
 ;
 enumeration-constant
-: TOKEN_IDENTIFIER {$$ = PARSER_TAG(enumeration-constant, scanner_token(scanner));}
+: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(enumeration-constant, scanner);}
 ;
 character-constant
-: TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TAG(character-constant, scanner_token(scanner));}
+: TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TOKEN(character-constant, scanner);}
 ;
 string-literal
-: TOKEN_STRING_LITERAL {$$ = PARSER_TAG(string-literal, scanner_token(scanner));}
+: TOKEN_STRING_LITERAL {$$ = PARSER_TOKEN(string-literal, scanner);}
 ;
 
 auto: "auto" {$$ = sexp_symbol("auto");}
