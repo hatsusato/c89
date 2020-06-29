@@ -473,15 +473,15 @@ assignment-operator
 | bar-assign
 ;
 expression.opt
-: %empty {$$ = sexp_nil();}
+: %empty {$$ = PARSER_TAG(expression, sexp_nil());}
 | expression
 ;
 expression
 : assignment-expression
-| expression comma-operator assignment-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| expression.tag {$$ = PARSER_TAG(expression, $1);}
 ;
-comma-operator
-: comma {$$ = $1;}
+expression.tag
+: expression comma assignment-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 
 /* 6.4 Constant expressions */
