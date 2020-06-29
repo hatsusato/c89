@@ -377,11 +377,14 @@ additive-operator
 ;
 shift-expression
 : additive-expression
-| shift-expression shift-operator additive-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| shift-expression.tag {$$ = PARSER_TAG(shift-expression, $1);}
+;
+shift-expression.tag
+: shift-expression shift-operator additive-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 shift-operator
-: left-shift {$$ = $1;}
-| right-shift {$$ = $1;}
+: left-shift
+| right-shift
 ;
 relational-expression
 : shift-expression
