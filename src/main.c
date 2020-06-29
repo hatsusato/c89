@@ -6,10 +6,10 @@
 #include "result.h"
 
 void print_seq(Result *result) {
-  List *ast = result_get_ast(result);
-  print_ast(ast, 0);
+  Sexp *sexp = result_set_sexp(result, nil);
+  print_sexp(sexp, 0);
   printf("\n");
-  pretty_print(ast);
+  result_set_sexp(result, sexp);
 }
 
 int main(void) {
