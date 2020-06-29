@@ -12,7 +12,6 @@
 %code provides {
 #include "lexer.h"
 #include "parser.h"
-#include "typedef.h"
 }
 
 /* 6.1 Lexical elements */
@@ -473,7 +472,7 @@ constant-expression
 /* 6.5 Declarations */
 declaration
 : declaration-specifiers semicolon {$$.sexp = PARSER_LIST2($1, $2);}
-| declaration-specifiers init-declarator-list semicolon {typedef_register(scanner, $1, $2); $$.sexp = PARSER_LIST3($1, $2, $3);}
+| declaration-specifiers init-declarator-list semicolon {$$.sexp = PARSER_LIST3($1, $2, $3);}
 ;
 declaration-specifiers
 : declaration-specifier {$$.sexp = PARSER_LIST1($1);}
