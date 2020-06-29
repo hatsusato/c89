@@ -433,10 +433,10 @@ inclusive-or-expression.tag
 ;
 logical-and-expression
 : inclusive-or-expression
-| logical-and-expression logical-and-operator inclusive-or-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| logical-and-expression.tag {$$ = PARSER_TAG(logical-and-expression, $1);}
 ;
-logical-and-operator
-: and {$$ = $1;}
+logical-and-expression.tag
+: logical-and-expression and inclusive-or-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 logical-or-expression
 : logical-and-expression
