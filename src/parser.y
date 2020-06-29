@@ -304,7 +304,7 @@ primary-expression
 | integer-constant
 | character-constant
 | string-literal
-| left-paren expression right-paren {$$ = PARSER_LIST3($1, $2, $3);}
+| left-paren expression right-paren {$$ = PARSER_TAG(primary-expression, sexp_list3($1, $2, $3));}
 ;
 postfix-expression
 : primary-expression
