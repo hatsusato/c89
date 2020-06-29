@@ -8,7 +8,7 @@
 
 static void print_begin(int indent) {
   printf("\n");
-  print_indent(indent);
+  print_indent(indent * 2);
   printf("(");
 }
 static void print_end(void) {
@@ -31,7 +31,7 @@ static List *print_list(List *list, int indent) {
 
 void print_indent(int indent) {
   for (; 0 < indent; --indent) {
-    printf("  ");
+    printf(" ");
   }
 }
 List *print_data(List *list) {
