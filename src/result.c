@@ -7,6 +7,7 @@
 #include "utility.h"
 
 struct struct_Result {
+  Sexp *sexp;
   List *ast;
   Set *symbols;
 };
@@ -20,12 +21,14 @@ static void result_ast_data_free(List *ast) {
 
 Result *result_new(void) {
   Result *result = malloc(sizeof(Result));
+  result->sexp = sexp_nil();
   result->ast = nil;
   result->symbols = set_new();
   return result;
 }
 void result_delete(Result *result) {
   assert(result);
+  sexp_delete(result->sexp);
   list_delete(result->ast, result_ast_data_free);
   set_delete(result->symbols);
   free(result);
@@ -47,4 +50,9 @@ void result_set_ast(Result *result, List *ast) {
 Set *result_get_symbols(Result *result) {
   assert(result);
   return result->symbols;
+}
+Sexp *result_set_sexp(Result *result, Sexp *sexp) {
+  assert(result);
+  SWAP(Sexp *, result->sexp, sexp);
+  return sexp;
 }
