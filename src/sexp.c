@@ -89,6 +89,13 @@ Sexp *sexp_cdr(Sexp *sexp) {
   assert(sexp_is_pair(sexp));
   return sexp->data.pair.cdr;
 }
+Sexp *sexp_at(Sexp *sexp, int index) {
+  if (0 < index) {
+    return sexp_at(sexp_cdr(sexp), index - 1);
+  } else {
+    return sexp_car(sexp);
+  }
+}
 Bool sexp_eq(Sexp *sexp, const char *symbol) {
   assert(sexp_is_symbol(sexp));
   return 0 == strcmp(sexp->data.symbol, symbol);
