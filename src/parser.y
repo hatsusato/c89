@@ -401,11 +401,14 @@ relational-operator
 ;
 equality-expression
 : relational-expression
-| equality-expression equality-operator relational-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| equality-expression.tag {$$ = PARSER_TAG(equality-expression, $1);}
+;
+equality-expression.tag
+: equality-expression equality-operator relational-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 equality-operator
-: equal {$$ = $1;}
-| not-equal {$$ = $1;}
+: equal
+| not-equal
 ;
 and-expression
 : equality-expression
