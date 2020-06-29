@@ -440,10 +440,10 @@ logical-and-expression.tag
 ;
 logical-or-expression
 : logical-and-expression
-| logical-or-expression logical-or-operator logical-and-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| logical-or-expression.tag {$$ = PARSER_TAG(logical-or-expression, $1);}
 ;
-logical-or-operator
-: or {$$ = $1;}
+logical-or-expression.tag
+: logical-or-expression or logical-and-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 conditional-expression
 : logical-or-expression
