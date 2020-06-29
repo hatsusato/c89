@@ -419,10 +419,10 @@ and-expression.tag
 ;
 exclusive-or-expression
 : and-expression
-| exclusive-or-expression exclusive-or-operator and-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| exclusive-or-expression.tag {$$ = PARSER_TAG(exclusive-or-expression, $1);}
 ;
-exclusive-or-operator
-: caret {$$ = $1;}
+exclusive-or-expression.tag
+: exclusive-or-expression caret and-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 inclusive-or-expression
 : exclusive-or-expression
