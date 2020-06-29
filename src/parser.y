@@ -319,7 +319,7 @@ postfix-expression.tag
 | postfix-expression decrement {$$ = sexp_list2($1, $2);}
 ;
 argument-expression-list.opt
-: %empty {$$ = PARSER_TAG(argument-expression-list, sexp_nil());}
+: %empty {$$ = PARSER_LIST_NIL(argument-expression-list);}
 | argument-expression-list
 ;
 argument-expression-list
