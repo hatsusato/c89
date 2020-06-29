@@ -388,13 +388,16 @@ shift-operator
 ;
 relational-expression
 : shift-expression
-| relational-expression relational-operator shift-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| relational-expression.tag {$$ = PARSER_TAG(relational-expression, $1);}
+;
+relational-expression.tag
+: relational-expression relational-operator shift-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 relational-operator
-: less-than {$$ = $1;}
-| greater-than {$$ = $1;}
-| less-equal {$$ = $1;}
-| greater-equal {$$ = $1;}
+: less-than
+| greater-than
+| less-equal
+| greater-equal
 ;
 equality-expression
 : relational-expression
