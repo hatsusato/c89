@@ -9,6 +9,7 @@
 #define PARSER_TOKEN(sym, scanner) \
   PARSER_TAG(sym, sexp_list1(scanner_token(scanner)))
 #define PARSER_LIST_NIL(sym) PARSER_TAG(sym, sexp_nil())
+#define PARSER_LIST_ATOM(sym, atom) PARSER_TAG(sym, sexp_list1(atom))
 #define PARSER_LIST1(x0) sexp_list1(x0)
 #define PARSER_LIST2(x0, x1) sexp_list2(x0, x1)
 #define PARSER_LIST3(x0, x1, x2) sexp_list3(x0, x1, x2)
