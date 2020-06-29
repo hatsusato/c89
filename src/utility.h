@@ -14,4 +14,11 @@ typedef int Size;
 typedef int Index;
 typedef int Alignment;
 
+#define SWAP(type, lhs, rhs) \
+  do {                       \
+    type tmp = lhs;          \
+    lhs = rhs;               \
+    rhs = tmp;               \
+  } while (0);
+
 #endif /* INCLUDE_GUARD_26FC0E3E_05C7_464D_8860_9F5E5E2F9210 */
