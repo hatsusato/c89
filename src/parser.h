@@ -5,15 +5,12 @@
 #include "scanner.h"
 #include "sexp.h"
 
-#define PARSER_LIST1(x0) sexp_list1(x0.sexp)
-#define PARSER_LIST2(x0, x1) sexp_list2(x0.sexp, x1.sexp)
-#define PARSER_LIST3(x0, x1, x2) sexp_list3(x0.sexp, x1.sexp, x2.sexp)
-#define PARSER_LIST4(x0, x1, x2, x3) \
-  sexp_list4(x0.sexp, x1.sexp, x2.sexp, x3.sexp)
-#define PARSER_LIST5(x0, x1, x2, x3, x4) \
-  sexp_list5(x0.sexp, x1.sexp, x2.sexp, x3.sexp, x4.sexp)
-#define PARSER_LIST6(x0, x1, x2, x3, x4, x5) \
-  sexp_list6(x0.sexp, x1.sexp, x2.sexp, x3.sexp, x4.sexp, x5.sexp)
+#define PARSER_LIST1(x0) sexp_list1(x0)
+#define PARSER_LIST2(x0, x1) sexp_list2(x0, x1)
+#define PARSER_LIST3(x0, x1, x2) sexp_list3(x0, x1, x2)
+#define PARSER_LIST4(x0, x1, x2, x3) sexp_list4(x0, x1, x2, x3)
+#define PARSER_LIST5(x0, x1, x2, x3, x4) sexp_list5(x0, x1, x2, x3, x4)
+#define PARSER_LIST6(x0, x1, x2, x3, x4, x5) sexp_list6(x0, x1, x2, x3, x4, x5)
 
 AstList parser_init(void);
 AstList parser_token(int, yyscan_t);

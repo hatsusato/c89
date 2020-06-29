@@ -41,10 +41,10 @@ void scanner_delete(yyscan_t scanner) {
 int scanner_parse(yyscan_t scanner) {
   return yyparse(scanner);
 }
-void scanner_finish(yyscan_t scanner, AstList ast) {
+void scanner_finish(yyscan_t scanner, Sexp *sexp) {
   Result *result = yyget_extra(scanner);
-  ast.sexp = result_set_sexp(result, ast.sexp);
-  assert(!ast.sexp);
+  sexp = result_set_sexp(result, sexp);
+  assert(!sexp);
 }
 const char *scanner_get_text(yyscan_t scanner) {
   return yyget_text(scanner);

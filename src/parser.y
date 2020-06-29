@@ -6,7 +6,7 @@
 }
 
 %define api.pure full
-%define api.value.type {AstList}
+%define api.value.type {Sexp *}
 %param {yyscan_t scanner}
 
 %code provides {
@@ -113,188 +113,188 @@
 %%
 /* 6.1 Lexical elements */
 identifier.opt
-: %empty {$$.sexp = sexp_nil();}
+: %empty {$$ = sexp_nil();}
 | identifier
 ;
 identifier
-: TOKEN_IDENTIFIER {$$.sexp = sexp_list2(sexp_symbol("identifier"), scanner_token(scanner));}
+: TOKEN_IDENTIFIER {$$ = sexp_list2(sexp_symbol("identifier"), scanner_token(scanner));}
 ;
 typedef-identifier
-: TOKEN_TYPEDEF_IDENTIFIER {$$.sexp = sexp_list2(sexp_symbol("typedef-identifier"), scanner_token(scanner));}
+: TOKEN_TYPEDEF_IDENTIFIER {$$ = sexp_list2(sexp_symbol("typedef-identifier"), scanner_token(scanner));}
 ;
 floating-constant
-: TOKEN_FLOATING_CONSTANT {$$.sexp = sexp_list2(sexp_symbol("floating-constant"), scanner_token(scanner));}
+: TOKEN_FLOATING_CONSTANT {$$ = sexp_list2(sexp_symbol("floating-constant"), scanner_token(scanner));}
 ;
 integer-constant
-: TOKEN_INTEGER_CONSTANT {$$.sexp = sexp_list2(sexp_symbol("integer-constant"), scanner_token(scanner));}
+: TOKEN_INTEGER_CONSTANT {$$ = sexp_list2(sexp_symbol("integer-constant"), scanner_token(scanner));}
 ;
 enumeration-constant
-: TOKEN_IDENTIFIER {$$.sexp = sexp_list2(sexp_symbol("enumeration-constant"), scanner_token(scanner));}
+: TOKEN_IDENTIFIER {$$ = sexp_list2(sexp_symbol("enumeration-constant"), scanner_token(scanner));}
 ;
 character-constant
-: TOKEN_CHARACTER_CONSTANT {$$.sexp = sexp_list2(sexp_symbol("character-constant"), scanner_token(scanner));}
+: TOKEN_CHARACTER_CONSTANT {$$ = sexp_list2(sexp_symbol("character-constant"), scanner_token(scanner));}
 ;
 string-literal
-: TOKEN_STRING_LITERAL {$$.sexp = sexp_list2(sexp_symbol("string-literal"), scanner_token(scanner));}
+: TOKEN_STRING_LITERAL {$$ = sexp_list2(sexp_symbol("string-literal"), scanner_token(scanner));}
 ;
 
-auto: "auto" {$$.sexp = sexp_symbol("auto");}
+auto: "auto" {$$ = sexp_symbol("auto");}
 ;
-break: "break" {$$.sexp = sexp_symbol("break");}
+break: "break" {$$ = sexp_symbol("break");}
 ;
-case: "case" {$$.sexp = sexp_symbol("case");}
+case: "case" {$$ = sexp_symbol("case");}
 ;
-char: "char" {$$.sexp = sexp_symbol("char");}
+char: "char" {$$ = sexp_symbol("char");}
 ;
-const: "const" {$$.sexp = sexp_symbol("const");}
+const: "const" {$$ = sexp_symbol("const");}
 ;
-continue: "continue" {$$.sexp = sexp_symbol("continue");}
+continue: "continue" {$$ = sexp_symbol("continue");}
 ;
-default: "default" {$$.sexp = sexp_symbol("default");}
+default: "default" {$$ = sexp_symbol("default");}
 ;
-do: "do" {$$.sexp = sexp_symbol("do");}
+do: "do" {$$ = sexp_symbol("do");}
 ;
-double: "double" {$$.sexp = sexp_symbol("double");}
+double: "double" {$$ = sexp_symbol("double");}
 ;
-else: "else" {$$.sexp = sexp_symbol("else");}
+else: "else" {$$ = sexp_symbol("else");}
 ;
-enum: "enum" {$$.sexp = sexp_symbol("enum");}
+enum: "enum" {$$ = sexp_symbol("enum");}
 ;
-extern: "extern" {$$.sexp = sexp_symbol("extern");}
+extern: "extern" {$$ = sexp_symbol("extern");}
 ;
-float: "float" {$$.sexp = sexp_symbol("float");}
+float: "float" {$$ = sexp_symbol("float");}
 ;
-for: "for" {$$.sexp = sexp_symbol("for");}
+for: "for" {$$ = sexp_symbol("for");}
 ;
-goto: "goto" {$$.sexp = sexp_symbol("goto");}
+goto: "goto" {$$ = sexp_symbol("goto");}
 ;
-if: "if" {$$.sexp = sexp_symbol("if");}
+if: "if" {$$ = sexp_symbol("if");}
 ;
-int: "int" {$$.sexp = sexp_symbol("int");}
+int: "int" {$$ = sexp_symbol("int");}
 ;
-long: "long" {$$.sexp = sexp_symbol("long");}
+long: "long" {$$ = sexp_symbol("long");}
 ;
-register: "register" {$$.sexp = sexp_symbol("register");}
+register: "register" {$$ = sexp_symbol("register");}
 ;
-return: "return" {$$.sexp = sexp_symbol("return");}
+return: "return" {$$ = sexp_symbol("return");}
 ;
-short: "short" {$$.sexp = sexp_symbol("short");}
+short: "short" {$$ = sexp_symbol("short");}
 ;
-signed: "signed" {$$.sexp = sexp_symbol("signed");}
+signed: "signed" {$$ = sexp_symbol("signed");}
 ;
-sizeof: "sizeof" {$$.sexp = sexp_symbol("sizeof");}
+sizeof: "sizeof" {$$ = sexp_symbol("sizeof");}
 ;
-static: "static" {$$.sexp = sexp_symbol("static");}
+static: "static" {$$ = sexp_symbol("static");}
 ;
-struct: "struct" {$$.sexp = sexp_symbol("struct");}
+struct: "struct" {$$ = sexp_symbol("struct");}
 ;
-switch: "switch" {$$.sexp = sexp_symbol("switch");}
+switch: "switch" {$$ = sexp_symbol("switch");}
 ;
-typedef: "typedef" {$$.sexp = sexp_symbol("typedef");}
+typedef: "typedef" {$$ = sexp_symbol("typedef");}
 ;
-union: "union" {$$.sexp = sexp_symbol("union");}
+union: "union" {$$ = sexp_symbol("union");}
 ;
-unsigned: "unsigned" {$$.sexp = sexp_symbol("unsigned");}
+unsigned: "unsigned" {$$ = sexp_symbol("unsigned");}
 ;
-void: "void" {$$.sexp = sexp_symbol("void");}
+void: "void" {$$ = sexp_symbol("void");}
 ;
-volatile: "volatile" {$$.sexp = sexp_symbol("volatile");}
+volatile: "volatile" {$$ = sexp_symbol("volatile");}
 ;
-while: "while" {$$.sexp = sexp_symbol("while");}
+while: "while" {$$ = sexp_symbol("while");}
 ;
 
-period: "." {$$.sexp = sexp_symbol(".");}
+period: "." {$$ = sexp_symbol(".");}
 ;
-arrow: "->" {$$.sexp = sexp_symbol("->");}
+arrow: "->" {$$ = sexp_symbol("->");}
 ;
-increment: "++" {$$.sexp = sexp_symbol("++");}
+increment: "++" {$$ = sexp_symbol("++");}
 ;
-decrement: "--" {$$.sexp = sexp_symbol("--");}
+decrement: "--" {$$ = sexp_symbol("--");}
 ;
-ampersand: "&" {$$.sexp = sexp_symbol("&");}
+ampersand: "&" {$$ = sexp_symbol("&");}
 ;
-asterisk: "*" {$$.sexp = sexp_symbol("*");}
+asterisk: "*" {$$ = sexp_symbol("*");}
 ;
-plus: "+" {$$.sexp = sexp_symbol("+");}
+plus: "+" {$$ = sexp_symbol("+");}
 ;
-minus: "-" {$$.sexp = sexp_symbol("-");}
+minus: "-" {$$ = sexp_symbol("-");}
 ;
-tilde: "~" {$$.sexp = sexp_symbol("~");}
+tilde: "~" {$$ = sexp_symbol("~");}
 ;
-exclamation: "!" {$$.sexp = sexp_symbol("!");}
+exclamation: "!" {$$ = sexp_symbol("!");}
 ;
-slash: "/" {$$.sexp = sexp_symbol("/");}
+slash: "/" {$$ = sexp_symbol("/");}
 ;
-percent: "%" {$$.sexp = sexp_symbol("%");}
+percent: "%" {$$ = sexp_symbol("%");}
 ;
-left-shift: "<<" {$$.sexp = sexp_symbol("<<");}
+left-shift: "<<" {$$ = sexp_symbol("<<");}
 ;
-right-shift: ">>" {$$.sexp = sexp_symbol(">>");}
+right-shift: ">>" {$$ = sexp_symbol(">>");}
 ;
-less-than: "<" {$$.sexp = sexp_symbol("<");}
+less-than: "<" {$$ = sexp_symbol("<");}
 ;
-greater-than: ">" {$$.sexp = sexp_symbol(">");}
+greater-than: ">" {$$ = sexp_symbol(">");}
 ;
-less-equal: "<=" {$$.sexp = sexp_symbol("<=");}
+less-equal: "<=" {$$ = sexp_symbol("<=");}
 ;
-greater-equal: ">=" {$$.sexp = sexp_symbol(">=");}
+greater-equal: ">=" {$$ = sexp_symbol(">=");}
 ;
-equal: "==" {$$.sexp = sexp_symbol("==");}
+equal: "==" {$$ = sexp_symbol("==");}
 ;
-not-equal: "!=" {$$.sexp = sexp_symbol("!=");}
+not-equal: "!=" {$$ = sexp_symbol("!=");}
 ;
-caret: "^" {$$.sexp = sexp_symbol("^");}
+caret: "^" {$$ = sexp_symbol("^");}
 ;
-bar: "|" {$$.sexp = sexp_symbol("|");}
+bar: "|" {$$ = sexp_symbol("|");}
 ;
-and: "&&" {$$.sexp = sexp_symbol("&&");}
+and: "&&" {$$ = sexp_symbol("&&");}
 ;
-or: "||" {$$.sexp = sexp_symbol("||");}
+or: "||" {$$ = sexp_symbol("||");}
 ;
-question: "?" {$$.sexp = sexp_symbol("?");}
+question: "?" {$$ = sexp_symbol("?");}
 ;
-assign: "=" {$$.sexp = sexp_symbol("=");}
+assign: "=" {$$ = sexp_symbol("=");}
 ;
-asterisk-assign: "*=" {$$.sexp = sexp_symbol("*=");}
+asterisk-assign: "*=" {$$ = sexp_symbol("*=");}
 ;
-slash-assign: "/=" {$$.sexp = sexp_symbol("/=");}
+slash-assign: "/=" {$$ = sexp_symbol("/=");}
 ;
-percent-assign: "%=" {$$.sexp = sexp_symbol("%=");}
+percent-assign: "%=" {$$ = sexp_symbol("%=");}
 ;
-plus-assign: "+=" {$$.sexp = sexp_symbol("+=");}
+plus-assign: "+=" {$$ = sexp_symbol("+=");}
 ;
-minus-assign: "-=" {$$.sexp = sexp_symbol("-=");}
+minus-assign: "-=" {$$ = sexp_symbol("-=");}
 ;
-left-shift-assign: "<<=" {$$.sexp = sexp_symbol("<<=");}
+left-shift-assign: "<<=" {$$ = sexp_symbol("<<=");}
 ;
-right-shift-assign: ">>=" {$$.sexp = sexp_symbol(">>=");}
+right-shift-assign: ">>=" {$$ = sexp_symbol(">>=");}
 ;
-ampersand-assign: "&=" {$$.sexp = sexp_symbol("&=");}
+ampersand-assign: "&=" {$$ = sexp_symbol("&=");}
 ;
-caret-assign: "^=" {$$.sexp = sexp_symbol("^=");}
+caret-assign: "^=" {$$ = sexp_symbol("^=");}
 ;
-bar-assign: "|=" {$$.sexp = sexp_symbol("|=");}
+bar-assign: "|=" {$$ = sexp_symbol("|=");}
 ;
 
-left-bracket: "[" {$$.sexp = sexp_symbol("[");}
+left-bracket: "[" {$$ = sexp_symbol("[");}
 ;
-right-bracket: "]" {$$.sexp = sexp_symbol("]");}
+right-bracket: "]" {$$ = sexp_symbol("]");}
 ;
-left-paren: "(" {$$.sexp = sexp_symbol("(");}
+left-paren: "(" {$$ = sexp_symbol("(");}
 ;
-right-paren: ")" {$$.sexp = sexp_symbol(")");}
+right-paren: ")" {$$ = sexp_symbol(")");}
 ;
-left-brace: "{" {$$.sexp = sexp_symbol("{");}
+left-brace: "{" {$$ = sexp_symbol("{");}
 ;
-right-brace: "}" {$$.sexp = sexp_symbol("}");}
+right-brace: "}" {$$ = sexp_symbol("}");}
 ;
-comma: "," {$$.sexp = sexp_symbol(",");}
+comma: "," {$$ = sexp_symbol(",");}
 ;
-colon: ":" {$$.sexp = sexp_symbol(":");}
+colon: ":" {$$ = sexp_symbol(":");}
 ;
-semicolon: ";" {$$.sexp = sexp_symbol(";");}
+semicolon: ";" {$$ = sexp_symbol(";");}
 ;
-ellipsis: "..." {$$.sexp = sexp_symbol("...");}
+ellipsis: "..." {$$ = sexp_symbol("...");}
 ;
 
 /* 6.3 Expressions */
@@ -304,179 +304,179 @@ primary-expression
 | integer-constant
 | character-constant
 | string-literal
-| left-paren expression right-paren {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| left-paren expression right-paren {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 postfix-expression
 : primary-expression
-| postfix-expression postfix-expression.suffix {$$.sexp = sexp_cons($1.sexp, $2.sexp);}
+| postfix-expression postfix-expression.suffix {$$ = sexp_cons($1, $2);}
 ;
 postfix-expression.suffix
-: left-bracket expression right-bracket {$$.sexp = PARSER_LIST3($1, $2, $3);}
-| left-paren argument-expression-list.opt right-paren {$$.sexp = PARSER_LIST3($1, $2, $3);}
-| period identifier {$$.sexp = PARSER_LIST2($1, $2);}
-| arrow identifier {$$.sexp = PARSER_LIST2($1, $2);}
-| increment {$$.sexp = PARSER_LIST1($1);}
-| decrement {$$.sexp = PARSER_LIST1($1);}
+: left-bracket expression right-bracket {$$ = PARSER_LIST3($1, $2, $3);}
+| left-paren argument-expression-list.opt right-paren {$$ = PARSER_LIST3($1, $2, $3);}
+| period identifier {$$ = PARSER_LIST2($1, $2);}
+| arrow identifier {$$ = PARSER_LIST2($1, $2);}
+| increment {$$ = PARSER_LIST1($1);}
+| decrement {$$ = PARSER_LIST1($1);}
 ;
 argument-expression-list.opt
-: %empty {$$.sexp = sexp_nil();}
+: %empty {$$ = sexp_nil();}
 | argument-expression-list
 ;
 argument-expression-list
-: assignment-expression {$$.sexp = PARSER_LIST1($1);}
-| argument-expression-list comma assignment-expression {$$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
+: assignment-expression {$$ = PARSER_LIST1($1);}
+| argument-expression-list comma assignment-expression {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
 ;
 unary-expression
 : postfix-expression
-| unary-expression.prefix unary-expression {$$.sexp = PARSER_LIST2($1, $2);}
-| sizeof unary-expression {$$.sexp = PARSER_LIST2($1, $2);}
-| sizeof left-paren type-name right-paren {$$.sexp = PARSER_LIST4($1, $2, $3, $4);}
-| unary-operator cast-expression {$$.sexp = PARSER_LIST2($1, $2);}
+| unary-expression.prefix unary-expression {$$ = PARSER_LIST2($1, $2);}
+| sizeof unary-expression {$$ = PARSER_LIST2($1, $2);}
+| sizeof left-paren type-name right-paren {$$ = PARSER_LIST4($1, $2, $3, $4);}
+| unary-operator cast-expression {$$ = PARSER_LIST2($1, $2);}
 ;
 unary-expression.prefix
-: increment {$$.sexp = $1.sexp;}
-| decrement {$$.sexp = $1.sexp;}
+: increment {$$ = $1;}
+| decrement {$$ = $1;}
 ;
 unary-operator
-: ampersand {$$.sexp = $1.sexp;}
-| asterisk {$$.sexp = $1.sexp;};
-| plus {$$.sexp = $1.sexp;};
-| minus {$$.sexp = $1.sexp;};
-| tilde {$$.sexp = $1.sexp;};
-| exclamation {$$.sexp = $1.sexp;};
+: ampersand {$$ = $1;}
+| asterisk {$$ = $1;};
+| plus {$$ = $1;};
+| minus {$$ = $1;};
+| tilde {$$ = $1;};
+| exclamation {$$ = $1;};
 ;
 cast-expression
 : unary-expression
-| left-paren type-name right-paren cast-expression {$$.sexp = PARSER_LIST4($1, $2, $3, $4);}
+| left-paren type-name right-paren cast-expression {$$ = PARSER_LIST4($1, $2, $3, $4);}
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression multiplicative-operator cast-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| multiplicative-expression multiplicative-operator cast-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 multiplicative-operator
-: asterisk {$$.sexp = $1.sexp;}
-| slash {$$.sexp = $1.sexp;}
-| percent {$$.sexp = $1.sexp;}
+: asterisk {$$ = $1;}
+| slash {$$ = $1;}
+| percent {$$ = $1;}
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression additive-operator multiplicative-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| additive-expression additive-operator multiplicative-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 additive-operator
-: plus {$$.sexp = $1.sexp;}
-| minus {$$.sexp = $1.sexp;}
+: plus {$$ = $1;}
+| minus {$$ = $1;}
 ;
 shift-expression
 : additive-expression
-| shift-expression shift-operator additive-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| shift-expression shift-operator additive-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 shift-operator
-: left-shift {$$.sexp = $1.sexp;}
-| right-shift {$$.sexp = $1.sexp;}
+: left-shift {$$ = $1;}
+| right-shift {$$ = $1;}
 ;
 relational-expression
 : shift-expression
-| relational-expression relational-operator shift-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| relational-expression relational-operator shift-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 relational-operator
-: less-than {$$.sexp = $1.sexp;}
-| greater-than {$$.sexp = $1.sexp;}
-| less-equal {$$.sexp = $1.sexp;}
-| greater-equal {$$.sexp = $1.sexp;}
+: less-than {$$ = $1;}
+| greater-than {$$ = $1;}
+| less-equal {$$ = $1;}
+| greater-equal {$$ = $1;}
 ;
 equality-expression
 : relational-expression
-| equality-expression equality-operator relational-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| equality-expression equality-operator relational-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 equality-operator
-: equal {$$.sexp = $1.sexp;}
-| not-equal {$$.sexp = $1.sexp;}
+: equal {$$ = $1;}
+| not-equal {$$ = $1;}
 ;
 and-expression
 : equality-expression
-| and-expression and-operator equality-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| and-expression and-operator equality-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 and-operator
-: ampersand {$$.sexp = $1.sexp;}
+: ampersand {$$ = $1;}
 ;
 exclusive-or-expression
 : and-expression
-| exclusive-or-expression exclusive-or-operator and-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| exclusive-or-expression exclusive-or-operator and-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 exclusive-or-operator
-: caret {$$.sexp = $1.sexp;}
+: caret {$$ = $1;}
 ;
 inclusive-or-expression
 : exclusive-or-expression
-| inclusive-or-expression inclusive-or-operator exclusive-or-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| inclusive-or-expression inclusive-or-operator exclusive-or-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 inclusive-or-operator
-: bar {$$.sexp = $1.sexp;}
+: bar {$$ = $1;}
 ;
 logical-and-expression
 : inclusive-or-expression
-| logical-and-expression logical-and-operator inclusive-or-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| logical-and-expression logical-and-operator inclusive-or-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 logical-and-operator
-: and {$$.sexp = $1.sexp;}
+: and {$$ = $1;}
 ;
 logical-or-expression
 : logical-and-expression
-| logical-or-expression logical-or-operator logical-and-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| logical-or-expression logical-or-operator logical-and-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 logical-or-operator
-: or {$$.sexp = $1.sexp;}
+: or {$$ = $1;}
 ;
 conditional-expression
 : logical-or-expression
-| logical-or-expression question expression colon conditional-expression {$$.sexp = PARSER_LIST5($1, $2, $3, $4, $5);}
+| logical-or-expression question expression colon conditional-expression {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
 ;
 assignment-expression
 : conditional-expression
-| unary-expression assignment-operator assignment-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| unary-expression assignment-operator assignment-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 assignment-operator
-: assign {$$.sexp = $1.sexp;}
-| asterisk-assign {$$.sexp = $1.sexp;}
-| slash-assign {$$.sexp = $1.sexp;}
-| percent-assign {$$.sexp = $1.sexp;}
-| plus-assign {$$.sexp = $1.sexp;}
-| minus-assign {$$.sexp = $1.sexp;}
-| left-shift-assign {$$.sexp = $1.sexp;}
-| right-shift-assign {$$.sexp = $1.sexp;}
-| ampersand-assign {$$.sexp = $1.sexp;}
-| caret-assign {$$.sexp = $1.sexp;}
-| bar-assign {$$.sexp = $1.sexp;}
+: assign {$$ = $1;}
+| asterisk-assign {$$ = $1;}
+| slash-assign {$$ = $1;}
+| percent-assign {$$ = $1;}
+| plus-assign {$$ = $1;}
+| minus-assign {$$ = $1;}
+| left-shift-assign {$$ = $1;}
+| right-shift-assign {$$ = $1;}
+| ampersand-assign {$$ = $1;}
+| caret-assign {$$ = $1;}
+| bar-assign {$$ = $1;}
 ;
 expression.opt
-: %empty {$$.sexp = sexp_nil();}
+: %empty {$$ = sexp_nil();}
 | expression
 ;
 expression
 : assignment-expression
-| expression comma-operator assignment-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| expression comma-operator assignment-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 comma-operator
-: comma {$$.sexp = $1.sexp;}
+: comma {$$ = $1;}
 ;
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty {$$.sexp = sexp_nil();}
+: %empty {$$ = sexp_nil();}
 | constant-expression
 ;
 constant-expression
-: conditional-expression {$$.sexp = $1.sexp;}
+: conditional-expression {$$ = $1;}
 ;
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers semicolon {$$.sexp = PARSER_LIST2($1, $2);}
-| declaration-specifiers init-declarator-list semicolon {$$.sexp = PARSER_LIST3($1, $2, $3);}
+: declaration-specifiers semicolon {$$ = PARSER_LIST2($1, $2);}
+| declaration-specifiers init-declarator-list semicolon {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 declaration-specifiers
-: declaration-specifier {$$.sexp = PARSER_LIST1($1);}
-| declaration-specifiers declaration-specifier {$$.sexp = sexp_snoc($1.sexp, $2.sexp);}
+: declaration-specifier {$$ = PARSER_LIST1($1);}
+| declaration-specifiers declaration-specifier {$$ = sexp_snoc($1, $2);}
 ;
 declaration-specifier
 : storage-class-specifier
@@ -484,194 +484,194 @@ declaration-specifier
 | type-qualifier
 ;
 init-declarator-list
-: init-declarator {$$.sexp = PARSER_LIST1($1);}
-| init-declarator-list comma init-declarator {$$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
+: init-declarator {$$ = PARSER_LIST1($1);}
+| init-declarator-list comma init-declarator {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
 ;
 init-declarator
-: declarator {$$.sexp = $1.sexp;}
-| declarator assign initializer {$$.sexp = PARSER_LIST3($1, $2, $3);}
+: declarator {$$ = $1;}
+| declarator assign initializer {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 storage-class-specifier
-: storage-class-specifier.prefix {$$.sexp = $1.sexp;}
+: storage-class-specifier.prefix {$$ = $1;}
 ;
 storage-class-specifier.prefix
-: typedef {$$.sexp = $1.sexp;}
-| extern {$$.sexp = $1.sexp;}
-| static {$$.sexp = $1.sexp;}
-| auto {$$.sexp = $1.sexp;}
-| register {$$.sexp = $1.sexp;}
+: typedef {$$ = $1;}
+| extern {$$ = $1;}
+| static {$$ = $1;}
+| auto {$$ = $1;}
+| register {$$ = $1;}
 ;
 type-specifier
-: type-specifier.prefix {$$.sexp = $1.sexp;}
+: type-specifier.prefix {$$ = $1;}
 ;
 type-specifier.prefix
-: void {$$.sexp = $1.sexp;}
-| char {$$.sexp = $1.sexp;}
-| short {$$.sexp = $1.sexp;}
-| int {$$.sexp = $1.sexp;}
-| long {$$.sexp = $1.sexp;}
-| float {$$.sexp = $1.sexp;}
-| double {$$.sexp = $1.sexp;}
-| signed {$$.sexp = $1.sexp;}
-| unsigned {$$.sexp = $1.sexp;}
+: void {$$ = $1;}
+| char {$$ = $1;}
+| short {$$ = $1;}
+| int {$$ = $1;}
+| long {$$ = $1;}
+| float {$$ = $1;}
+| double {$$ = $1;}
+| signed {$$ = $1;}
+| unsigned {$$ = $1;}
 | struct-or-union-specifier
 | enum-specifier
 | typedef-name
 ;
 struct-or-union-specifier
-: struct-or-union identifier.opt left-brace struct-declaration-list right-brace {$$.sexp = PARSER_LIST5($1, $2, $3, $4, $5);}
-| struct-or-union identifier {$$.sexp = PARSER_LIST2($1, $2);}
+: struct-or-union identifier.opt left-brace struct-declaration-list right-brace {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
+| struct-or-union identifier {$$ = PARSER_LIST2($1, $2);}
 ;
 struct-or-union
-: struct {$$.sexp = $1.sexp;}
-| union {$$.sexp = $1.sexp;}
+: struct {$$ = $1;}
+| union {$$ = $1;}
 ;
 struct-declaration-list
-: struct-declaration {$$.sexp = PARSER_LIST1($1);}
-| struct-declaration-list struct-declaration {$$.sexp = sexp_snoc($1.sexp, $2.sexp);}
+: struct-declaration {$$ = PARSER_LIST1($1);}
+| struct-declaration-list struct-declaration {$$ = sexp_snoc($1, $2);}
 ;
 struct-declaration
-: specifier-qualifier-list struct-declarator-list semicolon {$$.sexp = PARSER_LIST3($1, $2, $3);}
+: specifier-qualifier-list struct-declarator-list semicolon {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 specifier-qualifier-list
-: specifier-qualifier {$$.sexp = PARSER_LIST1($1);}
-| specifier-qualifier-list specifier-qualifier {$$.sexp = sexp_snoc($1.sexp, $2.sexp);}
+: specifier-qualifier {$$ = PARSER_LIST1($1);}
+| specifier-qualifier-list specifier-qualifier {$$ = sexp_snoc($1, $2);}
 ;
 specifier-qualifier
 : type-specifier
 | type-qualifier
 ;
 struct-declarator-list
-: struct-declarator {$$.sexp = PARSER_LIST1($1);}
-| struct-declarator-list comma struct-declarator {$$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
+: struct-declarator {$$ = PARSER_LIST1($1);}
+| struct-declarator-list comma struct-declarator {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
 ;
 struct-declarator
-: declarator {$$.sexp = $1.sexp;}
-| declarator.opt colon constant-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+: declarator {$$ = $1;}
+| declarator.opt colon constant-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 enum-specifier
-: enum identifier.opt left-brace enumerator-list right-brace {$$.sexp = PARSER_LIST5($1, $2, $3, $4, $5);}
-| enum identifier {$$.sexp = PARSER_LIST2($1, $2);}
+: enum identifier.opt left-brace enumerator-list right-brace {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
+| enum identifier {$$ = PARSER_LIST2($1, $2);}
 ;
 enumerator-list
-: enumerator {$$.sexp = PARSER_LIST1($1);}
-| enumerator-list comma enumerator {$$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
+: enumerator {$$ = PARSER_LIST1($1);}
+| enumerator-list comma enumerator {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
 ;
 enumerator
-: enumeration-constant {$$.sexp = $1.sexp;}
-| enumeration-constant assign constant-expression {$$.sexp = PARSER_LIST3($1, $2, $3);}
+: enumeration-constant {$$ = $1;}
+| enumeration-constant assign constant-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 type-qualifier
-: type-qualifier.prefix {$$.sexp = $1.sexp;}
+: type-qualifier.prefix {$$ = $1;}
 ;
 type-qualifier.prefix
-: const {$$.sexp = $1.sexp;}
-| volatile {$$.sexp = $1.sexp;}
+: const {$$ = $1;}
+| volatile {$$ = $1;}
 ;
 declarator.opt
-: %empty {$$.sexp = sexp_nil();}
+: %empty {$$ = sexp_nil();}
 | declarator
 ;
 declarator
-: direct-declarator {$$.sexp = sexp_list2(sexp_nil(), $1.sexp);}
-| pointer direct-declarator {$$.sexp = PARSER_LIST2($1, $2);}
+: direct-declarator {$$ = sexp_list2(sexp_nil(), $1);}
+| pointer direct-declarator {$$ = PARSER_LIST2($1, $2);}
 ;
 direct-declarator
 : direct-declarator.prefix
-| direct-declarator direct-declarator.suffix {$$.sexp = PARSER_LIST2($1, $2);}
+| direct-declarator direct-declarator.suffix {$$ = PARSER_LIST2($1, $2);}
 ;
 direct-declarator.prefix
 : identifier
-| "(" declarator ")" {$$.sexp = sexp_list3(sexp_symbol("("), $2.sexp, sexp_symbol(")"));}
+| "(" declarator ")" {$$ = sexp_list3(sexp_symbol("("), $2, sexp_symbol(")"));}
 ;
 direct-declarator.suffix
-: left-bracket constant-expression.opt right-bracket {$$.sexp = PARSER_LIST3($1, $2, $3);}
-| left-paren parameter-type-list right-paren {$$.sexp = PARSER_LIST3($1, $2, $3);}
-| left-paren identifier-list.opt right-paren {$$.sexp = PARSER_LIST3($1, $2, $3);}
+: left-bracket constant-expression.opt right-bracket {$$ = PARSER_LIST3($1, $2, $3);}
+| left-paren parameter-type-list right-paren {$$ = PARSER_LIST3($1, $2, $3);}
+| left-paren identifier-list.opt right-paren {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 pointer
-: pointer.prefix {$$.sexp = $1.sexp;}
-| pointer.prefix pointer {$$.sexp = PARSER_LIST2($1, $2);}
+: pointer.prefix {$$ = $1;}
+| pointer.prefix pointer {$$ = PARSER_LIST2($1, $2);}
 ;
 pointer.prefix
-: asterisk type-qualifier-list.opt {$$.sexp = PARSER_LIST2($1, $2);}
+: asterisk type-qualifier-list.opt {$$ = PARSER_LIST2($1, $2);}
 ;
 type-qualifier-list.opt
-: %empty {$$.sexp = sexp_nil();}
+: %empty {$$ = sexp_nil();}
 | type-qualifier-list
 ;
 type-qualifier-list
-: type-qualifier {$$.sexp = PARSER_LIST1($1);}
-| type-qualifier-list type-qualifier {$$.sexp = sexp_snoc($1.sexp, $2.sexp);}
+: type-qualifier {$$ = PARSER_LIST1($1);}
+| type-qualifier-list type-qualifier {$$ = sexp_snoc($1, $2);}
 ;
 parameter-type-list.opt
-: %empty {$$.sexp = sexp_nil();}
+: %empty {$$ = sexp_nil();}
 | parameter-type-list
 ;
 parameter-type-list
 : parameter-list
-| parameter-list comma ellipsis {$$.sexp = PARSER_LIST3($1, $2, $3);}
+| parameter-list comma ellipsis {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 parameter-list
-: parameter-declaration {$$.sexp = PARSER_LIST1($1);}
-| parameter-list comma parameter-declaration {$$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
+: parameter-declaration {$$ = PARSER_LIST1($1);}
+| parameter-list comma parameter-declaration {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
 ;
 parameter-declaration
-: declaration-specifiers {$$.sexp = $1.sexp;}
-| declaration-specifiers parameter-declaration.suffix {$$.sexp = PARSER_LIST2($1, $2);}
+: declaration-specifiers {$$ = $1;}
+| declaration-specifiers parameter-declaration.suffix {$$ = PARSER_LIST2($1, $2);}
 ;
 parameter-declaration.suffix
 : declarator
 | abstract-declarator
 ;
 identifier-list.opt
-: %empty {$$.sexp = sexp_nil();}
+: %empty {$$ = sexp_nil();}
 | identifier-list
 ;
 identifier-list
-: identifier {$$.sexp = PARSER_LIST1($1);}
-| identifier-list comma identifier {$$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
+: identifier {$$ = PARSER_LIST1($1);}
+| identifier-list comma identifier {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
 ;
 type-name
-: specifier-qualifier-list {$$.sexp = $1.sexp;}
-| specifier-qualifier-list abstract-declarator {$$.sexp = PARSER_LIST2($1, $2);}
+: specifier-qualifier-list {$$ = $1;}
+| specifier-qualifier-list abstract-declarator {$$ = PARSER_LIST2($1, $2);}
 ;
 abstract-declarator
-: abstract-declarator.prefix {$$.sexp = $1.sexp;}
-| pointer direct-abstract-declarator {$$.sexp = PARSER_LIST2($1, $2);}
+: abstract-declarator.prefix {$$ = $1;}
+| pointer direct-abstract-declarator {$$ = PARSER_LIST2($1, $2);}
 ;
 abstract-declarator.prefix
 : pointer
 | direct-abstract-declarator
 ;
 direct-abstract-declarator
-: "(" abstract-declarator ")" {$$.sexp = sexp_list3(sexp_symbol("("), $2.sexp, sexp_symbol(")"));}
+: "(" abstract-declarator ")" {$$ = sexp_list3(sexp_symbol("("), $2, sexp_symbol(")"));}
 | direct-abstract-declarator.suffix
-| direct-abstract-declarator direct-abstract-declarator.suffix {$$.sexp = PARSER_LIST2($1, $2);}
+| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = PARSER_LIST2($1, $2);}
 ;
 direct-abstract-declarator.suffix
-: left-bracket constant-expression.opt right-bracket {$$.sexp = PARSER_LIST3($1, $2, $3);}
-| left-paren parameter-type-list.opt right-paren {$$.sexp = PARSER_LIST3($1, $2, $3);}
+: left-bracket constant-expression.opt right-bracket {$$ = PARSER_LIST3($1, $2, $3);}
+| left-paren parameter-type-list.opt right-paren {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 typedef-name
-: typedef-identifier {$$.sexp = $1.sexp;}
+: typedef-identifier {$$ = $1;}
 ;
 initializer
 : assignment-expression
-| initializer.suffix {$$.sexp = $1.sexp;}
+| initializer.suffix {$$ = $1;}
 ;
 initializer.suffix
-: "{" initializer-list "}" {$$.sexp = sexp_list3(sexp_symbol("{"), $2.sexp, sexp_symbol("}"));}
-| "{" initializer-list comma "}" {$$.sexp = sexp_list4(sexp_symbol("{"), $2.sexp, $3.sexp, sexp_symbol("}"));}
+: "{" initializer-list "}" {$$ = sexp_list3(sexp_symbol("{"), $2, sexp_symbol("}"));}
+| "{" initializer-list comma "}" {$$ = sexp_list4(sexp_symbol("{"), $2, $3, sexp_symbol("}"));}
 ;
 initializer-list
-: initializer {$$.sexp = PARSER_LIST1($1);}
-| initializer-list comma initializer {$$.sexp = sexp_snoc($1.sexp, PARSER_LIST2($2, $3));}
+: initializer {$$ = PARSER_LIST1($1);}
+| initializer-list comma initializer {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
 ;
 
 /* 6.6 Statements */
 statement
-: statement.prefix {$$.sexp = $1.sexp;}
+: statement.prefix {$$ = $1;}
 ;
 statement.prefix
 : labeled-statement
@@ -682,74 +682,74 @@ statement.prefix
 | jump-statement
 ;
 labeled-statement
-: labeled-statement.prefix colon statement {$$.sexp = PARSER_LIST3($1, $2, $3);}
+: labeled-statement.prefix colon statement {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 labeled-statement.prefix
 : identifier
-| case constant-expression {$$.sexp = PARSER_LIST2($1, $2);}
-| default {$$.sexp = $1.sexp;}
+| case constant-expression {$$ = PARSER_LIST2($1, $2);}
+| default {$$ = $1;}
 ;
 compound-statement
-: left-brace declaration-list.opt statement-list.opt right-brace {$$.sexp = PARSER_LIST4($1, $2, $3, $4);}
+: left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
 ;
 declaration-list.opt
-: %empty {$$.sexp = sexp_nil();}
+: %empty {$$ = sexp_nil();}
 | declaration-list
 ;
 declaration-list
-: declaration {$$.sexp = PARSER_LIST1($1);}
-| declaration-list declaration {$$.sexp = sexp_snoc($1.sexp, $2.sexp);}
+: declaration {$$ = PARSER_LIST1($1);}
+| declaration-list declaration {$$ = sexp_snoc($1, $2);}
 ;
 statement-list.opt
-: %empty {$$.sexp = sexp_nil();}
+: %empty {$$ = sexp_nil();}
 | statement-list
 ;
 statement-list
-: statement {$$.sexp = PARSER_LIST1($1);}
-| statement-list statement {$$.sexp = sexp_snoc($1.sexp, $2.sexp);}
+: statement {$$ = PARSER_LIST1($1);}
+| statement-list statement {$$ = sexp_snoc($1, $2);}
 ;
 expression-statement
-: expression.opt semicolon {$$.sexp = PARSER_LIST2($1, $2);}
+: expression.opt semicolon {$$ = PARSER_LIST2($1, $2);}
 ;
 selection-statement
-: selection-statement.suffix {$$.sexp = $1.sexp;}
+: selection-statement.suffix {$$ = $1;}
 ;
 selection-statement.suffix
-: if selection-statement.if {$$.sexp = sexp_cons($1.sexp, $2.sexp);}
-| switch selection-statement.switch {$$.sexp = sexp_cons($1.sexp, $2.sexp);}
+: if selection-statement.if {$$ = sexp_cons($1, $2);}
+| switch selection-statement.switch {$$ = sexp_cons($1, $2);}
 ;
 selection-statement.if
-: "(" expression ")" statement %prec THEN {$$.sexp = sexp_list4(sexp_symbol("("), $2.sexp, sexp_symbol(")"), $4.sexp);}
-| "(" expression ")" statement else statement {$$.sexp = sexp_list6(sexp_symbol("("), $2.sexp, sexp_symbol(")"), $4.sexp, $5.sexp, $6.sexp);}
+: "(" expression ")" statement %prec THEN {$$ = sexp_list4(sexp_symbol("("), $2, sexp_symbol(")"), $4);}
+| "(" expression ")" statement else statement {$$ = sexp_list6(sexp_symbol("("), $2, sexp_symbol(")"), $4, $5, $6);}
 ;
 selection-statement.switch
-: left-paren expression right-paren statement {$$.sexp = PARSER_LIST4($1, $2, $3, $4);}
+: left-paren expression right-paren statement {$$ = PARSER_LIST4($1, $2, $3, $4);}
 ;
 iteration-statement
-: iteration-statement.suffix {$$.sexp = $1.sexp;}
+: iteration-statement.suffix {$$ = $1;}
 ;
 iteration-statement.suffix
-: while iteration-statement.while {$$.sexp = sexp_cons($1.sexp, $2.sexp);}
-| do iteration-statement.do {$$.sexp = sexp_cons($1.sexp, $2.sexp);}
-| for iteration-statement.for {$$.sexp = sexp_cons($1.sexp, $2.sexp);}
+: while iteration-statement.while {$$ = sexp_cons($1, $2);}
+| do iteration-statement.do {$$ = sexp_cons($1, $2);}
+| for iteration-statement.for {$$ = sexp_cons($1, $2);}
 ;
 iteration-statement.while
-: left-paren expression right-paren statement {$$.sexp = PARSER_LIST4($1, $2, $3, $4);}
+: left-paren expression right-paren statement {$$ = PARSER_LIST4($1, $2, $3, $4);}
 ;
 iteration-statement.do
-: statement while left-paren expression right-paren semicolon {$$.sexp = PARSER_LIST6($1, $2, $3, $4, $5, $6);}
+: statement while left-paren expression right-paren semicolon {$$ = PARSER_LIST6($1, $2, $3, $4, $5, $6);}
 ;
 iteration-statement.for
-: left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {$$.sexp = sexp_list4($1.sexp, PARSER_LIST5($2, $3, $4, $5, $6), $7.sexp, $8.sexp);}
+: left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {$$ = sexp_list4($1, PARSER_LIST5($2, $3, $4, $5, $6), $7, $8);}
 ;
 jump-statement
-: jump-statement.suffix semicolon {$$.sexp = sexp_snoc($1.sexp, $2.sexp);}
+: jump-statement.suffix semicolon {$$ = sexp_snoc($1, $2);}
 ;
 jump-statement.suffix
-: goto identifier {$$.sexp = PARSER_LIST2($1, $2);}
-| continue {$$.sexp = PARSER_LIST1($1);}
-| break {$$.sexp = PARSER_LIST1($1);}
-| return expression.opt {$$.sexp = PARSER_LIST2($1, $2);}
+: goto identifier {$$ = PARSER_LIST2($1, $2);}
+| continue {$$ = PARSER_LIST1($1);}
+| break {$$ = PARSER_LIST1($1);}
+| return expression.opt {$$ = PARSER_LIST2($1, $2);}
 ;
 
 /* 6.7 External definitions */
@@ -757,20 +757,20 @@ top
 : translation-unit {scanner_finish(scanner, $1);}
 ;
 translation-unit
-: external-declaration {$$.sexp = PARSER_LIST1($1);}
-| translation-unit external-declaration {$$.sexp = sexp_snoc($1.sexp, $2.sexp);}
+: external-declaration {$$ = PARSER_LIST1($1);}
+| translation-unit external-declaration {$$ = sexp_snoc($1, $2);}
 ;
 external-declaration
 : function-definition
-| declaration {$$.sexp = $1.sexp;}
+| declaration {$$ = $1;}
 ;
 function-definition
-: function-definition.old {$$.sexp = $1.sexp;}
-| declaration-specifiers declarator compound-statement {$$.sexp = PARSER_LIST3($1, $2, $3);}
+: function-definition.old {$$ = $1;}
+| declaration-specifiers declarator compound-statement {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 function-definition.old
-: declarator compound-statement {$$.sexp = PARSER_LIST2($1, $2);}
-| declarator declaration-list compound-statement {$$.sexp = PARSER_LIST3($1, $2, $3);}
-| declaration-specifiers declarator declaration-list compound-statement {$$.sexp = PARSER_LIST4($1, $2, $3, $4);}
+: declarator compound-statement {$$ = PARSER_LIST2($1, $2);}
+| declarator declaration-list compound-statement {$$ = PARSER_LIST3($1, $2, $3);}
+| declaration-specifiers declarator declaration-list compound-statement {$$ = PARSER_LIST4($1, $2, $3, $4);}
 ;
 %%
