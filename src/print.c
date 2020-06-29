@@ -127,3 +127,27 @@ List *print_consume(List *ast) {
   }
   return ast;
 }
+static void print_sexp_list(Sexp *sexp, int indent) {
+  if (sexp_is_pair(sexp)) {
+    printf("\n");
+    print_indent(indent);
+    print_sexp(sexp_car(sexp), indent);
+    print_sexp_list(sexp_cdr(sexp), indent);
+  } else {
+    assert(sexp_is_nil(sexp));
+  }
+}
+void print_sexp(Sexp *sexp, int indent) {
+  if (sexp_is_pair(sexp)) {
+    printf("(");
+    print_sexp(sexp_car(sexp), indent + 1);
+    print_sexp_list(sexp_cdr(sexp), indent + 1);
+    printf(")");
+  } else if (sexp_is_symbol(sexp)) {
+    printf("%s", sexp_get_string(sexp));
+  } else if (sexp_is_string(sexp)) {
+    printf("\"%s\"", sexp_get_string(sexp));
+  } else {
+    printf("()");
+  }
+}
