@@ -113,7 +113,7 @@
 %%
 /* 6.1 Lexical elements */
 identifier.opt
-: %empty {$$ = sexp_nil();}
+: %empty {$$ = PARSER_TAG(identifier, sexp_nil());}
 | identifier
 ;
 identifier
