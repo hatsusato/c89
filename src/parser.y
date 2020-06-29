@@ -354,12 +354,15 @@ cast-expression.tag
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression multiplicative-operator cast-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| multiplicative-expression.tag {$$ = PARSER_TAG(multiplicative-expression, $1);}
+;
+multiplicative-expression.tag
+: multiplicative-expression multiplicative-operator cast-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 multiplicative-operator
-: asterisk {$$ = $1;}
-| slash {$$ = $1;}
-| percent {$$ = $1;}
+: asterisk
+| slash
+| percent
 ;
 additive-expression
 : multiplicative-expression
