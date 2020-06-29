@@ -454,20 +454,23 @@ conditional-expression.tag
 ;
 assignment-expression
 : conditional-expression
-| unary-expression assignment-operator assignment-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| assignment-expression.tag {$$ = PARSER_TAG(assignment-expression, $1);}
+;
+assignment-expression.tag
+: unary-expression assignment-operator assignment-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 assignment-operator
-: assign {$$ = $1;}
-| asterisk-assign {$$ = $1;}
-| slash-assign {$$ = $1;}
-| percent-assign {$$ = $1;}
-| plus-assign {$$ = $1;}
-| minus-assign {$$ = $1;}
-| left-shift-assign {$$ = $1;}
-| right-shift-assign {$$ = $1;}
-| ampersand-assign {$$ = $1;}
-| caret-assign {$$ = $1;}
-| bar-assign {$$ = $1;}
+: assign
+| asterisk-assign
+| slash-assign
+| percent-assign
+| plus-assign
+| minus-assign
+| left-shift-assign
+| right-shift-assign
+| ampersand-assign
+| caret-assign
+| bar-assign
 ;
 expression.opt
 : %empty {$$ = sexp_nil();}
