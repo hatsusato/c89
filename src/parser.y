@@ -324,7 +324,7 @@ argument-expression-list.opt
 ;
 argument-expression-list
 : assignment-expression {$$ = PARSER_LIST_ATOM(argument-expression-list, $1);}
-| argument-expression-list comma assignment-expression {$$ = parser_sexp_push($1, sexp_list2($2, $3));}
+| argument-expression-list comma assignment-expression {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
 ;
 unary-expression
 : postfix-expression
