@@ -46,11 +46,6 @@ void scanner_finish(yyscan_t scanner, AstList ast) {
   ast = parser_list_finish(ast);
   result_set_ast(result, ast.list);
 }
-void scanner_set_ast(yyscan_t scanner, AstList ast) {
-  Result *result = yyget_extra(scanner);
-  result_set_ast(result, ast.list);
-  yyset_extra(result, scanner);
-}
 const char *scanner_get_text(yyscan_t scanner) {
   return yyget_text(scanner);
 }

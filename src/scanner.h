@@ -16,7 +16,6 @@ yyscan_t scanner_new(Result *);
 void scanner_delete(yyscan_t);
 int scanner_parse(yyscan_t);
 void scanner_finish(yyscan_t, AstList);
-void scanner_set_ast(yyscan_t, AstList);
 const char *scanner_get_text(yyscan_t);
 void scanner_insert_symbol(yyscan_t, const char *);
 Bool scanner_contains_symbol(yyscan_t, const char *);
