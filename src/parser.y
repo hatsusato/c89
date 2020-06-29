@@ -308,23 +308,23 @@ primary-expression
 ;
 postfix-expression
 : primary-expression
-| postfix-expression postfix-expression.suffix {$$ = sexp_cons($1, $2);}
+| postfix-expression.tag {$$ = PARSER_TAG(postfix-expression, $1);}
 ;
-postfix-expression.suffix
-: left-bracket expression right-bracket {$$ = PARSER_LIST3($1, $2, $3);}
-| left-paren argument-expression-list.opt right-paren {$$ = PARSER_LIST3($1, $2, $3);}
-| period identifier {$$ = PARSER_LIST2($1, $2);}
-| arrow identifier {$$ = PARSER_LIST2($1, $2);}
-| increment {$$ = PARSER_LIST1($1);}
-| decrement {$$ = PARSER_LIST1($1);}
+postfix-expression.tag
+: postfix-expression left-bracket expression right-bracket {$$ = sexp_list4($1, $2, $3, $4);}
+| postfix-expression left-paren argument-expression-list.opt right-paren {$$ = sexp_list4($1, $2, $3, $4);}
+| postfix-expression period identifier {$$ = sexp_list3($1, $2, $3);}
+| postfix-expression arrow identifier {$$ = sexp_list3($1, $2, $3);}
+| postfix-expression increment {$$ = sexp_list2($1, $2);}
+| postfix-expression decrement {$$ = sexp_list2($1, $2);}
 ;
 argument-expression-list.opt
-: %empty {$$ = sexp_nil();}
+: %empty {$$ = PARSER_TAG(argument-expression-list, sexp_nil());}
 | argument-expression-list
 ;
 argument-expression-list
-: assignment-expression {$$ = PARSER_LIST1($1);}
-| argument-expression-list comma assignment-expression {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
+: assignment-expression {$$ = PARSER_TAG(argument-expression-list, sexp_list1($1));}
+| argument-expression-list comma assignment-expression {$$ = parser_sexp_push($1, sexp_list2($2, $3));}
 ;
 unary-expression
 : postfix-expression
