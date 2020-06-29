@@ -447,7 +447,10 @@ logical-or-expression.tag
 ;
 conditional-expression
 : logical-or-expression
-| logical-or-expression question expression colon conditional-expression {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
+| conditional-expression.tag {$$ = PARSER_TAG(conditional-expression, $1);}
+;
+conditional-expression.tag
+: logical-or-expression question expression colon conditional-expression {$$ = sexp_list5($1, $2, $3, $4, $5);}
 ;
 assignment-expression
 : conditional-expression
