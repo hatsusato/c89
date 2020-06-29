@@ -41,6 +41,11 @@ void scanner_delete(yyscan_t scanner) {
 int scanner_parse(yyscan_t scanner) {
   return yyparse(scanner);
 }
+void scanner_finish(yyscan_t scanner, AstList ast) {
+  Result *result = yyget_extra(scanner);
+  ast = parser_list_finish(ast);
+  result_set_ast(result, ast.list);
+}
 void scanner_set_ast(yyscan_t scanner, AstList ast) {
   Result *result = yyget_extra(scanner);
   result_set_ast(result, ast.list);

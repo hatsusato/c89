@@ -755,7 +755,7 @@ jump-statement.suffix
 
 /* 6.7 External definitions */
 top
-: translation-unit {scanner_set_ast(scanner, parser_list_finish($1));}
+: translation-unit {scanner_finish(scanner, $1);}
 ;
 translation-unit
 : external-declaration {$$ = parser_list_new(AST_TRANSLATION_UNIT, $1); $$.sexp = PARSER_LIST1($1);}
