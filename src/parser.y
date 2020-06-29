@@ -426,10 +426,10 @@ exclusive-or-expression.tag
 ;
 inclusive-or-expression
 : exclusive-or-expression
-| inclusive-or-expression inclusive-or-operator exclusive-or-expression {$$ = PARSER_LIST3($1, $2, $3);}
+| inclusive-or-expression.tag {$$ = PARSER_TAG(inclusive-or-expression, $1);}
 ;
-inclusive-or-operator
-: bar {$$ = $1;}
+inclusive-or-expression.tag
+: inclusive-or-expression bar exclusive-or-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 logical-and-expression
 : inclusive-or-expression
