@@ -328,22 +328,22 @@ argument-expression-list
 ;
 unary-expression
 : postfix-expression
-| unary-expression.prefix unary-expression {$$ = PARSER_LIST2($1, $2);}
-| sizeof unary-expression {$$ = PARSER_LIST2($1, $2);}
-| sizeof left-paren type-name right-paren {$$ = PARSER_LIST4($1, $2, $3, $4);}
-| unary-operator cast-expression {$$ = PARSER_LIST2($1, $2);}
+| unary-expression.tag {$$ = PARSER_TAG(unary-expression, $1);}
 ;
-unary-expression.prefix
-: increment {$$ = $1;}
-| decrement {$$ = $1;}
+unary-expression.tag
+: increment unary-expression {$$ = sexp_list2($1, $2);}
+| decrement unary-expression {$$ = sexp_list2($1, $2);}
+| unary-operator cast-expression {$$ = sexp_list2($1, $2);}
+| sizeof unary-expression {$$ = sexp_list2($1, $2);}
+| sizeof left-paren type-name right-paren {$$ = sexp_list4($1, $2, $3, $4);}
 ;
 unary-operator
-: ampersand {$$ = $1;}
-| asterisk {$$ = $1;};
-| plus {$$ = $1;};
-| minus {$$ = $1;};
-| tilde {$$ = $1;};
-| exclamation {$$ = $1;};
+: ampersand
+| asterisk
+| plus
+| minus
+| tilde
+| exclamation
 ;
 cast-expression
 : unary-expression
