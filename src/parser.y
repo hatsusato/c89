@@ -311,12 +311,15 @@ postfix-expression
 | postfix-expression.tag {$$ = PARSER_TAG(postfix-expression, $1);}
 ;
 postfix-expression.tag
-: postfix-expression left-bracket expression right-bracket {$$ = sexp_list4($1, $2, $3, $4);}
-| postfix-expression left-paren argument-expression-list.opt right-paren {$$ = sexp_list4($1, $2, $3, $4);}
-| postfix-expression period identifier {$$ = sexp_list3($1, $2, $3);}
-| postfix-expression arrow identifier {$$ = sexp_list3($1, $2, $3);}
-| postfix-expression increment {$$ = sexp_list2($1, $2);}
-| postfix-expression decrement {$$ = sexp_list2($1, $2);}
+: postfix-expression postfix-expression.suffix {$$ = sexp_cons($1, $2);}
+;
+postfix-expression.suffix
+: left-bracket expression right-bracket {$$ = sexp_list3($1, $2, $3);}
+| left-paren argument-expression-list.opt right-paren {$$ = sexp_list3($1, $2, $3);}
+| period identifier {$$ = sexp_list2($1, $2);}
+| arrow identifier {$$ = sexp_list2($1, $2);}
+| increment {$$ = sexp_list1($1);}
+| decrement {$$ = sexp_list1($1);}
 ;
 argument-expression-list.opt
 : %empty {$$ = PARSER_LIST_NIL(argument-expression-list);}
@@ -632,9 +635,12 @@ direct-declarator
 direct-declarator.tag
 : identifier {$$ = sexp_list1($1);}
 | left-paren declarator right-paren {$$ = sexp_list3($1, $2, $3);}
-| direct-declarator left-bracket constant-expression.opt right-bracket {$$ = sexp_list4($1, $2, $3, $4);}
-| direct-declarator left-paren parameter-type-list.opt right-paren {$$ = sexp_list4($1, $2, $3, $4);}
-| direct-declarator left-paren identifier-list right-paren {$$ = sexp_list4($1, $2, $3, $4);}
+| direct-declarator direct-declarator.suffix {$$ = sexp_cons($1, $2);}
+;
+direct-declarator.suffix
+: left-bracket constant-expression.opt right-bracket {$$ = sexp_list3($1, $2, $3);}
+| left-paren parameter-type-list.opt right-paren {$$ = sexp_list3($1, $2, $3);}
+| left-paren identifier-list right-paren {$$ = sexp_list3($1, $2, $3);}
 ;
 pointer
 : pointer.tag {$$ = PARSER_TAG(pointer, $1);}
