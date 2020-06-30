@@ -675,25 +675,34 @@ identifier-list
 | identifier-list comma identifier {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
 ;
 type-name
-: specifier-qualifier-list {$$ = $1;}
-| specifier-qualifier-list abstract-declarator {$$ = PARSER_LIST2($1, $2);}
+: type-name.tag {$$ = PARSER_TAG(type-name, $1);}
+;
+type-name.tag
+: specifier-qualifier-list abstract-declarator.opt {$$ = sexp_list2($1, $2);}
+;
+abstract-declarator.opt
+: %empty {$$ = PARSER_TAG(abstract-declarator, sexp_nil());}
+| abstract-declarator
 ;
 abstract-declarator
-: abstract-declarator.prefix {$$ = $1;}
-| pointer direct-abstract-declarator {$$ = PARSER_LIST2($1, $2);}
+: abstract-declarator.tag {$$ = PARSER_TAG(abstract-declarator, $1);}
 ;
-abstract-declarator.prefix
-: pointer
-| direct-abstract-declarator
+abstract-declarator.tag
+: pointer {$$ = sexp_list1($1);}
+| direct-abstract-declarator {$$ = sexp_list1($1);}
+| pointer direct-abstract-declarator {$$ = sexp_list2($1, $2);}
 ;
 direct-abstract-declarator
-: "(" abstract-declarator ")" {$$ = sexp_list3(sexp_symbol("("), $2, sexp_symbol(")"));}
+: direct-abstract-declarator.tag {$$ = PARSER_TAG(direct-abstract-declarator, $1);}
+;
+direct-abstract-declarator.tag
+: left-paren abstract-declarator right-paren {$$ = sexp_list3($1, $2, $3);}
 | direct-abstract-declarator.suffix
-| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = PARSER_LIST2($1, $2);}
+| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = sexp_cons($1, $2);}
 ;
 direct-abstract-declarator.suffix
-: left-bracket constant-expression.opt right-bracket {$$ = PARSER_LIST3($1, $2, $3);}
-| left-paren parameter-type-list.opt right-paren {$$ = PARSER_LIST3($1, $2, $3);}
+: left-bracket constant-expression.opt right-bracket {$$ = sexp_list3($1, $2, $3);}
+| left-paren parameter-type-list.opt right-paren {$$ = sexp_list3($1, $2, $3);}
 ;
 typedef-name
 : typedef-identifier {$$ = $1;}
