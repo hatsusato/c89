@@ -552,35 +552,43 @@ type-specifier.tag
 | typedef-name
 ;
 struct-or-union-specifier
-: struct-or-union identifier.opt left-brace struct-declaration-list right-brace {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
-| struct-or-union identifier {$$ = PARSER_LIST2($1, $2);}
+: struct-or-union-specifier.tag {$$ = PARSER_TAG(struct-or-union-specifier, $1);}
+;
+struct-or-union-specifier.tag
+: struct-or-union identifier.opt left-brace struct-declaration-list right-brace {$$ = sexp_list5($1, $2, $3, $4, $5);}
+| struct-or-union identifier {$$ = sexp_list2($1, $2);}
 ;
 struct-or-union
-: struct {$$ = $1;}
-| union {$$ = $1;}
+: struct
+| union
 ;
 struct-declaration-list
-: struct-declaration {$$ = PARSER_LIST1($1);}
-| struct-declaration-list struct-declaration {$$ = sexp_snoc($1, $2);}
+: struct-declaration {$$ = PARSER_LIST_ATOM(struct-declaration-list, $1);}
+| struct-declaration-list struct-declaration {$$ = PARSER_LIST_PAIR($1, $2);}
 ;
 struct-declaration
-: specifier-qualifier-list struct-declarator-list semicolon {$$ = PARSER_LIST3($1, $2, $3);}
+: struct-declaration.tag {$$ = PARSER_TAG(struct-declaration, $1);}
+struct-declaration.tag
+: specifier-qualifier-list struct-declarator-list semicolon {$$ = sexp_list3($1, $2, $3);}
 ;
 specifier-qualifier-list
-: specifier-qualifier {$$ = PARSER_LIST1($1);}
-| specifier-qualifier-list specifier-qualifier {$$ = sexp_snoc($1, $2);}
+: specifier-qualifier {$$ = PARSER_LIST_ATOM(specifier-qualifier-list, $1);}
+| specifier-qualifier-list specifier-qualifier {$$ = PARSER_LIST_PAIR($1, $2);}
 ;
 specifier-qualifier
 : type-specifier
 | type-qualifier
 ;
 struct-declarator-list
-: struct-declarator {$$ = PARSER_LIST1($1);}
-| struct-declarator-list comma struct-declarator {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
+: struct-declarator {$$ = PARSER_LIST_ATOM(struct-declarator-list, $1);}
+| struct-declarator-list comma struct-declarator {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
 ;
 struct-declarator
-: declarator {$$ = $1;}
-| declarator.opt colon constant-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: struct-declarator.tag {$$ = PARSER_TAG(struct-declarator, $1);}
+;
+struct-declarator.tag
+: declarator {$$ = sexp_list1($1);}
+| declarator.opt colon constant-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 enum-specifier
 : enum identifier.opt left-brace enumerator-list right-brace {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
