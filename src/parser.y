@@ -495,25 +495,34 @@ constant-expression
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers semicolon {$$ = PARSER_LIST2($1, $2);}
-| declaration-specifiers init-declarator-list semicolon {$$ = PARSER_LIST3($1, $2, $3);}
+: declaration.tag {$$ = PARSER_TAG(declaration, $1);}
+;
+declaration.tag
+: declaration-specifiers init-declarator-list.opt semicolon {$$ = sexp_list3($1, $2, $3);}
 ;
 declaration-specifiers
-: declaration-specifier {$$ = PARSER_LIST1($1);}
-| declaration-specifiers declaration-specifier {$$ = sexp_snoc($1, $2);}
+: declaration-specifier {$$ = PARSER_LIST_ATOM(declaration-specifiers, $1);}
+| declaration-specifiers declaration-specifier {$$ = PARSER_LIST_PAIR($1, $2);}
 ;
 declaration-specifier
 : storage-class-specifier
 | type-specifier
 | type-qualifier
 ;
+init-declarator-list.opt
+: %empty {$$ = PARSER_LIST_NIL(init-declarator-list);}
+| init-declarator-list
+;
 init-declarator-list
-: init-declarator {$$ = PARSER_LIST1($1);}
-| init-declarator-list comma init-declarator {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
+: init-declarator {$$ = PARSER_LIST_ATOM(init-declarator-list, $1);}
+| init-declarator-list comma init-declarator {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
 ;
 init-declarator
-: declarator {$$ = $1;}
-| declarator assign initializer {$$ = PARSER_LIST3($1, $2, $3);}
+: init-declarator.tag {$$ = PARSER_TAG(init-declarator, $1);}
+;
+init-declarator.tag
+: declarator {$$ = sexp_list1($1);}
+| declarator assign initializer {$$ = sexp_list3($1, $2, $3);}
 ;
 storage-class-specifier
 : storage-class-specifier.prefix {$$ = $1;}
