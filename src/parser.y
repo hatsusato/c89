@@ -711,19 +711,19 @@ direct-abstract-declarator.suffix
 | left-paren parameter-type-list.opt right-paren {$$ = sexp_list3($1, $2, $3);}
 ;
 typedef-name
-: typedef-identifier {$$ = $1;}
+: typedef-identifier {$$ = PARSER_TAG(typedef-name, sexp_list1($1));}
 ;
 initializer
 : assignment-expression
-| initializer.suffix {$$ = $1;}
+| initializer.tag {$$ = PARSER_TAG(initializer, $1);}
 ;
-initializer.suffix
-: "{" initializer-list "}" {$$ = sexp_list3(sexp_symbol("{"), $2, sexp_symbol("}"));}
-| "{" initializer-list comma "}" {$$ = sexp_list4(sexp_symbol("{"), $2, $3, sexp_symbol("}"));}
+initializer.tag
+: left-brace initializer-list right-brace {$$ = sexp_list3($1, $2, $3);}
+| left-brace initializer-list comma right-brace {$$ = sexp_list4($1, $2, $3, $4);}
 ;
 initializer-list
-: initializer {$$ = PARSER_LIST1($1);}
-| initializer-list comma initializer {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
+: initializer {$$ = PARSER_LIST_ATOM(initializer-list, $1);}
+| initializer-list comma initializer {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
 ;
 
 /* 6.6 Statements */
