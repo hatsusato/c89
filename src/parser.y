@@ -525,28 +525,28 @@ init-declarator.tag
 | declarator assign initializer {$$ = sexp_list3($1, $2, $3);}
 ;
 storage-class-specifier
-: storage-class-specifier.prefix {$$ = $1;}
+: storage-class-specifier.tag {$$ = PARSER_TAG(storage-class-specifier, sexp_list1($1));}
 ;
-storage-class-specifier.prefix
-: typedef {$$ = $1;}
-| extern {$$ = $1;}
-| static {$$ = $1;}
-| auto {$$ = $1;}
-| register {$$ = $1;}
+storage-class-specifier.tag
+: typedef
+| extern
+| static
+| auto
+| register
 ;
 type-specifier
-: type-specifier.prefix {$$ = $1;}
+: type-specifier.tag {$$ = PARSER_TAG(type-specifier, sexp_list1($1));}
 ;
-type-specifier.prefix
-: void {$$ = $1;}
-| char {$$ = $1;}
-| short {$$ = $1;}
-| int {$$ = $1;}
-| long {$$ = $1;}
-| float {$$ = $1;}
-| double {$$ = $1;}
-| signed {$$ = $1;}
-| unsigned {$$ = $1;}
+type-specifier.tag
+: void
+| char
+| short
+| int
+| long
+| float
+| double
+| signed
+| unsigned
 | struct-or-union-specifier
 | enum-specifier
 | typedef-name
