@@ -591,23 +591,29 @@ struct-declarator.tag
 | declarator.opt colon constant-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 enum-specifier
-: enum identifier.opt left-brace enumerator-list right-brace {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
-| enum identifier {$$ = PARSER_LIST2($1, $2);}
+: enum-specifier.tag {$$ = PARSER_TAG(enum-specifier, $1);}
+;
+enum-specifier.tag
+: enum identifier.opt left-brace enumerator-list right-brace {$$ = sexp_list5($1, $2, $3, $4, $5);}
+| enum identifier {$$ = sexp_list2($1, $2);}
 ;
 enumerator-list
-: enumerator {$$ = PARSER_LIST1($1);}
-| enumerator-list comma enumerator {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
+: enumerator {$$ = PARSER_LIST_ATOM(enumerator-list, $1);}
+| enumerator-list comma enumerator {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
 ;
 enumerator
-: enumeration-constant {$$ = $1;}
-| enumeration-constant assign constant-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: enumerator.tag {$$ = PARSER_TAG(enumerator, $1);}
+;
+enumerator.tag
+: enumeration-constant {$$ = sexp_list1($1);}
+| enumeration-constant assign constant-expression {$$ = sexp_list3($1, $2, $3);}
 ;
 type-qualifier
-: type-qualifier.prefix {$$ = $1;}
+: type-qualifier.tag {$$ = PARSER_TAG(type-qualifier, sexp_list1($1));}
 ;
-type-qualifier.prefix
-: const {$$ = $1;}
-| volatile {$$ = $1;}
+type-qualifier.tag
+: const
+| volatile
 ;
 declarator.opt
 : %empty {$$ = sexp_nil();}
