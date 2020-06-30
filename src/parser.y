@@ -616,68 +616,63 @@ type-qualifier.tag
 | volatile
 ;
 declarator.opt
-: %empty {$$ = sexp_nil();}
+: %empty {$$ = PARSER_TAG(declarator, sexp_nil());}
 | declarator
 ;
 declarator
-: direct-declarator {$$ = sexp_list2(sexp_nil(), $1);}
-| pointer direct-declarator {$$ = PARSER_LIST2($1, $2);}
+: declarator.tag {$$ = PARSER_TAG(declarator, $1);}
+;
+declarator.tag
+: direct-declarator {$$ = sexp_list1($1);}
+| pointer direct-declarator {$$ = sexp_list2($1, $2);}
 ;
 direct-declarator
-: direct-declarator.prefix
-| direct-declarator direct-declarator.suffix {$$ = PARSER_LIST2($1, $2);}
+: direct-declarator.tag {$$ = PARSER_TAG(direct-declarator, $1);}
 ;
-direct-declarator.prefix
-: identifier
-| "(" declarator ")" {$$ = sexp_list3(sexp_symbol("("), $2, sexp_symbol(")"));}
-;
-direct-declarator.suffix
-: left-bracket constant-expression.opt right-bracket {$$ = PARSER_LIST3($1, $2, $3);}
-| left-paren parameter-type-list right-paren {$$ = PARSER_LIST3($1, $2, $3);}
-| left-paren identifier-list.opt right-paren {$$ = PARSER_LIST3($1, $2, $3);}
+direct-declarator.tag
+: identifier {$$ = sexp_list1($1);}
+| left-paren declarator right-paren {$$ = sexp_list3($1, $2, $3);}
+| direct-declarator left-bracket constant-expression.opt right-bracket {$$ = sexp_list4($1, $2, $3, $4);}
+| direct-declarator left-paren parameter-type-list.opt right-paren {$$ = sexp_list4($1, $2, $3, $4);}
+| direct-declarator left-paren identifier-list right-paren {$$ = sexp_list4($1, $2, $3, $4);}
 ;
 pointer
-: pointer.prefix {$$ = $1;}
-| pointer.prefix pointer {$$ = PARSER_LIST2($1, $2);}
+: pointer.tag {$$ = PARSER_TAG(pointer, $1);}
 ;
-pointer.prefix
-: asterisk type-qualifier-list.opt {$$ = PARSER_LIST2($1, $2);}
+pointer.tag
+: asterisk type-qualifier-list.opt {$$ = sexp_list2($1, $2);}
+| pointer asterisk type-qualifier-list.opt {$$ = sexp_list3($1, $2, $3);}
 ;
 type-qualifier-list.opt
-: %empty {$$ = sexp_nil();}
+: %empty {$$ = PARSER_LIST_NIL(type-qualifier-list);}
 | type-qualifier-list
 ;
 type-qualifier-list
-: type-qualifier {$$ = PARSER_LIST1($1);}
-| type-qualifier-list type-qualifier {$$ = sexp_snoc($1, $2);}
+: type-qualifier {$$ = PARSER_LIST_ATOM(type-qualifier-list, $1);}
+| type-qualifier-list type-qualifier {$$ = PARSER_LIST_PAIR($1, $2);}
 ;
 parameter-type-list.opt
-: %empty {$$ = sexp_nil();}
+: %empty {$$ = PARSER_LIST_NIL(parameter-list);}
 | parameter-type-list
 ;
 parameter-type-list
 : parameter-list
-| parameter-list comma ellipsis {$$ = PARSER_LIST3($1, $2, $3);}
+| parameter-list comma ellipsis {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
 ;
 parameter-list
-: parameter-declaration {$$ = PARSER_LIST1($1);}
-| parameter-list comma parameter-declaration {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
+: parameter-declaration {$$ = PARSER_LIST_ATOM(parameter-list, $1);}
+| parameter-list comma parameter-declaration {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
 ;
 parameter-declaration
-: declaration-specifiers {$$ = $1;}
-| declaration-specifiers parameter-declaration.suffix {$$ = PARSER_LIST2($1, $2);}
+: parameter-declaration.tag {$$ = PARSER_TAG(parameter-declaration, $1);}
 ;
-parameter-declaration.suffix
-: declarator
-| abstract-declarator
-;
-identifier-list.opt
-: %empty {$$ = sexp_nil();}
-| identifier-list
+parameter-declaration.tag
+: declaration-specifiers declarator {$$ = sexp_list2($1, $2);}
+| declaration-specifiers abstract-declarator.opt {$$ = sexp_list2($1, $2);}
 ;
 identifier-list
-: identifier {$$ = PARSER_LIST1($1);}
-| identifier-list comma identifier {$$ = sexp_snoc($1, PARSER_LIST2($2, $3));}
+: identifier {$$ = PARSER_LIST_ATOM(identifier-list, $1);}
+| identifier-list comma identifier {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
 ;
 type-name
 : specifier-qualifier-list {$$ = $1;}
