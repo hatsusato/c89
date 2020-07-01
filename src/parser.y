@@ -775,44 +775,29 @@ expression-statement.tag
 : expression.opt semicolon {$$ = sexp_list2($1, $2);}
 ;
 selection-statement
-: selection-statement.suffix {$$ = $1;}
+: selection-statement.tag {$$ = PARSER_TAG(selection-statement, $1);}
 ;
-selection-statement.suffix
-: if selection-statement.if {$$ = sexp_cons($1, $2);}
-| switch selection-statement.switch {$$ = sexp_cons($1, $2);}
-;
-selection-statement.if
-: "(" expression ")" statement %prec THEN {$$ = sexp_list4(sexp_symbol("("), $2, sexp_symbol(")"), $4);}
-| "(" expression ")" statement else statement {$$ = sexp_list6(sexp_symbol("("), $2, sexp_symbol(")"), $4, $5, $6);}
-;
-selection-statement.switch
-: left-paren expression right-paren statement {$$ = PARSER_LIST4($1, $2, $3, $4);}
+selection-statement.tag
+: if left-paren expression right-paren statement %prec THEN {$$ = sexp_list5($1, $2, $3, $4, $5);}
+| if left-paren expression right-paren statement else statement {$$ = sexp_list7($1, $2, $3, $4, $5, $6, $7);}
+| switch left-paren expression right-paren statement {$$ = sexp_list5($1, $2, $3, $4, $5);}
 ;
 iteration-statement
-: iteration-statement.suffix {$$ = $1;}
+: iteration-statement.tag {$$ = PARSER_TAG(iteration-statement, $1);}
 ;
-iteration-statement.suffix
-: while iteration-statement.while {$$ = sexp_cons($1, $2);}
-| do iteration-statement.do {$$ = sexp_cons($1, $2);}
-| for iteration-statement.for {$$ = sexp_cons($1, $2);}
-;
-iteration-statement.while
-: left-paren expression right-paren statement {$$ = PARSER_LIST4($1, $2, $3, $4);}
-;
-iteration-statement.do
-: statement while left-paren expression right-paren semicolon {$$ = PARSER_LIST6($1, $2, $3, $4, $5, $6);}
-;
-iteration-statement.for
-: left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {$$ = sexp_list4($1, PARSER_LIST5($2, $3, $4, $5, $6), $7, $8);}
+iteration-statement.tag
+: while left-paren expression right-paren statement {$$ = sexp_list5($1, $2, $3, $4, $5);}
+| do statement while left-paren expression right-paren semicolon {$$ = sexp_list7($1, $2, $3, $4, $5, $6, $7);}
+| for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {$$ = sexp_list9($1, $2, $3, $4, $5, $6, $7, $8, $9);}
 ;
 jump-statement
-: jump-statement.suffix semicolon {$$ = sexp_snoc($1, $2);}
+: jump-statement.tag {$$ = PARSER_TAG(jump-statement, $1);}
 ;
-jump-statement.suffix
-: goto identifier {$$ = PARSER_LIST2($1, $2);}
-| continue {$$ = PARSER_LIST1($1);}
-| break {$$ = PARSER_LIST1($1);}
-| return expression.opt {$$ = PARSER_LIST2($1, $2);}
+jump-statement.tag
+: goto identifier semicolon {$$ = sexp_list3($1, $2, $3);}
+| continue semicolon {$$ = sexp_list2($1, $2);}
+| break semicolon {$$ = sexp_list2($1, $2);}
+| return expression.opt semicolon {$$ = sexp_list3($1, $2, $3);}
 ;
 
 /* 6.7 External definitions */
