@@ -747,26 +747,32 @@ labeled-statement.tag
 | default colon statement {$$ = sexp_list3($1, $2, $3);}
 ;
 compound-statement
-: left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
+: compound-statement.tag {$$ = PARSER_TAG(compound-statement, $1);}
+;
+compound-statement.tag
+: left-brace declaration-list.opt statement-list.opt right-brace {$$ = sexp_list4($1, $2, $3, $4);}
 ;
 declaration-list.opt
-: %empty {$$ = sexp_nil();}
+: %empty {$$ = PARSER_LIST_NIL(declaration-list);}
 | declaration-list
 ;
 declaration-list
-: declaration {$$ = PARSER_LIST1($1);}
-| declaration-list declaration {$$ = sexp_snoc($1, $2);}
+: declaration {$$ = PARSER_LIST_ATOM(declaration-list, $1);}
+| declaration-list declaration {$$ = PARSER_LIST_PAIR($1, $2);}
 ;
 statement-list.opt
-: %empty {$$ = sexp_nil();}
+: %empty {$$ = PARSER_LIST_NIL(statement-list);}
 | statement-list
 ;
 statement-list
-: statement {$$ = PARSER_LIST1($1);}
-| statement-list statement {$$ = sexp_snoc($1, $2);}
+: statement {$$ = PARSER_LIST_ATOM(statement-list, $1);}
+| statement-list statement {$$ = PARSER_LIST_PAIR($1, $2);}
 ;
 expression-statement
-: expression.opt semicolon {$$ = PARSER_LIST2($1, $2);}
+: expression-statement.tag {$$ = PARSER_TAG(expression-statement, $1);}
+;
+expression-statement.tag
+: expression.opt semicolon {$$ = sexp_list2($1, $2);}
 ;
 selection-statement
 : selection-statement.suffix {$$ = $1;}
