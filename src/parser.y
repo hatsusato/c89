@@ -805,20 +805,18 @@ top
 : translation-unit {scanner_finish(scanner, $1);}
 ;
 translation-unit
-: external-declaration {$$ = PARSER_LIST1($1);}
-| translation-unit external-declaration {$$ = sexp_snoc($1, $2);}
+: external-declaration {$$ = PARSER_LIST_ATOM(translation-unit, $1);}
+| translation-unit external-declaration {$$ = PARSER_LIST_PAIR($1, $2);}
 ;
 external-declaration
 : function-definition
-| declaration {$$ = $1;}
+| declaration {$$ = PARSER_TAG(external-declaration, sexp_list1($1));}
 ;
 function-definition
-: function-definition.old {$$ = $1;}
-| declaration-specifiers declarator compound-statement {$$ = PARSER_LIST3($1, $2, $3);}
+: function-definition.tag {$$ = PARSER_TAG(function-definition, $1);}
 ;
-function-definition.old
-: declarator compound-statement {$$ = PARSER_LIST2($1, $2);}
-| declarator declaration-list compound-statement {$$ = PARSER_LIST3($1, $2, $3);}
-| declaration-specifiers declarator declaration-list compound-statement {$$ = PARSER_LIST4($1, $2, $3, $4);}
+function-definition.tag
+: declarator declaration-list.opt compound-statement {$$ = sexp_list3($1, $2, $3);}
+| declaration-specifiers declarator declaration-list.opt compound-statement {$$ = sexp_list4($1, $2, $3, $4);}
 ;
 %%
