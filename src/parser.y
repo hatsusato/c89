@@ -1,7 +1,6 @@
 %code top {
 }
 %code requires {
-#include "ast.h"
 #include "scanner.h"
 }
 
