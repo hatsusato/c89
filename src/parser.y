@@ -728,9 +728,9 @@ initializer-list
 
 /* 6.6 Statements */
 statement
-: statement.prefix {$$ = $1;}
+: statement.tag {$$ = PARSER_TAG(statement, sexp_list1($1));}
 ;
-statement.prefix
+statement.tag
 : labeled-statement
 | compound-statement
 | expression-statement
@@ -739,12 +739,12 @@ statement.prefix
 | jump-statement
 ;
 labeled-statement
-: labeled-statement.prefix colon statement {$$ = PARSER_LIST3($1, $2, $3);}
+: labeled-statement.tag {$$ = PARSER_TAG(labeled-statement, $1);}
 ;
-labeled-statement.prefix
-: identifier
-| case constant-expression {$$ = PARSER_LIST2($1, $2);}
-| default {$$ = $1;}
+labeled-statement.tag
+: identifier colon statement {$$ = sexp_list3($1, $2, $3);}
+| case constant-expression colon statement {$$ = sexp_list4($1, $2, $3, $4);}
+| default colon statement {$$ = sexp_list3($1, $2, $3);}
 ;
 compound-statement
 : left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
