@@ -144,7 +144,12 @@ void print_sexp(Sexp *sexp, int indent) {
     print_sexp_list(sexp_cdr(sexp), indent + 1);
     printf(")");
   } else if (sexp_is_symbol(sexp)) {
-    printf("%s", sexp_get_string(sexp));
+    const char *str = sexp_get_string(sexp);
+    if (str && isalpha(*str)) {
+      printf("%s", str);
+    } else {
+      printf("#%s", str);
+    }
   } else if (sexp_is_string(sexp)) {
     printf("\"%s\"", sexp_get_string(sexp));
   } else {
