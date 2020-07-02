@@ -53,6 +53,13 @@ Sexp *sexp_string(const char *text, int leng) {
   sexp->data.string = string_new_s(text, leng);
   return sexp;
 }
+Bool sexp_is_list(Sexp *list) {
+  if (sexp_is_nil(list)) {
+    return true;
+  } else {
+    return (sexp_is_pair(list) && sexp_is_list(sexp_cdr(list)));
+  }
+}
 void sexp_delete(Sexp *sexp) {
   switch (sexp_kind(sexp)) {
   case SEXP_NIL:
