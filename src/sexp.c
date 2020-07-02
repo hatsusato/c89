@@ -60,6 +60,13 @@ Bool sexp_is_list(Sexp *list) {
     return (sexp_is_pair(list) && sexp_is_list(sexp_cdr(list)));
   }
 }
+int sexp_length(Sexp *list) {
+  if (sexp_is_pair(list)) {
+    return 1 + sexp_length(sexp_cdr(list));
+  } else {
+    return 0;
+  }
+}
 Bool sexp_check_tag(Sexp *sexp, const char *tag) {
   if (!sexp_is_nil(sexp) && sexp_is_list(sexp)) {
     return sexp_eq(sexp_car(sexp), tag);
@@ -108,6 +115,14 @@ Sexp *sexp_at(Sexp *sexp, int index) {
   } else {
     return sexp_car(sexp);
   }
+}
+Sexp *sexp_last(Sexp *sexp) {
+  for (; sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+    if (sexp_is_nil(sexp_cdr(sexp))) {
+      return sexp_car(sexp);
+    }
+  }
+  return sexp_nil();
 }
 Bool sexp_eq(Sexp *sexp, const char *symbol) {
   return (sexp_is_symbol(sexp)) && 0 == strcmp(sexp->data.symbol, symbol);
