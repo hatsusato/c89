@@ -497,7 +497,7 @@ constant-expression
 
 /* 6.5 Declarations */
 declaration
-: declaration.tag {$$ = PARSER_TAG(declaration, $1);}
+: declaration.tag {$$ = PARSER_TAG(declaration, $1); scanner_register_typedef(scanner, $$);}
 ;
 declaration.tag
 : declaration-specifiers init-declarator-list.opt semicolon {$$ = sexp_list3($1, $2, $3);}

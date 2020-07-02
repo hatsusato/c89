@@ -87,3 +87,20 @@ static Sexp *get_identifier(Sexp *decl) {
     return sexp_nil();
   }
 }
+void scanner_register_typedef(yyscan_t scanner, Sexp *sexp) {
+  assert(sexp_check_tag(sexp, "declaration"));
+  if (is_typedef(sexp)) {
+    sexp = sexp_at(sexp, 2);
+    assert(sexp_check_tag(sexp, "init-declarator-list"));
+    for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+      Sexp *id = sexp_car(sexp);
+      assert(sexp_check_tag(id, "init-declarator"));
+      id = get_identifier(sexp_at(id, 1));
+      if (sexp_check_tag(id, "identifier")) {
+        id = sexp_at(id, 1);
+        assert(sexp_is_string(id));
+        scanner_insert_symbol(scanner, sexp_get_string(id));
+      }
+    }
+  }
+}
