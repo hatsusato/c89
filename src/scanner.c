@@ -1,21 +1,13 @@
 #include "scanner.h"
 
 #include <ctype.h>
-#include <stdio.h>
 
 #include "parser.tab.h"
+#include "print.h"
 
 void yyerror(yyscan_t scanner, const char *msg) {
   fprintf(stderr, "yyerror: %s: ", msg);
-  msg = yyget_text(scanner);
-  while (msg && *msg) {
-    char c = *msg++;
-    if (isprint(c)) {
-      fprintf(stderr, "%c", c);
-    } else {
-      fprintf(stderr, "\\x%02x", (unsigned char)c);
-    }
-  }
+  print_verbatim(stderr, yyget_text(scanner), yyget_leng(scanner));
   fprintf(stderr, "\n");
 }
 

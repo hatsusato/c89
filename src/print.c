@@ -1,7 +1,6 @@
 #include "print.h"
 
 #include <ctype.h>
-#include <stdio.h>
 
 #include "ast.h"
 #include "string.h"
@@ -126,6 +125,17 @@ List *print_consume(List *ast) {
     assert(0);
   }
   return ast;
+}
+void print_verbatim(FILE *fp, const char *text, int leng) {
+  int i = 0;
+  for (i = 0; i < leng; ++i) {
+    char c = text[i];
+    if (isprint(c)) {
+      fprintf(fp, "%c", c);
+    } else {
+      fprintf(fp, "\\x%02x", (unsigned char)c);
+    }
+  }
 }
 void print_symbol(Sexp *sexp) {
   if (sexp_is_symbol(sexp) || sexp_is_string(sexp)) {
