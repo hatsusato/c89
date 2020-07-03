@@ -452,6 +452,13 @@ Sexp *pretty_sexp_convert(Sexp *sexp) {
       ret = sexp_snoc(ret, sexp_symbol(" "));
       ret = sexp_snoc(ret, pretty_sexp_convert(sexp_at(car, 1)));
     }
+  } else if (sexp_check_tag(sexp, "multiplicative-expression")) {
+    assert(4 == sexp_length(sexp));
+    ret = sexp_snoc(ret, pretty_sexp_convert(sexp_at(sexp, 1)));
+    ret = sexp_snoc(ret, sexp_symbol(" "));
+    ret = sexp_snoc(ret, pretty_sexp_convert(sexp_at(sexp, 2)));
+    ret = sexp_snoc(ret, sexp_symbol(" "));
+    ret = sexp_snoc(ret, pretty_sexp_convert(sexp_at(sexp, 3)));
   } else if (sexp_check_tag(sexp, "declaration")) {
     assert(4 == sexp_length(sexp));
     ret = sexp_snoc(ret, pretty_sexp_convert(sexp_at(sexp, 1)));
