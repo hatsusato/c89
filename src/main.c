@@ -9,6 +9,8 @@ void print_seq(Result *result) {
   Sexp *sexp = result_set_sexp(result, nil);
   print_sexp(sexp, 0);
   printf("\n");
+  pretty_sexp(sexp);
+  printf("\n");
   result_set_sexp(result, sexp);
 }
 

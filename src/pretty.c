@@ -426,3 +426,22 @@ void pretty_print(List *ast) {
   }
   list_delete(pretty.head, nil);
 }
+
+static void pretty_sexp_list(Sexp *list) {
+  if (sexp_is_pair(list)) {
+    pretty_sexp(sexp_car(list));
+    printf(" ");
+    pretty_sexp_list(sexp_cdr(list));
+  } else if (!sexp_is_nil(list)) {
+    printf("%s", sexp_get_string(list));
+  }
+}
+void pretty_sexp(Sexp *sexp) {
+  if (sexp_is_list(sexp)) {
+    assert(sexp_is_pair(sexp));
+    pretty_sexp_list(sexp_cdr(sexp));
+  } else {
+    print_symbol(sexp);
+    fprintf(stderr, "debug: [%s]", sexp_get_string(sexp));
+  }
+}
