@@ -441,6 +441,17 @@ Sexp *pretty_sexp_convert(Sexp *sexp) {
     if (!sexp_is_nil(sexp)) {
       ret = sexp_symbol(sexp_get_string(sexp));
     }
+  } else if (sexp_check_tag(sexp, "argument-expression-list")) {
+    sexp = sexp_cdr(sexp);
+    assert(sexp_is_pair(sexp));
+    ret = sexp_snoc(ret, pretty_sexp_convert(sexp_car(sexp)));
+    for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+      Sexp *car = sexp_car(sexp);
+      assert(2 == sexp_length(car));
+      ret = sexp_snoc(ret, pretty_sexp_convert(sexp_at(car, 0)));
+      ret = sexp_snoc(ret, sexp_symbol(" "));
+      ret = sexp_snoc(ret, pretty_sexp_convert(sexp_at(car, 1)));
+    }
   } else if (sexp_check_tag(sexp, "declaration")) {
     assert(4 == sexp_length(sexp));
     ret = sexp_snoc(ret, pretty_sexp_convert(sexp_at(sexp, 1)));
