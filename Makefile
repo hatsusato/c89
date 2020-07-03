@@ -5,7 +5,7 @@ YACC := bison
 target := main.out
 lex_prefix := src/lexer
 yacc_prefix := src/parser
-files := ast list main parser pretty print result scanner set sexp string vector
+files := ast list main pretty print result scanner set sexp string vector
 
 ldflags =
 cflags = -Wall -Wextra -ansi -pedantic
