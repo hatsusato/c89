@@ -435,6 +435,16 @@ static void pretty_sexp_list(Sexp *list) {
     assert(sexp_is_nil(list));
   }
 }
+static Sexp *pretty_sexp_between_space(Sexp *pretty, Sexp *ast) {
+  assert(sexp_is_pair(ast) && sexp_is_list(ast));
+  pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_car(ast)));
+  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    pretty = sexp_snoc(pretty, sexp_symbol(" "));
+    pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_car(ast)));
+  }
+  return pretty;
+}
+
 Sexp *pretty_sexp_convert(Sexp *ast) {
   Sexp *pretty = sexp_nil();
   if (!sexp_is_pair(ast)) {
@@ -446,19 +456,10 @@ Sexp *pretty_sexp_convert(Sexp *ast) {
     assert(sexp_is_pair(ast));
     pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_car(ast)));
     for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-      Sexp *car = sexp_car(ast);
-      assert(2 == sexp_length(car));
-      pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_at(car, 0)));
-      pretty = sexp_snoc(pretty, sexp_symbol(" "));
-      pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_at(car, 1)));
+      pretty = pretty_sexp_between_space(pretty, sexp_car(ast));
     }
   } else if (sexp_check_tag(ast, "multiplicative-expression")) {
-    assert(4 == sexp_length(ast));
-    pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_at(ast, 1)));
-    pretty = sexp_snoc(pretty, sexp_symbol(" "));
-    pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_at(ast, 2)));
-    pretty = sexp_snoc(pretty, sexp_symbol(" "));
-    pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_at(ast, 3)));
+    pretty = pretty_sexp_between_space(pretty, sexp_cdr(ast));
   } else if (sexp_check_tag(ast, "declaration")) {
     assert(4 == sexp_length(ast));
     pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_at(ast, 1)));
