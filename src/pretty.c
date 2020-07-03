@@ -458,7 +458,24 @@ Sexp *pretty_sexp_convert(Sexp *ast) {
     for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
       pretty = pretty_sexp_between_space(pretty, sexp_car(ast));
     }
-  } else if (sexp_check_tag(ast, "multiplicative-expression")) {
+  } else if (sexp_check_tag(ast, "multiplicative-expression") ||
+             sexp_check_tag(ast, "additive-expression") ||
+             sexp_check_tag(ast, "shift-expression") ||
+             sexp_check_tag(ast, "relational-expression") ||
+             sexp_check_tag(ast, "equality-expression") ||
+             sexp_check_tag(ast, "and-expression") ||
+             sexp_check_tag(ast, "exclusive-or-expression") ||
+             sexp_check_tag(ast, "inclusive-or-expression") ||
+             sexp_check_tag(ast, "logical-and-expression") ||
+             sexp_check_tag(ast, "logical-or-expression") ||
+             sexp_check_tag(ast, "conditional-expression") ||
+             sexp_check_tag(ast, "assignment-expression")) {
+    pretty = pretty_sexp_between_space(pretty, sexp_cdr(ast));
+  } else if (sexp_check_tag(ast, "expression")) {
+    assert(sexp_is_pair(ast));
+    ast = sexp_cdr(ast);
+    assert(sexp_is_pair(ast));
+    pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_car(ast)));
     pretty = pretty_sexp_between_space(pretty, sexp_cdr(ast));
   } else if (sexp_check_tag(ast, "declaration")) {
     assert(4 == sexp_length(ast));
