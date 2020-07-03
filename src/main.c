@@ -17,7 +17,9 @@ void print_seq(Result *result) {
 int main(void) {
   Result *result = result_new();
   int ret = result_parse(result);
-  print_seq(result);
+  if (0 == ret) {
+    print_seq(result);
+  }
   result_delete(result);
   return ret;
 }
