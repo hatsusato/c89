@@ -436,15 +436,15 @@ static void pretty_sexp_list(Sexp *list) {
   }
 }
 Sexp *pretty_sexp_convert(Sexp *sexp) {
+  Sexp *ret = sexp_nil();
   if (sexp_is_pair(sexp)) {
-    Sexp *car = pretty_sexp_convert(sexp_car(sexp));
-    Sexp *cdr = pretty_sexp_convert(sexp_cdr(sexp));
-    return sexp_cons(car, cdr);
-  } else if (sexp_is_nil(sexp)) {
-    return sexp;
-  } else {
-    return sexp_symbol(sexp_get_string(sexp));
+    for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+      ret = sexp_snoc(ret, pretty_sexp_convert(sexp_car(sexp)));
+    }
+  } else if (!sexp_is_nil(sexp)) {
+    ret = sexp_symbol(sexp_get_string(sexp));
   }
+  return ret;
 }
 void pretty_sexp(Sexp *sexp) {
   if (sexp_is_pair(sexp)) {
