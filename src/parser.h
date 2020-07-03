@@ -8,7 +8,7 @@
   PARSER_TAG(sym, sexp_list1(scanner_token(scanner)))
 #define PARSER_LIST_NIL(sym) PARSER_TAG(sym, sexp_nil())
 #define PARSER_LIST_ATOM(sym, atom) PARSER_TAG(sym, sexp_list1(atom))
-#define PARSER_LIST_PAIR(list, last) parser_sexp_push(list, last)
+#define PARSER_LIST_PAIR(list, last) sexp_snoc(list, last)
 
 Sexp *parser_sexp_push(Sexp *, Sexp *);
 
