@@ -436,6 +436,17 @@ static void pretty_sexp_list(Sexp *list) {
     printf("%s", sexp_get_string(list));
   }
 }
+Sexp *pretty_sexp_convert(Sexp *sexp) {
+  if (sexp_is_pair(sexp)) {
+    Sexp *car = pretty_sexp_convert(sexp_car(sexp));
+    Sexp *cdr = pretty_sexp_convert(sexp_cdr(sexp));
+    return sexp_cons(car, cdr);
+  } else if (sexp_is_nil(sexp)) {
+    return sexp;
+  } else {
+    return sexp_symbol(sexp_get_string(sexp));
+  }
+}
 void pretty_sexp(Sexp *sexp) {
   if (sexp_is_list(sexp)) {
     assert(sexp_is_pair(sexp));
