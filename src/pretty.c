@@ -437,15 +437,15 @@ static void pretty_sexp_list(Sexp *list) {
 }
 static Sexp *pretty_sexp_between_space(Sexp *pretty, Sexp *ast) {
   assert(sexp_is_pair(ast) && sexp_is_list(ast));
-  pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_car(ast)));
+  pretty = sexp_snoc(pretty, pretty_sexp(sexp_car(ast)));
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     pretty = sexp_snoc(pretty, sexp_symbol(" "));
-    pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_car(ast)));
+    pretty = sexp_snoc(pretty, pretty_sexp(sexp_car(ast)));
   }
   return pretty;
 }
 
-Sexp *pretty_sexp_convert(Sexp *ast) {
+Sexp *pretty_sexp(Sexp *ast) {
   Sexp *pretty = sexp_nil();
   if (!sexp_is_pair(ast)) {
     if (!sexp_is_nil(ast)) {
@@ -454,7 +454,7 @@ Sexp *pretty_sexp_convert(Sexp *ast) {
   } else if (sexp_check_tag(ast, "argument-expression-list")) {
     ast = sexp_cdr(ast);
     assert(sexp_is_pair(ast));
-    pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_car(ast)));
+    pretty = sexp_snoc(pretty, pretty_sexp(sexp_car(ast)));
     for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
       pretty = pretty_sexp_between_space(pretty, sexp_car(ast));
     }
@@ -475,17 +475,17 @@ Sexp *pretty_sexp_convert(Sexp *ast) {
     assert(sexp_is_pair(ast));
     ast = sexp_cdr(ast);
     assert(sexp_is_pair(ast));
-    pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_car(ast)));
+    pretty = sexp_snoc(pretty, pretty_sexp(sexp_car(ast)));
     pretty = pretty_sexp_between_space(pretty, sexp_cdr(ast));
   } else if (sexp_check_tag(ast, "declaration")) {
     assert(4 == sexp_length(ast));
-    pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_at(ast, 1)));
-    pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_at(ast, 2)));
-    pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_at(ast, 3)));
+    pretty = sexp_snoc(pretty, pretty_sexp(sexp_at(ast, 1)));
+    pretty = sexp_snoc(pretty, pretty_sexp(sexp_at(ast, 2)));
+    pretty = sexp_snoc(pretty, pretty_sexp(sexp_at(ast, 3)));
     pretty = sexp_snoc(pretty, sexp_symbol("\n"));
   } else {
     for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-      pretty = sexp_snoc(pretty, pretty_sexp_convert(sexp_car(ast)));
+      pretty = sexp_snoc(pretty, pretty_sexp(sexp_car(ast)));
     }
   }
   return pretty;
