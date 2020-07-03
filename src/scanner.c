@@ -68,8 +68,12 @@ static Bool is_typedef(Sexp *sexp) {
   assert(sexp_check_tag(sexp, "declaration-specifiers"));
   for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
     Sexp *spec = sexp_car(sexp);
-    if (sexp_check_tag(spec, "storage-class-specifier")) {
-      return sexp_eq(sexp_at(spec, 1), "typedef");
+    if (!sexp_check_tag(spec, "storage-class-specifier")) {
+      assert(sexp_check_tag(spec, "type-specifier") ||
+             sexp_check_tag(spec, "type-qualifier"));
+      continue;
+    } else if (sexp_check_tag(sexp_cdr(spec), "typedef")) {
+      return true;
     }
   }
   return false;
