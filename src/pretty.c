@@ -437,12 +437,20 @@ static void pretty_sexp_list(Sexp *list) {
 }
 Sexp *pretty_sexp_convert(Sexp *sexp) {
   Sexp *ret = sexp_nil();
-  if (sexp_is_pair(sexp)) {
+  if (!sexp_is_pair(sexp)) {
+    if (!sexp_is_nil(sexp)) {
+      ret = sexp_symbol(sexp_get_string(sexp));
+    }
+  } else if (sexp_check_tag(sexp, "declaration")) {
+    assert(4 == sexp_length(sexp));
+    ret = sexp_snoc(ret, pretty_sexp_convert(sexp_at(sexp, 1)));
+    ret = sexp_snoc(ret, pretty_sexp_convert(sexp_at(sexp, 2)));
+    ret = sexp_snoc(ret, pretty_sexp_convert(sexp_at(sexp, 3)));
+    ret = sexp_snoc(ret, sexp_symbol("\n"));
+  } else {
     for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
       ret = sexp_snoc(ret, pretty_sexp_convert(sexp_car(sexp)));
     }
-  } else if (!sexp_is_nil(sexp)) {
-    ret = sexp_symbol(sexp_get_string(sexp));
   }
   return ret;
 }
