@@ -429,7 +429,7 @@ void pretty_print(List *ast) {
 
 static void pretty_sexp_list(Sexp *list) {
   if (sexp_is_pair(list)) {
-    pretty_sexp(sexp_car(list));
+    pretty_print_sexp(sexp_car(list));
     pretty_sexp_list(sexp_cdr(list));
   } else {
     assert(sexp_is_nil(list));
@@ -490,7 +490,7 @@ Sexp *pretty_sexp_convert(Sexp *ast) {
   }
   return pretty;
 }
-void pretty_sexp(Sexp *sexp) {
+void pretty_print_sexp(Sexp *sexp) {
   if (sexp_is_pair(sexp)) {
     assert(sexp_is_list(sexp));
     pretty_sexp_list(sexp);

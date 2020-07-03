@@ -10,7 +10,7 @@ void print_seq(Result *result) {
   Sexp *pretty = pretty_sexp_convert(sexp);
   print_sexp(sexp, 0);
   printf("\n");
-  pretty_sexp(pretty);
+  pretty_print_sexp(pretty);
   printf("\n");
   sexp_delete(pretty);
   result_set_sexp(result, sexp);
