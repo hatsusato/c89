@@ -127,6 +127,11 @@ List *print_consume(List *ast) {
   }
   return ast;
 }
+void print_symbol(Sexp *sexp) {
+  if (sexp_is_symbol(sexp) || sexp_is_string(sexp)) {
+    printf("%s", sexp_get_string(sexp));
+  }
+}
 static void print_sexp_list(Sexp *sexp, int indent) {
   if (sexp_is_pair(sexp)) {
     printf("\n");
@@ -144,14 +149,15 @@ void print_sexp(Sexp *sexp, int indent) {
     print_sexp_list(sexp_cdr(sexp), indent + 1);
     printf(")");
   } else if (sexp_is_symbol(sexp)) {
-    const char *str = sexp_get_string(sexp);
-    if (str && isalpha(*str)) {
-      printf("%s", str);
-    } else {
-      printf("#%s", str);
+    assert(sexp_get_string(sexp));
+    if (!isalpha(*sexp_get_string(sexp))) {
+      printf("#");
     }
+    print_symbol(sexp);
   } else if (sexp_is_string(sexp)) {
-    printf("\"%s\"", sexp_get_string(sexp));
+    printf("%c", '"');
+    print_symbol(sexp);
+    printf("%c", '"');
   } else {
     printf("()");
   }
