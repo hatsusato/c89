@@ -439,10 +439,15 @@ static Sexp *pretty_sexp_push(Sexp *pretty, Sexp *ast) {
   assert(sexp_is_pair(ast));
   return sexp_snoc(pretty, pretty_sexp(sexp_car(ast)));
 }
+static Sexp *pretty_sexp_skip(Sexp *ast) {
+  assert(sexp_is_pair(ast));
+  return sexp_cdr(ast);
+}
 static Sexp *pretty_sexp_between_space(Sexp *pretty, Sexp *ast) {
   assert(sexp_is_pair(ast) && sexp_is_list(ast));
   pretty = pretty_sexp_push(pretty, ast);
-  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+  ast = pretty_sexp_skip(ast);
+  for (; sexp_is_pair(ast); ast = pretty_sexp_skip(ast)) {
     pretty = sexp_snoc(pretty, sexp_symbol(" "));
     pretty = pretty_sexp_push(pretty, ast);
   }
@@ -456,10 +461,10 @@ Sexp *pretty_sexp(Sexp *ast) {
       pretty = sexp_symbol(sexp_get_string(ast));
     }
   } else if (sexp_check_tag(ast, "argument-expression-list")) {
-    ast = sexp_cdr(ast);
-    assert(sexp_is_pair(ast));
+    ast = pretty_sexp_skip(ast);
     pretty = pretty_sexp_push(pretty, ast);
-    for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    ast = pretty_sexp_skip(ast);
+    for (; sexp_is_pair(ast); ast = pretty_sexp_skip(ast)) {
       pretty = pretty_sexp_between_space(pretty, sexp_car(ast));
     }
   } else if (sexp_check_tag(ast, "multiplicative-expression") ||
@@ -474,21 +479,24 @@ Sexp *pretty_sexp(Sexp *ast) {
              sexp_check_tag(ast, "logical-or-expression") ||
              sexp_check_tag(ast, "conditional-expression") ||
              sexp_check_tag(ast, "assignment-expression")) {
-    pretty = pretty_sexp_between_space(pretty, sexp_cdr(ast));
+    ast = pretty_sexp_skip(ast);
+    pretty = pretty_sexp_between_space(pretty, ast);
   } else if (sexp_check_tag(ast, "expression")) {
-    assert(sexp_is_pair(ast));
-    ast = sexp_cdr(ast);
-    assert(sexp_is_pair(ast));
+    ast = pretty_sexp_skip(ast);
     pretty = pretty_sexp_push(pretty, ast);
-    pretty = pretty_sexp_between_space(pretty, sexp_cdr(ast));
+    ast = pretty_sexp_skip(ast);
+    pretty = pretty_sexp_between_space(pretty, ast);
   } else if (sexp_check_tag(ast, "declaration")) {
-    assert(4 == sexp_length(ast));
-    pretty = sexp_snoc(pretty, pretty_sexp(sexp_at(ast, 1)));
-    pretty = sexp_snoc(pretty, pretty_sexp(sexp_at(ast, 2)));
-    pretty = sexp_snoc(pretty, pretty_sexp(sexp_at(ast, 3)));
+    ast = pretty_sexp_skip(ast);
+    pretty = pretty_sexp_push(pretty, ast);
+    ast = pretty_sexp_skip(ast);
+    pretty = pretty_sexp_push(pretty, ast);
+    ast = pretty_sexp_skip(ast);
+    pretty = pretty_sexp_push(pretty, ast);
     pretty = sexp_snoc(pretty, sexp_symbol("\n"));
   } else {
-    for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    ast = pretty_sexp_skip(ast);
+    for (; sexp_is_pair(ast); ast = pretty_sexp_skip(ast)) {
       pretty = pretty_sexp_push(pretty, ast);
     }
   }
