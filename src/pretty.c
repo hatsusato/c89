@@ -462,10 +462,12 @@ Sexp *pretty_sexp(Sexp *ast) {
     }
   } else if (sexp_check_tag(ast, "argument-expression-list")) {
     ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_push(pretty, ast);
-    ast = pretty_sexp_skip(ast);
-    for (; sexp_is_pair(ast); ast = pretty_sexp_skip(ast)) {
-      pretty = pretty_sexp_between_space(pretty, sexp_car(ast));
+    if (sexp_is_pair(ast)) {
+      pretty = pretty_sexp_push(pretty, ast);
+      ast = pretty_sexp_skip(ast);
+      for (; sexp_is_pair(ast); ast = pretty_sexp_skip(ast)) {
+        pretty = pretty_sexp_between_space(pretty, sexp_car(ast));
+      }
     }
   } else if (sexp_check_tag(ast, "multiplicative-expression") ||
              sexp_check_tag(ast, "additive-expression") ||
