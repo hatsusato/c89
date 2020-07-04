@@ -486,16 +486,46 @@ Sexp *pretty_sexp(Sexp *ast) {
                pretty_equal(tag, "logical-or-expression") ||
                pretty_equal(tag, "conditional-expression") ||
                pretty_equal(tag, "assignment-expression") ||
-               pretty_equal(tag, "declaration-specifiers")) {
+               pretty_equal(tag, "declaration-specifiers") ||
+               pretty_equal(tag, "specifier-qualifier-list")) {
       pretty = pretty_sexp_list(pretty, ast, " ");
-    } else if (pretty_equal(tag, "declaration")) {
+    } else if (pretty_equal(tag, "declaration") ||
+               pretty_equal(tag, "struct-declaration")) {
       pretty = pretty_sexp_list(pretty, ast, nil);
       pretty = pretty_sexp_push_symbol(pretty, "\n");
-    } else if (pretty_equal(tag, "init-declarator-list")) {
+    } else if (pretty_equal(tag, "init-declarator-list") ||
+               pretty_equal(tag, "struct-declarator-list")) {
       pretty = pretty_sexp_list(pretty, ast, ",");
     } else if (pretty_equal(tag, "init-declarator")) {
       pretty = pretty_sexp_push_symbol(pretty, " ");
       pretty = pretty_sexp_list(pretty, ast, " ");
+    } else if (pretty_equal(tag, "struct-or-union-specifier")) {
+      pretty = pretty_sexp_with_space(pretty, ast);
+      ast = pretty_sexp_skip(ast);
+      pretty = pretty_sexp_with_space(pretty, ast);
+      ast = pretty_sexp_skip(ast);
+      if (!sexp_is_nil(sexp_car(ast))) {
+        pretty = pretty_sexp_push(pretty, ast);
+        ast = pretty_sexp_skip(ast);
+        pretty = pretty_sexp_push_symbol(pretty, "\n");
+        pretty = pretty_sexp_push(pretty, ast);
+        ast = pretty_sexp_skip(ast);
+        pretty = pretty_sexp_push(pretty, ast);
+        ast = pretty_sexp_skip(ast);
+      }
+    } else if (pretty_equal(tag, "struct-declarator")) {
+      pretty = pretty_sexp_push_symbol(pretty, " ");
+      if (1 == sexp_length(ast)) {
+        pretty = pretty_sexp_push(pretty, ast);
+        ast = pretty_sexp_skip(ast);
+      } else {
+        pretty = pretty_sexp_with_space(pretty, ast);
+        ast = pretty_sexp_skip(ast);
+        pretty = pretty_sexp_with_space(pretty, ast);
+        ast = pretty_sexp_skip(ast);
+        pretty = pretty_sexp_push(pretty, ast);
+        ast = pretty_sexp_skip(ast);
+      }
     } else {
       pretty = pretty_sexp_list(pretty, ast, nil);
     }
