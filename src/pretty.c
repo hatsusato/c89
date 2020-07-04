@@ -464,7 +464,8 @@ Sexp *pretty_sexp(Sexp *ast) {
     if (!sexp_is_nil(ast)) {
       pretty = sexp_symbol(sexp_get_string(ast));
     }
-  } else if (sexp_check_tag(ast, "argument-expression-list")) {
+  } else if (sexp_check_tag(ast, "argument-expression-list") ||
+             sexp_check_tag(ast, "expression")) {
     ast = pretty_sexp_skip(ast);
     pretty = pretty_sexp_between(pretty, ast, ", ");
   } else if (sexp_check_tag(ast, "multiplicative-expression") ||
@@ -479,11 +480,6 @@ Sexp *pretty_sexp(Sexp *ast) {
              sexp_check_tag(ast, "logical-or-expression") ||
              sexp_check_tag(ast, "conditional-expression") ||
              sexp_check_tag(ast, "assignment-expression")) {
-    ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_between(pretty, ast, " ");
-  } else if (sexp_check_tag(ast, "expression")) {
-    ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_push(pretty, ast);
     ast = pretty_sexp_skip(ast);
     pretty = pretty_sexp_between(pretty, ast, " ");
   } else if (sexp_check_tag(ast, "declaration")) {

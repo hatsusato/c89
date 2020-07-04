@@ -489,7 +489,7 @@ expression
 | expression.tag {$$ = PARSER_TAG(expression, $1);}
 ;
 expression.tag
-: expression comma assignment-expression {$$ = sexp_list3($1, $2, $3);}
+: expression "," assignment-expression {$$ = sexp_list2($1, $3);}
 ;
 
 /* 6.4 Constant expressions */
