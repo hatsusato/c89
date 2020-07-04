@@ -431,6 +431,9 @@ void pretty_print(List *ast) {
 static Bool pretty_equal(const char *lhs, const char *rhs) {
   return 0 == strcmp(lhs, rhs);
 }
+static Sexp *pretty_sexp_push_symbol(Sexp *pretty, const char *symbol) {
+  return sexp_snoc(pretty, sexp_symbol(symbol));
+}
 static Sexp *pretty_sexp_push(Sexp *pretty, Sexp *ast) {
   assert(sexp_is_pair(ast));
   return sexp_snoc(pretty, pretty_sexp(sexp_car(ast)));
@@ -444,11 +447,12 @@ static Sexp *pretty_sexp_list(Sexp *pretty, Sexp *ast, const char *between) {
   if (sexp_is_pair(ast)) {
     pretty = pretty_sexp_push(pretty, ast);
     ast = pretty_sexp_skip(ast);
-    for (; sexp_is_pair(ast); ast = pretty_sexp_skip(ast)) {
+    while (sexp_is_pair(ast)) {
       if (between) {
-        pretty = sexp_snoc(pretty, sexp_symbol(between));
+        pretty = pretty_sexp_push_symbol(pretty, between);
       }
       pretty = pretty_sexp_push(pretty, ast);
+      ast = pretty_sexp_skip(ast);
     }
   }
   return pretty;
@@ -477,7 +481,7 @@ Sexp *pretty_sexp(Sexp *ast) {
       pretty = pretty_sexp_list(pretty, ast, " ");
     } else if (pretty_equal(tag, "declaration")) {
       pretty = pretty_sexp_list(pretty, ast, nil);
-      pretty = sexp_snoc(pretty, sexp_symbol("\n"));
+      pretty = pretty_sexp_push_symbol(pretty, "\n");
     } else {
       pretty = pretty_sexp_list(pretty, ast, nil);
     }
