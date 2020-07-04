@@ -118,7 +118,7 @@
 %%
 /* 6.1 Lexical elements */
 identifier.opt
-: %empty {$$ = PARSER_TAG(identifier, sexp_nil());}
+: %empty {$$ = sexp_nil();}
 | identifier
 ;
 identifier
@@ -481,7 +481,7 @@ assignment-operator
 | bar-assign
 ;
 expression.opt
-: %empty {$$ = PARSER_TAG(expression, sexp_nil());}
+: %empty {$$ = sexp_nil();}
 | expression
 ;
 expression
@@ -494,7 +494,7 @@ expression.tag
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty {$$ = PARSER_TAG(constant-expression, sexp_nil());}
+: %empty {$$ = sexp_nil();}
 | constant-expression
 ;
 constant-expression
@@ -624,7 +624,7 @@ type-qualifier.tag
 | volatile
 ;
 declarator.opt
-: %empty {$$ = PARSER_TAG(declarator, sexp_nil());}
+: %empty {$$ = sexp_nil();}
 | declarator
 ;
 declarator
@@ -692,7 +692,7 @@ type-name.tag
 : specifier-qualifier-list abstract-declarator.opt {$$ = sexp_list2($1, $2);}
 ;
 abstract-declarator.opt
-: %empty {$$ = PARSER_TAG(abstract-declarator, sexp_nil());}
+: %empty {$$ = sexp_nil();}
 | abstract-declarator
 ;
 abstract-declarator
