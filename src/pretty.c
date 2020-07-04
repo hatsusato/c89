@@ -464,7 +464,8 @@ Sexp *pretty_sexp(Sexp *ast) {
     const char *tag = sexp_get_string(sexp_car(ast));
     ast = pretty_sexp_skip(ast);
     if (pretty_equal(tag, "argument-expression-list") ||
-        pretty_equal(tag, "expression")) {
+        pretty_equal(tag, "expression") ||
+        pretty_equal(tag, "init-declarator-list")) {
       pretty = pretty_sexp_list(pretty, ast, ", ");
     } else if (pretty_equal(tag, "multiplicative-expression") ||
                pretty_equal(tag, "additive-expression") ||
@@ -477,7 +478,9 @@ Sexp *pretty_sexp(Sexp *ast) {
                pretty_equal(tag, "logical-and-expression") ||
                pretty_equal(tag, "logical-or-expression") ||
                pretty_equal(tag, "conditional-expression") ||
-               pretty_equal(tag, "assignment-expression")) {
+               pretty_equal(tag, "assignment-expression") ||
+               pretty_equal(tag, "declaration-specifiers") ||
+               pretty_equal(tag, "init-declarator")) {
       pretty = pretty_sexp_list(pretty, ast, " ");
     } else if (pretty_equal(tag, "declaration")) {
       pretty = pretty_sexp_push(pretty, ast);
