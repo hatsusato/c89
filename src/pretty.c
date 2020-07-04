@@ -472,7 +472,10 @@ Sexp *pretty_sexp(Sexp *ast) {
     const char *tag = sexp_get_string(sexp_car(ast));
     ast = pretty_sexp_skip(ast);
     if (pretty_equal(tag, "argument-expression-list") ||
-        pretty_equal(tag, "expression")) {
+        pretty_equal(tag, "expression") ||
+        pretty_equal(tag, "enumerator-list") ||
+        pretty_equal(tag, "parameter-list") ||
+        pretty_equal(tag, "identifier-list")) {
       pretty = pretty_sexp_list(pretty, ast, ", ");
     } else if (pretty_equal(tag, "multiplicative-expression") ||
                pretty_equal(tag, "additive-expression") ||
@@ -487,7 +490,8 @@ Sexp *pretty_sexp(Sexp *ast) {
                pretty_equal(tag, "conditional-expression") ||
                pretty_equal(tag, "assignment-expression") ||
                pretty_equal(tag, "declaration-specifiers") ||
-               pretty_equal(tag, "specifier-qualifier-list")) {
+               pretty_equal(tag, "specifier-qualifier-list") ||
+               pretty_equal(tag, "enumerator")) {
       pretty = pretty_sexp_list(pretty, ast, " ");
     } else if (pretty_equal(tag, "declaration") ||
                pretty_equal(tag, "struct-declaration")) {
@@ -523,6 +527,25 @@ Sexp *pretty_sexp(Sexp *ast) {
         ast = pretty_sexp_skip(ast);
         pretty = pretty_sexp_with_space(pretty, ast);
         ast = pretty_sexp_skip(ast);
+        pretty = pretty_sexp_push(pretty, ast);
+        ast = pretty_sexp_skip(ast);
+      }
+    } else if (pretty_equal(tag, "enum-specifier")) {
+      pretty = pretty_sexp_with_space(pretty, ast);
+      ast = pretty_sexp_skip(ast);
+      pretty = pretty_sexp_with_space(pretty, ast);
+      ast = pretty_sexp_skip(ast);
+      pretty = pretty_sexp_list(pretty, ast, " ");
+    } else if (pretty_equal(tag, "type-qualifier-list")) {
+      pretty = pretty_sexp_list(pretty, ast, " ");
+      if (!sexp_is_nil(ast)) {
+        pretty = pretty_sexp_push_symbol(pretty, " ");
+      }
+    } else if (pretty_equal(tag, "parameter-declaration")) {
+      pretty = pretty_sexp_push(pretty, ast);
+      ast = pretty_sexp_skip(ast);
+      if (!sexp_is_nil(ast)) {
+        pretty = pretty_sexp_push_symbol(pretty, " ");
         pretty = pretty_sexp_push(pretty, ast);
         ast = pretty_sexp_skip(ast);
       }
