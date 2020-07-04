@@ -435,7 +435,7 @@ static Sexp *pretty_sexp_skip(Sexp *ast) {
   assert(sexp_is_pair(ast));
   return sexp_cdr(ast);
 }
-static Sexp *pretty_sexp_between(Sexp *pretty, Sexp *ast, const char *between) {
+static Sexp *pretty_sexp_list(Sexp *pretty, Sexp *ast, const char *between) {
   assert(sexp_is_list(ast));
   if (sexp_is_pair(ast)) {
     pretty = pretty_sexp_push(pretty, ast);
@@ -459,7 +459,7 @@ Sexp *pretty_sexp(Sexp *ast) {
   } else if (sexp_check_tag(ast, "argument-expression-list") ||
              sexp_check_tag(ast, "expression")) {
     ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_between(pretty, ast, ", ");
+    pretty = pretty_sexp_list(pretty, ast, ", ");
   } else if (sexp_check_tag(ast, "multiplicative-expression") ||
              sexp_check_tag(ast, "additive-expression") ||
              sexp_check_tag(ast, "shift-expression") ||
@@ -473,10 +473,10 @@ Sexp *pretty_sexp(Sexp *ast) {
              sexp_check_tag(ast, "conditional-expression") ||
              sexp_check_tag(ast, "assignment-expression")) {
     ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_between(pretty, ast, " ");
+    pretty = pretty_sexp_list(pretty, ast, " ");
   } else if (sexp_check_tag(ast, "declaration")) {
     ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_between(pretty, ast, nil);
+    pretty = pretty_sexp_list(pretty, ast, nil);
     pretty = sexp_snoc(pretty, sexp_symbol("\n"));
   } else {
     ast = pretty_sexp_skip(ast);
