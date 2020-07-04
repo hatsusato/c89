@@ -428,13 +428,6 @@ void pretty_print(List *ast) {
   list_delete(pretty.head, nil);
 }
 
-static const char *pretty_get_tag(Sexp *ast) {
-  if (sexp_is_pair(ast)) {
-    return sexp_get_string(sexp_car(ast));
-  } else {
-    return nil;
-  }
-}
 static Bool pretty_equal(const char *lhs, const char *rhs) {
   return 0 == strcmp(lhs, rhs);
 }
@@ -464,7 +457,7 @@ static Sexp *pretty_sexp_list(Sexp *pretty, Sexp *ast, const char *between) {
 Sexp *pretty_sexp(Sexp *ast) {
   Sexp *pretty = sexp_nil();
   if (sexp_is_pair(ast)) {
-    const char *tag = pretty_get_tag(ast);
+    const char *tag = sexp_get_string(sexp_car(ast));
     ast = pretty_sexp_skip(ast);
     if (pretty_equal(tag, "argument-expression-list") ||
         pretty_equal(tag, "expression")) {
