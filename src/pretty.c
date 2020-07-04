@@ -484,11 +484,7 @@ Sexp *pretty_sexp(Sexp *ast) {
     pretty = pretty_sexp_between(pretty, ast, " ");
   } else if (sexp_check_tag(ast, "declaration")) {
     ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_push(pretty, ast);
-    ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_push(pretty, ast);
-    ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_push(pretty, ast);
+    pretty = pretty_sexp_between(pretty, ast, nil);
     pretty = sexp_snoc(pretty, sexp_symbol("\n"));
   } else {
     ast = pretty_sexp_skip(ast);
