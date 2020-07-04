@@ -463,38 +463,33 @@ static Sexp *pretty_sexp_list(Sexp *pretty, Sexp *ast, const char *between) {
 
 Sexp *pretty_sexp(Sexp *ast) {
   Sexp *pretty = sexp_nil();
-  const char *tag = pretty_get_tag(ast);
-  if (!sexp_is_pair(ast)) {
-    if (!sexp_is_nil(ast)) {
-      pretty = sexp_symbol(sexp_get_string(ast));
+  if (sexp_is_pair(ast)) {
+    const char *tag = pretty_get_tag(ast);
+    ast = pretty_sexp_skip(ast);
+    if (pretty_equal(tag, "argument-expression-list") ||
+        pretty_equal(tag, "expression")) {
+      pretty = pretty_sexp_list(pretty, ast, ", ");
+    } else if (pretty_equal(tag, "multiplicative-expression") ||
+               pretty_equal(tag, "additive-expression") ||
+               pretty_equal(tag, "shift-expression") ||
+               pretty_equal(tag, "relational-expression") ||
+               pretty_equal(tag, "equality-expression") ||
+               pretty_equal(tag, "and-expression") ||
+               pretty_equal(tag, "exclusive-or-expression") ||
+               pretty_equal(tag, "inclusive-or-expression") ||
+               pretty_equal(tag, "logical-and-expression") ||
+               pretty_equal(tag, "logical-or-expression") ||
+               pretty_equal(tag, "conditional-expression") ||
+               pretty_equal(tag, "assignment-expression")) {
+      pretty = pretty_sexp_list(pretty, ast, " ");
+    } else if (pretty_equal(tag, "declaration")) {
+      pretty = pretty_sexp_list(pretty, ast, nil);
+      pretty = sexp_snoc(pretty, sexp_symbol("\n"));
+    } else {
+      pretty = pretty_sexp_list(pretty, ast, nil);
     }
-  } else if (pretty_equal(tag, "argument-expression-list") ||
-             pretty_equal(tag, "expression")) {
-    ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_list(pretty, ast, ", ");
-  } else if (pretty_equal(tag, "multiplicative-expression") ||
-             pretty_equal(tag, "additive-expression") ||
-             pretty_equal(tag, "shift-expression") ||
-             pretty_equal(tag, "relational-expression") ||
-             pretty_equal(tag, "equality-expression") ||
-             pretty_equal(tag, "and-expression") ||
-             pretty_equal(tag, "exclusive-or-expression") ||
-             pretty_equal(tag, "inclusive-or-expression") ||
-             pretty_equal(tag, "logical-and-expression") ||
-             pretty_equal(tag, "logical-or-expression") ||
-             pretty_equal(tag, "conditional-expression") ||
-             pretty_equal(tag, "assignment-expression")) {
-    ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_list(pretty, ast, " ");
-  } else if (pretty_equal(tag, "declaration")) {
-    ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_list(pretty, ast, nil);
-    pretty = sexp_snoc(pretty, sexp_symbol("\n"));
-  } else {
-    ast = pretty_sexp_skip(ast);
-    for (; sexp_is_pair(ast); ast = pretty_sexp_skip(ast)) {
-      pretty = pretty_sexp_push(pretty, ast);
-    }
+  } else if (!sexp_is_nil(ast)) {
+    pretty = sexp_symbol(sexp_get_string(ast));
   }
   return pretty;
 }
