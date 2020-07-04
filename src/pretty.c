@@ -427,14 +427,6 @@ void pretty_print(List *ast) {
   list_delete(pretty.head, nil);
 }
 
-static void pretty_sexp_list(Sexp *list) {
-  if (sexp_is_pair(list)) {
-    pretty_print_sexp(sexp_car(list));
-    pretty_sexp_list(sexp_cdr(list));
-  } else {
-    assert(sexp_is_nil(list));
-  }
-}
 static Sexp *pretty_sexp_push(Sexp *pretty, Sexp *ast) {
   assert(sexp_is_pair(ast));
   return sexp_snoc(pretty, pretty_sexp(sexp_car(ast)));
@@ -497,7 +489,8 @@ Sexp *pretty_sexp(Sexp *ast) {
 void pretty_print_sexp(Sexp *sexp) {
   if (sexp_is_pair(sexp)) {
     assert(sexp_is_list(sexp));
-    pretty_sexp_list(sexp);
+    pretty_print_sexp(sexp_car(sexp));
+    pretty_print_sexp(sexp_cdr(sexp));
   } else {
     print_symbol(sexp);
   }
