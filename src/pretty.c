@@ -472,8 +472,7 @@ Sexp *pretty_sexp(Sexp *ast) {
     const char *tag = sexp_get_string(sexp_car(ast));
     ast = pretty_sexp_skip(ast);
     if (pretty_equal(tag, "argument-expression-list") ||
-        pretty_equal(tag, "expression") ||
-        pretty_equal(tag, "init-declarator-list")) {
+        pretty_equal(tag, "expression")) {
       pretty = pretty_sexp_list(pretty, ast, ", ");
     } else if (pretty_equal(tag, "multiplicative-expression") ||
                pretty_equal(tag, "additive-expression") ||
@@ -487,18 +486,16 @@ Sexp *pretty_sexp(Sexp *ast) {
                pretty_equal(tag, "logical-or-expression") ||
                pretty_equal(tag, "conditional-expression") ||
                pretty_equal(tag, "assignment-expression") ||
-               pretty_equal(tag, "declaration-specifiers") ||
-               pretty_equal(tag, "init-declarator")) {
+               pretty_equal(tag, "declaration-specifiers")) {
       pretty = pretty_sexp_list(pretty, ast, " ");
     } else if (pretty_equal(tag, "declaration")) {
-      pretty = pretty_sexp_push(pretty, ast);
-      ast = pretty_sexp_skip(ast);
-      pretty = pretty_sexp_push_symbol(pretty, " ");
-      pretty = pretty_sexp_push(pretty, ast);
-      ast = pretty_sexp_skip(ast);
-      pretty = pretty_sexp_push(pretty, ast);
-      ast = pretty_sexp_skip(ast);
+      pretty = pretty_sexp_list(pretty, ast, nil);
       pretty = pretty_sexp_push_symbol(pretty, "\n");
+    } else if (pretty_equal(tag, "init-declarator-list")) {
+      pretty = pretty_sexp_list(pretty, ast, ",");
+    } else if (pretty_equal(tag, "init-declarator")) {
+      pretty = pretty_sexp_push_symbol(pretty, " ");
+      pretty = pretty_sexp_list(pretty, ast, " ");
     } else {
       pretty = pretty_sexp_list(pretty, ast, nil);
     }
