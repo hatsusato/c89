@@ -443,13 +443,17 @@ static Sexp *pretty_sexp_skip(Sexp *ast) {
   assert(sexp_is_pair(ast));
   return sexp_cdr(ast);
 }
-static Sexp *pretty_sexp_between_space(Sexp *pretty, Sexp *ast) {
-  assert(sexp_is_pair(ast) && sexp_is_list(ast));
-  pretty = pretty_sexp_push(pretty, ast);
-  ast = pretty_sexp_skip(ast);
-  for (; sexp_is_pair(ast); ast = pretty_sexp_skip(ast)) {
-    pretty = sexp_snoc(pretty, sexp_symbol(" "));
+static Sexp *pretty_sexp_between(Sexp *pretty, Sexp *ast, const char *between) {
+  assert(sexp_is_list(ast));
+  if (sexp_is_pair(ast)) {
     pretty = pretty_sexp_push(pretty, ast);
+    ast = pretty_sexp_skip(ast);
+    for (; sexp_is_pair(ast); ast = pretty_sexp_skip(ast)) {
+      if (between) {
+        pretty = sexp_snoc(pretty, sexp_symbol(between));
+      }
+      pretty = pretty_sexp_push(pretty, ast);
+    }
   }
   return pretty;
 }
@@ -462,13 +466,7 @@ Sexp *pretty_sexp(Sexp *ast) {
     }
   } else if (sexp_check_tag(ast, "argument-expression-list")) {
     ast = pretty_sexp_skip(ast);
-    if (sexp_is_pair(ast)) {
-      pretty = pretty_sexp_push(pretty, ast);
-      ast = pretty_sexp_skip(ast);
-      for (; sexp_is_pair(ast); ast = pretty_sexp_skip(ast)) {
-        pretty = pretty_sexp_between_space(pretty, sexp_car(ast));
-      }
-    }
+    pretty = pretty_sexp_between(pretty, ast, ", ");
   } else if (sexp_check_tag(ast, "multiplicative-expression") ||
              sexp_check_tag(ast, "additive-expression") ||
              sexp_check_tag(ast, "shift-expression") ||
@@ -482,12 +480,12 @@ Sexp *pretty_sexp(Sexp *ast) {
              sexp_check_tag(ast, "conditional-expression") ||
              sexp_check_tag(ast, "assignment-expression")) {
     ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_between_space(pretty, ast);
+    pretty = pretty_sexp_between(pretty, ast, " ");
   } else if (sexp_check_tag(ast, "expression")) {
     ast = pretty_sexp_skip(ast);
     pretty = pretty_sexp_push(pretty, ast);
     ast = pretty_sexp_skip(ast);
-    pretty = pretty_sexp_between_space(pretty, ast);
+    pretty = pretty_sexp_between(pretty, ast, " ");
   } else if (sexp_check_tag(ast, "declaration")) {
     ast = pretty_sexp_skip(ast);
     pretty = pretty_sexp_push(pretty, ast);

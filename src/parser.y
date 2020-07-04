@@ -332,7 +332,7 @@ argument-expression-list.opt
 ;
 argument-expression-list
 : assignment-expression {$$ = PARSER_LIST_ATOM(argument-expression-list, $1);}
-| argument-expression-list comma assignment-expression {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
+| argument-expression-list "," assignment-expression {$$ = PARSER_LIST_PAIR($1, $3);}
 ;
 unary-expression
 : postfix-expression
@@ -523,7 +523,7 @@ init-declarator-list.opt
 ;
 init-declarator-list
 : init-declarator {$$ = PARSER_LIST_ATOM(init-declarator-list, $1);}
-| init-declarator-list comma init-declarator {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
+| init-declarator-list "," init-declarator {$$ = PARSER_LIST_PAIR($1, $3);}
 ;
 init-declarator
 : init-declarator.tag {$$ = PARSER_TAG(init-declarator, $1);}
@@ -589,7 +589,7 @@ specifier-qualifier
 ;
 struct-declarator-list
 : struct-declarator {$$ = PARSER_LIST_ATOM(struct-declarator-list, $1);}
-| struct-declarator-list comma struct-declarator {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
+| struct-declarator-list "," struct-declarator {$$ = PARSER_LIST_PAIR($1, $3);}
 ;
 struct-declarator
 : struct-declarator.tag {$$ = PARSER_TAG(struct-declarator, $1);}
@@ -607,7 +607,7 @@ enum-specifier.tag
 ;
 enumerator-list
 : enumerator {$$ = PARSER_LIST_ATOM(enumerator-list, $1);}
-| enumerator-list comma enumerator {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
+| enumerator-list "," enumerator {$$ = PARSER_LIST_PAIR($1, $3);}
 ;
 enumerator
 : enumerator.tag {$$ = PARSER_TAG(enumerator, $1);}
@@ -668,11 +668,11 @@ parameter-type-list.opt
 ;
 parameter-type-list
 : parameter-list
-| parameter-list comma ellipsis {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
+| parameter-list "," ellipsis {$$ = PARSER_LIST_PAIR($1, $3);}
 ;
 parameter-list
 : parameter-declaration {$$ = PARSER_LIST_ATOM(parameter-list, $1);}
-| parameter-list comma parameter-declaration {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
+| parameter-list "," parameter-declaration {$$ = PARSER_LIST_PAIR($1, $3);}
 ;
 parameter-declaration
 : parameter-declaration.tag {$$ = PARSER_TAG(parameter-declaration, $1);}
@@ -683,7 +683,7 @@ parameter-declaration.tag
 ;
 identifier-list
 : identifier {$$ = PARSER_LIST_ATOM(identifier-list, $1);}
-| identifier-list comma identifier {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
+| identifier-list "," identifier {$$ = PARSER_LIST_PAIR($1, $3);}
 ;
 type-name
 : type-name.tag {$$ = PARSER_TAG(type-name, $1);}
@@ -728,7 +728,7 @@ initializer.tag
 ;
 initializer-list
 : initializer {$$ = PARSER_LIST_ATOM(initializer-list, $1);}
-| initializer-list comma initializer {$$ = PARSER_LIST_PAIR($1, sexp_list2($2, $3));}
+| initializer-list "," initializer {$$ = PARSER_LIST_PAIR($1, $3);}
 ;
 
 /* 6.6 Statements */
