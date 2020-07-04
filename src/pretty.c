@@ -5,6 +5,11 @@
 #include "print.h"
 #include "utility.h"
 
+struct {
+  Sexp *result;
+  Sexp *ast;
+} typedef Pretty;
+
 static Bool pretty_equal(const char *lhs, const char *rhs) {
   return 0 == strcmp(lhs, rhs);
 }
