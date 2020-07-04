@@ -1,6 +1,7 @@
 #include "pretty.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #include "ast.h"
 #include "print.h"
@@ -434,6 +435,9 @@ static const char *pretty_get_tag(Sexp *ast) {
     return nil;
   }
 }
+static Bool pretty_equal(const char *lhs, const char *rhs) {
+  return 0 == strcmp(lhs, rhs);
+}
 static Sexp *pretty_sexp_push(Sexp *pretty, Sexp *ast) {
   assert(sexp_is_pair(ast));
   return sexp_snoc(pretty, pretty_sexp(sexp_car(ast)));
@@ -464,25 +468,25 @@ Sexp *pretty_sexp(Sexp *ast) {
     if (!sexp_is_nil(ast)) {
       pretty = sexp_symbol(sexp_get_string(ast));
     }
-  } else if (sexp_check_tag(ast, "argument-expression-list") ||
-             sexp_check_tag(ast, "expression")) {
+  } else if (pretty_equal(tag, "argument-expression-list") ||
+             pretty_equal(tag, "expression")) {
     ast = pretty_sexp_skip(ast);
     pretty = pretty_sexp_list(pretty, ast, ", ");
-  } else if (sexp_check_tag(ast, "multiplicative-expression") ||
-             sexp_check_tag(ast, "additive-expression") ||
-             sexp_check_tag(ast, "shift-expression") ||
-             sexp_check_tag(ast, "relational-expression") ||
-             sexp_check_tag(ast, "equality-expression") ||
-             sexp_check_tag(ast, "and-expression") ||
-             sexp_check_tag(ast, "exclusive-or-expression") ||
-             sexp_check_tag(ast, "inclusive-or-expression") ||
-             sexp_check_tag(ast, "logical-and-expression") ||
-             sexp_check_tag(ast, "logical-or-expression") ||
-             sexp_check_tag(ast, "conditional-expression") ||
-             sexp_check_tag(ast, "assignment-expression")) {
+  } else if (pretty_equal(tag, "multiplicative-expression") ||
+             pretty_equal(tag, "additive-expression") ||
+             pretty_equal(tag, "shift-expression") ||
+             pretty_equal(tag, "relational-expression") ||
+             pretty_equal(tag, "equality-expression") ||
+             pretty_equal(tag, "and-expression") ||
+             pretty_equal(tag, "exclusive-or-expression") ||
+             pretty_equal(tag, "inclusive-or-expression") ||
+             pretty_equal(tag, "logical-and-expression") ||
+             pretty_equal(tag, "logical-or-expression") ||
+             pretty_equal(tag, "conditional-expression") ||
+             pretty_equal(tag, "assignment-expression")) {
     ast = pretty_sexp_skip(ast);
     pretty = pretty_sexp_list(pretty, ast, " ");
-  } else if (sexp_check_tag(ast, "declaration")) {
+  } else if (pretty_equal(tag, "declaration")) {
     ast = pretty_sexp_skip(ast);
     pretty = pretty_sexp_list(pretty, ast, nil);
     pretty = sexp_snoc(pretty, sexp_symbol("\n"));
