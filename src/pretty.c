@@ -442,6 +442,14 @@ static Sexp *pretty_sexp_skip(Sexp *ast) {
   assert(sexp_is_pair(ast));
   return sexp_cdr(ast);
 }
+static Sexp *pretty_sexp_with_space(Sexp *pretty, Sexp *ast) {
+  assert(sexp_is_pair(ast));
+  if (!sexp_is_nil(sexp_car(ast))) {
+    pretty = pretty_sexp_push(pretty, ast);
+    pretty = pretty_sexp_push_symbol(pretty, " ");
+  }
+  return pretty;
+}
 static Sexp *pretty_sexp_list(Sexp *pretty, Sexp *ast, const char *between) {
   assert(sexp_is_list(ast));
   if (sexp_is_pair(ast)) {
