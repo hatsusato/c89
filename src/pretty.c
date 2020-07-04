@@ -480,7 +480,13 @@ Sexp *pretty_sexp(Sexp *ast) {
                pretty_equal(tag, "assignment-expression")) {
       pretty = pretty_sexp_list(pretty, ast, " ");
     } else if (pretty_equal(tag, "declaration")) {
-      pretty = pretty_sexp_list(pretty, ast, nil);
+      pretty = pretty_sexp_push(pretty, ast);
+      ast = pretty_sexp_skip(ast);
+      pretty = pretty_sexp_push_symbol(pretty, " ");
+      pretty = pretty_sexp_push(pretty, ast);
+      ast = pretty_sexp_skip(ast);
+      pretty = pretty_sexp_push(pretty, ast);
+      ast = pretty_sexp_skip(ast);
       pretty = pretty_sexp_push_symbol(pretty, "\n");
     } else {
       pretty = pretty_sexp_list(pretty, ast, nil);
