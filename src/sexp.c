@@ -22,14 +22,6 @@ typedef struct struct_Sexp MutableSexp;
 static SexpKind sexp_kind(Sexp *sexp) {
   return sexp ? sexp->kind : SEXP_NIL;
 }
-static void sexp_set_car(Sexp *pair, Sexp *car) {
-  assert(sexp_is_pair(pair));
-  ((MutableSexp *)pair)->data.pair.car = car;
-}
-static void sexp_set_cdr(Sexp *pair, Sexp *cdr) {
-  assert(sexp_is_pair(pair));
-  ((MutableSexp *)pair)->data.pair.cdr = cdr;
-}
 
 Sexp *sexp_nil(void) {
   return nil;
