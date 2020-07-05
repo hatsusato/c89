@@ -41,6 +41,19 @@ Sexp *sexp_cons(Sexp *car, Sexp *cdr) {
   sexp->data.pair.cdr = cdr;
   return sexp;
 }
+Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
+  if (sexp_is_pair(xs)) {
+    Sexp *cdr = xs->data.pair.cdr;
+    if (sexp_is_pair(cdr)) {
+      sexp_snoc(cdr, x);
+    } else {
+      ((MutableSexp *)xs)->data.pair.cdr = sexp_cons(x, cdr);
+    }
+    return xs;
+  } else {
+    return sexp_cons(x, xs);
+  }
+}
 Sexp *sexp_symbol(const char *symbol) {
   MutableSexp *sexp = malloc(sizeof(Sexp));
   sexp->kind = SEXP_SYMBOL;
@@ -133,21 +146,7 @@ const char *sexp_get_string(Sexp *sexp) {
   } else if (sexp_is_symbol(sexp)) {
     return sexp->data.symbol;
   } else {
-    assert(0);
     return nil;
-  }
-}
-Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
-  if (sexp_is_pair(xs)) {
-    Sexp *cdr = sexp_cdr(xs);
-    if (sexp_is_pair(cdr)) {
-      sexp_snoc(cdr, x);
-    } else {
-      sexp_set_cdr(xs, sexp_cons(x, cdr));
-    }
-    return xs;
-  } else {
-    return sexp_cons(x, xs);
   }
 }
 Sexp *sexp_list1(Sexp *sexp0) {
