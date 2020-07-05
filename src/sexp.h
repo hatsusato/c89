@@ -24,16 +24,5 @@ Sexp *sexp_last(Sexp *);
 Bool sexp_eq(Sexp *, const char *);
 const char *sexp_get_string(Sexp *);
 Sexp *sexp_snoc(Sexp *, Sexp *);
-Sexp *sexp_list1(Sexp *);
-Sexp *sexp_list2(Sexp *, Sexp *);
-Sexp *sexp_list3(Sexp *, Sexp *, Sexp *);
-Sexp *sexp_list4(Sexp *, Sexp *, Sexp *, Sexp *);
-Sexp *sexp_list5(Sexp *, Sexp *, Sexp *, Sexp *, Sexp *);
-Sexp *sexp_list6(Sexp *, Sexp *, Sexp *, Sexp *, Sexp *, Sexp *);
-Sexp *sexp_list7(Sexp *, Sexp *, Sexp *, Sexp *, Sexp *, Sexp *, Sexp *);
-Sexp *sexp_list8(Sexp *, Sexp *, Sexp *, Sexp *, Sexp *, Sexp *, Sexp *,
-                 Sexp *);
-Sexp *sexp_list9(Sexp *, Sexp *, Sexp *, Sexp *, Sexp *, Sexp *, Sexp *, Sexp *,
-                 Sexp *);
 
 #endif /* INCLUDE_GUARD_3397EB56_FB26_40B7_AD9E_F7B3DA519335 */
