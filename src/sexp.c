@@ -130,7 +130,8 @@ Sexp *sexp_last(Sexp *sexp) {
   return sexp_nil();
 }
 Bool sexp_eq(Sexp *sexp, const char *symbol) {
-  return (sexp_is_symbol(sexp)) && 0 == strcmp(sexp->data.symbol, symbol);
+  assert(sexp_is_symbol(sexp));
+  return utility_str_eq(sexp->data.symbol, symbol);
 }
 const char *sexp_get_string(Sexp *sexp) {
   if (sexp_is_string(sexp)) {
