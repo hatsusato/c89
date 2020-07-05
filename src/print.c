@@ -34,21 +34,21 @@ void print_symbol(FILE *fp, Sexp *sexp) {
   }
 }
 void print_sexp(FILE *fp, Sexp *sexp, int indent) {
+  const char *prefix = "(", *suffix = ")";
   if (sexp_is_pair(sexp)) {
-    fprintf(fp, "(");
+    fprintf(fp, "%s", prefix);
     print_sexp_list(fp, sexp, indent + 1);
-    fprintf(fp, ")");
-  } else if (sexp_is_symbol(sexp)) {
-    assert(sexp_get_string(sexp));
-    if (!isalpha(*sexp_get_string(sexp))) {
-      fprintf(fp, "#");
-    }
-    print_symbol(fp, sexp);
-  } else if (sexp_is_string(sexp)) {
-    fprintf(fp, "%c", '"');
-    print_symbol(fp, sexp);
-    fprintf(fp, "%c", '"');
+    fprintf(fp, "%s", suffix);
   } else {
-    fprintf(fp, "()");
+    if (sexp_is_symbol(sexp)) {
+      const char *sym = sexp_get_string(sexp);
+      assert(sym);
+      prefix = suffix = (isalpha(*sym) ? "" : "#");
+    } else if (sexp_is_string(sexp)) {
+      prefix = suffix = "\"";
+    }
+    fprintf(fp, "%s", prefix);
+    print_symbol(fp, sexp);
+    fprintf(fp, "%s", suffix);
   }
 }
