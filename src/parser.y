@@ -326,7 +326,7 @@ argument-expression-list.opt
 ;
 argument-expression-list
 : assignment-expression {$$ = PARSER_ATOM(argument-expression-list, $1);}
-| argument-expression-list "," assignment-expression {$$ = PARSER_PAIR($1, $3);}
+| argument-expression-list "," assignment-expression {$$ = PARSER_SNOC($1, $3);}
 ;
 unary-expression
 : postfix-expression
@@ -504,7 +504,7 @@ declaration.tag
 ;
 declaration-specifiers
 : declaration-specifier {$$ = PARSER_ATOM(declaration-specifiers, $1);}
-| declaration-specifiers declaration-specifier {$$ = PARSER_PAIR($1, $2);}
+| declaration-specifiers declaration-specifier {$$ = PARSER_SNOC($1, $2);}
 ;
 declaration-specifier
 : storage-class-specifier
@@ -517,7 +517,7 @@ init-declarator-list.opt
 ;
 init-declarator-list
 : init-declarator {$$ = PARSER_ATOM(init-declarator-list, $1);}
-| init-declarator-list "," init-declarator {$$ = PARSER_PAIR($1, $3);}
+| init-declarator-list "," init-declarator {$$ = PARSER_SNOC($1, $3);}
 ;
 init-declarator
 : init-declarator.tag {$$ = PARSER_TAG(init-declarator, $1);}
@@ -566,7 +566,7 @@ struct-or-union
 ;
 struct-declaration-list
 : struct-declaration {$$ = PARSER_ATOM(struct-declaration-list, $1);}
-| struct-declaration-list struct-declaration {$$ = PARSER_PAIR($1, $2);}
+| struct-declaration-list struct-declaration {$$ = PARSER_SNOC($1, $2);}
 ;
 struct-declaration
 : struct-declaration.tag {$$ = PARSER_TAG(struct-declaration, $1);}
@@ -575,7 +575,7 @@ struct-declaration.tag
 ;
 specifier-qualifier-list
 : specifier-qualifier {$$ = PARSER_ATOM(specifier-qualifier-list, $1);}
-| specifier-qualifier-list specifier-qualifier {$$ = PARSER_PAIR($1, $2);}
+| specifier-qualifier-list specifier-qualifier {$$ = PARSER_SNOC($1, $2);}
 ;
 specifier-qualifier
 : type-specifier
@@ -583,7 +583,7 @@ specifier-qualifier
 ;
 struct-declarator-list
 : struct-declarator {$$ = PARSER_ATOM(struct-declarator-list, $1);}
-| struct-declarator-list "," struct-declarator {$$ = PARSER_PAIR($1, $3);}
+| struct-declarator-list "," struct-declarator {$$ = PARSER_SNOC($1, $3);}
 ;
 struct-declarator
 : struct-declarator.tag {$$ = PARSER_TAG(struct-declarator, $1);}
@@ -601,7 +601,7 @@ enum-specifier.tag
 ;
 enumerator-list
 : enumerator {$$ = PARSER_ATOM(enumerator-list, $1);}
-| enumerator-list "," enumerator {$$ = PARSER_PAIR($1, $3);}
+| enumerator-list "," enumerator {$$ = PARSER_SNOC($1, $3);}
 ;
 enumerator
 : enumerator.tag {$$ = PARSER_TAG(enumerator, $1);}
@@ -654,7 +654,7 @@ type-qualifier-list.opt
 ;
 type-qualifier-list
 : type-qualifier {$$ = PARSER_ATOM(type-qualifier-list, $1);}
-| type-qualifier-list type-qualifier {$$ = PARSER_PAIR($1, $2);}
+| type-qualifier-list type-qualifier {$$ = PARSER_SNOC($1, $2);}
 ;
 parameter-type-list.opt
 : %empty {$$ = PARSER_NIL(parameter-list);}
@@ -662,11 +662,11 @@ parameter-type-list.opt
 ;
 parameter-type-list
 : parameter-list
-| parameter-list "," ellipsis {$$ = PARSER_PAIR($1, $3);}
+| parameter-list "," ellipsis {$$ = PARSER_SNOC($1, $3);}
 ;
 parameter-list
 : parameter-declaration {$$ = PARSER_ATOM(parameter-list, $1);}
-| parameter-list "," parameter-declaration {$$ = PARSER_PAIR($1, $3);}
+| parameter-list "," parameter-declaration {$$ = PARSER_SNOC($1, $3);}
 ;
 parameter-declaration
 : parameter-declaration.tag {$$ = PARSER_TAG(parameter-declaration, $1);}
@@ -677,7 +677,7 @@ parameter-declaration.tag
 ;
 identifier-list
 : identifier {$$ = PARSER_ATOM(identifier-list, $1);}
-| identifier-list "," identifier {$$ = PARSER_PAIR($1, $3);}
+| identifier-list "," identifier {$$ = PARSER_SNOC($1, $3);}
 ;
 type-name
 : type-name.tag {$$ = PARSER_TAG(type-name, $1);}
@@ -722,7 +722,7 @@ initializer.tag
 ;
 initializer-list
 : initializer {$$ = PARSER_ATOM(initializer-list, $1);}
-| initializer-list "," initializer {$$ = PARSER_PAIR($1, $3);}
+| initializer-list "," initializer {$$ = PARSER_SNOC($1, $3);}
 ;
 
 /* 6.6 Statements */
@@ -757,7 +757,7 @@ declaration-list.opt
 ;
 declaration-list
 : declaration {$$ = PARSER_ATOM(declaration-list, $1);}
-| declaration-list declaration {$$ = PARSER_PAIR($1, $2);}
+| declaration-list declaration {$$ = PARSER_SNOC($1, $2);}
 ;
 statement-list.opt
 : %empty {$$ = PARSER_NIL(statement-list);}
@@ -765,7 +765,7 @@ statement-list.opt
 ;
 statement-list
 : statement {$$ = PARSER_ATOM(statement-list, $1);}
-| statement-list statement {$$ = PARSER_PAIR($1, $2);}
+| statement-list statement {$$ = PARSER_SNOC($1, $2);}
 ;
 expression-statement
 : expression-statement.tag {$$ = PARSER_TAG(expression-statement, $1);}
@@ -805,7 +805,7 @@ top
 ;
 translation-unit
 : external-declaration {$$ = PARSER_ATOM(translation-unit, $1);}
-| translation-unit external-declaration {$$ = PARSER_PAIR($1, $2);}
+| translation-unit external-declaration {$$ = PARSER_SNOC($1, $2);}
 ;
 external-declaration
 : function-definition
