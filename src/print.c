@@ -3,13 +3,12 @@
 #include <ctype.h>
 
 static void print_sexp_list(FILE *fp, Sexp *sexp, int indent) {
-  if (sexp_is_pair(sexp)) {
+  assert(sexp_is_pair(sexp));
+  print_sexp(fp, sexp_car(sexp), indent);
+  for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
     fprintf(fp, "\n");
     print_indent(fp, indent);
     print_sexp(fp, sexp_car(sexp), indent);
-    print_sexp_list(fp, sexp_cdr(sexp), indent);
-  } else {
-    assert(sexp_is_nil(sexp));
   }
 }
 
@@ -37,8 +36,7 @@ void print_symbol(FILE *fp, Sexp *sexp) {
 void print_sexp(FILE *fp, Sexp *sexp, int indent) {
   if (sexp_is_pair(sexp)) {
     fprintf(fp, "(");
-    print_sexp(fp, sexp_car(sexp), indent + 1);
-    print_sexp_list(fp, sexp_cdr(sexp), indent + 1);
+    print_sexp_list(fp, sexp, indent + 1);
     fprintf(fp, ")");
   } else if (sexp_is_symbol(sexp)) {
     assert(sexp_get_string(sexp));
