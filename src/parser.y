@@ -321,12 +321,12 @@ postfix-expression.suffix
 | decrement {$$ = PARSER_LIST1($1);}
 ;
 argument-expression-list.opt
-: %empty {$$ = PARSER_LIST_NIL(argument-expression-list);}
+: %empty {$$ = PARSER_NIL(argument-expression-list);}
 | argument-expression-list
 ;
 argument-expression-list
-: assignment-expression {$$ = PARSER_LIST_ATOM(argument-expression-list, $1);}
-| argument-expression-list "," assignment-expression {$$ = PARSER_LIST_PAIR($1, $3);}
+: assignment-expression {$$ = PARSER_ATOM(argument-expression-list, $1);}
+| argument-expression-list "," assignment-expression {$$ = PARSER_PAIR($1, $3);}
 ;
 unary-expression
 : postfix-expression
@@ -503,8 +503,8 @@ declaration.tag
 : declaration-specifiers init-declarator-list.opt semicolon {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 declaration-specifiers
-: declaration-specifier {$$ = PARSER_LIST_ATOM(declaration-specifiers, $1);}
-| declaration-specifiers declaration-specifier {$$ = PARSER_LIST_PAIR($1, $2);}
+: declaration-specifier {$$ = PARSER_ATOM(declaration-specifiers, $1);}
+| declaration-specifiers declaration-specifier {$$ = PARSER_PAIR($1, $2);}
 ;
 declaration-specifier
 : storage-class-specifier
@@ -512,12 +512,12 @@ declaration-specifier
 | type-qualifier
 ;
 init-declarator-list.opt
-: %empty {$$ = PARSER_LIST_NIL(init-declarator-list);}
+: %empty {$$ = PARSER_NIL(init-declarator-list);}
 | init-declarator-list
 ;
 init-declarator-list
-: init-declarator {$$ = PARSER_LIST_ATOM(init-declarator-list, $1);}
-| init-declarator-list "," init-declarator {$$ = PARSER_LIST_PAIR($1, $3);}
+: init-declarator {$$ = PARSER_ATOM(init-declarator-list, $1);}
+| init-declarator-list "," init-declarator {$$ = PARSER_PAIR($1, $3);}
 ;
 init-declarator
 : init-declarator.tag {$$ = PARSER_TAG(init-declarator, $1);}
@@ -565,8 +565,8 @@ struct-or-union
 | union
 ;
 struct-declaration-list
-: struct-declaration {$$ = PARSER_LIST_ATOM(struct-declaration-list, $1);}
-| struct-declaration-list struct-declaration {$$ = PARSER_LIST_PAIR($1, $2);}
+: struct-declaration {$$ = PARSER_ATOM(struct-declaration-list, $1);}
+| struct-declaration-list struct-declaration {$$ = PARSER_PAIR($1, $2);}
 ;
 struct-declaration
 : struct-declaration.tag {$$ = PARSER_TAG(struct-declaration, $1);}
@@ -574,16 +574,16 @@ struct-declaration.tag
 : specifier-qualifier-list struct-declarator-list semicolon {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 specifier-qualifier-list
-: specifier-qualifier {$$ = PARSER_LIST_ATOM(specifier-qualifier-list, $1);}
-| specifier-qualifier-list specifier-qualifier {$$ = PARSER_LIST_PAIR($1, $2);}
+: specifier-qualifier {$$ = PARSER_ATOM(specifier-qualifier-list, $1);}
+| specifier-qualifier-list specifier-qualifier {$$ = PARSER_PAIR($1, $2);}
 ;
 specifier-qualifier
 : type-specifier
 | type-qualifier
 ;
 struct-declarator-list
-: struct-declarator {$$ = PARSER_LIST_ATOM(struct-declarator-list, $1);}
-| struct-declarator-list "," struct-declarator {$$ = PARSER_LIST_PAIR($1, $3);}
+: struct-declarator {$$ = PARSER_ATOM(struct-declarator-list, $1);}
+| struct-declarator-list "," struct-declarator {$$ = PARSER_PAIR($1, $3);}
 ;
 struct-declarator
 : struct-declarator.tag {$$ = PARSER_TAG(struct-declarator, $1);}
@@ -600,8 +600,8 @@ enum-specifier.tag
 | enum identifier {$$ = PARSER_LIST2($1, $2);}
 ;
 enumerator-list
-: enumerator {$$ = PARSER_LIST_ATOM(enumerator-list, $1);}
-| enumerator-list "," enumerator {$$ = PARSER_LIST_PAIR($1, $3);}
+: enumerator {$$ = PARSER_ATOM(enumerator-list, $1);}
+| enumerator-list "," enumerator {$$ = PARSER_PAIR($1, $3);}
 ;
 enumerator
 : enumerator.tag {$$ = PARSER_TAG(enumerator, $1);}
@@ -649,24 +649,24 @@ pointer.tag
 | pointer asterisk type-qualifier-list.opt {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 type-qualifier-list.opt
-: %empty {$$ = PARSER_LIST_NIL(type-qualifier-list);}
+: %empty {$$ = PARSER_NIL(type-qualifier-list);}
 | type-qualifier-list
 ;
 type-qualifier-list
-: type-qualifier {$$ = PARSER_LIST_ATOM(type-qualifier-list, $1);}
-| type-qualifier-list type-qualifier {$$ = PARSER_LIST_PAIR($1, $2);}
+: type-qualifier {$$ = PARSER_ATOM(type-qualifier-list, $1);}
+| type-qualifier-list type-qualifier {$$ = PARSER_PAIR($1, $2);}
 ;
 parameter-type-list.opt
-: %empty {$$ = PARSER_LIST_NIL(parameter-list);}
+: %empty {$$ = PARSER_NIL(parameter-list);}
 | parameter-type-list
 ;
 parameter-type-list
 : parameter-list
-| parameter-list "," ellipsis {$$ = PARSER_LIST_PAIR($1, $3);}
+| parameter-list "," ellipsis {$$ = PARSER_PAIR($1, $3);}
 ;
 parameter-list
-: parameter-declaration {$$ = PARSER_LIST_ATOM(parameter-list, $1);}
-| parameter-list "," parameter-declaration {$$ = PARSER_LIST_PAIR($1, $3);}
+: parameter-declaration {$$ = PARSER_ATOM(parameter-list, $1);}
+| parameter-list "," parameter-declaration {$$ = PARSER_PAIR($1, $3);}
 ;
 parameter-declaration
 : parameter-declaration.tag {$$ = PARSER_TAG(parameter-declaration, $1);}
@@ -676,8 +676,8 @@ parameter-declaration.tag
 | declaration-specifiers abstract-declarator.opt {$$ = PARSER_LIST2($1, $2);}
 ;
 identifier-list
-: identifier {$$ = PARSER_LIST_ATOM(identifier-list, $1);}
-| identifier-list "," identifier {$$ = PARSER_LIST_PAIR($1, $3);}
+: identifier {$$ = PARSER_ATOM(identifier-list, $1);}
+| identifier-list "," identifier {$$ = PARSER_PAIR($1, $3);}
 ;
 type-name
 : type-name.tag {$$ = PARSER_TAG(type-name, $1);}
@@ -721,8 +721,8 @@ initializer.tag
 | left-brace initializer-list comma right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
 ;
 initializer-list
-: initializer {$$ = PARSER_LIST_ATOM(initializer-list, $1);}
-| initializer-list "," initializer {$$ = PARSER_LIST_PAIR($1, $3);}
+: initializer {$$ = PARSER_ATOM(initializer-list, $1);}
+| initializer-list "," initializer {$$ = PARSER_PAIR($1, $3);}
 ;
 
 /* 6.6 Statements */
@@ -752,20 +752,20 @@ compound-statement.tag
 : left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
 ;
 declaration-list.opt
-: %empty {$$ = PARSER_LIST_NIL(declaration-list);}
+: %empty {$$ = PARSER_NIL(declaration-list);}
 | declaration-list
 ;
 declaration-list
-: declaration {$$ = PARSER_LIST_ATOM(declaration-list, $1);}
-| declaration-list declaration {$$ = PARSER_LIST_PAIR($1, $2);}
+: declaration {$$ = PARSER_ATOM(declaration-list, $1);}
+| declaration-list declaration {$$ = PARSER_PAIR($1, $2);}
 ;
 statement-list.opt
-: %empty {$$ = PARSER_LIST_NIL(statement-list);}
+: %empty {$$ = PARSER_NIL(statement-list);}
 | statement-list
 ;
 statement-list
-: statement {$$ = PARSER_LIST_ATOM(statement-list, $1);}
-| statement-list statement {$$ = PARSER_LIST_PAIR($1, $2);}
+: statement {$$ = PARSER_ATOM(statement-list, $1);}
+| statement-list statement {$$ = PARSER_PAIR($1, $2);}
 ;
 expression-statement
 : expression-statement.tag {$$ = PARSER_TAG(expression-statement, $1);}
@@ -804,8 +804,8 @@ top
 : translation-unit {scanner_finish(scanner, $1);}
 ;
 translation-unit
-: external-declaration {$$ = PARSER_LIST_ATOM(translation-unit, $1);}
-| translation-unit external-declaration {$$ = PARSER_LIST_PAIR($1, $2);}
+: external-declaration {$$ = PARSER_ATOM(translation-unit, $1);}
+| translation-unit external-declaration {$$ = PARSER_PAIR($1, $2);}
 ;
 external-declaration
 : function-definition
