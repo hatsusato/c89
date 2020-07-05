@@ -87,7 +87,7 @@ yyscan_t scanner_new(Result *result) {
   Set *symbols = result_get_symbols(result);
   int ret = yylex_init_extra(result, &scanner);
   assert(ret == 0);
-  while (it && *it) {
+  while (*it) {
     set_string_insert(symbols, *it++);
   }
   return scanner;
@@ -105,16 +105,6 @@ void scanner_finish(yyscan_t scanner, Sexp *sexp) {
 }
 const char *scanner_get_text(yyscan_t scanner) {
   return yyget_text(scanner);
-}
-void scanner_insert_symbol(yyscan_t scanner, const char *str) {
-  Result *result = yyget_extra(scanner);
-  Set *symbols = result_get_symbols(result);
-  set_string_insert(symbols, str);
-}
-Bool scanner_contains_symbol(yyscan_t scanner, const char *str) {
-  Result *result = yyget_extra(scanner);
-  Set *symbols = result_get_symbols(result);
-  return set_string_contains(symbols, str);
 }
 Sexp *scanner_token(yyscan_t scanner) {
   return sexp_string(yyget_text(scanner), yyget_leng(scanner));

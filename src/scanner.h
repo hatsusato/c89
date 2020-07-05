@@ -16,8 +16,6 @@ void scanner_delete(yyscan_t);
 int scanner_parse(yyscan_t);
 void scanner_finish(yyscan_t, Sexp *);
 const char *scanner_get_text(yyscan_t);
-void scanner_insert_symbol(yyscan_t, const char *);
-Bool scanner_contains_symbol(yyscan_t, const char *);
 Sexp *scanner_token(yyscan_t);
 void scanner_register_typedef(yyscan_t, Sexp *);
 Bool scanner_query_typedef(yyscan_t, const char *);
