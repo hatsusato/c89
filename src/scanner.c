@@ -40,20 +40,45 @@ static Sexp *get_identifier(Sexp *decl) {
     return sexp_nil();
   }
 }
+static Sexp *from_declarator(Sexp *ast);
+static Sexp *from_direct_declarator(Sexp *ast) {
+  Sexp *next = nil;
+  assert(sexp_check_tag(ast, "direct-declarator"));
+  next = sexp_at(ast, 1);
+  if (sexp_check_tag(next, "identifier")) {
+    return next;
+  } else if (sexp_check_tag(next, "left-paren")) {
+    next = sexp_at(ast, 2);
+    return from_declarator(next);
+  } else {
+    return from_direct_declarator(next);
+  }
+}
+static Sexp *from_declarator(Sexp *ast) {
+  Sexp *next = nil;
+  assert(sexp_check_tag(ast, "declarator"));
+  next = sexp_at(ast, 1);
+  if (sexp_check_tag(next, "pointer")) {
+    next = sexp_at(ast, 2);
+  }
+  return from_direct_declarator(next);
+}
+static Sexp *from_init_declarator(Sexp *ast) {
+  assert(sexp_check_tag(ast, "init-declarator"));
+  ast = sexp_at(ast, 1);
+  return from_declarator(ast);
+}
 static void register_typedef(Set *symbols, Sexp *sexp) {
   assert(sexp_check_tag(sexp, "declaration"));
   if (is_typedef(sexp)) {
     sexp = sexp_at(sexp, 2);
     assert(sexp_check_tag(sexp, "init-declarator-list"));
     for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
-      Sexp *id = sexp_car(sexp);
-      assert(sexp_check_tag(id, "init-declarator"));
-      id = get_identifier(sexp_at(id, 1));
-      if (sexp_check_tag(id, "identifier")) {
-        id = sexp_at(id, 1);
-        assert(sexp_is_string(id));
-        set_string_insert(symbols, sexp_get_string(id));
-      }
+      Sexp *identifier = from_init_declarator(sexp_car(sexp));
+      assert(sexp_check_tag(identifier, "identifier"));
+      identifier = sexp_at(identifier, 1);
+      assert(sexp_is_string(identifier));
+      set_string_insert(symbols, sexp_get_string(identifier));
     }
   }
 }
