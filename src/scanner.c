@@ -11,19 +11,20 @@ void yyerror(yyscan_t scanner, const char *msg) {
   fprintf(stderr, "\n");
 }
 
-static Bool is_typedef(Sexp *sexp) {
-  assert(sexp_check_tag(sexp, "declaration"));
-  sexp = sexp_at(sexp, 1);
-  assert(sexp_check_tag(sexp, "declaration-specifiers"));
-  for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
-    Sexp *spec = sexp_car(sexp);
-    if (!sexp_check_tag(spec, "storage-class-specifier")) {
-      assert(sexp_check_tag(spec, "type-specifier") ||
-             sexp_check_tag(spec, "type-qualifier"));
-      continue;
-    } else if (sexp_check_tag(sexp_cdr(spec), "typedef")) {
-      return true;
+static Bool is_typedef(Sexp *ast) {
+  assert(sexp_check_tag(ast, "declaration-specifiers"));
+  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    Sexp *specifier = sexp_car(ast);
+    if (sexp_check_tag(specifier, "storage-class-specifier")) {
+      specifier = sexp_at(specifier, 1);
+      if (sexp_eq(specifier, "typedef")) {
+        return true;
+      } else {
+        continue;
+      }
     }
+    assert(sexp_check_tag(specifier, "type-specifier") ||
+           sexp_check_tag(specifier, "type-qualifier"));
   }
   return false;
 }
@@ -70,7 +71,7 @@ static Sexp *from_init_declarator(Sexp *ast) {
 }
 static void register_typedef(Set *symbols, Sexp *sexp) {
   assert(sexp_check_tag(sexp, "declaration"));
-  if (is_typedef(sexp)) {
+  if (is_typedef(sexp_at(sexp, 1))) {
     sexp = sexp_at(sexp, 2);
     assert(sexp_check_tag(sexp, "init-declarator-list"));
     for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
