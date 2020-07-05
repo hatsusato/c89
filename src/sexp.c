@@ -112,14 +112,6 @@ Sexp *sexp_at(Sexp *sexp, int index) {
     return sexp_car(sexp);
   }
 }
-Sexp *sexp_last(Sexp *sexp) {
-  for (; sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
-    if (sexp_is_nil(sexp_cdr(sexp))) {
-      return sexp_car(sexp);
-    }
-  }
-  return sexp_nil();
-}
 int sexp_length(Sexp *list) {
   if (sexp_is_pair(list)) {
     return 1 + sexp_length(sexp_cdr(list));
