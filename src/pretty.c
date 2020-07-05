@@ -5,14 +5,26 @@
 #include "print.h"
 #include "utility.h"
 
+static Sexp *pretty_convert(Sexp *ast);
+static Sexp *pretty_convert_list(Sexp *ast, const char *delim) {
+  Sexp *pretty = sexp_nil();
+  if (sexp_is_pair(ast)) {
+    pretty = sexp_snoc(pretty, pretty_convert(sexp_car(ast)));
+    ast = sexp_cdr(ast);
+  }
+  for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    if (delim) {
+      pretty = sexp_snoc(pretty, sexp_symbol(delim));
+    }
+    pretty = sexp_snoc(pretty, pretty_convert(sexp_car(ast)));
+  }
+  return pretty;
+}
 static Sexp *pretty_convert(Sexp *ast) {
   if (sexp_is_pair(ast)) {
     const char *tag = sexp_get(sexp_car(ast));
-    Sexp *pretty = sexp_nil();
-    for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-      pretty = sexp_snoc(pretty, pretty_convert(sexp_car(ast)));
-    }
-    return pretty;
+    ast = sexp_cdr(ast);
+    return pretty_convert_list(ast, nil);
   } else {
     const char *symbol = sexp_get(ast);
     return symbol ? sexp_symbol(symbol) : sexp_nil();
