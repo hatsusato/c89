@@ -58,20 +58,6 @@ Sexp *sexp_string(const char *text, int leng) {
   sexp->data.string = string_new_s(text, leng);
   return sexp;
 }
-Bool sexp_is_list(Sexp *list) {
-  if (sexp_is_nil(list)) {
-    return true;
-  } else {
-    return (sexp_is_pair(list) && sexp_is_list(sexp_cdr(list)));
-  }
-}
-int sexp_length(Sexp *list) {
-  if (sexp_is_pair(list)) {
-    return 1 + sexp_length(sexp_cdr(list));
-  } else {
-    return 0;
-  }
-}
 void sexp_delete(Sexp *sexp) {
   switch (sexp_kind(sexp)) {
   case SEXP_NIL:
@@ -100,6 +86,17 @@ Bool sexp_is_symbol(Sexp *sexp) {
 Bool sexp_is_string(Sexp *sexp) {
   return SEXP_STRING == sexp_kind(sexp);
 }
+Bool sexp_is_list(Sexp *list) {
+  if (sexp_is_nil(list)) {
+    return true;
+  } else {
+    return (sexp_is_pair(list) && sexp_is_list(sexp_cdr(list)));
+  }
+}
+Bool sexp_eq(Sexp *sexp, const char *symbol) {
+  assert(sexp_is_symbol(sexp));
+  return utility_str_eq(sexp->data.symbol, symbol);
+}
 Sexp *sexp_car(Sexp *sexp) {
   assert(sexp_is_pair(sexp));
   return sexp->data.pair.car;
@@ -123,9 +120,12 @@ Sexp *sexp_last(Sexp *sexp) {
   }
   return sexp_nil();
 }
-Bool sexp_eq(Sexp *sexp, const char *symbol) {
-  assert(sexp_is_symbol(sexp));
-  return utility_str_eq(sexp->data.symbol, symbol);
+int sexp_length(Sexp *list) {
+  if (sexp_is_pair(list)) {
+    return 1 + sexp_length(sexp_cdr(list));
+  } else {
+    return 0;
+  }
 }
 const char *sexp_get_string(Sexp *sexp) {
   if (sexp_is_string(sexp)) {
