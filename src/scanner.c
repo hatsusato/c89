@@ -40,6 +40,23 @@ static Sexp *get_identifier(Sexp *decl) {
     return sexp_nil();
   }
 }
+static void register_typedef(Set *symbols, Sexp *sexp) {
+  assert(sexp_check_tag(sexp, "declaration"));
+  if (is_typedef(sexp)) {
+    sexp = sexp_at(sexp, 2);
+    assert(sexp_check_tag(sexp, "init-declarator-list"));
+    for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+      Sexp *id = sexp_car(sexp);
+      assert(sexp_check_tag(id, "init-declarator"));
+      id = get_identifier(sexp_at(id, 1));
+      if (sexp_check_tag(id, "identifier")) {
+        id = sexp_at(id, 1);
+        assert(sexp_is_string(id));
+        set_string_insert(symbols, sexp_get_string(id));
+      }
+    }
+  }
+}
 
 yyscan_t scanner_new(Result *result) {
   yyscan_t scanner = nil;
@@ -85,19 +102,7 @@ Sexp *scanner_token(yyscan_t scanner) {
   return sexp_string(yyget_text(scanner), yyget_leng(scanner));
 }
 void scanner_register_typedef(yyscan_t scanner, Sexp *sexp) {
-  assert(sexp_check_tag(sexp, "declaration"));
-  if (is_typedef(sexp)) {
-    sexp = sexp_at(sexp, 2);
-    assert(sexp_check_tag(sexp, "init-declarator-list"));
-    for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
-      Sexp *id = sexp_car(sexp);
-      assert(sexp_check_tag(id, "init-declarator"));
-      id = get_identifier(sexp_at(id, 1));
-      if (sexp_check_tag(id, "identifier")) {
-        id = sexp_at(id, 1);
-        assert(sexp_is_string(id));
-        scanner_insert_symbol(scanner, sexp_get_string(id));
-      }
-    }
-  }
+  Result *result = yyget_extra(scanner);
+  Set *symbols = result_get_symbols(result);
+  register_typedef(symbols, sexp);
 }
