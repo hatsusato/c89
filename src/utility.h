@@ -21,4 +21,6 @@ typedef int Alignment;
     rhs = tmp;               \
   } while (0);
 
+Bool utility_str_eq(const char*, const char*);
+
 #endif /* INCLUDE_GUARD_26FC0E3E_05C7_464D_8860_9F5E5E2F9210 */
