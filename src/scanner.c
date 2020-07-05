@@ -35,33 +35,32 @@ static Bool is_typedef(Sexp *ast) {
 }
 static const char *from_declarator(Sexp *ast);
 static const char *from_direct_declarator(Sexp *ast) {
-  Sexp *next = nil;
+  Sexp *head = nil;
   assert(check_tag(ast, "direct-declarator"));
-  next = sexp_at(ast, 1);
-  if (check_tag(next, "identifier")) {
-    next = sexp_at(next, 1);
-    assert(sexp_is_string(next));
-    return sexp_get_string(next);
-  } else if (check_tag(next, "left-paren")) {
-    next = sexp_at(ast, 2);
-    return from_declarator(next);
+  head = sexp_at(ast, 1);
+  if (check_tag(head, "identifier")) {
+    head = sexp_at(head, 1);
+    assert(sexp_is_string(head));
+    return sexp_get_string(head);
+  } else if (check_tag(head, "left-paren")) {
+    return from_declarator(sexp_at(ast, 2));
   } else {
-    return from_direct_declarator(next);
+    return from_direct_declarator(head);
   }
 }
 static const char *from_declarator(Sexp *ast) {
-  Sexp *next = nil;
+  Sexp *head = nil;
   assert(check_tag(ast, "declarator"));
-  next = sexp_at(ast, 1);
-  if (check_tag(next, "pointer")) {
-    next = sexp_at(ast, 2);
+  head = sexp_at(ast, 1);
+  if (check_tag(head, "pointer")) {
+    return from_direct_declarator(sexp_at(ast, 2));
+  } else {
+    return from_direct_declarator(head);
   }
-  return from_direct_declarator(next);
 }
 static const char *from_init_declarator(Sexp *ast) {
   assert(check_tag(ast, "init-declarator"));
-  ast = sexp_at(ast, 1);
-  return from_declarator(ast);
+  return from_declarator(sexp_at(ast, 1));
 }
 static void register_typedef(Set *symbols, Sexp *sexp) {
   assert(check_tag(sexp, "declaration"));
