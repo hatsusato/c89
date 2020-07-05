@@ -51,7 +51,7 @@ static Sexp *pretty_sexp_list(Sexp *pretty, Sexp *ast, const char *between) {
 Sexp *pretty_sexp(Sexp *ast) {
   Sexp *pretty = sexp_nil();
   if (sexp_is_pair(ast)) {
-    const char *tag = sexp_get_string(sexp_car(ast));
+    const char *tag = sexp_get(sexp_car(ast));
     ast = pretty_sexp_skip(ast);
     if (pretty_equal(tag, "argument-expression-list") ||
         pretty_equal(tag, "expression") ||
@@ -135,7 +135,7 @@ Sexp *pretty_sexp(Sexp *ast) {
       pretty = pretty_sexp_list(pretty, ast, nil);
     }
   } else if (!sexp_is_nil(ast)) {
-    pretty = sexp_symbol(sexp_get_string(ast));
+    pretty = sexp_symbol(sexp_get(ast));
   }
   return pretty;
 }

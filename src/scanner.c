@@ -43,7 +43,7 @@ static const char *from_direct_declarator(Sexp *ast) {
   if (check_tag(head, "identifier")) {
     head = sexp_at(head, 1);
     assert(sexp_is_string(head));
-    return sexp_get_string(head);
+    return sexp_get(head);
   } else if (check_tag(head, "left-paren")) {
     return from_declarator(sexp_at(ast, 2));
   } else {

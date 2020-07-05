@@ -112,19 +112,19 @@ Sexp *sexp_at(Sexp *sexp, int index) {
     return sexp_car(sexp);
   }
 }
-int sexp_length(Sexp *list) {
-  if (sexp_is_pair(list)) {
-    return 1 + sexp_length(sexp_cdr(list));
-  } else {
-    return 0;
-  }
-}
-const char *sexp_get_string(Sexp *sexp) {
+const char *sexp_get(Sexp *sexp) {
   if (sexp_is_string(sexp)) {
     return string_begin((String *)sexp->data.string);
   } else if (sexp_is_symbol(sexp)) {
     return sexp->data.symbol;
   } else {
     return nil;
+  }
+}
+int sexp_length(Sexp *list) {
+  if (sexp_is_pair(list)) {
+    return 1 + sexp_length(sexp_cdr(list));
+  } else {
+    return 0;
   }
 }

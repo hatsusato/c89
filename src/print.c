@@ -30,7 +30,7 @@ void print_verbatim(FILE *fp, const char *text, int leng) {
 }
 void print_symbol(FILE *fp, Sexp *sexp) {
   if (sexp_is_symbol(sexp) || sexp_is_string(sexp)) {
-    fprintf(fp, "%s", sexp_get_string(sexp));
+    fprintf(fp, "%s", sexp_get(sexp));
   }
 }
 void print_sexp(FILE *fp, Sexp *sexp, int indent) {
@@ -41,7 +41,7 @@ void print_sexp(FILE *fp, Sexp *sexp, int indent) {
     fprintf(fp, "%s", suffix);
   } else {
     if (sexp_is_symbol(sexp)) {
-      const char *sym = sexp_get_string(sexp);
+      const char *sym = sexp_get(sexp);
       assert(sym);
       prefix = suffix = (isalpha(*sym) ? "" : "#");
     } else if (sexp_is_string(sexp)) {
