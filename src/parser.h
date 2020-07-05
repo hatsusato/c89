@@ -7,8 +7,8 @@
 #define PARSER_SYMBOL(sym) parser_symbol(#sym)
 #define PARSER_TAG(sym, ast) parser_tag(#sym, ast)
 #define PARSER_TOKEN(sym, scanner) parser_token(#sym, scanner)
-#define PARSER_NIL(sym) parser_nil(#sym)
-#define PARSER_ATOM(sym, atom) parser_atom(#sym, atom)
+#define PARSER_NIL(sym) PARSER_LIST1(PARSER_SYMBOL(sym))
+#define PARSER_ATOM(sym, atom) PARSER_LIST2(PARSER_SYMBOL(sym), atom)
 #define PARSER_SNOC(list, last) sexp_snoc(list, last)
 #define PARSER_CONS(car, cdr) sexp_cons(car, cdr);
 #define PARSER_LIST0() sexp_nil()
