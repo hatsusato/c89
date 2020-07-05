@@ -31,8 +31,5 @@
 Sexp *parser_symbol(const char *);
 Sexp *parser_tag(const char *, Sexp *);
 Sexp *parser_token(const char *, yyscan_t);
-Sexp *parser_nil(const char *);
-Sexp *parser_atom(const char *, Sexp *);
-Sexp *parser_pair(Sexp *, Sexp *);
 
 #endif /* INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD */
