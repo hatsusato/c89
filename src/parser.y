@@ -310,7 +310,7 @@ postfix-expression
 | postfix-expression.tag {$$ = PARSER_TAG(postfix-expression, $1);}
 ;
 postfix-expression.tag
-: postfix-expression postfix-expression.suffix {$$ = sexp_cons($1, $2);}
+: postfix-expression postfix-expression.suffix {$$ = PARSER_CONS($1, $2);}
 ;
 postfix-expression.suffix
 : left-bracket expression right-bracket {$$ = PARSER_LIST3($1, $2, $3);}
@@ -634,7 +634,7 @@ direct-declarator
 direct-declarator.tag
 : identifier {$$ = PARSER_LIST1($1);}
 | left-paren declarator right-paren {$$ = PARSER_LIST3($1, $2, $3);}
-| direct-declarator direct-declarator.suffix {$$ = sexp_cons($1, $2);}
+| direct-declarator direct-declarator.suffix {$$ = PARSER_CONS($1, $2);}
 ;
 direct-declarator.suffix
 : left-bracket constant-expression.opt right-bracket {$$ = PARSER_LIST3($1, $2, $3);}
@@ -703,7 +703,7 @@ direct-abstract-declarator
 direct-abstract-declarator.tag
 : left-paren abstract-declarator right-paren {$$ = PARSER_LIST3($1, $2, $3);}
 | direct-abstract-declarator.suffix
-| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = sexp_cons($1, $2);}
+| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = PARSER_CONS($1, $2);}
 ;
 direct-abstract-declarator.suffix
 : left-bracket constant-expression.opt right-bracket {$$ = PARSER_LIST3($1, $2, $3);}

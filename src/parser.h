@@ -10,6 +10,7 @@
 #define PARSER_NIL(sym) parser_nil(#sym)
 #define PARSER_ATOM(sym, atom) parser_atom(#sym, atom)
 #define PARSER_PAIR(list, last) parser_pair(list, last)
+#define PARSER_CONS(car, cdr) sexp_cons(car, cdr);
 #define PARSER_LIST0() sexp_nil()
 #define PARSER_LIST1(ast0) sexp_cons(ast0, PARSER_LIST0())
 #define PARSER_LIST2(ast0, ast1) sexp_cons(ast0, PARSER_LIST1(ast1))
