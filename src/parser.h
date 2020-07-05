@@ -1,11 +1,11 @@
 #ifndef INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD
 #define INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD
 
+#include "scanner.h"
 #include "sexp.h"
 
-#define PARSER_TAG(sym, ast) sexp_cons(sexp_symbol(#sym), ast)
-#define PARSER_TOKEN(sym, scanner) \
-  PARSER_TAG(sym, sexp_list1(scanner_token(scanner)))
+#define PARSER_TAG(sym, ast) parser_tag(#sym, ast)
+#define PARSER_TOKEN(sym, scanner) parser_token(#sym, scanner)
 #define PARSER_LIST_NIL(sym) PARSER_TAG(sym, sexp_nil())
 #define PARSER_LIST_ATOM(sym, atom) PARSER_TAG(sym, sexp_list1(atom))
 #define PARSER_LIST_PAIR(list, last) sexp_snoc(list, last)
@@ -26,4 +26,6 @@
 #define PARSER_LIST9(ast0, ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8) \
   sexp_cons(ast0, PARSER_LIST8(ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8))
 
+Sexp *parser_tag(const char *, Sexp *);
+Sexp *parser_token(const char *, yyscan_t);
 #endif /* INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD */
