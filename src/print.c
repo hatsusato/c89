@@ -52,3 +52,8 @@ void print_sexp(FILE *fp, Sexp *sexp, int indent) {
     fprintf(fp, "%s", suffix);
   }
 }
+void print_ast(Sexp *ast) {
+  FILE *fp = stdout;
+  print_sexp(fp, ast, 0);
+  print_newline(fp);
+}
