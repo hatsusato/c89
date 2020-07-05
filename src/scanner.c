@@ -11,6 +11,36 @@ void yyerror(yyscan_t scanner, const char *msg) {
   fprintf(stderr, "\n");
 }
 
+static Bool is_typedef(Sexp *sexp) {
+  assert(sexp_check_tag(sexp, "declaration"));
+  sexp = sexp_at(sexp, 1);
+  assert(sexp_check_tag(sexp, "declaration-specifiers"));
+  for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+    Sexp *spec = sexp_car(sexp);
+    if (!sexp_check_tag(spec, "storage-class-specifier")) {
+      assert(sexp_check_tag(spec, "type-specifier") ||
+             sexp_check_tag(spec, "type-qualifier"));
+      continue;
+    } else if (sexp_check_tag(sexp_cdr(spec), "typedef")) {
+      return true;
+    }
+  }
+  return false;
+}
+static Sexp *get_identifier(Sexp *decl) {
+  assert(sexp_check_tag(decl, "declarator"));
+  decl = sexp_last(decl);
+  assert(sexp_check_tag(decl, "direct-declarator"));
+  switch (sexp_length(decl)) {
+  case 2:
+    return sexp_at(decl, 1);
+  case 4:
+    return get_identifier(sexp_at(decl, 2));
+  default:
+    return sexp_nil();
+  }
+}
+
 yyscan_t scanner_new(Result *result) {
   yyscan_t scanner = nil;
   const char *builtin_types[] = {
@@ -53,35 +83,6 @@ Bool scanner_contains_symbol(yyscan_t scanner, const char *str) {
 }
 Sexp *scanner_token(yyscan_t scanner) {
   return sexp_string(yyget_text(scanner), yyget_leng(scanner));
-}
-static Bool is_typedef(Sexp *sexp) {
-  assert(sexp_check_tag(sexp, "declaration"));
-  sexp = sexp_at(sexp, 1);
-  assert(sexp_check_tag(sexp, "declaration-specifiers"));
-  for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
-    Sexp *spec = sexp_car(sexp);
-    if (!sexp_check_tag(spec, "storage-class-specifier")) {
-      assert(sexp_check_tag(spec, "type-specifier") ||
-             sexp_check_tag(spec, "type-qualifier"));
-      continue;
-    } else if (sexp_check_tag(sexp_cdr(spec), "typedef")) {
-      return true;
-    }
-  }
-  return false;
-}
-static Sexp *get_identifier(Sexp *decl) {
-  assert(sexp_check_tag(decl, "declarator"));
-  decl = sexp_last(decl);
-  assert(sexp_check_tag(decl, "direct-declarator"));
-  switch (sexp_length(decl)) {
-  case 2:
-    return sexp_at(decl, 1);
-  case 4:
-    return get_identifier(sexp_at(decl, 2));
-  default:
-    return sexp_nil();
-  }
 }
 void scanner_register_typedef(yyscan_t scanner, Sexp *sexp) {
   assert(sexp_check_tag(sexp, "declaration"));
