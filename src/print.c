@@ -2,6 +2,17 @@
 
 #include <ctype.h>
 
+static void print_sexp_list(FILE *fp, Sexp *sexp, int indent) {
+  if (sexp_is_pair(sexp)) {
+    fprintf(fp, "\n");
+    print_indent(fp, indent);
+    print_sexp(fp, sexp_car(sexp), indent);
+    print_sexp_list(fp, sexp_cdr(sexp), indent);
+  } else {
+    assert(sexp_is_nil(sexp));
+  }
+}
+
 void print_indent(FILE *fp, int indent) {
   for (; 0 < indent; --indent) {
     fprintf(fp, " ");
@@ -23,33 +34,23 @@ void print_symbol(FILE *fp, Sexp *sexp) {
     fprintf(fp, "%s", sexp_get_string(sexp));
   }
 }
-static void print_sexp_list(Sexp *sexp, int indent) {
+void print_sexp(FILE *fp, Sexp *sexp, int indent) {
   if (sexp_is_pair(sexp)) {
-    printf("\n");
-    print_indent(stdout, indent);
-    print_sexp(sexp_car(sexp), indent);
-    print_sexp_list(sexp_cdr(sexp), indent);
-  } else {
-    assert(sexp_is_nil(sexp));
-  }
-}
-void print_sexp(Sexp *sexp, int indent) {
-  if (sexp_is_pair(sexp)) {
-    printf("(");
-    print_sexp(sexp_car(sexp), indent + 1);
-    print_sexp_list(sexp_cdr(sexp), indent + 1);
-    printf(")");
+    fprintf(fp, "(");
+    print_sexp(fp, sexp_car(sexp), indent + 1);
+    print_sexp_list(fp, sexp_cdr(sexp), indent + 1);
+    fprintf(fp, ")");
   } else if (sexp_is_symbol(sexp)) {
     assert(sexp_get_string(sexp));
     if (!isalpha(*sexp_get_string(sexp))) {
-      printf("#");
+      fprintf(fp, "#");
     }
-    print_symbol(stdout, sexp);
+    print_symbol(fp, sexp);
   } else if (sexp_is_string(sexp)) {
-    printf("%c", '"');
-    print_symbol(stdout, sexp);
-    printf("%c", '"');
+    fprintf(fp, "%c", '"');
+    print_symbol(fp, sexp);
+    fprintf(fp, "%c", '"');
   } else {
-    printf("()");
+    fprintf(fp, "()");
   }
 }
