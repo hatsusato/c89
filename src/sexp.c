@@ -72,12 +72,6 @@ int sexp_length(Sexp *list) {
     return 0;
   }
 }
-Bool sexp_check_tag(Sexp *sexp, const char *tag) {
-  if (!sexp_is_nil(sexp) && sexp_is_list(sexp)) {
-    return sexp_eq(sexp_car(sexp), tag);
-  }
-  return false;
-}
 void sexp_delete(Sexp *sexp) {
   switch (sexp_kind(sexp)) {
   case SEXP_NIL:

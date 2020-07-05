@@ -11,11 +11,16 @@ void yyerror(yyscan_t scanner, const char *msg) {
   fprintf(stderr, "\n");
 }
 
+static Bool check_tag(Sexp *ast, const char *tag) {
+  assert(sexp_is_pair(ast) && sexp_is_list(ast));
+  ast = sexp_car(ast);
+  return sexp_eq(ast, tag);
+}
 static Bool is_typedef(Sexp *ast) {
-  assert(sexp_check_tag(ast, "declaration-specifiers"));
+  assert(check_tag(ast, "declaration-specifiers"));
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     Sexp *specifier = sexp_car(ast);
-    if (sexp_check_tag(specifier, "storage-class-specifier")) {
+    if (check_tag(specifier, "storage-class-specifier")) {
       specifier = sexp_at(specifier, 1);
       if (sexp_eq(specifier, "typedef")) {
         return true;
@@ -23,21 +28,21 @@ static Bool is_typedef(Sexp *ast) {
         continue;
       }
     }
-    assert(sexp_check_tag(specifier, "type-specifier") ||
-           sexp_check_tag(specifier, "type-qualifier"));
+    assert(check_tag(specifier, "type-specifier") ||
+           check_tag(specifier, "type-qualifier"));
   }
   return false;
 }
 static const char *from_declarator(Sexp *ast);
 static const char *from_direct_declarator(Sexp *ast) {
   Sexp *next = nil;
-  assert(sexp_check_tag(ast, "direct-declarator"));
+  assert(check_tag(ast, "direct-declarator"));
   next = sexp_at(ast, 1);
-  if (sexp_check_tag(next, "identifier")) {
+  if (check_tag(next, "identifier")) {
     next = sexp_at(next, 1);
     assert(sexp_is_string(next));
     return sexp_get_string(next);
-  } else if (sexp_check_tag(next, "left-paren")) {
+  } else if (check_tag(next, "left-paren")) {
     next = sexp_at(ast, 2);
     return from_declarator(next);
   } else {
@@ -46,23 +51,23 @@ static const char *from_direct_declarator(Sexp *ast) {
 }
 static const char *from_declarator(Sexp *ast) {
   Sexp *next = nil;
-  assert(sexp_check_tag(ast, "declarator"));
+  assert(check_tag(ast, "declarator"));
   next = sexp_at(ast, 1);
-  if (sexp_check_tag(next, "pointer")) {
+  if (check_tag(next, "pointer")) {
     next = sexp_at(ast, 2);
   }
   return from_direct_declarator(next);
 }
 static const char *from_init_declarator(Sexp *ast) {
-  assert(sexp_check_tag(ast, "init-declarator"));
+  assert(check_tag(ast, "init-declarator"));
   ast = sexp_at(ast, 1);
   return from_declarator(ast);
 }
 static void register_typedef(Set *symbols, Sexp *sexp) {
-  assert(sexp_check_tag(sexp, "declaration"));
+  assert(check_tag(sexp, "declaration"));
   if (is_typedef(sexp_at(sexp, 1))) {
     sexp = sexp_at(sexp, 2);
-    assert(sexp_check_tag(sexp, "init-declarator-list"));
+    assert(check_tag(sexp, "init-declarator-list"));
     for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
       const char *identifier = from_init_declarator(sexp_car(sexp));
       set_string_insert(symbols, identifier);
