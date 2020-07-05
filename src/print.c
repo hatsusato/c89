@@ -6,7 +6,7 @@ static void print_sexp_list(FILE *fp, Sexp *sexp, int indent) {
   assert(sexp_is_pair(sexp));
   print_sexp(fp, sexp_car(sexp), indent);
   for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
-    fprintf(fp, "\n");
+    print_newline(fp);
     print_indent(fp, indent);
     print_sexp(fp, sexp_car(sexp), indent);
   }
@@ -14,8 +14,14 @@ static void print_sexp_list(FILE *fp, Sexp *sexp, int indent) {
 
 void print_indent(FILE *fp, int indent) {
   for (; 0 < indent; --indent) {
-    fprintf(fp, " ");
+    print_message(fp, " ");
   }
+}
+void print_newline(FILE *fp) {
+  print_message(fp, "\n");
+}
+void print_message(FILE *fp, const char *msg) {
+  fprintf(fp, "%s", msg);
 }
 void print_verbatim(FILE *fp, const char *text, int leng) {
   int i = 0;
@@ -30,15 +36,15 @@ void print_verbatim(FILE *fp, const char *text, int leng) {
 }
 void print_symbol(FILE *fp, Sexp *sexp) {
   if (sexp_is_symbol(sexp) || sexp_is_string(sexp)) {
-    fprintf(fp, "%s", sexp_get(sexp));
+    print_message(fp, sexp_get(sexp));
   }
 }
 void print_sexp(FILE *fp, Sexp *sexp, int indent) {
   const char *prefix = "(", *suffix = ")";
   if (sexp_is_pair(sexp)) {
-    fprintf(fp, "%s", prefix);
+    print_message(fp, prefix);
     print_sexp_list(fp, sexp, indent + 1);
-    fprintf(fp, "%s", suffix);
+    print_message(fp, suffix);
   } else {
     if (sexp_is_symbol(sexp)) {
       const char *sym = sexp_get(sexp);
@@ -47,9 +53,9 @@ void print_sexp(FILE *fp, Sexp *sexp, int indent) {
     } else if (sexp_is_string(sexp)) {
       prefix = suffix = "\"";
     }
-    fprintf(fp, "%s", prefix);
+    print_message(fp, prefix);
     print_symbol(fp, sexp);
-    fprintf(fp, "%s", suffix);
+    print_message(fp, suffix);
   }
 }
 void print_ast(Sexp *ast) {

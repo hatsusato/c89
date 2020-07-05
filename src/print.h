@@ -6,6 +6,8 @@
 #include "sexp.h"
 
 void print_indent(FILE *, int);
+void print_newline(FILE *);
+void print_message(FILE *, const char *);
 void print_verbatim(FILE *, const char *, int);
 void print_symbol(FILE *, Sexp *);
 void print_sexp(FILE *, Sexp *, int);
