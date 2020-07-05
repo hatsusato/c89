@@ -124,3 +124,8 @@ void scanner_register_typedef(yyscan_t scanner, Sexp *sexp) {
   Set *symbols = result_get_symbols(result);
   register_typedef(symbols, sexp);
 }
+Bool scanner_query_typedef(yyscan_t scanner, const char *symbol) {
+  Result *result = yyget_extra(scanner);
+  Set *symbols = result_get_symbols(result);
+  return set_string_contains(symbols, symbol);
+}

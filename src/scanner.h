@@ -20,5 +20,6 @@ void scanner_insert_symbol(yyscan_t, const char *);
 Bool scanner_contains_symbol(yyscan_t, const char *);
 Sexp *scanner_token(yyscan_t);
 void scanner_register_typedef(yyscan_t, Sexp *);
+Bool scanner_query_typedef(yyscan_t, const char *);
 
 #endif /* INCLUDE_GUARD_EB689973_FC12_413F_9E9E_C612BD832E1C */
