@@ -2,9 +2,9 @@
 
 #include <ctype.h>
 
-void print_indent(int indent) {
+void print_indent(FILE *fp, int indent) {
   for (; 0 < indent; --indent) {
-    printf(" ");
+    fprintf(fp, " ");
   }
 }
 void print_verbatim(FILE *fp, const char *text, int leng) {
@@ -26,7 +26,7 @@ void print_symbol(Sexp *sexp) {
 static void print_sexp_list(Sexp *sexp, int indent) {
   if (sexp_is_pair(sexp)) {
     printf("\n");
-    print_indent(indent);
+    print_indent(stdout, indent);
     print_sexp(sexp_car(sexp), indent);
     print_sexp_list(sexp_cdr(sexp), indent);
   } else {

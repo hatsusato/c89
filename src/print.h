@@ -5,7 +5,7 @@
 
 #include "sexp.h"
 
-void print_indent(int);
+void print_indent(FILE *, int);
 void print_verbatim(FILE *, const char *, int);
 void print_symbol(Sexp *);
 void print_sexp(Sexp *, int);
