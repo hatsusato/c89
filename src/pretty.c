@@ -5,6 +5,19 @@
 #include "print.h"
 #include "utility.h"
 
+static Sexp *pretty_convert(Sexp *ast) {
+  if (sexp_is_pair(ast)) {
+    const char *tag = sexp_get(sexp_car(ast));
+    Sexp *pretty = sexp_nil();
+    for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+      pretty = sexp_snoc(pretty, pretty_convert(sexp_car(ast)));
+    }
+    return pretty;
+  } else {
+    const char *symbol = sexp_get(ast);
+    return symbol ? sexp_symbol(symbol) : sexp_nil();
+  }
+}
 
 static Bool pretty_equal(const char *lhs, const char *rhs) {
   return 0 == strcmp(lhs, rhs);
