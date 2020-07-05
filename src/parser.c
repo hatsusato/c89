@@ -1,5 +1,8 @@
 #include "parser.h"
 
+Sexp *parser_symbol(const char *sym) {
+  return sexp_symbol(sym);
+}
 Sexp *parser_tag(const char *sym, Sexp *ast) {
   assert(sexp_is_list(ast));
   return sexp_cons(sexp_symbol(sym), ast);

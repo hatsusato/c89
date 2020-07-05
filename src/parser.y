@@ -137,163 +137,163 @@ string-literal
 : TOKEN_STRING_LITERAL {$$ = PARSER_TOKEN(string-literal, scanner);}
 ;
 
-auto: "auto" {$$ = sexp_symbol("auto");}
+auto: "auto" {$$ = PARSER_SYMBOL(auto);}
 ;
-break: "break" {$$ = sexp_symbol("break");}
+break: "break" {$$ = PARSER_SYMBOL(break);}
 ;
-case: "case" {$$ = sexp_symbol("case");}
+case: "case" {$$ = PARSER_SYMBOL(case);}
 ;
-char: "char" {$$ = sexp_symbol("char");}
+char: "char" {$$ = PARSER_SYMBOL(char);}
 ;
-const: "const" {$$ = sexp_symbol("const");}
+const: "const" {$$ = PARSER_SYMBOL(const);}
 ;
-continue: "continue" {$$ = sexp_symbol("continue");}
+continue: "continue" {$$ = PARSER_SYMBOL(continue);}
 ;
-default: "default" {$$ = sexp_symbol("default");}
+default: "default" {$$ = PARSER_SYMBOL(default);}
 ;
-do: "do" {$$ = sexp_symbol("do");}
+do: "do" {$$ = PARSER_SYMBOL(do);}
 ;
-double: "double" {$$ = sexp_symbol("double");}
+double: "double" {$$ = PARSER_SYMBOL(double);}
 ;
-else: "else" {$$ = sexp_symbol("else");}
+else: "else" {$$ = PARSER_SYMBOL(else);}
 ;
-enum: "enum" {$$ = sexp_symbol("enum");}
+enum: "enum" {$$ = PARSER_SYMBOL(enum);}
 ;
-extern: "extern" {$$ = sexp_symbol("extern");}
+extern: "extern" {$$ = PARSER_SYMBOL(extern);}
 ;
-float: "float" {$$ = sexp_symbol("float");}
+float: "float" {$$ = PARSER_SYMBOL(float);}
 ;
-for: "for" {$$ = sexp_symbol("for");}
+for: "for" {$$ = PARSER_SYMBOL(for);}
 ;
-goto: "goto" {$$ = sexp_symbol("goto");}
+goto: "goto" {$$ = PARSER_SYMBOL(goto);}
 ;
-if: "if" {$$ = sexp_symbol("if");}
+if: "if" {$$ = PARSER_SYMBOL(if);}
 ;
-int: "int" {$$ = sexp_symbol("int");}
+int: "int" {$$ = PARSER_SYMBOL(int);}
 ;
-long: "long" {$$ = sexp_symbol("long");}
+long: "long" {$$ = PARSER_SYMBOL(long);}
 ;
-register: "register" {$$ = sexp_symbol("register");}
+register: "register" {$$ = PARSER_SYMBOL(register);}
 ;
-return: "return" {$$ = sexp_symbol("return");}
+return: "return" {$$ = PARSER_SYMBOL(return);}
 ;
-short: "short" {$$ = sexp_symbol("short");}
+short: "short" {$$ = PARSER_SYMBOL(short);}
 ;
-signed: "signed" {$$ = sexp_symbol("signed");}
+signed: "signed" {$$ = PARSER_SYMBOL(signed);}
 ;
-sizeof: "sizeof" {$$ = sexp_symbol("sizeof");}
+sizeof: "sizeof" {$$ = PARSER_SYMBOL(sizeof);}
 ;
-static: "static" {$$ = sexp_symbol("static");}
+static: "static" {$$ = PARSER_SYMBOL(static);}
 ;
-struct: "struct" {$$ = sexp_symbol("struct");}
+struct: "struct" {$$ = PARSER_SYMBOL(struct);}
 ;
-switch: "switch" {$$ = sexp_symbol("switch");}
+switch: "switch" {$$ = PARSER_SYMBOL(switch);}
 ;
-typedef: "typedef" {$$ = sexp_symbol("typedef");}
+typedef: "typedef" {$$ = PARSER_SYMBOL(typedef);}
 ;
-union: "union" {$$ = sexp_symbol("union");}
+union: "union" {$$ = PARSER_SYMBOL(union);}
 ;
-unsigned: "unsigned" {$$ = sexp_symbol("unsigned");}
+unsigned: "unsigned" {$$ = PARSER_SYMBOL(unsigned);}
 ;
-void: "void" {$$ = sexp_symbol("void");}
+void: "void" {$$ = PARSER_SYMBOL(void);}
 ;
-volatile: "volatile" {$$ = sexp_symbol("volatile");}
+volatile: "volatile" {$$ = PARSER_SYMBOL(volatile);}
 ;
-while: "while" {$$ = sexp_symbol("while");}
+while: "while" {$$ = PARSER_SYMBOL(while);}
 ;
 
-period: "." {$$ = sexp_symbol(".");}
+period: "." {$$ = parser_symbol(".");}
 ;
-arrow: "->" {$$ = sexp_symbol("->");}
+arrow: "->" {$$ = parser_symbol("->");}
 ;
-increment: "++" {$$ = sexp_symbol("++");}
+increment: "++" {$$ = parser_symbol("++");}
 ;
-decrement: "--" {$$ = sexp_symbol("--");}
+decrement: "--" {$$ = parser_symbol("--");}
 ;
-ampersand: "&" {$$ = sexp_symbol("&");}
+ampersand: "&" {$$ = parser_symbol("&");}
 ;
-asterisk: "*" {$$ = sexp_symbol("*");}
+asterisk: "*" {$$ = parser_symbol("*");}
 ;
-plus: "+" {$$ = sexp_symbol("+");}
+plus: "+" {$$ = parser_symbol("+");}
 ;
-minus: "-" {$$ = sexp_symbol("-");}
+minus: "-" {$$ = parser_symbol("-");}
 ;
-tilde: "~" {$$ = sexp_symbol("~");}
+tilde: "~" {$$ = parser_symbol("~");}
 ;
-exclamation: "!" {$$ = sexp_symbol("!");}
+exclamation: "!" {$$ = parser_symbol("!");}
 ;
-slash: "/" {$$ = sexp_symbol("/");}
+slash: "/" {$$ = parser_symbol("/");}
 ;
-percent: "%" {$$ = sexp_symbol("%");}
+percent: "%" {$$ = parser_symbol("%");}
 ;
-left-shift: "<<" {$$ = sexp_symbol("<<");}
+left-shift: "<<" {$$ = parser_symbol("<<");}
 ;
-right-shift: ">>" {$$ = sexp_symbol(">>");}
+right-shift: ">>" {$$ = parser_symbol(">>");}
 ;
-less-than: "<" {$$ = sexp_symbol("<");}
+less-than: "<" {$$ = parser_symbol("<");}
 ;
-greater-than: ">" {$$ = sexp_symbol(">");}
+greater-than: ">" {$$ = parser_symbol(">");}
 ;
-less-equal: "<=" {$$ = sexp_symbol("<=");}
+less-equal: "<=" {$$ = parser_symbol("<=");}
 ;
-greater-equal: ">=" {$$ = sexp_symbol(">=");}
+greater-equal: ">=" {$$ = parser_symbol(">=");}
 ;
-equal: "==" {$$ = sexp_symbol("==");}
+equal: "==" {$$ = parser_symbol("==");}
 ;
-not-equal: "!=" {$$ = sexp_symbol("!=");}
+not-equal: "!=" {$$ = parser_symbol("!=");}
 ;
-caret: "^" {$$ = sexp_symbol("^");}
+caret: "^" {$$ = parser_symbol("^");}
 ;
-bar: "|" {$$ = sexp_symbol("|");}
+bar: "|" {$$ = parser_symbol("|");}
 ;
-and: "&&" {$$ = sexp_symbol("&&");}
+and: "&&" {$$ = parser_symbol("&&");}
 ;
-or: "||" {$$ = sexp_symbol("||");}
+or: "||" {$$ = parser_symbol("||");}
 ;
-question: "?" {$$ = sexp_symbol("?");}
+question: "?" {$$ = parser_symbol("?");}
 ;
-assign: "=" {$$ = sexp_symbol("=");}
+assign: "=" {$$ = parser_symbol("=");}
 ;
-asterisk-assign: "*=" {$$ = sexp_symbol("*=");}
+asterisk-assign: "*=" {$$ = parser_symbol("*=");}
 ;
-slash-assign: "/=" {$$ = sexp_symbol("/=");}
+slash-assign: "/=" {$$ = parser_symbol("/=");}
 ;
-percent-assign: "%=" {$$ = sexp_symbol("%=");}
+percent-assign: "%=" {$$ = parser_symbol("%=");}
 ;
-plus-assign: "+=" {$$ = sexp_symbol("+=");}
+plus-assign: "+=" {$$ = parser_symbol("+=");}
 ;
-minus-assign: "-=" {$$ = sexp_symbol("-=");}
+minus-assign: "-=" {$$ = parser_symbol("-=");}
 ;
-left-shift-assign: "<<=" {$$ = sexp_symbol("<<=");}
+left-shift-assign: "<<=" {$$ = parser_symbol("<<=");}
 ;
-right-shift-assign: ">>=" {$$ = sexp_symbol(">>=");}
+right-shift-assign: ">>=" {$$ = parser_symbol(">>=");}
 ;
-ampersand-assign: "&=" {$$ = sexp_symbol("&=");}
+ampersand-assign: "&=" {$$ = parser_symbol("&=");}
 ;
-caret-assign: "^=" {$$ = sexp_symbol("^=");}
+caret-assign: "^=" {$$ = parser_symbol("^=");}
 ;
-bar-assign: "|=" {$$ = sexp_symbol("|=");}
+bar-assign: "|=" {$$ = parser_symbol("|=");}
 ;
 
-left-bracket: "[" {$$ = sexp_symbol("[");}
+left-bracket: "[" {$$ = parser_symbol("[");}
 ;
-right-bracket: "]" {$$ = sexp_symbol("]");}
+right-bracket: "]" {$$ = parser_symbol("]");}
 ;
-left-paren: "(" {$$ = sexp_symbol("(");}
+left-paren: "(" {$$ = parser_symbol("(");}
 ;
-right-paren: ")" {$$ = sexp_symbol(")");}
+right-paren: ")" {$$ = parser_symbol(")");}
 ;
-left-brace: "{" {$$ = sexp_symbol("{");}
+left-brace: "{" {$$ = parser_symbol("{");}
 ;
-right-brace: "}" {$$ = sexp_symbol("}");}
+right-brace: "}" {$$ = parser_symbol("}");}
 ;
-comma: "," {$$ = sexp_symbol(",");}
+comma: "," {$$ = parser_symbol(",");}
 ;
-colon: ":" {$$ = sexp_symbol(":");}
+colon: ":" {$$ = parser_symbol(":");}
 ;
-semicolon: ";" {$$ = sexp_symbol(";");}
+semicolon: ";" {$$ = parser_symbol(";");}
 ;
-ellipsis: "..." {$$ = sexp_symbol("...");}
+ellipsis: "..." {$$ = parser_symbol("...");}
 ;
 
 /* 6.3 Expressions */

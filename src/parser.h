@@ -4,6 +4,7 @@
 #include "scanner.h"
 #include "sexp.h"
 
+#define PARSER_SYMBOL(sym) parser_symbol(#sym)
 #define PARSER_TAG(sym, ast) parser_tag(#sym, ast)
 #define PARSER_TOKEN(sym, scanner) parser_token(#sym, scanner)
 #define PARSER_NIL(sym) parser_nil(#sym)
@@ -26,6 +27,7 @@
 #define PARSER_LIST9(ast0, ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8) \
   sexp_cons(ast0, PARSER_LIST8(ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8))
 
+Sexp *parser_symbol(const char *);
 Sexp *parser_tag(const char *, Sexp *);
 Sexp *parser_token(const char *, yyscan_t);
 Sexp *parser_nil(const char *);
