@@ -28,19 +28,6 @@ static Bool is_typedef(Sexp *ast) {
   }
   return false;
 }
-static Sexp *get_identifier(Sexp *decl) {
-  assert(sexp_check_tag(decl, "declarator"));
-  decl = sexp_last(decl);
-  assert(sexp_check_tag(decl, "direct-declarator"));
-  switch (sexp_length(decl)) {
-  case 2:
-    return sexp_at(decl, 1);
-  case 4:
-    return get_identifier(sexp_at(decl, 2));
-  default:
-    return sexp_nil();
-  }
-}
 static Sexp *from_declarator(Sexp *ast);
 static Sexp *from_direct_declarator(Sexp *ast) {
   Sexp *next = nil;
