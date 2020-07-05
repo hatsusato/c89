@@ -5,8 +5,8 @@ Sexp *parser_symbol(const char *sym) {
 }
 Sexp *parser_tag(const char *sym, Sexp *ast) {
   assert(sexp_is_list(ast));
-  return sexp_cons(sexp_symbol(sym), ast);
+  return PARSER_CONS(parser_symbol(sym), ast);
 }
 Sexp *parser_token(const char *sym, yyscan_t scanner) {
-  return PARSER_LIST2(sexp_symbol(sym), scanner_token(scanner));
+  return PARSER_LIST2(parser_symbol(sym), scanner_token(scanner));
 }
