@@ -18,9 +18,9 @@ void print_verbatim(FILE *fp, const char *text, int leng) {
     }
   }
 }
-void print_symbol(Sexp *sexp) {
+void print_symbol(FILE *fp, Sexp *sexp) {
   if (sexp_is_symbol(sexp) || sexp_is_string(sexp)) {
-    printf("%s", sexp_get_string(sexp));
+    fprintf(fp, "%s", sexp_get_string(sexp));
   }
 }
 static void print_sexp_list(Sexp *sexp, int indent) {
@@ -44,10 +44,10 @@ void print_sexp(Sexp *sexp, int indent) {
     if (!isalpha(*sexp_get_string(sexp))) {
       printf("#");
     }
-    print_symbol(sexp);
+    print_symbol(stdout, sexp);
   } else if (sexp_is_string(sexp)) {
     printf("%c", '"');
-    print_symbol(sexp);
+    print_symbol(stdout, sexp);
     printf("%c", '"');
   } else {
     printf("()");

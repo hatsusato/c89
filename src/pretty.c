@@ -145,6 +145,6 @@ void pretty_print_sexp(Sexp *sexp) {
     pretty_print_sexp(sexp_car(sexp));
     pretty_print_sexp(sexp_cdr(sexp));
   } else {
-    print_symbol(sexp);
+    print_symbol(stdout, sexp);
   }
 }
