@@ -24,10 +24,11 @@ static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, const char *prefix) {
   }
   return pretty;
 }
-static Sexp *pretty_convert_join(Sexp *ast, const char *delims[]) {
+static Sexp *pretty_convert_join(Sexp *ast, const char *prefix,
+                                 const char *delims[], const char *suffix) {
   Sexp *pretty = sexp_nil();
   int i = 0;
-  pretty = pretty_snoc_symbol(pretty, delims[i++]);
+  pretty = pretty_snoc_symbol(pretty, prefix);
   if (sexp_is_pair(ast)) {
     pretty = pretty_snoc(pretty, ast, nil);
     ast = sexp_cdr(ast);
@@ -35,20 +36,21 @@ static Sexp *pretty_convert_join(Sexp *ast, const char *delims[]) {
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     pretty = pretty_snoc(pretty, ast, delims[i++]);
   }
-  pretty = pretty_snoc_symbol(pretty, delims[i++]);
+  pretty = pretty_snoc_symbol(pretty, suffix);
   return pretty;
 }
-static Sexp *pretty_convert_list(Sexp *ast, const char *delims[]) {
+static Sexp *pretty_convert_list(Sexp *ast, const char *prefix,
+                                 const char *delim, const char *suffix) {
   Sexp *pretty = sexp_nil();
-  pretty = pretty_snoc_symbol(pretty, delims[0]);
+  pretty = pretty_snoc_symbol(pretty, prefix);
   if (sexp_is_pair(ast)) {
     pretty = pretty_snoc(pretty, ast, nil);
     ast = sexp_cdr(ast);
   }
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    pretty = pretty_snoc(pretty, ast, delims[1]);
+    pretty = pretty_snoc(pretty, ast, delim);
   }
-  pretty = pretty_snoc_symbol(pretty, delims[2]);
+  pretty = pretty_snoc_symbol(pretty, suffix);
   return pretty;
 }
 static Bool pretty_check_sizeof(Sexp *ast) {
@@ -76,8 +78,7 @@ static Bool pretty_check_binary_expression(const char *tag) {
 }
 static Sexp *pretty_convert(Sexp *ast) {
   if (sexp_is_pair(ast)) {
-    const char *delims[6] = {0};
-    Bool join = false;
+    const char *delims[10] = {0};
     const char *tag = sexp_get(sexp_car(ast));
     ast = sexp_cdr(ast);
     if (utility_str_eq(tag, "argument-expression-list") ||
@@ -85,54 +86,45 @@ static Sexp *pretty_convert(Sexp *ast) {
         utility_str_eq(tag, "parameter-list") ||
         utility_str_eq(tag, "identifier-list") ||
         utility_str_eq(tag, "initializer-list")) {
-      delims[1] = ", ";
+      return pretty_convert_list(ast, nil, ", ", nil);
     } else if (utility_str_eq(tag, "unary-expression")) {
-      join = true;
-      delims[1] = pretty_check_sizeof(ast) ? " " : nil;
+      const char *delim = pretty_check_sizeof(ast) ? " " : nil;
+      return pretty_convert_list(ast, nil, delim, nil);
     } else if (pretty_check_binary_expression(tag) ||
                utility_str_eq(tag, "conditional-expression") ||
                utility_str_eq(tag, "declaration-specifiers") ||
                utility_str_eq(tag, "specifier-qualifier-list")) {
-      delims[1] = " ";
+      return pretty_convert_list(ast, nil, " ", nil);
     } else if (utility_str_eq(tag, "declaration") ||
                utility_str_eq(tag, "struct-declaration")) {
-      delims[2] = "\n";
+      return pretty_convert_list(ast, nil, nil, "\n");
     } else if (utility_str_eq(tag, "init-declarator-list") ||
                utility_str_eq(tag, "struct-declarator-list") ||
                utility_str_eq(tag, "enumerator-list")) {
-      delims[1] = ",";
+      return pretty_convert_list(ast, nil, ",", nil);
     } else if (utility_str_eq(tag, "init-declarator") ||
                utility_str_eq(tag, "enumerator")) {
-      delims[0] = delims[1] = " ";
+      return pretty_convert_list(ast, " ", " ", nil);
     } else if (utility_str_eq(tag, "struct-or-union-specifier")) {
-      join = true;
-      delims[1] = delims[2] = " ";
-      delims[3] = "\n";
+      delims[0] = delims[1] = " ";
+      delims[2] = "\n";
+      return pretty_convert_join(ast, nil, delims, nil);
     } else if (utility_str_eq(tag, "struct-declarator")) {
-      join = true;
-      if (!sexp_is_nil(sexp_car(ast))) {
-        delims[0] = " ";
-      }
-      if (3 == sexp_length(ast)) {
-        delims[1] = delims[2] = " ";
-      }
+      const char *prefix = sexp_is_nil(sexp_car(ast)) ? nil : " ";
+      const char *delim = 3 == sexp_length(ast) ? " " : nil;
+      return pretty_convert_list(ast, prefix, delim, nil);
     } else if (utility_str_eq(tag, "enum-specifier")) {
-      join = true;
-      delims[1] = delims[2] = delims[4] = " ";
+      delims[0] = delims[1] = delims[3] = " ";
+      return pretty_convert_join(ast, nil, delims, nil);
     } else if (utility_str_eq(tag, "type-qualifier-list")) {
-      delims[1] = " ";
-      if (!sexp_is_nil(ast)) {
-        delims[2] = " ";
-      }
+      const char *suffix = sexp_is_nil(ast) ? nil : " ";
+      return pretty_convert_list(ast, nil, " ", suffix);
     } else if (utility_str_eq(tag, "parameter-declaration") ||
                utility_str_eq(tag, "type-name")) {
-      join = true;
       delims[1] = " ";
-    }
-    if (join) {
-      return pretty_convert_join(ast, delims);
+      return pretty_convert_join(ast, nil, delims, nil);
     } else {
-      return pretty_convert_list(ast, delims);
+      return pretty_convert_list(ast, nil, nil, nil);
     }
   } else {
     const char *symbol = sexp_get(ast);
