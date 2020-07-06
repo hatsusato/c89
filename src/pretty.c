@@ -77,7 +77,7 @@ static Bool pretty_check_binary_expression(const char *tag) {
 static Sexp *pretty_convert(Sexp *ast) {
   if (sexp_is_pair(ast)) {
     const char *delims[6] = {0};
-    Sexp *(*convert)(Sexp *, const char *[]) = pretty_convert_list;
+    Bool join = false;
     const char *tag = sexp_get(sexp_car(ast));
     ast = sexp_cdr(ast);
     if (utility_str_eq(tag, "argument-expression-list") ||
@@ -87,7 +87,7 @@ static Sexp *pretty_convert(Sexp *ast) {
         utility_str_eq(tag, "initializer-list")) {
       delims[1] = ", ";
     } else if (utility_str_eq(tag, "unary-expression")) {
-      convert = pretty_convert_join;
+      join = true;
       delims[1] = pretty_check_sizeof(ast) ? " " : nil;
     } else if (pretty_check_binary_expression(tag) ||
                utility_str_eq(tag, "conditional-expression") ||
@@ -105,11 +105,11 @@ static Sexp *pretty_convert(Sexp *ast) {
                utility_str_eq(tag, "enumerator")) {
       delims[0] = delims[1] = " ";
     } else if (utility_str_eq(tag, "struct-or-union-specifier")) {
-      convert = pretty_convert_join;
+      join = true;
       delims[1] = delims[2] = " ";
       delims[3] = "\n";
     } else if (utility_str_eq(tag, "struct-declarator")) {
-      convert = pretty_convert_join;
+      join = true;
       if (!sexp_is_nil(sexp_car(ast))) {
         delims[0] = " ";
       }
@@ -117,7 +117,7 @@ static Sexp *pretty_convert(Sexp *ast) {
         delims[1] = delims[2] = " ";
       }
     } else if (utility_str_eq(tag, "enum-specifier")) {
-      convert = pretty_convert_join;
+      join = true;
       delims[1] = delims[2] = delims[4] = " ";
     } else if (utility_str_eq(tag, "type-qualifier-list")) {
       delims[1] = " ";
@@ -126,10 +126,14 @@ static Sexp *pretty_convert(Sexp *ast) {
       }
     } else if (utility_str_eq(tag, "parameter-declaration") ||
                utility_str_eq(tag, "type-name")) {
-      convert = pretty_convert_join;
+      join = true;
       delims[1] = " ";
     }
-    return convert(ast, delims);
+    if (join) {
+      return pretty_convert_join(ast, delims);
+    } else {
+      return pretty_convert_list(ast, delims);
+    }
   } else {
     const char *symbol = sexp_get(ast);
     return symbol ? sexp_symbol(symbol) : sexp_nil();
