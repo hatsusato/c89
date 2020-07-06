@@ -169,3 +169,8 @@ void pretty_print_sexp(Sexp *sexp) {
     print_symbol(stdout, sexp);
   }
 }
+void pretty_print(Sexp *ast) {
+  Sexp *pretty = pretty_convert(ast);
+  pretty_print_sexp(pretty);
+  sexp_delete(pretty);
+}
