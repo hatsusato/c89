@@ -93,7 +93,9 @@ static Sexp *pretty_convert(Sexp *ast) {
     } else if (pretty_check_binary_expression(tag) ||
                utility_str_eq(tag, "conditional-expression") ||
                utility_str_eq(tag, "declaration-specifiers") ||
-               utility_str_eq(tag, "specifier-qualifier-list")) {
+               utility_str_eq(tag, "specifier-qualifier-list") ||
+               utility_str_eq(tag, "parameter-declaration") ||
+               utility_str_eq(tag, "type-name")) {
       return pretty_convert_list(ast, nil, " ", nil);
     } else if (utility_str_eq(tag, "declaration") ||
                utility_str_eq(tag, "struct-declaration")) {
@@ -119,10 +121,6 @@ static Sexp *pretty_convert(Sexp *ast) {
     } else if (utility_str_eq(tag, "type-qualifier-list")) {
       const char *suffix = sexp_is_nil(ast) ? nil : " ";
       return pretty_convert_list(ast, nil, " ", suffix);
-    } else if (utility_str_eq(tag, "parameter-declaration") ||
-               utility_str_eq(tag, "type-name")) {
-      delims[1] = " ";
-      return pretty_convert_join(ast, nil, delims, nil);
     } else {
       return pretty_convert_list(ast, nil, nil, nil);
     }
