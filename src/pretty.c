@@ -54,9 +54,13 @@ static Sexp *pretty_convert_list(Sexp *ast, const char *delims[]) {
 static Sexp *pretty_convert(Sexp *ast) {
   if (sexp_is_pair(ast)) {
     const char *delims[3] = {0};
+    Sexp *(*convert)(Sexp *, const char *[]) = pretty_convert_list;
     const char *tag = sexp_get(sexp_car(ast));
     ast = sexp_cdr(ast);
-    return pretty_convert_list(ast, delims);
+    if (utility_str_eq(tag, "argument-expression-list")) {
+      delims[1] = ", ";
+    }
+    return convert(ast, delims);
   } else {
     const char *symbol = sexp_get(ast);
     return symbol ? sexp_symbol(symbol) : sexp_nil();
