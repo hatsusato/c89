@@ -51,14 +51,27 @@ static Sexp *pretty_convert_list(Sexp *ast, const char *delims[]) {
   pretty = pretty_snoc_symbol(pretty, delims[2]);
   return pretty;
 }
+static Bool pretty_check_sizeof(Sexp *ast) {
+  if (2 == sexp_length(ast)) {
+    Sexp *first = sexp_at(ast, 0), *second = sexp_at(ast, 1);
+    if (sexp_eq(first, "sizeof")) {
+      return !(sexp_is_pair(second) &&
+               sexp_eq(sexp_car(second), "primary-expression"));
+    }
+  }
+  return false;
+}
 static Sexp *pretty_convert(Sexp *ast) {
   if (sexp_is_pair(ast)) {
-    const char *delims[3] = {0};
+    const char *delims[5] = {0};
     Sexp *(*convert)(Sexp *, const char *[]) = pretty_convert_list;
     const char *tag = sexp_get(sexp_car(ast));
     ast = sexp_cdr(ast);
     if (utility_str_eq(tag, "argument-expression-list")) {
       delims[1] = ", ";
+    } else if (utility_str_eq(tag, "unary-expression")) {
+      convert = pretty_convert_join;
+      delims[1] = pretty_check_sizeof(ast) ? " " : nil;
     }
     return convert(ast, delims);
   } else {
