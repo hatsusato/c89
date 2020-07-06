@@ -14,6 +14,10 @@ static Sexp *pretty_snoc_symbol(Sexp *pretty, const char *symbol) {
 }
 static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent,
                          const char *prefix) {
+  int i = 0;
+  for (; i < indent; ++i) {
+    pretty = pretty_snoc_symbol(pretty, "  ");
+  }
   if (sexp_is_pair(ast)) {
     Sexp *car = sexp_car(ast);
     if (!sexp_is_nil(car)) {
@@ -88,40 +92,42 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
         utility_str_eq(tag, "parameter-list") ||
         utility_str_eq(tag, "identifier-list") ||
         utility_str_eq(tag, "initializer-list")) {
-      return pretty_convert_list(ast, indent, nil, ", ", nil);
+      return pretty_convert_list(ast, 0, nil, ", ", nil);
     } else if (utility_str_eq(tag, "unary-expression")) {
       const char *delim = pretty_check_sizeof(ast) ? " " : nil;
-      return pretty_convert_list(ast, indent, nil, delim, nil);
+      return pretty_convert_list(ast, 0, nil, delim, nil);
     } else if (pretty_check_binary_expression(tag) ||
                utility_str_eq(tag, "conditional-expression") ||
                utility_str_eq(tag, "declaration-specifiers") ||
                utility_str_eq(tag, "specifier-qualifier-list") ||
                utility_str_eq(tag, "parameter-declaration") ||
                utility_str_eq(tag, "type-name")) {
-      return pretty_convert_list(ast, indent, nil, " ", nil);
+      return pretty_convert_list(ast, 0, nil, " ", nil);
     } else if (utility_str_eq(tag, "declaration") ||
                utility_str_eq(tag, "struct-declaration")) {
-      return pretty_convert_list(ast, indent, nil, nil, "\n");
+      return pretty_convert_list(ast, 0, nil, nil, "\n");
     } else if (utility_str_eq(tag, "init-declarator-list") ||
                utility_str_eq(tag, "struct-declarator-list") ||
                utility_str_eq(tag, "enumerator-list")) {
-      return pretty_convert_list(ast, indent, nil, ",", nil);
+      return pretty_convert_list(ast, 0, nil, ",", nil);
     } else if (utility_str_eq(tag, "init-declarator") ||
                utility_str_eq(tag, "enumerator")) {
-      return pretty_convert_list(ast, indent, " ", " ", nil);
+      return pretty_convert_list(ast, 0, " ", " ", nil);
     } else if (utility_str_eq(tag, "struct-or-union-specifier")) {
       delims[1] = delims[2] = " ";
       delims[3] = "\n";
-      return pretty_convert_join(ast, indent, nil, delims, nil);
+      return pretty_convert_join(ast, 0, nil, delims, nil);
+    } else if (utility_str_eq(tag, "struct-declaration-list")) {
+      return pretty_convert_list(ast, indent + 1, nil, nil, nil);
     } else if (utility_str_eq(tag, "struct-declarator")) {
       delims[0] = delims[1] = delims[2] = " ";
-      return pretty_convert_join(ast, indent, nil, delims, nil);
+      return pretty_convert_join(ast, 0, nil, delims, nil);
     } else if (utility_str_eq(tag, "enum-specifier")) {
       delims[1] = delims[2] = delims[4] = " ";
-      return pretty_convert_join(ast, indent, nil, delims, nil);
+      return pretty_convert_join(ast, 0, nil, delims, nil);
     } else if (utility_str_eq(tag, "type-qualifier-list")) {
       const char *suffix = sexp_is_nil(ast) ? nil : " ";
-      return pretty_convert_list(ast, indent, nil, " ", suffix);
+      return pretty_convert_list(ast, 0, nil, " ", suffix);
     } else {
       return pretty_convert_list(ast, indent, nil, nil, nil);
     }
