@@ -31,11 +31,12 @@ static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *prefix,
   int i = 0;
   pretty = pretty_snoc_symbol(pretty, prefix);
   if (sexp_is_pair(ast)) {
-    pretty = pretty_snoc(pretty, ast, indent, nil);
+    pretty = pretty_snoc(pretty, ast, indent, delims[i]);
     ast = sexp_cdr(ast);
+    ++i;
   }
-  for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    pretty = pretty_snoc(pretty, ast, indent, delims[i++]);
+  for (; sexp_is_pair(ast); ast = sexp_cdr(ast), ++i) {
+    pretty = pretty_snoc(pretty, ast, indent, delims[i]);
   }
   pretty = pretty_snoc_symbol(pretty, suffix);
   return pretty;
@@ -109,15 +110,14 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
                utility_str_eq(tag, "enumerator")) {
       return pretty_convert_list(ast, indent, " ", " ", nil);
     } else if (utility_str_eq(tag, "struct-or-union-specifier")) {
-      delims[0] = delims[1] = " ";
-      delims[2] = "\n";
+      delims[1] = delims[2] = " ";
+      delims[3] = "\n";
       return pretty_convert_join(ast, indent, nil, delims, nil);
     } else if (utility_str_eq(tag, "struct-declarator")) {
-      const char *prefix = sexp_is_nil(sexp_car(ast)) ? nil : " ";
-      const char *delim = 3 == sexp_length(ast) ? " " : nil;
-      return pretty_convert_list(ast, indent, prefix, delim, nil);
+      delims[0] = delims[1] = delims[2] = " ";
+      return pretty_convert_join(ast, indent, nil, delims, nil);
     } else if (utility_str_eq(tag, "enum-specifier")) {
-      delims[0] = delims[1] = delims[3] = " ";
+      delims[1] = delims[2] = delims[4] = " ";
       return pretty_convert_join(ast, indent, nil, delims, nil);
     } else if (utility_str_eq(tag, "type-qualifier-list")) {
       const char *suffix = sexp_is_nil(ast) ? nil : " ";
