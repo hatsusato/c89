@@ -6,6 +6,12 @@
 #include "utility.h"
 
 static Sexp *pretty_convert(Sexp *ast);
+static Sexp *pretty_snoc_symbol(Sexp *pretty, const char *symbol) {
+  if (symbol) {
+    pretty = sexp_snoc(pretty, sexp_symbol(symbol));
+  }
+  return pretty;
+}
 static Sexp *pretty_convert_list(Sexp *ast, const char *delim) {
   Sexp *pretty = sexp_nil();
   if (sexp_is_pair(ast)) {
@@ -13,9 +19,7 @@ static Sexp *pretty_convert_list(Sexp *ast, const char *delim) {
     ast = sexp_cdr(ast);
   }
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    if (delim) {
-      pretty = sexp_snoc(pretty, sexp_symbol(delim));
-    }
+    pretty = pretty_snoc_symbol(pretty, delim);
     pretty = sexp_snoc(pretty, pretty_convert(sexp_car(ast)));
   }
   return pretty;
