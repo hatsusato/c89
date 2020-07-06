@@ -61,6 +61,19 @@ static Bool pretty_check_sizeof(Sexp *ast) {
   }
   return false;
 }
+static Bool pretty_check_binary_expression(const char *tag) {
+  return (utility_str_eq(tag, "multiplicative-expression") ||
+          utility_str_eq(tag, "additive-expression") ||
+          utility_str_eq(tag, "shift-expression") ||
+          utility_str_eq(tag, "relational-expression") ||
+          utility_str_eq(tag, "equality-expression") ||
+          utility_str_eq(tag, "and-expression") ||
+          utility_str_eq(tag, "exclusive-or-expression") ||
+          utility_str_eq(tag, "inclusive-or-expression") ||
+          utility_str_eq(tag, "logical-and-expression") ||
+          utility_str_eq(tag, "logical-or-expression") ||
+          utility_str_eq(tag, "assignment-expression"));
+}
 static Sexp *pretty_convert(Sexp *ast) {
   if (sexp_is_pair(ast)) {
     const char *delims[5] = {0};
@@ -72,6 +85,9 @@ static Sexp *pretty_convert(Sexp *ast) {
     } else if (utility_str_eq(tag, "unary-expression")) {
       convert = pretty_convert_join;
       delims[1] = pretty_check_sizeof(ast) ? " " : nil;
+    } else if (pretty_check_binary_expression(tag) ||
+               utility_str_eq(tag, "conditional-expression")) {
+      delims[1] = " ";
     }
     return convert(ast, delims);
   } else {
