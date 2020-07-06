@@ -22,7 +22,7 @@ for arg in "$@"; do
   if test "$eflag"; then
     print "$arg" -Isrc
   else
-    print "$arg" -Isrc -fsyntax-only || exit $?
+    print "$arg" -Isrc -fsyntax-only >/dev/null || exit $?
     print "$arg" -Isrc | ./main.out
   fi
 done
