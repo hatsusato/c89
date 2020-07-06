@@ -80,7 +80,8 @@ static Sexp *pretty_convert(Sexp *ast) {
     Sexp *(*convert)(Sexp *, const char *[]) = pretty_convert_list;
     const char *tag = sexp_get(sexp_car(ast));
     ast = sexp_cdr(ast);
-    if (utility_str_eq(tag, "argument-expression-list")) {
+    if (utility_str_eq(tag, "argument-expression-list") ||
+        utility_str_eq(tag, "expression")) {
       delims[1] = ", ";
     } else if (utility_str_eq(tag, "unary-expression")) {
       convert = pretty_convert_join;
