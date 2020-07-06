@@ -76,18 +76,57 @@ static Bool pretty_check_binary_expression(const char *tag) {
 }
 static Sexp *pretty_convert(Sexp *ast) {
   if (sexp_is_pair(ast)) {
-    const char *delims[5] = {0};
+    const char *delims[6] = {0};
     Sexp *(*convert)(Sexp *, const char *[]) = pretty_convert_list;
     const char *tag = sexp_get(sexp_car(ast));
     ast = sexp_cdr(ast);
     if (utility_str_eq(tag, "argument-expression-list") ||
-        utility_str_eq(tag, "expression")) {
+        utility_str_eq(tag, "expression") ||
+        utility_str_eq(tag, "parameter-list") ||
+        utility_str_eq(tag, "identifier-list") ||
+        utility_str_eq(tag, "initializer-list")) {
       delims[1] = ", ";
     } else if (utility_str_eq(tag, "unary-expression")) {
       convert = pretty_convert_join;
       delims[1] = pretty_check_sizeof(ast) ? " " : nil;
     } else if (pretty_check_binary_expression(tag) ||
-               utility_str_eq(tag, "conditional-expression")) {
+               utility_str_eq(tag, "conditional-expression") ||
+               utility_str_eq(tag, "declaration-specifiers") ||
+               utility_str_eq(tag, "specifier-qualifier-list")) {
+      delims[1] = " ";
+    } else if (utility_str_eq(tag, "declaration") ||
+               utility_str_eq(tag, "struct-declaration")) {
+      delims[2] = "\n";
+    } else if (utility_str_eq(tag, "init-declarator-list") ||
+               utility_str_eq(tag, "struct-declarator-list") ||
+               utility_str_eq(tag, "enumerator-list")) {
+      delims[1] = ",";
+    } else if (utility_str_eq(tag, "init-declarator") ||
+               utility_str_eq(tag, "enumerator")) {
+      delims[0] = delims[1] = " ";
+    } else if (utility_str_eq(tag, "struct-or-union-specifier")) {
+      convert = pretty_convert_join;
+      delims[1] = delims[2] = " ";
+      delims[3] = "\n";
+    } else if (utility_str_eq(tag, "struct-declarator")) {
+      convert = pretty_convert_join;
+      if (!sexp_is_nil(sexp_car(ast))) {
+        delims[0] = " ";
+      }
+      if (3 == sexp_length(ast)) {
+        delims[1] = delims[2] = " ";
+      }
+    } else if (utility_str_eq(tag, "enum-specifier")) {
+      convert = pretty_convert_join;
+      delims[1] = delims[2] = delims[4] = " ";
+    } else if (utility_str_eq(tag, "type-qualifier-list")) {
+      delims[1] = " ";
+      if (!sexp_is_nil(ast)) {
+        delims[2] = " ";
+      }
+    } else if (utility_str_eq(tag, "parameter-declaration") ||
+               utility_str_eq(tag, "type-name")) {
+      convert = pretty_convert_join;
       delims[1] = " ";
     }
     return convert(ast, delims);
