@@ -12,6 +12,21 @@ static Sexp *pretty_snoc_symbol(Sexp *pretty, const char *symbol) {
   }
   return pretty;
 }
+static Sexp *pretty_convert_join(Sexp *ast, const char *delims[]) {
+  Sexp *pretty = sexp_nil();
+  int i = 0;
+  pretty = pretty_snoc_symbol(pretty, delims[i++]);
+  if (sexp_is_pair(ast)) {
+    pretty = sexp_snoc(pretty, pretty_convert(sexp_car(ast)));
+    ast = sexp_cdr(ast);
+  }
+  for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    pretty = pretty_snoc_symbol(pretty, delims[i++]);
+    pretty = sexp_snoc(pretty, pretty_convert(sexp_car(ast)));
+  }
+  pretty = pretty_snoc_symbol(pretty, delims[i++]);
+  return pretty;
+}
 static Sexp *pretty_convert_list(Sexp *ast, const char *delims[]) {
   Sexp *pretty = sexp_nil();
   pretty = pretty_snoc_symbol(pretty, delims[0]);
