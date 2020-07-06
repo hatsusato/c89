@@ -94,8 +94,7 @@ Bool sexp_is_list(Sexp *list) {
   }
 }
 Bool sexp_eq(Sexp *sexp, const char *symbol) {
-  assert(sexp_is_symbol(sexp));
-  return utility_str_eq(sexp->data.symbol, symbol);
+  return sexp_is_symbol(sexp) && utility_str_eq(sexp->data.symbol, symbol);
 }
 Sexp *sexp_car(Sexp *sexp) {
   assert(sexp_is_pair(sexp));
