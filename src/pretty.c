@@ -64,10 +64,8 @@ static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *prefix,
   pretty = pretty_snoc_symbol(pretty, indent, suffix);
   return pretty;
 }
-static Sexp *pretty_convert_list(Sexp *ast, int indent, const char *prefix,
-                                 const char *delim, const char *suffix) {
+static Sexp *pretty_convert_list(Sexp *ast, int indent, const char *delim) {
   Sexp *pretty = sexp_nil();
-  pretty = pretty_snoc_symbol(pretty, indent, prefix);
   if (sexp_is_pair(ast)) {
     pretty = pretty_snoc(pretty, ast, indent, nil);
     ast = sexp_cdr(ast);
@@ -75,7 +73,6 @@ static Sexp *pretty_convert_list(Sexp *ast, int indent, const char *prefix,
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     pretty = pretty_snoc(pretty, ast, indent, delim);
   }
-  pretty = pretty_snoc_symbol(pretty, indent, suffix);
   return pretty;
 }
 static Bool pretty_check_sizeof(Sexp *ast) {
@@ -111,35 +108,35 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
         utility_str_eq(tag, "parameter-list") ||
         utility_str_eq(tag, "identifier-list") ||
         utility_str_eq(tag, "initializer-list")) {
-      return pretty_convert_list(ast, indent, nil, ", ", nil);
+      return pretty_convert_list(ast, indent, ", ");
     } else if (utility_str_eq(tag, "unary-expression")) {
       const char *delim = pretty_check_sizeof(ast) ? " " : nil;
-      return pretty_convert_list(ast, indent, nil, delim, nil);
+      return pretty_convert_list(ast, indent, delim);
     } else if (pretty_check_binary_expression(tag) ||
                utility_str_eq(tag, "conditional-expression") ||
                utility_str_eq(tag, "declaration-specifiers") ||
                utility_str_eq(tag, "specifier-qualifier-list") ||
                utility_str_eq(tag, "parameter-declaration") ||
                utility_str_eq(tag, "type-name")) {
-      return pretty_convert_list(ast, indent, nil, " ", nil);
+      return pretty_convert_list(ast, indent, " ");
     } else if (utility_str_eq(tag, "declaration") ||
                utility_str_eq(tag, "struct-declaration")) {
-      ast = pretty_convert_list(ast, indent, nil, nil, nil);
+      ast = pretty_convert_list(ast, indent, nil);
       return pretty_indent(indent, ast);
     } else if (utility_str_eq(tag, "init-declarator-list") ||
                utility_str_eq(tag, "struct-declarator-list") ||
                utility_str_eq(tag, "enumerator-list")) {
-      return pretty_convert_list(ast, indent, nil, ",", nil);
+      return pretty_convert_list(ast, indent, ",");
     } else if (utility_str_eq(tag, "init-declarator") ||
                utility_str_eq(tag, "enumerator")) {
-      ast = pretty_convert_list(ast, indent, nil, " ", nil);
+      ast = pretty_convert_list(ast, indent, " ");
       return pretty_prefix(ast, " ");
     } else if (utility_str_eq(tag, "struct-or-union-specifier")) {
       delims[1] = delims[2] = " ";
       delims[4] = "\n";
       return pretty_convert_join(ast, indent, nil, delims, nil);
     } else if (utility_str_eq(tag, "struct-declaration-list")) {
-      return pretty_convert_list(ast, indent + 1, nil, nil, nil);
+      return pretty_convert_list(ast, indent + 1, nil);
     } else if (utility_str_eq(tag, "struct-declarator")) {
       delims[0] = delims[1] = delims[2] = " ";
       return pretty_convert_join(ast, indent, nil, delims, nil);
@@ -147,7 +144,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       delims[1] = delims[2] = delims[4] = " ";
       return pretty_convert_join(ast, indent, nil, delims, nil);
     } else if (utility_str_eq(tag, "type-qualifier-list")) {
-      ast = pretty_convert_list(ast, indent, nil, " ", nil);
+      ast = pretty_convert_list(ast, indent, " ");
       return pretty_suffix(ast, sexp_is_nil(ast) ? nil : " ");
     } else if (utility_str_eq(tag, "labeled-statement")) {
       delims[1] = pretty_check_tag(ast, "case") ? " " : nil;
@@ -160,9 +157,9 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       return pretty_convert_join(ast, indent, nil, delims, nil);
     } else if (utility_str_eq(tag, "declaration-list") ||
                utility_str_eq(tag, "statement-list")) {
-      return pretty_convert_list(ast, indent + 1, nil, nil, nil);
+      return pretty_convert_list(ast, indent + 1, nil);
     } else if (utility_str_eq(tag, "expression-statement")) {
-      ast = pretty_convert_list(ast, indent, nil, nil, nil);
+      ast = pretty_convert_list(ast, indent, nil);
       return pretty_indent(indent, ast);
     } else if (utility_str_eq(tag, "selection-statement")) {
       delims[1] = delims[5] = " ";
@@ -185,14 +182,14 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       ast = pretty_convert_join(ast, indent, nil, delims, nil);
       return pretty_indent(indent, ast);
     } else if (utility_str_eq(tag, "translation-unit")) {
-      ast = pretty_convert_list(ast, indent, nil, nil, nil);
+      ast = pretty_convert_list(ast, indent, nil);
       return pretty_suffix(ast, "\n");
     } else if (utility_str_eq(tag, "function-definition")) {
       delims[1] = " ";
       ast = pretty_convert_join(ast, indent, nil, delims, nil);
       return pretty_indent(indent, ast);
     } else {
-      return pretty_convert_list(ast, indent, nil, nil, nil);
+      return pretty_convert_list(ast, indent, nil);
     }
   } else {
     const char *symbol = sexp_get(ast);
