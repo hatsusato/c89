@@ -61,7 +61,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       return pretty_convert_list(ast, indent, ", ");
     case AST_UNARY_EXPRESSION:
       if (2 == sexp_length(ast) && pretty_check_tag(ast, "sizeof") &&
-          !(pretty_check_tag(sexp_cdr(ast), "primary-expression"))) {
+          !pretty_check_tag(sexp_cdr(ast), "primary-expression")) {
         delims[1] = " ";
       }
       return pretty_convert_join(ast, indent, delims);
@@ -84,6 +84,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       return pretty_convert_list(ast, indent, " ");
     case AST_DECLARATION:
     case AST_STRUCT_DECLARATION:
+    case AST_EXPRESSION_STATEMENT:
       ast = pretty_convert_list(ast, indent, nil);
       return pretty_indent(indent, ast);
     case AST_INIT_DECLARATOR_LIST:
@@ -99,6 +100,8 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       delims[4] = "\n";
       return pretty_convert_join(ast, indent, delims);
     case AST_STRUCT_DECLARATION_LIST:
+    case AST_DECLARATION_LIST:
+    case AST_STATEMENT_LIST:
       return pretty_convert_list(ast, indent + 1, nil);
     case AST_STRUCT_DECLARATOR:
       delims[0] = delims[1] = delims[2] = " ";
@@ -118,12 +121,6 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       delims[0] = " ";
       delims[3] = "\n";
       return pretty_convert_join(ast, indent, delims);
-    case AST_DECLARATION_LIST:
-    case AST_STATEMENT_LIST:
-      return pretty_convert_list(ast, indent + 1, nil);
-    case AST_EXPRESSION_STATEMENT:
-      ast = pretty_convert_list(ast, indent, nil);
-      return pretty_indent(indent, ast);
     case AST_SELECTION_STATEMENT:
       delims[1] = delims[5] = " ";
       ast = pretty_convert_join(ast, indent, delims);
