@@ -15,6 +15,18 @@ static Sexp *pretty_indent(int indent, Sexp *ast) {
   }
   return sexp_cons(sexp_symbol("\n"), ast);
 }
+static Sexp *pretty_prefix(Sexp *ast, const char *symbol) {
+  if (symbol) {
+    ast = sexp_cons(sexp_symbol(symbol), ast);
+  }
+  return ast;
+}
+static Sexp *pretty_suffix(Sexp *ast, const char *symbol) {
+  if (symbol) {
+    ast = sexp_snoc(ast, sexp_symbol(symbol));
+  }
+  return ast;
+}
 static Sexp *pretty_snoc_symbol(Sexp *pretty, int indent, const char *symbol) {
   if (utility_str_eq(symbol, "\n")) {
     return sexp_snoc(pretty, pretty_indent(indent, sexp_nil()));
@@ -120,7 +132,8 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       return pretty_convert_list(ast, indent, nil, ",", nil);
     } else if (utility_str_eq(tag, "init-declarator") ||
                utility_str_eq(tag, "enumerator")) {
-      return pretty_convert_list(ast, indent, " ", " ", nil);
+      ast = pretty_convert_list(ast, indent, nil, " ", nil);
+      return pretty_prefix(ast, " ");
     } else if (utility_str_eq(tag, "struct-or-union-specifier")) {
       delims[1] = delims[2] = " ";
       delims[4] = "\n";
@@ -134,8 +147,8 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       delims[1] = delims[2] = delims[4] = " ";
       return pretty_convert_join(ast, indent, nil, delims, nil);
     } else if (utility_str_eq(tag, "type-qualifier-list")) {
-      const char *suffix = sexp_is_nil(ast) ? nil : " ";
-      return pretty_convert_list(ast, indent, nil, " ", suffix);
+      ast = pretty_convert_list(ast, indent, nil, " ", nil);
+      return pretty_suffix(ast, sexp_is_nil(ast) ? nil : " ");
     } else if (utility_str_eq(tag, "labeled-statement")) {
       delims[1] = pretty_check_tag(ast, "case") ? " " : nil;
       ast = pretty_convert_join(ast, indent, nil, delims, nil);
@@ -172,7 +185,8 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       ast = pretty_convert_join(ast, indent, nil, delims, nil);
       return pretty_indent(indent, ast);
     } else if (utility_str_eq(tag, "translation-unit")) {
-      return pretty_convert_list(ast, indent, nil, nil, "\n");
+      ast = pretty_convert_list(ast, indent, nil, nil, nil);
+      return pretty_suffix(ast, "\n");
     } else if (utility_str_eq(tag, "function-definition")) {
       delims[1] = " ";
       ast = pretty_convert_join(ast, indent, nil, delims, nil);
