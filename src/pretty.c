@@ -136,6 +136,41 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     } else if (utility_str_eq(tag, "type-qualifier-list")) {
       const char *suffix = sexp_is_nil(ast) ? nil : " ";
       return pretty_convert_list(ast, indent, nil, " ", suffix);
+    } else if (utility_str_eq(tag, "labeled-statement")) {
+      delims[1] = pretty_check_tag(ast, "case") ? " " : nil;
+      ast = pretty_convert_join(ast, indent, nil, delims, nil);
+      indent = pretty_check_tag(sexp_car(ast), "identifier") ? 0 : indent - 1;
+      return pretty_indent(indent, ast);
+    } else if (utility_str_eq(tag, "compound-statement")) {
+      delims[0] = " ";
+      delims[3] = "\n";
+      return pretty_convert_join(ast, indent, nil, delims, nil);
+    } else if (utility_str_eq(tag, "declaration-list") ||
+               utility_str_eq(tag, "statement-list")) {
+      return pretty_convert_list(ast, indent + 1, nil, nil, nil);
+    } else if (utility_str_eq(tag, "expression-statement")) {
+      ast = pretty_convert_list(ast, indent, nil, nil, nil);
+      return pretty_indent(indent, ast);
+    } else if (utility_str_eq(tag, "selection-statement")) {
+      delims[1] = delims[5] = " ";
+      ast = pretty_convert_join(ast, indent, nil, delims, nil);
+      return pretty_indent(indent, ast);
+    } else if (utility_str_eq(tag, "iteration-statement")) {
+      if (pretty_check_tag(ast, "while")) {
+        delims[1] = " ";
+      } else if (pretty_check_tag(ast, "do")) {
+        delims[2] = delims[3] = " ";
+      } else if (pretty_check_tag(ast, "for")) {
+        delims[1] = delims[4] = delims[6] = " ";
+      }
+      ast = pretty_convert_join(ast, indent, nil, delims, nil);
+      return pretty_indent(indent, ast);
+    } else if (utility_str_eq(tag, "jump-statement")) {
+      if (pretty_check_tag(ast, "goto") || pretty_check_tag(ast, "return")) {
+        delims[1] = " ";
+      }
+      ast = pretty_convert_join(ast, indent, nil, delims, nil);
+      return pretty_indent(indent, ast);
     } else {
       return pretty_convert_list(ast, indent, nil, nil, nil);
     }
