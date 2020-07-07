@@ -34,17 +34,18 @@ Sexp *sexp_cons(Sexp *car, Sexp *cdr) {
   return sexp;
 }
 Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
-  if (sexp_is_pair(xs)) {
-    Sexp *cdr = xs->data.pair.cdr;
-    if (sexp_is_pair(cdr)) {
-      sexp_snoc(cdr, x);
-    } else {
-      ((MutableSexp *)xs)->data.pair.cdr = sexp_cons(x, cdr);
+  Sexp *sexp = xs;
+  assert(sexp_is_list(xs));
+  while (sexp_is_pair(sexp)) {
+    Sexp *cdr = sexp_cdr(sexp);
+    if (sexp_is_nil(cdr)) {
+      ((MutableSexp *)sexp)->data.pair.cdr = sexp_cons(x, cdr);
+      return xs;
     }
-    return xs;
-  } else {
-    return sexp_cons(x, xs);
+    sexp = cdr;
   }
+  assert(sexp_is_nil(sexp));
+  return sexp_cons(x, xs);
 }
 Sexp *sexp_symbol(const char *symbol) {
   MutableSexp *sexp = malloc(sizeof(Sexp));
