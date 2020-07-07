@@ -6,6 +6,12 @@
 #include "utility.h"
 
 static Sexp *pretty_convert(Sexp *, int);
+static Sexp *pretty_indent(int indent, Sexp *ast) {
+  for (; 0 < indent; --indent) {
+    ast = sexp_cons(sexp_symbol("  "), ast);
+  }
+  return sexp_cons(sexp_symbol("\n"), ast);
+}
 static Sexp *pretty_snoc_symbol(Sexp *pretty, int indent, const char *symbol) {
   if (symbol) {
     pretty = sexp_snoc(pretty, sexp_symbol(symbol));
