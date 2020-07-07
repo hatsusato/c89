@@ -71,16 +71,6 @@ static Sexp *pretty_convert_list(Sexp *ast, int indent, const char *delim) {
   }
   return pretty;
 }
-static Bool pretty_check_sizeof(Sexp *ast) {
-  if (2 == sexp_length(ast)) {
-    Sexp *first = sexp_at(ast, 0), *second = sexp_at(ast, 1);
-    if (sexp_eq(first, "sizeof")) {
-      return !(sexp_is_pair(second) &&
-               sexp_eq(sexp_car(second), "primary-expression"));
-    }
-  }
-  return false;
-}
 static Sexp *pretty_convert(Sexp *ast, int indent) {
   if (sexp_is_pair(ast)) {
     const char *delims[10] = {0};
@@ -94,8 +84,11 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     case AST_INITIALIZER_LIST:
       return pretty_convert_list(ast, indent, ", ");
     case AST_UNARY_EXPRESSION:
-      return pretty_convert_list(ast, indent,
-                                 pretty_check_sizeof(ast) ? " " : nil);
+      if (pretty_check_tag(ast, "sizeof") &&
+          !(pretty_check_tag(sexp_cdr(ast), "primary-expression"))) {
+        delims[1] = " ";
+      }
+      return pretty_convert_join(ast, indent, delims);
     case AST_MULTIPLICATIVE_EXPRESSION:
     case AST_ADDITIVE_EXPRESSION:
     case AST_SHIFT_EXPRESSION:
