@@ -1,5 +1,6 @@
 #include "pretty.h"
 
+#include "ast.h"
 #include "print.h"
 #include "utility.h"
 
@@ -83,87 +84,85 @@ static Bool pretty_check_sizeof(Sexp *ast) {
   }
   return false;
 }
-static Bool pretty_check_binary_expression(const char *tag) {
-  return (utility_str_eq(tag, "multiplicative-expression") ||
-          utility_str_eq(tag, "additive-expression") ||
-          utility_str_eq(tag, "shift-expression") ||
-          utility_str_eq(tag, "relational-expression") ||
-          utility_str_eq(tag, "equality-expression") ||
-          utility_str_eq(tag, "and-expression") ||
-          utility_str_eq(tag, "exclusive-or-expression") ||
-          utility_str_eq(tag, "inclusive-or-expression") ||
-          utility_str_eq(tag, "logical-and-expression") ||
-          utility_str_eq(tag, "logical-or-expression") ||
-          utility_str_eq(tag, "assignment-expression"));
-}
 static Sexp *pretty_convert(Sexp *ast, int indent) {
   if (sexp_is_pair(ast)) {
     const char *delims[10] = {0};
-    const char *tag = sexp_get(sexp_car(ast));
+    int tag = ast_to_int(sexp_get(sexp_car(ast)));
     ast = sexp_cdr(ast);
-    if (utility_str_eq(tag, "argument-expression-list") ||
-        utility_str_eq(tag, "expression") ||
-        utility_str_eq(tag, "parameter-list") ||
-        utility_str_eq(tag, "identifier-list") ||
-        utility_str_eq(tag, "initializer-list")) {
+    switch (tag) {
+    case AST_ARGUMENT_EXPRESSION_LIST:
+    case AST_EXPRESSION:
+    case AST_PARAMETER_LIST:
+    case AST_IDENTIFIER_LIST:
+    case AST_INITIALIZER_LIST:
       return pretty_convert_list(ast, indent, ", ");
-    } else if (utility_str_eq(tag, "unary-expression")) {
-      const char *delim = pretty_check_sizeof(ast) ? " " : nil;
-      return pretty_convert_list(ast, indent, delim);
-    } else if (pretty_check_binary_expression(tag) ||
-               utility_str_eq(tag, "conditional-expression") ||
-               utility_str_eq(tag, "declaration-specifiers") ||
-               utility_str_eq(tag, "specifier-qualifier-list") ||
-               utility_str_eq(tag, "parameter-declaration") ||
-               utility_str_eq(tag, "type-name")) {
+    case AST_UNARY_EXPRESSION:
+      return pretty_convert_list(ast, indent,
+                                 pretty_check_sizeof(ast) ? " " : nil);
+    case AST_MULTIPLICATIVE_EXPRESSION:
+    case AST_ADDITIVE_EXPRESSION:
+    case AST_SHIFT_EXPRESSION:
+    case AST_RELATIONAL_EXPRESSION:
+    case AST_EQUALITY_EXPRESSION:
+    case AST_AND_EXPRESSION:
+    case AST_EXCLUSIVE_OR_EXPRESSION:
+    case AST_INCLUSIVE_OR_EXPRESSION:
+    case AST_LOGICAL_AND_EXPRESSION:
+    case AST_LOGICAL_OR_EXPRESSION:
+    case AST_ASSIGNMENT_EXPRESSION:
+    case AST_CONDITIONAL_EXPRESSION:
+    case AST_DECLARATION_SPECIFIERS:
+    case AST_SPECIFIER_QUALIFIER_LIST:
+    case AST_PARAMETER_DECLARATION:
+    case AST_TYPE_NAME:
       return pretty_convert_list(ast, indent, " ");
-    } else if (utility_str_eq(tag, "declaration") ||
-               utility_str_eq(tag, "struct-declaration")) {
+    case AST_DECLARATION:
+    case AST_STRUCT_DECLARATION:
       ast = pretty_convert_list(ast, indent, nil);
       return pretty_indent(indent, ast);
-    } else if (utility_str_eq(tag, "init-declarator-list") ||
-               utility_str_eq(tag, "struct-declarator-list") ||
-               utility_str_eq(tag, "enumerator-list")) {
+    case AST_INIT_DECLARATOR_LIST:
+    case AST_STRUCT_DECLARATOR_LIST:
+    case AST_ENUMERATOR_LIST:
       return pretty_convert_list(ast, indent, ",");
-    } else if (utility_str_eq(tag, "init-declarator") ||
-               utility_str_eq(tag, "enumerator")) {
+    case AST_INIT_DECLARATOR:
+    case AST_ENUMERATOR:
       ast = pretty_convert_list(ast, indent, " ");
       return pretty_prefix(ast, " ");
-    } else if (utility_str_eq(tag, "struct-or-union-specifier")) {
+    case AST_STRUCT_OR_UNION_SPECIFIER:
       delims[1] = delims[2] = " ";
       delims[4] = "\n";
       return pretty_convert_join(ast, indent, nil, delims, nil);
-    } else if (utility_str_eq(tag, "struct-declaration-list")) {
+    case AST_STRUCT_DECLARATION_LIST:
       return pretty_convert_list(ast, indent + 1, nil);
-    } else if (utility_str_eq(tag, "struct-declarator")) {
+    case AST_STRUCT_DECLARATOR:
       delims[0] = delims[1] = delims[2] = " ";
       return pretty_convert_join(ast, indent, nil, delims, nil);
-    } else if (utility_str_eq(tag, "enum-specifier")) {
+    case AST_ENUM_SPECIFIER:
       delims[1] = delims[2] = delims[4] = " ";
       return pretty_convert_join(ast, indent, nil, delims, nil);
-    } else if (utility_str_eq(tag, "type-qualifier-list")) {
+    case AST_TYPE_QUALIFIER_LIST:
       ast = pretty_convert_list(ast, indent, " ");
       return pretty_suffix(ast, sexp_is_nil(ast) ? nil : " ");
-    } else if (utility_str_eq(tag, "labeled-statement")) {
+    case AST_LABELED_STATEMENT:
       delims[1] = pretty_check_tag(ast, "case") ? " " : nil;
       ast = pretty_convert_join(ast, indent, nil, delims, nil);
       indent = pretty_check_tag(sexp_car(ast), "identifier") ? 0 : indent - 1;
       return pretty_indent(indent, ast);
-    } else if (utility_str_eq(tag, "compound-statement")) {
+    case AST_COMPOUND_STATEMENT:
       delims[0] = " ";
       delims[3] = "\n";
       return pretty_convert_join(ast, indent, nil, delims, nil);
-    } else if (utility_str_eq(tag, "declaration-list") ||
-               utility_str_eq(tag, "statement-list")) {
+    case AST_DECLARATION_LIST:
+    case AST_STATEMENT_LIST:
       return pretty_convert_list(ast, indent + 1, nil);
-    } else if (utility_str_eq(tag, "expression-statement")) {
+    case AST_EXPRESSION_STATEMENT:
       ast = pretty_convert_list(ast, indent, nil);
       return pretty_indent(indent, ast);
-    } else if (utility_str_eq(tag, "selection-statement")) {
+    case AST_SELECTION_STATEMENT:
       delims[1] = delims[5] = " ";
       ast = pretty_convert_join(ast, indent, nil, delims, nil);
       return pretty_indent(indent, ast);
-    } else if (utility_str_eq(tag, "iteration-statement")) {
+    case AST_ITERATION_STATEMENT:
       if (pretty_check_tag(ast, "while")) {
         delims[1] = " ";
       } else if (pretty_check_tag(ast, "do")) {
@@ -173,20 +172,20 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       }
       ast = pretty_convert_join(ast, indent, nil, delims, nil);
       return pretty_indent(indent, ast);
-    } else if (utility_str_eq(tag, "jump-statement")) {
+    case AST_JUMP_STATEMENT:
       if (pretty_check_tag(ast, "goto") || pretty_check_tag(ast, "return")) {
         delims[1] = " ";
       }
       ast = pretty_convert_join(ast, indent, nil, delims, nil);
       return pretty_indent(indent, ast);
-    } else if (utility_str_eq(tag, "translation-unit")) {
+    case AST_TRANSLATION_UNIT:
       ast = pretty_convert_list(ast, indent, nil);
       return pretty_suffix(ast, "\n");
-    } else if (utility_str_eq(tag, "function-definition")) {
+    case AST_FUNCTION_DEFINITION:
       delims[1] = " ";
       ast = pretty_convert_join(ast, indent, nil, delims, nil);
       return pretty_indent(indent, ast);
-    } else {
+    default:
       return pretty_convert_list(ast, indent, nil);
     }
   } else {
