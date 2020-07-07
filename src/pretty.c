@@ -171,6 +171,12 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       }
       ast = pretty_convert_join(ast, indent, nil, delims, nil);
       return pretty_indent(indent, ast);
+    } else if (utility_str_eq(tag, "translation-unit")) {
+      return pretty_convert_list(ast, indent, nil, nil, "\n");
+    } else if (utility_str_eq(tag, "function-definition")) {
+      delims[1] = " ";
+      ast = pretty_convert_join(ast, indent, nil, delims, nil);
+      return pretty_indent(indent, ast);
     } else {
       return pretty_convert_list(ast, indent, nil, nil, nil);
     }
