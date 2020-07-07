@@ -28,9 +28,11 @@ enum AstTag {
 #
 #include "enum/definition.def"
 #undef HANDLE
+  AST_UNKNOWN,
   AST_TAG_END
 };
 
 const char *ast_show(int);
+int ast_to_int(const char *);
 
 #endif /* INCLUDE_GUARD_A84E9F8A_C152_4807_9181_80EE16B4DFA5 */
