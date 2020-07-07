@@ -141,9 +141,6 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       }
       ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
-    case AST_TRANSLATION_UNIT:
-      ast = pretty_convert_list(ast, indent, nil);
-      return sexp_snoc(ast, sexp_symbol("\n"));
     case AST_FUNCTION_DEFINITION:
       delims[1] = " ";
       ast = pretty_convert_join(ast, indent, delims);
@@ -156,18 +153,19 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     return symbol ? sexp_symbol(symbol) : sexp_nil();
   }
 }
-static void pretty_print_sexp(Sexp *sexp) {
+static void pretty_print_sexp(FILE *fp, Sexp *sexp) {
   if (sexp_is_pair(sexp)) {
     assert(sexp_is_list(sexp));
-    pretty_print_sexp(sexp_car(sexp));
-    pretty_print_sexp(sexp_cdr(sexp));
+    pretty_print_sexp(fp, sexp_car(sexp));
+    pretty_print_sexp(fp, sexp_cdr(sexp));
   } else {
-    print_symbol(stdout, sexp);
+    print_symbol(fp, sexp);
   }
 }
 
-void pretty_print(Sexp *ast) {
+void pretty_print(FILE *fp, Sexp *ast) {
   Sexp *pretty = pretty_convert(ast, 0);
-  pretty_print_sexp(pretty);
+  pretty_print_sexp(fp, pretty);
+  print_newline(fp);
   sexp_delete(pretty);
 }
