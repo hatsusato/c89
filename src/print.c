@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 
+static void print_sexp(FILE *, Sexp *, int);
 static void print_sexp_list(FILE *fp, Sexp *sexp, int indent) {
   assert(sexp_is_pair(sexp));
   print_sexp(fp, sexp_car(sexp), indent);
@@ -39,7 +40,7 @@ void print_symbol(FILE *fp, Sexp *sexp) {
     print_message(fp, sexp_get(sexp));
   }
 }
-void print_sexp(FILE *fp, Sexp *sexp, int indent) {
+static void print_sexp(FILE *fp, Sexp *sexp, int indent) {
   const char *prefix = "(", *suffix = ")";
   if (sexp_is_pair(sexp)) {
     print_message(fp, prefix);
