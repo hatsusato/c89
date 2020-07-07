@@ -45,10 +45,6 @@ static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent,
 static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *delims[]) {
   Sexp *pretty = sexp_nil();
   int i = 0;
-  if (sexp_is_pair(ast)) {
-    pretty = pretty_snoc(pretty, ast, indent, delims[i++]);
-    ast = sexp_cdr(ast);
-  }
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     pretty = pretty_snoc(pretty, ast, indent, delims[i++]);
   }
@@ -56,12 +52,10 @@ static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *delims[]) {
 }
 static Sexp *pretty_convert_list(Sexp *ast, int indent, const char *delim) {
   Sexp *pretty = sexp_nil();
-  if (sexp_is_pair(ast)) {
-    pretty = pretty_snoc(pretty, ast, indent, nil);
-    ast = sexp_cdr(ast);
-  }
+  const char *sep = nil;
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    pretty = pretty_snoc(pretty, ast, indent, delim);
+    pretty = pretty_snoc(pretty, ast, indent, sep);
+    sep = delim;
   }
   return pretty;
 }
