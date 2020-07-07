@@ -4,7 +4,6 @@
 
 void print_seq(Result *result) {
   Sexp *sexp = result_set_sexp(result, nil);
-  print_ast(sexp);
   pretty_print(sexp);
   result_set_sexp(result, sexp);
 }
