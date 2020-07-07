@@ -9,6 +9,7 @@ typedef struct struct_Sexp const Sexp;
 Sexp *sexp_nil(void);
 Sexp *sexp_cons(Sexp *, Sexp *);
 Sexp *sexp_snoc(Sexp *, Sexp *);
+Sexp *sexp_append(Sexp *, Sexp *);
 Sexp *sexp_symbol(const char *);
 Sexp *sexp_string(const char *, int);
 void sexp_delete(Sexp *);

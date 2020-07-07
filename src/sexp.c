@@ -47,6 +47,20 @@ Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
   assert(sexp_is_nil(sexp));
   return sexp_cons(x, xs);
 }
+Sexp *sexp_append(Sexp *lhs, Sexp *rhs) {
+  Sexp *sexp = lhs;
+  assert(sexp_is_list(lhs));
+  while (sexp_is_pair(sexp)) {
+    Sexp *cdr = sexp_cdr(sexp);
+    if (sexp_is_nil(cdr)) {
+      ((MutableSexp *)sexp)->data.pair.cdr = rhs;
+      return lhs;
+    }
+    sexp = cdr;
+  }
+  assert(sexp_is_nil(sexp));
+  return rhs;
+}
 Sexp *sexp_symbol(const char *symbol) {
   MutableSexp *sexp = malloc(sizeof(Sexp));
   sexp->kind = SEXP_SYMBOL;
