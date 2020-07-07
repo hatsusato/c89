@@ -13,13 +13,10 @@ static Sexp *pretty_indent(int indent, Sexp *ast) {
   return sexp_cons(sexp_symbol("\n"), ast);
 }
 static Sexp *pretty_snoc_symbol(Sexp *pretty, int indent, const char *symbol) {
-  if (symbol) {
-    pretty = sexp_snoc(pretty, sexp_symbol(symbol));
-    if (utility_str_eq(symbol, "\n")) {
-      for (; 0 < indent; --indent) {
-        pretty = sexp_snoc(pretty, sexp_symbol("  "));
-      }
-    }
+  if (utility_str_eq(symbol, "\n")) {
+    return sexp_snoc(pretty, pretty_indent(indent, sexp_nil()));
+  } else if (symbol) {
+    return sexp_snoc(pretty, sexp_symbol(symbol));
   }
   return pretty;
 }
@@ -112,7 +109,8 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       return pretty_convert_list(ast, indent, nil, " ", nil);
     } else if (utility_str_eq(tag, "declaration") ||
                utility_str_eq(tag, "struct-declaration")) {
-      return pretty_convert_list(ast, indent, "\n", nil, nil);
+      ast = pretty_convert_list(ast, indent, nil, nil, nil);
+      return pretty_indent(indent, ast);
     } else if (utility_str_eq(tag, "init-declarator-list") ||
                utility_str_eq(tag, "struct-declarator-list") ||
                utility_str_eq(tag, "enumerator-list")) {
