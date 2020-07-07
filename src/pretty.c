@@ -76,7 +76,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     case AST_INITIALIZER_LIST:
       return pretty_convert_list(ast, indent, ", ");
     case AST_UNARY_EXPRESSION:
-      if (pretty_check_tag(ast, "sizeof") &&
+      if (2 == sexp_length(ast) && pretty_check_tag(ast, "sizeof") &&
           !(pretty_check_tag(sexp_cdr(ast), "primary-expression"))) {
         delims[1] = " ";
       }
