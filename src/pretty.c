@@ -29,16 +29,18 @@ static Sexp *pretty_suffix(Sexp *ast, const char *symbol) {
 static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent,
                          const char *prefix) {
   assert(sexp_is_pair(ast));
-  Sexp *car = sexp_car(ast);
-  if (!sexp_is_nil(car)) {
-    if (utility_str_eq(prefix, "\n")) {
-      pretty = sexp_snoc(pretty, pretty_indent(indent, sexp_nil()));
-    } else if (prefix) {
-      pretty = sexp_snoc(pretty, sexp_symbol(prefix));
-    }
-    pretty = sexp_snoc(pretty, pretty_convert(car, indent));
+  ast = sexp_car(ast);
+  if (sexp_is_nil(ast)) {
+    return pretty;
   }
-  return pretty;
+  ast = pretty_convert(ast, indent);
+  ast = sexp_cons(ast, sexp_nil());
+  if (utility_str_eq(prefix, "\n")) {
+    ast = pretty_indent(indent, ast);
+  } else if (prefix) {
+    ast = sexp_cons(sexp_symbol(prefix), ast);
+  }
+  return sexp_snoc(pretty, ast);
 }
 static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *delims[]) {
   Sexp *pretty = sexp_nil();
