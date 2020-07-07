@@ -5,8 +5,6 @@
 const char *ast_show(int tag) {
   const char *name[] = {"tag-begin",
 #define HANDLE(name, str) str,
-#include "enum/misc.def"
-#
 #include "enum/keyword.def"
 #
 #include "enum/token.def"
@@ -33,8 +31,6 @@ int ast_to_int(const char *tag) {
   else if (utility_str_eq(tag, str)) { \
     return AST_##name;                 \
   }
-#include "enum/misc.def"
-#
 #include "enum/keyword.def"
 #
 #include "enum/token.def"
