@@ -47,11 +47,9 @@ static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent,
   }
   return pretty;
 }
-static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *prefix,
-                                 const char *delims[], const char *suffix) {
+static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *delims[]) {
   Sexp *pretty = sexp_nil();
   int i = 0;
-  pretty = pretty_snoc_symbol(pretty, indent, prefix);
   if (sexp_is_pair(ast)) {
     pretty = pretty_snoc(pretty, ast, indent, delims[i]);
     ast = sexp_cdr(ast);
@@ -60,7 +58,6 @@ static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *prefix,
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast), ++i) {
     pretty = pretty_snoc(pretty, ast, indent, delims[i]);
   }
-  pretty = pretty_snoc_symbol(pretty, indent, suffix);
   return pretty;
 }
 static Sexp *pretty_convert_list(Sexp *ast, int indent, const char *delim) {
@@ -131,27 +128,27 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     case AST_STRUCT_OR_UNION_SPECIFIER:
       delims[1] = delims[2] = " ";
       delims[4] = "\n";
-      return pretty_convert_join(ast, indent, nil, delims, nil);
+      return pretty_convert_join(ast, indent, delims);
     case AST_STRUCT_DECLARATION_LIST:
       return pretty_convert_list(ast, indent + 1, nil);
     case AST_STRUCT_DECLARATOR:
       delims[0] = delims[1] = delims[2] = " ";
-      return pretty_convert_join(ast, indent, nil, delims, nil);
+      return pretty_convert_join(ast, indent, delims);
     case AST_ENUM_SPECIFIER:
       delims[1] = delims[2] = delims[4] = " ";
-      return pretty_convert_join(ast, indent, nil, delims, nil);
+      return pretty_convert_join(ast, indent, delims);
     case AST_TYPE_QUALIFIER_LIST:
       ast = pretty_convert_list(ast, indent, " ");
       return pretty_suffix(ast, sexp_is_nil(ast) ? nil : " ");
     case AST_LABELED_STATEMENT:
       delims[1] = pretty_check_tag(ast, "case") ? " " : nil;
-      ast = pretty_convert_join(ast, indent, nil, delims, nil);
+      ast = pretty_convert_join(ast, indent, delims);
       indent = pretty_check_tag(sexp_car(ast), "identifier") ? 0 : indent - 1;
       return pretty_indent(indent, ast);
     case AST_COMPOUND_STATEMENT:
       delims[0] = " ";
       delims[3] = "\n";
-      return pretty_convert_join(ast, indent, nil, delims, nil);
+      return pretty_convert_join(ast, indent, delims);
     case AST_DECLARATION_LIST:
     case AST_STATEMENT_LIST:
       return pretty_convert_list(ast, indent + 1, nil);
@@ -160,7 +157,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       return pretty_indent(indent, ast);
     case AST_SELECTION_STATEMENT:
       delims[1] = delims[5] = " ";
-      ast = pretty_convert_join(ast, indent, nil, delims, nil);
+      ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     case AST_ITERATION_STATEMENT:
       if (pretty_check_tag(ast, "while")) {
@@ -170,20 +167,20 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       } else if (pretty_check_tag(ast, "for")) {
         delims[1] = delims[4] = delims[6] = " ";
       }
-      ast = pretty_convert_join(ast, indent, nil, delims, nil);
+      ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     case AST_JUMP_STATEMENT:
       if (pretty_check_tag(ast, "goto") || pretty_check_tag(ast, "return")) {
         delims[1] = " ";
       }
-      ast = pretty_convert_join(ast, indent, nil, delims, nil);
+      ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     case AST_TRANSLATION_UNIT:
       ast = pretty_convert_list(ast, indent, nil);
       return pretty_suffix(ast, "\n");
     case AST_FUNCTION_DEFINITION:
       delims[1] = " ";
-      ast = pretty_convert_join(ast, indent, nil, delims, nil);
+      ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     default:
       return pretty_convert_list(ast, indent, nil);
