@@ -6,6 +6,9 @@
 #include "utility.h"
 
 static Sexp *pretty_convert(Sexp *, int);
+static Bool pretty_check_tag(Sexp *ast, const char *tag) {
+  return sexp_is_pair(ast) && sexp_eq(sexp_car(ast), tag);
+}
 static Sexp *pretty_indent(int indent, Sexp *ast) {
   for (; 0 < indent; --indent) {
     ast = sexp_cons(sexp_symbol("  "), ast);
