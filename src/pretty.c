@@ -51,12 +51,11 @@ static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *delims[]) {
   Sexp *pretty = sexp_nil();
   int i = 0;
   if (sexp_is_pair(ast)) {
-    pretty = pretty_snoc(pretty, ast, indent, delims[i]);
+    pretty = pretty_snoc(pretty, ast, indent, delims[i++]);
     ast = sexp_cdr(ast);
-    ++i;
   }
-  for (; sexp_is_pair(ast); ast = sexp_cdr(ast), ++i) {
-    pretty = pretty_snoc(pretty, ast, indent, delims[i]);
+  for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    pretty = pretty_snoc(pretty, ast, indent, delims[i++]);
   }
   return pretty;
 }
