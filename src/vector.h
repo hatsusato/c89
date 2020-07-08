@@ -15,5 +15,6 @@ const void **vector_begin(const Vector *);
 const void **vector_end(const Vector *);
 void vector_push(Vector *, const void *);
 void vector_pop(Vector *, VectorDestructor);
+void vector_clean(Vector *, VectorDestructor);
 
 #endif /* INCLUDE_GUARD_228B134A_0631_479A_9421_9C226E168C9E */
