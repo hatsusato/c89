@@ -10,14 +10,14 @@ struct struct_Vector {
 
 static void vector_alloc(Vector *v) {
   void *prev = v->data;
-  v->data = malloc(v->capacity);
+  v->data = malloc(v->capacity * vector_alignment());
   if (prev) {
-    memcpy(v->data, prev, v->size);
+    memcpy(v->data, prev, v->size * vector_alignment());
     free(prev);
   }
 }
 static void vector_extend(Vector *v, Size size) {
-  Size initial_size = 16 * vector_alignment();
+  Size initial_size = 16;
   if (v->capacity < size) {
     v->capacity = size;
   } else {
@@ -27,7 +27,7 @@ static void vector_extend(Vector *v, Size size) {
 }
 static void *vector_offset(Vector *v, Size offset) {
   Byte *ptr = v->data;
-  return ptr + offset;
+  return ptr + offset * vector_alignment();
 }
 
 Size vector_alignment(void) {
@@ -46,17 +46,14 @@ void vector_delete(Vector *v) {
 }
 Size vector_length(const Vector *v) {
   assert(v);
-  return v->size / vector_alignment();
+  return v->size;
 }
 void *vector_back(Vector *v) {
-  Size size = 0;
   assert(v);
   if (v->size == v->capacity) {
     vector_extend(v, 2 * v->capacity);
   }
-  size = v->size;
-  v->size += vector_alignment();
-  return vector_offset(v, size);
+  return vector_offset(v, v->size++);
 }
 void *vector_begin(Vector *v) {
   assert(v);
