@@ -51,3 +51,13 @@ void vector_push(Vector *v, const void *data) {
   }
   v->data[v->size++] = data;
 }
+void vector_pop(Vector *v, VectorDestructor dtor) {
+  assert(v);
+  if (0 < v->size) {
+    --v->size;
+    if (dtor) {
+      dtor(v->data[v->size]);
+    }
+    v->data[v->size] = nil;
+  }
+}
