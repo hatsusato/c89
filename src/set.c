@@ -5,8 +5,6 @@
 
 #include "vector.h"
 
-#define SET_ALIGNMENT (sizeof(void *))
-
 struct struct_Set {
   Vector *data;
 };
@@ -20,17 +18,17 @@ static void *set_find(const Set *set, const void *key,
                       int (*cmp)(const void *, const void *)) {
   const void *const *data = vector_begin(set->data);
   size_t count = vector_length(set->data);
-  return bsearch(&key, data, count, SET_ALIGNMENT, cmp);
+  return bsearch(&key, data, count, vector_alignment(), cmp);
 }
 static void set_sort(Set *set, int (*cmp)(const void *, const void *)) {
   const void **data = vector_begin(set->data);
   size_t count = vector_length(set->data);
-  qsort(data, count, SET_ALIGNMENT, cmp);
+  qsort(data, count, vector_alignment(), cmp);
 }
 
 Set *set_new(void) {
   Set *set = malloc(sizeof(Set));
-  set->data = vector_new(SET_ALIGNMENT);
+  set->data = vector_new(vector_alignment());
   return set;
 }
 void set_delete(Set *set) {

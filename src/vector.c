@@ -31,6 +31,9 @@ static void *vector_offset(Vector *v, Size offset) {
   return ptr + offset;
 }
 
+Size vector_alignment(void) {
+  return sizeof(void *);
+}
 Vector *vector_new(Alignment a) {
   Vector *v = nil;
   assert(0 < a);
