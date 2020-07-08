@@ -4,7 +4,7 @@
 #include <string.h>
 
 struct struct_Vector {
-  void *data;
+  const void **data;
   Size size, capacity;
 };
 
@@ -25,10 +25,6 @@ static void vector_extend(Vector *v, Size size) {
   }
   vector_alloc(v);
 }
-static void *vector_offset(Vector *v, Size offset) {
-  Byte *ptr = v->data;
-  return ptr + offset * vector_alignment();
-}
 
 Size vector_alignment(void) {
   return sizeof(void *);
@@ -48,18 +44,18 @@ Size vector_length(const Vector *v) {
   assert(v);
   return v->size;
 }
+const void **vector_begin(const Vector *v) {
+  assert(v);
+  return v->data;
+}
+const void **vector_end(const Vector *v) {
+  assert(v);
+  return v->data + v->size;
+}
 void vector_push(Vector *v, const void *data) {
   assert(v);
   if (v->size == v->capacity) {
     vector_extend(v, 2 * v->capacity);
   }
-  ((void **)v->data)[v->size++] = (void *)data;
-}
-void *vector_begin(Vector *v) {
-  assert(v);
-  return vector_offset(v, 0);
-}
-void *vector_end(Vector *v) {
-  assert(v);
-  return vector_offset(v, v->size);
+  v->data[v->size++] = data;
 }
