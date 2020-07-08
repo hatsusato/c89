@@ -43,6 +43,20 @@ const void **vector_end(const Vector *v) {
   assert(v);
   return v->data + v->size;
 }
+const void *vector_front(const Vector *v) {
+  assert(v);
+  if (0 < v->size) {
+    return v->data[0];
+  }
+  return nil;
+}
+const void *vector_back(const Vector *v) {
+  assert(v);
+  if (0 < v->size) {
+    return v->data[v->size - 1];
+  }
+  return nil;
+}
 void vector_push(Vector *v, const void *data) {
   assert(v);
   if (v->size == v->capacity) {

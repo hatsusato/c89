@@ -13,6 +13,8 @@ void vector_delete(Vector *);
 Size vector_length(const Vector *);
 const void **vector_begin(const Vector *);
 const void **vector_end(const Vector *);
+const void *vector_front(const Vector *);
+const void *vector_back(const Vector *);
 void vector_push(Vector *, const void *);
 void vector_pop(Vector *, VectorDestructor);
 void vector_clean(Vector *, VectorDestructor);
