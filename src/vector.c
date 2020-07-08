@@ -4,7 +4,6 @@
 #include <string.h>
 
 struct struct_Vector {
-  Alignment align;
   void *data;
   Size size, capacity;
 };
@@ -18,7 +17,7 @@ static void vector_alloc(Vector *v) {
   }
 }
 static void vector_extend(Vector *v, Size size) {
-  Size initial_size = 16 * v->align;
+  Size initial_size = 16 * vector_alignment();
   if (v->capacity < size) {
     v->capacity = size;
   } else {
@@ -36,7 +35,6 @@ Size vector_alignment(void) {
 }
 Vector *vector_new(void) {
   Vector *v = malloc(sizeof(Vector));
-  v->align = vector_alignment();
   v->data = nil;
   v->size = v->capacity = 0;
   return v;
@@ -48,7 +46,7 @@ void vector_delete(Vector *v) {
 }
 Size vector_length(const Vector *v) {
   assert(v);
-  return v->size / v->align;
+  return v->size / vector_alignment();
 }
 void *vector_back(Vector *v) {
   Size size = 0;
@@ -57,7 +55,7 @@ void *vector_back(Vector *v) {
     vector_extend(v, 2 * v->capacity);
   }
   size = v->size;
-  v->size += v->align;
+  v->size += vector_alignment();
   return vector_offset(v, size);
 }
 void *vector_begin(Vector *v) {
@@ -70,8 +68,8 @@ void *vector_end(Vector *v) {
 }
 void *vector_at(Vector *v, Index i) {
   assert(v);
-  assert(v->align * i < v->size);
-  return vector_offset(v, v->align * i);
+  assert(vector_alignment() * i < v->size);
+  return vector_offset(v, vector_alignment() * i);
 }
 Vector *vector_clone(const Vector *v) {
   Vector *w = nil;
@@ -91,7 +89,7 @@ void vector_append(Vector *v, const void *buf, Size len) {
     return;
   }
   assert(buf);
-  len *= v->align;
+  len *= vector_alignment();
   if (v->capacity < v->size + len) {
     vector_extend(v, v->size + len);
   }

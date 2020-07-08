@@ -12,7 +12,6 @@ typedef int Bool;
 typedef unsigned char Byte;
 typedef int Size;
 typedef int Index;
-typedef int Alignment;
 
 #define SWAP(type, lhs, rhs) \
   do {                       \
