@@ -16,15 +16,6 @@ static void vector_alloc(Vector *v) {
     free(prev);
   }
 }
-static void vector_extend(Vector *v, Size size) {
-  Size initial_size = 16;
-  if (v->capacity < size) {
-    v->capacity = size;
-  } else {
-    v->capacity += initial_size;
-  }
-  vector_alloc(v);
-}
 
 Size vector_alignment(void) {
   return sizeof(void *);
@@ -55,7 +46,8 @@ const void **vector_end(const Vector *v) {
 void vector_push(Vector *v, const void *data) {
   assert(v);
   if (v->size == v->capacity) {
-    vector_extend(v, 2 * v->capacity);
+    v->capacity += 1 + v->size;
+    vector_alloc(v);
   }
   v->data[v->size++] = data;
 }
