@@ -28,7 +28,7 @@ static void set_sort(Set *set, int (*cmp)(const void *, const void *)) {
 
 Set *set_new(void) {
   Set *set = malloc(sizeof(Set));
-  set->data = vector_new(vector_alignment());
+  set->data = vector_new();
   return set;
 }
 void set_delete(Set *set) {

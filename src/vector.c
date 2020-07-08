@@ -34,11 +34,9 @@ static void *vector_offset(Vector *v, Size offset) {
 Size vector_alignment(void) {
   return sizeof(void *);
 }
-Vector *vector_new(Alignment a) {
-  Vector *v = nil;
-  assert(0 < a);
-  v = malloc(sizeof(Vector));
-  v->align = a;
+Vector *vector_new(void) {
+  Vector *v = malloc(sizeof(Vector));
+  v->align = vector_alignment();
   v->data = nil;
   v->size = v->capacity = 0;
   return v;
@@ -78,7 +76,7 @@ void *vector_at(Vector *v, Index i) {
 Vector *vector_clone(const Vector *v) {
   Vector *w = nil;
   assert(v);
-  w = vector_new(v->align);
+  w = vector_new();
   if (0 == v->size) {
     return w;
   }
