@@ -13,10 +13,5 @@ Size vector_length(const Vector *);
 void *vector_back(Vector *);
 void *vector_begin(Vector *);
 void *vector_end(Vector *);
-void *vector_at(Vector *, Index);
-Vector *vector_clone(const Vector *);
-void vector_append(Vector *, const void *, Size);
-void vector_clear(Vector *);
-void vector_pop(Vector *);
 
 #endif /* INCLUDE_GUARD_228B134A_0631_479A_9421_9C226E168C9E */
