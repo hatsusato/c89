@@ -55,6 +55,13 @@ void *vector_back(Vector *v) {
   }
   return vector_offset(v, v->size++);
 }
+void vector_push(Vector *v, const void *data) {
+  assert(v);
+  if (v->size == v->capacity) {
+    vector_extend(v, 2 * v->capacity);
+  }
+  ((void **)v->data)[v->size++] = (void *)data;
+}
 void *vector_begin(Vector *v) {
   assert(v);
   return vector_offset(v, 0);

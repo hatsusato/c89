@@ -43,7 +43,7 @@ Bool set_string_contains(const Set *set, const char *str) {
 void set_string_insert(Set *set, const char *str) {
   assert(set);
   if (!set_string_contains(set, str)) {
-    *(const char **)vector_back(set->data) = str;
+    vector_push(set->data, str);
     set_sort(set, set_string_compare);
   }
 }
