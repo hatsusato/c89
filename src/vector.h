@@ -10,7 +10,6 @@ Size vector_alignment(void);
 Vector *vector_new(void);
 void vector_delete(Vector *);
 Size vector_length(const Vector *);
-void *vector_back(Vector *);
 void vector_push(Vector *, const void *);
 void *vector_begin(Vector *);
 void *vector_end(Vector *);

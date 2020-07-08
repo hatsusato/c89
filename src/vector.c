@@ -48,13 +48,6 @@ Size vector_length(const Vector *v) {
   assert(v);
   return v->size;
 }
-void *vector_back(Vector *v) {
-  assert(v);
-  if (v->size == v->capacity) {
-    vector_extend(v, 2 * v->capacity);
-  }
-  return vector_offset(v, v->size++);
-}
 void vector_push(Vector *v, const void *data) {
   assert(v);
   if (v->size == v->capacity) {
