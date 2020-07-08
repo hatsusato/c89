@@ -83,6 +83,7 @@ yyscan_t scanner_new(Result *result) {
   const char **it = builtin_types;
   Set *symbols = result_get_symbols(result);
   int ret = yylex_init_extra(result, &scanner);
+  (void)ret;
   assert(ret == 0);
   while (*it) {
     set_string_insert(symbols, *it++);
