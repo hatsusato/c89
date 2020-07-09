@@ -7,6 +7,7 @@
 
 struct struct_Set {
   Vector *data;
+  SetCompare cmp;
 };
 
 static int set_string_compare(const void *lhs, const void *rhs) {
@@ -26,9 +27,10 @@ static void set_sort(Set *set, int (*cmp)(const void *, const void *)) {
   qsort(data, count, vector_alignment(), cmp);
 }
 
-Set *set_new(void) {
+Set *set_new(SetCompare cmp) {
   Set *set = malloc(sizeof(Set));
   set->data = vector_new();
+  set->cmp = cmp;
   return set;
 }
 void set_delete(Set *set) {

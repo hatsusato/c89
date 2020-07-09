@@ -5,8 +5,9 @@
 
 struct struct_Set;
 typedef struct struct_Set Set;
+typedef int (*SetCompare)(const void *, const void *);
 
-Set *set_new(void);
+Set *set_new(SetCompare);
 void set_delete(Set *);
 Bool set_string_contains(const Set *, const char *);
 void set_string_insert(Set *, const char *);

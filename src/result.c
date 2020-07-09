@@ -1,6 +1,7 @@
 #include "result.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "scanner.h"
 #include "utility.h"
@@ -10,10 +11,16 @@ struct struct_Result {
   Set *symbols;
 };
 
+static int result_set_compare(const void *lhs, const void *rhs) {
+  const char *const *l = lhs;
+  const char *const *r = rhs;
+  return strcmp(*l, *r);
+}
+
 Result *result_new(void) {
   Result *result = malloc(sizeof(Result));
   result->sexp = sexp_nil();
-  result->symbols = set_new();
+  result->symbols = set_new(result_set_compare);
   return result;
 }
 void result_delete(Result *result) {
