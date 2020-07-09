@@ -75,7 +75,7 @@ void vector_pop(Vector *v, VectorDestructor dtor) {
     v->data[v->size] = nil;
   }
 }
-void vector_clean(Vector *v, VectorDestructor dtor) {
+void vector_clear(Vector *v, VectorDestructor dtor) {
   assert(v);
   while (0 < v->size) {
     vector_pop(v, dtor);
