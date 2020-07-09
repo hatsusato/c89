@@ -8,6 +8,14 @@ struct struct_SymbolTable {
   Vector *table;
 };
 
+static const void *flag_set(const void *ptr) {
+  PointerBytes bits = (PointerBytes)ptr;
+  return (const void *)(bits | 1);
+}
+static const void *flag_reset(const void *ptr) {
+  PointerBytes bits = (PointerBytes)ptr;
+  return (const void *)(bits & ~1);
+}
 SymbolTable *table_new(void) {
   SymbolTable *table = malloc(sizeof(SymbolTable));
   table->table = vector_new();

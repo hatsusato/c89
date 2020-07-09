@@ -10,6 +10,7 @@ typedef int Bool;
 #define nil (NULL)
 
 typedef unsigned char Byte;
+typedef unsigned long PointerBytes;
 typedef int Size;
 typedef int Index;
 

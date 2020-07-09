@@ -1,6 +1,8 @@
 #ifndef INCLUDE_GUARD_FC98E9F8_303C_4170_8AFE_2C7622F95044
 #define INCLUDE_GUARD_FC98E9F8_303C_4170_8AFE_2C7622F95044
 
+#include "utility.h"
+
 struct struct_SymbolTable;
 typedef struct struct_SymbolTable SymbolTable;
 
