@@ -9,6 +9,8 @@ typedef int (*SetCompare)(const void *, const void *);
 
 Set *set_new(SetCompare);
 void set_delete(Set *);
+void set_insert(Set *, const void *);
+Bool set_contains(Set *, const void *);
 Bool set_string_contains(const Set *, const char *);
 void set_string_insert(Set *, const char *);
 

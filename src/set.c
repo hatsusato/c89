@@ -36,6 +36,17 @@ void set_delete(Set *set) {
   vector_delete(set->data);
   free(set);
 }
+void set_insert(Set *set, const void *data) {
+  assert(set);
+  if (!set_find(set, data)) {
+    vector_push(set->data, data);
+    set_sort(set);
+  }
+}
+Bool set_contains(Set *set, const void *data) {
+  assert(set);
+  return set_find(set, data) != nil;
+}
 Bool set_string_contains(const Set *set, const char *str) {
   assert(set);
   return set_find(set, str) != nil;
