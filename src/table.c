@@ -26,6 +26,10 @@ static int compare(const void *lhs, const void *rhs) {
 static void destructor(const void *set) {
   set_delete((Set *)set);
 }
+static Set *table_set(SymbolTable *table) {
+  assert(table);
+  return (Set *)vector_back(table->table);
+}
 
 SymbolTable *table_new(void) {
   SymbolTable *table = malloc(sizeof(SymbolTable));
@@ -44,4 +48,12 @@ void table_push(SymbolTable *table) {
 void table_pop(SymbolTable *table) {
   assert(table);
   vector_pop(table->table, destructor);
+}
+void table_register(SymbolTable *table, const char *symbol, Bool flag) {
+  Set *set = table_set(table);
+  set_insert(set, flag ? flag_set(symbol) : symbol);
+}
+Bool table_query(SymbolTable *table, const char *symbol) {
+  Set *set = table_set(table);
+  return set_contains(set, symbol);
 }
