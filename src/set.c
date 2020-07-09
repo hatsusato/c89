@@ -9,6 +9,11 @@ struct struct_Set {
   SetCompare cmp;
 };
 
+static int set_compare_default(const void *lhs, const void *rhs) {
+  const void *const *l = lhs;
+  const void *const *r = rhs;
+  return l < r ? -1 : l > r ? 1 : 0;
+}
 static void *set_find(const Set *set, const void *key) {
   const void *const *data = vector_begin(set->data);
   size_t count = vector_length(set->data);
@@ -23,7 +28,7 @@ static void set_sort(Set *set) {
 Set *set_new(SetCompare cmp) {
   Set *set = malloc(sizeof(Set));
   set->data = vector_new();
-  set->cmp = cmp;
+  set->cmp = cmp ? cmp : set_compare_default;
   return set;
 }
 void set_delete(Set *set) {
