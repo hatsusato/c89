@@ -68,7 +68,7 @@ static void register_typedef(Set *symbols, Sexp *sexp) {
     assert(check_tag(sexp, "init-declarator-list"));
     for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
       const char *identifier = from_init_declarator(sexp_car(sexp));
-      set_string_insert(symbols, identifier);
+      set_insert(symbols, identifier);
     }
   }
 }
@@ -86,7 +86,7 @@ yyscan_t scanner_new(Result *result) {
   (void)ret;
   assert(ret == 0);
   while (*it) {
-    set_string_insert(symbols, *it++);
+    set_insert(symbols, *it++);
   }
   return scanner;
 }
@@ -115,5 +115,5 @@ void scanner_register_typedef(yyscan_t scanner, Sexp *sexp) {
 Bool scanner_query_typedef(yyscan_t scanner, const char *symbol) {
   Result *result = yyget_extra(scanner);
   Set *symbols = result_get_symbols(result);
-  return set_string_contains(symbols, symbol);
+  return set_contains(symbols, symbol);
 }

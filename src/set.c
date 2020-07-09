@@ -47,14 +47,3 @@ Bool set_contains(Set *set, const void *data) {
   assert(set);
   return set_find(set, data) != nil;
 }
-Bool set_string_contains(const Set *set, const char *str) {
-  assert(set);
-  return set_find(set, str) != nil;
-}
-void set_string_insert(Set *set, const char *str) {
-  assert(set);
-  if (!set_string_contains(set, str)) {
-    vector_push(set->data, str);
-    set_sort(set);
-  }
-}

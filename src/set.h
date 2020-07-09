@@ -11,7 +11,5 @@ Set *set_new(SetCompare);
 void set_delete(Set *);
 void set_insert(Set *, const void *);
 Bool set_contains(Set *, const void *);
-Bool set_string_contains(const Set *, const char *);
-void set_string_insert(Set *, const char *);
 
 #endif /* INCLUDE_GUARD_DE6D0AC9_F1A3_4A4E_90C8_FBAA690CD01A */
