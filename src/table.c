@@ -17,3 +17,11 @@ void table_delete(SymbolTable *table) {
   vector_delete(table->table);
   free(table);
 }
+void table_push(SymbolTable *table) {
+  assert(table);
+  vector_push(table->table, nil);
+}
+void table_pop(SymbolTable *table) {
+  assert(table);
+  vector_pop(table->table, nil);
+}
