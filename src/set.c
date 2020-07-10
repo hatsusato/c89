@@ -13,11 +13,6 @@ typedef int (*Compare)(const void *, const void *);
 static int set_compare_default(const SetElem *lhs, const SetElem *rhs) {
   return *lhs < *rhs ? -1 : *lhs > *rhs ? 1 : 0;
 }
-static SetElem *set_find(const Set *set, SetElem key) {
-  const SetElem *data = vector_begin(set->data);
-  size_t count = vector_length(set->data);
-  return bsearch(&key, data, count, sizeof(SetElem), (Compare)set->cmp);
-}
 static void set_sort(Set *set) {
   SetElem *data = vector_begin(set->data);
   size_t count = vector_length(set->data);
@@ -42,7 +37,12 @@ void set_insert(Set *set, SetElem elem) {
     set_sort(set);
   }
 }
-Bool set_contains(Set *set, SetElem elem) {
+Bool set_contains(const Set *set, SetElem elem) {
   assert(set);
   return set_find(set, elem) != nil;
+}
+const SetElem *set_find(const Set *set, SetElem key) {
+  const SetElem *data = vector_begin(set->data);
+  size_t count = vector_length(set->data);
+  return bsearch(&key, data, count, sizeof(SetElem), (Compare)set->cmp);
 }
