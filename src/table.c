@@ -18,10 +18,8 @@ static const void *flag_reset(const void *ptr) {
   PointerBytes bits = (PointerBytes)ptr;
   return (const void *)(bits & ~1);
 }
-static int compare(const void *lhs, const void *rhs) {
-  const char *const *l = lhs;
-  const char *const *r = rhs;
-  return strcmp(flag_reset(*l), flag_reset(*r));
+static int compare(const SetElem *lhs, const SetElem *rhs) {
+  return strcmp(flag_reset(*lhs), flag_reset(*rhs));
 }
 static void destructor(const void *set) {
   set_delete((Set *)set);

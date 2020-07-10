@@ -5,11 +5,12 @@
 
 struct struct_Set;
 typedef struct struct_Set Set;
-typedef int (*SetCompare)(const void *, const void *);
+typedef const void *SetElem;
+typedef int (*SetCompare)(const SetElem *, const SetElem *);
 
 Set *set_new(SetCompare);
 void set_delete(Set *);
-void set_insert(Set *, const void *);
-Bool set_contains(Set *, const void *);
+void set_insert(Set *, SetElem);
+Bool set_contains(Set *, SetElem);
 
 #endif /* INCLUDE_GUARD_DE6D0AC9_F1A3_4A4E_90C8_FBAA690CD01A */

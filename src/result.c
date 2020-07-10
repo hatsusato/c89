@@ -11,10 +11,8 @@ struct struct_Result {
   Set *symbols;
 };
 
-static int result_set_compare(const void *lhs, const void *rhs) {
-  const char *const *l = lhs;
-  const char *const *r = rhs;
-  return strcmp(*l, *r);
+static int result_set_compare(const SetElem *lhs, const SetElem *rhs) {
+  return strcmp(*lhs, *rhs);
 }
 
 Result *result_new(void) {

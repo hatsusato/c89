@@ -8,21 +8,20 @@ struct struct_Set {
   Vector *data;
   SetCompare cmp;
 };
+typedef int (*Compare)(const void *, const void *);
 
-static int set_compare_default(const void *lhs, const void *rhs) {
-  const void *const *l = lhs;
-  const void *const *r = rhs;
-  return l < r ? -1 : l > r ? 1 : 0;
+static int set_compare_default(const SetElem *lhs, const SetElem *rhs) {
+  return *lhs < *rhs ? -1 : *lhs > *rhs ? 1 : 0;
 }
-static void *set_find(const Set *set, const void *key) {
-  const void *const *data = vector_begin(set->data);
+static SetElem *set_find(const Set *set, SetElem key) {
+  const SetElem *data = vector_begin(set->data);
   size_t count = vector_length(set->data);
-  return bsearch(&key, data, count, vector_alignment(), set->cmp);
+  return bsearch(&key, data, count, sizeof(SetElem), (Compare)set->cmp);
 }
 static void set_sort(Set *set) {
-  const void **data = vector_begin(set->data);
+  SetElem *data = vector_begin(set->data);
   size_t count = vector_length(set->data);
-  qsort(data, count, vector_alignment(), set->cmp);
+  qsort(data, count, sizeof(SetElem), (Compare)set->cmp);
 }
 
 Set *set_new(SetCompare cmp) {
@@ -36,14 +35,14 @@ void set_delete(Set *set) {
   vector_delete(set->data);
   free(set);
 }
-void set_insert(Set *set, const void *data) {
+void set_insert(Set *set, SetElem elem) {
   assert(set);
-  if (!set_find(set, data)) {
-    vector_push(set->data, data);
+  if (!set_find(set, elem)) {
+    vector_push(set->data, elem);
     set_sort(set);
   }
 }
-Bool set_contains(Set *set, const void *data) {
+Bool set_contains(Set *set, SetElem elem) {
   assert(set);
-  return set_find(set, data) != nil;
+  return set_find(set, elem) != nil;
 }
