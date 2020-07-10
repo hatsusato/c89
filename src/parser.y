@@ -745,11 +745,14 @@ labeled-statement.tag
 | case constant-expression colon statement {$$ = PARSER_LIST4($1, $2, $3, $4);}
 | default colon statement {$$ = PARSER_LIST3($1, $2, $3);}
 ;
+new-scope
+: %empty {scanner_push_scope(scanner);}
+;
 compound-statement
-: compound-statement.tag {$$ = PARSER_TAG(compound-statement, $1);}
+: new-scope compound-statement.tag {$$ = PARSER_TAG(compound-statement, $2);}
 ;
 compound-statement.tag
-: left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
+: left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4); scanner_pop_scope(scanner);}
 ;
 declaration-list.opt
 : %empty {$$ = PARSER_NIL(declaration-list);}
