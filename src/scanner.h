@@ -19,5 +19,7 @@ const char *scanner_get_text(yyscan_t);
 Sexp *scanner_token(yyscan_t);
 void scanner_register_typedef(yyscan_t, Sexp *);
 Bool scanner_query_typedef(yyscan_t, const char *);
+void scanner_push_scope(yyscan_t);
+void scanner_pop_scope(yyscan_t);
 
 #endif /* INCLUDE_GUARD_EB689973_FC12_413F_9E9E_C612BD832E1C */

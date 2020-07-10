@@ -117,3 +117,11 @@ Bool scanner_query_typedef(yyscan_t scanner, const char *symbol) {
   Set *symbols = result_get_symbols(result);
   return set_contains(symbols, symbol);
 }
+void scanner_push_scope(yyscan_t scanner) {
+  Result *result = yyget_extra(scanner);
+  result_push_scope(result);
+}
+void scanner_pop_scope(yyscan_t scanner) {
+  Result *result = yyget_extra(scanner);
+  result_pop_scope(result);
+}
