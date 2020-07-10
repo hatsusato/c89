@@ -5,17 +5,18 @@
 
 struct struct_Vector;
 typedef struct struct_Vector Vector;
-typedef void (*VectorDestructor)(const void *);
+typedef const void *VectorElem;
+typedef void (*VectorDestructor)(VectorElem);
 
 Size vector_alignment(void);
 Vector *vector_new(void);
 void vector_delete(Vector *);
 Size vector_length(const Vector *);
-const void **vector_begin(const Vector *);
-const void **vector_end(const Vector *);
-const void *vector_front(const Vector *);
-const void *vector_back(const Vector *);
-void vector_push(Vector *, const void *);
+VectorElem *vector_begin(const Vector *);
+VectorElem *vector_end(const Vector *);
+VectorElem vector_front(const Vector *);
+VectorElem vector_back(const Vector *);
+void vector_push(Vector *, VectorElem);
 void vector_pop(Vector *, VectorDestructor);
 void vector_clear(Vector *, VectorDestructor);
 
