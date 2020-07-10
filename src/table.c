@@ -10,13 +10,17 @@ struct struct_SymbolTable {
   Vector *table;
 };
 
+static Bool flag_check(const void *ptr) {
+  PointerBytes bytes = (PointerBytes)ptr;
+  return bytes & 1;
+}
 static const void *flag_set(const void *ptr) {
-  PointerBytes bits = (PointerBytes)ptr;
-  return (const void *)(bits | 1);
+  PointerBytes bytes = (PointerBytes)ptr;
+  return (const void *)(bytes | 1);
 }
 static const void *flag_reset(const void *ptr) {
-  PointerBytes bits = (PointerBytes)ptr;
-  return (const void *)(bits & ~1);
+  PointerBytes bytes = (PointerBytes)ptr;
+  return (const void *)(bytes & ~1);
 }
 static int compare(const SetElem *lhs, const SetElem *rhs) {
   return strcmp(flag_reset(*lhs), flag_reset(*rhs));
