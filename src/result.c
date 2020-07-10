@@ -4,11 +4,13 @@
 #include <string.h>
 
 #include "scanner.h"
+#include "table.h"
 #include "utility.h"
 
 struct struct_Result {
   Sexp *sexp;
   Set *symbols;
+  SymbolTable *table;
 };
 
 static int result_set_compare(const SetElem *lhs, const SetElem *rhs) {
@@ -19,12 +21,14 @@ Result *result_new(void) {
   Result *result = malloc(sizeof(Result));
   result->sexp = sexp_nil();
   result->symbols = set_new(result_set_compare);
+  result->table = table_new();
   return result;
 }
 void result_delete(Result *result) {
   assert(result);
   sexp_delete(result->sexp);
   set_delete(result->symbols);
+  table_delete(result->table);
   free(result);
 }
 int result_parse(Result *result) {
