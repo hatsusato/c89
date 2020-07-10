@@ -46,3 +46,11 @@ Sexp *result_set_sexp(Result *result, Sexp *sexp) {
   SWAP(Sexp *, result->sexp, sexp);
   return sexp;
 }
+void result_push_scope(Result *result) {
+  assert(result);
+  table_push(result->table);
+}
+void result_pop_scope(Result *result) {
+  assert(result);
+  table_pop(result->table);
+}
