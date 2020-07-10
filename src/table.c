@@ -55,7 +55,18 @@ void table_register(SymbolTable *table, const char *symbol, Bool flag) {
   Set *set = table_set(table);
   set_insert(set, flag ? flag_set(symbol) : symbol);
 }
-Bool table_query(SymbolTable *table, const char *symbol) {
-  Set *set = table_set(table);
-  return set_contains(set, symbol);
+Bool table_query(const SymbolTable *table, const char *symbol) {
+  assert(table);
+  if (0 < vector_length(table->table)) {
+    const VectorElem *it = vector_end(table->table);
+    for (; it != vector_begin(table->table); --it) {
+      const SetElem *elem = set_find(it[-1], symbol);
+      if (elem) {
+        return flag_check(*elem);
+      } else {
+        continue;
+      }
+    }
+  }
+  return false;
 }

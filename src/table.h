@@ -11,6 +11,6 @@ void table_delete(SymbolTable *);
 void table_push(SymbolTable *);
 void table_pop(SymbolTable *);
 void table_register(SymbolTable *, const char *, Bool);
-Bool table_query(SymbolTable *, const char *);
+Bool table_query(const SymbolTable *, const char *);
 
 #endif /* INCLUDE_GUARD_FC98E9F8_303C_4170_8AFE_2C7622F95044 */
