@@ -75,11 +75,7 @@ static void register_typedef(Set *symbols, Sexp *sexp) {
 
 yyscan_t scanner_new(Result *result) {
   yyscan_t scanner = nil;
-  const char *builtin_types[] = {
-#define HANDLE(name) #name,
-#include "enum/builtin.def"
-#undef HANDLE
-      nil};
+  const char *builtin_types[] = {"__builtin_va_list", nil};
   const char **it = builtin_types;
   Set *symbols = result_get_symbols(result);
   int ret = yylex_init_extra(result, &scanner);
