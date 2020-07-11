@@ -24,6 +24,9 @@ void print_newline(FILE *fp) {
 void print_message(FILE *fp, const char *msg) {
   fprintf(fp, "%s", msg);
 }
+void print_integer(FILE *fp, int num) {
+  fprintf(fp, "%d", num);
+}
 void print_verbatim(FILE *fp, const char *text, int leng) {
   int i = 0;
   for (i = 0; i < leng; ++i) {

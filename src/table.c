@@ -106,10 +106,10 @@ static Bool dump_foreach(const Set *set, void *data) {
     print_message(stderr, "dump: ");
     print_message(stderr, flag_reset(*it));
     print_message(stderr, ": ");
-    fprintf(stderr, "%d", flag_check(*it));
+    print_integer(stderr, flag_check(*it));
     print_newline(stderr);
     print_message(stderr, "query: ");
-    fprintf(stderr, "%d", table_query(table, *it));
+    print_integer(stderr, table_query(table, *it));
     print_newline(stderr);
   }
   print_message(stderr, "----------------\n");
