@@ -69,8 +69,6 @@ Bool table_query(const SymbolTable *table, const char *symbol) {
       const SetElem *elem = set_find(it[-1], symbol);
       if (elem) {
         return flag_check(*elem);
-      } else {
-        continue;
       }
     }
   }
