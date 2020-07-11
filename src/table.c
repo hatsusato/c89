@@ -29,10 +29,23 @@ static int compare(const SetElem *lhs, const SetElem *rhs) {
 static void destructor(const void *set) {
   set_delete((Set *)set);
 }
+static void table_init(SymbolTable *table) {
+  const char *builtin_types[] = {
+#define HANDLE(name) #name,
+#include "enum/builtin.def"
+#undef HANDLE
+      nil};
+  const char **it = builtin_types;
+  table_push(table);
+  while (*it) {
+    table_register(table, *it++, true);
+  }
+}
 
 SymbolTable *table_new(void) {
   SymbolTable *table = malloc(sizeof(SymbolTable));
   table->table = vector_new();
+  table_init(table);
   return table;
 }
 void table_delete(SymbolTable *table) {
