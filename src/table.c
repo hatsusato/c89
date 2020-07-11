@@ -29,10 +29,6 @@ static int compare(const SetElem *lhs, const SetElem *rhs) {
 static void destructor(const void *set) {
   set_delete((Set *)set);
 }
-static Set *table_set(SymbolTable *table) {
-  assert(table);
-  return (Set *)vector_back(table->table);
-}
 
 SymbolTable *table_new(void) {
   SymbolTable *table = malloc(sizeof(SymbolTable));
