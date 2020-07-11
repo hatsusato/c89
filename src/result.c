@@ -16,6 +16,9 @@ struct struct_Result {
 static int result_set_compare(const SetElem *lhs, const SetElem *rhs) {
   return strcmp(*lhs, *rhs);
 }
+static Bool check_tag(Sexp *ast, const char *tag) {
+  return sexp_is_pair(ast) && sexp_is_list(ast) && sexp_eq(sexp_car(ast), tag);
+}
 
 Result *result_new(void) {
   Result *result = malloc(sizeof(Result));
