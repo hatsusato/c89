@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_EB689973_FC12_413F_9E9E_C612BD832E1C
 #define INCLUDE_GUARD_EB689973_FC12_413F_9E9E_C612BD832E1C
 
-#include "struct.h"
+#include "typedef.h"
 #include "utility.h"
 
 void yyerror(yyscan_t, const char *);

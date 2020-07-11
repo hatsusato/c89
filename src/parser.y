@@ -1,5 +1,5 @@
 %code requires {
-#include "struct.h"
+#include "typedef.h"
 }
 
 %define api.pure full

@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "struct.h"
+#include "typedef.h"
 
 void print_indent(FILE *, int);
 void print_newline(FILE *);

@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "struct.h"
+#include "typedef.h"
 
 void pretty_print(FILE *, Sexp *);
 
