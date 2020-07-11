@@ -1,10 +1,12 @@
 #!/bin/bash
 
+set -eu
+
 print() {
-  local opts=(-Wall -Wextra -ansi -pedantic -x c -E -P -)
+  local opts=(-Wall -Wextra -Werror -ansi -pedantic -x c -P)
   local target="$1"
   shift
-  cat - "$target" <<EOF | gcc "$@" "${opts[@]}"
+  cat - "$target" <<EOF | gcc "$@" "${opts[@]}" -
 #define __attribute__(x)
 #define __asm__(x)
 #define __extension__
@@ -20,9 +22,9 @@ if [[ "$1" == -E ]]; then
 fi
 for arg in "$@"; do
   if test "$eflag"; then
-    print "$arg" -Isrc
+    print "$arg" -Isrc -fsyntax-only
   else
-    print "$arg" -Isrc -fsyntax-only >/dev/null || exit $?
-    print "$arg" -Isrc | ./main.out
+    print "$arg" -Isrc -fsyntax-only >/dev/null
+    print "$arg" -Isrc -E | ./main.out
   fi
 done
