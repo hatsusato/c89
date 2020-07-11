@@ -1,7 +1,6 @@
 %{
 #define yyHEADER_H
 #include "parser.tab.h"
-#include "scanner.h"
 #define EMIT_TOKEN(token) do {return token;} while(0)
 %}
 

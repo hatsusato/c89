@@ -1,5 +1,8 @@
 #include "parser.h"
 
+#include "scanner.h"
+#include "sexp.h"
+
 Sexp *parser_symbol(const char *sym) {
   return sexp_symbol(sym);
 }

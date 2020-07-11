@@ -3,11 +3,7 @@
 
 #include "struct.h"
 #include "utility.h"
-
-#ifndef YY_TYPEDEF_YY_SCANNER_T
-#define YY_TYPEDEF_YY_SCANNER_T
-typedef void *yyscan_t;
-#endif
+#include "yyscan.h"
 
 void yyerror(yyscan_t, const char *);
 yyscan_t scanner_new(Result *);

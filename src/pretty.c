@@ -2,6 +2,7 @@
 
 #include "ast.h"
 #include "print.h"
+#include "sexp.h"
 #include "utility.h"
 
 static Sexp *pretty_convert(Sexp *, int);

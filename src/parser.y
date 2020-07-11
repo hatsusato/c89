@@ -1,7 +1,6 @@
-%code top {
-}
 %code requires {
-#include "scanner.h"
+#include "yyscan.h"
+#include "struct.h"
 }
 
 %define api.pure full
@@ -11,6 +10,7 @@
 %code provides {
 #include "lexer.h"
 #include "parser.h"
+#include "scanner.h"
 #include "sexp.h"
 }
 
