@@ -37,6 +37,18 @@ static void table_init(SymbolTable *table) {
     table_register(table, *it++, true);
   }
 }
+static void table_traverse(const SymbolTable *table, void *data,
+                           Bool (*f)(const Set *, void *)) {
+  const Vector *v = table->table;
+  const Set **rbegin = (const Set **)vector_end(v);
+  const Set **rend = (const Set **)vector_begin(v);
+  const Set **it;
+  for (it = rbegin; it != rend; --it) {
+    if (f(it[-1], data)) {
+      return;
+    }
+  }
+}
 
 SymbolTable *table_new(void) {
   SymbolTable *table = malloc(sizeof(SymbolTable));
