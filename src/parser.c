@@ -13,3 +13,12 @@ Sexp *parser_tag(const char *sym, Sexp *ast) {
 Sexp *parser_token(const char *sym, yyscan_t scanner) {
   return PARSER_LIST2(parser_symbol(sym), scanner_token(scanner));
 }
+Sexp *parser_nil(void) {
+  return sexp_nil();
+}
+Sexp *parser_cons(Sexp *car, Sexp *cdr) {
+  return sexp_cons(car, cdr);
+}
+Sexp *parser_snoc(Sexp *xs, Sexp *x) {
+  return sexp_snoc(xs, x);
+}

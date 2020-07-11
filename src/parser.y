@@ -11,7 +11,6 @@
 #include "lexer.h"
 #include "parser.h"
 #include "scanner.h"
-#include "sexp.h"
 }
 
 /* 6.1 Lexical elements */
