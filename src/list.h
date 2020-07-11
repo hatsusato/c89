@@ -1,8 +1,7 @@
 #ifndef INCLUDE_GUARD_A22A8A22_8237_41B8_A841_CCF37171764F
 #define INCLUDE_GUARD_A22A8A22_8237_41B8_A841_CCF37171764F
 
-struct struct_List;
-typedef struct struct_List List;
+#include "struct.h"
 
 List *list_new(int, void *);
 void list_delete(List *, void (*)(List *));

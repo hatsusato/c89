@@ -4,6 +4,8 @@
 #include <string.h>
 
 #include "scanner.h"
+#include "set.h"
+#include "sexp.h"
 #include "table.h"
 #include "utility.h"
 

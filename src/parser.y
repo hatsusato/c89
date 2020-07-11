@@ -11,6 +11,7 @@
 %code provides {
 #include "lexer.h"
 #include "parser.h"
+#include "sexp.h"
 }
 
 /* 6.1 Lexical elements */

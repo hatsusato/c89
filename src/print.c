@@ -2,6 +2,8 @@
 
 #include <ctype.h>
 
+#include "sexp.h"
+
 static void print_sexp(FILE *, Sexp *, int);
 static void print_sexp_list(FILE *fp, Sexp *sexp, int indent) {
   assert(sexp_is_pair(sexp));

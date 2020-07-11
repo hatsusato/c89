@@ -2,7 +2,7 @@
 #define INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD
 
 #include "scanner.h"
-#include "sexp.h"
+#include "struct.h"
 
 #define PARSER_SYMBOL(sym) parser_symbol(#sym)
 #define PARSER_TAG(sym, ast) parser_tag(#sym, ast)

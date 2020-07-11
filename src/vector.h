@@ -1,12 +1,8 @@
 #ifndef INCLUDE_GUARD_228B134A_0631_479A_9421_9C226E168C9E
 #define INCLUDE_GUARD_228B134A_0631_479A_9421_9C226E168C9E
 
+#include "struct.h"
 #include "utility.h"
-
-struct struct_Vector;
-typedef struct struct_Vector Vector;
-typedef const void *VectorElem;
-typedef void (*VectorDestructor)(VectorElem);
 
 Size vector_alignment(void);
 Vector *vector_new(void);

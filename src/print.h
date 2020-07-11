@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "sexp.h"
+#include "struct.h"
 
 void print_indent(FILE *, int);
 void print_newline(FILE *);

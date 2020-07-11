@@ -2,6 +2,8 @@
 
 #include "parser.tab.h"
 #include "print.h"
+#include "result.h"
+#include "set.h"
 
 void yyerror(yyscan_t scanner, const char *msg) {
   FILE *fp = stderr;
