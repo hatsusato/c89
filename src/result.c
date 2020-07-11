@@ -63,6 +63,13 @@ static const char *from_init_declarator(Sexp *ast) {
   assert(check_tag(ast, "init-declarator"));
   return from_declarator(sexp_at(ast, 1));
 }
+static void register_symbols(SymbolTable *table, Sexp *ast, Bool is_typedef) {
+  assert(check_tag(ast, "init-declarator-list"));
+  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    const char *symbol = from_init_declarator(sexp_car(ast));
+    table_register(table, symbol, is_typedef);
+  }
+}
 
 Result *result_new(void) {
   Result *result = malloc(sizeof(Result));
