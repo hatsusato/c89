@@ -46,3 +46,11 @@ const SetElem *set_find(const Set *set, SetElem key) {
   size_t count = vector_length(set->data);
   return bsearch(&key, data, count, sizeof(SetElem), (Compare)set->cmp);
 }
+const SetElem *set_begin(const Set *set) {
+  assert(set);
+  return vector_begin(set->data);
+}
+const SetElem *set_end(const Set *set) {
+  assert(set);
+  return vector_end(set->data);
+}
