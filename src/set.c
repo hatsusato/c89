@@ -42,9 +42,9 @@ Bool set_contains(const Set *set, SetElem elem) {
   return set_find(set, elem) != nil;
 }
 const SetElem *set_find(const Set *set, SetElem key) {
-  const SetElem *data = vector_begin(set->data);
-  size_t count = vector_length(set->data);
-  return bsearch(&key, data, count, sizeof(SetElem), (Compare)set->cmp);
+  assert(set);
+  return bsearch(&key, vector_begin(set->data), vector_length(set->data),
+                 sizeof(SetElem), (Compare)set->cmp);
 }
 const SetElem *set_begin(const Set *set) {
   assert(set);
