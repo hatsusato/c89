@@ -95,3 +95,28 @@ Bool table_query(const SymbolTable *table, const char *symbol) {
   }
   return false;
 }
+static Bool dump_foreach(const Set *set, void *data) {
+  const SymbolTable *table = data;
+  const char **begin = (const char **)set_begin(set);
+  const char **end = (const char **)set_end(set);
+  const char **it;
+  (void)data;
+  print_message(stderr, "----------------\n");
+  for (it = begin; it != end; ++it) {
+    print_message(stderr, "dump: ");
+    print_message(stderr, flag_reset(*it));
+    print_message(stderr, ": ");
+    fprintf(stderr, "%d", flag_check(*it));
+    print_newline(stderr);
+    print_message(stderr, "query: ");
+    fprintf(stderr, "%d", table_query(table, *it));
+    print_newline(stderr);
+  }
+  print_message(stderr, "----------------\n");
+  return false;
+}
+void table_dump(const SymbolTable *table) {
+  if (table) {
+    table_traverse(table, (void *)table, dump_foreach);
+  }
+}
