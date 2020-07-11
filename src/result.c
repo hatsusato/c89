@@ -33,6 +33,36 @@ static Bool is_typedef(Sexp *ast) {
   }
   return false;
 }
+static const char *from_declarator(Sexp *ast);
+static const char *from_identifier(Sexp *ast) {
+  assert(check_tag(ast, "identifier"));
+  ast = sexp_at(ast, 1);
+  assert(sexp_is_string(ast));
+  return sexp_get(ast);
+}
+static const char *from_direct_declarator(Sexp *ast) {
+  assert(check_tag(ast, "direct-declarator"));
+  ast = sexp_cdr(ast);
+  if (check_tag(ast, "(")) {
+    return from_declarator(sexp_at(ast, 1));
+  } else {
+    ast = sexp_car(ast);
+    if (check_tag(ast, "identifier")) {
+      return from_identifier(ast);
+    } else {
+      return from_direct_declarator(ast);
+    }
+  }
+}
+static const char *from_declarator(Sexp *ast) {
+  assert(check_tag(ast, "declarator"));
+  ast = sexp_at(ast, sexp_length(ast) - 1);
+  return from_direct_declarator(ast);
+}
+static const char *from_init_declarator(Sexp *ast) {
+  assert(check_tag(ast, "init-declarator"));
+  return from_declarator(sexp_at(ast, 1));
+}
 
 Result *result_new(void) {
   Result *result = malloc(sizeof(Result));
