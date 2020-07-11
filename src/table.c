@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "print.h"
 #include "set.h"
 #include "vector.h"
 
@@ -14,9 +15,9 @@ static Bool flag_check(const void *ptr) {
   PointerBytes bytes = (PointerBytes)ptr;
   return bytes & 1;
 }
-static const void *flag_set(const void *ptr) {
+static const void *flag_set(const void *ptr, Bool flag) {
   PointerBytes bytes = (PointerBytes)ptr;
-  return (const void *)(bytes | 1);
+  return (const void *)(bytes | (flag ? 1 : 0));
 }
 static const void *flag_reset(const void *ptr) {
   PointerBytes bytes = (PointerBytes)ptr;
@@ -52,8 +53,17 @@ void table_pop(SymbolTable *table) {
   vector_pop(table->table, destructor);
 }
 void table_register(SymbolTable *table, const char *symbol, Bool flag) {
-  Set *set = table_set(table);
-  set_insert(set, flag ? flag_set(symbol) : symbol);
+  assert(table);
+  if (0 < vector_length(table->table)) {
+    Set *set = (Set *)vector_back(table->table);
+    if (set_contains(set, symbol)) {
+      print_message(stderr, "ERROR: redeclared symbol: ");
+      print_message(stderr, symbol);
+      print_newline(stderr);
+    } else {
+      set_insert(set, flag_set(symbol, flag));
+    }
+  }
 }
 Bool table_query(const SymbolTable *table, const char *symbol) {
   assert(table);
