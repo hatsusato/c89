@@ -3,7 +3,6 @@
 
 #include "struct.h"
 #include "utility.h"
-#include "yyscan.h"
 
 void yyerror(yyscan_t, const char *);
 yyscan_t scanner_new(Result *);

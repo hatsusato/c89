@@ -1,5 +1,4 @@
 %code requires {
-#include "yyscan.h"
 #include "struct.h"
 }
 
