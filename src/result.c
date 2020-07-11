@@ -19,6 +19,20 @@ static int result_set_compare(const SetElem *lhs, const SetElem *rhs) {
 static Bool check_tag(Sexp *ast, const char *tag) {
   return sexp_is_pair(ast) && sexp_is_list(ast) && sexp_eq(sexp_car(ast), tag);
 }
+static Bool is_typedef(Sexp *ast) {
+  assert(check_tag(ast, "declaration-specifiers"));
+  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    Sexp *spec = sexp_car(ast);
+    assert(check_tag(spec, "storage-class-specifier") ||
+           check_tag(spec, "type-specifier") ||
+           check_tag(spec, "type-qualifier"));
+    if (check_tag(spec, "storage-class-specifier") &&
+        sexp_eq(sexp_at(spec, 1), "typedef")) {
+      return true;
+    }
+  }
+  return false;
+}
 
 Result *result_new(void) {
   Result *result = malloc(sizeof(Result));
