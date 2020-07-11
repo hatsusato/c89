@@ -22,7 +22,7 @@ if [[ "$1" == -E ]]; then
 fi
 for arg in "$@"; do
   if test "$eflag"; then
-    print "$arg" -Isrc -fsyntax-only
+    print "$arg" -Isrc -fsyntax-only -E
   else
     print "$arg" -Isrc -fsyntax-only >/dev/null
     print "$arg" -Isrc -E | ./main.out
