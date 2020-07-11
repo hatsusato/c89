@@ -108,3 +108,13 @@ void result_pop_scope(Result *result) {
   assert(result);
   table_pop(result->table);
 }
+void result_register(Result *result, Sexp *decl) {
+  assert(result);
+  assert(check_tag(decl, "declaration"));
+  register_symbols(result->table, sexp_at(decl, 2),
+                   is_typedef(sexp_at(decl, 1)));
+}
+Bool result_query(Result *result, const char *symbol) {
+  assert(result);
+  return table_query(result->table, symbol);
+}
