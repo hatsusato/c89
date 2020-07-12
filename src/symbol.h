@@ -9,6 +9,7 @@ typedef struct struct_Symbol Symbol;
 void symbol_delete(Symbol *symbol);
 int symbol_compare(const ElemType *, const ElemType *);
 Bool symbol_flag(const Symbol *);
+void symbol_init(Set *);
 void symbol_register(Set *, Sexp *);
 const Symbol *symbol_query(const Set *, const char *);
 
