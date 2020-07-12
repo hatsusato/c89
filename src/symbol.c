@@ -1,4 +1,4 @@
-#include "symbols.h"
+#include "symbol.h"
 
 #include "set.h"
 #include "utility.h"

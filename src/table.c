@@ -1,7 +1,7 @@
 #include "table.h"
 
 #include "set.h"
-#include "symbols.h"
+#include "symbol.h"
 #include "utility.h"
 #include "vector.h"
 
