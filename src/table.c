@@ -5,6 +5,12 @@
 #include "utility.h"
 #include "vector.h"
 
+static Set *table_top(Table *table) {
+  Set *top = (Set *)vector_back(table);
+  assert(top);
+  return top;
+}
+
 Table *table_new(void) {
   return vector_new((Destructor)set_delete);
 }
@@ -22,7 +28,7 @@ void table_pop(Table *table) {
 }
 void table_register(Table *table, Sexp *ast) {
   assert(table);
-  symbol_register((Set *)vector_back(table), ast);
+  symbol_register(table_top(table), ast);
 }
 Bool table_query(Table *table, const char *symbol) {
   const Set **rbegin = (const Set **)vector_end(table);
