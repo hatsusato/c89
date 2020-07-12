@@ -1,6 +1,5 @@
 #include "register.h"
 
-#include "print.h"
 #include "set.h"
 #include "sexp.h"
 #include "symbol.h"
@@ -53,11 +52,7 @@ void register_identifier(Register *reg, Sexp *ast) {
   Symbol symbol;
   symbol.symbol = register_from_init_declarator(ast);
   symbol.flag = reg->flag;
-  if (set_contains(reg->symbols, &symbol)) {
-    print_message(stderr, "ERROR: redeclared symbol: ");
-    print_message(stderr, symbol.symbol);
-    print_newline(stderr);
-  } else {
+  if (!set_contains(reg->symbols, &symbol)) {
     Bool ret = set_insert(reg->symbols, symbol_new(&symbol));
     assert(ret);
     (void)ret;
