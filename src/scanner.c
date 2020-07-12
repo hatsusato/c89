@@ -31,8 +31,8 @@ int scanner_parse(yyscan_t scanner) {
 }
 void scanner_finish(yyscan_t scanner, Sexp *sexp) {
   Result *result = yyget_extra(scanner);
-  sexp = result_set_sexp(result, sexp);
-  assert(!sexp);
+  assert(!result_get_sexp(result));
+  result_set_sexp(result, sexp);
 }
 Sexp *scanner_token(yyscan_t scanner) {
   return sexp_string(yyget_text(scanner), yyget_leng(scanner));

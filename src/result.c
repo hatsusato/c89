@@ -32,8 +32,11 @@ Table *result_get_table(Result *result) {
   assert(result);
   return result->table;
 }
-Sexp *result_set_sexp(Result *result, Sexp *sexp) {
+Sexp *result_get_sexp(Result *result) {
   assert(result);
-  UTILITY_SWAP(Sexp *, result->sexp, sexp);
-  return sexp;
+  return result->sexp;
+}
+void result_set_sexp(Result *result, Sexp *sexp) {
+  assert(result);
+  result->sexp = sexp;
 }

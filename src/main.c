@@ -3,9 +3,8 @@
 #include "result.h"
 
 void print_seq(Result *result) {
-  Sexp *sexp = result_set_sexp(result, NULL);
+  Sexp *sexp = result_get_sexp(result);
   pretty_print(stdout, sexp);
-  result_set_sexp(result, sexp);
 }
 
 int main(void) {
