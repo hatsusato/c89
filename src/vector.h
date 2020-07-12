@@ -3,7 +3,6 @@
 
 #include "typedef.h"
 
-Size vector_alignment(void);
 Vector *vector_new(void);
 void vector_delete(Vector *);
 Size vector_length(const Vector *);

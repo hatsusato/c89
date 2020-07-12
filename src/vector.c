@@ -19,9 +19,6 @@ static void vector_alloc(Vector *v) {
   }
 }
 
-Size vector_alignment(void) {
-  return sizeof(ElemType);
-}
 Vector *vector_new(void) {
   Vector *v = malloc(sizeof(Vector));
   v->data = NULL;
