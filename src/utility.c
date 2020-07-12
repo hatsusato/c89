@@ -6,6 +6,9 @@
 Bool utility_str_eq(const char *lhs, const char *rhs) {
   return lhs && rhs && 0 == strcmp(lhs, rhs);
 }
+int utility_str_cmp(const char *lhs, const char *rhs) {
+  return strcmp(lhs, rhs);
+}
 void *utility_malloc(size_t size) {
   return malloc(size);
 }

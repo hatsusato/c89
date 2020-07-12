@@ -1,8 +1,5 @@
 #include "result.h"
 
-#include <stdlib.h>
-#include <string.h>
-
 #include "scanner.h"
 #include "set.h"
 #include "sexp.h"
@@ -16,7 +13,7 @@ struct struct_Result {
 };
 
 static int result_set_compare(const ElemType *lhs, const ElemType *rhs) {
-  return strcmp(*lhs, *rhs);
+  return utility_str_cmp(*lhs, *rhs);
 }
 static Bool check_tag(Sexp *ast, const char *tag) {
   return sexp_is_pair(ast) && sexp_is_list(ast) && sexp_eq(sexp_car(ast), tag);
@@ -74,7 +71,7 @@ static void register_symbols(SymbolTable *table, Sexp *ast, Bool is_typedef) {
 }
 
 Result *result_new(void) {
-  Result *result = malloc(sizeof(Result));
+  Result *result = UTILITY_MALLOC(Result);
   result->sexp = sexp_nil();
   result->symbols = set_new(NULL, result_set_compare);
   result->table = table_new();
@@ -85,7 +82,7 @@ void result_delete(Result *result) {
   sexp_delete(result->sexp);
   set_delete(result->symbols);
   table_delete(result->table);
-  free(result);
+  UTILITY_FREE(result);
 }
 int result_parse(Result *result) {
   yyscan_t scanner = scanner_new(result);

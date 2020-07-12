@@ -23,6 +23,7 @@
   utility_memcpy((dst), (src), sizeof(type) * (count))
 
 Bool utility_str_eq(const char *, const char *);
+int utility_str_cmp(const char *, const char *);
 void *utility_malloc(size_t);
 void utility_free(void *);
 void utility_memcpy(void *dst, const void *src, size_t count);
