@@ -70,7 +70,7 @@ Sexp *sexp_symbol(const char *symbol) {
 Sexp *sexp_string(const char *text, int leng) {
   MutableSexp *sexp = malloc(sizeof(Sexp));
   sexp->kind = SEXP_STRING;
-  sexp->data.string = string_new_s(text, leng);
+  sexp->data.string = string_new(text, leng);
   return sexp;
 }
 void sexp_delete(Sexp *sexp) {
