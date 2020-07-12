@@ -12,7 +12,10 @@ static Set *table_top(Table *table) {
 }
 
 Table *table_new(void) {
-  return vector_new((Destructor)set_delete);
+  Table *table = vector_new((Destructor)set_delete);
+  table_push(table);
+  symbol_init(table_top(table));
+  return table;
 }
 void table_delete(Table *table) {
   assert(table);
