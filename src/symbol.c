@@ -10,16 +10,12 @@ struct struct_Symbol {
   Bool flag;
 };
 
-typedef struct {
-  Set *symbols;
-  Bool flag;
-} Register;
-
 static Symbol *symbol_new(Symbol *src) {
   Symbol *dst = UTILITY_MALLOC(Symbol);
   *dst = *src;
   return dst;
 }
+
 void symbol_delete(Symbol *symbol) {
   UTILITY_FREE(symbol);
 }
@@ -32,6 +28,11 @@ Bool symbol_flag(const Symbol *symbol) {
   assert(symbol);
   return symbol->flag;
 }
+
+typedef struct {
+  Set *symbols;
+  Bool flag;
+} Register;
 
 static Bool register_check_tag(Sexp *ast, const char *tag) {
   return sexp_is_pair(ast) && sexp_is_list(ast) && sexp_eq(sexp_car(ast), tag);
