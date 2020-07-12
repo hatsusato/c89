@@ -108,16 +108,6 @@ const char *scanner_get_text(yyscan_t scanner) {
 Sexp *scanner_token(yyscan_t scanner) {
   return sexp_string(yyget_text(scanner), yyget_leng(scanner));
 }
-void scanner_register_typedef(yyscan_t scanner, Sexp *sexp) {
-  Result *result = yyget_extra(scanner);
-  Set *symbols = result_get_symbols(result);
-  register_typedef(symbols, sexp);
-}
-Bool scanner_query_typedef(yyscan_t scanner, const char *symbol) {
-  Result *result = yyget_extra(scanner);
-  Set *symbols = result_get_symbols(result);
-  return set_contains(symbols, symbol);
-}
 void scanner_push_scope(yyscan_t scanner) {
   Result *result = yyget_extra(scanner);
   Table *table = result_get_table(result);

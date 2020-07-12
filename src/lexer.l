@@ -149,7 +149,7 @@ s-char                  {character-set}|{single-quote}|{escape-sequence}
 "..."   { EMIT_TOKEN(TOKEN_ELLIPSIS);      }
 
 {identifier} {
-  if (scanner_query_typedef(yyscanner, yytext)) {
+  if (scanner_query(yyscanner, yytext)) {
     EMIT_TOKEN(TOKEN_TYPEDEF_IDENTIFIER);
   } else {
     EMIT_TOKEN(TOKEN_IDENTIFIER);

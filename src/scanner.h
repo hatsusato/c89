@@ -10,8 +10,6 @@ int scanner_parse(yyscan_t);
 void scanner_finish(yyscan_t, Sexp *);
 const char *scanner_get_text(yyscan_t);
 Sexp *scanner_token(yyscan_t);
-void scanner_register_typedef(yyscan_t, Sexp *);
-Bool scanner_query_typedef(yyscan_t, const char *);
 void scanner_push_scope(yyscan_t);
 void scanner_pop_scope(yyscan_t);
 void scanner_register(yyscan_t, Sexp *);

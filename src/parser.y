@@ -496,7 +496,7 @@ constant-expression
 
 /* 6.5 Declarations */
 declaration
-: declaration.tag {$$ = PARSER_TAG(declaration, $1); scanner_register_typedef(scanner, $$);}
+: declaration.tag {$$ = PARSER_TAG(declaration, $1); scanner_register(scanner, $$);}
 ;
 declaration.tag
 : declaration-specifiers init-declarator-list.opt semicolon {$$ = PARSER_LIST3($1, $2, $3);}
@@ -748,10 +748,10 @@ new-scope
 : %empty {scanner_push_scope(scanner);}
 ;
 compound-statement
-: new-scope compound-statement.tag {$$ = PARSER_TAG(compound-statement, $2);}
+: new-scope compound-statement.tag {$$ = PARSER_TAG(compound-statement, $2); scanner_pop_scope(scanner);}
 ;
 compound-statement.tag
-: left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4); scanner_pop_scope(scanner);}
+: left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
 ;
 declaration-list.opt
 : %empty {$$ = PARSER_NIL(declaration-list);}
