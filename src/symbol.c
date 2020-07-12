@@ -109,3 +109,11 @@ void symbol_register(Set *set, Sexp *sexp) {
   assert(register_check_tag(ast, "init-declarator-list"));
   register_foreach(&reg, ast, register_identifier);
 }
+const Symbol *symbol_query(const Set *set, const char *sym) {
+  Symbol symbol;
+  const ElemType *found;
+  symbol.symbol = sym;
+  symbol.flag = false;
+  found = set_find(set, &sym);
+  return found ? *found : NULL;
+}
