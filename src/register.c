@@ -83,3 +83,17 @@ void register_identifier(Register *reg, Sexp *ast) {
     (void)ret;
   }
 }
+void register_symbols(Set *symbols, Sexp *sexp) {
+  Register reg;
+  Sexp *ast = sexp;
+  assert(symbols);
+  assert(register_check_tag(ast, "declaration"));
+  reg.symbols = symbols;
+  reg.flag = false;
+  ast = sexp_at(sexp, 1);
+  assert(register_check_tag(ast, "declaration-specifiers"));
+  register_foreach(&reg, ast, register_is_typedef);
+  ast = sexp_at(sexp, 2);
+  assert(register_check_tag(ast, "init-declarator-list"));
+  register_foreach(&reg, ast, register_identifier);
+}
