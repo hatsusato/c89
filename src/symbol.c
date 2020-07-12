@@ -5,6 +5,11 @@
 #include "sexp.h"
 #include "utility.h"
 
+struct struct_Symbol {
+  const char *symbol;
+  Bool flag;
+};
+
 typedef struct {
   Set *symbols;
   Bool flag;
