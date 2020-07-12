@@ -24,7 +24,7 @@ static const void *flag_reset(const void *ptr) {
   PointerBytes bytes = (PointerBytes)ptr;
   return (const void *)(bytes & ~1);
 }
-static int compare(const SetElem *lhs, const SetElem *rhs) {
+static int compare(const ElemType *lhs, const ElemType *rhs) {
   return strcmp(flag_reset(*lhs), flag_reset(*rhs));
 }
 static void destructor(const void *set) {
@@ -86,9 +86,9 @@ void table_register(SymbolTable *table, const char *symbol, Bool flag) {
 Bool table_query(const SymbolTable *table, const char *symbol) {
   assert(table);
   if (0 < vector_length(table->table)) {
-    const VectorElem *it = vector_end(table->table);
+    const ElemType *it = vector_end(table->table);
     for (; it != vector_begin(table->table); --it) {
-      const SetElem *elem = set_find(it[-1], symbol);
+      const ElemType *elem = set_find(it[-1], symbol);
       if (elem) {
         return flag_check(*elem);
       }

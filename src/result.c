@@ -15,7 +15,7 @@ struct struct_Result {
   SymbolTable *table;
 };
 
-static int result_set_compare(const SetElem *lhs, const SetElem *rhs) {
+static int result_set_compare(const ElemType *lhs, const ElemType *rhs) {
   return strcmp(*lhs, *rhs);
 }
 static Bool check_tag(Sexp *ast, const char *tag) {

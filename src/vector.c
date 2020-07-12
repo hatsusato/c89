@@ -6,21 +6,21 @@
 #include "utility.h"
 
 struct struct_Vector {
-  VectorElem *data;
+  ElemType *data;
   Size size, capacity;
 };
 
 static void vector_alloc(Vector *v) {
-  VectorElem *prev = v->data;
-  v->data = malloc(v->capacity * sizeof(VectorElem));
+  ElemType *prev = v->data;
+  v->data = malloc(v->capacity * sizeof(ElemType));
   if (prev) {
-    memcpy(v->data, prev, v->size * sizeof(VectorElem));
+    memcpy(v->data, prev, v->size * sizeof(ElemType));
     free(prev);
   }
 }
 
 Size vector_alignment(void) {
-  return sizeof(VectorElem);
+  return sizeof(ElemType);
 }
 Vector *vector_new(void) {
   Vector *v = malloc(sizeof(Vector));
@@ -37,29 +37,29 @@ Size vector_length(const Vector *v) {
   assert(v);
   return v->size;
 }
-VectorElem *vector_begin(const Vector *v) {
+ElemType *vector_begin(const Vector *v) {
   assert(v);
   return v->data;
 }
-VectorElem *vector_end(const Vector *v) {
+ElemType *vector_end(const Vector *v) {
   assert(v);
   return v->data + v->size;
 }
-VectorElem vector_front(const Vector *v) {
+ElemType vector_front(const Vector *v) {
   assert(v);
   if (0 < v->size) {
     return v->data[0];
   }
   return NULL;
 }
-VectorElem vector_back(const Vector *v) {
+ElemType vector_back(const Vector *v) {
   assert(v);
   if (0 < v->size) {
     return v->data[v->size - 1];
   }
   return NULL;
 }
-void vector_push(Vector *v, VectorElem elem) {
+void vector_push(Vector *v, ElemType elem) {
   assert(v);
   if (v->size == v->capacity) {
     v->capacity += 1 + v->size;
@@ -67,7 +67,7 @@ void vector_push(Vector *v, VectorElem elem) {
   }
   v->data[v->size++] = elem;
 }
-void vector_pop(Vector *v, VectorDestructor dtor) {
+void vector_pop(Vector *v, Destructor dtor) {
   assert(v);
   if (0 < v->size) {
     --v->size;
@@ -77,7 +77,7 @@ void vector_pop(Vector *v, VectorDestructor dtor) {
     v->data[v->size] = NULL;
   }
 }
-void vector_clear(Vector *v, VectorDestructor dtor) {
+void vector_clear(Vector *v, Destructor dtor) {
   assert(v);
   while (0 < v->size) {
     vector_pop(v, dtor);
