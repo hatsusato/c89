@@ -96,7 +96,7 @@ Set *result_get_symbols(Result *result) {
 }
 Sexp *result_set_sexp(Result *result, Sexp *sexp) {
   assert(result);
-  SWAP(Sexp *, result->sexp, sexp);
+  UTILITY_SWAP(Sexp *, result->sexp, sexp);
   return sexp;
 }
 void result_push_scope(Result *result) {

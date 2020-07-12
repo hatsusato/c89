@@ -40,6 +40,6 @@ void list_append(List *lhs, List *rhs) {
       lhs->first = rhs->first;
     }
     lhs->last = rhs->first = NULL;
-    SWAP(Node *, lhs->last, rhs->last);
+    UTILITY_SWAP(Node *, lhs->last, rhs->last);
   }
 }

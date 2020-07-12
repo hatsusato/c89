@@ -5,11 +5,11 @@
 
 #include "typedef.h"
 
-#define SWAP(type, lhs, rhs) \
-  do {                       \
-    type tmp = (lhs);        \
-    (lhs) = (rhs);           \
-    (rhs) = tmp;             \
+#define UTILITY_SWAP(type, lhs, rhs) \
+  do {                               \
+    type tmp = (lhs);                \
+    (lhs) = (rhs);                   \
+    (rhs) = tmp;                     \
   } while (0);
 #define UTILITY_MALLOC(type) (type *)utility_malloc(sizeof(type))
 #define UTILITY_MALLOC_ARRAY(type, count) \
