@@ -5,6 +5,7 @@
 #include "result.h"
 #include "set.h"
 #include "sexp.h"
+#include "table.h"
 #include "utility.h"
 
 void yyerror(yyscan_t scanner, const char *msg) {
@@ -124,4 +125,14 @@ void scanner_push_scope(yyscan_t scanner) {
 void scanner_pop_scope(yyscan_t scanner) {
   Result *result = yyget_extra(scanner);
   result_pop_scope(result);
+}
+void scanner_register(yyscan_t scanner, Sexp *ast) {
+  Result *result = yyget_extra(scanner);
+  Table *table = result_get_table(result);
+  table_register(table, ast);
+}
+Bool scanner_query(yyscan_t scanner, const char *symbol) {
+  Result *result = yyget_extra(scanner);
+  Table *table = result_get_table(result);
+  return table_query(table, symbol);
 }
