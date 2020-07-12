@@ -3,6 +3,26 @@
 #include "sexp.h"
 #include "utility.h"
 
+typedef struct {
+  const char *symbol;
+  Bool flag;
+} Symbol;
+
+static Symbol *symbol_new(const char *symbol, Bool flag) {
+  Symbol *ptr = UTILITY_MALLOC(Symbol);
+  ptr->symbol = symbol;
+  ptr->flag = flag;
+  return ptr;
+}
+static Symbol *symbol_duplicate(const Symbol *src) {
+  Symbol *ptr = UTILITY_MALLOC(Symbol);
+  *ptr = *src;
+  return ptr;
+}
+static void symbol_delete(Symbol *symbol) {
+  UTILITY_FREE(symbol);
+}
+
 static Bool register_check_tag(Sexp *ast, const char *tag) {
   return sexp_is_pair(ast) && sexp_is_list(ast) && sexp_eq(sexp_car(ast), tag);
 }
