@@ -24,3 +24,15 @@ void table_register(Table *table, Sexp *ast) {
   assert(table);
   symbol_register((Set *)vector_back(table), ast);
 }
+Bool table_query(Table *table, const char *symbol) {
+  const Set **rbegin = (const Set **)vector_end(table);
+  const Set **rend = (const Set **)vector_begin(table);
+  const Set **it;
+  for (it = rbegin; it != rend; --it) {
+    const Symbol *found = symbol_query(it[-1], symbol);
+    if (found) {
+      return symbol_flag(found);
+    }
+  }
+  return false;
+}
