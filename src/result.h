@@ -7,6 +7,7 @@ Result *result_new(void);
 void result_delete(Result *);
 int result_parse(Result *);
 Set *result_get_symbols(Result *);
+Table *result_get_table(Result *);
 Sexp *result_set_sexp(Result *, Sexp *);
 void result_push_scope(Result *);
 void result_pop_scope(Result *);

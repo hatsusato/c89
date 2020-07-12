@@ -87,6 +87,10 @@ Set *result_get_symbols(Result *result) {
   assert(result);
   return result->symbols;
 }
+Table *result_get_table(Result *result) {
+  assert(result);
+  return result->table;
+}
 Sexp *result_set_sexp(Result *result, Sexp *sexp) {
   assert(result);
   UTILITY_SWAP(Sexp *, result->sexp, sexp);
