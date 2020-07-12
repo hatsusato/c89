@@ -20,3 +20,7 @@ void table_pop(Table *table) {
   assert(table);
   vector_pop(table);
 }
+void table_register(Table *table, Sexp *ast) {
+  assert(table);
+  symbol_register((Set *)vector_back(table), ast);
+}

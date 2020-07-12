@@ -90,7 +90,7 @@ static void register_foreach(Register *reg, Sexp *ast,
   }
 }
 
-void symbols_register(Set *symbols, Sexp *sexp) {
+void symbol_register(Set *symbols, Sexp *sexp) {
   Register reg;
   Sexp *ast = sexp;
   assert(symbols);
