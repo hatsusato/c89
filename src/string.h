@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_08E41EF5_65A1_4E4C_9B5A_FE5896BDA20E
 
 #include "typedef.h"
-#include "utility.h"
 
 String *string_new(const char *);
 String *string_new_s(const char *, int);

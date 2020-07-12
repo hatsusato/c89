@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_FC98E9F8_303C_4170_8AFE_2C7622F95044
 
 #include "typedef.h"
-#include "utility.h"
 
 SymbolTable *table_new(void);
 void table_delete(SymbolTable *);

@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_228B134A_0631_479A_9421_9C226E168C9E
 
 #include "typedef.h"
-#include "utility.h"
 
 Size vector_alignment(void);
 Vector *vector_new(void);

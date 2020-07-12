@@ -5,6 +5,7 @@
 
 #include "print.h"
 #include "set.h"
+#include "utility.h"
 #include "vector.h"
 
 struct struct_SymbolTable {

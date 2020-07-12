@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+#include "utility.h"
 #include "vector.h"
 
 struct struct_Set {

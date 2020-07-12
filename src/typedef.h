@@ -1,10 +1,20 @@
 #ifndef INCLUDE_GUARD_E20E6EF6_D4AC_4C0A_A3D6_B4A494B0E59A
 #define INCLUDE_GUARD_E20E6EF6_D4AC_4C0A_A3D6_B4A494B0E59A
 
+#include <stddef.h>
+
 #ifndef YY_TYPEDEF_YY_SCANNER_T
 #define YY_TYPEDEF_YY_SCANNER_T
 typedef void *yyscan_t;
 #endif
+
+#define true (1)
+#define false (0)
+#define nil (NULL)
+typedef int Bool;
+typedef unsigned char Byte;
+typedef unsigned long PointerBytes;
+typedef int Size;
 
 struct struct_List;
 typedef struct struct_List List;

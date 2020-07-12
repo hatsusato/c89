@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_9C8CB4C0_BC4E_4938_931F_A41B8FE242C3
 
 #include "typedef.h"
-#include "utility.h"
 
 Result *result_new(void);
 void result_delete(Result *);

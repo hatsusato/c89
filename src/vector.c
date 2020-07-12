@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "utility.h"
+
 struct struct_Vector {
   VectorElem *data;
   Size size, capacity;

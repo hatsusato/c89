@@ -3,6 +3,7 @@
 #include <ctype.h>
 
 #include "sexp.h"
+#include "utility.h"
 
 static void print_sexp(FILE *, Sexp *, int);
 static void print_sexp_list(FILE *fp, Sexp *sexp, int indent) {
