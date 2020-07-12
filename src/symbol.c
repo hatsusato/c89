@@ -1,5 +1,6 @@
 #include "symbol.h"
 
+#include "print.h"
 #include "set.h"
 #include "sexp.h"
 #include "utility.h"
@@ -77,7 +78,11 @@ static void register_identifier(Register *reg, Sexp *ast) {
   Symbol symbol;
   symbol.symbol = register_from_init_declarator(ast);
   symbol.flag = reg->flag;
-  if (!set_contains(reg->symbols, &symbol)) {
+  if (set_contains(reg->symbols, &symbol)) {
+    print_message(stderr, "ERROR: redeclared symbol: ");
+    print_message(stderr, symbol.symbol);
+    print_newline(stderr);
+  } else {
     Bool ret = set_insert(reg->symbols, symbol_duplicate(&symbol));
     assert(ret);
     (void)ret;
@@ -90,12 +95,12 @@ static void register_foreach(Register *reg, Sexp *ast,
   }
 }
 
-void symbol_register(Set *symbols, Sexp *sexp) {
+void symbol_register(Set *set, Sexp *sexp) {
   Register reg;
   Sexp *ast = sexp;
-  assert(symbols);
+  assert(set);
   assert(register_check_tag(ast, "declaration"));
-  reg.symbols = symbols;
+  reg.symbols = set;
   reg.flag = false;
   ast = sexp_at(sexp, 1);
   assert(register_check_tag(ast, "declaration-specifiers"));
