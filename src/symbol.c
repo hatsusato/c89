@@ -101,7 +101,7 @@ static void register_foreach(Register *reg, Sexp *ast,
 void symbol_init(Set *set) {
   Bool ret = false;
   Symbol symbol;
-  symbol.symbol = "__buitin_va_list";
+  symbol.symbol = "__builtin_va_list";
   symbol.flag = true;
   ret = set_insert(set, symbol_new(&symbol));
   assert(ret);
