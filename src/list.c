@@ -1,40 +1,36 @@
 #include "list.h"
 
-#include <stdlib.h>
-
 #include "utility.h"
 
 struct struct_List {
-  int tag;
-  void *data;
+  ElemType elem;
+  Destructor dtor;
   List *next;
 };
 
-List *list_new(int tag, void *data) {
-  List *list = malloc(sizeof(List));
-  list->tag = tag;
-  list->data = data;
+static void list_destructor_default(ElemType e) {
+  (void)e;
+}
+
+List *list_new(ElemType elem, Destructor dtor) {
+  List *list = UTILITY_MALLOC(List);
+  list->elem = elem;
+  list->dtor = dtor ? dtor : list_destructor_default;
   list->next = NULL;
   return list;
 }
-void list_delete(List *list, void (*deleter)(List *)) {
+void list_delete(List *list) {
   List *next = NULL;
   while (list) {
     next = list->next;
-    if (deleter) {
-      deleter(list);
-    }
-    free(list);
+    list->dtor(list->elem);
+    UTILITY_FREE(list);
     list = next;
   }
 }
-int list_tag(List *list) {
+ElemType list_get(List *list) {
   assert(list);
-  return list->tag;
-}
-void *list_data(List *list) {
-  assert(list);
-  return list->data;
+  return list->elem;
 }
 List *list_next(List *list) {
   assert(list);

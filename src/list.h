@@ -3,10 +3,9 @@
 
 #include "typedef.h"
 
-List *list_new(int, void *);
-void list_delete(List *, void (*)(List *));
-int list_tag(List *);
-void *list_data(List *);
+List *list_new(ElemType, Destructor);
+void list_delete(List *);
+ElemType list_get(List *);
 List *list_next(List *);
 List *list_last(List *);
 void list_insert(List *, List *);
