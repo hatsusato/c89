@@ -3,13 +3,12 @@
 #include "scanner.h"
 #include "set.h"
 #include "sexp.h"
-#include "symbol_table.h"
+#include "table.h"
 #include "utility.h"
 
 struct struct_Result {
   Sexp *sexp;
   Set *symbols;
-  SymbolTable *table;
 };
 
 static int result_set_compare(const ElemType *lhs, const ElemType *rhs) {
@@ -62,26 +61,17 @@ static const char *from_init_declarator(Sexp *ast) {
   assert(check_tag(ast, "init-declarator"));
   return from_declarator(sexp_at(ast, 1));
 }
-static void register_symbols(SymbolTable *table, Sexp *ast, Bool is_typedef) {
-  assert(check_tag(ast, "init-declarator-list"));
-  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    const char *symbol = from_init_declarator(sexp_car(ast));
-    table_register(table, symbol, is_typedef);
-  }
-}
 
 Result *result_new(void) {
   Result *result = UTILITY_MALLOC(Result);
   result->sexp = sexp_nil();
   result->symbols = set_new(NULL, result_set_compare);
-  result->table = table_new();
   return result;
 }
 void result_delete(Result *result) {
   assert(result);
   sexp_delete(result->sexp);
   set_delete(result->symbols);
-  table_delete(result->table);
   UTILITY_FREE(result);
 }
 int result_parse(Result *result) {
@@ -101,19 +91,14 @@ Sexp *result_set_sexp(Result *result, Sexp *sexp) {
 }
 void result_push_scope(Result *result) {
   assert(result);
-  table_push(result->table);
 }
 void result_pop_scope(Result *result) {
   assert(result);
-  table_pop(result->table);
 }
 void result_register(Result *result, Sexp *decl) {
   assert(result);
   assert(check_tag(decl, "declaration"));
-  register_symbols(result->table, sexp_at(decl, 2),
-                   is_typedef(sexp_at(decl, 1)));
 }
 Bool result_query(Result *result, const char *symbol) {
   assert(result);
-  return table_query(result->table, symbol);
 }
