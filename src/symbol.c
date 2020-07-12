@@ -24,13 +24,10 @@ Bool symbol_flag(const Symbol *symbol) {
 }
 
 void symbol_init(Set *set) {
-  Bool ret = false;
   Symbol symbol;
   symbol.symbol = "__builtin_va_list";
   symbol.flag = true;
-  ret = set_insert(set, symbol_new(&symbol));
-  assert(ret);
-  (void)ret;
+  set_insert(set, symbol_new(&symbol));
 }
 void symbol_register(Set *set, Sexp *sexp) {
   Register reg;

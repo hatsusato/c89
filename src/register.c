@@ -53,9 +53,7 @@ void register_identifier(Register *reg, Sexp *ast) {
   symbol.symbol = register_from_init_declarator(ast);
   symbol.flag = reg->flag;
   if (!set_contains(reg->symbols, &symbol)) {
-    Bool ret = set_insert(reg->symbols, symbol_new(&symbol));
-    assert(ret);
-    (void)ret;
+    set_insert(reg->symbols, symbol_new(&symbol));
   }
 }
 void register_foreach(Register *reg, Sexp *ast,
