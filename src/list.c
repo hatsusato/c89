@@ -1,30 +1,27 @@
 #include "list.h"
 
+#include "node.h"
 #include "utility.h"
 
 struct struct_List {
-  ElemType elem;
+  Node *first, *last;
   Destructor dtor;
-  List *next;
 };
 
 static void list_destructor_default(ElemType e) {
   (void)e;
 }
 
-List *list_new(ElemType elem, Destructor dtor) {
+List *list_new(Destructor dtor) {
   List *list = UTILITY_MALLOC(List);
-  list->elem = elem;
+  list->first = list->last = NULL;
   list->dtor = dtor ? dtor : list_destructor_default;
-  list->next = NULL;
   return list;
 }
 void list_delete(List *list) {
-  List *next = NULL;
-  while (list) {
-    next = list->next;
-    list->dtor(list->elem);
-    UTILITY_FREE(list);
-    list = next;
+  Node *node = list->first;
+  while (node) {
+    node = node_delete(node, list->dtor);
   }
+  UTILITY_FREE(list);
 }

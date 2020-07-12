@@ -3,7 +3,7 @@
 
 #include "typedef.h"
 
-List *list_new(ElemType, Destructor);
+List *list_new(Destructor);
 void list_delete(List *);
 
 #endif /* INCLUDE_GUARD_A22A8A22_8237_41B8_A841_CCF37171764F */
