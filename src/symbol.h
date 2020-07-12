@@ -3,5 +3,7 @@
 
 #include "typedef.h"
 
+Set *symbols_new(void);
+void symbols_delete(Set *);
 
 #endif /* INCLUDE_GUARD_F61F06FD_A1EC_40C7_BDE9_B15A87E95C41 */
