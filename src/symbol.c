@@ -15,17 +15,10 @@ typedef struct {
   Bool flag;
 } Register;
 
-static Symbol *symbol_duplicate(Symbol *src) {
+static Symbol *symbol_new(Symbol *src) {
   Symbol *dst = UTILITY_MALLOC(Symbol);
   *dst = *src;
   return dst;
-}
-
-Symbol *symbol_new(const char *symbol, Bool flag) {
-  Symbol *ptr = UTILITY_MALLOC(Symbol);
-  ptr->symbol = symbol;
-  ptr->flag = flag;
-  return ptr;
 }
 void symbol_delete(Symbol *symbol) {
   UTILITY_FREE(symbol);
@@ -92,7 +85,7 @@ static void register_identifier(Register *reg, Sexp *ast) {
     print_message(stderr, symbol.symbol);
     print_newline(stderr);
   } else {
-    Bool ret = set_insert(reg->symbols, symbol_duplicate(&symbol));
+    Bool ret = set_insert(reg->symbols, symbol_new(&symbol));
     assert(ret);
     (void)ret;
   }

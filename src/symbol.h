@@ -6,7 +6,6 @@
 struct struct_Symbol;
 typedef struct struct_Symbol Symbol;
 
-Symbol *symbol_new(const char *symbol, Bool flag);
 void symbol_delete(Symbol *symbol);
 int symbol_compare(const ElemType *, const ElemType *);
 Bool symbol_flag(const Symbol *);
