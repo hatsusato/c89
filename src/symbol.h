@@ -3,10 +3,13 @@
 
 #include "typedef.h"
 
-struct struct_Symbol;
-typedef struct struct_Symbol Symbol;
+typedef struct {
+  const char *symbol;
+  Bool flag;
+} Symbol;
 
-void symbol_delete(Symbol *symbol);
+Symbol *symbol_new(Symbol *);
+void symbol_delete(Symbol *);
 int symbol_compare(const ElemType *, const ElemType *);
 Bool symbol_flag(const Symbol *);
 void symbol_init(Set *);
