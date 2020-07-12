@@ -19,3 +19,6 @@ Node *node_delete(Node *node, Destructor dtor) {
   UTILITY_FREE(node);
   return next;
 }
+void node_insert(Node *node, Node *next) {
+  node->next = next;
+}
