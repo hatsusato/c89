@@ -120,10 +120,14 @@ Bool scanner_query_typedef(yyscan_t scanner, const char *symbol) {
 }
 void scanner_push_scope(yyscan_t scanner) {
   Result *result = yyget_extra(scanner);
+  Table *table = result_get_table(result);
+  table_push(table);
   result_push_scope(result);
 }
 void scanner_pop_scope(yyscan_t scanner) {
   Result *result = yyget_extra(scanner);
+  Table *table = result_get_table(result);
+  table_pop(table);
   result_pop_scope(result);
 }
 void scanner_register(yyscan_t scanner, Sexp *ast) {
