@@ -7,6 +7,11 @@
 #include "table.h"
 #include "utility.h"
 
+static Table *get_table(yyscan_t scanner) {
+  Result *result = yyget_extra(scanner);
+  return result_get_table(result);
+}
+
 void yyerror(yyscan_t scanner, const char *msg) {
   FILE *fp = stderr;
   print_message(fp, "yyerror: ");
@@ -38,22 +43,14 @@ Sexp *scanner_token(yyscan_t scanner) {
   return sexp_string(yyget_text(scanner), yyget_leng(scanner));
 }
 void scanner_push_scope(yyscan_t scanner) {
-  Result *result = yyget_extra(scanner);
-  Table *table = result_get_table(result);
-  table_push(table);
+  table_push(get_table(scanner));
 }
 void scanner_pop_scope(yyscan_t scanner) {
-  Result *result = yyget_extra(scanner);
-  Table *table = result_get_table(result);
-  table_pop(table);
+  table_pop(get_table(scanner));
 }
 void scanner_register(yyscan_t scanner, Sexp *ast) {
-  Result *result = yyget_extra(scanner);
-  Table *table = result_get_table(result);
-  table_register(table, ast);
+  table_register(get_table(scanner), ast);
 }
 Bool scanner_query(yyscan_t scanner, const char *symbol) {
-  Result *result = yyget_extra(scanner);
-  Table *table = result_get_table(result);
-  return table_query(table, symbol);
+  return table_query(get_table(scanner), symbol);
 }
