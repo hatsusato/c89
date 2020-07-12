@@ -40,4 +40,6 @@ typedef struct struct_SymbolTable SymbolTable;
 struct struct_Vector;
 typedef struct struct_Vector Vector;
 
+typedef Vector Table;
+
 #endif /* INCLUDE_GUARD_E20E6EF6_D4AC_4C0A_A3D6_B4A494B0E59A */
