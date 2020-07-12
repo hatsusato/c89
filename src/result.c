@@ -3,7 +3,7 @@
 #include "scanner.h"
 #include "set.h"
 #include "sexp.h"
-#include "table.h"
+#include "symbol_table.h"
 #include "utility.h"
 
 struct struct_Result {
