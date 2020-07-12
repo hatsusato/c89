@@ -2,17 +2,17 @@
 
 #include "utility.h"
 
-struct struct_Symbol {
+typedef struct {
   const char *symbol;
   Bool flag;
-};
+} Symbol;
 
-Symbol *symbol_new(const char *symbol, Bool flag) {
+static Symbol *symbol_new(const char *symbol, Bool flag) {
   Symbol *ptr = UTILITY_MALLOC(Symbol);
   ptr->symbol = symbol;
   ptr->flag = flag;
   return ptr;
 }
-void symbol_delete(Symbol *symbol) {
+static void symbol_delete(Symbol *symbol) {
   UTILITY_FREE(symbol);
 }
