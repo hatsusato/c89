@@ -25,3 +25,21 @@ void list_delete(List *list) {
   }
   UTILITY_FREE(list);
 }
+void list_insert(List *list, ElemType elem) {
+  list->first = node_new(elem, list->first);
+  if (!list->last) {
+    list->last = list->first;
+  }
+}
+void list_append(List *lhs, List *rhs) {
+  assert(lhs->dtor == rhs->dtor);
+  if (rhs->last) {
+    if (lhs->last) {
+      node_insert(lhs->last, rhs->first);
+    } else {
+      lhs->first = rhs->first;
+    }
+    lhs->last = rhs->first = NULL;
+    SWAP(Node *, lhs->last, rhs->last);
+  }
+}
