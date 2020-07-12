@@ -1,0 +1,11 @@
+#ifndef INCLUDE_GUARD_73005BDB_B13D_44DF_81E9_5D8719897410
+#define INCLUDE_GUARD_73005BDB_B13D_44DF_81E9_5D8719897410
+
+#include "typedef.h"
+
+typedef struct {
+  Set *symbols;
+  Bool flag;
+} Register;
+
+#endif /* INCLUDE_GUARD_73005BDB_B13D_44DF_81E9_5D8719897410 */
