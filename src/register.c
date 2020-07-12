@@ -1,5 +1,6 @@
 #include "register.h"
 
+#include "set.h"
 #include "sexp.h"
 #include "utility.h"
 
@@ -70,5 +71,15 @@ void register_is_typedef(Register *reg, Sexp *ast) {
   if (register_check_tag(ast, "storage-class-specifier") &&
       sexp_eq(sexp_at(ast, 1), "typedef")) {
     reg->flag = true;
+  }
+}
+void register_identifier(Register *reg, Sexp *ast) {
+  Symbol symbol;
+  symbol.symbol = register_from_init_declarator(ast);
+  symbol.flag = reg->flag;
+  if (!set_contains(reg->symbols, &symbol)) {
+    Bool ret = set_insert(reg->symbols, symbol_duplicate(&symbol));
+    assert(ret);
+    (void)ret;
   }
 }

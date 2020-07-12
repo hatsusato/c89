@@ -10,5 +10,6 @@ typedef struct {
 
 void register_foreach(Register *, Sexp *, void (*)(Register *, Sexp *));
 void register_is_typedef(Register *, Sexp *);
+void register_identifier(Register *, Sexp *);
 
 #endif /* INCLUDE_GUARD_73005BDB_B13D_44DF_81E9_5D8719897410 */
