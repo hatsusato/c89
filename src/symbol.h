@@ -11,6 +11,7 @@ typedef struct {
 Symbol *symbol_new(const char *symbol, Bool flag);
 void symbol_delete(Symbol *symbol);
 int symbol_compare(const ElemType *, const ElemType *);
+Bool symbol_flag(const Symbol *);
 void symbol_register(Set *, Sexp *);
 const Symbol *symbol_query(const Set *, const char *);
 

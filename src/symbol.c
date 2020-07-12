@@ -30,6 +30,10 @@ int symbol_compare(const ElemType *lhs, const ElemType *rhs) {
   const Symbol *r = *rhs;
   return utility_str_cmp(l->symbol, r->symbol);
 }
+Bool symbol_flag(const Symbol *symbol) {
+  assert(symbol);
+  return symbol->flag;
+}
 
 static Bool register_check_tag(Sexp *ast, const char *tag) {
   return sexp_is_pair(ast) && sexp_is_list(ast) && sexp_eq(sexp_car(ast), tag);
