@@ -27,9 +27,6 @@ static const void *flag_reset(const void *ptr) {
 static int compare(const ElemType *lhs, const ElemType *rhs) {
   return strcmp(flag_reset(*lhs), flag_reset(*rhs));
 }
-static void destructor(const void *set) {
-  set_delete((Set *)set);
-}
 static void table_init(SymbolTable *table) {
   const char *builtin_types[] = {"__builtin_va_list", NULL};
   const char **it = builtin_types;
@@ -53,12 +50,12 @@ static void table_traverse(const SymbolTable *table, void *data,
 
 SymbolTable *table_new(void) {
   SymbolTable *table = malloc(sizeof(SymbolTable));
-  table->table = vector_new();
+  table->table = vector_new((Destructor)set_delete);
   table_init(table);
   return table;
 }
 void table_delete(SymbolTable *table) {
-  vector_clear(table->table, destructor);
+  vector_clear(table->table);
   vector_delete(table->table);
   free(table);
 }
@@ -68,7 +65,7 @@ void table_push(SymbolTable *table) {
 }
 void table_pop(SymbolTable *table) {
   assert(table);
-  vector_pop(table->table, destructor);
+  vector_pop(table->table);
 }
 void table_register(SymbolTable *table, const char *symbol, Bool flag) {
   assert(table);

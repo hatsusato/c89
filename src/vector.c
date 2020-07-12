@@ -8,8 +8,12 @@
 struct struct_Vector {
   ElemType *data;
   Size size, capacity;
+  Destructor dtor;
 };
 
+static void vector_default_destructor(ElemType e) {
+  (void)e;
+}
 static void vector_alloc(Vector *v) {
   ElemType *prev = v->data;
   v->data = malloc(v->capacity * sizeof(ElemType));
@@ -19,10 +23,11 @@ static void vector_alloc(Vector *v) {
   }
 }
 
-Vector *vector_new(void) {
+Vector *vector_new(Destructor dtor) {
   Vector *v = malloc(sizeof(Vector));
   v->data = NULL;
   v->size = v->capacity = 0;
+  v->dtor = dtor ? dtor : vector_default_destructor;
   return v;
 }
 void vector_delete(Vector *v) {
@@ -64,19 +69,17 @@ void vector_push(Vector *v, ElemType elem) {
   }
   v->data[v->size++] = elem;
 }
-void vector_pop(Vector *v, Destructor dtor) {
+void vector_pop(Vector *v) {
   assert(v);
   if (0 < v->size) {
     --v->size;
-    if (dtor) {
-      dtor(v->data[v->size]);
-    }
+    v->dtor(v->data[v->size]);
     v->data[v->size] = NULL;
   }
 }
-void vector_clear(Vector *v, Destructor dtor) {
+void vector_clear(Vector *v) {
   assert(v);
   while (0 < v->size) {
-    vector_pop(v, dtor);
+    vector_pop(v);
   }
 }

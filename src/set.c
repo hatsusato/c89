@@ -21,7 +21,7 @@ static void set_sort(Set *set) {
 
 Set *set_new(Compare cmp) {
   Set *set = malloc(sizeof(Set));
-  set->data = vector_new();
+  set->data = vector_new(NULL);
   set->cmp =
       (int (*)(const void *, const void *))(cmp ? cmp : set_compare_default);
   return set;
