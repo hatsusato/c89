@@ -61,7 +61,7 @@ void table_delete(SymbolTable *table) {
 }
 void table_push(SymbolTable *table) {
   assert(table);
-  vector_push(table->table, set_new(compare));
+  vector_push(table->table, set_new(NULL, compare));
 }
 void table_pop(SymbolTable *table) {
   assert(table);

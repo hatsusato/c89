@@ -5,38 +5,47 @@
 #include "utility.h"
 #include "vector.h"
 
+typedef int (*SetCompare)(const void *, const void *);
 struct struct_Set {
   Vector *data;
-  int (*cmp)(const void *, const void *);
+  SetCompare cmp;
 };
 
-static int set_compare_default(const ElemType *lhs, const ElemType *rhs) {
-  return *lhs < *rhs ? -1 : *lhs > *rhs ? 1 : 0;
+static int set_compare_default(const void *lhs, const void *rhs) {
+  ElemType l = *(const ElemType *)lhs;
+  ElemType r = *(const ElemType *)rhs;
+  return l < r ? -1 : l > r ? 1 : 0;
 }
 static void set_sort(Set *set) {
   ElemType *data = vector_begin(set->data);
   size_t count = vector_length(set->data);
   qsort(data, count, sizeof(ElemType), set->cmp);
 }
+static const ElemType *set_search(const Set *set, ElemType key) {
+  const ElemType *data = vector_begin(set->data);
+  size_t count = vector_length(set->data);
+  return bsearch(&key, data, count, sizeof(ElemType), set->cmp);
+}
 
-Set *set_new(Compare cmp) {
-  Set *set = malloc(sizeof(Set));
-  set->data = vector_new(NULL);
-  set->cmp =
-      (int (*)(const void *, const void *))(cmp ? cmp : set_compare_default);
+Set *set_new(Destructor dtor, Compare cmp) {
+  Set *set = UTILITY_MALLOC(Set);
+  set->data = vector_new(dtor);
+  set->cmp = cmp ? (SetCompare)cmp : set_compare_default;
   return set;
 }
 void set_delete(Set *set) {
   assert(set);
   vector_delete(set->data);
-  free(set);
+  UTILITY_FREE(set);
 }
-void set_insert(Set *set, ElemType elem) {
+Bool set_insert(Set *set, ElemType elem) {
   assert(set);
   if (!set_find(set, elem)) {
     vector_push(set->data, elem);
     set_sort(set);
+    return true;
   }
+  return false;
 }
 Bool set_contains(const Set *set, ElemType elem) {
   assert(set);
@@ -44,8 +53,7 @@ Bool set_contains(const Set *set, ElemType elem) {
 }
 const ElemType *set_find(const Set *set, ElemType key) {
   assert(set);
-  return bsearch(&key, vector_begin(set->data), vector_length(set->data),
-                 sizeof(ElemType), set->cmp);
+  return set_search(set, key);
 }
 const ElemType *set_begin(const Set *set) {
   assert(set);

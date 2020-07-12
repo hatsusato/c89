@@ -76,7 +76,7 @@ static void register_symbols(SymbolTable *table, Sexp *ast, Bool is_typedef) {
 Result *result_new(void) {
   Result *result = malloc(sizeof(Result));
   result->sexp = sexp_nil();
-  result->symbols = set_new(result_set_compare);
+  result->symbols = set_new(NULL, result_set_compare);
   result->table = table_new();
   return result;
 }
