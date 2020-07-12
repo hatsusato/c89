@@ -31,7 +31,7 @@ static void destructor(const void *set) {
   set_delete((Set *)set);
 }
 static void table_init(SymbolTable *table) {
-  const char *builtin_types[] = {"__builtin_va_list", nil};
+  const char *builtin_types[] = {"__builtin_va_list", NULL};
   const char **it = builtin_types;
   table_push(table);
   while (*it) {

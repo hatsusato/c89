@@ -3,7 +3,7 @@
 #include "result.h"
 
 void print_seq(Result *result) {
-  Sexp *sexp = result_set_sexp(result, nil);
+  Sexp *sexp = result_set_sexp(result, NULL);
   pretty_print(stdout, sexp);
   result_set_sexp(result, sexp);
 }

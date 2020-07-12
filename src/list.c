@@ -14,11 +14,11 @@ List *list_new(int tag, void *data) {
   List *list = malloc(sizeof(List));
   list->tag = tag;
   list->data = data;
-  list->next = nil;
+  list->next = NULL;
   return list;
 }
 void list_delete(List *list, void (*deleter)(List *)) {
-  List *next = nil;
+  List *next = NULL;
   while (list) {
     next = list->next;
     if (deleter) {

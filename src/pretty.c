@@ -41,7 +41,7 @@ static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *delims[]) {
 }
 static Sexp *pretty_convert_list(Sexp *ast, int indent, const char *delim) {
   Sexp *pretty = sexp_nil();
-  const char *sep = nil;
+  const char *sep = NULL;
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     pretty = pretty_snoc(pretty, ast, indent, sep);
     sep = delim;
@@ -86,7 +86,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     case AST_DECLARATION:
     case AST_STRUCT_DECLARATION:
     case AST_EXPRESSION_STATEMENT:
-      ast = pretty_convert_list(ast, indent, nil);
+      ast = pretty_convert_list(ast, indent, NULL);
       return pretty_indent(indent, ast);
     case AST_INIT_DECLARATOR_LIST:
     case AST_STRUCT_DECLARATOR_LIST:
@@ -103,7 +103,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     case AST_STRUCT_DECLARATION_LIST:
     case AST_DECLARATION_LIST:
     case AST_STATEMENT_LIST:
-      return pretty_convert_list(ast, indent + 1, nil);
+      return pretty_convert_list(ast, indent + 1, NULL);
     case AST_STRUCT_DECLARATOR:
       delims[0] = delims[1] = delims[2] = " ";
       return pretty_convert_join(ast, indent, delims);
@@ -114,7 +114,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       ast = pretty_convert_list(ast, indent, " ");
       return sexp_is_nil(ast) ? ast : sexp_snoc(ast, sexp_symbol(" "));
     case AST_LABELED_STATEMENT:
-      delims[1] = pretty_check_tag(ast, "case") ? " " : nil;
+      delims[1] = pretty_check_tag(ast, "case") ? " " : NULL;
       ast = pretty_convert_join(ast, indent, delims);
       indent = pretty_check_tag(sexp_car(ast), "identifier") ? 0 : indent - 1;
       return pretty_indent(indent, ast);
@@ -147,7 +147,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     default:
-      return pretty_convert_list(ast, indent, nil);
+      return pretty_convert_list(ast, indent, NULL);
     }
   } else {
     const char *symbol = sexp_get(ast);

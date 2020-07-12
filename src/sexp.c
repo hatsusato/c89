@@ -24,7 +24,7 @@ static SexpKind sexp_kind(Sexp *sexp) {
 }
 
 Sexp *sexp_nil(void) {
-  return nil;
+  return NULL;
 }
 Sexp *sexp_cons(Sexp *car, Sexp *cdr) {
   MutableSexp *sexp = malloc(sizeof(Sexp));
@@ -132,7 +132,7 @@ const char *sexp_get(Sexp *sexp) {
   } else if (sexp_is_symbol(sexp)) {
     return sexp->data.symbol;
   } else {
-    return nil;
+    return NULL;
   }
 }
 int sexp_length(Sexp *list) {

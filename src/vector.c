@@ -24,7 +24,7 @@ Size vector_alignment(void) {
 }
 Vector *vector_new(void) {
   Vector *v = malloc(sizeof(Vector));
-  v->data = nil;
+  v->data = NULL;
   v->size = v->capacity = 0;
   return v;
 }
@@ -50,14 +50,14 @@ VectorElem vector_front(const Vector *v) {
   if (0 < v->size) {
     return v->data[0];
   }
-  return nil;
+  return NULL;
 }
 VectorElem vector_back(const Vector *v) {
   assert(v);
   if (0 < v->size) {
     return v->data[v->size - 1];
   }
-  return nil;
+  return NULL;
 }
 void vector_push(Vector *v, VectorElem elem) {
   assert(v);
@@ -74,7 +74,7 @@ void vector_pop(Vector *v, VectorDestructor dtor) {
     if (dtor) {
       dtor(v->data[v->size]);
     }
-    v->data[v->size] = nil;
+    v->data[v->size] = NULL;
   }
 }
 void vector_clear(Vector *v, VectorDestructor dtor) {

@@ -39,7 +39,7 @@ static Bool has_typedef(Sexp *ast) {
 }
 static const char *from_declarator(Sexp *ast);
 static const char *from_direct_declarator(Sexp *ast) {
-  Sexp *next = nil;
+  Sexp *next = NULL;
   assert(check_tag(ast, "direct-declarator"));
   next = sexp_at(ast, 1);
   if (check_tag(next, "identifier")) {
@@ -53,7 +53,7 @@ static const char *from_direct_declarator(Sexp *ast) {
   }
 }
 static const char *from_declarator(Sexp *ast) {
-  Sexp *next = nil;
+  Sexp *next = NULL;
   assert(check_tag(ast, "declarator"));
   next = sexp_at(ast, 1);
   if (check_tag(next, "pointer")) {
@@ -78,8 +78,8 @@ static void register_typedef(Set *symbols, Sexp *sexp) {
 }
 
 yyscan_t scanner_new(Result *result) {
-  yyscan_t scanner = nil;
-  const char *builtin_types[] = {"__builtin_va_list", nil};
+  yyscan_t scanner = NULL;
+  const char *builtin_types[] = {"__builtin_va_list", NULL};
   const char **it = builtin_types;
   Set *symbols = result_get_symbols(result);
   int ret = yylex_init_extra(result, &scanner);

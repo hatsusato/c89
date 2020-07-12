@@ -40,7 +40,7 @@ void set_insert(Set *set, SetElem elem) {
 }
 Bool set_contains(const Set *set, SetElem elem) {
   assert(set);
-  return set_find(set, elem) != nil;
+  return set_find(set, elem) != NULL;
 }
 const SetElem *set_find(const Set *set, SetElem key) {
   assert(set);

@@ -10,7 +10,6 @@ typedef void *yyscan_t;
 
 #define true (1)
 #define false (0)
-#define nil (NULL)
 typedef int Bool;
 typedef unsigned char Byte;
 typedef unsigned long PointerBytes;
