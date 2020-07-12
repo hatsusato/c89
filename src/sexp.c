@@ -1,7 +1,5 @@
 #include "sexp.h"
 
-#include <stdlib.h>
-
 #include "string.h"
 #include "utility.h"
 
@@ -22,13 +20,23 @@ typedef struct struct_Sexp MutableSexp;
 static SexpKind sexp_kind(Sexp *sexp) {
   return sexp ? sexp->kind : SEXP_NIL;
 }
+static MutableSexp *sexp_new(SexpKind kind) {
+  MutableSexp *sexp = UTILITY_MALLOC(MutableSexp);
+  sexp->kind = kind;
+  return sexp;
+}
+static void sexp_free(MutableSexp *sexp) {
+  UTILITY_FREE(sexp);
+}
+static void sexp_set_cdr(Sexp *sexp, Sexp *cdr) {
+  ((MutableSexp *)sexp)->data.pair.cdr = cdr;
+}
 
 Sexp *sexp_nil(void) {
   return NULL;
 }
 Sexp *sexp_cons(Sexp *car, Sexp *cdr) {
-  MutableSexp *sexp = malloc(sizeof(Sexp));
-  sexp->kind = SEXP_PAIR;
+  MutableSexp *sexp = sexp_new(SEXP_PAIR);
   sexp->data.pair.car = car;
   sexp->data.pair.cdr = cdr;
   return sexp;
@@ -39,7 +47,7 @@ Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
   while (sexp_is_pair(sexp)) {
     Sexp *cdr = sexp_cdr(sexp);
     if (sexp_is_nil(cdr)) {
-      ((MutableSexp *)sexp)->data.pair.cdr = sexp_cons(x, cdr);
+      sexp_set_cdr(sexp, sexp_cons(x, cdr));
       return xs;
     }
     sexp = cdr;
@@ -53,7 +61,7 @@ Sexp *sexp_append(Sexp *lhs, Sexp *rhs) {
   while (sexp_is_pair(sexp)) {
     Sexp *cdr = sexp_cdr(sexp);
     if (sexp_is_nil(cdr)) {
-      ((MutableSexp *)sexp)->data.pair.cdr = rhs;
+      sexp_set_cdr(sexp, rhs);
       return lhs;
     }
     sexp = cdr;
@@ -62,14 +70,12 @@ Sexp *sexp_append(Sexp *lhs, Sexp *rhs) {
   return rhs;
 }
 Sexp *sexp_symbol(const char *symbol) {
-  MutableSexp *sexp = malloc(sizeof(Sexp));
-  sexp->kind = SEXP_SYMBOL;
+  MutableSexp *sexp = sexp_new(SEXP_SYMBOL);
   sexp->data.symbol = symbol;
   return sexp;
 }
 Sexp *sexp_string(const char *text, int leng) {
-  MutableSexp *sexp = malloc(sizeof(Sexp));
-  sexp->kind = SEXP_STRING;
+  MutableSexp *sexp = sexp_new(SEXP_STRING);
   sexp->data.string = string_new(text, leng);
   return sexp;
 }
@@ -87,7 +93,7 @@ void sexp_delete(Sexp *sexp) {
   default:
     break;
   }
-  free((void *)sexp);
+  sexp_free((MutableSexp *)sexp);
 }
 Bool sexp_is_nil(Sexp *sexp) {
   return SEXP_NIL == sexp_kind(sexp);
