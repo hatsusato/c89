@@ -1,8 +1,5 @@
 #include "vector.h"
 
-#include <stdlib.h>
-#include <string.h>
-
 #include "utility.h"
 
 struct struct_Vector {
@@ -16,15 +13,15 @@ static void vector_default_destructor(ElemType e) {
 }
 static void vector_alloc(Vector *v) {
   ElemType *prev = v->data;
-  v->data = malloc(v->capacity * sizeof(ElemType));
+  v->data = UTILITY_MALLOC_ARRAY(ElemType, v->capacity);
   if (prev) {
-    memcpy(v->data, prev, v->size * sizeof(ElemType));
-    free(prev);
+    UTILITY_MEMCPY(ElemType, v->data, prev, v->size);
+    UTILITY_FREE(prev);
   }
 }
 
 Vector *vector_new(Destructor dtor) {
-  Vector *v = malloc(sizeof(Vector));
+  Vector *v = UTILITY_MALLOC(Vector);
   v->data = NULL;
   v->size = v->capacity = 0;
   v->dtor = dtor ? dtor : vector_default_destructor;
@@ -32,8 +29,9 @@ Vector *vector_new(Destructor dtor) {
 }
 void vector_delete(Vector *v) {
   assert(v);
-  free(v->data);
-  free(v);
+  vector_clear(v);
+  UTILITY_FREE(v->data);
+  UTILITY_FREE(v);
 }
 Size vector_length(const Vector *v) {
   assert(v);
@@ -67,7 +65,8 @@ void vector_push(Vector *v, ElemType elem) {
     v->capacity += 1 + v->size;
     vector_alloc(v);
   }
-  v->data[v->size++] = elem;
+  v->data[v->size] = elem;
+  ++v->size;
 }
 void vector_pop(Vector *v) {
   assert(v);
