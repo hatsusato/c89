@@ -14,6 +14,16 @@ print() {
 #define __restrict
 EOF
 }
+error() {
+  echo ERROR: "$@" >&2
+  exit 1
+}
+check() {
+  print "$1" -Isrc -fsyntax-only >/dev/null || error "$1"
+}
+compile() {
+  print "$1" -Isrc -E
+}
 
 eflag=
 if [[ "$1" == -E ]]; then
@@ -21,10 +31,10 @@ if [[ "$1" == -E ]]; then
   shift
 fi
 for arg in "$@"; do
+  check "$arg"
   if test "$eflag"; then
-    print "$arg" -Isrc -fsyntax-only -E
+    compile "$arg"
   else
-    print "$arg" -Isrc -fsyntax-only >/dev/null
-    print "$arg" -Isrc -E | ./main.out
-  fi || echo "ERROR: $arg" >&2
+    compile "$arg" | ./main.out
+  fi
 done
