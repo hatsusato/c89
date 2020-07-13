@@ -4,6 +4,11 @@
 #include "sexp.h"
 #include "utility.h"
 
+struct struct_Symbol {
+  const char *symbol;
+  Bool flag;
+};
+
 Symbol *symbol_new(Symbol *src) {
   Symbol *dst = UTILITY_MALLOC(Symbol);
   *dst = *src;
