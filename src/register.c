@@ -1,11 +1,10 @@
 #include "register.h"
 
 #include "sexp.h"
-#include "symbol.h"
 #include "utility.h"
 
 typedef struct {
-  Set *symbols;
+  SymbolSet *symbols;
   Bool flag;
 } Register;
 
@@ -63,7 +62,7 @@ static void register_foreach(Register *reg, Sexp *ast,
   }
 }
 
-void register_declaration(Set *set, Sexp *sexp) {
+void register_declaration(SymbolSet *set, Sexp *sexp) {
   Register reg;
   Sexp *ast = sexp;
   assert(set);

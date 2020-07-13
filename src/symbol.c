@@ -23,14 +23,14 @@ static int symbol_compare(const ElemType *lhs, const ElemType *rhs) {
   return utility_str_cmp(l->symbol, r->symbol);
 }
 
-Set *symbol_set_new(void) {
+SymbolSet *symbol_set_new(void) {
   return set_new((Destructor)symbol_delete, symbol_compare);
 }
 Bool symbol_flag(const Symbol *symbol) {
   assert(symbol);
   return symbol->flag;
 }
-void symbol_register(Set *set, const char *identifier, Bool flag) {
+void symbol_register(SymbolSet *set, const char *identifier, Bool flag) {
   Symbol symbol;
   symbol.symbol = identifier;
   symbol.flag = flag;
@@ -38,7 +38,7 @@ void symbol_register(Set *set, const char *identifier, Bool flag) {
     set_insert(set, symbol_new(&symbol));
   }
 }
-const Symbol *symbol_query(const Set *set, const char *sym) {
+const Symbol *symbol_query(const SymbolSet *set, const char *sym) {
   Symbol symbol;
   const ElemType *found;
   symbol.symbol = sym;

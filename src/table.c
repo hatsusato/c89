@@ -6,8 +6,8 @@
 #include "utility.h"
 #include "vector.h"
 
-static Set *table_top(Table *table) {
-  Set *top = (Set *)vector_back(table);
+static SymbolSet *table_top(Table *table) {
+  SymbolSet *top = (SymbolSet *)vector_back(table);
   assert(top);
   return top;
 }
@@ -35,9 +35,9 @@ void table_register(Table *table, Sexp *ast) {
   register_declaration(table_top(table), ast);
 }
 Bool table_query(Table *table, const char *symbol) {
-  const Set **rbegin = (const Set **)vector_end(table);
-  const Set **rend = (const Set **)vector_begin(table);
-  const Set **it;
+  const SymbolSet **rbegin = (const SymbolSet **)vector_end(table);
+  const SymbolSet **rend = (const SymbolSet **)vector_begin(table);
+  const SymbolSet **it;
   for (it = rbegin; it != rend; --it) {
     const Symbol *found = symbol_query(it[-1], symbol);
     if (found) {
