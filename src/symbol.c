@@ -27,12 +27,6 @@ Bool symbol_flag(const Symbol *symbol) {
   return symbol->flag;
 }
 
-void symbol_init(Set *set) {
-  Symbol symbol;
-  symbol.symbol = "__builtin_va_list";
-  symbol.flag = true;
-  set_insert(set, symbol_new(&symbol));
-}
 void symbol_register(Set *set, const char *identifier, Bool flag) {
   Symbol symbol;
   symbol.symbol = identifier;

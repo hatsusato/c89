@@ -15,7 +15,7 @@ static Set *table_top(Table *table) {
 Table *table_new(void) {
   Table *table = vector_new((Destructor)set_delete);
   table_push(table);
-  symbol_init(table_top(table));
+  symbol_register(table_top(table), "__builtin_va_list", true);
   return table;
 }
 void table_delete(Table *table) {

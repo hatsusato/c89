@@ -10,7 +10,6 @@ Symbol *symbol_new(Symbol *);
 void symbol_delete(Symbol *);
 int symbol_compare(const ElemType *, const ElemType *);
 Bool symbol_flag(const Symbol *);
-void symbol_init(Set *);
 void symbol_register(Set *, const char *, Bool);
 const Symbol *symbol_query(const Set *, const char *);
 
