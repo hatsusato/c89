@@ -3,7 +3,7 @@
 set -eu
 
 print() {
-  local opts=(-Wall -Wextra -Werror -ansi -pedantic -x c -P)
+  local opts=(-Wall -Wextra -Werror -ansi -pedantic -x c)
   local target="$1"
   shift
   cat - "$target" <<EOF | gcc "$@" "${opts[@]}" -
@@ -26,5 +26,5 @@ for arg in "$@"; do
   else
     print "$arg" -Isrc -fsyntax-only >/dev/null
     print "$arg" -Isrc -E | ./main.out
-  fi
+  fi || echo "ERROR: $arg" >&2
 done
