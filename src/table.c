@@ -1,5 +1,6 @@
 #include "table.h"
 
+#include "register.h"
 #include "set.h"
 #include "symbol.h"
 #include "utility.h"
@@ -31,7 +32,7 @@ void table_pop(Table *table) {
 }
 void table_register(Table *table, Sexp *ast) {
   assert(table);
-  symbol_register(table_top(table), ast);
+  register_declaration(table_top(table), ast);
 }
 Bool table_query(Table *table, const char *symbol) {
   const Set **rbegin = (const Set **)vector_end(table);

@@ -13,7 +13,6 @@ void symbol_delete(Symbol *);
 int symbol_compare(const ElemType *, const ElemType *);
 Bool symbol_flag(const Symbol *);
 void symbol_init(Set *);
-void symbol_register(Set *, Sexp *);
 const Symbol *symbol_query(const Set *, const char *);
 
 #endif /* INCLUDE_GUARD_F61F06FD_A1EC_40C7_BDE9_B15A87E95C41 */

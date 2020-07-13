@@ -1,6 +1,5 @@
 #include "symbol.h"
 
-#include "register.h"
 #include "set.h"
 #include "sexp.h"
 #include "utility.h"
@@ -28,20 +27,6 @@ void symbol_init(Set *set) {
   symbol.symbol = "__builtin_va_list";
   symbol.flag = true;
   set_insert(set, symbol_new(&symbol));
-}
-void symbol_register(Set *set, Sexp *sexp) {
-  Register reg;
-  Sexp *ast = sexp;
-  assert(set);
-  assert(register_check_tag(ast, "declaration"));
-  reg.symbols = set;
-  reg.flag = false;
-  ast = sexp_at(sexp, 1);
-  assert(register_check_tag(ast, "declaration-specifiers"));
-  register_foreach(&reg, ast, register_is_typedef);
-  ast = sexp_at(sexp, 2);
-  assert(register_check_tag(ast, "init-declarator-list"));
-  register_foreach(&reg, ast, register_identifier);
 }
 const Symbol *symbol_query(const Set *set, const char *sym) {
   Symbol symbol;
