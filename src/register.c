@@ -5,6 +5,9 @@
 #include "symbol.h"
 #include "utility.h"
 
+static Bool register_check_tag(Sexp *ast, const char *tag) {
+  return sexp_is_pair(ast) && sexp_is_list(ast) && sexp_eq(sexp_car(ast), tag);
+}
 static const char *register_from_declarator(Sexp *ast);
 static const char *register_from_identifier(Sexp *ast) {
   assert(register_check_tag(ast, "identifier"));
@@ -36,9 +39,6 @@ static const char *register_from_init_declarator(Sexp *ast) {
   return register_from_declarator(sexp_at(ast, 1));
 }
 
-Bool register_check_tag(Sexp *ast, const char *tag) {
-  return sexp_is_pair(ast) && sexp_is_list(ast) && sexp_eq(sexp_car(ast), tag);
-}
 void register_is_typedef(Register *reg, Sexp *ast) {
   assert(register_check_tag(ast, "storage-class-specifier") ||
          register_check_tag(ast, "type-specifier") ||

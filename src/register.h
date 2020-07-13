@@ -8,7 +8,6 @@ typedef struct {
   Bool flag;
 } Register;
 
-Bool register_check_tag(Sexp *, const char *);
 void register_is_typedef(Register *, Sexp *);
 void register_identifier(Register *, Sexp *);
 void register_foreach(Register *, Sexp *, void (*)(Register *, Sexp *));
