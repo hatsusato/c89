@@ -24,7 +24,7 @@ void table_delete(Table *table) {
 }
 void table_push(Table *table) {
   assert(table);
-  vector_push(table, set_new((Destructor)symbol_delete, symbol_compare));
+  vector_push(table, symbol_set_new());
 }
 void table_pop(Table *table) {
   assert(table);

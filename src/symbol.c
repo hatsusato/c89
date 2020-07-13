@@ -22,11 +22,14 @@ int symbol_compare(const ElemType *lhs, const ElemType *rhs) {
   const Symbol *r = *rhs;
   return utility_str_cmp(l->symbol, r->symbol);
 }
+
+Set *symbol_set_new(void) {
+  return set_new((Destructor)symbol_delete, symbol_compare);
+}
 Bool symbol_flag(const Symbol *symbol) {
   assert(symbol);
   return symbol->flag;
 }
-
 void symbol_register(Set *set, const char *identifier, Bool flag) {
   Symbol symbol;
   symbol.symbol = identifier;
