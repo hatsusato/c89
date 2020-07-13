@@ -1,6 +1,5 @@
 #include "register.h"
 
-#include "set.h"
 #include "sexp.h"
 #include "symbol.h"
 #include "utility.h"
@@ -54,12 +53,8 @@ static void register_is_typedef(Register *reg, Sexp *ast) {
   }
 }
 static void register_identifier(Register *reg, Sexp *ast) {
-  Symbol symbol;
-  symbol.symbol = register_from_init_declarator(ast);
-  symbol.flag = reg->flag;
-  if (!set_contains(reg->symbols, &symbol)) {
-    set_insert(reg->symbols, symbol_new(&symbol));
-  }
+  const char *symbol = register_from_init_declarator(ast);
+  symbol_register(reg->symbols, symbol, reg->flag);
 }
 static void register_foreach(Register *reg, Sexp *ast,
                              void (*map)(Register *, Sexp *)) {

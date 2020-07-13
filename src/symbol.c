@@ -28,6 +28,14 @@ void symbol_init(Set *set) {
   symbol.flag = true;
   set_insert(set, symbol_new(&symbol));
 }
+void symbol_register(Set *set, const char *identifier, Bool flag) {
+  Symbol symbol;
+  symbol.symbol = identifier;
+  symbol.flag = flag;
+  if (!set_contains(set, &symbol)) {
+    set_insert(set, symbol_new(&symbol));
+  }
+}
 const Symbol *symbol_query(const Set *set, const char *sym) {
   Symbol symbol;
   const ElemType *found;
