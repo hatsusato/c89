@@ -39,7 +39,7 @@ static const char *register_from_init_declarator(Sexp *ast) {
   return register_from_declarator(sexp_at(ast, 1));
 }
 
-void register_is_typedef(Register *reg, Sexp *ast) {
+static void register_is_typedef(Register *reg, Sexp *ast) {
   assert(register_check_tag(ast, "storage-class-specifier") ||
          register_check_tag(ast, "type-specifier") ||
          register_check_tag(ast, "type-qualifier"));
@@ -48,7 +48,7 @@ void register_is_typedef(Register *reg, Sexp *ast) {
     reg->flag = true;
   }
 }
-void register_identifier(Register *reg, Sexp *ast) {
+static void register_identifier(Register *reg, Sexp *ast) {
   Symbol symbol;
   symbol.symbol = register_from_init_declarator(ast);
   symbol.flag = reg->flag;
@@ -56,8 +56,8 @@ void register_identifier(Register *reg, Sexp *ast) {
     set_insert(reg->symbols, symbol_new(&symbol));
   }
 }
-void register_foreach(Register *reg, Sexp *ast,
-                      void (*map)(Register *, Sexp *)) {
+static void register_foreach(Register *reg, Sexp *ast,
+                             void (*map)(Register *, Sexp *)) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     map(reg, sexp_car(ast));
   }
