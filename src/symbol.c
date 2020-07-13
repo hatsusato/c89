@@ -9,15 +9,15 @@ struct struct_Symbol {
   Bool flag;
 };
 
-Symbol *symbol_new(Symbol *src) {
+static Symbol *symbol_new(Symbol *src) {
   Symbol *dst = UTILITY_MALLOC(Symbol);
   *dst = *src;
   return dst;
 }
-void symbol_delete(Symbol *symbol) {
+static void symbol_delete(Symbol *symbol) {
   UTILITY_FREE(symbol);
 }
-int symbol_compare(const ElemType *lhs, const ElemType *rhs) {
+static int symbol_compare(const ElemType *lhs, const ElemType *rhs) {
   const Symbol *l = *lhs;
   const Symbol *r = *rhs;
   return utility_str_cmp(l->symbol, r->symbol);
