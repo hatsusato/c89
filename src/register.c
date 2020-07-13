@@ -5,6 +5,11 @@
 #include "symbol.h"
 #include "utility.h"
 
+typedef struct {
+  Set *symbols;
+  Bool flag;
+} Register;
+
 static Bool register_check_tag(Sexp *ast, const char *tag) {
   return sexp_is_pair(ast) && sexp_is_list(ast) && sexp_eq(sexp_car(ast), tag);
 }
@@ -62,6 +67,7 @@ static void register_foreach(Register *reg, Sexp *ast,
     map(reg, sexp_car(ast));
   }
 }
+
 void register_declaration(Set *set, Sexp *sexp) {
   Register reg;
   Sexp *ast = sexp;
