@@ -48,6 +48,6 @@ const Symbol *symbol_query(const Set *set, const char *sym) {
   const ElemType *found;
   symbol.symbol = sym;
   symbol.flag = false;
-  found = set_find(set, &sym);
+  found = set_find(set, &symbol);
   return found ? *found : NULL;
 }
