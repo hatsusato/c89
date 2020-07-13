@@ -12,7 +12,7 @@ struct struct_Sexp {
       Sexp *car, *cdr;
     } pair;
     const char *symbol;
-    const String *string;
+    const Str *string;
   } data;
 };
 typedef struct struct_Sexp MutableSexp;
@@ -88,7 +88,7 @@ void sexp_delete(Sexp *sexp) {
     sexp_delete(sexp->data.pair.cdr);
     break;
   case SEXP_STRING:
-    string_delete((String *)sexp->data.string);
+    string_delete((Str *)sexp->data.string);
     break;
   default:
     break;
@@ -134,7 +134,7 @@ Sexp *sexp_at(Sexp *sexp, int index) {
 }
 const char *sexp_get(Sexp *sexp) {
   if (sexp_is_string(sexp)) {
-    return string_begin((String *)sexp->data.string);
+    return string_begin(sexp->data.string);
   } else if (sexp_is_symbol(sexp)) {
     return sexp->data.symbol;
   } else {

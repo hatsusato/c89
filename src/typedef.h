@@ -31,8 +31,8 @@ typedef struct struct_Set Set;
 struct struct_Sexp;
 typedef struct struct_Sexp const Sexp;
 
-struct struct_String;
-typedef struct struct_String String;
+struct struct_Str;
+typedef struct struct_Str Str;
 
 struct struct_SymbolTable;
 typedef struct struct_SymbolTable SymbolTable;
