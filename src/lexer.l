@@ -65,6 +65,7 @@ string-literal          {wide-prefix}{double-quote}{s-char}*{double-quote}
 s-char                  {character-set}|{single-quote}|{escape-sequence}
 
 %%
+[#][^\n]*
 {space}
 
 "auto"          { EMIT_TOKEN(TOKEN_AUTO);     }
