@@ -19,12 +19,14 @@ List *list_new(Destructor dtor) {
   return list;
 }
 void list_delete(List *list) {
+  assert(list);
   while (list->first) {
     list_remove(list);
   }
   UTILITY_FREE(list);
 }
 void list_insert(List *list, ElemType elem) {
+  assert(list);
   list->first = node_new(elem, list->first);
   if (!list->last) {
     list->last = list->first;
@@ -38,6 +40,7 @@ void list_remove(List *list) {
   }
 }
 void list_append(List *lhs, List *rhs) {
+  assert(lhs && rhs);
   assert(lhs->dtor == rhs->dtor);
   if (rhs->last) {
     if (lhs->last) {
