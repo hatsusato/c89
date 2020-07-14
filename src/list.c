@@ -39,7 +39,7 @@ void list_append(List *lhs, List *rhs) {
     } else {
       lhs->first = rhs->first;
     }
-    lhs->last = rhs->first = NULL;
-    UTILITY_SWAP(Node *, lhs->last, rhs->last);
+    lhs->last = rhs->last;
   }
+  rhs->first = rhs->last = NULL;
 }
