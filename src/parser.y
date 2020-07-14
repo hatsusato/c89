@@ -132,8 +132,12 @@ enumeration-constant
 character-constant
 : TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TOKEN(character-constant, scanner);}
 ;
+string-literal-constant
+: TOKEN_STRING_LITERAL {$$ = scanner_token(scanner);}
+;
 string-literal
-: TOKEN_STRING_LITERAL {$$ = PARSER_TOKEN(string-literal, scanner);}
+: string-literal-constant {$$ = PARSER_ATOM(string-literal, $1);}
+| string-literal string-literal-constant {$$ = PARSER_SNOC($1, $2);}
 ;
 
 auto: "auto" {$$ = PARSER_SYMBOL(auto);}
