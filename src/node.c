@@ -19,6 +19,12 @@ Node *node_delete(Node *node, Destructor dtor) {
   UTILITY_FREE(node);
   return next;
 }
+ElemType node_get(Node *node) {
+  return node->elem;
+}
+Node *node_next(Node *node) {
+  return node->next;
+}
 void node_insert(Node *node, Node *next) {
   node->next = next;
 }

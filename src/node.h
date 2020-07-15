@@ -8,6 +8,8 @@ typedef struct struct_Node Node;
 
 Node *node_new(ElemType, Node *);
 Node *node_delete(Node *, Destructor);
+ElemType node_get(Node *);
+Node *node_next(Node *);
 void node_insert(Node *, Node *);
 Node *node_map(Node *, void *, ForeachMap);
 
