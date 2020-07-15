@@ -5,10 +5,8 @@
 #include "set.h"
 #include "symbol.h"
 #include "utility.h"
-#include "vector.h"
 
 struct struct_Table {
-  Vector *vec;
   List *list;
 };
 
@@ -20,7 +18,6 @@ static SymbolSet *table_top(Table *table) {
 
 Table *table_new(void) {
   Table *table = UTILITY_MALLOC(Table);
-  table->vec = vector_new((Destructor)set_delete);
   table->list = list_new((Destructor)set_delete);
   table_push(table);
   symbol_register(table_top(table), "__builtin_va_list", true);
@@ -28,18 +25,15 @@ Table *table_new(void) {
 }
 void table_delete(Table *table) {
   assert(table);
-  vector_delete(table->vec);
   list_delete(table->list);
   UTILITY_FREE(table);
 }
 void table_push(Table *table) {
   assert(table);
-  vector_push(table->vec, symbol_set_new());
   list_insert(table->list, symbol_set_new());
 }
 void table_pop(Table *table) {
   assert(table);
-  vector_pop(table->vec);
   list_remove(table->list);
 }
 void table_register(Table *table, Sexp *ast) {
