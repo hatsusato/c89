@@ -8,5 +8,6 @@ void list_delete(List *);
 void list_insert(List *, ElemType);
 void list_remove(List *);
 void list_append(List *, List *);
+void list_map(List *, void *, ForeachMap);
 
 #endif /* INCLUDE_GUARD_A22A8A22_8237_41B8_A841_CCF37171764F */

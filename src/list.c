@@ -52,3 +52,11 @@ void list_append(List *lhs, List *rhs) {
   }
   rhs->first = rhs->last = NULL;
 }
+void list_map(List *list, void *data, ForeachMap map) {
+  Node *node = NULL;
+  assert(list);
+  node = list->first;
+  while (node) {
+    node = node_map(node, data, map);
+  }
+}
