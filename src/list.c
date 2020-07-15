@@ -55,9 +55,8 @@ void list_append(List *lhs, List *rhs) {
 void list_map(List *list, void *data, ForeachMap map) {
   Node *node = NULL;
   assert(list);
-  node = list->first;
-  while (node) {
-    node = node_map(node, data, map);
+  for (node = list->first; node; node = node_next(node)) {
+    map(node_get(node), data);
   }
 }
 ElemType list_at(List *list, Index index) {

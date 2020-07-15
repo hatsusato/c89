@@ -28,7 +28,3 @@ Node *node_next(Node *node) {
 void node_insert(Node *node, Node *next) {
   node->next = next;
 }
-Node *node_map(Node *node, void *data, ForeachMap map) {
-  map(node->elem, data);
-  return node->next;
-}
