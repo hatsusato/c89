@@ -14,6 +14,7 @@ typedef int Bool;
 typedef unsigned char Byte;
 typedef unsigned long PointerBytes;
 typedef int Size;
+typedef int Index;
 
 typedef const void *ElemType;
 typedef int (*Compare)(const ElemType *, const ElemType *);

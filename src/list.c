@@ -60,3 +60,14 @@ void list_map(List *list, void *data, ForeachMap map) {
     node = node_map(node, data, map);
   }
 }
+ElemType list_at(List *list, Index index) {
+  Node *node = NULL;
+  Index i = 0;
+  assert(list);
+  for (node = list->first; node; node = node_next(node), ++i) {
+    if (i == index) {
+      return node_get(node);
+    }
+  }
+  return NULL;
+}
