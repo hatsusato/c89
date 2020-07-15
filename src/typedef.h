@@ -18,6 +18,7 @@ typedef int Size;
 typedef const void *ElemType;
 typedef int (*Compare)(const ElemType *, const ElemType *);
 typedef void (*Destructor)(ElemType);
+typedef void (*ForeachMap)(ElemType, void *);
 
 struct struct_List;
 typedef struct struct_List List;

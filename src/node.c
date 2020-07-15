@@ -22,3 +22,7 @@ Node *node_delete(Node *node, Destructor dtor) {
 void node_insert(Node *node, Node *next) {
   node->next = next;
 }
+Node *node_map(Node *node, void *data, ForeachMap map) {
+  map(node->elem, data);
+  return node->next;
+}
