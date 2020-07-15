@@ -13,7 +13,7 @@ struct struct_Table {
 };
 
 static SymbolSet *table_top(Table *table) {
-  SymbolSet *top = (SymbolSet *)vector_back(table->vec);
+  SymbolSet *top = (SymbolSet *)list_at(table->list, 0);
   assert(top);
   return top;
 }
@@ -46,15 +46,20 @@ void table_register(Table *table, Sexp *ast) {
   assert(table);
   register_declaration(table_top(table), ast);
 }
-Bool table_query(Table *table, const char *symbol) {
-  const SymbolSet **rbegin = (const SymbolSet **)vector_end(table->vec);
-  const SymbolSet **rend = (const SymbolSet **)vector_begin(table->vec);
-  const SymbolSet **it;
-  for (it = rbegin; it != rend; --it) {
-    const Symbol *found = symbol_query(it[-1], symbol);
-    if (found) {
-      return symbol_flag(found);
-    }
+typedef struct {
+  const char *symbol;
+  const Symbol *found;
+} TableQuery;
+static void table_query_map(ElemType elem, void *data) {
+  const SymbolSet *set = elem;
+  TableQuery *query = data;
+  if (!query->found) {
+    query->found = symbol_query(set, query->symbol);
   }
-  return false;
+}
+Bool table_query(Table *table, const char *symbol) {
+  TableQuery query = {NULL, NULL};
+  query.symbol = symbol;
+  list_map(table->list, &query, table_query_map);
+  return query.found ? symbol_flag(query.found) : false;
 }
