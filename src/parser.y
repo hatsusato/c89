@@ -132,12 +132,12 @@ enumeration-constant
 character-constant
 : TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TOKEN(character-constant, scanner);}
 ;
-string-literal-constant
+string-literal
 : TOKEN_STRING_LITERAL {$$ = scanner_token(scanner);}
 ;
-string-literal
-: string-literal-constant {$$ = PARSER_ATOM(string-literal, $1);}
-| string-literal string-literal-constant {$$ = PARSER_SNOC($1, $2);}
+string-constant
+: string-literal {$$ = PARSER_ATOM(string-literal, $1);}
+| string-constant string-literal {$$ = PARSER_SNOC($1, $2);}
 ;
 
 auto: "auto" {$$ = PARSER_SYMBOL(auto);}
@@ -305,7 +305,7 @@ primary-expression
 | floating-constant
 | integer-constant
 | character-constant
-| string-literal
+| string-constant
 | left-paren expression right-paren {$$ = PARSER_TAG(primary-expression, PARSER_LIST3($1, $2, $3));}
 ;
 postfix-expression
