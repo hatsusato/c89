@@ -156,6 +156,12 @@ const char *sexp_get_string(Sexp *sexp) {
     return NULL;
   }
 }
+int sexp_get_integer(Sexp *sexp) {
+  if (sexp_is_integer(sexp)) {
+    return sexp->data.integer;
+  }
+  return 0;
+}
 int sexp_length(Sexp *list) {
   if (sexp_is_pair(list)) {
     return 1 + sexp_length(sexp_cdr(list));

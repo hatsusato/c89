@@ -22,6 +22,7 @@ Sexp *sexp_car(Sexp *);
 Sexp *sexp_cdr(Sexp *);
 Sexp *sexp_at(Sexp *, int);
 const char *sexp_get_string(Sexp *);
+int sexp_get_integer(Sexp *);
 int sexp_length(Sexp *);
 
 #endif /* INCLUDE_GUARD_3397EB56_FB26_40B7_AD9E_F7B3DA519335 */
