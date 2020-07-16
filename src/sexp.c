@@ -3,7 +3,13 @@
 #include "str.h"
 #include "utility.h"
 
-typedef enum { SEXP_NIL, SEXP_PAIR, SEXP_SYMBOL, SEXP_STRING } SexpKind;
+typedef enum {
+  SEXP_NIL,
+  SEXP_PAIR,
+  SEXP_SYMBOL,
+  SEXP_STRING,
+  SEXP_INTEGER
+} SexpKind;
 
 struct struct_Sexp {
   SexpKind kind;
@@ -13,6 +19,7 @@ struct struct_Sexp {
     } pair;
     const char *symbol;
     const Str *string;
+    int integer;
   } data;
 };
 typedef struct struct_Sexp MutableSexp;
@@ -79,6 +86,11 @@ Sexp *sexp_string(const char *text, int leng) {
   sexp->data.string = string_new(text, leng);
   return sexp;
 }
+Sexp *sexp_integer(int i) {
+  MutableSexp *sexp = sexp_new(SEXP_INTEGER);
+  sexp->data.integer = i;
+  return sexp;
+}
 void sexp_delete(Sexp *sexp) {
   switch (sexp_kind(sexp)) {
   case SEXP_NIL:
@@ -106,6 +118,9 @@ Bool sexp_is_symbol(Sexp *sexp) {
 }
 Bool sexp_is_string(Sexp *sexp) {
   return SEXP_STRING == sexp_kind(sexp);
+}
+Bool sexp_is_integer(Sexp *sexp) {
+  return SEXP_INTEGER == sexp_kind(sexp);
 }
 Bool sexp_is_list(Sexp *list) {
   if (sexp_is_nil(list)) {
