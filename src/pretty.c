@@ -51,7 +51,7 @@ static Sexp *pretty_convert_list(Sexp *ast, int indent, const char *delim) {
 static Sexp *pretty_convert(Sexp *ast, int indent) {
   if (sexp_is_pair(ast)) {
     const char *delims[10] = {0};
-    int tag = ast_to_int(sexp_get(sexp_car(ast)));
+    int tag = ast_to_int(sexp_get_string(sexp_car(ast)));
     ast = sexp_cdr(ast);
     switch (tag) {
     case AST_ARGUMENT_EXPRESSION_LIST:
@@ -150,7 +150,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       return pretty_convert_list(ast, indent, NULL);
     }
   } else {
-    const char *symbol = sexp_get(ast);
+    const char *symbol = sexp_get_string(ast);
     return symbol ? sexp_symbol(symbol) : sexp_nil();
   }
 }

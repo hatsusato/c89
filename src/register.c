@@ -16,7 +16,7 @@ static const char *register_from_identifier(Sexp *ast) {
   assert(register_check_tag(ast, "identifier"));
   ast = sexp_at(ast, 1);
   assert(sexp_is_string(ast));
-  return sexp_get(ast);
+  return sexp_get_string(ast);
 }
 static const char *register_from_direct_declarator(Sexp *ast) {
   assert(register_check_tag(ast, "direct-declarator"));

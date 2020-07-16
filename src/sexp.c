@@ -147,7 +147,7 @@ Sexp *sexp_at(Sexp *sexp, int index) {
     return sexp_car(sexp);
   }
 }
-const char *sexp_get(Sexp *sexp) {
+const char *sexp_get_string(Sexp *sexp) {
   if (sexp_is_string(sexp)) {
     return string_begin(sexp->data.string);
   } else if (sexp_is_symbol(sexp)) {
