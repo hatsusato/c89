@@ -8,7 +8,7 @@ typedef enum {
   SEXP_PAIR,
   SEXP_SYMBOL,
   SEXP_STRING,
-  SEXP_INTEGER
+  SEXP_NUMBER
 } SexpKind;
 
 struct struct_Sexp {
@@ -19,7 +19,7 @@ struct struct_Sexp {
     } pair;
     const char *symbol;
     const Str *string;
-    int integer;
+    int number;
   } data;
 };
 typedef struct struct_Sexp MutableSexp;
@@ -86,9 +86,9 @@ Sexp *sexp_string(const char *text, int leng) {
   sexp->data.string = string_new(text, leng);
   return sexp;
 }
-Sexp *sexp_integer(int i) {
-  MutableSexp *sexp = sexp_new(SEXP_INTEGER);
-  sexp->data.integer = i;
+Sexp *sexp_number(int i) {
+  MutableSexp *sexp = sexp_new(SEXP_NUMBER);
+  sexp->data.number = i;
   return sexp;
 }
 Sexp *sexp_clone(Sexp *sexp) {
@@ -97,8 +97,8 @@ Sexp *sexp_clone(Sexp *sexp) {
   } else if (sexp_is_string(sexp)) {
     return sexp_string(string_begin(sexp->data.string),
                        string_length(sexp->data.string));
-  } else if (sexp_is_integer(sexp)) {
-    return sexp_integer(sexp->data.integer);
+  } else if (sexp_is_number(sexp)) {
+    return sexp_number(sexp->data.number);
   } else {
     return sexp_nil();
   }
@@ -131,8 +131,8 @@ Bool sexp_is_symbol(Sexp *sexp) {
 Bool sexp_is_string(Sexp *sexp) {
   return SEXP_STRING == sexp_kind(sexp);
 }
-Bool sexp_is_integer(Sexp *sexp) {
-  return SEXP_INTEGER == sexp_kind(sexp);
+Bool sexp_is_number(Sexp *sexp) {
+  return SEXP_NUMBER == sexp_kind(sexp);
 }
 Bool sexp_is_list(Sexp *list) {
   if (sexp_is_nil(list)) {
@@ -168,9 +168,9 @@ const char *sexp_get_string(Sexp *sexp) {
     return NULL;
   }
 }
-int sexp_get_integer(Sexp *sexp) {
-  if (sexp_is_integer(sexp)) {
-    return sexp->data.integer;
+int sexp_get_number(Sexp *sexp) {
+  if (sexp_is_number(sexp)) {
+    return sexp->data.number;
   }
   return 0;
 }
