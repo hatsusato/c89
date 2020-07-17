@@ -20,8 +20,10 @@ const char *ast_show(int tag) {
 #include "enum/definition.def"
 #undef HANDLE
                         "unknown", "tag-end"};
-  assert(AST_TAG_BEGIN < tag && tag < AST_TAG_END);
-  return name[tag];
+  if (AST_TAG_BEGIN < tag && tag < AST_TAG_END) {
+    return name[tag];
+  }
+  return NULL;
 }
 int ast_to_int(const char *tag) {
   if (utility_str_eq(tag, "unknown")) {
