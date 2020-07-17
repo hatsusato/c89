@@ -10,6 +10,7 @@ Sexp *sexp_append(Sexp *, Sexp *);
 Sexp *sexp_symbol(const char *);
 Sexp *sexp_string(const char *, int);
 Sexp *sexp_integer(int);
+Sexp *sexp_clone(Sexp *);
 void sexp_delete(Sexp *);
 Bool sexp_is_nil(Sexp *);
 Bool sexp_is_pair(Sexp *);

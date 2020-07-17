@@ -150,8 +150,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       return pretty_convert_list(ast, indent, NULL);
     }
   } else {
-    const char *symbol = sexp_get_string(ast);
-    return symbol ? sexp_symbol(symbol) : sexp_nil();
+    return sexp_clone(ast);
   }
 }
 static void pretty_print_sexp(FILE *fp, Sexp *sexp) {

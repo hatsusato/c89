@@ -91,6 +91,18 @@ Sexp *sexp_integer(int i) {
   sexp->data.integer = i;
   return sexp;
 }
+Sexp *sexp_clone(Sexp *sexp) {
+  if (sexp_is_symbol(sexp)) {
+    return sexp_symbol(sexp->data.symbol);
+  } else if (sexp_is_string(sexp)) {
+    return sexp_string(string_begin(sexp->data.string),
+                       string_length(sexp->data.string));
+  } else if (sexp_is_integer(sexp)) {
+    return sexp_integer(sexp->data.integer);
+  } else {
+    return sexp_nil();
+  }
+}
 void sexp_delete(Sexp *sexp) {
   switch (sexp_kind(sexp)) {
   case SEXP_NIL:
