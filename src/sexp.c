@@ -1,5 +1,6 @@
 #include "sexp.h"
 
+#include "ast.h"
 #include "str.h"
 #include "utility.h"
 
@@ -164,6 +165,8 @@ const char *sexp_get_string(Sexp *sexp) {
     return string_begin(sexp->data.string);
   } else if (sexp_is_symbol(sexp)) {
     return sexp->data.symbol;
+  } else if (sexp_is_number(sexp)) {
+    return ast_show(sexp->data.number);
   } else {
     return NULL;
   }
