@@ -1,11 +1,12 @@
 #include "parser.h"
 
+#include "ast.h"
 #include "scanner.h"
 #include "sexp.h"
 #include "utility.h"
 
 Sexp *parser_symbol(const char *sym) {
-  return sexp_symbol(sym);
+  return sexp_number(ast_to_int(sym));
 }
 Sexp *parser_tag(const char *sym, Sexp *ast) {
   assert(sexp_is_list(ast));
