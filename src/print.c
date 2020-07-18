@@ -42,8 +42,9 @@ void print_verbatim(FILE *fp, const char *text, int leng) {
   }
 }
 void print_symbol(FILE *fp, Sexp *sexp) {
-  if (sexp_is_symbol(sexp) || sexp_is_string(sexp)) {
-    print_message(fp, sexp_get_string(sexp));
+  const char *s = sexp_get_string(sexp);
+  if (s) {
+    print_message(fp, s);
   }
 }
 static void print_sexp(FILE *fp, Sexp *sexp, int indent) {
