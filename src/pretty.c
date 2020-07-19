@@ -6,8 +6,8 @@
 #include "utility.h"
 
 static Sexp *pretty_convert(Sexp *, int);
-static Bool pretty_check_tag(Sexp *ast, const char *tag) {
-  return sexp_is_pair(ast) && sexp_eq(sexp_car(ast), tag);
+static Bool pretty_check_tag(Sexp *ast, AstTag tag) {
+  return sexp_is_pair(ast) && sexp_get_number(sexp_car(ast)) == (int)tag;
 }
 static Sexp *pretty_indent(int indent, Sexp *ast) {
   for (; 0 < indent; --indent) {
@@ -61,8 +61,8 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     case AST_INITIALIZER_LIST:
       return pretty_convert_list(ast, indent, ", ");
     case AST_UNARY_EXPRESSION:
-      if (2 == sexp_length(ast) && pretty_check_tag(ast, "sizeof") &&
-          !pretty_check_tag(sexp_cdr(ast), "primary-expression")) {
+      if (2 == sexp_length(ast) && pretty_check_tag(ast, AST_SIZEOF) &&
+          !pretty_check_tag(sexp_cdr(ast), AST_PRIMARY_EXPRESSION)) {
         delims[1] = " ";
       }
       return pretty_convert_join(ast, indent, delims);
@@ -114,9 +114,9 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       ast = pretty_convert_list(ast, indent, " ");
       return sexp_is_nil(ast) ? ast : sexp_snoc(ast, sexp_symbol(" "));
     case AST_LABELED_STATEMENT:
-      delims[1] = pretty_check_tag(ast, "case") ? " " : NULL;
+      delims[1] = pretty_check_tag(ast, AST_CASE) ? " " : NULL;
       ast = pretty_convert_join(ast, indent, delims);
-      indent = pretty_check_tag(sexp_car(ast), "identifier") ? 0 : indent - 1;
+      indent = pretty_check_tag(sexp_car(ast), AST_IDENTIFIER) ? 0 : indent - 1;
       return pretty_indent(indent, ast);
     case AST_COMPOUND_STATEMENT:
       delims[0] = " ";
@@ -127,17 +127,18 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     case AST_ITERATION_STATEMENT:
-      if (pretty_check_tag(ast, "while")) {
+      if (pretty_check_tag(ast, AST_WHILE)) {
         delims[1] = " ";
-      } else if (pretty_check_tag(ast, "do")) {
+      } else if (pretty_check_tag(ast, AST_DO)) {
         delims[2] = delims[3] = " ";
-      } else if (pretty_check_tag(ast, "for")) {
+      } else if (pretty_check_tag(ast, AST_FOR)) {
         delims[1] = delims[4] = delims[6] = " ";
       }
       ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     case AST_JUMP_STATEMENT:
-      if (pretty_check_tag(ast, "goto") || pretty_check_tag(ast, "return")) {
+      if (pretty_check_tag(ast, AST_GOTO) ||
+          pretty_check_tag(ast, AST_RETURN)) {
         delims[1] = " ";
       }
       ast = pretty_convert_join(ast, indent, delims);
