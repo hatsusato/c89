@@ -40,6 +40,9 @@ Sexp *parser_snoc(Sexp *xs, Sexp *x) {
 void parser_register(yyscan_t scanner, Sexp *ast) {
   table_register(get_table(scanner), ast);
 }
+Bool parser_query(yyscan_t scanner, const char *symbol) {
+  return table_query(get_table(scanner), symbol);
+}
 void parser_push(yyscan_t scanner) {
   table_push(get_table(scanner));
 }

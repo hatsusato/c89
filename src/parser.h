@@ -41,6 +41,7 @@ Sexp *parser_nil(void);
 Sexp *parser_cons(Sexp *, Sexp *);
 Sexp *parser_snoc(Sexp *, Sexp *);
 void parser_register(yyscan_t, Sexp *);
+Bool parser_query(yyscan_t, const char *);
 void parser_push(yyscan_t);
 void parser_pop(yyscan_t);
 void parser_finish(yyscan_t, Sexp *);

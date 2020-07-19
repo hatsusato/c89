@@ -2,7 +2,7 @@
 #define yyHEADER_H
 #include "parser.tab.h"
 #define EMIT_TOKEN(token) do {return token;} while(0)
-#include "scanner.h"
+#include "parser.h"
 %}
 
 %option noinput
@@ -151,7 +151,7 @@ s-char                  {character-set}|{single-quote}|{escape-sequence}
 "..."   { EMIT_TOKEN(TOKEN_ELLIPSIS);      }
 
 {identifier} {
-  if (scanner_query(yyscanner, yytext)) {
+  if (parser_query(yyscanner, yytext)) {
     EMIT_TOKEN(TOKEN_TYPEDEF_IDENTIFIER);
   } else {
     EMIT_TOKEN(TOKEN_IDENTIFIER);
