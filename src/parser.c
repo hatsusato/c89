@@ -1,6 +1,5 @@
 #include "parser.h"
 
-#include "parser.tab.h"
 #include "result.h"
 #include "scanner.h"
 #include "sexp.h"
@@ -39,7 +38,5 @@ void parser_pop(yyscan_t scanner) {
   table_pop(scanner_table(scanner));
 }
 void parser_finish(yyscan_t scanner, Sexp *ast) {
-  Result *result = yyget_extra(scanner);
-  assert(!result_get_sexp(result));
-  result_set_sexp(result, ast);
+  scanner_finish(scanner, ast);
 }
