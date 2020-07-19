@@ -44,3 +44,7 @@ void scanner_register(yyscan_t scanner, Sexp *ast) {
 Bool scanner_query(yyscan_t scanner, const char *symbol) {
   return table_query(get_table(scanner), symbol);
 }
+Table *scanner_table(yyscan_t scanner) {
+  Result *result = yyget_extra(scanner);
+  return result_get_table(result);
+}

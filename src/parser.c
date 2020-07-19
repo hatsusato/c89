@@ -8,11 +8,6 @@
 #include "table.h"
 #include "utility.h"
 
-static Table *get_table(yyscan_t scanner) {
-  Result *result = yyget_extra(scanner);
-  return result_get_table(result);
-}
-
 void yyerror(yyscan_t scanner, const char *msg) {
   FILE *fp = stderr;
   print_message(fp, "yyerror: ");
@@ -38,16 +33,16 @@ Sexp *parser_snoc(Sexp *xs, Sexp *x) {
   return sexp_snoc(xs, x);
 }
 void parser_register(yyscan_t scanner, Sexp *ast) {
-  table_register(get_table(scanner), ast);
+  table_register(scanner_table(scanner), ast);
 }
 Bool parser_query(yyscan_t scanner, const char *symbol) {
-  return table_query(get_table(scanner), symbol);
+  return table_query(scanner_table(scanner), symbol);
 }
 void parser_push(yyscan_t scanner) {
-  table_push(get_table(scanner));
+  table_push(scanner_table(scanner));
 }
 void parser_pop(yyscan_t scanner) {
-  table_pop(get_table(scanner));
+  table_pop(scanner_table(scanner));
 }
 void parser_finish(yyscan_t scanner, Sexp *ast) {
   Result *result = yyget_extra(scanner);
