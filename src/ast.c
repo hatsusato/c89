@@ -2,7 +2,7 @@
 
 #include "utility.h"
 
-const char *ast_show(int tag) {
+const char *ast_show(AstTag tag) {
   const char *name[] = {"tag-begin",
 #define HANDLE(name, str) str,
 #include "enum/keyword.def"
