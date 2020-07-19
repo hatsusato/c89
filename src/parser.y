@@ -518,7 +518,7 @@ constant-expression
 
 /* 6.5 Declarations */
 declaration
-: declaration.tag {$$ = PARSER_TAG(DECLARATION, $1); scanner_register(scanner, $$);}
+: declaration.tag {$$ = PARSER_TAG(DECLARATION, $1); PARSER_REGISTER(scanner, $$);}
 ;
 declaration.tag
 : declaration-specifiers init-declarator-list.opt semicolon {$$ = PARSER_LIST3($1, $2, $3);}
@@ -767,10 +767,10 @@ labeled-statement.tag
 | default colon statement {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 new-scope
-: %empty {scanner_push_scope(scanner);}
+: %empty {PARSER_PUSH(scanner);}
 ;
 compound-statement
-: new-scope compound-statement.tag {$$ = PARSER_TAG(COMPOUND_STATEMENT, $2); scanner_pop_scope(scanner);}
+: new-scope compound-statement.tag {$$ = PARSER_TAG(COMPOUND_STATEMENT, $2); PARSER_POP(scanner);}
 ;
 compound-statement.tag
 : left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
@@ -825,7 +825,7 @@ jump-statement.tag
 
 /* 6.7 External definitions */
 top
-: translation-unit {scanner_finish(scanner, $1);}
+: translation-unit {PARSER_FINISH(scanner, $1);}
 ;
 translation-unit
 : external-declaration {$$ = PARSER_ATOM(TRANSLATION_UNIT, $1);}
