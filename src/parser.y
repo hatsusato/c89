@@ -140,163 +140,163 @@ string-constant
 | string-constant string-literal {$$ = PARSER_SNOC($1, $2);}
 ;
 
-auto: "auto" {$$ = PARSER_SYMBOL(auto);}
+auto: "auto" {$$ = PARSER_SYMBOL(AUTO);}
 ;
-break: "break" {$$ = PARSER_SYMBOL(break);}
+break: "break" {$$ = PARSER_SYMBOL(BREAK);}
 ;
-case: "case" {$$ = PARSER_SYMBOL(case);}
+case: "case" {$$ = PARSER_SYMBOL(CASE);}
 ;
-char: "char" {$$ = PARSER_SYMBOL(char);}
+char: "char" {$$ = PARSER_SYMBOL(CHAR);}
 ;
-const: "const" {$$ = PARSER_SYMBOL(const);}
+const: "const" {$$ = PARSER_SYMBOL(CONST);}
 ;
-continue: "continue" {$$ = PARSER_SYMBOL(continue);}
+continue: "continue" {$$ = PARSER_SYMBOL(CONTINUE);}
 ;
-default: "default" {$$ = PARSER_SYMBOL(default);}
+default: "default" {$$ = PARSER_SYMBOL(DEFAULT);}
 ;
-do: "do" {$$ = PARSER_SYMBOL(do);}
+do: "do" {$$ = PARSER_SYMBOL(DO);}
 ;
-double: "double" {$$ = PARSER_SYMBOL(double);}
+double: "double" {$$ = PARSER_SYMBOL(DOUBLE);}
 ;
-else: "else" {$$ = PARSER_SYMBOL(else);}
+else: "else" {$$ = PARSER_SYMBOL(ELSE);}
 ;
-enum: "enum" {$$ = PARSER_SYMBOL(enum);}
+enum: "enum" {$$ = PARSER_SYMBOL(ENUM);}
 ;
-extern: "extern" {$$ = PARSER_SYMBOL(extern);}
+extern: "extern" {$$ = PARSER_SYMBOL(EXTERN);}
 ;
-float: "float" {$$ = PARSER_SYMBOL(float);}
+float: "float" {$$ = PARSER_SYMBOL(FLOAT);}
 ;
-for: "for" {$$ = PARSER_SYMBOL(for);}
+for: "for" {$$ = PARSER_SYMBOL(FOR);}
 ;
-goto: "goto" {$$ = PARSER_SYMBOL(goto);}
+goto: "goto" {$$ = PARSER_SYMBOL(GOTO);}
 ;
-if: "if" {$$ = PARSER_SYMBOL(if);}
+if: "if" {$$ = PARSER_SYMBOL(IF);}
 ;
-int: "int" {$$ = PARSER_SYMBOL(int);}
+int: "int" {$$ = PARSER_SYMBOL(INT);}
 ;
-long: "long" {$$ = PARSER_SYMBOL(long);}
+long: "long" {$$ = PARSER_SYMBOL(LONG);}
 ;
-register: "register" {$$ = PARSER_SYMBOL(register);}
+register: "register" {$$ = PARSER_SYMBOL(REGISTER);}
 ;
-return: "return" {$$ = PARSER_SYMBOL(return);}
+return: "return" {$$ = PARSER_SYMBOL(RETURN);}
 ;
-short: "short" {$$ = PARSER_SYMBOL(short);}
+short: "short" {$$ = PARSER_SYMBOL(SHORT);}
 ;
-signed: "signed" {$$ = PARSER_SYMBOL(signed);}
+signed: "signed" {$$ = PARSER_SYMBOL(SIGNED);}
 ;
-sizeof: "sizeof" {$$ = PARSER_SYMBOL(sizeof);}
+sizeof: "sizeof" {$$ = PARSER_SYMBOL(SIZEOF);}
 ;
-static: "static" {$$ = PARSER_SYMBOL(static);}
+static: "static" {$$ = PARSER_SYMBOL(STATIC);}
 ;
-struct: "struct" {$$ = PARSER_SYMBOL(struct);}
+struct: "struct" {$$ = PARSER_SYMBOL(STRUCT);}
 ;
-switch: "switch" {$$ = PARSER_SYMBOL(switch);}
+switch: "switch" {$$ = PARSER_SYMBOL(SWITCH);}
 ;
-typedef: "typedef" {$$ = PARSER_SYMBOL(typedef);}
+typedef: "typedef" {$$ = PARSER_SYMBOL(TYPEDEF);}
 ;
-union: "union" {$$ = PARSER_SYMBOL(union);}
+union: "union" {$$ = PARSER_SYMBOL(UNION);}
 ;
-unsigned: "unsigned" {$$ = PARSER_SYMBOL(unsigned);}
+unsigned: "unsigned" {$$ = PARSER_SYMBOL(UNSIGNED);}
 ;
-void: "void" {$$ = PARSER_SYMBOL(void);}
+void: "void" {$$ = PARSER_SYMBOL(VOID);}
 ;
-volatile: "volatile" {$$ = PARSER_SYMBOL(volatile);}
+volatile: "volatile" {$$ = PARSER_SYMBOL(VOLATILE);}
 ;
-while: "while" {$$ = PARSER_SYMBOL(while);}
+while: "while" {$$ = PARSER_SYMBOL(WHILE);}
 ;
 
-period: "." {$$ = parser_symbol(".");}
+period: "." {$$ = PARSER_SYMBOL(PERIOD);}
 ;
-arrow: "->" {$$ = parser_symbol("->");}
+arrow: "->" {$$ = PARSER_SYMBOL(ARROW);}
 ;
-increment: "++" {$$ = parser_symbol("++");}
+increment: "++" {$$ = PARSER_SYMBOL(INCREMENT);}
 ;
-decrement: "--" {$$ = parser_symbol("--");}
+decrement: "--" {$$ = PARSER_SYMBOL(DECREMENT);}
 ;
-ampersand: "&" {$$ = parser_symbol("&");}
+ampersand: "&" {$$ = PARSER_SYMBOL(AMPERSAND);}
 ;
-asterisk: "*" {$$ = parser_symbol("*");}
+asterisk: "*" {$$ = PARSER_SYMBOL(ASTERISK);}
 ;
-plus: "+" {$$ = parser_symbol("+");}
+plus: "+" {$$ = PARSER_SYMBOL(PLUS);}
 ;
-minus: "-" {$$ = parser_symbol("-");}
+minus: "-" {$$ = PARSER_SYMBOL(MINUS);}
 ;
-tilde: "~" {$$ = parser_symbol("~");}
+tilde: "~" {$$ = PARSER_SYMBOL(TILDE);}
 ;
-exclamation: "!" {$$ = parser_symbol("!");}
+exclamation: "!" {$$ = PARSER_SYMBOL(EXCLAMATION);}
 ;
-slash: "/" {$$ = parser_symbol("/");}
+slash: "/" {$$ = PARSER_SYMBOL(SLASH);}
 ;
-percent: "%" {$$ = parser_symbol("%");}
+percent: "%" {$$ = PARSER_SYMBOL(PERCENT);}
 ;
-left-shift: "<<" {$$ = parser_symbol("<<");}
+left-shift: "<<" {$$ = PARSER_SYMBOL(LEFT_SHIFT);}
 ;
-right-shift: ">>" {$$ = parser_symbol(">>");}
+right-shift: ">>" {$$ = PARSER_SYMBOL(RIGHT_SHIFT);}
 ;
-less-than: "<" {$$ = parser_symbol("<");}
+less-than: "<" {$$ = PARSER_SYMBOL(LESS_THAN);}
 ;
-greater-than: ">" {$$ = parser_symbol(">");}
+greater-than: ">" {$$ = PARSER_SYMBOL(GREATER_THAN);}
 ;
-less-equal: "<=" {$$ = parser_symbol("<=");}
+less-equal: "<=" {$$ = PARSER_SYMBOL(LESS_EQUAL);}
 ;
-greater-equal: ">=" {$$ = parser_symbol(">=");}
+greater-equal: ">=" {$$ = PARSER_SYMBOL(GREATER_EQUAL);}
 ;
-equal: "==" {$$ = parser_symbol("==");}
+equal: "==" {$$ = PARSER_SYMBOL(EQUAL);}
 ;
-not-equal: "!=" {$$ = parser_symbol("!=");}
+not-equal: "!=" {$$ = PARSER_SYMBOL(NOT_EQUAL);}
 ;
-caret: "^" {$$ = parser_symbol("^");}
+caret: "^" {$$ = PARSER_SYMBOL(CARET);}
 ;
-bar: "|" {$$ = parser_symbol("|");}
+bar: "|" {$$ = PARSER_SYMBOL(BAR);}
 ;
-and: "&&" {$$ = parser_symbol("&&");}
+and: "&&" {$$ = PARSER_SYMBOL(AND);}
 ;
-or: "||" {$$ = parser_symbol("||");}
+or: "||" {$$ = PARSER_SYMBOL(OR);}
 ;
-question: "?" {$$ = parser_symbol("?");}
+question: "?" {$$ = PARSER_SYMBOL(QUESTION);}
 ;
-assign: "=" {$$ = parser_symbol("=");}
+assign: "=" {$$ = PARSER_SYMBOL(ASSIGN);}
 ;
-asterisk-assign: "*=" {$$ = parser_symbol("*=");}
+asterisk-assign: "*=" {$$ = PARSER_SYMBOL(ASTERISK_ASSIGN);}
 ;
-slash-assign: "/=" {$$ = parser_symbol("/=");}
+slash-assign: "/=" {$$ = PARSER_SYMBOL(SLASH_ASSIGN);}
 ;
-percent-assign: "%=" {$$ = parser_symbol("%=");}
+percent-assign: "%=" {$$ = PARSER_SYMBOL(PERCENT_ASSIGN);}
 ;
-plus-assign: "+=" {$$ = parser_symbol("+=");}
+plus-assign: "+=" {$$ = PARSER_SYMBOL(PLUS_ASSIGN);}
 ;
-minus-assign: "-=" {$$ = parser_symbol("-=");}
+minus-assign: "-=" {$$ = PARSER_SYMBOL(MINUS_ASSIGN);}
 ;
-left-shift-assign: "<<=" {$$ = parser_symbol("<<=");}
+left-shift-assign: "<<=" {$$ = PARSER_SYMBOL(LEFT_SHIFT_ASSIGN);}
 ;
-right-shift-assign: ">>=" {$$ = parser_symbol(">>=");}
+right-shift-assign: ">>=" {$$ = PARSER_SYMBOL(RIGHT_SHIFT_ASSIGN);}
 ;
-ampersand-assign: "&=" {$$ = parser_symbol("&=");}
+ampersand-assign: "&=" {$$ = PARSER_SYMBOL(AMPERSAND_ASSIGN);}
 ;
-caret-assign: "^=" {$$ = parser_symbol("^=");}
+caret-assign: "^=" {$$ = PARSER_SYMBOL(CARET_ASSIGN);}
 ;
-bar-assign: "|=" {$$ = parser_symbol("|=");}
+bar-assign: "|=" {$$ = PARSER_SYMBOL(BAR_ASSIGN);}
 ;
 
-left-bracket: "[" {$$ = parser_symbol("[");}
+left-bracket: "[" {$$ = PARSER_SYMBOL(LEFT_BRACKET);}
 ;
-right-bracket: "]" {$$ = parser_symbol("]");}
+right-bracket: "]" {$$ = PARSER_SYMBOL(RIGHT_BRACKET);}
 ;
-left-paren: "(" {$$ = parser_symbol("(");}
+left-paren: "(" {$$ = PARSER_SYMBOL(LEFT_PAREN);}
 ;
-right-paren: ")" {$$ = parser_symbol(")");}
+right-paren: ")" {$$ = PARSER_SYMBOL(RIGHT_PAREN);}
 ;
-left-brace: "{" {$$ = parser_symbol("{");}
+left-brace: "{" {$$ = PARSER_SYMBOL(LEFT_BRACE);}
 ;
-right-brace: "}" {$$ = parser_symbol("}");}
+right-brace: "}" {$$ = PARSER_SYMBOL(RIGHT_BRACE);}
 ;
-comma: "," {$$ = parser_symbol(",");}
+comma: "," {$$ = PARSER_SYMBOL(COMMA);}
 ;
-colon: ":" {$$ = parser_symbol(":");}
+colon: ":" {$$ = PARSER_SYMBOL(COLON);}
 ;
-semicolon: ";" {$$ = parser_symbol(";");}
+semicolon: ";" {$$ = PARSER_SYMBOL(SEMICOLON);}
 ;
-ellipsis: "..." {$$ = parser_symbol("...");}
+ellipsis: "..." {$$ = PARSER_SYMBOL(ELLIPSIS);}
 ;
 
 /* 6.3 Expressions */

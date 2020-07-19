@@ -5,8 +5,8 @@
 #include "sexp.h"
 #include "utility.h"
 
-Sexp *parser_symbol(const char *sym) {
-  return sexp_number(ast_to_int(sym));
+Sexp *parser_symbol(AstTag tag) {
+  return sexp_number(tag);
 }
 Sexp *parser_tag(AstTag tag, Sexp *ast) {
   assert(sexp_is_list(ast));
