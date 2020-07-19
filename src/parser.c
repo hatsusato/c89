@@ -8,10 +8,6 @@
 Sexp *parser_symbol(AstTag tag) {
   return sexp_number(tag);
 }
-Sexp *parser_tag(AstTag tag, Sexp *ast) {
-  assert(sexp_is_list(ast));
-  return PARSER_CONS(sexp_number(tag), ast);
-}
 Sexp *parser_token(yyscan_t scanner) {
   return scanner_token(scanner);
 }

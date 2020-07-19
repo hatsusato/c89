@@ -5,7 +5,7 @@
 #include "typedef.h"
 
 #define PARSER_SYMBOL(tag) parser_symbol(AST_##tag)
-#define PARSER_TAG(tag, ast) parser_tag(AST_##tag, ast)
+#define PARSER_TAG(tag, ast) parser_cons(PARSER_SYMBOL(tag), ast)
 #define PARSER_TOKEN(scanner) parser_token(scanner)
 #define PARSER_NIL(tag) PARSER_TAG(tag, PARSER_LIST0())
 #define PARSER_ATOM(sym, atom) PARSER_TAG(sym, PARSER_LIST1(atom))
@@ -31,7 +31,6 @@
               PARSER_LIST8(ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8))
 
 Sexp *parser_symbol(AstTag);
-Sexp *parser_tag(AstTag, Sexp *);
 Sexp *parser_token(yyscan_t);
 Sexp *parser_nil(void);
 Sexp *parser_cons(Sexp *, Sexp *);
