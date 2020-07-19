@@ -1,6 +1,7 @@
 #include "scanner.h"
 
 #include "parser.tab.h"
+#include "print.h"
 #include "result.h"
 #include "sexp.h"
 #include "table.h"
@@ -47,4 +48,12 @@ Bool scanner_query(yyscan_t scanner, const char *symbol) {
 Table *scanner_table(yyscan_t scanner) {
   Result *result = yyget_extra(scanner);
   return result_get_table(result);
+}
+void scanner_print(yyscan_t scanner, const char *msg) {
+  FILE *fp = stderr;
+  print_message(fp, "yyerror: ");
+  print_message(fp, msg);
+  print_message(fp, ": ");
+  print_verbatim(fp, yyget_text(scanner), yyget_leng(scanner));
+  print_newline(fp);
 }

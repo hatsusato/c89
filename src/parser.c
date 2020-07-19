@@ -1,7 +1,6 @@
 #include "parser.h"
 
 #include "parser.tab.h"
-#include "print.h"
 #include "result.h"
 #include "scanner.h"
 #include "sexp.h"
@@ -9,12 +8,7 @@
 #include "utility.h"
 
 void yyerror(yyscan_t scanner, const char *msg) {
-  FILE *fp = stderr;
-  print_message(fp, "yyerror: ");
-  print_message(fp, msg);
-  print_message(fp, ": ");
-  print_verbatim(fp, yyget_text(scanner), yyget_leng(scanner));
-  print_newline(fp);
+  scanner_print(scanner, msg);
 }
 
 Sexp *parser_symbol(AstTag tag) {
