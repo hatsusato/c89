@@ -12,8 +12,8 @@ Sexp *parser_tag(const char *sym, Sexp *ast) {
   assert(sexp_is_list(ast));
   return PARSER_CONS(parser_symbol(sym), ast);
 }
-Sexp *parser_token(const char *sym, yyscan_t scanner) {
-  return PARSER_LIST2(parser_symbol(sym), scanner_token(scanner));
+Sexp *parser_token(AstTag tag, yyscan_t scanner) {
+  return PARSER_LIST2(sexp_number(tag), scanner_token(scanner));
 }
 Sexp *parser_nil(void) {
   return sexp_nil();

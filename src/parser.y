@@ -115,22 +115,22 @@ identifier.opt
 | identifier
 ;
 identifier
-: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(identifier, scanner);}
+: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(IDENTIFIER, scanner);}
 ;
 typedef-identifier
-: TOKEN_TYPEDEF_IDENTIFIER {$$ = PARSER_TOKEN(typedef-identifier, scanner);}
+: TOKEN_TYPEDEF_IDENTIFIER {$$ = PARSER_TOKEN(TYPEDEF_IDENTIFIER, scanner);}
 ;
 floating-constant
-: TOKEN_FLOATING_CONSTANT {$$ = PARSER_TOKEN(floating-constant, scanner);}
+: TOKEN_FLOATING_CONSTANT {$$ = PARSER_TOKEN(FLOATING_CONSTANT, scanner);}
 ;
 integer-constant
-: TOKEN_INTEGER_CONSTANT {$$ = PARSER_TOKEN(integer-constant, scanner);}
+: TOKEN_INTEGER_CONSTANT {$$ = PARSER_TOKEN(INTEGER_CONSTANT, scanner);}
 ;
 enumeration-constant
-: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(enumeration-constant, scanner);}
+: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(ENUMERATION_CONSTANT, scanner);}
 ;
 character-constant
-: TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TOKEN(character-constant, scanner);}
+: TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TOKEN(CHARACTER_CONSTANT, scanner);}
 ;
 string-literal
 : TOKEN_STRING_LITERAL {$$ = scanner_token(scanner);}

@@ -1,11 +1,12 @@
 #ifndef INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD
 #define INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD
 
+#include "ast.h"
 #include "typedef.h"
 
 #define PARSER_SYMBOL(sym) parser_symbol(#sym)
 #define PARSER_TAG(sym, ast) parser_tag(#sym, ast)
-#define PARSER_TOKEN(sym, scanner) parser_token(#sym, scanner)
+#define PARSER_TOKEN(tag, scanner) parser_token(AST_##tag, scanner)
 #define PARSER_NIL(sym) PARSER_LIST1(PARSER_SYMBOL(sym))
 #define PARSER_ATOM(sym, atom) PARSER_LIST2(PARSER_SYMBOL(sym), atom)
 #define PARSER_SNOC(list, last) parser_snoc(list, last)
@@ -31,7 +32,7 @@
 
 Sexp *parser_symbol(const char *);
 Sexp *parser_tag(const char *, Sexp *);
-Sexp *parser_token(const char *, yyscan_t);
+Sexp *parser_token(AstTag, yyscan_t);
 Sexp *parser_nil(void);
 Sexp *parser_cons(Sexp *, Sexp *);
 Sexp *parser_snoc(Sexp *, Sexp *);
