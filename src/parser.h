@@ -8,7 +8,7 @@
 #define PARSER_TAG(tag, ast) parser_tag(AST_##tag, ast)
 #define PARSER_TOKEN(tag, scanner) parser_token(AST_##tag, scanner)
 #define PARSER_NIL(tag) PARSER_TAG(tag, PARSER_LIST0())
-#define PARSER_ATOM(sym, atom) PARSER_LIST2(PARSER_SYMBOL(sym), atom)
+#define PARSER_ATOM(sym, atom) PARSER_TAG(sym, PARSER_LIST1(atom))
 #define PARSER_SNOC(list, last) parser_snoc(list, last)
 #define PARSER_CONS(car, cdr) parser_cons(car, cdr);
 #define PARSER_LIST0() parser_nil()
