@@ -109,55 +109,6 @@
 
 %start top
 %%
-/* 6.1 Lexical elements */
-identifier.opt
-: %empty {$$ = PARSER_LIST0();}
-| identifier
-;
-identifier
-: identifier.tag {$$ = PARSER_ATOM(IDENTIFIER, $1);}
-;
-identifier.tag
-: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
-;
-typedef-identifier
-: typedef-identifier.tag {$$ = PARSER_ATOM(TYPEDEF_IDENTIFIER, $1);}
-;
-typedef-identifier.tag
-: TOKEN_TYPEDEF_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
-;
-floating-constant
-: floating-constant.tag {$$ = PARSER_ATOM(FLOATING_CONSTANT, $1);}
-;
-floating-constant.tag
-: TOKEN_FLOATING_CONSTANT {$$ = PARSER_TOKEN(scanner);}
-;
-integer-constant
-: integer-constant.tag {$$ = PARSER_ATOM(INTEGER_CONSTANT, $1);}
-;
-integer-constant.tag
-: TOKEN_INTEGER_CONSTANT {$$ = PARSER_TOKEN(scanner);}
-;
-enumeration-constant
-: enumeration-constant.tag {$$ = PARSER_ATOM(ENUMERATION_CONSTANT, $1);}
-;
-enumeration-constant.tag
-: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
-;
-character-constant
-: character-constant.tag {$$ = PARSER_ATOM(CHARACTER_CONSTANT, $1);}
-;
-character-constant.tag
-: TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TOKEN(scanner);}
-;
-string-literal
-: TOKEN_STRING_LITERAL {$$ = PARSER_TOKEN(scanner);}
-;
-string-constant
-: string-literal {$$ = PARSER_ATOM(STRING_LITERAL, $1);}
-| string-constant string-literal {$$ = PARSER_SNOC($1, $2);}
-;
-
 auto: "auto" {$$ = PARSER_SYMBOL(AUTO);}
 ;
 break: "break" {$$ = PARSER_SYMBOL(BREAK);}
@@ -315,6 +266,55 @@ colon: ":" {$$ = PARSER_SYMBOL(COLON);}
 semicolon: ";" {$$ = PARSER_SYMBOL(SEMICOLON);}
 ;
 ellipsis: "..." {$$ = PARSER_SYMBOL(ELLIPSIS);}
+;
+
+/* 6.1 Lexical elements */
+identifier.opt
+: %empty {$$ = PARSER_LIST0();}
+| identifier
+;
+identifier
+: identifier.tag {$$ = PARSER_ATOM(IDENTIFIER, $1);}
+;
+identifier.tag
+: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
+;
+typedef-identifier
+: typedef-identifier.tag {$$ = PARSER_ATOM(TYPEDEF_IDENTIFIER, $1);}
+;
+typedef-identifier.tag
+: TOKEN_TYPEDEF_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
+;
+floating-constant
+: floating-constant.tag {$$ = PARSER_ATOM(FLOATING_CONSTANT, $1);}
+;
+floating-constant.tag
+: TOKEN_FLOATING_CONSTANT {$$ = PARSER_TOKEN(scanner);}
+;
+integer-constant
+: integer-constant.tag {$$ = PARSER_ATOM(INTEGER_CONSTANT, $1);}
+;
+integer-constant.tag
+: TOKEN_INTEGER_CONSTANT {$$ = PARSER_TOKEN(scanner);}
+;
+enumeration-constant
+: enumeration-constant.tag {$$ = PARSER_ATOM(ENUMERATION_CONSTANT, $1);}
+;
+enumeration-constant.tag
+: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
+;
+character-constant
+: character-constant.tag {$$ = PARSER_ATOM(CHARACTER_CONSTANT, $1);}
+;
+character-constant.tag
+: TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TOKEN(scanner);}
+;
+string-literal
+: TOKEN_STRING_LITERAL {$$ = PARSER_TOKEN(scanner);}
+;
+string-constant
+: string-literal {$$ = PARSER_ATOM(STRING_LITERAL, $1);}
+| string-constant string-literal {$$ = PARSER_SNOC($1, $2);}
 ;
 
 /* 6.3 Expressions */
