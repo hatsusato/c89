@@ -8,10 +8,6 @@ void scanner_delete(yyscan_t);
 int scanner_parse(yyscan_t);
 void scanner_finish(yyscan_t, Sexp *);
 Sexp *scanner_token(yyscan_t);
-void scanner_push_scope(yyscan_t);
-void scanner_pop_scope(yyscan_t);
-void scanner_register(yyscan_t, Sexp *);
-Bool scanner_query(yyscan_t, const char *);
 Table *scanner_table(yyscan_t);
 void scanner_print(yyscan_t, const char *);
 

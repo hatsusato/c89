@@ -2,7 +2,6 @@
 #define yyHEADER_H
 #include "parser.tab.h"
 #define EMIT_TOKEN(token) do {return token;} while(0)
-#include "parser.h"
 %}
 
 %option noinput

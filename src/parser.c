@@ -1,6 +1,5 @@
 #include "parser.h"
 
-#include "result.h"
 #include "scanner.h"
 #include "sexp.h"
 #include "table.h"
