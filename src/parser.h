@@ -34,6 +34,7 @@
 #define PARSER_POP(scanner) parser_pop(scanner)
 #define PARSER_FINISH(scanner, ast) parser_finish(scanner, ast)
 
+void yyerror(yyscan_t, const char *);
 Sexp *parser_symbol(AstTag);
 Sexp *parser_token(yyscan_t);
 Sexp *parser_nil(void);

@@ -3,7 +3,6 @@
 
 #include "typedef.h"
 
-void yyerror(yyscan_t, const char *);
 yyscan_t scanner_new(Result *);
 void scanner_delete(yyscan_t);
 int scanner_parse(yyscan_t);
