@@ -12,8 +12,8 @@ Sexp *parser_tag(AstTag tag, Sexp *ast) {
   assert(sexp_is_list(ast));
   return PARSER_CONS(sexp_number(tag), ast);
 }
-Sexp *parser_token(AstTag tag, yyscan_t scanner) {
-  return PARSER_LIST2(sexp_number(tag), scanner_token(scanner));
+Sexp *parser_token(yyscan_t scanner) {
+  return scanner_token(scanner);
 }
 Sexp *parser_nil(void) {
   return sexp_nil();

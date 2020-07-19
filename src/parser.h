@@ -6,7 +6,7 @@
 
 #define PARSER_SYMBOL(tag) parser_symbol(AST_##tag)
 #define PARSER_TAG(tag, ast) parser_tag(AST_##tag, ast)
-#define PARSER_TOKEN(tag, scanner) parser_token(AST_##tag, scanner)
+#define PARSER_TOKEN(scanner) parser_token(scanner)
 #define PARSER_NIL(tag) PARSER_TAG(tag, PARSER_LIST0())
 #define PARSER_ATOM(sym, atom) PARSER_TAG(sym, PARSER_LIST1(atom))
 #define PARSER_SNOC(list, last) parser_snoc(list, last)
@@ -32,7 +32,7 @@
 
 Sexp *parser_symbol(AstTag);
 Sexp *parser_tag(AstTag, Sexp *);
-Sexp *parser_token(AstTag, yyscan_t);
+Sexp *parser_token(yyscan_t);
 Sexp *parser_nil(void);
 Sexp *parser_cons(Sexp *, Sexp *);
 Sexp *parser_snoc(Sexp *, Sexp *);
