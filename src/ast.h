@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_A84E9F8A_C152_4807_9181_80EE16B4DFA5
 
 typedef enum {
+  AST_NULL,
   AST_TAG_BEGIN,
 #define HANDLE(name, str) name,
 #include "enum/keyword.def"
