@@ -41,11 +41,17 @@ static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent,
   }
   return sexp_snoc(pretty, ast);
 }
-static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *delims[]) {
+static Sexp *pretty_convert_join(Sexp *ast, int indent, AstTag delims[]) {
   Sexp *pretty = sexp_nil();
   int i = 0;
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    pretty = pretty_snoc(pretty, ast, indent, delims[i++]);
+    Sexp *car = sexp_car(ast);
+    if (!sexp_is_nil(car)) {
+      car = pretty_convert(car, indent);
+      car = sexp_cons(car, sexp_nil());
+      car = pretty_prefix(car, indent, delims[i++]);
+      pretty = sexp_snoc(pretty, car);
+    }
   }
   return pretty;
 }
@@ -65,8 +71,12 @@ static Sexp *pretty_convert_list(Sexp *ast, int indent, AstTag delim) {
   return pretty;
 }
 static Sexp *pretty_convert(Sexp *ast, int indent) {
+  AstTag delims[10];
+  int i;
+  for (i = 0; i < 10; ++i) {
+    delims[i] = AST_NULL;
+  }
   if (sexp_is_pair(ast)) {
-    const char *delims[10] = {0};
     int tag = sexp_get_number(sexp_car(ast));
     ast = sexp_cdr(ast);
     switch (tag) {
@@ -79,7 +89,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     case AST_UNARY_EXPRESSION:
       if (2 == sexp_length(ast) && check_tag(ast, AST_SIZEOF) &&
           !check_tag(sexp_cdr(ast), AST_PRIMARY_EXPRESSION)) {
-        delims[1] = " ";
+        delims[1] = AST_SPACE;
       }
       return pretty_convert_join(ast, indent, delims);
     case AST_MULTIPLICATIVE_EXPRESSION:
@@ -113,53 +123,53 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       ast = pretty_convert_list(ast, indent, AST_SPACE);
       return pretty_prefix(ast, indent, AST_SPACE);
     case AST_STRUCT_OR_UNION_SPECIFIER:
-      delims[1] = delims[2] = " ";
-      delims[4] = "\n";
+      delims[1] = delims[2] = AST_SPACE;
+      delims[4] = AST_NEWLINE;
       return pretty_convert_join(ast, indent, delims);
     case AST_STRUCT_DECLARATION_LIST:
     case AST_DECLARATION_LIST:
     case AST_STATEMENT_LIST:
       return pretty_convert_list(ast, indent + 1, AST_NULL);
     case AST_STRUCT_DECLARATOR:
-      delims[0] = delims[1] = delims[2] = " ";
+      delims[0] = delims[1] = delims[2] = AST_SPACE;
       return pretty_convert_join(ast, indent, delims);
     case AST_ENUM_SPECIFIER:
-      delims[1] = delims[2] = delims[4] = " ";
+      delims[1] = delims[2] = delims[4] = AST_SPACE;
       return pretty_convert_join(ast, indent, delims);
     case AST_TYPE_QUALIFIER_LIST:
       ast = pretty_convert_list(ast, indent, AST_SPACE);
       return sexp_is_nil(ast) ? ast : sexp_snoc(ast, sexp_symbol(" "));
     case AST_LABELED_STATEMENT:
-      delims[1] = check_tag(ast, AST_CASE) ? " " : NULL;
+      delims[1] = check_tag(ast, AST_CASE) ? AST_SPACE : AST_NULL;
       ast = pretty_convert_join(ast, indent, delims);
       indent = check_tag(sexp_car(ast), AST_IDENTIFIER) ? 0 : indent - 1;
       return pretty_indent(indent, ast);
     case AST_COMPOUND_STATEMENT:
-      delims[0] = " ";
-      delims[3] = "\n";
+      delims[0] = AST_SPACE;
+      delims[3] = AST_NEWLINE;
       return pretty_convert_join(ast, indent, delims);
     case AST_SELECTION_STATEMENT:
-      delims[1] = delims[5] = " ";
+      delims[1] = delims[5] = AST_SPACE;
       ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     case AST_ITERATION_STATEMENT:
       if (check_tag(ast, AST_WHILE)) {
-        delims[1] = " ";
+        delims[1] = AST_SPACE;
       } else if (check_tag(ast, AST_DO)) {
-        delims[2] = delims[3] = " ";
+        delims[2] = delims[3] = AST_SPACE;
       } else if (check_tag(ast, AST_FOR)) {
-        delims[1] = delims[4] = delims[6] = " ";
+        delims[1] = delims[4] = delims[6] = AST_SPACE;
       }
       ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     case AST_JUMP_STATEMENT:
       if (check_tag(ast, AST_GOTO) || check_tag(ast, AST_RETURN)) {
-        delims[1] = " ";
+        delims[1] = AST_SPACE;
       }
       ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     case AST_FUNCTION_DEFINITION:
-      delims[1] = " ";
+      delims[1] = AST_SPACE;
       ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     default:
