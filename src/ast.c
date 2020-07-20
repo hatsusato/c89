@@ -25,29 +25,3 @@ const char *ast_show(AstTag tag) {
   }
   return NULL;
 }
-int ast_to_int(const char *tag) {
-  if (utility_str_eq(tag, "unknown")) {
-    return AST_UNKNOWN;
-  }
-#define HANDLE(name, str)              \
-  else if (utility_str_eq(tag, str)) { \
-    return name;                       \
-  }
-#include "enum/keyword.def"
-#
-#include "enum/token.def"
-#
-#include "enum/symbol.def"
-#
-#include "enum/expression.def"
-#
-#include "enum/declaration.def"
-#
-#include "enum/statement.def"
-#
-#include "enum/definition.def"
-#undef HANDLE
-  else {
-    return AST_UNKNOWN;
-  }
-}

@@ -24,6 +24,5 @@ typedef enum {
 } AstTag;
 
 const char *ast_show(AstTag);
-int ast_to_int(const char *);
 
 #endif /* INCLUDE_GUARD_A84E9F8A_C152_4807_9181_80EE16B4DFA5 */
