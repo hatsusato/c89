@@ -125,9 +125,6 @@ Bool sexp_is_list(Sexp *list) {
     return (sexp_is_pair(list) && sexp_is_list(sexp_cdr(list)));
   }
 }
-Bool sexp_eq(Sexp *sexp, const char *symbol) {
-  return utility_str_eq(sexp_get_string(sexp), symbol);
-}
 Sexp *sexp_car(Sexp *sexp) {
   assert(sexp_is_pair(sexp));
   return sexp->data.pair.car;

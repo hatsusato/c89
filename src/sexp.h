@@ -16,7 +16,6 @@ Bool sexp_is_pair(Sexp *);
 Bool sexp_is_string(Sexp *);
 Bool sexp_is_number(Sexp *);
 Bool sexp_is_list(Sexp *);
-Bool sexp_eq(Sexp *, const char *);
 Sexp *sexp_car(Sexp *);
 Sexp *sexp_cdr(Sexp *);
 Sexp *sexp_at(Sexp *, int);
