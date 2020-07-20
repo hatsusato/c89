@@ -25,33 +25,21 @@ static Sexp *pretty_prefix(Sexp *ast, int indent, AstTag prefix) {
   }
   return sexp_cons(sexp_number(prefix), ast);
 }
-static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent,
-                         const char *prefix) {
-  assert(sexp_is_pair(ast));
+static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent, AstTag prefix) {
   ast = sexp_car(ast);
-  if (sexp_is_nil(ast)) {
-    return pretty;
+  if (!sexp_is_nil(ast)) {
+    ast = pretty_convert(ast, indent);
+    ast = sexp_cons(ast, sexp_nil());
+    ast = pretty_prefix(ast, indent, prefix);
+    pretty = sexp_snoc(pretty, ast);
   }
-  ast = pretty_convert(ast, indent);
-  ast = sexp_cons(ast, sexp_nil());
-  if (utility_str_eq(prefix, "\n")) {
-    ast = pretty_indent(indent, ast);
-  } else if (prefix) {
-    ast = sexp_cons(sexp_symbol(prefix), ast);
-  }
-  return sexp_snoc(pretty, ast);
+  return pretty;
 }
 static Sexp *pretty_convert_join(Sexp *ast, int indent, AstTag delims[]) {
   Sexp *pretty = sexp_nil();
   int i = 0;
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    Sexp *car = sexp_car(ast);
-    if (!sexp_is_nil(car)) {
-      car = pretty_convert(car, indent);
-      car = sexp_cons(car, sexp_nil());
-      car = pretty_prefix(car, indent, delims[i++]);
-      pretty = sexp_snoc(pretty, car);
-    }
+    pretty = pretty_snoc(pretty, ast, indent, delims[i++]);
   }
   return pretty;
 }
@@ -59,13 +47,7 @@ static Sexp *pretty_convert_list(Sexp *ast, int indent, AstTag delim) {
   Sexp *pretty = sexp_nil();
   AstTag prefix = 0;
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    Sexp *car = sexp_car(ast);
-    if (!sexp_is_nil(car)) {
-      car = pretty_convert(car, indent);
-      car = sexp_cons(car, sexp_nil());
-      car = pretty_prefix(car, indent, prefix);
-      pretty = sexp_snoc(pretty, car);
-    }
+    pretty = pretty_snoc(pretty, ast, indent, prefix);
     prefix = delim;
   }
   return pretty;
