@@ -1,8 +1,8 @@
 /* 6.7 External definitions */
 #include "handle.def"
 
-DO_HANDLE(TRANSLATION_UNIT, translation-unit)
-DO_HANDLE(EXTERNAL_DECLARATION, external-declaration)
-DO_HANDLE(FUNCTION_DEFINITION, function-definition)
+DO_HANDLE(AST_TRANSLATION_UNIT, translation-unit)
+DO_HANDLE(AST_EXTERNAL_DECLARATION, external-declaration)
+DO_HANDLE(AST_FUNCTION_DEFINITION, function-definition)
 
 #include "handle-end.def"

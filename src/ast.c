@@ -31,7 +31,7 @@ int ast_to_int(const char *tag) {
   }
 #define HANDLE(name, str)              \
   else if (utility_str_eq(tag, str)) { \
-    return AST_##name;                 \
+    return name;                       \
   }
 #include "enum/keyword.def"
 #
