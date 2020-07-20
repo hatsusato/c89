@@ -3,7 +3,7 @@
 #include "utility.h"
 
 const char *ast_show(AstTag tag) {
-  const char *name[] = {"", "tag-begin",
+  const char *name[] = {"",
 #define HANDLE(name, str) str,
 #include "enum/keyword.def"
 #
@@ -19,8 +19,8 @@ const char *ast_show(AstTag tag) {
 #
 #include "enum/definition.def"
 #undef HANDLE
-                        "unknown", "tag-end"};
-  if (AST_NULL < tag && tag < AST_TAG_END) {
+                        "tag-count"};
+  if (AST_NULL < tag && tag < AST_TAG_COUNT) {
     return name[tag];
   }
   return NULL;

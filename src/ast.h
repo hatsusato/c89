@@ -3,7 +3,6 @@
 
 typedef enum {
   AST_NULL,
-  AST_TAG_BEGIN,
 #define HANDLE(name, str) name,
 #include "enum/keyword.def"
 #
@@ -19,8 +18,7 @@ typedef enum {
 #
 #include "enum/definition.def"
 #undef HANDLE
-  AST_UNKNOWN,
-  AST_TAG_END
+  AST_TAG_COUNT
 } AstTag;
 
 const char *ast_show(AstTag);
