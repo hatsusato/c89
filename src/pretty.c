@@ -49,12 +49,18 @@ static Sexp *pretty_convert_join(Sexp *ast, int indent, const char *delims[]) {
   }
   return pretty;
 }
-static Sexp *pretty_convert_list(Sexp *ast, int indent, const char *delim) {
+static Sexp *pretty_convert_list(Sexp *ast, int indent, AstTag delim) {
   Sexp *pretty = sexp_nil();
-  const char *sep = NULL;
+  AstTag prefix = 0;
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    pretty = pretty_snoc(pretty, ast, indent, sep);
-    sep = delim;
+    Sexp *car = sexp_car(ast);
+    if (!sexp_is_nil(car)) {
+      car = pretty_convert(car, indent);
+      car = sexp_cons(car, sexp_nil());
+      car = pretty_prefix(car, indent, prefix);
+      pretty = sexp_snoc(pretty, car);
+    }
+    prefix = delim;
   }
   return pretty;
 }
@@ -69,7 +75,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     case AST_PARAMETER_LIST:
     case AST_IDENTIFIER_LIST:
     case AST_INITIALIZER_LIST:
-      return pretty_convert_list(ast, indent, ", ");
+      return pretty_convert_list(ast, indent, AST_SEPARATOR);
     case AST_UNARY_EXPRESSION:
       if (2 == sexp_length(ast) && check_tag(ast, AST_SIZEOF) &&
           !check_tag(sexp_cdr(ast), AST_PRIMARY_EXPRESSION)) {
@@ -92,20 +98,20 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     case AST_SPECIFIER_QUALIFIER_LIST:
     case AST_PARAMETER_DECLARATION:
     case AST_TYPE_NAME:
-      return pretty_convert_list(ast, indent, " ");
+      return pretty_convert_list(ast, indent, AST_SPACE);
     case AST_DECLARATION:
     case AST_STRUCT_DECLARATION:
     case AST_EXPRESSION_STATEMENT:
-      ast = pretty_convert_list(ast, indent, NULL);
+      ast = pretty_convert_list(ast, indent, AST_NULL);
       return pretty_indent(indent, ast);
     case AST_INIT_DECLARATOR_LIST:
     case AST_STRUCT_DECLARATOR_LIST:
     case AST_ENUMERATOR_LIST:
-      return pretty_convert_list(ast, indent, ",");
+      return pretty_convert_list(ast, indent, AST_COMMA);
     case AST_INIT_DECLARATOR:
     case AST_ENUMERATOR:
-      ast = pretty_convert_list(ast, indent, " ");
-      return sexp_cons(sexp_symbol(" "), ast);
+      ast = pretty_convert_list(ast, indent, AST_SPACE);
+      return pretty_prefix(ast, indent, AST_SPACE);
     case AST_STRUCT_OR_UNION_SPECIFIER:
       delims[1] = delims[2] = " ";
       delims[4] = "\n";
@@ -113,7 +119,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     case AST_STRUCT_DECLARATION_LIST:
     case AST_DECLARATION_LIST:
     case AST_STATEMENT_LIST:
-      return pretty_convert_list(ast, indent + 1, NULL);
+      return pretty_convert_list(ast, indent + 1, AST_NULL);
     case AST_STRUCT_DECLARATOR:
       delims[0] = delims[1] = delims[2] = " ";
       return pretty_convert_join(ast, indent, delims);
@@ -121,7 +127,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       delims[1] = delims[2] = delims[4] = " ";
       return pretty_convert_join(ast, indent, delims);
     case AST_TYPE_QUALIFIER_LIST:
-      ast = pretty_convert_list(ast, indent, " ");
+      ast = pretty_convert_list(ast, indent, AST_SPACE);
       return sexp_is_nil(ast) ? ast : sexp_snoc(ast, sexp_symbol(" "));
     case AST_LABELED_STATEMENT:
       delims[1] = check_tag(ast, AST_CASE) ? " " : NULL;
@@ -157,7 +163,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       ast = pretty_convert_join(ast, indent, delims);
       return pretty_indent(indent, ast);
     default:
-      return pretty_convert_list(ast, indent, NULL);
+      return pretty_convert_list(ast, indent, AST_NULL);
     }
   } else {
     return sexp_clone(ast);
