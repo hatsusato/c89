@@ -4,13 +4,7 @@
 #include "str.h"
 #include "utility.h"
 
-typedef enum {
-  SEXP_NIL,
-  SEXP_PAIR,
-  SEXP_SYMBOL,
-  SEXP_STRING,
-  SEXP_NUMBER
-} SexpKind;
+typedef enum { SEXP_NIL, SEXP_PAIR, SEXP_STRING, SEXP_NUMBER } SexpKind;
 
 struct struct_Sexp {
   SexpKind kind;
@@ -18,7 +12,6 @@ struct struct_Sexp {
     struct {
       Sexp *car, *cdr;
     } pair;
-    const char *symbol;
     const Str *string;
     int number;
   } data;
@@ -119,9 +112,6 @@ Bool sexp_is_nil(Sexp *sexp) {
 Bool sexp_is_pair(Sexp *sexp) {
   return SEXP_PAIR == sexp_kind(sexp);
 }
-Bool sexp_is_symbol(Sexp *sexp) {
-  return SEXP_SYMBOL == sexp_kind(sexp);
-}
 Bool sexp_is_string(Sexp *sexp) {
   return SEXP_STRING == sexp_kind(sexp);
 }
@@ -156,8 +146,6 @@ Sexp *sexp_at(Sexp *sexp, int index) {
 const char *sexp_get_string(Sexp *sexp) {
   if (sexp_is_string(sexp)) {
     return string_begin(sexp->data.string);
-  } else if (sexp_is_symbol(sexp)) {
-    return sexp->data.symbol;
   } else if (sexp_is_number(sexp)) {
     return ast_show(sexp->data.number);
   } else {
