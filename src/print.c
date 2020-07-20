@@ -54,12 +54,10 @@ static void print_sexp(FILE *fp, Sexp *sexp, int indent) {
     print_sexp_list(fp, sexp, indent + 1);
     print_message(fp, suffix);
   } else {
-    if (sexp_is_symbol(sexp)) {
-      const char *sym = sexp_get_string(sexp);
-      assert(sym);
-      prefix = suffix = (isalpha(*sym) ? "" : "#");
-    } else if (sexp_is_string(sexp)) {
+    if (sexp_is_string(sexp)) {
       prefix = suffix = "\"";
+    } else if (sexp_is_number(sexp)) {
+      prefix = suffix = "'";
     }
     print_message(fp, prefix);
     print_symbol(fp, sexp);
