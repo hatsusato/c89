@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 
+#include "ast.h"
 #include "sexp.h"
 #include "utility.h"
 
@@ -25,7 +26,9 @@ void print_newline(FILE *fp) {
   print_message(fp, "\n");
 }
 void print_message(FILE *fp, const char *msg) {
-  fprintf(fp, "%s", msg);
+  if (msg) {
+    fprintf(fp, "%s", msg);
+  }
 }
 void print_number(FILE *fp, int num) {
   fprintf(fp, "%d", num);
@@ -42,10 +45,13 @@ void print_verbatim(FILE *fp, const char *text, int leng) {
   }
 }
 void print_symbol(FILE *fp, Sexp *sexp) {
-  const char *s = sexp_get_string(sexp);
-  if (s) {
-    print_message(fp, s);
+  const char *msg = NULL;
+  if (sexp_is_string(sexp)) {
+    msg = sexp_get_string(sexp);
+  } else if (sexp_is_number(sexp)) {
+    msg = ast_show(sexp_get_number(sexp));
   }
+  print_message(fp, msg);
 }
 static void print_sexp(FILE *fp, Sexp *sexp, int indent) {
   const char *prefix = "(", *suffix = ")";

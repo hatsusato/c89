@@ -1,6 +1,5 @@
 #include "sexp.h"
 
-#include "ast.h"
 #include "str.h"
 #include "utility.h"
 
@@ -141,13 +140,7 @@ Sexp *sexp_at(Sexp *sexp, int index) {
   }
 }
 const char *sexp_get_string(Sexp *sexp) {
-  if (sexp_is_string(sexp)) {
-    return string_begin(sexp->data.string);
-  } else if (sexp_is_number(sexp)) {
-    return ast_show(sexp->data.number);
-  } else {
-    return NULL;
-  }
+  return sexp_is_string(sexp) ? string_begin(sexp->data.string) : NULL;
 }
 int sexp_get_number(Sexp *sexp) {
   if (sexp_is_number(sexp)) {
