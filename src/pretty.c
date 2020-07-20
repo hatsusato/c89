@@ -120,11 +120,11 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       return pretty_convert_join(ast, indent, delims);
     case AST_TYPE_QUALIFIER_LIST:
       ast = pretty_convert_list(ast, indent, AST_SPACE);
-      return sexp_is_nil(ast) ? ast : sexp_snoc(ast, sexp_symbol(" "));
+      return sexp_is_nil(ast) ? ast : sexp_snoc(ast, sexp_number(AST_SPACE));
     case AST_LABELED_STATEMENT:
       delims[1] = check_tag(ast, AST_CASE) ? AST_SPACE : AST_NULL;
       ast = pretty_convert_join(ast, indent, delims);
-      indent = check_tag(sexp_car(ast), AST_IDENTIFIER) ? 0 : indent - 1;
+      --indent;
       return pretty_indent(indent, ast);
     case AST_COMPOUND_STATEMENT:
       delims[0] = AST_SPACE;
