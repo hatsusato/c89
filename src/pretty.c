@@ -15,6 +15,16 @@ static Sexp *pretty_indent(int indent, Sexp *ast) {
   }
   return sexp_cons(sexp_symbol("\n"), ast);
 }
+static Sexp *pretty_prefix(Sexp *ast, int indent, AstTag prefix) {
+  if (AST_NULL == prefix) {
+    return ast;
+  } else if (AST_NEWLINE == prefix) {
+    for (; 0 < indent; --indent) {
+      ast = sexp_cons(sexp_number(AST_INDENT), ast);
+    }
+  }
+  return sexp_cons(sexp_number(prefix), ast);
+}
 static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent,
                          const char *prefix) {
   assert(sexp_is_pair(ast));
