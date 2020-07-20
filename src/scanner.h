@@ -9,6 +9,6 @@ int scanner_parse(yyscan_t);
 void scanner_finish(yyscan_t, Sexp *);
 Sexp *scanner_token(yyscan_t);
 Table *scanner_table(yyscan_t);
-void scanner_print(yyscan_t, const char *);
+void scanner_yyerror(yyscan_t, const char *);
 
 #endif /* INCLUDE_GUARD_EB689973_FC12_413F_9E9E_C612BD832E1C */

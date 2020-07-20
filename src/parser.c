@@ -6,7 +6,7 @@
 #include "utility.h"
 
 void yyerror(yyscan_t scanner, const char *msg) {
-  scanner_print(scanner, msg);
+  scanner_yyerror(scanner, msg);
 }
 
 Sexp *parser_symbol(AstTag tag) {
