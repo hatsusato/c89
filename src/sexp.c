@@ -77,11 +77,6 @@ Sexp *sexp_append(Sexp *lhs, Sexp *rhs) {
   assert(sexp_is_nil(sexp));
   return rhs;
 }
-Sexp *sexp_symbol(const char *symbol) {
-  MutableSexp *sexp = sexp_new(SEXP_SYMBOL);
-  sexp->data.symbol = symbol;
-  return sexp;
-}
 Sexp *sexp_string(const char *text, int leng) {
   MutableSexp *sexp = sexp_new(SEXP_STRING);
   sexp->data.string = string_new(text, leng);
@@ -93,9 +88,7 @@ Sexp *sexp_number(int i) {
   return sexp;
 }
 Sexp *sexp_clone(Sexp *sexp) {
-  if (sexp_is_symbol(sexp)) {
-    return sexp_symbol(sexp->data.symbol);
-  } else if (sexp_is_string(sexp)) {
+  if (sexp_is_string(sexp)) {
     return sexp_string(string_begin(sexp->data.string),
                        string_length(sexp->data.string));
   } else if (sexp_is_number(sexp)) {
