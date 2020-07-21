@@ -29,6 +29,14 @@ static Sexp *pretty_prefix(Sexp *ast, int indent, AstTag prefix) {
   }
   return sexp_cons(sexp_number(prefix), ast);
 }
+static Sexp *pretty_suffix(Sexp *ast, AstTag suffix) {
+  switch (suffix) {
+  case AST_NULL:
+    return ast;
+  default:
+    return sexp_snoc(ast, sexp_number(suffix));
+  }
+}
 static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent, AstTag prefix) {
   if (!sexp_is_nil(ast)) {
     ast = pretty_convert(ast, indent);
@@ -114,7 +122,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       goto case_list;
     case AST_TYPE_QUALIFIER_LIST:
       ast = pretty_convert_join(ast, indent, AST_SPACE);
-      return sexp_is_nil(ast) ? ast : sexp_snoc(ast, sexp_number(AST_SPACE));
+      return pretty_suffix(ast, sexp_is_nil(ast) ? AST_NULL : AST_SPACE);
     case AST_LABELED_STATEMENT:
       delims[1] = check_tag(ast, AST_CASE) ? AST_SPACE : AST_NULL;
       indent_diff = -1;
