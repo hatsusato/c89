@@ -8,7 +8,7 @@ struct struct_Vector {
   Destructor dtor;
 };
 
-static void vector_default_destructor(ElemType e) {
+static void vector_destructor_default(ElemType e) {
   (void)e;
 }
 static void vector_alloc(Vector *v) {
@@ -24,7 +24,7 @@ Vector *vector_new(Destructor dtor) {
   Vector *v = UTILITY_MALLOC(Vector);
   v->data = NULL;
   v->size = v->capacity = 0;
-  v->dtor = dtor ? dtor : vector_default_destructor;
+  v->dtor = dtor ? dtor : vector_destructor_default;
   return v;
 }
 void vector_delete(Vector *v) {
