@@ -6,8 +6,14 @@
 #include "utility.h"
 
 static Sexp *pretty_convert(Sexp *, int);
+static AstTag get_tag(Sexp *ast) {
+  if (sexp_is_number(ast)) {
+    return sexp_get_number(ast);
+  }
+  return AST_NULL;
+}
 static Bool check_tag(Sexp *ast, AstTag tag) {
-  return sexp_is_pair(ast) && sexp_get_number(sexp_car(ast)) == (int)tag;
+  return sexp_is_pair(ast) && get_tag(sexp_car(ast)) == tag;
 }
 static Sexp *pretty_prefix(Sexp *ast, int indent, AstTag prefix) {
   if (AST_NULL == prefix) {
