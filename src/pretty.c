@@ -38,14 +38,6 @@ static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent, AstTag prefix) {
   }
   return pretty;
 }
-static Sexp *pretty_convert_list(Sexp *ast, int indent, AstTag delims[]) {
-  Sexp *pretty = sexp_nil();
-  int i = 0;
-  for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    pretty = pretty_snoc(pretty, sexp_car(ast), indent, delims[i++]);
-  }
-  return pretty;
-}
 static Sexp *pretty_convert_join(Sexp *ast, int indent, AstTag delim) {
   Sexp *pretty = sexp_nil();
   AstTag prefix = 0;
@@ -56,13 +48,12 @@ static Sexp *pretty_convert_join(Sexp *ast, int indent, AstTag delim) {
   return pretty;
 }
 static Sexp *pretty_convert(Sexp *ast, int indent) {
-  AstTag delims[10];
-  int i;
-  for (i = 0; i < 10; ++i) {
-    delims[i] = AST_NULL;
-  }
+  AstTag delims[10] = {AST_NULL}, prefix = AST_NULL;
+  Sexp *pretty = NULL;
+  int i = 0, indent_diff = 0;
+  assert(delims[9] == AST_NULL);
   if (sexp_is_pair(ast)) {
-    int tag = sexp_get_number(sexp_car(ast));
+    AstTag tag = get_tag(sexp_car(ast));
     ast = sexp_cdr(ast);
     switch (tag) {
     case AST_ARGUMENT_EXPRESSION_LIST:
@@ -76,7 +67,7 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
           !check_tag(sexp_cdr(ast), AST_PRIMARY_EXPRESSION)) {
         delims[1] = AST_SPACE;
       }
-      return pretty_convert_list(ast, indent, delims);
+      goto case_list;
     case AST_MULTIPLICATIVE_EXPRESSION:
     case AST_ADDITIVE_EXPRESSION:
     case AST_SHIFT_EXPRESSION:
@@ -110,33 +101,31 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
     case AST_STRUCT_OR_UNION_SPECIFIER:
       delims[1] = delims[2] = AST_SPACE;
       delims[4] = AST_NEWLINE;
-      return pretty_convert_list(ast, indent, delims);
+      goto case_list;
     case AST_STRUCT_DECLARATION_LIST:
     case AST_DECLARATION_LIST:
     case AST_STATEMENT_LIST:
       return pretty_convert_join(ast, indent + 1, AST_NULL);
     case AST_STRUCT_DECLARATOR:
       delims[0] = delims[1] = delims[2] = AST_SPACE;
-      return pretty_convert_list(ast, indent, delims);
+      goto case_list;
     case AST_ENUM_SPECIFIER:
       delims[1] = delims[2] = delims[4] = AST_SPACE;
-      return pretty_convert_list(ast, indent, delims);
+      goto case_list;
     case AST_TYPE_QUALIFIER_LIST:
       ast = pretty_convert_join(ast, indent, AST_SPACE);
       return sexp_is_nil(ast) ? ast : sexp_snoc(ast, sexp_number(AST_SPACE));
     case AST_LABELED_STATEMENT:
       delims[1] = check_tag(ast, AST_CASE) ? AST_SPACE : AST_NULL;
-      ast = pretty_convert_list(ast, indent, delims);
-      --indent;
-      return pretty_prefix(ast, indent, AST_NEWLINE);
+      indent_diff = -1;
+      goto case_list_newline;
     case AST_COMPOUND_STATEMENT:
       delims[0] = AST_SPACE;
       delims[3] = AST_NEWLINE;
-      return pretty_convert_list(ast, indent, delims);
+      goto case_list;
     case AST_SELECTION_STATEMENT:
       delims[1] = delims[5] = AST_SPACE;
-      ast = pretty_convert_list(ast, indent, delims);
-      return pretty_prefix(ast, indent, AST_NEWLINE);
+      goto case_list_newline;
     case AST_ITERATION_STATEMENT:
       if (check_tag(ast, AST_WHILE)) {
         delims[1] = AST_SPACE;
@@ -145,20 +134,26 @@ static Sexp *pretty_convert(Sexp *ast, int indent) {
       } else if (check_tag(ast, AST_FOR)) {
         delims[1] = delims[4] = delims[6] = AST_SPACE;
       }
-      ast = pretty_convert_list(ast, indent, delims);
-      return pretty_prefix(ast, indent, AST_NEWLINE);
+      goto case_list_newline;
     case AST_JUMP_STATEMENT:
       if (check_tag(ast, AST_GOTO) || check_tag(ast, AST_RETURN)) {
         delims[1] = AST_SPACE;
       }
-      ast = pretty_convert_list(ast, indent, delims);
-      return pretty_prefix(ast, indent, AST_NEWLINE);
+      goto case_list_newline;
     case AST_FUNCTION_DEFINITION:
       delims[1] = AST_SPACE;
-      ast = pretty_convert_list(ast, indent, delims);
-      return pretty_prefix(ast, indent, AST_NEWLINE);
+      goto case_list_newline;
     default:
       return pretty_convert_join(ast, indent, AST_NULL);
+    case_list_newline:
+      prefix = AST_NEWLINE;
+      goto case_list;
+    case_list:
+      for (pretty = sexp_nil(), i = 0; sexp_is_pair(ast);
+           ast = sexp_cdr(ast), ++i) {
+        pretty = pretty_snoc(pretty, sexp_car(ast), indent, delims[i]);
+      }
+      return pretty_prefix(pretty, indent + indent_diff, prefix);
     }
   } else {
     return sexp_clone(ast);
