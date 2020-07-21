@@ -7,7 +7,7 @@ struct struct_Str {
   Size size;
 };
 
-Str *string_new(const char *text, int leng) {
+Str *str_new(const char *text, int leng) {
   Str *s = UTILITY_MALLOC(Str);
   assert(0 <= leng);
   s->data = UTILITY_MALLOC_ARRAY(char, leng + 1);
@@ -16,17 +16,17 @@ Str *string_new(const char *text, int leng) {
   s->data[leng] = 0;
   return s;
 }
-void string_delete(Str *s) {
+void str_delete(Str *s) {
   assert(s);
   UTILITY_FREE(s->data);
   UTILITY_FREE(s);
 }
-Size string_length(const Str *s) {
+Size str_length(const Str *s) {
   return s->size;
 }
-const char *string_begin(const Str *s) {
+const char *str_begin(const Str *s) {
   return s->data;
 }
-const char *string_end(const Str *s) {
+const char *str_end(const Str *s) {
   return s->data + s->size;
 }

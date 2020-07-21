@@ -71,7 +71,7 @@ Sexp *sexp_append(Sexp *lhs, Sexp *rhs) {
 }
 Sexp *sexp_string(const char *text, int leng) {
   MutableSexp *sexp = sexp_new(SEXP_STRING);
-  sexp->data.string = string_new(text, leng);
+  sexp->data.string = str_new(text, leng);
   return sexp;
 }
 Sexp *sexp_number(int i) {
@@ -81,8 +81,8 @@ Sexp *sexp_number(int i) {
 }
 Sexp *sexp_clone(Sexp *sexp) {
   if (sexp_is_string(sexp)) {
-    return sexp_string(string_begin(sexp->data.string),
-                       string_length(sexp->data.string));
+    return sexp_string(str_begin(sexp->data.string),
+                       str_length(sexp->data.string));
   } else if (sexp_is_number(sexp)) {
     return sexp_number(sexp->data.number);
   } else {
@@ -98,7 +98,7 @@ void sexp_delete(Sexp *sexp) {
     sexp_delete(sexp->data.pair.cdr);
     break;
   case SEXP_STRING:
-    string_delete((Str *)sexp->data.string);
+    str_delete((Str *)sexp->data.string);
     break;
   default:
     break;
@@ -140,7 +140,7 @@ Sexp *sexp_at(Sexp *sexp, int index) {
   }
 }
 const char *sexp_get_string(Sexp *sexp) {
-  return sexp_is_string(sexp) ? string_begin(sexp->data.string) : NULL;
+  return sexp_is_string(sexp) ? str_begin(sexp->data.string) : NULL;
 }
 int sexp_get_number(Sexp *sexp) {
   if (sexp_is_number(sexp)) {
