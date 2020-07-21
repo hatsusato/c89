@@ -16,12 +16,16 @@ static Bool check_tag(Sexp *ast, AstTag tag) {
   return sexp_is_pair(ast) && get_tag(sexp_car(ast)) == tag;
 }
 static Sexp *pretty_prefix(Sexp *ast, int indent, AstTag prefix) {
-  if (AST_NULL == prefix) {
+  switch (prefix) {
+  case AST_NULL:
     return ast;
-  } else if (AST_NEWLINE == prefix) {
+  case AST_NEWLINE:
     for (; 0 < indent; --indent) {
       ast = sexp_cons(sexp_number(AST_INDENT), ast);
     }
+    break;
+  default:
+    break;
   }
   return sexp_cons(sexp_number(prefix), ast);
 }
