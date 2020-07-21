@@ -20,7 +20,7 @@ static void symbol_delete(Symbol *symbol) {
 static int symbol_compare(const ElemType *lhs, const ElemType *rhs) {
   const Symbol *l = *lhs;
   const Symbol *r = *rhs;
-  return utility_str_cmp(l->symbol, r->symbol);
+  return strcmp(l->symbol, r->symbol);
 }
 
 SymbolSet *symbol_set_new(void) {

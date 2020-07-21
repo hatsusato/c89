@@ -3,8 +3,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
-
-#include "typedef.h"
+#include <string.h>
 
 #define UTILITY_SWAP(type, lhs, rhs) \
   do {                               \
@@ -20,10 +19,6 @@
     (var) = NULL;         \
   } while (0)
 #define UTILITY_MEMCPY(type, dst, src, count) \
-  utility_memcpy((dst), (src), sizeof(type) * (count))
-
-Bool utility_str_eq(const char *, const char *);
-int utility_str_cmp(const char *, const char *);
-void utility_memcpy(void *dst, const void *src, size_t count);
+  memcpy((dst), (src), sizeof(type) * (count))
 
 #endif /* INCLUDE_GUARD_26FC0E3E_05C7_464D_8860_9F5E5E2F9210 */
