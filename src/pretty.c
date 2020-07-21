@@ -30,7 +30,6 @@ static Sexp *pretty_prefix(Sexp *ast, int indent, AstTag prefix) {
   return sexp_cons(sexp_number(prefix), ast);
 }
 static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent, AstTag prefix) {
-  ast = sexp_car(ast);
   if (!sexp_is_nil(ast)) {
     ast = pretty_convert(ast, indent);
     ast = sexp_cons(ast, sexp_nil());
@@ -43,7 +42,7 @@ static Sexp *pretty_convert_list(Sexp *ast, int indent, AstTag delims[]) {
   Sexp *pretty = sexp_nil();
   int i = 0;
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    pretty = pretty_snoc(pretty, ast, indent, delims[i++]);
+    pretty = pretty_snoc(pretty, sexp_car(ast), indent, delims[i++]);
   }
   return pretty;
 }
@@ -51,7 +50,7 @@ static Sexp *pretty_convert_join(Sexp *ast, int indent, AstTag delim) {
   Sexp *pretty = sexp_nil();
   AstTag prefix = 0;
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    pretty = pretty_snoc(pretty, ast, indent, prefix);
+    pretty = pretty_snoc(pretty, sexp_car(ast), indent, prefix);
     prefix = delim;
   }
   return pretty;
