@@ -51,3 +51,18 @@ static const char *identifier_from_declarator(Sexp *ast) {
     return NULL;
   }
 }
+static void generate_function_definition(Sexp *ast) {
+  const char *name;
+  ast = check_tag(ast, AST_FUNCTION_DEFINITION);
+  assert(4 == sexp_length(ast));
+  name = identifier_from_declarator(sexp_at(ast, 1));
+  printf("define dso_local i32 @%s() {\n", name);
+  printf("  ret i32 0\n");
+  printf("}\n\n");
+}
+void generate_translation_unit(Sexp *ast) {
+  ast = check_tag(ast, AST_TRANSLATION_UNIT);
+  for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    generate_function_definition(sexp_car(ast));
+  }
+}

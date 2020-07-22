@@ -1,3 +1,4 @@
+#include "generate.h"
 #include "print.h"
 #include "result.h"
 
@@ -7,6 +8,7 @@ int main(void) {
   if (0 == ret) {
     Sexp *ast = result_get_sexp(result);
     print_ast(ast);
+    generate_translation_unit(ast);
   }
   result_delete(result);
   return ret;
