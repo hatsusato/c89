@@ -12,3 +12,7 @@ static AstTag get_tag(Sexp *ast) {
   }
   return AST_NULL;
 }
+static Sexp *check_tag(Sexp *ast, AstTag tag) {
+  assert(get_tag(ast) == tag);
+  return sexp_cdr(ast);
+}
