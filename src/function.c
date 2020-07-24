@@ -57,3 +57,8 @@ Function *function_new(void) {
 void function_delete(Function *func) {
   UTILITY_FREE(func);
 }
+void function_set(Function *func, Sexp *ast) {
+  ast = check_tag(ast, AST_FUNCTION_DEFINITION);
+  assert(4 == sexp_length(ast));
+  function_set_declarator(func, sexp_at(ast, 1));
+}
