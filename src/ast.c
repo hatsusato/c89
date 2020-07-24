@@ -1,5 +1,6 @@
 #include "ast.h"
 
+#include "sexp.h"
 #include "utility.h"
 
 const char *ast_show(AstTag tag) {
@@ -24,4 +25,12 @@ const char *ast_show(AstTag tag) {
     return name[tag];
   }
   return NULL;
+}
+AstTag ast_get(Sexp *ast) {
+  if (sexp_is_number(ast)) {
+    return sexp_get_number(ast);
+  } else if (sexp_is_pair(ast)) {
+    return ast_get(sexp_car(ast));
+  }
+  return AST_NULL;
 }
