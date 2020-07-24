@@ -1,6 +1,7 @@
 #include "function.h"
 
 #include "ast.h"
+#include "print.h"
 #include "sexp.h"
 #include "utility.h"
 
@@ -61,4 +62,15 @@ void function_set(Function *func, Sexp *ast) {
   ast = check_tag(ast, AST_FUNCTION_DEFINITION);
   assert(4 == sexp_length(ast));
   function_set_declarator(func, sexp_at(ast, 1));
+}
+void function_print(Function *func) {
+  print_message(stdout, "define dso_local i32 @");
+  print_message(stdout, func->name);
+  print_message(stdout, "() {");
+  print_newline(stdout);
+  print_indent(stdout, 1);
+  print_message(stdout, "ret i32 0");
+  print_newline(stdout);
+  print_message(stdout, "}");
+  print_newline(stdout);
 }

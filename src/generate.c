@@ -59,8 +59,8 @@ void generate_translation_unit(Sexp *ast) {
     if (ast_get(ast) == AST_FUNCTION_DEFINITION) {
       Function *func = function_new();
       function_set(func, sexp_car(ast));
+      function_print(func);
       function_delete(func);
     }
-    generate_function_definition(sexp_car(ast));
   }
 }
