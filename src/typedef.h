@@ -21,6 +21,9 @@ typedef int (*Compare)(const ElemType *, const ElemType *);
 typedef void (*Destructor)(ElemType);
 typedef void (*ForeachMap)(ElemType, void *);
 
+struct struct_Function;
+typedef struct struct_Function Function;
+
 struct struct_List;
 typedef struct struct_List List;
 
