@@ -11,6 +11,8 @@ Sexp *sexp_string(const char *, int);
 Sexp *sexp_number(int);
 Sexp *sexp_clone(Sexp *);
 void sexp_delete(Sexp *);
+Sexp *sexp_set_car(Sexp *, Sexp *);
+Sexp *sexp_set_cdr(Sexp *, Sexp *);
 Bool sexp_is_nil(Sexp *);
 Bool sexp_is_pair(Sexp *);
 Bool sexp_is_string(Sexp *);

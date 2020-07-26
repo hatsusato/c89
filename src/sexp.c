@@ -28,9 +28,6 @@ static MutableSexp *sexp_new(SexpKind kind) {
 static void sexp_free(MutableSexp *sexp) {
   UTILITY_FREE(sexp);
 }
-static void sexp_set_cdr(Sexp *sexp, Sexp *cdr) {
-  ((MutableSexp *)sexp)->data.pair.cdr = cdr;
-}
 
 Sexp *sexp_nil(void) {
   return NULL;
@@ -100,6 +97,16 @@ void sexp_delete(Sexp *sexp) {
     break;
   }
   sexp_free((MutableSexp *)sexp);
+}
+Sexp *sexp_set_car(Sexp *sexp, Sexp *car) {
+  Sexp *tmp = sexp_car(sexp);
+  ((MutableSexp *)sexp)->data.pair.car = car;
+  return tmp;
+}
+Sexp *sexp_set_cdr(Sexp *sexp, Sexp *cdr) {
+  Sexp *tmp = sexp_cdr(sexp);
+  ((MutableSexp *)sexp)->data.pair.cdr = cdr;
+  return tmp;
 }
 Bool sexp_is_nil(Sexp *sexp) {
   return SEXP_NIL == sexp_kind(sexp);
