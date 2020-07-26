@@ -142,6 +142,14 @@ Sexp *sexp_at(Sexp *sexp, int index) {
     return sexp_car(sexp);
   }
 }
+Sexp *sexp_next(Sexp *sexp, int n) {
+  Sexp *tmp = sexp;
+  assert(sexp_is_pair(sexp));
+  sexp = sexp_car(sexp);
+  assert(sexp_is_number(sexp));
+  assert(sexp_get_number(sexp) == n);
+  return sexp_cdr(tmp);
+}
 const char *sexp_get_string(Sexp *sexp) {
   return sexp_is_string(sexp) ? str_begin(sexp->data.string) : NULL;
 }

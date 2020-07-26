@@ -21,6 +21,7 @@ Bool sexp_is_list(Sexp *);
 Sexp *sexp_car(Sexp *);
 Sexp *sexp_cdr(Sexp *);
 Sexp *sexp_at(Sexp *, int);
+Sexp *sexp_next(Sexp *, int);
 const char *sexp_get_string(Sexp *);
 int sexp_get_number(Sexp *);
 int sexp_length(Sexp *);
