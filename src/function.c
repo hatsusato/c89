@@ -9,19 +9,15 @@ struct struct_Function {
   const char *name;
 };
 
-static Sexp *check_tag(Sexp *ast, AstTag tag) {
-  assert(ast_get(ast) == tag);
-  return sexp_cdr(ast);
-}
 static void function_set_declarator(Function *, Sexp *);
 static void function_set_identifier(Function *func, Sexp *ast) {
-  ast = check_tag(ast, AST_IDENTIFIER);
+  ast = sexp_next(ast, AST_IDENTIFIER);
   ast = sexp_car(ast);
   assert(sexp_is_string(ast));
   func->name = sexp_get_string(ast);
 }
 static void function_set_direct_declarator(Function *func, Sexp *ast) {
-  ast = check_tag(ast, AST_DIRECT_DECLARATOR);
+  ast = sexp_next(ast, AST_DIRECT_DECLARATOR);
   switch (ast_get(ast)) {
   case AST_IDENTIFIER:
     function_set_identifier(func, sexp_at(ast, 0));
@@ -37,7 +33,7 @@ static void function_set_direct_declarator(Function *func, Sexp *ast) {
   }
 }
 static void function_set_declarator(Function *func, Sexp *ast) {
-  ast = check_tag(ast, AST_DECLARATOR);
+  ast = sexp_next(ast, AST_DECLARATOR);
   switch (sexp_length(ast)) {
   case 1:
     function_set_direct_declarator(func, sexp_at(ast, 0));
@@ -59,7 +55,7 @@ void function_delete(Function *func) {
   UTILITY_FREE(func);
 }
 void function_set(Function *func, Sexp *ast) {
-  ast = check_tag(ast, AST_FUNCTION_DEFINITION);
+  ast = sexp_next(ast, AST_FUNCTION_DEFINITION);
   assert(4 == sexp_length(ast));
   function_set_declarator(func, sexp_at(ast, 1));
 }
