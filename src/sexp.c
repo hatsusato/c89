@@ -44,29 +44,25 @@ Sexp *sexp_cons(Sexp *car, Sexp *cdr) {
 Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
   Sexp *sexp = xs;
   assert(sexp_is_list(xs));
-  while (sexp_is_pair(sexp)) {
-    Sexp *cdr = sexp_cdr(sexp);
-    if (sexp_is_nil(cdr)) {
-      sexp_set_cdr(sexp, sexp_cons(x, cdr));
+  for (; sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+    if (sexp_is_nil(sexp_cdr(sexp))) {
+      sexp_set_cdr(sexp, sexp_cons(x, sexp_cdr(sexp)));
       return xs;
     }
-    sexp = cdr;
   }
-  assert(sexp_is_nil(sexp));
+  assert(sexp_is_nil(xs));
   return sexp_cons(x, xs);
 }
 Sexp *sexp_append(Sexp *lhs, Sexp *rhs) {
   Sexp *sexp = lhs;
   assert(sexp_is_list(lhs));
-  while (sexp_is_pair(sexp)) {
-    Sexp *cdr = sexp_cdr(sexp);
-    if (sexp_is_nil(cdr)) {
+  for (; sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+    if (sexp_is_nil(sexp_cdr(sexp))) {
       sexp_set_cdr(sexp, rhs);
       return lhs;
     }
-    sexp = cdr;
   }
-  assert(sexp_is_nil(sexp));
+  assert(sexp_is_nil(lhs));
   return rhs;
 }
 Sexp *sexp_string(const char *text, int leng) {
