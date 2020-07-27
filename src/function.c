@@ -45,6 +45,39 @@ static void function_set_declarator(Function *func, Sexp *ast) {
     assert(0);
   }
 }
+static const char *function_name_from_declarator(Sexp *);
+static const char *function_name_from_identifier(Sexp *ast) {
+  ast = sexp_next(ast, AST_IDENTIFIER);
+  ast = sexp_car(ast);
+  assert(sexp_is_string(ast));
+  return sexp_get_string(ast);
+}
+static const char *function_name_from_direct_declarator(Sexp *ast) {
+  ast = sexp_next(ast, AST_DIRECT_DECLARATOR);
+  switch (ast_get(ast)) {
+  case AST_IDENTIFIER:
+    return function_name_from_identifier(sexp_at(ast, 0));
+  case AST_LEFT_PAREN:
+    return function_name_from_declarator(sexp_at(ast, 1));
+  case AST_DIRECT_DECLARATOR:
+    return function_name_from_direct_declarator(sexp_at(ast, 0));
+  default:
+    assert(0);
+    return NULL;
+  }
+}
+static const char *function_name_from_declarator(Sexp *ast) {
+  ast = sexp_next(ast, AST_DECLARATOR);
+  switch (sexp_length(ast)) {
+  case 1:
+    return function_name_from_direct_declarator(sexp_at(ast, 0));
+  case 2:
+    return function_name_from_direct_declarator(sexp_at(ast, 1));
+  default:
+    assert(0);
+    return NULL;
+  }
+}
 
 Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
@@ -53,6 +86,18 @@ Function *function_new(void) {
 }
 void function_delete(Function *func) {
   UTILITY_FREE(func);
+}
+const char *function_name(Sexp *ast) {
+  ast = sexp_next(ast, AST_FUNCTION_DEFINITION);
+  switch (sexp_length(ast)) {
+  case 3:
+    return function_name_from_declarator(sexp_at(ast, 0));
+  case 4:
+    return function_name_from_declarator(sexp_at(ast, 1));
+  default:
+    assert(0);
+    return NULL;
+  }
 }
 void function_set(Function *func, Sexp *ast) {
   ast = sexp_next(ast, AST_FUNCTION_DEFINITION);
