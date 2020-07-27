@@ -99,6 +99,10 @@ const char *function_name(Sexp *ast) {
     return NULL;
   }
 }
+void function_set_name(Function *func, const char *name) {
+  assert(func);
+  func->name = name;
+}
 void function_set(Function *func, Sexp *ast) {
   ast = sexp_next(ast, AST_FUNCTION_DEFINITION);
   assert(4 == sexp_length(ast));
