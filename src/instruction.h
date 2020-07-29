@@ -3,4 +3,10 @@
 
 #include "typedef.h"
 
+typedef enum {
+  INSTRUCTION_ALLOC,
+  INSTRUCTION_STORE,
+  INSTRUCTION_RET
+} InstructionTag;
+
 #endif /* INCLUDE_GUARD_B22CD5CF_CFA4_4141_958E_3B8F73C9A6F1 */
