@@ -3,4 +3,7 @@
 
 #include "typedef.h"
 
+Block *block_new(void);
+void block_delete(Block *);
+
 #endif /* INCLUDE_GUARD_C5893AD5_9E36_4B47_A5BD_7EDC9894A05B */
