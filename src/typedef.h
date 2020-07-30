@@ -48,6 +48,9 @@ typedef struct struct_Str Str;
 struct struct_Table;
 typedef struct struct_Table Table;
 
+struct struct_Value;
+typedef struct struct_Value Value;
+
 struct struct_Vector;
 typedef struct struct_Vector Vector;
 
