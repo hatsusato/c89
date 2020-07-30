@@ -27,6 +27,9 @@ typedef struct struct_Block Block;
 struct struct_Function;
 typedef struct struct_Function Function;
 
+struct struct_Instruction;
+typedef struct struct_Instruction Instruction;
+
 struct struct_List;
 typedef struct struct_List List;
 
