@@ -20,11 +20,7 @@ void instruction_delete(Instruction *instr) {
   vector_delete(instr->operands);
   UTILITY_FREE(instr);
 }
-void instruction_insert_register(Instruction *instr, Instruction *operand) {
+void instruction_insert(Instruction *instr, Value *value) {
   assert(instr);
-  vector_push(instr->operands, value_new_register(operand));
-}
-void instruction_insert_integer(Instruction *instr, int operand) {
-  assert(instr);
-  vector_push(instr->operands, value_new_integer(operand));
+  vector_push(instr->operands, value);
 }
