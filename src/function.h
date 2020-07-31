@@ -5,6 +5,7 @@
 
 Function *function_new(void);
 void function_delete(Function *);
+void function_insert(Function *, Block *);
 const char *function_name(Sexp *);
 void function_set_name(Function *, const char *);
 void function_set(Function *, Sexp *);

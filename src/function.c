@@ -1,12 +1,15 @@
 #include "function.h"
 
 #include "ast.h"
+#include "block.h"
 #include "print.h"
 #include "sexp.h"
 #include "utility.h"
+#include "vector.h"
 
 struct struct_Function {
   const char *name;
+  Vector *blocks;
 };
 
 static void function_set_declarator(Function *, Sexp *);
@@ -82,10 +85,17 @@ static const char *function_name_from_declarator(Sexp *ast) {
 Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
   func->name = NULL;
+  func->blocks = vector_new((Destructor)block_delete);
   return func;
 }
 void function_delete(Function *func) {
+  assert(func);
+  vector_delete(func->blocks);
   UTILITY_FREE(func);
+}
+void function_insert(Function *func, Block *block) {
+  assert(func);
+  vector_push(func->blocks, block);
 }
 const char *function_name(Sexp *ast) {
   ast = sexp_next(ast, AST_FUNCTION_DEFINITION);
