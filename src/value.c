@@ -17,6 +17,16 @@ static Value *value_new(ValueTag tag) {
   return value;
 }
 
+Value *value_new_register(Instruction *instr) {
+  Value *value = value_new(VALUE_REGISTER);
+  value->value.instruction = instr;
+  return value;
+}
+Value *value_new_integer(int num) {
+  Value *value = value_new(VALUE_INTEGER);
+  value->value.integer = num;
+  return value;
+}
 void value_delete(Value *value) {
   assert(value);
   UTILITY_FREE(value);
