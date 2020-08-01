@@ -118,14 +118,14 @@ void function_set(Function *func, Sexp *ast) {
   assert(4 == sexp_length(ast));
   function_set_declarator(func, sexp_at(ast, 1));
 }
-void function_print(Function *func) {
-  print_message(stdout, "define dso_local i32 @");
-  print_message(stdout, func->name);
-  print_message(stdout, "() {");
-  print_newline(stdout);
-  print_indent(stdout, 1);
-  print_message(stdout, "ret i32 0");
-  print_newline(stdout);
-  print_message(stdout, "}");
-  print_newline(stdout);
+void function_print(FILE *fp, Function *func) {
+  ElemType *it;
+  assert(func);
+  print_message(fp, "define i32 @");
+  print_message(fp, func->name);
+  print_message(fp, "() {\n");
+  for (it = vector_begin(func->blocks); it != vector_end(func->blocks); ++it) {
+    block_print(fp, (Block *)*it);
+  }
+  print_message(fp, "}\n");
 }
