@@ -1,5 +1,6 @@
 #include "instruction.h"
 
+#include "print.h"
 #include "utility.h"
 #include "value.h"
 #include "vector.h"
@@ -23,4 +24,8 @@ void instruction_delete(Instruction *instr) {
 void instruction_insert(Instruction *instr, Value *value) {
   assert(instr);
   vector_push(instr->operands, value);
+}
+void instruction_print(FILE *fp, Instruction *instr) {
+  (void)instr;
+  print_message(fp, "  ret i32 0\n");
 }
