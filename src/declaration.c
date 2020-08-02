@@ -16,18 +16,17 @@ static Declaration *declaration_new(DeclarationTag tag) {
   decl->data = NULL;
   return decl;
 }
-static Declaration *declaration_new_function(Function *func) {
+static Declaration *declaration_new_function(Sexp *ast) {
   Declaration *decl = declaration_new(DECLARATION_FUNCTION);
-  decl->data = func;
+  decl->data = function_build(ast);
   return decl;
 }
 
 Declaration *declaration_build(Sexp *ast) {
-  assert(sexp_is_pair(ast));
-  assert(sexp_is_number(sexp_car(ast)));
+  assert(sexp_is_pair(ast) && sexp_is_number(sexp_car(ast)));
   switch (ast_get(ast)) {
   case AST_FUNCTION_DEFINITION:
-    return declaration_new_function(function_build(ast));
+    return declaration_new_function(ast);
   default:
     return NULL;
   }
