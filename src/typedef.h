@@ -33,6 +33,9 @@ typedef struct struct_Instruction Instruction;
 struct struct_List;
 typedef struct struct_List List;
 
+struct struct_Module;
+typedef struct struct_Module Module;
+
 struct struct_Result;
 typedef struct struct_Result Result;
 
