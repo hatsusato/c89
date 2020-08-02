@@ -25,3 +25,11 @@ void declaration_delete(Declaration *decl) {
   function_delete(decl->data);
   UTILITY_FREE(decl);
 }
+void declaration_print(FILE *fp, Declaration *decl) {
+  assert(decl);
+  switch (decl->tag) {
+  case DECLARATION_FUNCTION:
+    function_print(fp, decl->data);
+    return;
+  }
+}
