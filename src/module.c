@@ -19,9 +19,9 @@ static void module_insert(Module *module, Declaration *decl) {
   assert(module);
   vector_push(module->decls, decl);
 }
+
 Module *module_build(Sexp *ast) {
-  Module *module;
-  module = module_new();
+  Module *module = module_new();
   ast = sexp_next(ast, AST_TRANSLATION_UNIT);
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     Declaration *decl = declaration_build(sexp_car(ast));
@@ -30,9 +30,10 @@ Module *module_build(Sexp *ast) {
   return module;
 }
 void module_delete(Module *module) {
-  assert(module);
-  vector_delete(module->decls);
-  UTILITY_FREE(module);
+  if (module) {
+    vector_delete(module->decls);
+    UTILITY_FREE(module);
+  }
 }
 void module_print(FILE *fp, Module *module) {
   ElemType *it;
