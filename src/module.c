@@ -1,5 +1,6 @@
 #include "module.h"
 
+#include "function.h"
 #include "utility.h"
 #include "vector.h"
 
@@ -16,4 +17,12 @@ void module_delete(Module *module) {
   assert(module);
   vector_delete(module->decls);
   UTILITY_FREE(module);
+}
+void module_print(FILE *fp, Module *module) {
+  ElemType *it;
+  assert(module);
+  for (it = vector_begin(module->decls); it != vector_end(module->decls);
+       ++it) {
+    function_print(fp, (Function *)*it);
+  }
 }
