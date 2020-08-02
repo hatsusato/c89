@@ -32,15 +32,17 @@ Declaration *declaration_build(Sexp *ast) {
   }
 }
 void declaration_delete(Declaration *decl) {
-  assert(decl);
-  function_delete(decl->data);
-  UTILITY_FREE(decl);
+  if (decl) {
+    function_delete(decl->data);
+    UTILITY_FREE(decl);
+  }
 }
 void declaration_print(FILE *fp, Declaration *decl) {
-  assert(decl);
-  switch (decl->tag) {
-  case DECLARATION_FUNCTION:
-    function_print(fp, decl->data);
-    return;
+  if (decl) {
+    switch (decl->tag) {
+    case DECLARATION_FUNCTION:
+      function_print(fp, decl->data);
+      return;
+    }
   }
 }
