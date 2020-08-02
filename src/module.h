@@ -3,4 +3,7 @@
 
 #include "typedef.h"
 
+Module *module_new(void);
+void module_delete(Module *);
+
 #endif /* INCLUDE_GUARD_247AB52F_D89D_4924_960E_51BCF2BA3CCB */
