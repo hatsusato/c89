@@ -1,6 +1,8 @@
 #include "declaration.h"
 
+#include "ast.h"
 #include "function.h"
+#include "sexp.h"
 #include "utility.h"
 
 struct struct_Declaration {
@@ -24,6 +26,16 @@ void declaration_delete(Declaration *decl) {
   assert(decl);
   function_delete(decl->data);
   UTILITY_FREE(decl);
+}
+Declaration *declaration_build(Sexp *ast) {
+  assert(sexp_is_pair(ast));
+  assert(sexp_is_number(sexp_car(ast)));
+  switch (ast_get(ast)) {
+  case AST_FUNCTION_DEFINITION:
+    return declaration_new_function(function_build(ast));
+  default:
+    return NULL;
+  }
 }
 void declaration_print(FILE *fp, Declaration *decl) {
   assert(decl);
