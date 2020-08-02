@@ -1,4 +1,3 @@
-#include "generate.h"
 #include "module.h"
 #include "print.h"
 #include "result.h"
@@ -10,7 +9,6 @@ int main(void) {
     Sexp *ast = result_get_sexp(result);
     Module *module = module_build(ast);
     print_ast(ast);
-    generate_translation_unit(ast);
     module_print(stdout, module);
     module_delete(module);
   }
