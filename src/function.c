@@ -2,9 +2,11 @@
 
 #include "ast.h"
 #include "block.h"
+#include "instruction.h"
 #include "print.h"
 #include "sexp.h"
 #include "utility.h"
+#include "value.h"
 #include "vector.h"
 
 struct struct_Function {
@@ -117,6 +119,20 @@ void function_set(Function *func, Sexp *ast) {
   ast = sexp_next(ast, AST_FUNCTION_DEFINITION);
   assert(4 == sexp_length(ast));
   function_set_declarator(func, sexp_at(ast, 1));
+}
+Function *function_build(Sexp *ast) {
+  Function *func;
+  Block *block;
+  Instruction *instr;
+  const char *name = function_name(ast);
+  instr = instruction_new(INSTRUCTION_RET);
+  instruction_insert(instr, value_new_integer(0));
+  block = block_new();
+  block_insert(block, instr);
+  func = function_new();
+  function_set_name(func, name);
+  function_insert(func, block);
+  return func;
 }
 void function_print(FILE *fp, Function *func) {
   ElemType *it;
