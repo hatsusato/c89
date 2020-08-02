@@ -16,17 +16,12 @@ static Declaration *declaration_new(DeclarationTag tag) {
   decl->data = NULL;
   return decl;
 }
-
-Declaration *declaration_new_function(Function *func) {
+static Declaration *declaration_new_function(Function *func) {
   Declaration *decl = declaration_new(DECLARATION_FUNCTION);
   decl->data = func;
   return decl;
 }
-void declaration_delete(Declaration *decl) {
-  assert(decl);
-  function_delete(decl->data);
-  UTILITY_FREE(decl);
-}
+
 Declaration *declaration_build(Sexp *ast) {
   assert(sexp_is_pair(ast));
   assert(sexp_is_number(sexp_car(ast)));
@@ -36,6 +31,11 @@ Declaration *declaration_build(Sexp *ast) {
   default:
     return NULL;
   }
+}
+void declaration_delete(Declaration *decl) {
+  assert(decl);
+  function_delete(decl->data);
+  UTILITY_FREE(decl);
 }
 void declaration_print(FILE *fp, Declaration *decl) {
   assert(decl);

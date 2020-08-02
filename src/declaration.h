@@ -7,9 +7,8 @@
 
 typedef enum { DECLARATION_FUNCTION } DeclarationTag;
 
-Declaration *declaration_new_function(Function *);
-void declaration_delete(Declaration *);
 Declaration *declaration_build(Sexp *);
+void declaration_delete(Declaration *);
 void declaration_print(FILE *, Declaration *);
 
 #endif /* INCLUDE_GUARD_0DCFEB82_40C6_4B2A_A620_2FA21E8F81A8 */
