@@ -84,22 +84,13 @@ static const char *function_name_from_declarator(Sexp *ast) {
   }
 }
 
-Function *function_new(void) {
+static Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
   func->name = NULL;
   func->blocks = vector_new((Destructor)block_delete);
   return func;
 }
-void function_delete(Function *func) {
-  assert(func);
-  vector_delete(func->blocks);
-  UTILITY_FREE(func);
-}
-void function_insert(Function *func, Block *block) {
-  assert(func);
-  vector_push(func->blocks, block);
-}
-const char *function_name(Sexp *ast) {
+static const char *function_name(Sexp *ast) {
   ast = sexp_next(ast, AST_FUNCTION_DEFINITION);
   switch (sexp_length(ast)) {
   case 3:
@@ -111,15 +102,20 @@ const char *function_name(Sexp *ast) {
     return NULL;
   }
 }
-void function_set_name(Function *func, const char *name) {
-  assert(func);
-  func->name = name;
-}
-void function_set(Function *func, Sexp *ast) {
+static void function_set(Function *func, Sexp *ast) {
   ast = sexp_next(ast, AST_FUNCTION_DEFINITION);
   assert(4 == sexp_length(ast));
   function_set_declarator(func, sexp_at(ast, 1));
 }
+static void function_set_name(Function *func, const char *name) {
+  assert(func);
+  func->name = name;
+}
+static void function_insert(Function *func, Block *block) {
+  assert(func);
+  vector_push(func->blocks, block);
+}
+
 Function *function_build(Sexp *ast) {
   Function *func;
   Block *block;
@@ -133,6 +129,11 @@ Function *function_build(Sexp *ast) {
   function_set_name(func, name);
   function_insert(func, block);
   return func;
+}
+void function_delete(Function *func) {
+  assert(func);
+  vector_delete(func->blocks);
+  UTILITY_FREE(func);
 }
 void function_print(FILE *fp, Function *func) {
   ElemType *it;
