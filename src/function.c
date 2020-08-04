@@ -81,18 +81,22 @@ static void function_insert(Function *func, Block *block) {
   assert(func);
   vector_push(func->blocks, block);
 }
-
-Function *function_build(Sexp *ast) {
-  Function *func;
+static void function_build_compound_statement(Function *func, Sexp *ast) {
   Block *block;
   Instruction *instr;
   instr = instruction_new(INSTRUCTION_RET);
   instruction_insert(instr, value_new_integer(0));
   block = block_new();
   block_insert(block, instr);
+  function_insert(func, block);
+  (void)ast;
+}
+
+Function *function_build(Sexp *ast) {
+  Function *func;
   func = function_new();
   func->name = function_name(ast);
-  function_insert(func, block);
+  function_build_compound_statement(func, function_body(ast));
   return func;
 }
 void function_delete(Function *func) {
