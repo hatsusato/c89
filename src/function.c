@@ -59,6 +59,18 @@ static const char *function_name(Sexp *ast) {
     return NULL;
   }
 }
+static Sexp *function_body(Sexp *ast) {
+  ast = sexp_next(ast, AST_FUNCTION_DEFINITION);
+  switch (sexp_length(ast)) {
+  case 3:
+    return sexp_at(ast, 2);
+  case 4:
+    return sexp_at(ast, 3);
+  default:
+    assert(0);
+    return NULL;
+  }
+}
 static Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
   func->name = NULL;
