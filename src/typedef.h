@@ -24,6 +24,9 @@ typedef void (*ForeachMap)(ElemType, void *);
 struct struct_Block;
 typedef struct struct_Block Block;
 
+struct struct_Builder;
+typedef struct struct_Builder Builder;
+
 struct struct_Declaration;
 typedef struct struct_Declaration Declaration;
 
