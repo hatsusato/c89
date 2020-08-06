@@ -1,6 +1,7 @@
 #include "module.h"
 
 #include "ast.h"
+#include "builder.h"
 #include "declaration.h"
 #include "sexp.h"
 #include "utility.h"
@@ -20,19 +21,17 @@ Module *module_new(void) {
   module->decls = vector_new((Destructor)declaration_delete);
   return module;
 }
-Module *module_build(Sexp *ast) {
-  Module *module = module_new();
-  ast = sexp_next(ast, AST_TRANSLATION_UNIT);
-  for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    Declaration *decl = declaration_build(sexp_car(ast));
-    module_insert(module, decl);
-  }
-  return module;
-}
 void module_delete(Module *module) {
   if (module) {
     vector_delete(module->decls);
     UTILITY_FREE(module);
+  }
+}
+void module_build(Builder *builder, Sexp *ast) {
+  ast = sexp_next(ast, AST_TRANSLATION_UNIT);
+  for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    Declaration *decl = declaration_build(sexp_car(ast));
+    module_insert(builder_module(builder), decl);
   }
 }
 void module_print(FILE *fp, Module *module) {
