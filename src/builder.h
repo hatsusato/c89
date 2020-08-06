@@ -3,7 +3,7 @@
 
 #include "typedef.h"
 
-Builder *builder_new(void);
+Builder *builder_new(Module *);
 void builder_delete(Builder *);
 Module *builder_module(Builder *);
 
