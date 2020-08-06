@@ -17,3 +17,7 @@ void builder_delete(Builder *builder) {
   module_delete(builder->module);
   UTILITY_FREE(builder);
 }
+Module *builder_module(Builder *builder) {
+  assert(builder);
+  return builder->module;
+}
