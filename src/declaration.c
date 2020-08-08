@@ -22,6 +22,12 @@ static Declaration *declaration_new_function(Sexp *ast) {
   return decl;
 }
 
+void declaration_delete(Declaration *decl) {
+  if (decl) {
+    function_delete(decl->data);
+    UTILITY_FREE(decl);
+  }
+}
 Declaration *declaration_build(Sexp *ast) {
   assert(sexp_is_pair(ast) && sexp_is_number(sexp_car(ast)));
   switch (ast_get(ast)) {
@@ -29,12 +35,6 @@ Declaration *declaration_build(Sexp *ast) {
     return declaration_new_function(ast);
   default:
     return NULL;
-  }
-}
-void declaration_delete(Declaration *decl) {
-  if (decl) {
-    function_delete(decl->data);
-    UTILITY_FREE(decl);
   }
 }
 void declaration_print(FILE *fp, Declaration *decl) {
