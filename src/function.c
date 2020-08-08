@@ -92,17 +92,17 @@ static void function_build_compound_statement(Function *func, Sexp *ast) {
   (void)ast;
 }
 
+void function_delete(Function *func) {
+  assert(func);
+  vector_delete(func->blocks);
+  UTILITY_FREE(func);
+}
 Function *function_build(Sexp *ast) {
   Function *func;
   func = function_new();
   func->name = function_name(ast);
   function_build_compound_statement(func, function_body(ast));
   return func;
-}
-void function_delete(Function *func) {
-  assert(func);
-  vector_delete(func->blocks);
-  UTILITY_FREE(func);
 }
 void function_print(FILE *fp, Function *func) {
   ElemType *it;

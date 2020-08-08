@@ -5,8 +5,8 @@
 
 #include "typedef.h"
 
-Function *function_build(Sexp *);
 void function_delete(Function *);
+Function *function_build(Sexp *);
 void function_print(FILE *, Function *);
 
 #endif /* INCLUDE_GUARD_A4D0857A_3580_4AC6_B714_9A0637D15442 */
