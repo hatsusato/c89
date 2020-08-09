@@ -9,9 +9,9 @@ struct struct_Builder {
   Function *func;
 };
 
-Builder *builder_new(Module *module) {
+Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
-  builder->module = module;
+  builder->module = NULL;
   builder->func = NULL;
   return builder;
 }
@@ -28,6 +28,7 @@ void builder_new_function(Builder *builder) {
 void builder_delete(Builder *builder) {
   assert(builder);
   assert(!builder->func);
+  module_delete(builder->module);
   UTILITY_FREE(builder);
 }
 Module *builder_module(Builder *builder) {
