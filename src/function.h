@@ -5,6 +5,7 @@
 
 #include "typedef.h"
 
+Function *function_new(void);
 void function_delete(Function *);
 Function *function_build(Sexp *);
 void function_print(FILE *, Function *);

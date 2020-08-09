@@ -71,12 +71,6 @@ static Sexp *function_body(Sexp *ast) {
     return NULL;
   }
 }
-static Function *function_new(void) {
-  Function *func = UTILITY_MALLOC(Function);
-  func->name = NULL;
-  func->blocks = vector_new((Destructor)block_delete);
-  return func;
-}
 static void function_insert(Function *func, Block *block) {
   assert(func);
   vector_push(func->blocks, block);
@@ -92,6 +86,12 @@ static void function_build_compound_statement(Function *func, Sexp *ast) {
   (void)ast;
 }
 
+Function *function_new(void) {
+  Function *func = UTILITY_MALLOC(Function);
+  func->name = NULL;
+  func->blocks = vector_new((Destructor)block_delete);
+  return func;
+}
 void function_delete(Function *func) {
   assert(func);
   vector_delete(func->blocks);
