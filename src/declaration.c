@@ -28,6 +28,10 @@ void declaration_delete(Declaration *decl) {
     UTILITY_FREE(decl);
   }
 }
+Function *declaration_function(Declaration *decl) {
+  assert(decl);
+  return DECLARATION_FUNCTION == decl->tag ? decl->data : NULL;
+}
 Declaration *declaration_build(Sexp *ast) {
   assert(sexp_is_pair(ast) && sexp_is_number(sexp_car(ast)));
   switch (ast_get(ast)) {
