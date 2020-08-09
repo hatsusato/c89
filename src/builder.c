@@ -1,5 +1,6 @@
 #include "builder.h"
 
+#include "function.h"
 #include "module.h"
 #include "utility.h"
 
@@ -13,6 +14,16 @@ Builder *builder_new(Module *module) {
   builder->module = module;
   builder->func = NULL;
   return builder;
+}
+void builder_new_module(Builder *builder) {
+  assert(builder);
+  assert(!builder->module);
+  builder->module = module_new();
+}
+void builder_new_function(Builder *builder) {
+  assert(builder);
+  assert(!builder->func);
+  builder->func = function_new();
 }
 void builder_delete(Builder *builder) {
   assert(builder);
