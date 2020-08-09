@@ -26,6 +26,12 @@ void module_insert(Module *module, Declaration *decl) {
   assert(module);
   vector_push(module->decls, decl);
 }
+Function *module_last(Module *module) {
+  Declaration *decl;
+  assert(module);
+  decl = (Declaration *)vector_back(module->decls);
+  return decl ? declaration_function(decl) : NULL;
+}
 void module_build(Builder *builder, Sexp *ast) {
   builder_new_module(builder);
   ast = sexp_next(ast, AST_TRANSLATION_UNIT);
