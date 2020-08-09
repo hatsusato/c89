@@ -11,11 +11,6 @@ struct struct_Module {
   Vector *decls;
 };
 
-static void module_insert(Module *module, Declaration *decl) {
-  assert(module);
-  vector_push(module->decls, decl);
-}
-
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->decls = vector_new((Destructor)declaration_delete);
@@ -26,6 +21,10 @@ void module_delete(Module *module) {
     vector_delete(module->decls);
     UTILITY_FREE(module);
   }
+}
+void module_insert(Module *module, Declaration *decl) {
+  assert(module);
+  vector_push(module->decls, decl);
 }
 void module_build(Builder *builder, Sexp *ast) {
   ast = sexp_next(ast, AST_TRANSLATION_UNIT);

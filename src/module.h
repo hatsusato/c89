@@ -7,6 +7,7 @@
 
 Module *module_new(void);
 void module_delete(Module *);
+void module_insert(Module *, Declaration *);
 void module_build(Builder *, Sexp *);
 void module_print(FILE *, Module *);
 
