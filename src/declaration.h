@@ -7,6 +7,7 @@
 
 typedef enum { DECLARATION_FUNCTION } DeclarationTag;
 
+Declaration *declaration_new_function(Function *);
 void declaration_delete(Declaration *);
 Declaration *declaration_build(Sexp *);
 void declaration_print(FILE *, Declaration *);
