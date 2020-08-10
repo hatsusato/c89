@@ -1,7 +1,9 @@
 #include "declaration.h"
 
 #include "ast.h"
+#include "builder.h"
 #include "function.h"
+#include "module.h"
 #include "sexp.h"
 #include "utility.h"
 
@@ -32,13 +34,15 @@ Function *declaration_function(Declaration *decl) {
   assert(decl);
   return DECLARATION_FUNCTION == decl->tag ? decl->data : NULL;
 }
-Declaration *declaration_build(Sexp *ast) {
+void declaration_build(Builder *builder, Sexp *ast) {
   assert(sexp_is_pair(ast) && sexp_is_number(sexp_car(ast)));
   switch (ast_get(ast)) {
   case AST_FUNCTION_DEFINITION:
-    return declaration_new_function(function_build(ast));
+    module_insert(builder_module(builder),
+                  declaration_new_function(function_build(ast)));
+    return;
   default:
-    return NULL;
+    return;
   }
 }
 void declaration_print(FILE *fp, Declaration *decl) {

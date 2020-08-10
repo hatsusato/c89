@@ -36,8 +36,7 @@ void module_build(Builder *builder, Sexp *ast) {
   builder_new_module(builder);
   ast = sexp_next(ast, AST_TRANSLATION_UNIT);
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    Declaration *decl = declaration_build(sexp_car(ast));
-    module_insert(builder_module(builder), decl);
+    declaration_build(builder, sexp_car(ast));
   }
 }
 void module_print(FILE *fp, Module *module) {
