@@ -19,9 +19,12 @@ void builder_new_module(Builder *builder) {
   assert(!builder->module);
   builder->module = module_new();
 }
-void builder_new_function(Builder *builder) {
+Function *builder_new_function(Builder *builder) {
+  Function *func;
   assert(builder);
-  module_insert(builder->module, declaration_new_function(function_new()));
+  func = function_new();
+  module_insert(builder->module, declaration_new_function(func));
+  return func;
 }
 void builder_delete(Builder *builder) {
   assert(builder);

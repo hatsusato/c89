@@ -99,9 +99,7 @@ void function_delete(Function *func) {
   UTILITY_FREE(func);
 }
 void function_build(Builder *builder, Sexp *ast) {
-  Function *func;
-  builder_new_function(builder);
-  func = builder_function(builder);
+  Function *func = builder_new_function(builder);
   func->name = function_name(ast);
   function_build_compound_statement(func, function_body(ast));
 }
