@@ -38,8 +38,7 @@ void declaration_build(Builder *builder, Sexp *ast) {
   assert(sexp_is_pair(ast) && sexp_is_number(sexp_car(ast)));
   switch (ast_get(ast)) {
   case AST_FUNCTION_DEFINITION:
-    module_insert(builder_module(builder),
-                  declaration_new_function(function_build(ast)));
+    function_build(builder, ast);
     return;
   default:
     return;

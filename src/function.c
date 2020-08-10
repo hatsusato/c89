@@ -2,6 +2,7 @@
 
 #include "ast.h"
 #include "block.h"
+#include "builder.h"
 #include "instruction.h"
 #include "print.h"
 #include "sexp.h"
@@ -97,12 +98,12 @@ void function_delete(Function *func) {
   vector_delete(func->blocks);
   UTILITY_FREE(func);
 }
-Function *function_build(Sexp *ast) {
+void function_build(Builder *builder, Sexp *ast) {
   Function *func;
-  func = function_new();
+  builder_new_function(builder);
+  func = builder_function(builder);
   func->name = function_name(ast);
   function_build_compound_statement(func, function_body(ast));
-  return func;
 }
 void function_print(FILE *fp, Function *func) {
   ElemType *it;
