@@ -33,7 +33,3 @@ Function *builder_new_function(Builder *builder) {
   module_insert_function(builder->module, func);
   return func;
 }
-Module *builder_module(Builder *builder) {
-  assert(builder);
-  return builder->module;
-}
