@@ -34,7 +34,3 @@ Module *builder_module(Builder *builder) {
   assert(builder);
   return builder->module;
 }
-Function *builder_function(Builder *builder) {
-  assert(builder);
-  return module_last(builder->module);
-}
