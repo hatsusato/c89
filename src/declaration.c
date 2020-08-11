@@ -23,10 +23,9 @@ Declaration *declaration_new_function(Function *func) {
   return declaration_new(DECLARATION_FUNCTION, func);
 }
 void declaration_delete(Declaration *decl) {
-  if (decl) {
-    function_delete(decl->data);
-    UTILITY_FREE(decl);
-  }
+  assert(decl);
+  function_delete(decl->data);
+  UTILITY_FREE(decl);
 }
 Function *declaration_function(Declaration *decl) {
   assert(decl);
@@ -43,11 +42,10 @@ void declaration_build(Builder *builder, Sexp *ast) {
   }
 }
 void declaration_print(FILE *fp, Declaration *decl) {
-  if (decl) {
-    switch (decl->tag) {
-    case DECLARATION_FUNCTION:
-      function_print(fp, decl->data);
-      return;
-    }
+  assert(decl);
+  switch (decl->tag) {
+  case DECLARATION_FUNCTION:
+    function_print(fp, decl->data);
+    return;
   }
 }
