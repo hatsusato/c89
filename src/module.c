@@ -1,6 +1,7 @@
 #include "module.h"
 
 #include "ast.h"
+#include "builder.h"
 #include "declaration.h"
 #include "function.h"
 #include "sexp.h"
@@ -36,7 +37,7 @@ void module_insert_function(Module *module, Function *func) {
 void module_build(Builder *builder, Sexp *ast) {
   ast = sexp_next(ast, AST_TRANSLATION_UNIT);
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    declaration_build(builder, sexp_car(ast));
+    declaration_build(builder_module(builder), sexp_car(ast));
   }
 }
 void module_print(FILE *fp, Module *module) {

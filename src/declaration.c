@@ -27,11 +27,11 @@ void declaration_delete(Declaration *decl) {
   function_delete(decl->data);
   UTILITY_FREE(decl);
 }
-void declaration_build(Builder *builder, Sexp *ast) {
+void declaration_build(Module *module, Sexp *ast) {
   assert(sexp_is_pair(ast) && sexp_is_number(sexp_car(ast)));
   switch (ast_get(ast)) {
   case AST_FUNCTION_DEFINITION:
-    function_build(builder_module(builder), ast);
+    function_build(module, ast);
     return;
   default:
     return;
