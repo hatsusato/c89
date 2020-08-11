@@ -1,4 +1,3 @@
-#include "builder.h"
 #include "module.h"
 #include "print.h"
 #include "result.h"
@@ -8,12 +7,11 @@ int main(void) {
   int ret = result_parse(result);
   if (0 == ret) {
     Sexp *ast = result_get_sexp(result);
-    Builder *builder = builder_new();
-    Module *module = builder_new_module(builder);
+    Module *module = module_new();
     print_ast(ast);
     module_build(module, ast);
     module_print(stdout, module);
-    builder_delete(builder);
+    module_delete(module);
   }
   result_delete(result);
   return ret;
