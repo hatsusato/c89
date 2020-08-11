@@ -1,7 +1,6 @@
 #include "module.h"
 
 #include "ast.h"
-#include "builder.h"
 #include "declaration.h"
 #include "sexp.h"
 #include "utility.h"
