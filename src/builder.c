@@ -13,10 +13,13 @@ Builder *builder_new(void) {
   builder->module = NULL;
   return builder;
 }
-void builder_new_module(Builder *builder) {
+Module *builder_new_module(Builder *builder) {
+  Module *module;
   assert(builder);
   assert(!builder->module);
-  builder->module = module_new();
+  module = module_new();
+  builder->module = module;
+  return module;
 }
 Function *builder_new_function(Builder *builder) {
   Function *func;

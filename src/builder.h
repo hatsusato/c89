@@ -4,7 +4,7 @@
 #include "typedef.h"
 
 Builder *builder_new(void);
-void builder_new_module(Builder *);
+Module *builder_new_module(Builder *);
 Function *builder_new_function(Builder *);
 void builder_delete(Builder *);
 Module *builder_module(Builder *);
