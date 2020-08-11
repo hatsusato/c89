@@ -8,7 +8,6 @@
 Module *module_new(void);
 void module_delete(Module *);
 Function *module_new_function(Module *);
-void module_insert_function(Module *, Function *);
 void module_build(Module *, Sexp *);
 void module_print(FILE *, Module *);
 

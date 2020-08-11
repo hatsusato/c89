@@ -29,10 +29,6 @@ Function *module_new_function(Module *module) {
   vector_push(module->decls, declaration_new_function(func));
   return func;
 }
-void module_insert_function(Module *module, Function *func) {
-  assert(module);
-  vector_push(module->decls, declaration_new_function(func));
-}
 void module_build(Module *module, Sexp *ast) {
   ast = sexp_next(ast, AST_TRANSLATION_UNIT);
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
