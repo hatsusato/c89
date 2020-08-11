@@ -11,7 +11,7 @@ int main(void) {
     Builder *builder = builder_new();
     Module *module = builder_new_module(builder);
     print_ast(ast);
-    module_build(builder, ast);
+    module_build(module, ast);
     module_print(stdout, module);
     builder_delete(builder);
   }
