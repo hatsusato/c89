@@ -9,9 +9,10 @@ int main(void) {
   if (0 == ret) {
     Sexp *ast = result_get_sexp(result);
     Builder *builder = builder_new();
+    Module *module = builder_new_module(builder);
     print_ast(ast);
     module_build(builder, ast);
-    module_print(stdout, builder_module(builder));
+    module_print(stdout, module);
     builder_delete(builder);
   }
   result_delete(result);

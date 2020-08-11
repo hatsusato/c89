@@ -27,7 +27,6 @@ void module_insert_function(Module *module, Function *func) {
   vector_push(module->decls, declaration_new_function(func));
 }
 void module_build(Builder *builder, Sexp *ast) {
-  builder_new_module(builder);
   ast = sexp_next(ast, AST_TRANSLATION_UNIT);
   for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     declaration_build(builder, sexp_car(ast));
