@@ -12,17 +12,15 @@ struct struct_Declaration {
   void *data;
 };
 
-static Declaration *declaration_new(DeclarationTag tag) {
+static Declaration *declaration_new(DeclarationTag tag, void *data) {
   Declaration *decl = UTILITY_MALLOC(Declaration);
   decl->tag = tag;
-  decl->data = NULL;
+  decl->data = data;
   return decl;
 }
 
 Declaration *declaration_new_function(Function *func) {
-  Declaration *decl = declaration_new(DECLARATION_FUNCTION);
-  decl->data = func;
-  return decl;
+  return declaration_new(DECLARATION_FUNCTION, func);
 }
 void declaration_delete(Declaration *decl) {
   if (decl) {
