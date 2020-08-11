@@ -2,8 +2,8 @@
 
 #include "ast.h"
 #include "block.h"
-#include "builder.h"
 #include "instruction.h"
+#include "module.h"
 #include "print.h"
 #include "sexp.h"
 #include "utility.h"
@@ -98,8 +98,8 @@ void function_delete(Function *func) {
   vector_delete(func->blocks);
   UTILITY_FREE(func);
 }
-void function_build(Builder *builder, Sexp *ast) {
-  Function *func = builder_new_function(builder);
+void function_build(Module *module, Sexp *ast) {
+  Function *func = module_new_function(module);
   func->name = function_name(ast);
   function_build_compound_statement(func, function_body(ast));
 }

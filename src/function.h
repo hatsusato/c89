@@ -7,7 +7,7 @@
 
 Function *function_new(void);
 void function_delete(Function *);
-void function_build(Builder *, Sexp *);
+void function_build(Module *, Sexp *);
 void function_print(FILE *, Function *);
 
 #endif /* INCLUDE_GUARD_A4D0857A_3580_4AC6_B714_9A0637D15442 */
