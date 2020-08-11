@@ -2,6 +2,7 @@
 
 #include "ast.h"
 #include "declaration.h"
+#include "function.h"
 #include "sexp.h"
 #include "utility.h"
 #include "vector.h"
@@ -20,6 +21,13 @@ void module_delete(Module *module) {
     vector_delete(module->decls);
     UTILITY_FREE(module);
   }
+}
+Function *module_new_function(Module *module) {
+  Function *func;
+  assert(module);
+  func = function_new();
+  vector_push(module->decls, declaration_new_function(func));
+  return func;
 }
 void module_insert_function(Module *module, Function *func) {
   assert(module);
