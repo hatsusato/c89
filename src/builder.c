@@ -13,6 +13,11 @@ Builder *builder_new(void) {
   builder->module = NULL;
   return builder;
 }
+void builder_delete(Builder *builder) {
+  assert(builder);
+  module_delete(builder->module);
+  UTILITY_FREE(builder);
+}
 Module *builder_new_module(Builder *builder) {
   Module *module;
   assert(builder);
@@ -27,11 +32,6 @@ Function *builder_new_function(Builder *builder) {
   func = function_new();
   module_insert_function(builder->module, func);
   return func;
-}
-void builder_delete(Builder *builder) {
-  assert(builder);
-  module_delete(builder->module);
-  UTILITY_FREE(builder);
 }
 Module *builder_module(Builder *builder) {
   assert(builder);
