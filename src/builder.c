@@ -1,6 +1,5 @@
 #include "builder.h"
 
-#include "declaration.h"
 #include "function.h"
 #include "module.h"
 #include "utility.h"
@@ -23,7 +22,7 @@ Function *builder_new_function(Builder *builder) {
   Function *func;
   assert(builder);
   func = function_new();
-  module_insert(builder->module, declaration_new_function(func));
+  module_insert_function(builder->module, func);
   return func;
 }
 void builder_delete(Builder *builder) {

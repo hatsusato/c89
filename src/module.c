@@ -26,6 +26,10 @@ void module_insert(Module *module, Declaration *decl) {
   assert(module);
   vector_push(module->decls, decl);
 }
+void module_insert_function(Module *module, Function *func) {
+  assert(module);
+  vector_push(module->decls, declaration_new_function(func));
+}
 Function *module_last(Module *module) {
   Declaration *decl;
   assert(module);
