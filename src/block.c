@@ -25,10 +25,6 @@ Instruction *block_new_instruction(Block *block, InstructionTag tag) {
   vector_push(block->insts, instr);
   return instr;
 }
-void block_insert(Block *block, Instruction *instr) {
-  assert(block);
-  vector_push(block->insts, instr);
-}
 void block_print(FILE *fp, Block *block) {
   ElemType *it;
   assert(block);

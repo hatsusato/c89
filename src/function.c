@@ -72,10 +72,6 @@ static Sexp *function_body(Sexp *ast) {
     return NULL;
   }
 }
-static void function_insert(Function *func, Block *block) {
-  assert(func);
-  vector_push(func->blocks, block);
-}
 static void function_build_compound_statement(Function *func, Sexp *ast) {
   Block *block;
   Instruction *instr;
