@@ -5,7 +5,7 @@
 
 #include "typedef.h"
 
-Function *function_new(void);
+Function *function_new(Module *);
 void function_delete(Function *);
 Block *function_new_block(Function *);
 void function_build(Module *, Sexp *);

@@ -11,6 +11,7 @@
 #include "vector.h"
 
 struct struct_Function {
+  Module *parent;
   const char *name;
   Vector *blocks;
 };
@@ -81,8 +82,9 @@ static void function_build_compound_statement(Function *func, Sexp *ast) {
   (void)ast;
 }
 
-Function *function_new(void) {
+Function *function_new(Module *module) {
   Function *func = UTILITY_MALLOC(Function);
+  func->parent = module;
   func->name = NULL;
   func->blocks = vector_new((Destructor)block_delete);
   return func;

@@ -25,7 +25,7 @@ void module_delete(Module *module) {
 Function *module_new_function(Module *module) {
   Function *func;
   assert(module);
-  func = function_new();
+  func = function_new(module);
   vector_push(module->decls, declaration_new_function(func));
   return func;
 }
