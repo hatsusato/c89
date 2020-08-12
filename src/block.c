@@ -18,6 +18,13 @@ void block_delete(Block *block) {
   vector_delete(block->insts);
   UTILITY_FREE(block);
 }
+Instruction *block_new_instruction(Block *block, InstructionTag tag) {
+  Instruction *instr;
+  assert(block);
+  instr = instruction_new(tag);
+  vector_push(block->insts, instr);
+  return instr;
+}
 void block_insert(Block *block, Instruction *instr) {
   assert(block);
   vector_push(block->insts, instr);

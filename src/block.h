@@ -3,10 +3,12 @@
 
 #include <stdio.h>
 
+#include "instruction.h"
 #include "typedef.h"
 
 Block *block_new(void);
 void block_delete(Block *);
+Instruction *block_new_instruction(Block *, InstructionTag);
 void block_insert(Block *, Instruction *);
 void block_print(FILE *, Block *);
 

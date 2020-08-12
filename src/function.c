@@ -79,10 +79,9 @@ static void function_insert(Function *func, Block *block) {
 static void function_build_compound_statement(Function *func, Sexp *ast) {
   Block *block;
   Instruction *instr;
-  instr = instruction_new(INSTRUCTION_RET);
-  instruction_insert(instr, value_new_integer(0));
   block = function_new_block(func);
-  block_insert(block, instr);
+  instr = block_new_instruction(block, INSTRUCTION_RET);
+  instruction_insert(instr, value_new_integer(0));
   (void)ast;
 }
 
