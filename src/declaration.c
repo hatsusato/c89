@@ -2,7 +2,6 @@
 
 #include "ast.h"
 #include "function.h"
-#include "module.h"
 #include "sexp.h"
 #include "utility.h"
 
