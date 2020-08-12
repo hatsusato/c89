@@ -5,8 +5,6 @@
 
 #include "typedef.h"
 
-typedef enum { DECLARATION_FUNCTION } DeclarationTag;
-
 Declaration *declaration_new_function(Function *);
 void declaration_delete(Declaration *);
 void declaration_build(Module *, Sexp *);

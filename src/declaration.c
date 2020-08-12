@@ -5,6 +5,8 @@
 #include "sexp.h"
 #include "utility.h"
 
+typedef enum { DECLARATION_FUNCTION } DeclarationTag;
+
 struct struct_Declaration {
   DeclarationTag tag;
   void *data;
