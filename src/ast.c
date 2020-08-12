@@ -26,11 +26,11 @@ const char *ast_show(AstTag tag) {
   }
   return NULL;
 }
-AstTag ast_get(Sexp *ast) {
+AstTag ast_tag(Sexp *ast) {
   if (sexp_is_number(ast)) {
     return sexp_get_number(ast);
   } else if (sexp_is_pair(ast)) {
-    return ast_get(sexp_car(ast));
+    return ast_tag(sexp_car(ast));
   }
   return AST_NULL;
 }

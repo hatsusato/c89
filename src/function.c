@@ -24,7 +24,7 @@ static const char *function_name_from_identifier(Sexp *ast) {
 }
 static const char *function_name_from_direct_declarator(Sexp *ast) {
   ast = sexp_next(ast, AST_DIRECT_DECLARATOR);
-  switch (ast_get(ast)) {
+  switch (ast_tag(ast)) {
   case AST_IDENTIFIER:
     return function_name_from_identifier(sexp_at(ast, 0));
   case AST_LEFT_PAREN:

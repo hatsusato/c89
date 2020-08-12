@@ -29,7 +29,7 @@ void declaration_delete(Declaration *decl) {
 }
 void declaration_build(Module *module, Sexp *ast) {
   assert(sexp_is_pair(ast) && sexp_is_number(sexp_car(ast)));
-  switch (ast_get(ast)) {
+  switch (ast_tag(ast)) {
   case AST_FUNCTION_DEFINITION:
     function_build(module, ast);
     return;
