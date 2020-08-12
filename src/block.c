@@ -23,7 +23,7 @@ void block_delete(Block *block) {
 Instruction *block_new_instruction(Block *block, InstructionTag tag) {
   Instruction *instr;
   assert(block);
-  instr = instruction_new(tag);
+  instr = instruction_new(block, tag);
   vector_push(block->insts, instr);
   return instr;
 }

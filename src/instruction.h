@@ -11,7 +11,7 @@ typedef enum {
   INSTRUCTION_RET
 } InstructionTag;
 
-Instruction *instruction_new(InstructionTag);
+Instruction *instruction_new(Block *, InstructionTag);
 void instruction_delete(Instruction *);
 void instruction_insert(Instruction *, Value *);
 void instruction_print(FILE *, Instruction *);

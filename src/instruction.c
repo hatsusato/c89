@@ -6,12 +6,14 @@
 #include "vector.h"
 
 struct struct_Instruction {
+  Block *parent;
   InstructionTag tag;
   Vector *operands;
 };
 
-Instruction *instruction_new(InstructionTag tag) {
+Instruction *instruction_new(Block *block, InstructionTag tag) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
+  instr->parent = block;
   instr->tag = tag;
   instr->operands = vector_new((Destructor)value_delete);
   return instr;
