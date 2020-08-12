@@ -7,6 +7,7 @@
 
 Function *function_new(void);
 void function_delete(Function *);
+Block *function_new_block(Function *);
 void function_build(Module *, Sexp *);
 void function_print(FILE *, Function *);
 

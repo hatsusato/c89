@@ -81,9 +81,8 @@ static void function_build_compound_statement(Function *func, Sexp *ast) {
   Instruction *instr;
   instr = instruction_new(INSTRUCTION_RET);
   instruction_insert(instr, value_new_integer(0));
-  block = block_new();
+  block = function_new_block(func);
   block_insert(block, instr);
-  function_insert(func, block);
   (void)ast;
 }
 
@@ -97,6 +96,13 @@ void function_delete(Function *func) {
   assert(func);
   vector_delete(func->blocks);
   UTILITY_FREE(func);
+}
+Block *function_new_block(Function *func) {
+  Block *block;
+  assert(func);
+  block = block_new();
+  vector_push(func->blocks, block);
+  return block;
 }
 void function_build(Module *module, Sexp *ast) {
   Function *func = module_new_function(module);
