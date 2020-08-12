@@ -6,7 +6,7 @@
 #include "instruction.h"
 #include "typedef.h"
 
-Block *block_new(void);
+Block *block_new(Function *);
 void block_delete(Block *);
 Instruction *block_new_instruction(Block *, InstructionTag);
 void block_print(FILE *, Block *);

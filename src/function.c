@@ -97,7 +97,7 @@ void function_delete(Function *func) {
 Block *function_new_block(Function *func) {
   Block *block;
   assert(func);
-  block = block_new();
+  block = block_new(func);
   vector_push(func->blocks, block);
   return block;
 }

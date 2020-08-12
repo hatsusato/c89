@@ -5,11 +5,13 @@
 #include "vector.h"
 
 struct struct_Block {
+  Function *parent;
   Vector *insts;
 };
 
-Block *block_new(void) {
+Block *block_new(Function *func) {
   Block *block = UTILITY_MALLOC(Block);
+  block->parent = func;
   block->insts = vector_new((Destructor)instruction_delete);
   return block;
 }
