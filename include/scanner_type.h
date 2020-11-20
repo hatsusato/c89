@@ -6,4 +6,7 @@
 typedef void *yyscan_t;
 #endif
 
+struct struct_Scanner;
+typedef struct struct_Scanner Scanner;
+
 #endif /* INCLUDE_GUARD_7B0E7F8C_1388_40A7_8119_2E75D5DD636E */
