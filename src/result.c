@@ -1,6 +1,6 @@
 #include "result.h"
 
-#include "scanner.h"
+#include "scan.h"
 #include "sexp.h"
 #include "table.h"
 #include "utility.h"
@@ -23,9 +23,9 @@ void result_delete(Result *result) {
   UTILITY_FREE(result);
 }
 int result_parse(Result *result) {
-  yyscan_t scanner = scanner_new(result);
-  int ret = scanner_parse(scanner);
-  scanner_delete(scanner);
+  yyscan_t scan = scan_new(result);
+  int ret = scan_parse(scan);
+  scan_delete(scan);
   return ret;
 }
 Table *result_get_table(Result *result) {

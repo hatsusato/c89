@@ -1,19 +1,19 @@
 #include "parser.h"
 
-#include "scanner.h"
+#include "scan.h"
 #include "sexp.h"
 #include "table.h"
 #include "utility.h"
 
-void yyerror(yyscan_t scanner, const char *msg) {
-  scanner_yyerror(scanner, msg);
+void yyerror(yyscan_t scan, const char *msg) {
+  scan_yyerror(scan, msg);
 }
 
 Sexp *parser_symbol(AstTag tag) {
   return sexp_number(tag);
 }
-Sexp *parser_token(yyscan_t scanner) {
-  return scanner_token(scanner);
+Sexp *parser_token(yyscan_t scan) {
+  return scan_token(scan);
 }
 Sexp *parser_nil(void) {
   return sexp_nil();
@@ -24,18 +24,18 @@ Sexp *parser_cons(Sexp *car, Sexp *cdr) {
 Sexp *parser_snoc(Sexp *xs, Sexp *x) {
   return sexp_snoc(xs, x);
 }
-void parser_register(yyscan_t scanner, Sexp *ast) {
-  table_register(scanner_table(scanner), ast);
+void parser_register(yyscan_t scan, Sexp *ast) {
+  table_register(scan_table(scan), ast);
 }
-Bool parser_query(yyscan_t scanner, const char *symbol) {
-  return table_query(scanner_table(scanner), symbol);
+Bool parser_query(yyscan_t scan, const char *symbol) {
+  return table_query(scan_table(scan), symbol);
 }
-void parser_push(yyscan_t scanner) {
-  table_push(scanner_table(scanner));
+void parser_push(yyscan_t scan) {
+  table_push(scan_table(scan));
 }
-void parser_pop(yyscan_t scanner) {
-  table_pop(scanner_table(scanner));
+void parser_pop(yyscan_t scan) {
+  table_pop(scan_table(scan));
 }
-void parser_finish(yyscan_t scanner, Sexp *ast) {
-  scanner_finish(scanner, ast);
+void parser_finish(yyscan_t scan, Sexp *ast) {
+  scan_finish(scan, ast);
 }
