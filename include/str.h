@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_08E41EF5_65A1_4E4C_9B5A_FE5896BDA20E
 
 #include "typedef.h"
+#include "types.h"
 
 Str *str_new(const char *, int);
 void str_delete(Str *);

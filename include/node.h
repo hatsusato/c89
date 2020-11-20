@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_B708D97B_CAA0_46DF_A61B_61DC00CAC93F
 
 #include "typedef.h"
+#include "types.h"
 
 struct struct_Node;
 typedef struct struct_Node Node;

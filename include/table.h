@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_DD5D0935_0DD4_46BA_8D0E_560243A08759
 
 #include "typedef.h"
+#include "types.h"
 
 Table *table_new(void);
 void table_delete(Table *);

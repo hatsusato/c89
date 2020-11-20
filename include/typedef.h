@@ -1,21 +1,6 @@
 #ifndef INCLUDE_GUARD_E20E6EF6_D4AC_4C0A_A3D6_B4A494B0E59A
 #define INCLUDE_GUARD_E20E6EF6_D4AC_4C0A_A3D6_B4A494B0E59A
 
-#include <stddef.h>
-
-#define true (1)
-#define false (0)
-typedef int Bool;
-typedef unsigned char Byte;
-typedef unsigned long PointerBytes;
-typedef int Size;
-typedef int Index;
-
-typedef const void *ElemType;
-typedef int (*Compare)(const ElemType *, const ElemType *);
-typedef void (*Destructor)(ElemType);
-typedef void (*ForeachMap)(ElemType, void *);
-
 struct struct_Block;
 typedef struct struct_Block Block;
 
