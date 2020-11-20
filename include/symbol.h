@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_F61F06FD_A1EC_40C7_BDE9_B15A87E95C41
 #define INCLUDE_GUARD_F61F06FD_A1EC_40C7_BDE9_B15A87E95C41
 
-#include "typedef.h"
+#include "set_type.h"
 #include "types.h"
 
 typedef Set SymbolSet;
