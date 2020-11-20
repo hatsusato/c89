@@ -1,6 +1,8 @@
 #include "parser.h"
 
+#include "parser.tab.h"
 #include "scan.h"
+#include "scanner.h"
 #include "sexp.h"
 #include "table.h"
 #include "utility.h"
@@ -13,7 +15,7 @@ Sexp *parser_symbol(AstTag tag) {
   return sexp_number(tag);
 }
 Sexp *parser_token(yyscan_t scan) {
-  return scan_token(scan);
+  return scanner_token(yyget_extra(scan));
 }
 Sexp *parser_nil(void) {
   return sexp_nil();
@@ -25,17 +27,21 @@ Sexp *parser_snoc(Sexp *xs, Sexp *x) {
   return sexp_snoc(xs, x);
 }
 void parser_register(yyscan_t scan, Sexp *ast) {
-  table_register(scan_table(scan), ast);
+  Table *table = scanner_table(yyget_extra(scan));
+  table_register(table, ast);
 }
 Bool parser_query(yyscan_t scan, const char *symbol) {
-  return table_query(scan_table(scan), symbol);
+  Table *table = scanner_table(yyget_extra(scan));
+  return table_query(table, symbol);
 }
 void parser_push(yyscan_t scan) {
-  table_push(scan_table(scan));
+  Table *table = scanner_table(yyget_extra(scan));
+  table_push(table);
 }
 void parser_pop(yyscan_t scan) {
-  table_pop(scan_table(scan));
+  Table *table = scanner_table(yyget_extra(scan));
+  table_pop(table);
 }
 void parser_finish(yyscan_t scan, Sexp *ast) {
-  scan_finish(scan, ast);
+  scanner_finish(yyget_extra(scan), ast);
 }

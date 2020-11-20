@@ -1,13 +1,14 @@
 #include "print.h"
 #include "result.h"
+#include "scanner.h"
 
 int main(void) {
-  Result *result = result_new();
-  int ret = result_parse(result);
+  Scanner *scanner = scanner_new();
+  int ret = scanner_parse(scanner);
   if (0 == ret) {
-    Sexp *ast = result_get_sexp(result);
+    Sexp *ast = scanner_get_ast(scanner);
     print_ast(ast);
   }
-  result_delete(result);
+  scanner_delete(scanner);
   return ret;
 }

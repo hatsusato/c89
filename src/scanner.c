@@ -37,3 +37,12 @@ void scanner_set_ast(Scanner *scanner, Sexp *ast) {
 Sexp *scanner_get_ast(Scanner *scanner) {
   return scanner->ast;
 }
+void scanner_finish(Scanner *scanner, Sexp *ast) {
+  scanner_set_ast(scanner, ast);
+}
+Sexp *scanner_token(Scanner *scanner) {
+  return sexp_string(yyget_text(scanner->yyscan), yyget_leng(scanner->yyscan));
+}
+Table *scanner_table(Scanner *scanner) {
+  return scanner->table;
+}
