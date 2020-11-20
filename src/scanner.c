@@ -19,3 +19,6 @@ void scanner_delete(Scanner *scanner) {
   yylex_destroy(scanner->yyscan);
   UTILITY_FREE(scanner);
 }
+int scanner_parse(Scanner *scanner) {
+  return yyparse(scanner->yyscan);
+}
