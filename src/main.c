@@ -1,5 +1,4 @@
 #include "print.h"
-#include "result.h"
 #include "scanner.h"
 
 int main(void) {
