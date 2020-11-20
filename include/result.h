@@ -3,7 +3,7 @@
 
 #include "result_type.h"
 #include "sexp_type.h"
-#include "typedef.h"
+#include "table_type.h"
 
 Result *result_new(void);
 void result_delete(Result *);

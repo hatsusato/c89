@@ -4,7 +4,7 @@
 #include "result_type.h"
 #include "scanner_type.h"
 #include "sexp_type.h"
-#include "typedef.h"
+#include "table_type.h"
 
 yyscan_t scan_new(Result *);
 void scan_delete(yyscan_t);

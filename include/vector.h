@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_228B134A_0631_479A_9421_9C226E168C9E
 #define INCLUDE_GUARD_228B134A_0631_479A_9421_9C226E168C9E
 
-#include "typedef.h"
 #include "types.h"
+#include "vector_type.h"
 
 Vector *vector_new(Destructor);
 void vector_delete(Vector *);
