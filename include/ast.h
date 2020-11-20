@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_A84E9F8A_C152_4807_9181_80EE16B4DFA5
 #define INCLUDE_GUARD_A84E9F8A_C152_4807_9181_80EE16B4DFA5
 
-#include "typedef.h"
+#include "sexp_type.h"
 
 typedef enum {
   AST_NULL,

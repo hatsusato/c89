@@ -4,9 +4,6 @@
 struct struct_Set;
 typedef struct struct_Set Set;
 
-struct struct_Sexp;
-typedef struct struct_Sexp const Sexp;
-
 struct struct_Str;
 typedef struct struct_Str Str;
 

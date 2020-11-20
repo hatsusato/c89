@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_3397EB56_FB26_40B7_AD9E_F7B3DA519335
 #define INCLUDE_GUARD_3397EB56_FB26_40B7_AD9E_F7B3DA519335
 
-#include "typedef.h"
+#include "sexp_type.h"
 #include "types.h"
 
 Sexp *sexp_nil(void);

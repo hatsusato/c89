@@ -1,5 +1,5 @@
 %code requires {
-#include "typedef.h"
+#include "sexp_type.h"
 #include "scanner_type.h"
 }
 
