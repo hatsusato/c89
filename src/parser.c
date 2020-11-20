@@ -2,7 +2,6 @@
 
 #include "parser.tab.h"
 #include "print.h"
-#include "scan.h"
 #include "scanner.h"
 #include "sexp.h"
 #include "table.h"
