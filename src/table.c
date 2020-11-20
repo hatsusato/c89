@@ -38,7 +38,7 @@ void table_pop(Table *table) {
 }
 void table_register(Table *table, Sexp *ast) {
   assert(table);
-  register_declaration(table_top(table), ast);
+  reg_declaration(table_top(table), ast);
 }
 typedef struct {
   const char *symbol;

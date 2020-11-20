@@ -44,7 +44,7 @@ typedef struct {
   Bool flag;
 } Register;
 
-static void register_is_typedef(Register *reg, Sexp *ast) {
+static void reg_is_typedef(Register *reg, Sexp *ast) {
   assert(check_tag(ast, AST_STORAGE_CLASS_SPECIFIER) ||
          check_tag(ast, AST_TYPE_SPECIFIER) ||
          check_tag(ast, AST_TYPE_QUALIFIER));
@@ -53,18 +53,18 @@ static void register_is_typedef(Register *reg, Sexp *ast) {
     reg->flag = true;
   }
 }
-static void register_identifier(Register *reg, Sexp *ast) {
+static void reg_identifier(Register *reg, Sexp *ast) {
   const char *symbol = from_init_declarator(ast);
   symbol_register(reg->symbols, symbol, reg->flag);
 }
-static void register_foreach(Register *reg, Sexp *ast,
-                             void (*map)(Register *, Sexp *)) {
+static void reg_foreach(Register *reg, Sexp *ast,
+                        void (*map)(Register *, Sexp *)) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     map(reg, sexp_car(ast));
   }
 }
 
-void register_declaration(SymbolSet *set, Sexp *sexp) {
+void reg_declaration(SymbolSet *set, Sexp *sexp) {
   Register reg;
   Sexp *ast = sexp;
   assert(set);
@@ -73,8 +73,8 @@ void register_declaration(SymbolSet *set, Sexp *sexp) {
   reg.flag = false;
   ast = sexp_at(sexp, 1);
   assert(check_tag(ast, AST_DECLARATION_SPECIFIERS));
-  register_foreach(&reg, ast, register_is_typedef);
+  reg_foreach(&reg, ast, reg_is_typedef);
   ast = sexp_at(sexp, 2);
   assert(check_tag(ast, AST_INIT_DECLARATOR_LIST));
-  register_foreach(&reg, ast, register_identifier);
+  reg_foreach(&reg, ast, reg_identifier);
 }
