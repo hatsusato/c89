@@ -3,11 +3,6 @@
 
 #include <stddef.h>
 
-#ifndef YY_TYPEDEF_YY_SCANNER_T
-#define YY_TYPEDEF_YY_SCANNER_T
-typedef void *yyscan_t;
-#endif
-
 #define true (1)
 #define false (0)
 typedef int Bool;

@@ -1,5 +1,6 @@
 %code requires {
 #include "typedef.h"
+#include "scanner_type.h"
 }
 
 %define api.pure full

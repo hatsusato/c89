@@ -2,7 +2,7 @@
 #define INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD
 
 #include "ast.h"
-#include "typedef.h"
+#include "scanner_type.h"
 
 #define PARSER_SYMBOL(tag) parser_symbol(AST_##tag)
 #define PARSER_TAG(tag, ast) PARSER_CONS(PARSER_SYMBOL(tag), ast)
