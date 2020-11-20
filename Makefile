@@ -8,7 +8,7 @@ yacc_prefix := src/parser
 files := ast block instruction list main node parser pretty print register result scan set sexp statement str symbol table utility value vector
 
 ldflags =
-cflags = -Wall -Wextra -ansi -pedantic
+cflags = -Wall -Wextra -ansi -pedantic -Iinclude
 dflags = -MF $@ -MG -MM -MP -MT $(@:%.d=%.o)
 release_cflags := -O3 -DNDEBUG
 debug_cflags := -g
