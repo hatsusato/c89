@@ -3,4 +3,7 @@
 
 #include "pool_type.h"
 
+Pool *pool_new(void);
+void pool_delete(Pool *);
+
 #endif /* INCLUDE_GUARD_B4E15810_2F41_4F54_A991_687F0FFE8ED4 */
