@@ -34,15 +34,12 @@ void scanner_delete(Scanner *scanner) {
 int scanner_parse(Scanner *scanner) {
   return yyparse(scanner->yyscan);
 }
-void scanner_set_ast(Scanner *scanner, Sexp *ast) {
-  sexp_delete(scanner->ast);
-  scanner->ast = ast;
-}
 Sexp *scanner_get_ast(Scanner *scanner) {
   return scanner->ast;
 }
 void scanner_finish(Scanner *scanner, Sexp *ast) {
-  scanner_set_ast(scanner, ast);
+  assert(sexp_is_nil(scanner->ast));
+  scanner->ast = ast;
 }
 Sexp *scanner_token(Scanner *scanner) {
   const char *text = yyget_text(scanner->yyscan);

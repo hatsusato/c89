@@ -8,7 +8,6 @@
 Scanner *scanner_new(void);
 void scanner_delete(Scanner *);
 int scanner_parse(Scanner *);
-void scanner_set_ast(Scanner *, Sexp *);
 Sexp *scanner_get_ast(Scanner *);
 void scanner_finish(Scanner *, Sexp *);
 Sexp *scanner_token(Scanner *);
