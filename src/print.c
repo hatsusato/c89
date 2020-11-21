@@ -47,7 +47,7 @@ void print_verbatim(FILE *fp, const char *text, int leng) {
 void print_symbol(FILE *fp, Sexp *sexp) {
   const char *msg = NULL;
   if (sexp_is_symbol(sexp)) {
-    msg = sexp_get_string(sexp);
+    msg = sexp_get_symbol(sexp);
   } else if (sexp_is_number(sexp)) {
     msg = ast_show(sexp_get_number(sexp));
   }

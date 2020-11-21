@@ -125,7 +125,7 @@ Sexp *sexp_at(Sexp *sexp, Index index) {
     return sexp_car(sexp);
   }
 }
-const char *sexp_get_string(Sexp *sexp) {
+const char *sexp_get_symbol(Sexp *sexp) {
   return sexp_is_symbol(sexp) ? sexp->data.symbol : NULL;
 }
 int sexp_get_number(Sexp *sexp) {

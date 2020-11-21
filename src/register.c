@@ -46,7 +46,7 @@ static void register_identifier(Scanner *scanner, Sexp *ast) {
   assert(check_tag(ast, AST_IDENTIFIER));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  scanner_register(scanner, sexp_get_string(ast));
+  scanner_register(scanner, sexp_get_symbol(ast));
 }
 static void register_declarator(Scanner *, Sexp *);
 static void register_direct_declarator(Scanner *scanner, Sexp *ast) {

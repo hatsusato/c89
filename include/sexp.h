@@ -19,7 +19,7 @@ Sexp *sexp_car(Sexp *);
 Sexp *sexp_cdr(Sexp *);
 Sexp *sexp_snoc(Sexp *, Sexp *);
 Sexp *sexp_at(Sexp *, Index);
-const char *sexp_get_string(Sexp *);
+const char *sexp_get_symbol(Sexp *);
 int sexp_get_number(Sexp *);
 int sexp_length(Sexp *);
 
