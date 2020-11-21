@@ -71,3 +71,6 @@ void scanner_register(Scanner *scanner, const char *symbol, Bool flag) {
     set_insert(scanner->typedefs, buf);
   }
 }
+Bool scanner_query(Scanner *scanner, const char *symbol) {
+  return set_contains(scanner->typedefs, (ElemType)symbol);
+}

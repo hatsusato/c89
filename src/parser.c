@@ -39,8 +39,8 @@ void parser_register(yyscan_t scan, Sexp *ast) {
   register_declaration(scanner, ast);
 }
 Bool parser_query(yyscan_t scan, const char *symbol) {
-  Table *table = scanner_table(yyget_extra(scan));
-  return table_query(table, symbol);
+  Scanner *scanner = yyget_extra(scan);
+  return scanner_query(scanner, symbol);
 }
 void parser_push(yyscan_t scan) {
   Table *table = scanner_table(yyget_extra(scan));
