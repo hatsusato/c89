@@ -91,11 +91,10 @@ Bool sexp_is_number(Sexp *sexp) {
   return SEXP_NUMBER == sexp_kind(sexp);
 }
 Bool sexp_is_list(Sexp *list) {
-  if (sexp_is_nil(list)) {
-    return true;
-  } else {
-    return sexp_is_pair(list) && sexp_is_list(sexp_cdr(list));
+  while (sexp_is_pair(list)) {
+    list = sexp_cdr(list);
   }
+  return sexp_is_nil(list);
 }
 Sexp *sexp_car(Sexp *sexp) {
   assert(sexp_is_pair(sexp));
@@ -119,11 +118,11 @@ Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
 }
 Sexp *sexp_at(Sexp *sexp, Index index) {
   assert(sexp_is_pair(sexp));
-  if (0 < index) {
-    return sexp_at(sexp_cdr(sexp), index - 1);
-  } else {
-    return sexp_car(sexp);
+  for (; 0 < index; --index) {
+    assert(sexp_is_pair(sexp));
+    sexp = sexp_cdr(sexp);
   }
+  return sexp_car(sexp);
 }
 const char *sexp_get_symbol(Sexp *sexp) {
   return sexp_is_symbol(sexp) ? sexp->data.symbol : NULL;
@@ -135,9 +134,9 @@ int sexp_get_number(Sexp *sexp) {
   return 0;
 }
 int sexp_length(Sexp *list) {
-  if (sexp_is_pair(list)) {
-    return 1 + sexp_length(sexp_cdr(list));
-  } else {
-    return 0;
+  int i = 0;
+  for (; sexp_is_pair(list); ++i) {
+    list = sexp_cdr(list);
   }
+  return i;
 }
