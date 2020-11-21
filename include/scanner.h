@@ -3,7 +3,6 @@
 
 #include "scanner_type.h"
 #include "sexp_type.h"
-#include "table_type.h"
 #include "types.h"
 
 Scanner *scanner_new(void);
@@ -13,7 +12,6 @@ void scanner_set_ast(Scanner *, Sexp *);
 Sexp *scanner_get_ast(Scanner *);
 void scanner_finish(Scanner *, Sexp *);
 Sexp *scanner_token(Scanner *);
-Table *scanner_table(Scanner *);
 void scanner_register(Scanner *, const char *, Bool);
 Bool scanner_query(Scanner *, const char *);
 

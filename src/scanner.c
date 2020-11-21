@@ -3,13 +3,11 @@
 #include "parser.tab.h"
 #include "set.h"
 #include "sexp.h"
-#include "table.h"
 #include "utility.h"
 
 struct struct_Scanner {
   yyscan_t yyscan;
   Sexp *ast;
-  Table *table;
   Set *typedefs;
 };
 
@@ -27,14 +25,12 @@ Scanner *scanner_new(void) {
   (void)ret;
   yyset_extra(scanner, scanner->yyscan);
   scanner->ast = sexp_nil();
-  scanner->table = table_new();
   scanner->typedefs = set_new(typedefs_destructor, typedefs_compare);
   scanner_register(scanner, "__builtin_va_list", true);
   return scanner;
 }
 void scanner_delete(Scanner *scanner) {
   set_delete(scanner->typedefs);
-  table_delete(scanner->table);
   sexp_delete(scanner->ast);
   yylex_destroy(scanner->yyscan);
   UTILITY_FREE(scanner);
@@ -55,12 +51,7 @@ void scanner_finish(Scanner *scanner, Sexp *ast) {
 Sexp *scanner_token(Scanner *scanner) {
   return sexp_string(yyget_text(scanner->yyscan), yyget_leng(scanner->yyscan));
 }
-Table *scanner_table(Scanner *scanner) {
-  return scanner->table;
-}
 void scanner_register(Scanner *scanner, const char *symbol, Bool flag) {
-  SymbolSet *top = table_top(scanner->table);
-  symbol_register(top, symbol, flag);
   if (flag) {
     Size size = strlen(symbol);
     char *buf;
