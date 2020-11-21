@@ -34,7 +34,7 @@ void scanner_delete(Scanner *scanner) {
 int scanner_parse(Scanner *scanner) {
   return yyparse(scanner->yyscan);
 }
-Sexp *scanner_get_ast(Scanner *scanner) {
+Sexp *scanner_ast(Scanner *scanner) {
   return scanner->ast;
 }
 void scanner_finish(Scanner *scanner, Sexp *ast) {
