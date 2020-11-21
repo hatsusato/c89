@@ -26,7 +26,7 @@ Scanner *scanner_new(void) {
   yyset_extra(scanner, scanner->yyscan);
   scanner->ast = sexp_nil();
   scanner->typedefs = set_new(typedefs_destructor, typedefs_compare);
-  scanner_register(scanner, "__builtin_va_list", true);
+  scanner_register(scanner, "__builtin_va_list");
   return scanner;
 }
 void scanner_delete(Scanner *scanner) {
@@ -51,16 +51,14 @@ void scanner_finish(Scanner *scanner, Sexp *ast) {
 Sexp *scanner_token(Scanner *scanner) {
   return sexp_string(yyget_text(scanner->yyscan), yyget_leng(scanner->yyscan));
 }
-void scanner_register(Scanner *scanner, const char *symbol, Bool flag) {
-  if (flag) {
-    Size size = strlen(symbol);
-    char *buf;
-    assert(!set_contains(scanner->typedefs, (ElemType)symbol));
-    buf = UTILITY_MALLOC_ARRAY(char, size + 1);
-    UTILITY_MEMCPY(char, buf, symbol, size);
-    buf[size] = '\0';
-    set_insert(scanner->typedefs, buf);
-  }
+void scanner_register(Scanner *scanner, const char *symbol) {
+  Size size = strlen(symbol);
+  char *buf;
+  assert(!set_contains(scanner->typedefs, (ElemType)symbol));
+  buf = UTILITY_MALLOC_ARRAY(char, size + 1);
+  UTILITY_MEMCPY(char, buf, symbol, size);
+  buf[size] = '\0';
+  set_insert(scanner->typedefs, buf);
 }
 Bool scanner_query(Scanner *scanner, const char *symbol) {
   return set_contains(scanner->typedefs, (ElemType)symbol);

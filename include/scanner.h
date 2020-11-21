@@ -12,7 +12,7 @@ void scanner_set_ast(Scanner *, Sexp *);
 Sexp *scanner_get_ast(Scanner *);
 void scanner_finish(Scanner *, Sexp *);
 Sexp *scanner_token(Scanner *);
-void scanner_register(Scanner *, const char *, Bool);
+void scanner_register(Scanner *, const char *);
 Bool scanner_query(Scanner *, const char *);
 
 #endif /* INCLUDE_GUARD_29982745_2BB0_454B_9528_9FABEC206FF9 */
