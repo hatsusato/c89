@@ -81,3 +81,27 @@ void reg_declaration(SymbolSet *set, Sexp *sexp) {
   assert(check_tag(ast, AST_INIT_DECLARATOR_LIST));
   reg_foreach(&reg, ast, reg_identifier);
 }
+
+Bool is_typedef_storage_class_specifier(Sexp *ast) {
+  assert(check_tag(ast, AST_STORAGE_CLASS_SPECIFIER));
+  ast = sexp_at(ast, 1);
+  return check_tag(ast, AST_TYPEDEF);
+}
+Bool is_typedef_declaration_specifier(Sexp *ast) {
+  if (check_tag(ast, AST_STORAGE_CLASS_SPECIFIER)) {
+    return is_typedef_storage_class_specifier(ast);
+  } else {
+    assert(check_tag(ast, AST_TYPE_SPECIFIER));
+    assert(check_tag(ast, AST_TYPE_QUALIFIER));
+    return false;
+  }
+}
+Bool is_typedef_declaration_specifiers(Sexp *ast) {
+  assert(check_tag(ast, AST_DECLARATION_SPECIFIERS));
+  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    if (is_typedef_declaration_specifier(sexp_car(ast))) {
+      return true;
+    }
+  }
+  return false;
+}
