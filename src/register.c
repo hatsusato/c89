@@ -92,8 +92,8 @@ static Bool is_typedef_declaration_specifier(Sexp *ast) {
   if (check_tag(ast, AST_STORAGE_CLASS_SPECIFIER)) {
     return is_typedef_storage_class_specifier(ast);
   } else {
-    assert(check_tag(ast, AST_TYPE_SPECIFIER));
-    assert(check_tag(ast, AST_TYPE_QUALIFIER));
+    assert(check_tag(ast, AST_TYPE_SPECIFIER) ||
+           check_tag(ast, AST_TYPE_QUALIFIER));
     return false;
   }
 }
