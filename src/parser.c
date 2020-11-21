@@ -42,14 +42,6 @@ Bool parser_query(yyscan_t scan, const char *symbol) {
   Scanner *scanner = yyget_extra(scan);
   return scanner_query(scanner, symbol);
 }
-void parser_push(yyscan_t scan) {
-  Table *table = scanner_table(yyget_extra(scan));
-  table_push(table);
-}
-void parser_pop(yyscan_t scan) {
-  Table *table = scanner_table(yyget_extra(scan));
-  table_pop(table);
-}
 void parser_finish(yyscan_t scan, Sexp *ast) {
   scanner_finish(yyget_extra(scan), ast);
 }

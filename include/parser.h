@@ -31,8 +31,6 @@
   parser_cons(ast0,                                                        \
               PARSER_LIST8(ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8))
 #define PARSER_REGISTER(scanner, ast) parser_register(scanner, ast)
-#define PARSER_PUSH(scanner) parser_push(scanner)
-#define PARSER_POP(scanner) parser_pop(scanner)
 #define PARSER_FINISH(scanner, ast) parser_finish(scanner, ast)
 
 void yyerror(yyscan_t, const char *);
@@ -43,8 +41,6 @@ Sexp *parser_cons(Sexp *, Sexp *);
 Sexp *parser_snoc(Sexp *, Sexp *);
 void parser_register(yyscan_t, Sexp *);
 Bool parser_query(yyscan_t, const char *);
-void parser_push(yyscan_t);
-void parser_pop(yyscan_t);
 void parser_finish(yyscan_t, Sexp *);
 
 #endif /* INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD */
