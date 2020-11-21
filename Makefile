@@ -1,23 +1,14 @@
 #!/usr/bin/make -f
 
-LEX := flex
-YACC := bison
 target := main.out
-lex_prefix := src/lexer
-yacc_prefix := src/parser
-files := ast list main node parser pool pretty print register scanner set sexp str utility vector
-
+files := ast list main node pool pretty print set sexp str utility vector
 builddir := $(CURDIR)/build
+includedir := $(CURDIR)/include
 
-ldflags =
-cflags = -Wall -Wextra -ansi -pedantic -Iinclude
+ldflags = -L$(builddir)/lib -l:scanner.a
+cflags = -Wall -Wextra -ansi -pedantic -I$(includedir)
 dflags = -MF $@ -MG -MM -MP -MT $(@:%.d=%.o)
-lflags := --header-file=$(lex_prefix).h --outfile=$(lex_prefix).c
-yflags := -d -b $(yacc_prefix)
-lex_intermeds := $(addprefix $(lex_prefix),.c .h)
-yacc_intermeds := $(addprefix $(yacc_prefix),.tab.c .tab.h)
-intermeds := $(lex_intermeds) $(yacc_intermeds)
-srcs := $(files:%=src/%.c) $(filter %.c,$(intermeds))
+srcs := $(files:%=src/%.c)
 objs := $(srcs:%.c=$(builddir)/%.o)
 deps := $(objs:%.o=%.d)
 
@@ -27,19 +18,19 @@ else
 cflags += -O0 -g
 endif
 
+export BUILD_DIR = $(builddir)
+export CFLAGS = $(cflags)
+
 .SUFFIXES:
 
 .PHONY: all
 all: $(target)
 
-$(target): $(objs)
+$(target): $(objs) $(builddir)/lib/scanner.a
 	$(CC) $(ldflags) $^ -o $@
 
-$(lex_intermeds): $(lex_prefix).l $(yacc_prefix).tab.h
-	$(LEX) $(lflags) $<
-
-$(yacc_intermeds): $(yacc_prefix).y
-	$(YACC) $(yflags) $<
+$(builddir)/lib/scanner.a:
+	$(MAKE) -C lib/scanner build
 
 $(objs): $(builddir)/%.o: %.c
 	@mkdir -p $(@D)
@@ -53,6 +44,5 @@ $(deps): $(builddir)/%.d: %.c
 
 .PHONY: clean distclean
 clean:
-	$(RM) -r $(builddir) $(intermeds)
-distclean: clean
-	$(RM) $(target)
+	$(RM) -r $(builddir) $(intermeds) $(target)
+	$(MAKE) -C lib/scanner clean
