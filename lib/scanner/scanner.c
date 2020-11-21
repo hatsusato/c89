@@ -1,4 +1,4 @@
-#include "scanner.h"
+#include "lib/scanner.h"
 
 #include "parser.tab.h"
 #include "pool.h"
