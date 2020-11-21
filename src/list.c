@@ -52,7 +52,7 @@ void list_append(List *lhs, List *rhs) {
   }
   rhs->first = rhs->last = NULL;
 }
-void list_map(List *list, void *data, ForeachMap map) {
+void list_map(List *list, void *data, ListMap map) {
   Node *node = NULL;
   assert(list);
   for (node = list->first; node; node = node_next(node)) {
