@@ -11,7 +11,7 @@ typedef unsigned long PointerBytes;
 typedef int Size;
 typedef int Index;
 
-typedef const void *ElemType;
+typedef void *ElemType;
 typedef int (*Compare)(const ElemType *, const ElemType *);
 typedef void (*Destructor)(ElemType);
 typedef void (*ForeachMap)(ElemType, void *);

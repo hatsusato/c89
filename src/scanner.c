@@ -1,6 +1,7 @@
 #include "scanner.h"
 
 #include "parser.tab.h"
+#include "set.h"
 #include "sexp.h"
 #include "table.h"
 #include "utility.h"
@@ -9,7 +10,15 @@ struct struct_Scanner {
   yyscan_t yyscan;
   Sexp *ast;
   Table *table;
+  Set *typedefs;
 };
+
+static int typedefs_compare(const ElemType *lhs, const ElemType *rhs) {
+  return strcmp(*lhs, *rhs);
+}
+static void typedefs_destructor(ElemType elem) {
+  UTILITY_FREE(elem);
+}
 
 Scanner *scanner_new(void) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
@@ -19,9 +28,11 @@ Scanner *scanner_new(void) {
   yyset_extra(scanner, scanner->yyscan);
   scanner->ast = sexp_nil();
   scanner->table = table_new();
+  scanner->typedefs = set_new(typedefs_destructor, typedefs_compare);
   return scanner;
 }
 void scanner_delete(Scanner *scanner) {
+  set_delete(scanner->typedefs);
   table_delete(scanner->table);
   sexp_delete(scanner->ast);
   yylex_destroy(scanner->yyscan);
@@ -49,4 +60,13 @@ Table *scanner_table(Scanner *scanner) {
 void scanner_register(Scanner *scanner, const char *symbol, Bool flag) {
   SymbolSet *top = table_top(scanner->table);
   symbol_register(top, symbol, flag);
+  if (flag) {
+    Size size = strlen(symbol);
+    char *buf;
+    assert(!set_contains(scanner->typedefs, (ElemType)symbol));
+    buf = UTILITY_MALLOC_ARRAY(char, size + 1);
+    UTILITY_MEMCPY(char, buf, symbol, size);
+    buf[size] = '\0';
+    set_insert(scanner->typedefs, buf);
+  }
 }
