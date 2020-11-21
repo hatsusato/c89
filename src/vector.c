@@ -33,6 +33,10 @@ void vector_delete(Vector *v) {
   UTILITY_FREE(v->data);
   UTILITY_FREE(v);
 }
+void vector_destruct(Vector *v, ElemType elem) {
+  assert(v);
+  v->dtor(elem);
+}
 Size vector_length(const Vector *v) {
   assert(v);
   return v->size;
@@ -72,7 +76,7 @@ void vector_pop(Vector *v) {
   assert(v);
   if (0 < v->size) {
     --v->size;
-    v->dtor(v->data[v->size]);
+    vector_destruct(v, v->data[v->size]);
     v->data[v->size] = NULL;
   }
 }

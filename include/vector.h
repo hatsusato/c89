@@ -6,6 +6,7 @@
 
 Vector *vector_new(Destructor);
 void vector_delete(Vector *);
+void vector_destruct(Vector *, ElemType);
 Size vector_length(const Vector *);
 ElemType *vector_begin(const Vector *);
 ElemType *vector_end(const Vector *);
