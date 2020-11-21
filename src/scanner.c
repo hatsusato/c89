@@ -29,6 +29,7 @@ Scanner *scanner_new(void) {
   scanner->ast = sexp_nil();
   scanner->table = table_new();
   scanner->typedefs = set_new(typedefs_destructor, typedefs_compare);
+  scanner_register(scanner, "__builtin_va_list", true);
   return scanner;
 }
 void scanner_delete(Scanner *scanner) {
