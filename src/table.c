@@ -29,10 +29,6 @@ void table_pop(Table *table) {
   assert(table);
   list_remove(table->list);
 }
-void table_register(Table *table, Sexp *ast) {
-  assert(table);
-  reg_declaration(table_top(table), ast);
-}
 typedef struct {
   const char *symbol;
   const Symbol *found;

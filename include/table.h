@@ -10,7 +10,6 @@ Table *table_new(void);
 void table_delete(Table *);
 void table_push(Table *);
 void table_pop(Table *);
-void table_register(Table *, Sexp *);
 Bool table_query(Table *, const char *);
 SymbolSet *table_top(Table *);
 

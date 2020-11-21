@@ -5,7 +5,6 @@
 #include "register.h"
 #include "scanner.h"
 #include "sexp.h"
-#include "table.h"
 #include "utility.h"
 
 void yyerror(yyscan_t scan, const char *msg) {
@@ -34,8 +33,6 @@ Sexp *parser_snoc(Sexp *xs, Sexp *x) {
 }
 void parser_register(yyscan_t scan, Sexp *ast) {
   Scanner *scanner = yyget_extra(scan);
-  Table *table = scanner_table(scanner);
-  table_register(table, ast);
   register_declaration(scanner, ast);
 }
 Bool parser_query(yyscan_t scan, const char *symbol) {

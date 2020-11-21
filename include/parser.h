@@ -3,6 +3,7 @@
 
 #include "ast.h"
 #include "scanner_type.h"
+#include "sexp_type.h"
 #include "types.h"
 
 #define PARSER_SYMBOL(tag) parser_symbol(AST_##tag)
