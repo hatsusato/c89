@@ -5,7 +5,7 @@
 #include "types.h"
 
 Sexp *sexp_nil(void);
-Sexp *sexp_cons(Sexp *, Sexp *);
+Sexp *sexp_pair(Sexp *, Sexp *);
 Sexp *sexp_snoc(Sexp *, Sexp *);
 Sexp *sexp_string(const char *, int);
 Sexp *sexp_number(int);

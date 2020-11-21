@@ -26,7 +26,7 @@ Sexp *parser_nil(void) {
   return sexp_nil();
 }
 Sexp *parser_cons(Sexp *car, Sexp *cdr) {
-  return sexp_cons(car, cdr);
+  return sexp_pair(car, cdr);
 }
 Sexp *parser_snoc(Sexp *xs, Sexp *x) {
   return sexp_snoc(xs, x);

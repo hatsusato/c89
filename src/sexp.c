@@ -47,7 +47,7 @@ Sexp *sexp_nil(void) {
   static MutableSexp sexp = {SEXP_NIL, {NULL}};
   return &sexp;
 }
-Sexp *sexp_cons(Sexp *car, Sexp *cdr) {
+Sexp *sexp_pair(Sexp *car, Sexp *cdr) {
   MutableSexp *sexp = sexp_new(SEXP_PAIR);
   sexp->data.pair.car = car;
   sexp->data.pair.cdr = cdr;
@@ -58,12 +58,12 @@ Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
   assert(sexp_is_list(xs));
   for (; sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
     if (sexp_is_nil(sexp_cdr(sexp))) {
-      sexp_set_cdr(sexp, sexp_cons(x, sexp_cdr(sexp)));
+      sexp_set_cdr(sexp, sexp_pair(x, sexp_cdr(sexp)));
       return xs;
     }
   }
   assert(sexp_is_nil(xs));
-  return sexp_cons(x, xs);
+  return sexp_pair(x, xs);
 }
 Sexp *sexp_string(const char *text, int leng) {
   MutableSexp *sexp = sexp_new(SEXP_STRING);
@@ -83,7 +83,7 @@ Sexp *sexp_number(int number) {
 Sexp *sexp_clone(Sexp *sexp) {
   switch (sexp_kind(sexp)) {
   case SEXP_PAIR:
-    return sexp_cons(sexp_clone(sexp_car(sexp)), sexp_clone(sexp_cdr(sexp)));
+    return sexp_pair(sexp_clone(sexp_car(sexp)), sexp_clone(sexp_cdr(sexp)));
   case SEXP_STRING:
     return sexp_string(str_begin(sexp->data.string),
                        str_length(sexp->data.string));
