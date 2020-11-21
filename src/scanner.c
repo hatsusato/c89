@@ -1,19 +1,15 @@
 #include "scanner.h"
 
 #include "parser.tab.h"
-#include "set.h"
+#include "pool.h"
 #include "sexp.h"
 #include "utility.h"
 
 struct struct_Scanner {
   yyscan_t yyscan;
   Sexp *ast;
-  Set *typedefs;
+  Pool *typedefs;
 };
-
-static int typedefs_compare(const ElemType *lhs, const ElemType *rhs) {
-  return strcmp(*lhs, *rhs);
-}
 
 Scanner *scanner_new(void) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
@@ -22,12 +18,12 @@ Scanner *scanner_new(void) {
   (void)ret;
   yyset_extra(scanner, scanner->yyscan);
   scanner->ast = sexp_nil();
-  scanner->typedefs = set_new(NULL, typedefs_compare);
+  scanner->typedefs = pool_new(NULL);
   scanner_register(scanner, "__builtin_va_list");
   return scanner;
 }
 void scanner_delete(Scanner *scanner) {
-  set_delete(scanner->typedefs);
+  pool_delete(scanner->typedefs);
   sexp_delete(scanner->ast);
   yylex_destroy(scanner->yyscan);
   UTILITY_FREE(scanner);
@@ -49,9 +45,9 @@ Sexp *scanner_token(Scanner *scanner) {
   return sexp_string(yyget_text(scanner->yyscan), yyget_leng(scanner->yyscan));
 }
 void scanner_register(Scanner *scanner, const char *symbol) {
-  assert(!set_contains(scanner->typedefs, (ElemType)symbol));
-  set_insert(scanner->typedefs, (ElemType)symbol);
+  assert(!scanner_query(scanner, symbol));
+  pool_insert(scanner->typedefs, symbol);
 }
 Bool scanner_query(Scanner *scanner, const char *symbol) {
-  return set_contains(scanner->typedefs, (ElemType)symbol);
+  return pool_contains(scanner->typedefs, symbol);
 }
