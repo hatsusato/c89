@@ -35,7 +35,9 @@ static MutableSexp *sexp_new(SexpKind kind) {
   return sexp;
 }
 static void sexp_free(MutableSexp *sexp) {
-  UTILITY_FREE(sexp);
+  if (sexp_nil() != sexp) {
+    UTILITY_FREE(sexp);
+  }
 }
 static Sexp *sexp_set_cdr(Sexp *sexp, Sexp *cdr) {
   Sexp *tmp = sexp_cdr(sexp);
@@ -50,9 +52,7 @@ void sexp_delete(Sexp *sexp) {
   } else if (sexp_is_string(sexp)) {
     str_delete((Str *)sexp->data.string);
   }
-  if (!sexp_is_nil(sexp)) {
-    sexp_free((MutableSexp *)sexp);
-  }
+  sexp_free((MutableSexp *)sexp);
 }
 Sexp *sexp_clone(Sexp *sexp) {
   switch (sexp_kind(sexp)) {
