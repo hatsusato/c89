@@ -5,8 +5,11 @@
 #include "utility.h"
 
 static Bool check_tag(Sexp *ast, AstTag tag) {
-  return sexp_is_pair(ast) && sexp_is_list(ast) &&
-         sexp_get_number(sexp_car(ast)) == (int)tag;
+  if (sexp_is_pair(ast)) {
+    assert(sexp_is_list(ast));
+    ast = sexp_car(ast);
+  }
+  return sexp_get_number(ast) == (int)tag;
 }
 static const char *from_declarator(Sexp *ast);
 static const char *from_identifier(Sexp *ast) {
