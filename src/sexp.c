@@ -8,6 +8,7 @@ typedef enum { SEXP_NIL, SEXP_PAIR, SEXP_STRING, SEXP_NUMBER } SexpKind;
 struct struct_Sexp {
   SexpKind kind;
   union {
+    const void *nil;
     struct {
       Sexp *car, *cdr;
     } pair;
@@ -18,7 +19,8 @@ struct struct_Sexp {
 typedef struct struct_Sexp MutableSexp;
 
 static SexpKind sexp_kind(Sexp *sexp) {
-  return sexp ? sexp->kind : SEXP_NIL;
+  assert(sexp);
+  return sexp->kind;
 }
 static MutableSexp *sexp_new(SexpKind kind) {
   MutableSexp *sexp = UTILITY_MALLOC(MutableSexp);
@@ -30,7 +32,8 @@ static void sexp_free(MutableSexp *sexp) {
 }
 
 Sexp *sexp_nil(void) {
-  return NULL;
+  static MutableSexp sexp = {SEXP_NIL, {NULL}};
+  return &sexp;
 }
 Sexp *sexp_cons(Sexp *car, Sexp *cdr) {
   MutableSexp *sexp = sexp_new(SEXP_PAIR);
