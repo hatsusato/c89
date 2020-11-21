@@ -2,6 +2,7 @@
 
 #include "parser.tab.h"
 #include "print.h"
+#include "register.h"
 #include "scanner.h"
 #include "sexp.h"
 #include "table.h"
@@ -32,8 +33,10 @@ Sexp *parser_snoc(Sexp *xs, Sexp *x) {
   return sexp_snoc(xs, x);
 }
 void parser_register(yyscan_t scan, Sexp *ast) {
-  Table *table = scanner_table(yyget_extra(scan));
+  Scanner *scanner = yyget_extra(scan);
+  Table *table = scanner_table(scanner);
   table_register(table, ast);
+  register_declaration(scanner, ast);
 }
 Bool parser_query(yyscan_t scan, const char *symbol) {
   Table *table = scanner_table(yyget_extra(scan));
