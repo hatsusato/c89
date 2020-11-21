@@ -39,10 +39,11 @@ static void sexp_free(MutableSexp *sexp) {
     UTILITY_FREE(sexp);
   }
 }
-static Sexp *sexp_set_cdr(Sexp *sexp, Sexp *cdr) {
-  Sexp *tmp = sexp_cdr(sexp);
-  ((MutableSexp *)sexp)->data.pair.cdr = cdr;
-  return tmp;
+static void sexp_set_cdar(Sexp *sexp, Sexp *cdar) {
+  if (sexp_is_pair(sexp)) {
+    Sexp *cdr = sexp_pair(cdar, sexp_cdr(sexp));
+    ((MutableSexp *)sexp)->data.pair.cdr = cdr;
+  }
 }
 
 void sexp_delete(Sexp *sexp) {
@@ -131,7 +132,7 @@ Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
     while (sexp_is_pair(sexp_cdr(it))) {
       it = sexp_cdr(it);
     }
-    sexp_set_cdr(it, sexp_pair(x, sexp_cdr(it)));
+    sexp_set_cdar(it, x);
   } else {
     xs = sexp_pair(x, xs);
   }
