@@ -1,15 +1,8 @@
 #include "sexp.h"
 
-#include "str.h"
 #include "utility.h"
 
-typedef enum {
-  SEXP_NIL,
-  SEXP_PAIR,
-  SEXP_STRING,
-  SEXP_SYMBOL,
-  SEXP_NUMBER
-} SexpKind;
+typedef enum { SEXP_NIL, SEXP_PAIR, SEXP_SYMBOL, SEXP_NUMBER } SexpKind;
 
 struct struct_Sexp {
   SexpKind kind;
@@ -18,7 +11,6 @@ struct struct_Sexp {
     struct {
       Sexp *car, *cdr;
     } pair;
-    const Str *string;
     const char *symbol;
     int number;
   } data;
@@ -50,8 +42,6 @@ void sexp_delete(Sexp *sexp) {
   if (sexp_is_pair(sexp)) {
     sexp_delete(sexp->data.pair.car);
     sexp_delete(sexp->data.pair.cdr);
-  } else if (sexp_is_string(sexp)) {
-    str_delete((Str *)sexp->data.string);
   }
   sexp_free((MutableSexp *)sexp);
 }
@@ -59,9 +49,6 @@ Sexp *sexp_clone(Sexp *sexp) {
   switch (sexp_kind(sexp)) {
   case SEXP_PAIR:
     return sexp_pair(sexp_clone(sexp_car(sexp)), sexp_clone(sexp_cdr(sexp)));
-  case SEXP_STRING:
-    return sexp_string(str_begin(sexp->data.string),
-                       str_length(sexp->data.string));
   case SEXP_SYMBOL:
     return sexp_symbol(sexp->data.symbol);
   case SEXP_NUMBER:
@@ -81,11 +68,6 @@ Sexp *sexp_pair(Sexp *car, Sexp *cdr) {
   sexp->data.pair.cdr = cdr;
   return sexp;
 }
-Sexp *sexp_string(const char *text, Size leng) {
-  MutableSexp *sexp = sexp_new(SEXP_STRING);
-  sexp->data.string = str_new(text, leng);
-  return sexp;
-}
 Sexp *sexp_symbol(const char *symbol) {
   MutableSexp *sexp = sexp_new(SEXP_SYMBOL);
   sexp->data.symbol = symbol;
@@ -101,9 +83,6 @@ Bool sexp_is_nil(Sexp *sexp) {
 }
 Bool sexp_is_pair(Sexp *sexp) {
   return SEXP_PAIR == sexp_kind(sexp);
-}
-Bool sexp_is_string(Sexp *sexp) {
-  return SEXP_STRING == sexp_kind(sexp);
 }
 Bool sexp_is_symbol(Sexp *sexp) {
   return SEXP_SYMBOL == sexp_kind(sexp);
@@ -147,9 +126,7 @@ Sexp *sexp_at(Sexp *sexp, Index index) {
   }
 }
 const char *sexp_get_string(Sexp *sexp) {
-  return sexp_is_string(sexp)   ? str_begin(sexp->data.string)
-         : sexp_is_symbol(sexp) ? sexp->data.symbol
-                                : NULL;
+  return sexp_is_symbol(sexp) ? sexp->data.symbol : NULL;
 }
 int sexp_get_number(Sexp *sexp) {
   if (sexp_is_number(sexp)) {
