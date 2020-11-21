@@ -24,8 +24,8 @@ const char *pool_construct(const char *text, Size size) {
 void pool_destruct(ElemType elem) {
   UTILITY_FREE(elem);
 }
-const char *pool_insert(Pool *pool, const char *text, Size size) {
-  return set_insert(pool, duplicate_string(text, size));
+const char *pool_insert(Pool *pool, const char *str) {
+  return set_insert(pool, (ElemType)str);
 }
 Bool pool_contains(Pool *pool, const char *str) {
   return set_contains(pool, (ElemType)str);
