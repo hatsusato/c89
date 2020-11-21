@@ -4,8 +4,9 @@
 #include "pool_type.h"
 #include "types.h"
 
-Pool *pool_new(void);
+Pool *pool_new(Destructor);
 void pool_delete(Pool *);
+void pool_destruct(ElemType);
 const char *pool_insert(Pool *, const char *, Size);
 Bool pool_contains(Pool *, const char *);
 

@@ -5,9 +5,6 @@
 #include "set.h"
 #include "utility.h"
 
-static void pool_destructor(ElemType elem) {
-  UTILITY_FREE(elem);
-}
 static int pool_compare(const ElemType *lhs, const ElemType *rhs) {
   return strcmp(*lhs, *rhs);
 }
@@ -18,11 +15,14 @@ static char *duplicate_string(const char *text, Size size) {
   return buf;
 }
 
-Pool *pool_new(void) {
-  return set_new(pool_destructor, pool_compare);
+Pool *pool_new(Destructor dtor) {
+  return set_new(dtor, pool_compare);
 }
 void pool_delete(Pool *pool) {
   set_delete(pool);
+}
+void pool_destruct(ElemType elem) {
+  UTILITY_FREE(elem);
 }
 const char *pool_insert(Pool *pool, const char *text, Size size) {
   return set_insert(pool, duplicate_string(text, size));
