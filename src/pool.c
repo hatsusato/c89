@@ -24,8 +24,8 @@ Pool *pool_new(void) {
 void pool_delete(Pool *pool) {
   set_delete(pool);
 }
-void pool_insert(Pool *pool, const char *text, Size size) {
-  set_insert(pool, duplicate_string(text, size));
+const char *pool_insert(Pool *pool, const char *text, Size size) {
+  return set_insert(pool, duplicate_string(text, size));
 }
 Bool pool_contains(Pool *pool, const char *str) {
   return set_contains(pool, (ElemType)str);

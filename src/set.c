@@ -38,13 +38,17 @@ void set_delete(Set *set) {
   vector_delete(set->data);
   UTILITY_FREE(set);
 }
-void set_insert(Set *set, ElemType elem) {
+ElemType set_insert(Set *set, ElemType elem) {
+  const ElemType *found;
   assert(set);
-  if (set_contains(set, elem)) {
+  found = set_find(set, elem);
+  if (found) {
     vector_destruct(set->data, elem);
+    return *found;
   } else {
     vector_push(set->data, elem);
     set_sort(set);
+    return elem;
   }
 }
 Bool set_contains(const Set *set, ElemType elem) {

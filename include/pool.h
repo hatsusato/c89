@@ -6,7 +6,7 @@
 
 Pool *pool_new(void);
 void pool_delete(Pool *);
-void pool_insert(Pool *, const char *, Size);
+const char *pool_insert(Pool *, const char *, Size);
 Bool pool_contains(Pool *, const char *);
 
 #endif /* INCLUDE_GUARD_B4E15810_2F41_4F54_A991_687F0FFE8ED4 */
