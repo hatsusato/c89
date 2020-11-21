@@ -126,14 +126,16 @@ Sexp *sexp_cdr(Sexp *sexp) {
   return sexp->data.pair.cdr;
 }
 Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
-  Sexp *it;
-  for (it = xs; sexp_is_pair(it); it = sexp_cdr(it)) {
-    if (!sexp_is_pair(sexp_cdr(it))) {
-      sexp_set_cdr(it, sexp_pair(x, sexp_cdr(it)));
-      return xs;
+  if (sexp_is_pair(xs)) {
+    Sexp *it = xs;
+    while (sexp_is_pair(sexp_cdr(it))) {
+      it = sexp_cdr(it);
     }
+    sexp_set_cdr(it, sexp_pair(x, sexp_cdr(it)));
+  } else {
+    xs = sexp_pair(x, xs);
   }
-  return sexp_pair(x, xs);
+  return xs;
 }
 Sexp *sexp_at(Sexp *sexp, Index index) {
   assert(sexp_is_pair(sexp));
