@@ -52,7 +52,7 @@ Sexp *scanner_token(Scanner *scanner) {
   return sexp_symbol(token);
 }
 void scanner_register(Scanner *scanner, const char *symbol) {
-  assert(!scanner_query(scanner, symbol));
+  assert("redefinition of typedef" && !scanner_query(scanner, symbol));
   pool_insert(scanner->typedefs, symbol);
 }
 Bool scanner_query(Scanner *scanner, const char *symbol) {
