@@ -1,16 +1,19 @@
 #!/usr/bin/make -f
 
 target := main.out
-files := ast list main node pool pretty print set sexp str utility vector
 builddir := $(CURDIR)/build
 includedir := $(CURDIR)/include
+libs/dir != find lib/ -mindepth 1 -type d
+libs := $(libs/dir:%=$(builddir)/%.a)
 
-ldflags = -L$(builddir)/lib -l:scanner.a
+ldflags = -L$(builddir)/lib $(libs/dir:lib/%=-l:%.a)
 cflags = -Wall -Wextra -ansi -pedantic -I$(includedir)
 dflags = -MF $@ -MG -MM -MP -MT $(@:%.d=%.o)
-srcs := $(files:%=src/%.c)
+srcs != git ls-files src/*.c
 objs := $(srcs:%.c=$(builddir)/%.o)
 deps := $(objs:%.o=%.d)
+builds := $(libs/dir:%=build/%)
+cleans := $(libs/dir:%=clean/%)
 
 ifeq (,$(wildcard .develop))
 cflags += -O3 -DNDEBUG
@@ -23,14 +26,15 @@ export CFLAGS = $(cflags)
 
 .SUFFIXES:
 
-.PHONY: all
-all: $(target)
+.PHONY: build $(builds)
+build: $(target)
+$(builds): build/%: $(builddir)/%.a
 
-$(target): $(objs) $(builddir)/lib/scanner.a
+$(target): $(objs) $(libs)
 	$(CC) $(ldflags) $^ -o $@
 
-$(builddir)/lib/scanner.a:
-	$(MAKE) -C lib/scanner build
+$(libs): $(builddir)/%.a:
+	$(MAKE) -C $* build
 
 $(objs): $(builddir)/%.o: %.c
 	@mkdir -p $(@D)
@@ -42,7 +46,8 @@ $(deps): $(builddir)/%.d: %.c
 
 -include $(deps)
 
-.PHONY: clean distclean
-clean:
-	$(RM) -r $(builddir) $(intermeds) $(target)
-	$(MAKE) -C lib/scanner clean
+.PHONY: clean $(cleans)
+clean: $(cleans)
+	$(RM) $(objs) $(deps) $(target)
+$(cleans): clean/%:
+	$(MAKE) -C $* clean
