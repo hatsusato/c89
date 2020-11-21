@@ -14,9 +14,6 @@ struct struct_Scanner {
 static int typedefs_compare(const ElemType *lhs, const ElemType *rhs) {
   return strcmp(*lhs, *rhs);
 }
-static void typedefs_destructor(ElemType elem) {
-  UTILITY_FREE(elem);
-}
 
 Scanner *scanner_new(void) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
@@ -25,7 +22,7 @@ Scanner *scanner_new(void) {
   (void)ret;
   yyset_extra(scanner, scanner->yyscan);
   scanner->ast = sexp_nil();
-  scanner->typedefs = set_new(typedefs_destructor, typedefs_compare);
+  scanner->typedefs = set_new(NULL, typedefs_compare);
   scanner_register(scanner, "__builtin_va_list");
   return scanner;
 }
@@ -52,13 +49,8 @@ Sexp *scanner_token(Scanner *scanner) {
   return sexp_string(yyget_text(scanner->yyscan), yyget_leng(scanner->yyscan));
 }
 void scanner_register(Scanner *scanner, const char *symbol) {
-  Size size = strlen(symbol);
-  char *buf;
   assert(!set_contains(scanner->typedefs, (ElemType)symbol));
-  buf = UTILITY_MALLOC_ARRAY(char, size + 1);
-  UTILITY_MEMCPY(char, buf, symbol, size);
-  buf[size] = '\0';
-  set_insert(scanner->typedefs, buf);
+  set_insert(scanner->typedefs, (ElemType)symbol);
 }
 Bool scanner_query(Scanner *scanner, const char *symbol) {
   return set_contains(scanner->typedefs, (ElemType)symbol);
