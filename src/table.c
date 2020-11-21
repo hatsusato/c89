@@ -3,18 +3,11 @@
 #include "list.h"
 #include "register.h"
 #include "set.h"
-#include "symbol.h"
 #include "utility.h"
 
 struct struct_Table {
   List *list;
 };
-
-static SymbolSet *table_top(Table *table) {
-  SymbolSet *top = (SymbolSet *)list_at(table->list, 0);
-  assert(top);
-  return top;
-}
 
 Table *table_new(void) {
   Table *table = UTILITY_MALLOC(Table);
@@ -56,4 +49,9 @@ Bool table_query(Table *table, const char *symbol) {
   query.symbol = symbol;
   list_map(table->list, &query, table_query_map);
   return query.found ? symbol_flag(query.found) : false;
+}
+SymbolSet *table_top(Table *table) {
+  SymbolSet *top = (SymbolSet *)list_at(table->list, 0);
+  assert(top);
+  return top;
 }

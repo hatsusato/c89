@@ -46,3 +46,7 @@ Sexp *scanner_token(Scanner *scanner) {
 Table *scanner_table(Scanner *scanner) {
   return scanner->table;
 }
+void scanner_register(Scanner *scanner, const char *symbol, Bool flag) {
+  SymbolSet *top = table_top(scanner->table);
+  symbol_register(top, symbol, flag);
+}
