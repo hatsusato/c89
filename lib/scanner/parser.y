@@ -1,6 +1,6 @@
 %code requires {
 #include "sexp_type.h"
-#include "scanner_type.h"
+#include "yyscan.h"
 }
 
 %define api.pure full
