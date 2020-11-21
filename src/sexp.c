@@ -3,7 +3,13 @@
 #include "str.h"
 #include "utility.h"
 
-typedef enum { SEXP_NIL, SEXP_PAIR, SEXP_STRING, SEXP_NUMBER } SexpKind;
+typedef enum {
+  SEXP_NIL,
+  SEXP_PAIR,
+  SEXP_STRING,
+  SEXP_SYMBOL,
+  SEXP_NUMBER
+} SexpKind;
 
 struct struct_Sexp {
   SexpKind kind;
@@ -13,6 +19,7 @@ struct struct_Sexp {
       Sexp *car, *cdr;
     } pair;
     const Str *string;
+    const char *symbol;
     int number;
   } data;
 };
@@ -63,18 +70,29 @@ Sexp *sexp_string(const char *text, int leng) {
   sexp->data.string = str_new(text, leng);
   return sexp;
 }
-Sexp *sexp_number(int i) {
+Sexp *sexp_symbol(const char *symbol) {
+  MutableSexp *sexp = sexp_new(SEXP_SYMBOL);
+  sexp->data.symbol = symbol;
+  return sexp;
+}
+Sexp *sexp_number(int number) {
   MutableSexp *sexp = sexp_new(SEXP_NUMBER);
-  sexp->data.number = i;
+  sexp->data.number = number;
   return sexp;
 }
 Sexp *sexp_clone(Sexp *sexp) {
-  if (sexp_is_string(sexp)) {
+  switch (sexp_kind(sexp)) {
+  case SEXP_PAIR:
+    return sexp_cons(sexp_clone(sexp_car(sexp)), sexp_clone(sexp_cdr(sexp)));
+  case SEXP_STRING:
     return sexp_string(str_begin(sexp->data.string),
                        str_length(sexp->data.string));
-  } else if (sexp_is_number(sexp)) {
+  case SEXP_SYMBOL:
+    return sexp_symbol(sexp->data.symbol);
+  case SEXP_NUMBER:
     return sexp_number(sexp->data.number);
-  } else {
+  default:
+    assert(sexp_is_nil(sexp));
     return sexp_nil();
   }
 }
@@ -103,6 +121,9 @@ Bool sexp_is_pair(Sexp *sexp) {
 Bool sexp_is_string(Sexp *sexp) {
   return SEXP_STRING == sexp_kind(sexp);
 }
+Bool sexp_is_symbol(Sexp *sexp) {
+  return SEXP_SYMBOL == sexp_kind(sexp);
+}
 Bool sexp_is_number(Sexp *sexp) {
   return SEXP_NUMBER == sexp_kind(sexp);
 }
@@ -129,7 +150,9 @@ Sexp *sexp_at(Sexp *sexp, int index) {
   }
 }
 const char *sexp_get_string(Sexp *sexp) {
-  return sexp_is_string(sexp) ? str_begin(sexp->data.string) : NULL;
+  return sexp_is_string(sexp)   ? str_begin(sexp->data.string)
+         : sexp_is_symbol(sexp) ? sexp->data.symbol
+                                : NULL;
 }
 int sexp_get_number(Sexp *sexp) {
   if (sexp_is_number(sexp)) {
