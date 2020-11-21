@@ -6,6 +6,7 @@
 
 Pool *pool_new(Destructor);
 void pool_delete(Pool *);
+const char *pool_construct(const char *, Size);
 void pool_destruct(ElemType);
 const char *pool_insert(Pool *, const char *, Size);
 Bool pool_contains(Pool *, const char *);

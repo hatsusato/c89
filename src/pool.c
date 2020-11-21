@@ -8,18 +8,18 @@
 static int pool_compare(const ElemType *lhs, const ElemType *rhs) {
   return strcmp(*lhs, *rhs);
 }
-static char *duplicate_string(const char *text, Size size) {
-  char *buf = UTILITY_MALLOC_ARRAY(char, size + 1);
-  UTILITY_MEMCPY(char, buf, text, size);
-  buf[size] = '\0';
-  return buf;
-}
 
 Pool *pool_new(Destructor dtor) {
   return set_new(dtor, pool_compare);
 }
 void pool_delete(Pool *pool) {
   set_delete(pool);
+}
+const char *pool_construct(const char *text, Size size) {
+  char *buf = UTILITY_MALLOC_ARRAY(char, size + 1);
+  UTILITY_MEMCPY(char, buf, text, size);
+  buf[size] = '\0';
+  return buf;
 }
 void pool_destruct(ElemType elem) {
   UTILITY_FREE(elem);
