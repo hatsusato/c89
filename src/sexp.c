@@ -43,42 +43,16 @@ static Sexp *sexp_set_cdr(Sexp *sexp, Sexp *cdr) {
   return tmp;
 }
 
-Sexp *sexp_nil(void) {
-  static MutableSexp sexp = {SEXP_NIL, {NULL}};
-  return &sexp;
-}
-Sexp *sexp_pair(Sexp *car, Sexp *cdr) {
-  MutableSexp *sexp = sexp_new(SEXP_PAIR);
-  sexp->data.pair.car = car;
-  sexp->data.pair.cdr = cdr;
-  return sexp;
-}
-Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
-  Sexp *sexp = xs;
-  assert(sexp_is_list(xs));
-  for (; sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
-    if (sexp_is_nil(sexp_cdr(sexp))) {
-      sexp_set_cdr(sexp, sexp_pair(x, sexp_cdr(sexp)));
-      return xs;
-    }
+void sexp_delete(Sexp *sexp) {
+  if (sexp_is_pair(sexp)) {
+    sexp_delete(sexp->data.pair.car);
+    sexp_delete(sexp->data.pair.cdr);
+  } else if (sexp_is_string(sexp)) {
+    str_delete((Str *)sexp->data.string);
   }
-  assert(sexp_is_nil(xs));
-  return sexp_pair(x, xs);
-}
-Sexp *sexp_string(const char *text, int leng) {
-  MutableSexp *sexp = sexp_new(SEXP_STRING);
-  sexp->data.string = str_new(text, leng);
-  return sexp;
-}
-Sexp *sexp_symbol(const char *symbol) {
-  MutableSexp *sexp = sexp_new(SEXP_SYMBOL);
-  sexp->data.symbol = symbol;
-  return sexp;
-}
-Sexp *sexp_number(int number) {
-  MutableSexp *sexp = sexp_new(SEXP_NUMBER);
-  sexp->data.number = number;
-  return sexp;
+  if (!sexp_is_nil(sexp)) {
+    sexp_free((MutableSexp *)sexp);
+  }
 }
 Sexp *sexp_clone(Sexp *sexp) {
   switch (sexp_kind(sexp)) {
@@ -96,21 +70,30 @@ Sexp *sexp_clone(Sexp *sexp) {
     return sexp_nil();
   }
 }
-void sexp_delete(Sexp *sexp) {
-  switch (sexp_kind(sexp)) {
-  case SEXP_NIL:
-    return;
-  case SEXP_PAIR:
-    sexp_delete(sexp->data.pair.car);
-    sexp_delete(sexp->data.pair.cdr);
-    break;
-  case SEXP_STRING:
-    str_delete((Str *)sexp->data.string);
-    break;
-  default:
-    break;
-  }
-  sexp_free((MutableSexp *)sexp);
+Sexp *sexp_nil(void) {
+  static MutableSexp sexp = {SEXP_NIL, {NULL}};
+  return &sexp;
+}
+Sexp *sexp_pair(Sexp *car, Sexp *cdr) {
+  MutableSexp *sexp = sexp_new(SEXP_PAIR);
+  sexp->data.pair.car = car;
+  sexp->data.pair.cdr = cdr;
+  return sexp;
+}
+Sexp *sexp_string(const char *text, Size leng) {
+  MutableSexp *sexp = sexp_new(SEXP_STRING);
+  sexp->data.string = str_new(text, leng);
+  return sexp;
+}
+Sexp *sexp_symbol(const char *symbol) {
+  MutableSexp *sexp = sexp_new(SEXP_SYMBOL);
+  sexp->data.symbol = symbol;
+  return sexp;
+}
+Sexp *sexp_number(int number) {
+  MutableSexp *sexp = sexp_new(SEXP_NUMBER);
+  sexp->data.number = number;
+  return sexp;
 }
 Bool sexp_is_nil(Sexp *sexp) {
   return SEXP_NIL == sexp_kind(sexp);
@@ -131,7 +114,7 @@ Bool sexp_is_list(Sexp *list) {
   if (sexp_is_nil(list)) {
     return true;
   } else {
-    return (sexp_is_pair(list) && sexp_is_list(sexp_cdr(list)));
+    return sexp_is_pair(list) && sexp_is_list(sexp_cdr(list));
   }
 }
 Sexp *sexp_car(Sexp *sexp) {
@@ -142,7 +125,18 @@ Sexp *sexp_cdr(Sexp *sexp) {
   assert(sexp_is_pair(sexp));
   return sexp->data.pair.cdr;
 }
-Sexp *sexp_at(Sexp *sexp, int index) {
+Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
+  Sexp *it;
+  for (it = xs; sexp_is_pair(it); it = sexp_cdr(it)) {
+    if (!sexp_is_pair(sexp_cdr(it))) {
+      sexp_set_cdr(it, sexp_pair(x, sexp_cdr(it)));
+      return xs;
+    }
+  }
+  return sexp_pair(x, xs);
+}
+Sexp *sexp_at(Sexp *sexp, Index index) {
+  assert(sexp_is_pair(sexp));
   if (0 < index) {
     return sexp_at(sexp_cdr(sexp), index - 1);
   } else {
