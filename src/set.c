@@ -40,9 +40,12 @@ void set_delete(Set *set) {
 }
 void set_insert(Set *set, ElemType elem) {
   assert(set);
-  assert(!set_contains(set, elem));
-  vector_push(set->data, elem);
-  set_sort(set);
+  if (set_contains(set, elem)) {
+    vector_destruct(set->data, elem);
+  } else {
+    vector_push(set->data, elem);
+    set_sort(set);
+  }
 }
 Bool set_contains(const Set *set, ElemType elem) {
   assert(set);
