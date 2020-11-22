@@ -3,12 +3,15 @@
 builddir := build
 target := $(builddir)/main.out
 
-srcs != git ls-files src/*.c lib/*.c
+srcs != git ls-files src/
+srcs := $(filter %.c,$(srcs))
 objs := $(srcs:%.c=$(builddir)/%.o)
 deps := $(objs:%.o=%.d)
-scanner/objs := $(addprefix $(builddir)/lib/scanner/,parser.o scanner.o)
-lex/src := lib/scanner/lexer.l
-yacc/src := lib/scanner/parser.y
+scanner/prefix := src/scanner
+scanner/outdir := $(builddir)/$(scanner/prefix)
+scanner/objs := $(addprefix $(scanner/outdir)/,parser.o scanner.o)
+lex/src := $(scanner/prefix)/lexer.l
+yacc/src := $(scanner/prefix)/parser.y
 lex/prefix := $(lex/src:%.l=$(builddir)/%)
 yacc/prefix := $(yacc/src:%.y=$(builddir)/%)
 meds/lex := $(lex/prefix).c $(lex/prefix).h
