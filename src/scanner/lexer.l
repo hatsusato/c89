@@ -1,7 +1,6 @@
 %{
 #define yyHEADER_H
 #include "parser.tab.h"
-#define EMIT_TOKEN(token) do {return token;} while(0)
 %}
 
 %option noinput
@@ -68,97 +67,97 @@ s-char                  {character-set}|{single-quote}|{escape-sequence}
 [#][^\n]*
 {space}
 
-"auto"          { EMIT_TOKEN(TOKEN_AUTO);     }
-"break"         { EMIT_TOKEN(TOKEN_BREAK);    }
-"case"          { EMIT_TOKEN(TOKEN_CASE);     }
-"char"          { EMIT_TOKEN(TOKEN_CHAR);     }
-"const"         { EMIT_TOKEN(TOKEN_CONST);    }
-"continue"      { EMIT_TOKEN(TOKEN_CONTINUE); }
-"default"       { EMIT_TOKEN(TOKEN_DEFAULT);  }
-"do"            { EMIT_TOKEN(TOKEN_DO);       }
-"double"        { EMIT_TOKEN(TOKEN_DOUBLE);   }
-"else"          { EMIT_TOKEN(TOKEN_ELSE);     }
-"enum"          { EMIT_TOKEN(TOKEN_ENUM);     }
-"extern"        { EMIT_TOKEN(TOKEN_EXTERN);   }
-"float"         { EMIT_TOKEN(TOKEN_FLOAT);    }
-"for"           { EMIT_TOKEN(TOKEN_FOR);      }
-"goto"          { EMIT_TOKEN(TOKEN_GOTO);     }
-"if"            { EMIT_TOKEN(TOKEN_IF);       }
-"int"           { EMIT_TOKEN(TOKEN_INT);      }
-"long"          { EMIT_TOKEN(TOKEN_LONG);     }
-"register"      { EMIT_TOKEN(TOKEN_REGISTER); }
-"return"        { EMIT_TOKEN(TOKEN_RETURN);   }
-"signed"        { EMIT_TOKEN(TOKEN_SIGNED);   }
-"sizeof"        { EMIT_TOKEN(TOKEN_SIZEOF);   }
-"short"         { EMIT_TOKEN(TOKEN_SHORT);    }
-"static"        { EMIT_TOKEN(TOKEN_STATIC);   }
-"struct"        { EMIT_TOKEN(TOKEN_STRUCT);   }
-"switch"        { EMIT_TOKEN(TOKEN_SWITCH);   }
-"typedef"       { EMIT_TOKEN(TOKEN_TYPEDEF);  }
-"union"         { EMIT_TOKEN(TOKEN_UNION);    }
-"unsigned"      { EMIT_TOKEN(TOKEN_UNSIGNED); }
-"void"          { EMIT_TOKEN(TOKEN_VOID);     }
-"volatile"      { EMIT_TOKEN(TOKEN_VOLATILE); }
-"while"         { EMIT_TOKEN(TOKEN_WHILE);    }
+"auto"          { return TOKEN_AUTO;     }
+"break"         { return TOKEN_BREAK;    }
+"case"          { return TOKEN_CASE;     }
+"char"          { return TOKEN_CHAR;     }
+"const"         { return TOKEN_CONST;    }
+"continue"      { return TOKEN_CONTINUE; }
+"default"       { return TOKEN_DEFAULT;  }
+"do"            { return TOKEN_DO;       }
+"double"        { return TOKEN_DOUBLE;   }
+"else"          { return TOKEN_ELSE;     }
+"enum"          { return TOKEN_ENUM;     }
+"extern"        { return TOKEN_EXTERN;   }
+"float"         { return TOKEN_FLOAT;    }
+"for"           { return TOKEN_FOR;      }
+"goto"          { return TOKEN_GOTO;     }
+"if"            { return TOKEN_IF;       }
+"int"           { return TOKEN_INT;      }
+"long"          { return TOKEN_LONG;     }
+"register"      { return TOKEN_REGISTER; }
+"return"        { return TOKEN_RETURN;   }
+"signed"        { return TOKEN_SIGNED;   }
+"sizeof"        { return TOKEN_SIZEOF;   }
+"short"         { return TOKEN_SHORT;    }
+"static"        { return TOKEN_STATIC;   }
+"struct"        { return TOKEN_STRUCT;   }
+"switch"        { return TOKEN_SWITCH;   }
+"typedef"       { return TOKEN_TYPEDEF;  }
+"union"         { return TOKEN_UNION;    }
+"unsigned"      { return TOKEN_UNSIGNED; }
+"void"          { return TOKEN_VOID;     }
+"volatile"      { return TOKEN_VOLATILE; }
+"while"         { return TOKEN_WHILE;    }
 
-"."     { EMIT_TOKEN(TOKEN_PERIOD);             }
-"->"    { EMIT_TOKEN(TOKEN_ARROW);              }
-"++"    { EMIT_TOKEN(TOKEN_INCREMENT);          }
-"--"    { EMIT_TOKEN(TOKEN_DECREMENT);          }
-"&"     { EMIT_TOKEN(TOKEN_AMPERSAND);          }
-"*"     { EMIT_TOKEN(TOKEN_ASTERISK);           }
-"+"     { EMIT_TOKEN(TOKEN_PLUS);               }
-"-"     { EMIT_TOKEN(TOKEN_MINUS);              }
-"~"     { EMIT_TOKEN(TOKEN_TILDE);              }
-"!"     { EMIT_TOKEN(TOKEN_EXCLAMATION);        }
-"/"     { EMIT_TOKEN(TOKEN_SLASH);              }
-"%"     { EMIT_TOKEN(TOKEN_PERCENT);            }
-"<<"    { EMIT_TOKEN(TOKEN_LEFT_SHIFT);         }
-">>"    { EMIT_TOKEN(TOKEN_RIGHT_SHIFT);        }
-"<"     { EMIT_TOKEN(TOKEN_LESS_THAN);          }
-">"     { EMIT_TOKEN(TOKEN_GREATER_THAN);       }
-"<="    { EMIT_TOKEN(TOKEN_LESS_EQUAL);         }
-">="    { EMIT_TOKEN(TOKEN_GREATER_EQUAL);      }
-"=="    { EMIT_TOKEN(TOKEN_EQUAL);              }
-"!="    { EMIT_TOKEN(TOKEN_NOT_EQUAL);          }
-"^"     { EMIT_TOKEN(TOKEN_CARET);              }
-"|"     { EMIT_TOKEN(TOKEN_BAR);                }
-"&&"    { EMIT_TOKEN(TOKEN_AND);                }
-"||"    { EMIT_TOKEN(TOKEN_OR);                 }
-"?"     { EMIT_TOKEN(TOKEN_QUESTION);           }
-"="     { EMIT_TOKEN(TOKEN_ASSIGN);             }
-"*="    { EMIT_TOKEN(TOKEN_ASTERISK_ASSIGN);    }
-"/="    { EMIT_TOKEN(TOKEN_SLASH_ASSIGN);       }
-"%="    { EMIT_TOKEN(TOKEN_PERCENT_ASSIGN);     }
-"+="    { EMIT_TOKEN(TOKEN_PLUS_ASSIGN);        }
-"-="    { EMIT_TOKEN(TOKEN_MINUS_ASSIGN);       }
-"<<="   { EMIT_TOKEN(TOKEN_LEFT_SHIFT_ASSIGN);  }
-">>="   { EMIT_TOKEN(TOKEN_RIGHT_SHIFT_ASSIGN); }
-"&="    { EMIT_TOKEN(TOKEN_AMPERSAND_ASSIGN);   }
-"^="    { EMIT_TOKEN(TOKEN_CARET_ASSIGN);       }
-"|="    { EMIT_TOKEN(TOKEN_BAR_ASSIGN);         }
+"."     { return TOKEN_PERIOD;             }
+"->"    { return TOKEN_ARROW;              }
+"++"    { return TOKEN_INCREMENT;          }
+"--"    { return TOKEN_DECREMENT;          }
+"&"     { return TOKEN_AMPERSAND;          }
+"*"     { return TOKEN_ASTERISK;           }
+"+"     { return TOKEN_PLUS;               }
+"-"     { return TOKEN_MINUS;              }
+"~"     { return TOKEN_TILDE;              }
+"!"     { return TOKEN_EXCLAMATION;        }
+"/"     { return TOKEN_SLASH;              }
+"%"     { return TOKEN_PERCENT;            }
+"<<"    { return TOKEN_LEFT_SHIFT;         }
+">>"    { return TOKEN_RIGHT_SHIFT;        }
+"<"     { return TOKEN_LESS_THAN;          }
+">"     { return TOKEN_GREATER_THAN;       }
+"<="    { return TOKEN_LESS_EQUAL;         }
+">="    { return TOKEN_GREATER_EQUAL;      }
+"=="    { return TOKEN_EQUAL;              }
+"!="    { return TOKEN_NOT_EQUAL;          }
+"^"     { return TOKEN_CARET;              }
+"|"     { return TOKEN_BAR;                }
+"&&"    { return TOKEN_AND;                }
+"||"    { return TOKEN_OR;                 }
+"?"     { return TOKEN_QUESTION;           }
+"="     { return TOKEN_ASSIGN;             }
+"*="    { return TOKEN_ASTERISK_ASSIGN;    }
+"/="    { return TOKEN_SLASH_ASSIGN;       }
+"%="    { return TOKEN_PERCENT_ASSIGN;     }
+"+="    { return TOKEN_PLUS_ASSIGN;        }
+"-="    { return TOKEN_MINUS_ASSIGN;       }
+"<<="   { return TOKEN_LEFT_SHIFT_ASSIGN;  }
+">>="   { return TOKEN_RIGHT_SHIFT_ASSIGN; }
+"&="    { return TOKEN_AMPERSAND_ASSIGN;   }
+"^="    { return TOKEN_CARET_ASSIGN;       }
+"|="    { return TOKEN_BAR_ASSIGN;         }
 
-"["     { EMIT_TOKEN(TOKEN_LEFT_BRACKET);  }
-"]"     { EMIT_TOKEN(TOKEN_RIGHT_BRACKET); }
-"("     { EMIT_TOKEN(TOKEN_LEFT_PAREN);    }
-")"     { EMIT_TOKEN(TOKEN_RIGHT_PAREN);   }
-"{"     { EMIT_TOKEN(TOKEN_LEFT_BRACE);    }
-"}"     { EMIT_TOKEN(TOKEN_RIGHT_BRACE);   }
-","     { EMIT_TOKEN(TOKEN_COMMA);         }
-":"     { EMIT_TOKEN(TOKEN_COLON);         }
-";"     { EMIT_TOKEN(TOKEN_SEMICOLON);     }
-"..."   { EMIT_TOKEN(TOKEN_ELLIPSIS);      }
+"["     { return TOKEN_LEFT_BRACKET;  }
+"]"     { return TOKEN_RIGHT_BRACKET; }
+"("     { return TOKEN_LEFT_PAREN;    }
+")"     { return TOKEN_RIGHT_PAREN;   }
+"{"     { return TOKEN_LEFT_BRACE;    }
+"}"     { return TOKEN_RIGHT_BRACE;   }
+","     { return TOKEN_COMMA;         }
+":"     { return TOKEN_COLON;         }
+";"     { return TOKEN_SEMICOLON;     }
+"..."   { return TOKEN_ELLIPSIS;      }
 
 {identifier} {
   if (parser_query(yyscanner, yytext)) {
-    EMIT_TOKEN(TOKEN_TYPEDEF_IDENTIFIER);
+    return TOKEN_TYPEDEF_IDENTIFIER;
   } else {
-    EMIT_TOKEN(TOKEN_IDENTIFIER);
+    return TOKEN_IDENTIFIER;
   }
 }
-{floating-constant}     { EMIT_TOKEN(TOKEN_FLOATING_CONSTANT);  }
-{integer-constant}      { EMIT_TOKEN(TOKEN_INTEGER_CONSTANT);   }
-{character-constant}    { EMIT_TOKEN(TOKEN_CHARACTER_CONSTANT); }
-{string-literal}        { EMIT_TOKEN(TOKEN_STRING_LITERAL);     }
+{floating-constant}     { return TOKEN_FLOATING_CONSTANT;  }
+{integer-constant}      { return TOKEN_INTEGER_CONSTANT;   }
+{character-constant}    { return TOKEN_CHARACTER_CONSTANT; }
+{string-literal}        { return TOKEN_STRING_LITERAL;     }
 . { yyerror(yyscanner, "unknown token"); }
 %%
