@@ -1,6 +1,6 @@
 #include "lib/scanner.h"
 
-#include "lib/pool.h"
+#include "lib/set.h"
 #include "parser.tab.h"
 #include "sexp.h"
 #include "utility.h"

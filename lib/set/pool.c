@@ -1,5 +1,3 @@
-#include "lib/pool.h"
-
 #include <string.h>
 
 #include "lib/set.h"
