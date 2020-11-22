@@ -1,7 +1,7 @@
 #include "lib/scanner.h"
 
+#include "lib/pool.h"
 #include "parser.tab.h"
-#include "pool.h"
 #include "sexp.h"
 #include "utility.h"
 

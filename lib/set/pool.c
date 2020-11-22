@@ -1,8 +1,8 @@
-#include "pool.h"
+#include "lib/pool.h"
 
 #include <string.h>
 
-#include "set.h"
+#include "lib/set.h"
 #include "utility.h"
 
 static int pool_compare(const ElemType *lhs, const ElemType *rhs) {
