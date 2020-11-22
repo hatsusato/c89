@@ -1,19 +1,27 @@
 #!/usr/bin/make -f
 
-target := main.out
-builddir := $(CURDIR)/build
-includedir := $(CURDIR)/include
-libs/dir != find lib/ -mindepth 1 -type d
-libs := $(libs/dir:%=$(builddir)/%.a)
+builddir := build
+target := $(builddir)/main.out
 
-ldflags = -L$(builddir)/lib $(libs/dir:lib/%=-l:%.a)
-cflags = -Wall -Wextra -ansi -pedantic -I$(includedir)
-dflags = -MF $@ -MG -MM -MP -MT $(@:%.d=%.o)
-srcs != git ls-files src/*.c
+srcs != git ls-files src/*.c lib/*.c
 objs := $(srcs:%.c=$(builddir)/%.o)
 deps := $(objs:%.o=%.d)
-builds := $(libs/dir:%=build/%)
-cleans := $(libs/dir:%=clean/%)
+scanner/objs := $(addprefix $(builddir)/lib/scanner/,parser.o scanner.o)
+lex/src := lib/scanner/lexer.l
+yacc/src := lib/scanner/parser.y
+lex/prefix := $(lex/src:%.l=$(builddir)/%)
+yacc/prefix := $(yacc/src:%.y=$(builddir)/%)
+meds/lex := $(lex/prefix).c $(lex/prefix).h
+meds/yacc := $(yacc/prefix).tab.c $(yacc/prefix).tab.h
+meds/srcs := $(filter %.c,$(meds/lex) $(meds/yacc))
+meds/objs := $(meds/srcs:%.c=%.o)
+meds/deps := $(meds/objs:%.o=%.d)
+
+ldflags =
+cflags = -Wall -Wextra -ansi -pedantic -Iinclude
+dflags = $(cflags) -MF $@ -MG -MM -MP -MT $(@:%.d=%.o)
+lflags := --header-file=$(lex/prefix).h --outfile=$(lex/prefix).c
+yflags := -d -b $(yacc/prefix)
 
 ifeq (,$(wildcard .develop))
 cflags += -O3 -DNDEBUG
@@ -21,20 +29,13 @@ else
 cflags += -O0 -g
 endif
 
-export BUILD_DIR = $(builddir)
-export CFLAGS = $(cflags)
-
 .SUFFIXES:
 
-.PHONY: build $(builds)
-build: $(target)
-$(builds): build/%: $(builddir)/%.a
+.PHONY: all
+all: $(target)
 
-$(target): $(objs) $(libs)
+$(target): $(objs) $(meds/objs)
 	$(CC) $(ldflags) $^ -o $@
-
-$(libs): $(builddir)/%.a:
-	$(MAKE) -C $* build
 
 $(objs): $(builddir)/%.o: %.c
 	@mkdir -p $(@D)
@@ -44,10 +45,26 @@ $(deps): $(builddir)/%.d: %.c
 	@mkdir -p $(@D)
 	$(CC) $(dflags) $<
 
--include $(deps)
+$(meds/lex): $(lex/src) $(yacc/prefix).tab.h
+	@mkdir -p $(@D)
+	flex $(lflags) $<
 
-.PHONY: clean $(cleans)
-clean: $(cleans)
-	$(RM) $(objs) $(deps) $(target)
-$(cleans): clean/%:
-	$(MAKE) -C $* clean
+$(meds/yacc): $(yacc/src)
+	@mkdir -p $(@D)
+	bison $(yflags) $<
+
+$(scanner/objs): $(meds/lex) $(meds/yacc)
+$(scanner/objs): cflags += -I$(@D)
+
+$(meds/objs): %.o: %.c
+	$(CC) $(cflags) -c $< -o $@
+
+$(meds/deps): %.d: %.c
+	$(CC) $(dflags) $<
+
+-include $(deps) $(meds/deps)
+
+.PHONY: clean
+clean:
+	@$(RM) $(deps) $(meds/deps)
+	$(RM) $(objs) $(target) $(meds/objs) $(meds/lex) $(meds/yacc)
