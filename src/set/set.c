@@ -1,4 +1,4 @@
-#include "lib/set.h"
+#include "set.h"
 
 #include <stdlib.h>
 

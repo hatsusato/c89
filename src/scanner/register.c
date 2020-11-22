@@ -1,7 +1,7 @@
 #include "register.h"
 
 #include "ast.h"
-#include "lib/scanner.h"
+#include "scanner.h"
 #include "sexp.h"
 #include "utility.h"
 

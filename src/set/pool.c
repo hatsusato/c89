@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "lib/set.h"
+#include "set.h"
 #include "utility.h"
 
 static int pool_compare(const ElemType *lhs, const ElemType *rhs) {

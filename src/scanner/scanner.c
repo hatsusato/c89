@@ -1,9 +1,10 @@
-#include "lib/scanner.h"
+#include "scanner.h"
 
-#include "lib/set.h"
 #include "parser.tab.h"
+#include "set.h"
 #include "sexp.h"
 #include "utility.h"
+#include "yyscan.h"
 
 struct struct_Scanner {
   yyscan_t yyscan;

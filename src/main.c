@@ -1,5 +1,5 @@
-#include "lib/scanner.h"
 #include "print.h"
+#include "scanner.h"
 
 int main(void) {
   Scanner *scanner = scanner_new();
