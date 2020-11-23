@@ -20,8 +20,8 @@ Scanner *scanner_new(void) {
   assert(0 == ret);
   (void)ret;
   yyset_extra(scanner, scanner->yyscan);
-  scanner->symbols = pool_new(pool_destruct);
-  scanner->typedefs = pool_new(NULL);
+  scanner->symbols = pool_new(true);
+  scanner->typedefs = pool_new(false);
   scanner->ast = sexp_nil();
   scanner_register(scanner, "__builtin_va_list");
   return scanner;

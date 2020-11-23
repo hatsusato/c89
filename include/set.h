@@ -16,10 +16,9 @@ const ElemType *set_find(const Set *, ElemType);
 const ElemType *set_begin(const Set *);
 const ElemType *set_end(const Set *);
 
-Pool *pool_new(Destructor);
+Pool *pool_new(Bool);
 void pool_delete(Pool *);
 const char *pool_construct(const char *, Size);
-void pool_destruct(ElemType);
 const char *pool_insert(Pool *, const char *);
 Bool pool_contains(Pool *, const char *);
 
