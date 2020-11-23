@@ -3,6 +3,9 @@
 
 #include "sexp_type.h"
 
+struct struct_Ast;
+typedef struct struct_Ast Ast;
+
 typedef enum {
   AST_NULL,
 #define HANDLE(name, str) name,
@@ -23,6 +26,8 @@ typedef enum {
   AST_TAG_COUNT
 } AstTag;
 
+Ast *ast_new(void);
+void ast_delete(Ast *);
 const char *ast_show(AstTag);
 AstTag ast_tag(Sexp *);
 

@@ -3,6 +3,19 @@
 #include "sexp.h"
 #include "utility.h"
 
+struct struct_Ast {
+  Sexp *sexp;
+};
+
+Ast *ast_new(void) {
+  Ast *ast = UTILITY_MALLOC(Ast);
+  ast->sexp = sexp_nil();
+  return ast;
+}
+void ast_delete(Ast *ast) {
+  sexp_delete(ast->sexp);
+  UTILITY_FREE(ast);
+}
 const char *ast_show(AstTag tag) {
   const char *name[] = {"",
 #define HANDLE(name, str) str,
