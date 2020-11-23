@@ -13,7 +13,7 @@ static void vector_destructor_default(ElemType e) {
 }
 static void vector_alloc(Vector *v) {
   ElemType *prev = v->data;
-  v->data = UTILITY_MALLOC_ARRAY(ElemType, v->capacity);
+  v->data = UTILITY_MALLOC_ARRAY(ElemType, vector_capacity(v));
   if (prev) {
     UTILITY_MEMCPY(ElemType, v->data, prev, v->size);
     UTILITY_FREE(prev);
@@ -45,6 +45,10 @@ Size vector_length(const Vector *v) {
   assert(v);
   return v->size;
 }
+Size vector_capacity(const Vector *v) {
+  assert(v);
+  return v->capacity;
+}
 ElemType *vector_begin(const Vector *v) {
   assert(v);
   return v->data;
@@ -63,7 +67,7 @@ ElemType vector_back(const Vector *v) {
 }
 void vector_push(Vector *v, ElemType elem) {
   assert(v);
-  if (v->size == v->capacity) {
+  if (vector_length(v) == vector_capacity(v)) {
     v->capacity += 1 + v->size;
     vector_alloc(v);
   }
