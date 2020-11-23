@@ -37,6 +37,10 @@ void vector_destruct(Vector *v, ElemType elem) {
   assert(v);
   v->dtor(elem);
 }
+Bool vector_empty(const Vector *v) {
+  assert(v);
+  return 0 == vector_length(v);
+}
 Size vector_length(const Vector *v) {
   assert(v);
   return v->size;
@@ -51,17 +55,11 @@ ElemType *vector_end(const Vector *v) {
 }
 ElemType vector_front(const Vector *v) {
   assert(v);
-  if (0 < v->size) {
-    return v->data[0];
-  }
-  return NULL;
+  return vector_empty(v) ? NULL : v->data[0];
 }
 ElemType vector_back(const Vector *v) {
   assert(v);
-  if (0 < v->size) {
-    return v->data[v->size - 1];
-  }
-  return NULL;
+  return vector_empty(v) ? NULL : v->data[v->size - 1];
 }
 void vector_push(Vector *v, ElemType elem) {
   assert(v);
@@ -74,7 +72,7 @@ void vector_push(Vector *v, ElemType elem) {
 }
 void vector_pop(Vector *v) {
   assert(v);
-  if (0 < v->size) {
+  if (!vector_empty(v)) {
     --v->size;
     vector_destruct(v, v->data[v->size]);
     v->data[v->size] = NULL;
@@ -82,7 +80,7 @@ void vector_pop(Vector *v) {
 }
 void vector_clear(Vector *v) {
   assert(v);
-  while (0 < v->size) {
+  while (!vector_empty(v)) {
     vector_pop(v);
   }
 }

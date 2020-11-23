@@ -9,6 +9,7 @@ typedef struct struct_Vector Vector;
 Vector *vector_new(Destructor);
 void vector_delete(Vector *);
 void vector_destruct(Vector *, ElemType);
+Bool vector_empty(const Vector *);
 Size vector_length(const Vector *);
 ElemType *vector_begin(const Vector *);
 ElemType *vector_end(const Vector *);
