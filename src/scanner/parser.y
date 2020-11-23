@@ -1,6 +1,6 @@
 %code requires {
 #include "sexp_type.h"
-#include "yyscan.h"
+#include "scanner/yyscan.h"
 }
 
 %define api.pure full
@@ -9,7 +9,7 @@
 
 %code provides {
 #include "lexer.h"
-#include "parser.h"
+#include "scanner/parser.h"
 }
 
 /* 6.1 Lexical elements */
