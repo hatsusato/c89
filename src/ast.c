@@ -1,20 +1,27 @@
 #include "ast.h"
 
+#include "set.h"
 #include "sexp.h"
 #include "utility.h"
 
 struct struct_Ast {
+  Pool *symbols;
   Sexp *sexp;
 };
 
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
+  ast->symbols = pool_new(true);
   ast->sexp = sexp_nil();
   return ast;
 }
 void ast_delete(Ast *ast) {
   sexp_delete(ast->sexp);
+  pool_delete(ast->symbols);
   UTILITY_FREE(ast);
+}
+const char *ast_symbol(Ast *ast, const char *text, Size leng) {
+  return pool_insert(ast->symbols, pool_construct(text, leng));
 }
 const char *ast_show(AstTag tag) {
   const char *name[] = {"",
