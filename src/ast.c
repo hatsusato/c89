@@ -5,19 +5,33 @@
 #include "utility.h"
 
 struct struct_Ast {
-  Pool *symbols;
+  Set *symbols;
   Sexp *sexp;
 };
 
+static const char *symbols_construct(const char *text, Size size) {
+  char *buf = UTILITY_MALLOC_ARRAY(char, size + 1);
+  UTILITY_MEMCPY(char, buf, text, size);
+  buf[size] = '\0';
+  assert(text[size] == 0);
+  return buf;
+}
+static void symbols_destruct(ElemType elem) {
+  UTILITY_FREE(elem);
+}
+static int symbols_strcmp(const ElemType *lhs, const ElemType *rhs) {
+  return strcmp(*lhs, *rhs);
+}
+
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
-  ast->symbols = pool_new(true);
+  ast->symbols = set_new(symbols_destruct, symbols_strcmp);
   ast->sexp = sexp_nil();
   return ast;
 }
 void ast_delete(Ast *ast) {
   sexp_delete(ast->sexp);
-  pool_delete(ast->symbols);
+  set_delete(ast->symbols);
   UTILITY_FREE(ast);
 }
 Sexp *ast_get(Ast *ast) {
@@ -28,7 +42,8 @@ void ast_set(Ast *ast, Sexp *sexp) {
   ast->sexp = sexp;
 }
 const char *ast_symbol(Ast *ast, const char *text, Size leng) {
-  return pool_insert(ast->symbols, pool_construct(text, leng));
+  const char *symbol = symbols_construct(text, leng);
+  return set_insert(ast->symbols, (ElemType)symbol);
 }
 const char *ast_show(AstTag tag) {
   const char *name[] = {"",
