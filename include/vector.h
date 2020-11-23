@@ -2,7 +2,9 @@
 #define INCLUDE_GUARD_228B134A_0631_479A_9421_9C226E168C9E
 
 #include "types.h"
-#include "vector_type.h"
+
+struct struct_Vector;
+typedef struct struct_Vector Vector;
 
 Vector *vector_new(Destructor);
 void vector_delete(Vector *);
