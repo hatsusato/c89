@@ -29,6 +29,8 @@ typedef enum {
 
 Ast *ast_new(void);
 void ast_delete(Ast *);
+Sexp *ast_get(Ast *);
+void ast_set(Ast *, Sexp *);
 const char *ast_symbol(Ast *, const char *, Size);
 const char *ast_show(AstTag);
 AstTag ast_tag(Sexp *);

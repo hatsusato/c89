@@ -20,6 +20,13 @@ void ast_delete(Ast *ast) {
   pool_delete(ast->symbols);
   UTILITY_FREE(ast);
 }
+Sexp *ast_get(Ast *ast) {
+  return ast->sexp;
+}
+void ast_set(Ast *ast, Sexp *sexp) {
+  assert(sexp_is_nil(ast->sexp));
+  ast->sexp = sexp;
+}
 const char *ast_symbol(Ast *ast, const char *text, Size leng) {
   return pool_insert(ast->symbols, pool_construct(text, leng));
 }
