@@ -9,9 +9,8 @@
 
 struct struct_Scanner {
   yyscan_t yyscan;
-  Pool *symbols;
+  Ast *ast;
   Pool *typedefs;
-  Sexp *ast;
 };
 
 Scanner *scanner_new(void) {
@@ -20,34 +19,30 @@ Scanner *scanner_new(void) {
   assert(0 == ret);
   (void)ret;
   yyset_extra(scanner, scanner->yyscan);
-  scanner->symbols = pool_new(true);
+  scanner->ast = ast_new();
   scanner->typedefs = pool_new(false);
-  scanner->ast = sexp_nil();
   scanner_register(scanner, "__builtin_va_list");
   return scanner;
 }
 void scanner_delete(Scanner *scanner) {
-  sexp_delete(scanner->ast);
   pool_delete(scanner->typedefs);
-  pool_delete(scanner->symbols);
+  ast_delete(scanner->ast);
   yylex_destroy(scanner->yyscan);
   UTILITY_FREE(scanner);
 }
 int scanner_parse(Scanner *scanner) {
   return yyparse(scanner->yyscan);
 }
-Sexp *scanner_ast(Scanner *scanner) {
+Ast *scanner_ast(Scanner *scanner) {
   return scanner->ast;
 }
 void scanner_finish(Scanner *scanner, Sexp *ast) {
-  assert(sexp_is_nil(scanner->ast));
-  scanner->ast = ast;
+  ast_set(scanner->ast, ast);
 }
 Sexp *scanner_token(Scanner *scanner) {
   const char *text = yyget_text(scanner->yyscan);
   Size leng = yyget_leng(scanner->yyscan);
-  const char *token = pool_construct(text, leng);
-  token = pool_insert(scanner->symbols, token);
+  const char *token = ast_symbol(scanner->ast, text, leng);
   return sexp_symbol(token);
 }
 void scanner_register(Scanner *scanner, const char *symbol) {
