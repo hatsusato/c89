@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD
 
 #include "ast.h"
+#include "scanner.h"
 #include "sexp_type.h"
 #include "types.h"
 #include "yyscan.h"

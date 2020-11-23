@@ -3,7 +3,7 @@
 #include "parser.tab.h"
 #include "print.h"
 #include "register.h"
-#include "scanner.h"
+#include "scanner_impl.h"
 #include "sexp.h"
 #include "utility.h"
 
