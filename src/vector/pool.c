@@ -1,5 +1,7 @@
 #include "vector/pool.h"
 
+#include <stdlib.h>
+
 #include "utility.h"
 #include "vector.h"
 
@@ -24,27 +26,26 @@ static void entry_destructor(ElemType elem) {
   UTILITY_FREE(buf);
   UTILITY_FREE(elem);
 }
-static int entry_compare(const ElemType *l, const ElemType *r) {
-  Entry *lhs = *l;
-  Entry *rhs = *r;
+static int entry_compare(const void *l, const void *r) {
+  const Entry *lhs = *(const Entry **)l;
+  const Entry *rhs = *(const Entry **)r;
   int diff = lhs->size - rhs->size;
   int ret = memcmp(lhs->buf, rhs->buf, 0 < diff ? lhs->size : rhs->size);
   return 0 == ret ? diff : ret;
 }
 static const ElemType *pool_find(Pool *pool, const void *buf, Size size) {
-  const ElemType *it;
-  const ElemType *begin = vector_begin(pool->pool);
-  const ElemType *end = vector_end(pool->pool);
+  const ElemType *data = vector_begin(pool->pool);
+  size_t count = vector_length(pool->pool);
   Entry entry;
   ElemType key = &entry;
   entry.size = size;
   entry.buf = buf;
-  for (it = begin; it != end; ++it) {
-    if (entry_compare(it, &key)) {
-      return it;
-    }
-  }
-  return NULL;
+  return bsearch(&key, data, count, sizeof(ElemType), entry_compare);
+}
+static void pool_sort(Pool *pool) {
+  ElemType *data = vector_begin(pool->pool);
+  size_t count = vector_length(pool->pool);
+  qsort(data, count, sizeof(ElemType), entry_compare);
 }
 
 Pool *pool_new(void) {
@@ -64,6 +65,7 @@ const void *pool_insert(Pool *pool, const void *buf, Size size) {
   } else {
     entry = entry_constructor(buf, size);
     vector_push(pool->pool, entry);
+    pool_sort(pool);
   }
   return entry->buf;
 }
