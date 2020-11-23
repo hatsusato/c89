@@ -2,6 +2,7 @@
 
 #include <string.h>
 
+#include "ast.h"
 #include "parser.tab.h"
 #include "scanner/scanner_impl.h"
 #include "scanner/yyscan.h"
