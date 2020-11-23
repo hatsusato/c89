@@ -27,7 +27,7 @@ Scanner *scanner_new(void) {
   (void)ret;
   yyset_extra(scanner, scanner->yyscan);
   scanner->ast = ast_new();
-  scanner->typedefs = set_new(NULL, scanner_strcmp);
+  scanner->typedefs = set_new(scanner_strcmp);
   scanner_register(scanner, "__builtin_va_list");
   return scanner;
 }

@@ -27,9 +27,9 @@ static const ElemType *set_search(const Set *set, ElemType key) {
   return bsearch(&key, data, count, sizeof(ElemType), set->cmp);
 }
 
-Set *set_new(Destructor dtor, Compare cmp) {
+Set *set_new(Compare cmp) {
   Set *set = UTILITY_MALLOC(Set);
-  set->data = vector_new(dtor);
+  set->data = vector_new(NULL);
   set->cmp = cmp ? (SetCompare)cmp : set_compare_default;
   return set;
 }
@@ -42,14 +42,12 @@ ElemType set_insert(Set *set, ElemType elem) {
   const ElemType *found;
   assert(set);
   found = set_find(set, elem);
-  if (found) {
-    vector_destruct(set->data, elem);
-    return *found;
-  } else {
+  if (!found) {
     vector_push(set->data, elem);
     set_sort(set);
-    return elem;
+    found = &elem;
   }
+  return *found;
 }
 Bool set_contains(const Set *set, ElemType elem) {
   assert(set);
