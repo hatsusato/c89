@@ -5,6 +5,9 @@
 static Size sort_threshold(void) {
   return 32;
 }
+static ElemType *middle(ElemType *begin, ElemType *end) {
+  return begin + (end - begin) / 2;
+}
 
 void insert_sort(ElemType *begin, ElemType *end, Compare *cmp) {
   ElemType *cur = begin;
@@ -18,10 +21,9 @@ void insert_sort(ElemType *begin, ElemType *end, Compare *cmp) {
 }
 void quick_sort(ElemType *begin, ElemType *end, Compare *cmp) {
   ElemType pivot;
-  Size size = end - begin;
   ElemType *lo = begin, *hi = end - 1;
-  ElemType *mid = begin + size / 2;
-  if (size < sort_threshold()) {
+  ElemType *mid = middle(begin, end);
+  if (end - begin < sort_threshold()) {
     insert_sort(begin, end, cmp);
     return;
   }
@@ -49,4 +51,19 @@ void quick_sort(ElemType *begin, ElemType *end, Compare *cmp) {
   }
   quick_sort(begin, lo, cmp);
   quick_sort(lo, end, cmp);
+}
+ElemType *binary_search(ElemType key, ElemType *begin, ElemType *end,
+                        Compare *cmp) {
+  ElemType *mid = middle(begin, end);
+  while (begin < end) {
+    int ret = compare(cmp, key, *mid);
+    if (ret < 0) {
+      end = mid;
+    } else if (0 < ret) {
+      begin = mid + 1;
+    } else {
+      return mid;
+    }
+  }
+  return NULL;
 }

@@ -6,5 +6,6 @@
 
 void insert_sort(ElemType *, ElemType *, Compare *);
 void quick_sort(ElemType *, ElemType *, Compare *);
+ElemType *binary_search(ElemType, ElemType *, ElemType *, Compare *);
 
 #endif /* INCLUDE_GUARD_0C8B0910_CE56_48A5_8BFB_257BD9BDAB76 */
