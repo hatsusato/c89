@@ -6,6 +6,7 @@
 #define true (1)
 #define false (0)
 typedef int Bool, Size, Index;
+typedef unsigned char Byte;
 
 typedef void *ElemType;
 typedef void (*Destructor)(ElemType);
