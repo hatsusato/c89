@@ -2,7 +2,7 @@
 
 #include <ctype.h>
 
-#include "ast.h"
+#include "ast/ast_tag.h"
 #include "sexp.h"
 #include "utility.h"
 
