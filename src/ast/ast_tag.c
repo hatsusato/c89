@@ -5,19 +5,19 @@
 const char *ast_show(AstTag tag) {
   const char *name[] = {"",
 #define HANDLE(name, str) str,
-#include "enum/keyword.def"
+#include "ast/keyword.def"
 #
-#include "enum/token.def"
+#include "ast/token.def"
 #
-#include "enum/symbol.def"
+#include "ast/symbol.def"
 #
-#include "enum/expression.def"
+#include "ast/expression.def"
 #
-#include "enum/declaration.def"
+#include "ast/declaration.def"
 #
-#include "enum/statement.def"
+#include "ast/statement.def"
 #
-#include "enum/definition.def"
+#include "ast/definition.def"
 #undef HANDLE
                         "tag-count"};
   if (AST_NULL < tag && tag < AST_TAG_COUNT) {
