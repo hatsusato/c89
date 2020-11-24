@@ -27,5 +27,9 @@ CompareExtra compare_set_extra(Compare *compare, CompareExtra extra) {
   return extra;
 }
 int compare_cmp(Compare *compare, ElemType lhs, ElemType rhs) {
-  return compare->cmp(lhs, rhs, compare->extra);
+  if (compare->cmp) {
+    return compare->cmp(lhs, rhs, compare->extra);
+  } else {
+    return (lhs < rhs) ? -1 : (rhs < lhs);
+  }
 }
