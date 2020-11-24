@@ -11,10 +11,16 @@ struct struct_Vector {
 static void vector_destructor_default(ElemType e) {
   (void)e;
 }
+static ElemType *vector_sentinel(void) {
+  return NULL;
+}
+static Bool vector_positive(const Vector *v) {
+  return vector_sentinel() != v->data;
+}
 static void vector_alloc(Vector *v) {
   ElemType *prev = v->data;
   v->data = UTILITY_MALLOC_ARRAY(ElemType, vector_capacity(v));
-  if (prev) {
+  if (vector_positive(v)) {
     UTILITY_MEMCPY(ElemType, v->data, prev, v->size);
     UTILITY_FREE(prev);
   }
@@ -22,7 +28,7 @@ static void vector_alloc(Vector *v) {
 
 Vector *vector_new(Destructor dtor) {
   Vector *v = UTILITY_MALLOC(Vector);
-  v->data = NULL;
+  v->data = vector_sentinel();
   v->size = v->capacity = 0;
   v->dtor = dtor ? dtor : vector_destructor_default;
   return v;
