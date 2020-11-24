@@ -6,7 +6,7 @@
 struct struct_Set;
 typedef struct struct_Set Set;
 
-Set *set_new(Cmp);
+Set *set_new(int (*)(const ElemType *, const ElemType *));
 void set_delete(Set *);
 ElemType set_insert(Set *, ElemType);
 Bool set_contains(const Set *, ElemType);

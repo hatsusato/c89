@@ -27,7 +27,7 @@ static const ElemType *set_search(const Set *set, ElemType key) {
   return bsearch(&key, data, count, sizeof(ElemType), set->cmp);
 }
 
-Set *set_new(Cmp cmp) {
+Set *set_new(int (*cmp)(const ElemType *, const ElemType *)) {
   Set *set = UTILITY_MALLOC(Set);
   set->data = vector_new(NULL);
   set->cmp = cmp ? (SetCompare)cmp : set_compare_default;

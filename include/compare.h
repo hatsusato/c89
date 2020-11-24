@@ -4,6 +4,8 @@
 #include "compare_type.h"
 #include "types.h"
 
+typedef int (*Cmp)(ElemType, ElemType);
+
 Compare *compare_new(Cmp);
 void compare_delete(Compare *);
 int compare_cmp(Compare *, ElemType, ElemType);
