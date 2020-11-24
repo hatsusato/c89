@@ -16,8 +16,8 @@ struct struct_Scanner {
   Set *typedefs;
 };
 
-static int scanner_strcmp(const ElemType *lhs, const ElemType *rhs) {
-  return strcmp(*lhs, *rhs);
+static int scanner_strcmp(const void *lhs, const void *rhs) {
+  return strcmp(*(const ElemType *)lhs, *(const ElemType *)rhs);
 }
 
 Scanner *scanner_new(void) {

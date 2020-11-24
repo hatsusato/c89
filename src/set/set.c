@@ -5,17 +5,11 @@
 #include "utility.h"
 #include "vector.h"
 
-typedef int (*SetCompare)(const void *, const void *);
 struct struct_Set {
   Vector *data;
   SetCompare cmp;
 };
 
-static int set_compare_default(const void *lhs, const void *rhs) {
-  ElemType l = *(const ElemType *)lhs;
-  ElemType r = *(const ElemType *)rhs;
-  return l < r ? -1 : l > r ? 1 : 0;
-}
 static void set_sort(Set *set) {
   ElemType *data = vector_begin(set->data);
   size_t count = vector_length(set->data);
@@ -27,10 +21,10 @@ static const ElemType *set_search(const Set *set, ElemType key) {
   return bsearch(&key, data, count, sizeof(ElemType), set->cmp);
 }
 
-Set *set_new(int (*cmp)(const ElemType *, const ElemType *)) {
+Set *set_new(SetCompare cmp) {
   Set *set = UTILITY_MALLOC(Set);
   set->data = vector_new(NULL);
-  set->cmp = cmp ? (SetCompare)cmp : set_compare_default;
+  set->cmp = cmp;
   return set;
 }
 void set_delete(Set *set) {
