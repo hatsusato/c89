@@ -18,12 +18,16 @@ static Bool vector_positive(const Vector *v) {
   return vector_sentinel() != v->data;
 }
 static void vector_alloc(Vector *v) {
-  ElemType *prev = v->data;
-  v->data = UTILITY_MALLOC_ARRAY(ElemType, vector_capacity(v));
-  if (vector_positive(v)) {
-    UTILITY_MEMCPY(ElemType, v->data, prev, v->size);
-    UTILITY_FREE(prev);
+  Size leng = vector_length(v);
+  Size size = vector_positive(v) ? 2 * vector_capacity(v) : 8;
+  ElemType *buf = UTILITY_MALLOC_ARRAY(ElemType, size);
+  UTILITY_MEMCPY(ElemType, buf, v->data, leng);
+  UTILITY_SWAP(ElemType *, buf, v->data);
+  UTILITY_FREE(buf);
+  while (leng < size) {
+    v->data[leng++] = NULL;
   }
+  v->capacity = size;
 }
 
 Vector *vector_new(Destructor dtor) {
@@ -74,7 +78,6 @@ ElemType vector_back(const Vector *v) {
 void vector_push(Vector *v, ElemType elem) {
   assert(v);
   if (vector_length(v) == vector_capacity(v)) {
-    v->capacity += 1 + v->size;
     vector_alloc(v);
   }
   v->data[v->size] = elem;
