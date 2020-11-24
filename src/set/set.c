@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 
+#include "compare.h"
+#include "set/sort.h"
 #include "utility.h"
 #include "vector.h"
 
@@ -10,15 +12,27 @@ struct struct_Set {
   SetCompare cmp;
 };
 
+int set_compare(ElemType lhs, ElemType rhs, const void *extra) {
+  return ((SetCompare)extra)(&lhs, &rhs);
+}
+
 static void set_sort(Set *set) {
-  ElemType *data = vector_begin(set->data);
-  size_t count = vector_length(set->data);
-  qsort(data, count, sizeof(ElemType), set->cmp);
+  Compare *cmp = compare_new(set_compare);
+  ElemType *begin = vector_begin(set->data);
+  ElemType *end = vector_end(set->data);
+  compare_set_extra(cmp, (CompareExtra)set->cmp);
+  quick_sort(begin, end, cmp);
+  compare_delete(cmp);
 }
 static const ElemType *set_search(const Set *set, ElemType key) {
-  const ElemType *data = vector_begin(set->data);
-  size_t count = vector_length(set->data);
-  return bsearch(&key, data, count, sizeof(ElemType), set->cmp);
+  const ElemType *ret;
+  Compare *cmp = compare_new(set_compare);
+  ElemType *begin = vector_begin(set->data);
+  ElemType *end = vector_end(set->data);
+  compare_set_extra(cmp, (CompareExtra)set->cmp);
+  ret = binary_search(key, begin, end, cmp);
+  compare_delete(cmp);
+  return ret;
 }
 
 Set *set_new(SetCompare cmp) {
