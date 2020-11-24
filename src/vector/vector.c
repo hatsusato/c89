@@ -4,7 +4,6 @@
 
 struct struct_Vector {
   ElemType *begin, *end, *last;
-  Size size, capacity;
   Destructor dtor;
 };
 
@@ -37,13 +36,11 @@ static void vector_alloc(Vector *v) {
   while (leng++ < size) {
     *v->last++ = NULL;
   }
-  v->capacity = size;
 }
 
 Vector *vector_new(Destructor dtor) {
   Vector *v = UTILITY_MALLOC(Vector);
   v->begin = v->end = v->last = (ElemType *)vector_sentinel();
-  v->size = v->capacity = 0;
   v->dtor = dtor ? dtor : vector_destructor_default;
   return v;
 }
@@ -63,11 +60,11 @@ Bool vector_empty(const Vector *v) {
 }
 Size vector_length(const Vector *v) {
   assert(v);
-  return v->size;
+  return v->end - v->begin;
 }
 Size vector_capacity(const Vector *v) {
   assert(v);
-  return v->capacity;
+  return v->last - v->begin;
 }
 ElemType *vector_begin(const Vector *v) {
   assert(v);
@@ -75,7 +72,7 @@ ElemType *vector_begin(const Vector *v) {
 }
 ElemType *vector_end(const Vector *v) {
   assert(v);
-  return v->begin + v->size;
+  return v->end;
 }
 ElemType vector_front(const Vector *v) {
   assert(v);
@@ -83,24 +80,21 @@ ElemType vector_front(const Vector *v) {
 }
 ElemType vector_back(const Vector *v) {
   assert(v);
-  return vector_empty(v) ? NULL : v->begin[v->size - 1];
+  return vector_empty(v) ? NULL : v->end[-1];
 }
 void vector_push(Vector *v, ElemType elem) {
   assert(v);
   if (vector_length(v) == vector_capacity(v)) {
     vector_alloc(v);
   }
-  v->begin[v->size] = elem;
-  ++v->size;
-  ++v->end;
+  *v->end++ = elem;
 }
 void vector_pop(Vector *v) {
   assert(v);
   if (!vector_empty(v)) {
-    --v->size;
     --v->end;
-    vector_destruct(v, v->begin[v->size]);
-    v->begin[v->size] = NULL;
+    vector_destruct(v, *v->end);
+    *v->end = NULL;
   }
 }
 void vector_clear(Vector *v) {
