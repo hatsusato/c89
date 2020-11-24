@@ -11,27 +11,25 @@ static const ElemType *vector_sentinel(void) {
   static const ElemType sentinel = NULL;
   return &sentinel;
 }
-static Bool vector_positive(const Vector *v) {
-  const ElemType *const sentinel = vector_sentinel();
-  assert((sentinel == v->begin && sentinel == v->end && sentinel == v->last) ||
-         (sentinel != v->begin && sentinel != v->end && sentinel != v->last));
-  return sentinel != v->begin;
-}
 static void vector_free(ElemType *buf) {
   if (vector_sentinel() != buf) {
     UTILITY_FREE(buf);
   }
 }
 static void vector_alloc(Vector *v) {
+  ElemType *buf;
   Size leng = vector_length(v);
-  Size size = vector_positive(v) ? 2 * vector_capacity(v) : 8;
-  ElemType *buf = UTILITY_MALLOC_ARRAY(ElemType, size);
-  UTILITY_MEMCPY(ElemType, buf, v->begin, leng);
-  UTILITY_SWAP(ElemType *, buf, v->begin);
-  vector_free(buf);
-  v->end = v->last = v->begin + leng;
-  while (leng++ < size) {
-    *v->last++ = NULL;
+  Size size = vector_capacity(v);
+  if (leng == size) {
+    size += size == 0 ? 8 : size;
+    buf = UTILITY_MALLOC_ARRAY(ElemType, size);
+    UTILITY_MEMCPY(ElemType, buf, v->begin, leng);
+    UTILITY_SWAP(ElemType *, buf, v->begin);
+    vector_free(buf);
+    v->end = v->last = v->begin + leng;
+    while (leng++ < size) {
+      *v->last++ = NULL;
+    }
   }
 }
 
@@ -55,7 +53,7 @@ void vector_destruct(const Vector *v, ElemType elem) {
 }
 Bool vector_empty(const Vector *v) {
   assert(v);
-  return 0 == vector_length(v);
+  return v->end == v->begin;
 }
 Size vector_length(const Vector *v) {
   assert(v);
@@ -83,9 +81,7 @@ ElemType vector_back(const Vector *v) {
 }
 void vector_push(Vector *v, ElemType elem) {
   assert(v);
-  if (vector_length(v) == vector_capacity(v)) {
-    vector_alloc(v);
-  }
+  vector_alloc(v);
   *v->end++ = elem;
 }
 void vector_pop(Vector *v) {
