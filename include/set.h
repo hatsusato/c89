@@ -1,13 +1,13 @@
 #ifndef INCLUDE_GUARD_DE6D0AC9_F1A3_4A4E_90C8_FBAA690CD01A
 #define INCLUDE_GUARD_DE6D0AC9_F1A3_4A4E_90C8_FBAA690CD01A
 
+#include "compare_type.h"
 #include "types.h"
 
 struct struct_Set;
 typedef struct struct_Set Set;
-typedef int (*SetCompare)(const void *, const void *);
 
-Set *set_new(SetCompare);
+Set *set_new(Compare *);
 void set_delete(Set *);
 ElemType set_insert(Set *, ElemType);
 Bool set_contains(const Set *, ElemType);

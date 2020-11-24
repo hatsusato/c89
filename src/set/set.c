@@ -1,7 +1,5 @@
 #include "set.h"
 
-#include <stdlib.h>
-
 #include "compare.h"
 #include "set/sort.h"
 #include "utility.h"
@@ -9,33 +7,21 @@
 
 struct struct_Set {
   Vector *data;
-  SetCompare cmp;
+  Compare *cmp;
 };
 
-int set_compare(ElemType lhs, ElemType rhs, const void *extra) {
-  return ((SetCompare)extra)(&lhs, &rhs);
-}
-
 static void set_sort(Set *set) {
-  Compare *cmp = compare_new(set_compare);
   ElemType *begin = vector_begin(set->data);
   ElemType *end = vector_end(set->data);
-  compare_set_extra(cmp, (CompareExtra)set->cmp);
-  quick_sort(begin, end, cmp);
-  compare_delete(cmp);
+  quick_sort(begin, end, set->cmp);
 }
 static const ElemType *set_search(const Set *set, ElemType key) {
-  const ElemType *ret;
-  Compare *cmp = compare_new(set_compare);
   ElemType *begin = vector_begin(set->data);
   ElemType *end = vector_end(set->data);
-  compare_set_extra(cmp, (CompareExtra)set->cmp);
-  ret = binary_search(key, begin, end, cmp);
-  compare_delete(cmp);
-  return ret;
+  return binary_search(key, begin, end, set->cmp);
 }
 
-Set *set_new(SetCompare cmp) {
+Set *set_new(Compare *cmp) {
   Set *set = UTILITY_MALLOC(Set);
   set->data = vector_new(NULL);
   set->cmp = cmp;
@@ -43,6 +29,7 @@ Set *set_new(SetCompare cmp) {
 }
 void set_delete(Set *set) {
   assert(set);
+  compare_delete(set->cmp);
   vector_delete(set->data);
   UTILITY_FREE(set);
 }

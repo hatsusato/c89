@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "ast.h"
+#include "compare.h"
 #include "parser.tab.h"
 #include "scanner/scanner_impl.h"
 #include "scanner/yyscan.h"
@@ -16,18 +17,20 @@ struct struct_Scanner {
   Set *typedefs;
 };
 
-static int scanner_strcmp(const void *lhs, const void *rhs) {
-  return strcmp(*(const ElemType *)lhs, *(const ElemType *)rhs);
+static int scanner_strcmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
+  (void)extra;
+  return strcmp(lhs, rhs);
 }
 
 Scanner *scanner_new(void) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
+  Compare *cmp = compare_new(scanner_strcmp);
   int ret = yylex_init(&scanner->yyscan);
   assert(0 == ret);
   (void)ret;
   yyset_extra(scanner, scanner->yyscan);
   scanner->ast = ast_new();
-  scanner->typedefs = set_new(scanner_strcmp);
+  scanner->typedefs = set_new(cmp);
   scanner_register(scanner, "__builtin_va_list");
   return scanner;
 }
