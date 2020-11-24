@@ -14,6 +14,6 @@ Compare *compare_new(Cmp cmp) {
 void compare_delete(Compare *compare) {
   UTILITY_FREE(compare);
 }
-int compare(Compare *compare, ElemType lhs, ElemType rhs) {
+int compare_cmp(Compare *compare, ElemType lhs, ElemType rhs) {
   return compare->cmp(lhs, rhs);
 }
