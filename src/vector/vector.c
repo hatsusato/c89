@@ -3,7 +3,7 @@
 #include "utility.h"
 
 struct struct_Vector {
-  ElemType *begin;
+  ElemType *begin, *end, *last;
   Size size, capacity;
   Destructor dtor;
 };
@@ -16,7 +16,10 @@ static const ElemType *vector_sentinel(void) {
   return &sentinel;
 }
 static Bool vector_positive(const Vector *v) {
-  return vector_sentinel() != v->begin;
+  const ElemType *const sentinel = vector_sentinel();
+  assert((sentinel == v->begin && sentinel == v->end && sentinel == v->last) ||
+         (sentinel != v->begin && sentinel != v->end && sentinel != v->last));
+  return sentinel != v->begin;
 }
 static void vector_free(ElemType *buf) {
   if (vector_sentinel() != buf) {
@@ -30,15 +33,16 @@ static void vector_alloc(Vector *v) {
   UTILITY_MEMCPY(ElemType, buf, v->begin, leng);
   UTILITY_SWAP(ElemType *, buf, v->begin);
   vector_free(buf);
-  while (leng < size) {
-    v->begin[leng++] = NULL;
+  v->end = v->last = v->begin + leng;
+  while (leng++ < size) {
+    *v->last++ = NULL;
   }
   v->capacity = size;
 }
 
 Vector *vector_new(Destructor dtor) {
   Vector *v = UTILITY_MALLOC(Vector);
-  v->begin = vector_sentinel();
+  v->begin = v->end = v->last = (ElemType *)vector_sentinel();
   v->size = v->capacity = 0;
   v->dtor = dtor ? dtor : vector_destructor_default;
   return v;
@@ -88,11 +92,13 @@ void vector_push(Vector *v, ElemType elem) {
   }
   v->begin[v->size] = elem;
   ++v->size;
+  ++v->end;
 }
 void vector_pop(Vector *v) {
   assert(v);
   if (!vector_empty(v)) {
     --v->size;
+    --v->end;
     vector_destruct(v, v->begin[v->size]);
     v->begin[v->size] = NULL;
   }
