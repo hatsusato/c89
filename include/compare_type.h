@@ -2,6 +2,6 @@
 #define INCLUDE_GUARD_D2E8FE1E_D9DE_4B70_9CC5_787939BDA26A
 
 struct struct_Compare;
-typedef struct struct_Compare Compare;
+typedef struct struct_Compare const Compare;
 
 #endif /* INCLUDE_GUARD_D2E8FE1E_D9DE_4B70_9CC5_787939BDA26A */
