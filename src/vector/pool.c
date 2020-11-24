@@ -1,7 +1,6 @@
 #include "vector/pool.h"
 
 #include <stdlib.h>
-#include <string.h>
 
 #include "utility.h"
 #include "vector.h"
@@ -18,21 +17,20 @@ static Entry *entry_constructor(const void *buf, Size size) {
   Entry *entry = UTILITY_MALLOC(Entry);
   entry->size = size;
   entry->buf = UTILITY_MALLOC_ARRAY(Byte, size);
-  UTILITY_MEMCPY(Byte, (Byte *)entry->buf, buf, size);
+  UTILITY_MEMCPY(Byte, entry->buf, buf, size);
   return entry;
 }
 static void entry_destructor(ElemType elem) {
   Entry *entry = elem;
-  Byte *buf = (Byte *)entry->buf;
-  UTILITY_FREE(buf);
+  UTILITY_FREE(entry->buf);
   UTILITY_FREE(elem);
 }
 static int entry_compare(const void *l, const void *r) {
   const Entry *lhs = *(const Entry **)l;
   const Entry *rhs = *(const Entry **)r;
-  int diff = lhs->size - rhs->size;
-  int ret = memcmp(lhs->buf, rhs->buf, 0 < diff ? lhs->size : rhs->size);
-  return 0 == ret ? diff : ret;
+  const Size lsz = lhs->size, rsz = rhs->size;
+  int ret = utility_memcmp(lhs->buf, rhs->buf, lsz < rsz ? lsz : rsz);
+  return 0 == ret ? lsz - rsz : ret;
 }
 static const ElemType *pool_find(Pool *pool, const void *buf, Size size) {
   const ElemType *data = vector_begin(pool->pool);
