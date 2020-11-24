@@ -54,8 +54,8 @@ void quick_sort(ElemType *begin, ElemType *end, Compare *cmp) {
 }
 const ElemType *binary_search(ElemType key, const ElemType *begin,
                               const ElemType *end, Compare *cmp) {
-  const ElemType *mid = middle(begin, end);
   while (begin < end) {
+    const ElemType *mid = middle(begin, end);
     int ret = compare_cmp(cmp, key, *mid);
     if (ret < 0) {
       end = mid;
