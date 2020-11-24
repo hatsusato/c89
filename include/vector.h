@@ -8,7 +8,7 @@ typedef struct struct_Vector Vector;
 
 Vector *vector_new(Destructor);
 void vector_delete(Vector *);
-void vector_destruct(Vector *, ElemType);
+void vector_destruct(const Vector *, ElemType);
 Bool vector_empty(const Vector *);
 Size vector_length(const Vector *);
 Size vector_capacity(const Vector *);

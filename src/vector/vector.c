@@ -7,9 +7,6 @@ struct struct_Vector {
   Destructor dtor;
 };
 
-static void vector_destructor_default(ElemType e) {
-  (void)e;
-}
 static const ElemType *vector_sentinel(void) {
   static const ElemType sentinel = NULL;
   return &sentinel;
@@ -41,7 +38,7 @@ static void vector_alloc(Vector *v) {
 Vector *vector_new(Destructor dtor) {
   Vector *v = UTILITY_MALLOC(Vector);
   v->begin = v->end = v->last = (ElemType *)vector_sentinel();
-  v->dtor = dtor ? dtor : vector_destructor_default;
+  v->dtor = dtor;
   return v;
 }
 void vector_delete(Vector *v) {
@@ -50,9 +47,11 @@ void vector_delete(Vector *v) {
   vector_free(v->begin);
   UTILITY_FREE(v);
 }
-void vector_destruct(Vector *v, ElemType elem) {
+void vector_destruct(const Vector *v, ElemType elem) {
   assert(v);
-  v->dtor(elem);
+  if (v->dtor) {
+    v->dtor(elem);
+  }
 }
 Bool vector_empty(const Vector *v) {
   assert(v);
