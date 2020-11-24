@@ -2,11 +2,13 @@
 
 #include <stdlib.h>
 
+#include "compare.h"
 #include "utility.h"
 #include "vector.h"
 
 struct struct_Pool {
   Vector *pool;
+  Compare *cmp;
 };
 typedef struct {
   Size size;
@@ -32,6 +34,13 @@ static int entry_compare(const void *l, const void *r) {
   int ret = utility_memcmp(lhs->buf, rhs->buf, lsz < rsz ? lsz : rsz);
   return 0 == ret ? lsz - rsz : ret;
 }
+static int pool_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
+  const Entry *l = lhs, *r = rhs;
+  const Size lsz = l->size, rsz = r->size;
+  int ret = utility_memcmp(l->buf, r->buf, lsz < rsz ? lsz : rsz);
+  (void)extra;
+  return 0 == ret ? lsz - rsz : ret;
+}
 static const ElemType *pool_find(Pool *pool, const void *buf, Size size) {
   const ElemType *data = vector_begin(pool->pool);
   size_t count = vector_length(pool->pool);
@@ -50,9 +59,11 @@ static void pool_sort(Pool *pool) {
 Pool *pool_new(void) {
   Pool *pool = UTILITY_MALLOC(Pool);
   pool->pool = vector_new(entry_destructor);
+  pool->cmp = compare_new(pool_compare);
   return pool;
 }
 void pool_delete(Pool *pool) {
+  compare_delete(pool->cmp);
   vector_delete(pool->pool);
   UTILITY_FREE(pool);
 }
