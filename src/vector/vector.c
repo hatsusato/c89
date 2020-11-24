@@ -11,11 +11,17 @@ struct struct_Vector {
 static void vector_destructor_default(ElemType e) {
   (void)e;
 }
-static ElemType *vector_sentinel(void) {
-  return NULL;
+static const ElemType *vector_sentinel(void) {
+  static const ElemType sentinel = NULL;
+  return &sentinel;
 }
 static Bool vector_positive(const Vector *v) {
   return vector_sentinel() != v->begin;
+}
+static void vector_free(ElemType *buf) {
+  if (vector_sentinel() != buf) {
+    UTILITY_FREE(buf);
+  }
 }
 static void vector_alloc(Vector *v) {
   Size leng = vector_length(v);
@@ -23,7 +29,7 @@ static void vector_alloc(Vector *v) {
   ElemType *buf = UTILITY_MALLOC_ARRAY(ElemType, size);
   UTILITY_MEMCPY(ElemType, buf, v->begin, leng);
   UTILITY_SWAP(ElemType *, buf, v->begin);
-  UTILITY_FREE(buf);
+  vector_free(buf);
   while (leng < size) {
     v->begin[leng++] = NULL;
   }
@@ -40,7 +46,7 @@ Vector *vector_new(Destructor dtor) {
 void vector_delete(Vector *v) {
   assert(v);
   vector_clear(v);
-  UTILITY_FREE(v->begin);
+  vector_free(v->begin);
   UTILITY_FREE(v);
 }
 void vector_destruct(Vector *v, ElemType elem) {
