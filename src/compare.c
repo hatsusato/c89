@@ -8,22 +8,21 @@ struct struct_Compare {
 };
 typedef struct struct_Compare MutableCompare;
 
-MutableCompare *compare_as_mut(Compare *cmp) {
+static MutableCompare *compare_mut(Compare *cmp) {
   return (MutableCompare *)cmp;
 }
 
 Compare *compare_new(Cmp cmp) {
-  MutableCompare *compare = UTILITY_MALLOC(MutableCompare);
-  compare->cmp = cmp;
-  compare->extra = NULL;
+  Compare *compare = UTILITY_MALLOC(Compare);
+  compare_mut(compare)->cmp = cmp;
+  compare_mut(compare)->extra = NULL;
   return compare;
 }
 void compare_delete(Compare *compare) {
-  MutableCompare *mutcmp = compare_as_mut(compare);
-  UTILITY_FREE(mutcmp);
+  UTILITY_FREE(compare);
 }
 CompareExtra compare_set_extra(Compare *compare, CompareExtra extra) {
-  UTILITY_SWAP(CompareExtra, compare_as_mut(compare)->extra, extra);
+  UTILITY_SWAP(CompareExtra, compare_mut(compare)->extra, extra);
   return extra;
 }
 int compare_cmp(Compare *compare, ElemType lhs, ElemType rhs) {
