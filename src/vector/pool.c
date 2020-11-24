@@ -1,8 +1,7 @@
 #include "vector/pool.h"
 
-#include <stdlib.h>
-
 #include "compare.h"
+#include "set/sort.h"
 #include "utility.h"
 #include "vector.h"
 
@@ -25,14 +24,7 @@ static Entry *entry_constructor(const void *buf, Size size) {
 static void entry_destructor(ElemType elem) {
   Entry *entry = elem;
   UTILITY_FREE(entry->buf);
-  UTILITY_FREE(elem);
-}
-static int entry_compare(const void *l, const void *r) {
-  const Entry *lhs = *(const Entry **)l;
-  const Entry *rhs = *(const Entry **)r;
-  const Size lsz = lhs->size, rsz = rhs->size;
-  int ret = utility_memcmp(lhs->buf, rhs->buf, lsz < rsz ? lsz : rsz);
-  return 0 == ret ? lsz - rsz : ret;
+  UTILITY_FREE(entry);
 }
 static int pool_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
   const Entry *l = lhs, *r = rhs;
@@ -42,18 +34,17 @@ static int pool_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
   return 0 == ret ? lsz - rsz : ret;
 }
 static const ElemType *pool_find(Pool *pool, const void *buf, Size size) {
-  const ElemType *data = vector_begin(pool->pool);
-  size_t count = vector_length(pool->pool);
-  Entry entry;
-  ElemType key = &entry;
-  entry.size = size;
-  entry.buf = buf;
-  return bsearch(&key, data, count, sizeof(ElemType), entry_compare);
+  ElemType *begin = vector_begin(pool->pool);
+  ElemType *end = vector_end(pool->pool);
+  Entry key;
+  key.size = size;
+  key.buf = buf;
+  return binary_search(&key, begin, end, pool->cmp);
 }
 static void pool_sort(Pool *pool) {
-  ElemType *data = vector_begin(pool->pool);
-  size_t count = vector_length(pool->pool);
-  qsort(data, count, sizeof(ElemType), entry_compare);
+  ElemType *begin = vector_begin(pool->pool);
+  ElemType *end = vector_end(pool->pool);
+  quick_sort(begin, end, pool->cmp);
 }
 
 Pool *pool_new(void) {
