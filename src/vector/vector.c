@@ -3,7 +3,7 @@
 #include "utility.h"
 
 struct struct_Vector {
-  ElemType *data;
+  ElemType *begin;
   Size size, capacity;
   Destructor dtor;
 };
@@ -15,24 +15,24 @@ static ElemType *vector_sentinel(void) {
   return NULL;
 }
 static Bool vector_positive(const Vector *v) {
-  return vector_sentinel() != v->data;
+  return vector_sentinel() != v->begin;
 }
 static void vector_alloc(Vector *v) {
   Size leng = vector_length(v);
   Size size = vector_positive(v) ? 2 * vector_capacity(v) : 8;
   ElemType *buf = UTILITY_MALLOC_ARRAY(ElemType, size);
-  UTILITY_MEMCPY(ElemType, buf, v->data, leng);
-  UTILITY_SWAP(ElemType *, buf, v->data);
+  UTILITY_MEMCPY(ElemType, buf, v->begin, leng);
+  UTILITY_SWAP(ElemType *, buf, v->begin);
   UTILITY_FREE(buf);
   while (leng < size) {
-    v->data[leng++] = NULL;
+    v->begin[leng++] = NULL;
   }
   v->capacity = size;
 }
 
 Vector *vector_new(Destructor dtor) {
   Vector *v = UTILITY_MALLOC(Vector);
-  v->data = vector_sentinel();
+  v->begin = vector_sentinel();
   v->size = v->capacity = 0;
   v->dtor = dtor ? dtor : vector_destructor_default;
   return v;
@@ -40,7 +40,7 @@ Vector *vector_new(Destructor dtor) {
 void vector_delete(Vector *v) {
   assert(v);
   vector_clear(v);
-  UTILITY_FREE(v->data);
+  UTILITY_FREE(v->begin);
   UTILITY_FREE(v);
 }
 void vector_destruct(Vector *v, ElemType elem) {
@@ -61,34 +61,34 @@ Size vector_capacity(const Vector *v) {
 }
 ElemType *vector_begin(const Vector *v) {
   assert(v);
-  return v->data;
+  return v->begin;
 }
 ElemType *vector_end(const Vector *v) {
   assert(v);
-  return v->data + v->size;
+  return v->begin + v->size;
 }
 ElemType vector_front(const Vector *v) {
   assert(v);
-  return vector_empty(v) ? NULL : v->data[0];
+  return vector_empty(v) ? NULL : v->begin[0];
 }
 ElemType vector_back(const Vector *v) {
   assert(v);
-  return vector_empty(v) ? NULL : v->data[v->size - 1];
+  return vector_empty(v) ? NULL : v->begin[v->size - 1];
 }
 void vector_push(Vector *v, ElemType elem) {
   assert(v);
   if (vector_length(v) == vector_capacity(v)) {
     vector_alloc(v);
   }
-  v->data[v->size] = elem;
+  v->begin[v->size] = elem;
   ++v->size;
 }
 void vector_pop(Vector *v) {
   assert(v);
   if (!vector_empty(v)) {
     --v->size;
-    vector_destruct(v, v->data[v->size]);
-    v->data[v->size] = NULL;
+    vector_destruct(v, v->begin[v->size]);
+    v->begin[v->size] = NULL;
   }
 }
 void vector_clear(Vector *v) {
