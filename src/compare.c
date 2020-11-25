@@ -38,3 +38,7 @@ int compare_cmp(Compare *compare, ElemType lhs, ElemType rhs) {
     return (lhs < rhs) ? -1 : (rhs < lhs);
   }
 }
+int compare_strcmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
+  (void)extra;
+  return utility_strcmp(lhs, rhs);
+}

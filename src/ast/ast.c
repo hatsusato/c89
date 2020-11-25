@@ -10,10 +10,6 @@ struct struct_Ast {
   Sexp *sexp;
 };
 
-static int symbol_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
-  (void)extra;
-  return utility_strcmp(lhs, rhs);
-}
 static const char *symbol_new(const void *text, Size size) {
   char *symbol = UTILITY_MALLOC_ARRAY(char, size + 1);
   UTILITY_MEMCPY(char, symbol, text, size);
@@ -26,7 +22,7 @@ static void symbol_free(ElemType symbol) {
 
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
-  Compare *cmp = compare_new(symbol_compare);
+  Compare *cmp = compare_new(compare_strcmp);
   ast->symbols = set_new(symbol_free, cmp);
   ast->sexp = sexp_nil();
   return ast;

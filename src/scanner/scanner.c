@@ -1,7 +1,5 @@
 #include "scanner.h"
 
-#include <string.h>
-
 #include "ast.h"
 #include "compare.h"
 #include "parser.tab.h"
@@ -17,14 +15,9 @@ struct struct_Scanner {
   Set *typedefs;
 };
 
-static int scanner_strcmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
-  (void)extra;
-  return strcmp(lhs, rhs);
-}
-
 Scanner *scanner_new(void) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
-  Compare *cmp = compare_new(scanner_strcmp);
+  Compare *cmp = compare_new(compare_strcmp);
   int ret = yylex_init(&scanner->yyscan);
   assert(0 == ret);
   (void)ret;
