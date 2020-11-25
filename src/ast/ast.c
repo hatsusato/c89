@@ -1,10 +1,10 @@
 #include "ast.h"
 
 #include "compare.h"
+#include "set/pool.h"
 #include "sexp.h"
 #include "utility.h"
 #include "vector.h"
-#include "vector/pool.h"
 
 struct struct_Ast {
   Pool *symbols;

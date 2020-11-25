@@ -2,8 +2,8 @@
 #define INCLUDE_GUARD_EE46CC10_6993_423D_BD00_80BDCB6B3815
 
 #include "compare_type.h"
+#include "set/pool_type.h"
 #include "types.h"
-#include "vector/pool_type.h"
 #include "vector/vector_type.h"
 
 Pool *pool_new(Vector *, Compare *);
