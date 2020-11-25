@@ -3,8 +3,8 @@
 
 #include "compare_type.h"
 #include "types.h"
-#include "vector.h"
 #include "vector/pool_type.h"
+#include "vector/vector_type.h"
 
 Pool *pool_new(Vector *, Compare *);
 void pool_delete(Pool *);

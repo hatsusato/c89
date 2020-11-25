@@ -4,6 +4,7 @@
 #include "set/sort.h"
 #include "types.h"
 #include "utility.h"
+#include "vector.h"
 
 struct struct_Pool {
   Vector *vec;
