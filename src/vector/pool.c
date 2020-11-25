@@ -22,14 +22,6 @@ static void entry_destructor(ElemType elem) {
   UTILITY_FREE(entry->buf);
   UTILITY_FREE(entry);
 }
-static const ElemType *pool_find(Pool *pool, const void *buf, Size size) {
-  ElemType *begin = vector_begin(pool->pool);
-  ElemType *end = vector_end(pool->pool);
-  Entry key;
-  key.size = size;
-  key.buf = buf;
-  return binary_search(&key, begin, end, pool->cmp);
-}
 static void pool_sort(Pool *pool) {
   ElemType *begin = vector_begin(pool->pool);
   ElemType *end = vector_end(pool->pool);
@@ -58,4 +50,12 @@ const void *pool_insert(Pool *pool, const void *buf, Size size) {
     pool_sort(pool);
   }
   return entry->buf;
+}
+const ElemType *pool_find(Pool *pool, const void *buf, Size size) {
+  ElemType *begin = vector_begin(pool->pool);
+  ElemType *end = vector_end(pool->pool);
+  Entry key;
+  key.size = size;
+  key.buf = buf;
+  return binary_search(&key, begin, end, pool->cmp);
 }

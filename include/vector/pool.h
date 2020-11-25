@@ -13,5 +13,6 @@ typedef struct {
 Pool *pool_new(Compare *);
 void pool_delete(Pool *);
 const void *pool_insert(Pool *, const void *, Size);
+const ElemType *pool_find(Pool *, const void *, Size);
 
 #endif /* INCLUDE_GUARD_EE46CC10_6993_423D_BD00_80BDCB6B3815 */
