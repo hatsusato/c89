@@ -4,7 +4,6 @@
 #include "set/sort.h"
 #include "types.h"
 #include "utility.h"
-#include "vector.h"
 
 struct struct_Pool {
   Vector *pool;
@@ -16,18 +15,15 @@ static const char *entry_constructor(const void *buf, Size size) {
   UTILITY_MEMCPY(Byte, entry, buf, size);
   return entry;
 }
-static void entry_destructor(ElemType elem) {
-  UTILITY_FREE(elem);
-}
 static void pool_sort(Pool *pool) {
   ElemType *begin = vector_begin(pool->pool);
   ElemType *end = vector_end(pool->pool);
   quick_sort(begin, end, pool->cmp);
 }
 
-Pool *pool_new(Compare *cmp) {
+Pool *pool_new(Vector *vec, Compare *cmp) {
   Pool *pool = UTILITY_MALLOC(Pool);
-  pool->pool = vector_new(entry_destructor);
+  pool->pool = vec;
   pool->cmp = cmp;
   return pool;
 }

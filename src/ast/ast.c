@@ -3,6 +3,7 @@
 #include "compare.h"
 #include "sexp.h"
 #include "utility.h"
+#include "vector.h"
 #include "vector/pool.h"
 
 struct struct_Ast {
@@ -17,8 +18,9 @@ static int pool_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
 
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
+  Vector *vec = vector_new(utility_free);
   Compare *cmp = compare_new(pool_compare);
-  ast->symbols = pool_new(cmp);
+  ast->symbols = pool_new(vec, cmp);
   ast->sexp = sexp_nil();
   return ast;
 }

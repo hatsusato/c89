@@ -3,9 +3,10 @@
 
 #include "compare_type.h"
 #include "types.h"
+#include "vector.h"
 #include "vector/pool_type.h"
 
-Pool *pool_new(Compare *);
+Pool *pool_new(Vector *, Compare *);
 void pool_delete(Pool *);
 const void *pool_insert(Pool *, const void *, Size);
 const ElemType *pool_find(Pool *, const void *, Size);
