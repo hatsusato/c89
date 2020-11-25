@@ -1,5 +1,6 @@
 #include "ast.h"
 
+#include "compare.h"
 #include "sexp.h"
 #include "utility.h"
 #include "vector/pool.h"
@@ -9,9 +10,18 @@ struct struct_Ast {
   Sexp *sexp;
 };
 
+static int pool_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
+  const Entry *l = lhs, *r = rhs;
+  const Size lsz = l->size, rsz = r->size;
+  int ret = utility_memcmp(l->buf, r->buf, lsz < rsz ? lsz : rsz);
+  (void)extra;
+  return 0 == ret ? lsz - rsz : ret;
+}
+
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
-  ast->symbols = pool_new();
+  Compare *cmp = compare_new(pool_compare);
+  ast->symbols = pool_new(cmp);
   ast->sexp = sexp_nil();
   return ast;
 }
