@@ -2,47 +2,42 @@
 
 #include "compare.h"
 #include "set/sort.h"
+#include "types.h"
 #include "utility.h"
 #include "vector.h"
 
 struct struct_Set {
-  Vector *data;
+  Vector *vec;
   Compare *cmp;
 };
 
 static void set_sort(Set *set) {
-  ElemType *begin = vector_begin(set->data);
-  ElemType *end = vector_end(set->data);
+  ElemType *begin = vector_begin(set->vec);
+  ElemType *end = vector_end(set->vec);
   quick_sort(begin, end, set->cmp);
 }
 static const ElemType *set_search(const Set *set, ElemType key) {
-  ElemType *begin = vector_begin(set->data);
-  ElemType *end = vector_end(set->data);
+  ElemType *begin = vector_begin(set->vec);
+  ElemType *end = vector_end(set->vec);
   return binary_search(key, begin, end, set->cmp);
 }
 
-Set *set_new(Compare *cmp) {
+Set *set_new(Destructor dtor, Compare *cmp) {
   Set *set = UTILITY_MALLOC(Set);
-  set->data = vector_new(NULL);
+  set->vec = vector_new(dtor);
   set->cmp = cmp;
   return set;
 }
 void set_delete(Set *set) {
   assert(set);
   compare_delete(set->cmp);
-  vector_delete(set->data);
+  vector_delete(set->vec);
   UTILITY_FREE(set);
 }
-ElemType set_insert(Set *set, ElemType elem) {
-  const ElemType *found;
+void set_insert(Set *set, ElemType elem) {
   assert(set);
-  found = set_find(set, elem);
-  if (!found) {
-    vector_push(set->data, elem);
-    set_sort(set);
-    found = &elem;
-  }
-  return *found;
+  vector_push(set->vec, elem);
+  set_sort(set);
 }
 Bool set_contains(const Set *set, ElemType elem) {
   assert(set);
@@ -54,9 +49,9 @@ const ElemType *set_find(const Set *set, ElemType key) {
 }
 const ElemType *set_begin(const Set *set) {
   assert(set);
-  return vector_begin(set->data);
+  return vector_begin(set->vec);
 }
 const ElemType *set_end(const Set *set) {
   assert(set);
-  return vector_end(set->data);
+  return vector_end(set->vec);
 }

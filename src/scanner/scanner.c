@@ -30,7 +30,7 @@ Scanner *scanner_new(void) {
   (void)ret;
   yyset_extra(scanner, scanner->yyscan);
   scanner->ast = ast_new();
-  scanner->typedefs = set_new(cmp);
+  scanner->typedefs = set_new(NULL, cmp);
   scanner_register(scanner, "__builtin_va_list");
   return scanner;
 }

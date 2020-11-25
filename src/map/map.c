@@ -21,7 +21,7 @@ Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
   Compare *compare = compare_new(map_compare);
   compare_set_extra(compare, keycmp, (Destructor)compare_delete);
-  map->set = set_new(compare);
+  map->set = set_new(NULL, compare);
   return map;
 }
 void map_delete(Map *map) {

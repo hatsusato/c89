@@ -15,3 +15,6 @@ void utility_memcpy(void *dst, const void *src, size_t count) {
 int utility_memcmp(const void *lhs, const void *rhs, size_t count) {
   return memcmp(lhs, rhs, count);
 }
+int utility_strcmp(const char *lhs, const char *rhs) {
+  return strcmp(lhs, rhs);
+}
