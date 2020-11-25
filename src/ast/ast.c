@@ -15,15 +15,19 @@ static int symbol_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
   (void)extra;
   return utility_strcmp(lhs, rhs);
 }
-static const char *entry_constructor(const void *buf, Size size) {
-  char *entry = UTILITY_MALLOC_ARRAY(char, size);
-  UTILITY_MEMCPY(Byte, entry, buf, size);
-  return entry;
+static const char *symbol_new(const void *text, Size size) {
+  char *symbol = UTILITY_MALLOC_ARRAY(char, size + 1);
+  UTILITY_MEMCPY(char, symbol, text, size);
+  symbol[size] = '\0';
+  return symbol;
+}
+static void symbol_free(ElemType symbol) {
+  UTILITY_FREE(symbol);
 }
 
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
-  Vector *vec = vector_new(utility_free);
+  Vector *vec = vector_new(symbol_free);
   Compare *cmp = compare_new(symbol_compare);
   ast->symbols = pool_new(vec, cmp);
   ast->sexp = sexp_nil();
@@ -48,7 +52,7 @@ const char *ast_symbol(Ast *ast, const char *text, Size leng) {
   if (found) {
     return *found;
   } else {
-    ElemType elem = (ElemType)entry_constructor(text, leng + 1);
+    ElemType elem = (ElemType)symbol_new(text, leng);
     pool_insert(ast->symbols, elem);
     return elem;
   }
