@@ -9,7 +9,8 @@ typedef int (*Cmp)(ElemType, ElemType, CompareExtra);
 
 Compare *compare_new(Cmp);
 void compare_delete(Compare *);
-CompareExtra compare_set_extra(Compare *, CompareExtra);
+CompareExtra compare_get_extra(Compare *);
+void compare_set_extra(Compare *, CompareExtra, Destructor);
 int compare_cmp(Compare *, ElemType, ElemType);
 
 #endif /* INCLUDE_GUARD_34AB7F3A_885A_4F62_9026_BA9D1D12BD57 */

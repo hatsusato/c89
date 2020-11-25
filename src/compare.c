@@ -1,29 +1,35 @@
 #include "compare.h"
 
+#include "types.h"
 #include "utility.h"
 
 struct struct_Compare {
   Cmp cmp;
   CompareExtra extra;
+  Destructor dtor;
 };
 typedef struct struct_Compare MutableCompare;
 
-static MutableCompare *compare_mut(Compare *cmp) {
-  return (MutableCompare *)cmp;
-}
-
 Compare *compare_new(Cmp cmp) {
-  Compare *compare = UTILITY_MALLOC(Compare);
-  compare_mut(compare)->cmp = cmp;
-  compare_mut(compare)->extra = NULL;
+  MutableCompare *compare = UTILITY_MALLOC(MutableCompare);
+  compare->cmp = cmp;
+  compare->extra = NULL;
+  compare->dtor = NULL;
   return compare;
 }
 void compare_delete(Compare *compare) {
+  if (compare->dtor) {
+    compare->dtor((ElemType)compare->extra);
+  }
   UTILITY_FREE(compare);
 }
-CompareExtra compare_set_extra(Compare *compare, CompareExtra extra) {
-  UTILITY_SWAP(CompareExtra, compare_mut(compare)->extra, extra);
-  return extra;
+CompareExtra compare_get_extra(Compare *compare) {
+  return compare->extra;
+}
+void compare_set_extra(Compare *compare, CompareExtra extra, Destructor dtor) {
+  MutableCompare *mutcmp = (MutableCompare *)compare;
+  mutcmp->extra = extra;
+  mutcmp->dtor = dtor;
 }
 int compare_cmp(Compare *compare, ElemType lhs, ElemType rhs) {
   if (compare->cmp) {
