@@ -9,10 +9,6 @@ struct struct_Pool {
   Vector *pool;
   Compare *cmp;
 };
-typedef struct {
-  Size size;
-  const Byte *buf;
-} Entry;
 
 static Entry *entry_constructor(const void *buf, Size size) {
   Entry *entry = UTILITY_MALLOC(Entry);

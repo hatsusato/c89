@@ -4,6 +4,11 @@
 #include "types.h"
 #include "vector/pool_type.h"
 
+typedef struct {
+  Size size;
+  const Byte *buf;
+} Entry;
+
 Pool *pool_new(void);
 void pool_delete(Pool *);
 const void *pool_insert(Pool *, const void *, Size);
