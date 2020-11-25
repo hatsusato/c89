@@ -10,11 +10,6 @@ struct struct_Pool {
   Compare *cmp;
 };
 
-static const char *entry_constructor(const void *buf, Size size) {
-  char *entry = UTILITY_MALLOC_ARRAY(char, size);
-  UTILITY_MEMCPY(Byte, entry, buf, size);
-  return entry;
-}
 static void pool_sort(Pool *pool) {
   ElemType *begin = vector_begin(pool->pool);
   ElemType *end = vector_end(pool->pool);
@@ -32,11 +27,9 @@ void pool_delete(Pool *pool) {
   vector_delete(pool->pool);
   UTILITY_FREE(pool);
 }
-const void *pool_insert(Pool *pool, const void *buf, Size size) {
-  const char *entry = entry_constructor(buf, size);
-  vector_push(pool->pool, (ElemType)entry);
+void pool_insert(Pool *pool, ElemType elem) {
+  vector_push(pool->pool, elem);
   pool_sort(pool);
-  return entry;
 }
 const ElemType *pool_find(Pool *pool, const void *buf, Size size) {
   ElemType *begin = vector_begin(pool->pool);

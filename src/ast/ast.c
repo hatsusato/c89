@@ -15,6 +15,11 @@ static int pool_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
   (void)extra;
   return utility_strcmp(lhs, rhs);
 }
+static const char *entry_constructor(const void *buf, Size size) {
+  char *entry = UTILITY_MALLOC_ARRAY(char, size);
+  UTILITY_MEMCPY(Byte, entry, buf, size);
+  return entry;
+}
 
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
@@ -43,6 +48,8 @@ const char *ast_symbol(Ast *ast, const char *text, Size leng) {
   if (found) {
     return *found;
   } else {
-    return pool_insert(ast->symbols, text, leng + 1);
+    ElemType elem = (ElemType)entry_constructor(text, leng + 1);
+    pool_insert(ast->symbols, elem);
+    return elem;
   }
 }
