@@ -38,6 +38,13 @@ void ast_set(Ast *ast, Sexp *sexp) {
   ast->sexp = sexp;
 }
 const char *ast_symbol(Ast *ast, const char *text, Size leng) {
+  const ElemType *found;
   assert('\0' == text[leng]);
-  return pool_insert(ast->symbols, text, leng + 1);
+  found = pool_find(ast->symbols, text, leng + 1);
+  if (found) {
+    Entry *entry = *found;
+    return (const char *)entry->buf;
+  } else {
+    return pool_insert(ast->symbols, text, leng + 1);
+  }
 }

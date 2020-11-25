@@ -40,15 +40,9 @@ void pool_delete(Pool *pool) {
   UTILITY_FREE(pool);
 }
 const void *pool_insert(Pool *pool, const void *buf, Size size) {
-  const ElemType *found = pool_find(pool, buf, size);
-  Entry *entry;
-  if (found) {
-    entry = *found;
-  } else {
-    entry = entry_constructor(buf, size);
-    vector_push(pool->pool, entry);
-    pool_sort(pool);
-  }
+  Entry *entry = entry_constructor(buf, size);
+  vector_push(pool->pool, entry);
+  pool_sort(pool);
   return entry->buf;
 }
 const ElemType *pool_find(Pool *pool, const void *buf, Size size) {
