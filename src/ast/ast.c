@@ -11,7 +11,7 @@ struct struct_Ast {
   Sexp *sexp;
 };
 
-static int pool_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
+static int symbol_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
   (void)extra;
   return utility_strcmp(lhs, rhs);
 }
@@ -24,7 +24,7 @@ static const char *entry_constructor(const void *buf, Size size) {
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
   Vector *vec = vector_new(utility_free);
-  Compare *cmp = compare_new(pool_compare);
+  Compare *cmp = compare_new(symbol_compare);
   ast->symbols = pool_new(vec, cmp);
   ast->sexp = sexp_nil();
   return ast;
