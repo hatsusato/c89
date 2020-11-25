@@ -11,11 +11,8 @@ struct struct_Ast {
 };
 
 static int pool_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
-  const Entry *l = lhs, *r = rhs;
-  const Size lsz = l->size, rsz = r->size;
-  int ret = utility_memcmp(l->buf, r->buf, lsz < rsz ? lsz : rsz);
   (void)extra;
-  return 0 == ret ? lsz - rsz : ret;
+  return utility_strcmp(lhs, rhs);
 }
 
 Ast *ast_new(void) {
@@ -42,8 +39,7 @@ const char *ast_symbol(Ast *ast, const char *text, Size leng) {
   assert('\0' == text[leng]);
   found = pool_find(ast->symbols, text, leng + 1);
   if (found) {
-    Entry *entry = *found;
-    return (const char *)entry->buf;
+    return *found;
   } else {
     return pool_insert(ast->symbols, text, leng + 1);
   }
