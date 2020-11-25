@@ -44,7 +44,7 @@ void ast_set(Ast *ast, Sexp *sexp) {
 const char *ast_symbol(Ast *ast, const char *text, Size leng) {
   const ElemType *found;
   assert('\0' == text[leng]);
-  found = pool_find(ast->symbols, text, leng + 1);
+  found = pool_find(ast->symbols, (ElemType)text);
   if (found) {
     return *found;
   } else {

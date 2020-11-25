@@ -9,6 +9,6 @@
 Pool *pool_new(Vector *, Compare *);
 void pool_delete(Pool *);
 void pool_insert(Pool *, ElemType);
-const ElemType *pool_find(Pool *, const void *, Size);
+const ElemType *pool_find(Pool *, ElemType);
 
 #endif /* INCLUDE_GUARD_EE46CC10_6993_423D_BD00_80BDCB6B3815 */

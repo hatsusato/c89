@@ -31,9 +31,8 @@ void pool_insert(Pool *pool, ElemType elem) {
   vector_push(pool->pool, elem);
   pool_sort(pool);
 }
-const ElemType *pool_find(Pool *pool, const void *buf, Size size) {
+const ElemType *pool_find(Pool *pool, ElemType key) {
   ElemType *begin = vector_begin(pool->pool);
   ElemType *end = vector_end(pool->pool);
-  (void)size;
-  return binary_search((ElemType)buf, begin, end, pool->cmp);
+  return binary_search(key, begin, end, pool->cmp);
 }
