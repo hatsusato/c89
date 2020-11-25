@@ -4,9 +4,8 @@
 #include "compare_type.h"
 #include "set/set_type.h"
 #include "types.h"
-#include "vector/vector_type.h"
 
-Set *set_new(Vector *, Compare *);
+Set *set_new(Destructor, Compare *);
 void set_delete(Set *);
 void set_insert(Set *, ElemType);
 Bool set_contains(const Set *, ElemType);

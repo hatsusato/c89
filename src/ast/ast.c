@@ -4,7 +4,6 @@
 #include "set.h"
 #include "sexp.h"
 #include "utility.h"
-#include "vector.h"
 
 struct struct_Ast {
   Set *symbols;
@@ -27,9 +26,8 @@ static void symbol_free(ElemType symbol) {
 
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
-  Vector *vec = vector_new(symbol_free);
   Compare *cmp = compare_new(symbol_compare);
-  ast->symbols = set_new(vec, cmp);
+  ast->symbols = set_new(symbol_free, cmp);
   ast->sexp = sexp_nil();
   return ast;
 }

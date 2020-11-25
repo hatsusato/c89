@@ -10,7 +10,6 @@
 #include "set.h"
 #include "sexp.h"
 #include "utility.h"
-#include "vector.h"
 
 struct struct_Scanner {
   yyscan_t yyscan;
@@ -25,14 +24,13 @@ static int scanner_strcmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
 
 Scanner *scanner_new(void) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
-  Vector *vec = vector_new(NULL);
   Compare *cmp = compare_new(scanner_strcmp);
   int ret = yylex_init(&scanner->yyscan);
   assert(0 == ret);
   (void)ret;
   yyset_extra(scanner, scanner->yyscan);
   scanner->ast = ast_new();
-  scanner->typedefs = set_new(vec, cmp);
+  scanner->typedefs = set_new(NULL, cmp);
   scanner_register(scanner, "__builtin_va_list");
   return scanner;
 }

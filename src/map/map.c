@@ -19,10 +19,9 @@ static int map_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
 
 Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
-  Vector *vector = vector_new(NULL);
   Compare *compare = compare_new(map_compare);
   compare_set_extra(compare, keycmp, (Destructor)compare_delete);
-  map->set = set_new(vector, compare);
+  map->set = set_new(NULL, compare);
   return map;
 }
 void map_delete(Map *map) {
