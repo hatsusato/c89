@@ -7,7 +7,7 @@
 
 Set *set_new(Compare *);
 void set_delete(Set *);
-ElemType set_insert(Set *, ElemType);
+void set_insert(Set *, ElemType);
 Bool set_contains(const Set *, ElemType);
 const ElemType *set_find(const Set *, ElemType);
 const ElemType *set_begin(const Set *);
