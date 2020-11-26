@@ -20,9 +20,6 @@ Sexp *parser_cons(Sexp *car, Sexp *cdr) {
 Sexp *parser_snoc(Sexp *xs, Sexp *x) {
   return sexp_snoc(xs, x);
 }
-void parser_register(yyscan_t scan, Sexp *ast) {
-  register_declaration(scan, ast);
-}
 Bool parser_query(yyscan_t scan, const char *symbol) {
   return scanner_query(scan, symbol);
 }

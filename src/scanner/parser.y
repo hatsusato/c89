@@ -830,7 +830,7 @@ translation-unit
 ;
 external-declaration
 : function-definition
-| declaration {$$ = PARSER_TAG(EXTERNAL_DECLARATION, PARSER_LIST1($1)); PARSER_REGISTER(scanner, $1);}
+| declaration {$$ = PARSER_TAG(EXTERNAL_DECLARATION, PARSER_LIST1($1)); register_declaration(scanner, $1);}
 ;
 function-definition
 : function-definition.tag {$$ = PARSER_TAG(FUNCTION_DEFINITION, $1);}
