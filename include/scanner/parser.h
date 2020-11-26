@@ -10,9 +10,8 @@
 #include "yyscan.h"
 
 #define PARSER_SYMBOL(tag) parser_symbol(AST_##tag)
-#define PARSER_TAG(tag, ast) PARSER_CONS(PARSER_SYMBOL(tag), ast)
+#define PARSER_TAG(tag, ast) parser_cons(PARSER_SYMBOL(tag), ast)
 #define PARSER_NIL(tag) PARSER_TAG(tag, PARSER_LIST0())
-#define PARSER_CONS(car, cdr) parser_cons(car, cdr);
 #define PARSER_LIST0() parser_nil()
 #define PARSER_LIST1(ast0) parser_cons(ast0, PARSER_LIST0())
 #define PARSER_LIST2(ast0, ast1) parser_cons(ast0, PARSER_LIST1(ast1))
