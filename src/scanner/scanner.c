@@ -10,7 +10,6 @@
 #include "utility.h"
 
 typedef struct {
-  yyscan_t yyscan;
   Ast *ast;
   Set *typedefs;
 } Scanner;
@@ -20,22 +19,23 @@ static Scanner *scanner_get(yyscan_t yyscan) {
 }
 
 yyscan_t scanner_new(void) {
+  yyscan_t yyscan;
   Scanner *scanner = UTILITY_MALLOC(Scanner);
   Compare *cmp = compare_new(compare_strcmp);
-  int ret = yylex_init(&scanner->yyscan);
+  int ret = yylex_init(&yyscan);
   assert(0 == ret);
   UTILITY_UNUSED(ret);
-  yyset_extra(scanner, scanner->yyscan);
+  yyset_extra(scanner, yyscan);
   scanner->ast = ast_new();
   scanner->typedefs = set_new(NULL, cmp);
-  scanner_register(scanner->yyscan, "__builtin_va_list");
-  return scanner->yyscan;
+  scanner_register(yyscan, "__builtin_va_list");
+  return yyscan;
 }
 void scanner_delete(yyscan_t yyscan) {
   Scanner *scanner = scanner_get(yyscan);
   set_delete(scanner->typedefs);
   ast_delete(scanner->ast);
-  yylex_destroy(scanner->yyscan);
+  yylex_destroy(yyscan);
   UTILITY_FREE(scanner);
 }
 int scanner_parse(yyscan_t yyscan) {
