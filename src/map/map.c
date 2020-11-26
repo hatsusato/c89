@@ -16,12 +16,21 @@ static int pair_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
   const Pair *l = lhs, *r = rhs;
   return compare_cmp(extra, l->key, r->key);
 }
+static Pair *pair_new(ElemType key, ElemType val) {
+  Pair *pair = UTILITY_MALLOC(Pair);
+  pair->key = key;
+  pair->val = val;
+  return pair;
+}
+static void pair_delete(ElemType pair) {
+  UTILITY_FREE(pair);
+}
 
 Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
   Compare *compare = compare_new(pair_compare);
   compare_set_extra(compare, keycmp, (Destructor)compare_delete);
-  map->set = set_new(NULL, compare);
+  map->set = set_new(pair_delete, compare);
   return map;
 }
 void map_delete(Map *map) {
