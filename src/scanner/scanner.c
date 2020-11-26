@@ -49,10 +49,10 @@ Sexp *scanner_token(Scanner *scanner) {
   return sexp_symbol(token);
 }
 void scanner_register(Scanner *scanner, const char *symbol) {
-  assert("redefinition of typedef" &&
-         !scanner_query((ElemType)scanner, symbol));
+  assert("redefinition of typedef" && !scanner_query(scanner->yyscan, symbol));
   set_insert(scanner->typedefs, (ElemType)symbol);
 }
-Bool scanner_query(Scanner *scanner, const char *symbol) {
+Bool scanner_query(yyscan_t yyscan, const char *symbol) {
+  Scanner *scanner = yyget_extra(yyscan);
   return NULL != set_find(scanner->typedefs, (ElemType)symbol);
 }

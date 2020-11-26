@@ -26,8 +26,7 @@ void parser_register(yyscan_t scan, Sexp *ast) {
   register_declaration(scanner, ast);
 }
 Bool parser_query(yyscan_t scan, const char *symbol) {
-  Scanner *scanner = yyget_extra(scan);
-  return scanner_query(scanner, symbol);
+  return scanner_query(scan, symbol);
 }
 void parser_finish(yyscan_t scan, Sexp *ast) {
   scanner_finish(yyget_extra(scan), ast);
