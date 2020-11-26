@@ -48,6 +48,10 @@ Ast *scanner_ast(yyscan_t yyscan) {
   Scanner *scanner = yyget_extra(yyscan);
   return scanner->ast;
 }
+Sexp *scanner_get(yyscan_t yyscan) {
+  return ast_get(scanner_ast(yyscan));
+}
+
 void scanner_finish(yyscan_t yyscan, Sexp *ast) {
   ast_set(scanner_ast(yyscan), ast);
 }
