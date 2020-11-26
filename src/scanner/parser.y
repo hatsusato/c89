@@ -324,11 +324,11 @@ primary-expression
 | integer-constant
 | character-constant
 | string-constant
-| left-paren expression right-paren {$$ = PARSER_TAG(PRIMARY_EXPRESSION, PARSER_LIST3($1, $2, $3));}
+| left-paren expression right-paren {$$ = parser_tag(AST_PRIMARY_EXPRESSION, PARSER_LIST3($1, $2, $3));}
 ;
 postfix-expression
 : primary-expression
-| postfix-expression.tag {$$ = PARSER_TAG(POSTFIX_EXPRESSION, $1);}
+| postfix-expression.tag {$$ = parser_tag(AST_POSTFIX_EXPRESSION, $1);}
 ;
 postfix-expression.tag
 : postfix-expression postfix-expression.suffix {$$ = PARSER_CONS($1, $2);}
@@ -351,7 +351,7 @@ argument-expression-list
 ;
 unary-expression
 : postfix-expression
-| unary-expression.tag {$$ = PARSER_TAG(UNARY_EXPRESSION, $1);}
+| unary-expression.tag {$$ = parser_tag(AST_UNARY_EXPRESSION, $1);}
 ;
 unary-expression.tag
 : increment unary-expression {$$ = PARSER_LIST2($1, $2);}
@@ -370,14 +370,14 @@ unary-operator
 ;
 cast-expression
 : unary-expression
-| cast-expression.tag {$$ = PARSER_TAG(CAST_EXPRESSION, $1);}
+| cast-expression.tag {$$ = parser_tag(AST_CAST_EXPRESSION, $1);}
 ;
 cast-expression.tag
 : left-paren type-name right-paren cast-expression {$$ = PARSER_LIST4($1, $2, $3, $4);}
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression.tag {$$ = PARSER_TAG(MULTIPLICATIVE_EXPRESSION, $1);}
+| multiplicative-expression.tag {$$ = parser_tag(AST_MULTIPLICATIVE_EXPRESSION, $1);}
 ;
 multiplicative-expression.tag
 : multiplicative-expression multiplicative-operator cast-expression {$$ = PARSER_LIST3($1, $2, $3);}
@@ -389,7 +389,7 @@ multiplicative-operator
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression.tag {$$ = PARSER_TAG(ADDITIVE_EXPRESSION, $1);}
+| additive-expression.tag {$$ = parser_tag(AST_ADDITIVE_EXPRESSION, $1);}
 ;
 additive-expression.tag
 : additive-expression additive-operator multiplicative-expression {$$ = PARSER_LIST3($1, $2, $3);}
@@ -400,7 +400,7 @@ additive-operator
 ;
 shift-expression
 : additive-expression
-| shift-expression.tag {$$ = PARSER_TAG(SHIFT_EXPRESSION, $1);}
+| shift-expression.tag {$$ = parser_tag(AST_SHIFT_EXPRESSION, $1);}
 ;
 shift-expression.tag
 : shift-expression shift-operator additive-expression {$$ = PARSER_LIST3($1, $2, $3);}
@@ -411,7 +411,7 @@ shift-operator
 ;
 relational-expression
 : shift-expression
-| relational-expression.tag {$$ = PARSER_TAG(RELATIONAL_EXPRESSION, $1);}
+| relational-expression.tag {$$ = parser_tag(AST_RELATIONAL_EXPRESSION, $1);}
 ;
 relational-expression.tag
 : relational-expression relational-operator shift-expression {$$ = PARSER_LIST3($1, $2, $3);}
@@ -424,7 +424,7 @@ relational-operator
 ;
 equality-expression
 : relational-expression
-| equality-expression.tag {$$ = PARSER_TAG(EQUALITY_EXPRESSION, $1);}
+| equality-expression.tag {$$ = parser_tag(AST_EQUALITY_EXPRESSION, $1);}
 ;
 equality-expression.tag
 : equality-expression equality-operator relational-expression {$$ = PARSER_LIST3($1, $2, $3);}
@@ -435,49 +435,49 @@ equality-operator
 ;
 and-expression
 : equality-expression
-| and-expression.tag {$$ = PARSER_TAG(AND_EXPRESSION, $1);}
+| and-expression.tag {$$ = parser_tag(AST_AND_EXPRESSION, $1);}
 ;
 and-expression.tag
 : and-expression ampersand equality-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 exclusive-or-expression
 : and-expression
-| exclusive-or-expression.tag {$$ = PARSER_TAG(EXCLUSIVE_OR_EXPRESSION, $1);}
+| exclusive-or-expression.tag {$$ = parser_tag(AST_EXCLUSIVE_OR_EXPRESSION, $1);}
 ;
 exclusive-or-expression.tag
 : exclusive-or-expression caret and-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 inclusive-or-expression
 : exclusive-or-expression
-| inclusive-or-expression.tag {$$ = PARSER_TAG(INCLUSIVE_OR_EXPRESSION, $1);}
+| inclusive-or-expression.tag {$$ = parser_tag(AST_INCLUSIVE_OR_EXPRESSION, $1);}
 ;
 inclusive-or-expression.tag
 : inclusive-or-expression bar exclusive-or-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 logical-and-expression
 : inclusive-or-expression
-| logical-and-expression.tag {$$ = PARSER_TAG(LOGICAL_AND_EXPRESSION, $1);}
+| logical-and-expression.tag {$$ = parser_tag(AST_LOGICAL_AND_EXPRESSION, $1);}
 ;
 logical-and-expression.tag
 : logical-and-expression and inclusive-or-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 logical-or-expression
 : logical-and-expression
-| logical-or-expression.tag {$$ = PARSER_TAG(LOGICAL_OR_EXPRESSION, $1);}
+| logical-or-expression.tag {$$ = parser_tag(AST_LOGICAL_OR_EXPRESSION, $1);}
 ;
 logical-or-expression.tag
 : logical-or-expression or logical-and-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 conditional-expression
 : logical-or-expression
-| conditional-expression.tag {$$ = PARSER_TAG(CONDITIONAL_EXPRESSION, $1);}
+| conditional-expression.tag {$$ = parser_tag(AST_CONDITIONAL_EXPRESSION, $1);}
 ;
 conditional-expression.tag
 : logical-or-expression question expression colon conditional-expression {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
 ;
 assignment-expression
 : conditional-expression
-| assignment-expression.tag {$$ = PARSER_TAG(ASSIGNMENT_EXPRESSION, $1);}
+| assignment-expression.tag {$$ = parser_tag(AST_ASSIGNMENT_EXPRESSION, $1);}
 ;
 assignment-expression.tag
 : unary-expression assignment-operator assignment-expression {$$ = PARSER_LIST3($1, $2, $3);}
@@ -501,7 +501,7 @@ expression.opt
 ;
 expression
 : assignment-expression
-| expression.tag {$$ = PARSER_TAG(EXPRESSION, $1);}
+| expression.tag {$$ = parser_tag(AST_EXPRESSION, $1);}
 ;
 expression.tag
 : expression "," assignment-expression {$$ = PARSER_LIST2($1, $3);}
@@ -513,12 +513,12 @@ constant-expression.opt
 | constant-expression
 ;
 constant-expression
-: conditional-expression {$$ = PARSER_TAG(CONSTANT_EXPRESSION, PARSER_LIST1($1));}
+: conditional-expression {$$ = parser_tag(AST_CONSTANT_EXPRESSION, PARSER_LIST1($1));}
 ;
 
 /* 6.5 Declarations */
 declaration
-: declaration.tag {$$ = PARSER_TAG(DECLARATION, $1);}
+: declaration.tag {$$ = parser_tag(AST_DECLARATION, $1);}
 ;
 declaration.tag
 : declaration-specifiers init-declarator-list.opt semicolon {$$ = PARSER_LIST3($1, $2, $3);}
@@ -541,14 +541,14 @@ init-declarator-list
 | init-declarator-list "," init-declarator {$$ = PARSER_SNOC($1, $3);}
 ;
 init-declarator
-: init-declarator.tag {$$ = PARSER_TAG(INIT_DECLARATOR, $1);}
+: init-declarator.tag {$$ = parser_tag(AST_INIT_DECLARATOR, $1);}
 ;
 init-declarator.tag
 : declarator {$$ = PARSER_LIST1($1);}
 | declarator assign initializer {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 storage-class-specifier
-: storage-class-specifier.tag {$$ = PARSER_TAG(STORAGE_CLASS_SPECIFIER, PARSER_LIST1($1));}
+: storage-class-specifier.tag {$$ = parser_tag(AST_STORAGE_CLASS_SPECIFIER, PARSER_LIST1($1));}
 ;
 storage-class-specifier.tag
 : typedef
@@ -558,7 +558,7 @@ storage-class-specifier.tag
 | register
 ;
 type-specifier
-: type-specifier.tag {$$ = PARSER_TAG(TYPE_SPECIFIER, PARSER_LIST1($1));}
+: type-specifier.tag {$$ = parser_tag(AST_TYPE_SPECIFIER, PARSER_LIST1($1));}
 ;
 type-specifier.tag
 : void
@@ -575,7 +575,7 @@ type-specifier.tag
 | typedef-name
 ;
 struct-or-union-specifier
-: struct-or-union-specifier.tag {$$ = PARSER_TAG(STRUCT_OR_UNION_SPECIFIER, $1);}
+: struct-or-union-specifier.tag {$$ = parser_tag(AST_STRUCT_OR_UNION_SPECIFIER, $1);}
 ;
 struct-or-union-specifier.tag
 : struct-or-union identifier.opt left-brace struct-declaration-list right-brace {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
@@ -590,7 +590,7 @@ struct-declaration-list
 | struct-declaration-list struct-declaration {$$ = PARSER_SNOC($1, $2);}
 ;
 struct-declaration
-: struct-declaration.tag {$$ = PARSER_TAG(STRUCT_DECLARATION, $1);}
+: struct-declaration.tag {$$ = parser_tag(AST_STRUCT_DECLARATION, $1);}
 struct-declaration.tag
 : specifier-qualifier-list struct-declarator-list semicolon {$$ = PARSER_LIST3($1, $2, $3);}
 ;
@@ -607,14 +607,14 @@ struct-declarator-list
 | struct-declarator-list "," struct-declarator {$$ = PARSER_SNOC($1, $3);}
 ;
 struct-declarator
-: struct-declarator.tag {$$ = PARSER_TAG(STRUCT_DECLARATOR, $1);}
+: struct-declarator.tag {$$ = parser_tag(AST_STRUCT_DECLARATOR, $1);}
 ;
 struct-declarator.tag
 : declarator {$$ = PARSER_LIST1($1);}
 | declarator.opt colon constant-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 enum-specifier
-: enum-specifier.tag {$$ = PARSER_TAG(ENUM_SPECIFIER, $1);}
+: enum-specifier.tag {$$ = parser_tag(AST_ENUM_SPECIFIER, $1);}
 ;
 enum-specifier.tag
 : enum identifier.opt left-brace enumerator-list right-brace {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
@@ -625,14 +625,14 @@ enumerator-list
 | enumerator-list "," enumerator {$$ = PARSER_SNOC($1, $3);}
 ;
 enumerator
-: enumerator.tag {$$ = PARSER_TAG(ENUMERATOR, $1);}
+: enumerator.tag {$$ = parser_tag(AST_ENUMERATOR, $1);}
 ;
 enumerator.tag
 : enumeration-constant {$$ = PARSER_LIST1($1);}
 | enumeration-constant assign constant-expression {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 type-qualifier
-: type-qualifier.tag {$$ = PARSER_TAG(TYPE_QUALIFIER, PARSER_LIST1($1));}
+: type-qualifier.tag {$$ = parser_tag(AST_TYPE_QUALIFIER, PARSER_LIST1($1));}
 ;
 type-qualifier.tag
 : const
@@ -643,14 +643,14 @@ declarator.opt
 | declarator
 ;
 declarator
-: declarator.tag {$$ = PARSER_TAG(DECLARATOR, $1);}
+: declarator.tag {$$ = parser_tag(AST_DECLARATOR, $1);}
 ;
 declarator.tag
 : direct-declarator {$$ = PARSER_LIST1($1);}
 | pointer direct-declarator {$$ = PARSER_LIST2($1, $2);}
 ;
 direct-declarator
-: direct-declarator.tag {$$ = PARSER_TAG(DIRECT_DECLARATOR, $1);}
+: direct-declarator.tag {$$ = parser_tag(AST_DIRECT_DECLARATOR, $1);}
 ;
 direct-declarator.tag
 : identifier {$$ = PARSER_LIST1($1);}
@@ -663,7 +663,7 @@ direct-declarator.suffix
 | left-paren identifier-list right-paren {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 pointer
-: pointer.tag {$$ = PARSER_TAG(POINTER, $1);}
+: pointer.tag {$$ = parser_tag(AST_POINTER, $1);}
 ;
 pointer.tag
 : asterisk type-qualifier-list.opt {$$ = PARSER_LIST2($1, $2);}
@@ -690,7 +690,7 @@ parameter-list
 | parameter-list "," parameter-declaration {$$ = PARSER_SNOC($1, $3);}
 ;
 parameter-declaration
-: parameter-declaration.tag {$$ = PARSER_TAG(PARAMETER_DECLARATION, $1);}
+: parameter-declaration.tag {$$ = parser_tag(AST_PARAMETER_DECLARATION, $1);}
 ;
 parameter-declaration.tag
 : declaration-specifiers declarator {$$ = PARSER_LIST2($1, $2);}
@@ -701,7 +701,7 @@ identifier-list
 | identifier-list "," identifier {$$ = PARSER_SNOC($1, $3);}
 ;
 type-name
-: type-name.tag {$$ = PARSER_TAG(TYPE_NAME, $1);}
+: type-name.tag {$$ = parser_tag(AST_TYPE_NAME, $1);}
 ;
 type-name.tag
 : specifier-qualifier-list abstract-declarator.opt {$$ = PARSER_LIST2($1, $2);}
@@ -711,7 +711,7 @@ abstract-declarator.opt
 | abstract-declarator
 ;
 abstract-declarator
-: abstract-declarator.tag {$$ = PARSER_TAG(ABSTRACT_DECLARATOR, $1);}
+: abstract-declarator.tag {$$ = parser_tag(AST_ABSTRACT_DECLARATOR, $1);}
 ;
 abstract-declarator.tag
 : pointer {$$ = PARSER_LIST1($1);}
@@ -719,7 +719,7 @@ abstract-declarator.tag
 | pointer direct-abstract-declarator {$$ = PARSER_LIST2($1, $2);}
 ;
 direct-abstract-declarator
-: direct-abstract-declarator.tag {$$ = PARSER_TAG(DIRECT_ABSTRACT_DECLARATOR, $1);}
+: direct-abstract-declarator.tag {$$ = parser_tag(AST_DIRECT_ABSTRACT_DECLARATOR, $1);}
 ;
 direct-abstract-declarator.tag
 : left-paren abstract-declarator right-paren {$$ = PARSER_LIST3($1, $2, $3);}
@@ -731,11 +731,11 @@ direct-abstract-declarator.suffix
 | left-paren parameter-type-list.opt right-paren {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 typedef-name
-: typedef-identifier {$$ = PARSER_TAG(TYPEDEF_NAME, PARSER_LIST1($1));}
+: typedef-identifier {$$ = parser_tag(AST_TYPEDEF_NAME, PARSER_LIST1($1));}
 ;
 initializer
 : assignment-expression
-| initializer.tag {$$ = PARSER_TAG(INITIALIZER, $1);}
+| initializer.tag {$$ = parser_tag(AST_INITIALIZER, $1);}
 ;
 initializer.tag
 : left-brace initializer-list right-brace {$$ = PARSER_LIST3($1, $2, $3);}
@@ -748,7 +748,7 @@ initializer-list
 
 /* 6.6 Statements */
 statement
-: statement.tag {$$ = PARSER_TAG(STATEMENT, PARSER_LIST1($1));}
+: statement.tag {$$ = parser_tag(AST_STATEMENT, PARSER_LIST1($1));}
 ;
 statement.tag
 : labeled-statement
@@ -759,7 +759,7 @@ statement.tag
 | jump-statement
 ;
 labeled-statement
-: labeled-statement.tag {$$ = PARSER_TAG(LABELED_STATEMENT, $1);}
+: labeled-statement.tag {$$ = parser_tag(AST_LABELED_STATEMENT, $1);}
 ;
 labeled-statement.tag
 : identifier colon statement {$$ = PARSER_LIST3($1, $2, $3);}
@@ -767,7 +767,7 @@ labeled-statement.tag
 | default colon statement {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 compound-statement
-: compound-statement.tag {$$ = PARSER_TAG(COMPOUND_STATEMENT, $1);}
+: compound-statement.tag {$$ = parser_tag(AST_COMPOUND_STATEMENT, $1);}
 ;
 compound-statement.tag
 : left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
@@ -789,13 +789,13 @@ statement-list
 | statement-list statement {$$ = PARSER_SNOC($1, $2);}
 ;
 expression-statement
-: expression-statement.tag {$$ = PARSER_TAG(EXPRESSION_STATEMENT, $1);}
+: expression-statement.tag {$$ = parser_tag(AST_EXPRESSION_STATEMENT, $1);}
 ;
 expression-statement.tag
 : expression.opt semicolon {$$ = PARSER_LIST2($1, $2);}
 ;
 selection-statement
-: selection-statement.tag {$$ = PARSER_TAG(SELECTION_STATEMENT, $1);}
+: selection-statement.tag {$$ = parser_tag(AST_SELECTION_STATEMENT, $1);}
 ;
 selection-statement.tag
 : if left-paren expression right-paren statement %prec THEN {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
@@ -803,7 +803,7 @@ selection-statement.tag
 | switch left-paren expression right-paren statement {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
 ;
 iteration-statement
-: iteration-statement.tag {$$ = PARSER_TAG(ITERATION_STATEMENT, $1);}
+: iteration-statement.tag {$$ = parser_tag(AST_ITERATION_STATEMENT, $1);}
 ;
 iteration-statement.tag
 : while left-paren expression right-paren statement {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
@@ -811,7 +811,7 @@ iteration-statement.tag
 | for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {$$ = PARSER_LIST9($1, $2, $3, $4, $5, $6, $7, $8, $9);}
 ;
 jump-statement
-: jump-statement.tag {$$ = PARSER_TAG(JUMP_STATEMENT, $1);}
+: jump-statement.tag {$$ = parser_tag(AST_JUMP_STATEMENT, $1);}
 ;
 jump-statement.tag
 : goto identifier semicolon {$$ = PARSER_LIST3($1, $2, $3);}
@@ -830,10 +830,10 @@ translation-unit
 ;
 external-declaration
 : function-definition
-| declaration {$$ = PARSER_TAG(EXTERNAL_DECLARATION, PARSER_LIST1($1)); register_declaration(scanner, $1);}
+| declaration {$$ = parser_tag(AST_EXTERNAL_DECLARATION, PARSER_LIST1($1)); register_declaration(scanner, $1);}
 ;
 function-definition
-: function-definition.tag {$$ = PARSER_TAG(FUNCTION_DEFINITION, $1);}
+: function-definition.tag {$$ = parser_tag(AST_FUNCTION_DEFINITION, $1);}
 ;
 function-definition.tag
 : declarator declaration-list.opt compound-statement {$$ = PARSER_LIST3($1, $2, $3);}

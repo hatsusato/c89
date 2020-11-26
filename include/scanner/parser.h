@@ -35,6 +35,7 @@
               PARSER_LIST8(ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8))
 
 Sexp *parser_symbol(AstTag);
+Sexp *parser_tag(AstTag, Sexp *);
 Sexp *parser_token(yyscan_t);
 Sexp *parser_nil(void);
 Sexp *parser_cons(Sexp *, Sexp *);
