@@ -25,6 +25,9 @@ static Pair *pair_new(ElemType key, ElemType val) {
 static void pair_delete(ElemType pair) {
   UTILITY_FREE(pair);
 }
+static ElemType *pair_val(Pair *pair) {
+  return &pair->val;
+}
 
 Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
@@ -39,4 +42,12 @@ void map_delete(Map *map) {
 }
 void map_insert(Map *map, ElemType key, ElemType val) {
   set_insert(map->set, pair_new(key, val));
+}
+ElemType *map_find(Map *map, ElemType key) {
+  const ElemType *found;
+  Pair pair;
+  pair.key = key;
+  pair.val = NULL;
+  found = set_find(map->set, &pair);
+  return found ? pair_val(*found) : NULL;
 }
