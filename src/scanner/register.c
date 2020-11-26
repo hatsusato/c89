@@ -1,6 +1,7 @@
 #include "scanner/register.h"
 
 #include "ast/ast_tag.h"
+#include "parser.tab.h"
 #include "scanner/scanner_impl.h"
 #include "sexp.h"
 #include "utility.h"
@@ -82,10 +83,10 @@ static void register_init_declarator_list(Scanner *scanner, Sexp *ast) {
     register_init_declarator(scanner, sexp_car(ast));
   }
 }
-void register_declaration(Scanner *scanner, Sexp *ast) {
+void register_declaration(yyscan_t yyscan, Sexp *ast) {
   assert(check_tag(ast, AST_DECLARATION));
   if (is_typedef_declaration(ast)) {
     ast = sexp_at(ast, 2);
-    register_init_declarator_list(scanner, ast);
+    register_init_declarator_list(yyget_extra(yyscan), ast);
   }
 }
