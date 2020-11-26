@@ -4,17 +4,16 @@
 #include "compare.h"
 #include "parser.tab.h"
 #include "scanner/scanner_impl.h"
-#include "scanner/scanner_type.h"
 #include "scanner/yyscan.h"
 #include "set.h"
 #include "sexp.h"
 #include "utility.h"
 
-struct struct_Scanner {
+typedef struct {
   yyscan_t yyscan;
   Ast *ast;
   Set *typedefs;
-};
+} Scanner;
 
 yyscan_t scanner_new(void) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
