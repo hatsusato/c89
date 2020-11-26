@@ -3,10 +3,10 @@
 #include "scanner.h"
 
 int main(void) {
-  Scanner *scanner = scanner_new();
-  int ret = scanner_parse(scanner_yyscan(scanner));
+  yyscan_t scanner = scanner_new();
+  int ret = scanner_parse(scanner);
   if (0 == ret) {
-    Ast *ast = scanner_ast(scanner_yyscan(scanner));
+    Ast *ast = scanner_ast(scanner);
     print_ast(ast_get(ast));
   }
   scanner_delete(scanner);

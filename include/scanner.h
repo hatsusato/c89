@@ -5,8 +5,8 @@
 #include "scanner/scanner_type.h"
 #include "scanner/yyscan.h"
 
-Scanner *scanner_new(void);
-void scanner_delete(Scanner *);
+yyscan_t scanner_new(void);
+void scanner_delete(yyscan_t);
 int scanner_parse(yyscan_t);
 Ast *scanner_ast(yyscan_t);
 yyscan_t scanner_yyscan(Scanner *);

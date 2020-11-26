@@ -15,7 +15,7 @@ struct struct_Scanner {
   Set *typedefs;
 };
 
-Scanner *scanner_new(void) {
+yyscan_t scanner_new(void) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
   Compare *cmp = compare_new(compare_strcmp);
   int ret = yylex_init(&scanner->yyscan);
@@ -25,9 +25,10 @@ Scanner *scanner_new(void) {
   scanner->ast = ast_new();
   scanner->typedefs = set_new(NULL, cmp);
   scanner_register(scanner->yyscan, "__builtin_va_list");
-  return scanner;
+  return scanner->yyscan;
 }
-void scanner_delete(Scanner *scanner) {
+void scanner_delete(yyscan_t yyscan) {
+  Scanner *scanner = yyget_extra(yyscan);
   set_delete(scanner->typedefs);
   ast_delete(scanner->ast);
   yylex_destroy(scanner->yyscan);
