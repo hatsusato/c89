@@ -1,6 +1,5 @@
 #include "scanner/parser.h"
 
-#include "parser.tab.h"
 #include "scanner/register.h"
 #include "scanner/scanner_impl.h"
 #include "sexp.h"
@@ -10,7 +9,7 @@ Sexp *parser_symbol(AstTag tag) {
   return sexp_number(tag);
 }
 Sexp *parser_token(yyscan_t scan) {
-  return scanner_token(yyget_extra(scan));
+  return scanner_token(scan);
 }
 Sexp *parser_nil(void) {
   return sexp_nil();
@@ -28,5 +27,5 @@ Bool parser_query(yyscan_t scan, const char *symbol) {
   return scanner_query(scan, symbol);
 }
 void parser_finish(yyscan_t scan, Sexp *ast) {
-  scanner_finish(yyget_extra(scan), ast);
+  scanner_finish(scan, ast);
 }

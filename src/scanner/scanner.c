@@ -39,12 +39,14 @@ int scanner_parse(Scanner *scanner) {
 Ast *scanner_ast(Scanner *scanner) {
   return scanner->ast;
 }
-void scanner_finish(Scanner *scanner, Sexp *ast) {
+void scanner_finish(yyscan_t yyscan, Sexp *ast) {
+  Scanner *scanner = yyget_extra(yyscan);
   ast_set(scanner->ast, ast);
 }
-Sexp *scanner_token(Scanner *scanner) {
-  const char *text = yyget_text(scanner->yyscan);
-  Size leng = yyget_leng(scanner->yyscan);
+Sexp *scanner_token(yyscan_t yyscan) {
+  Scanner *scanner = yyget_extra(yyscan);
+  const char *text = yyget_text(yyscan);
+  Size leng = yyget_leng(yyscan);
   const char *token = ast_symbol(scanner->ast, text, leng);
   return sexp_symbol(token);
 }
