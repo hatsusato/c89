@@ -10,6 +10,8 @@
 %code provides {
 #include "lexer.h"
 #include "scanner/parser.h"
+#include "scanner/register.h"
+#include "scanner/scanner_impl.h"
 }
 
 /* 6.1 Lexical elements */
