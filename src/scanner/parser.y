@@ -822,7 +822,7 @@ jump-statement.tag
 
 /* 6.7 External definitions */
 top
-: translation-unit {PARSER_FINISH(scanner, $1);}
+: translation-unit {scanner_finish(scanner, $1);}
 ;
 translation-unit
 : external-declaration {$$ = PARSER_ATOM(TRANSLATION_UNIT, $1);}

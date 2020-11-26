@@ -34,13 +34,11 @@
 #define PARSER_LIST9(ast0, ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8) \
   parser_cons(ast0,                                                        \
               PARSER_LIST8(ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8))
-#define PARSER_FINISH(scanner, ast) parser_finish(scanner, ast)
 
 Sexp *parser_symbol(AstTag);
 Sexp *parser_token(yyscan_t);
 Sexp *parser_nil(void);
 Sexp *parser_cons(Sexp *, Sexp *);
 Sexp *parser_snoc(Sexp *, Sexp *);
-void parser_finish(yyscan_t, Sexp *);
 
 #endif /* INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD */

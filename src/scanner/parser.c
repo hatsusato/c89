@@ -20,6 +20,3 @@ Sexp *parser_cons(Sexp *car, Sexp *cdr) {
 Sexp *parser_snoc(Sexp *xs, Sexp *x) {
   return sexp_snoc(xs, x);
 }
-void parser_finish(yyscan_t scan, Sexp *ast) {
-  scanner_finish(scan, ast);
-}
