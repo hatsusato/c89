@@ -11,7 +11,6 @@
 
 #define PARSER_SYMBOL(tag) parser_symbol(AST_##tag)
 #define PARSER_TAG(tag, ast) PARSER_CONS(PARSER_SYMBOL(tag), ast)
-#define PARSER_TOKEN(scanner) parser_token(scanner)
 #define PARSER_NIL(tag) PARSER_TAG(tag, PARSER_LIST0())
 #define PARSER_ATOM(tag, atom) PARSER_TAG(tag, PARSER_LIST1(atom))
 #define PARSER_SNOC(list, last) parser_snoc(list, last)
