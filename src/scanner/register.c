@@ -43,50 +43,50 @@ static Bool is_typedef_declaration(Sexp *ast) {
   return is_typedef_declaration_specifiers(ast);
 }
 
-static void register_identifier(Scanner *scanner, Sexp *ast) {
+static void register_identifier(yyscan_t yyscan, Sexp *ast) {
   assert(check_tag(ast, AST_IDENTIFIER));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  scanner_register(scanner, sexp_get_symbol(ast));
+  scanner_register(yyget_extra(yyscan), sexp_get_symbol(ast));
 }
-static void register_declarator(Scanner *, Sexp *);
-static void register_direct_declarator(Scanner *scanner, Sexp *ast) {
+static void register_declarator(yyscan_t, Sexp *);
+static void register_direct_declarator(yyscan_t yyscan, Sexp *ast) {
   Sexp *next;
   assert(check_tag(ast, AST_DIRECT_DECLARATOR));
   next = sexp_at(ast, 1);
   if (check_tag(next, AST_LEFT_PAREN)) {
     next = sexp_at(ast, 2);
-    register_declarator(scanner, next);
+    register_declarator(yyscan, next);
   } else if (check_tag(next, AST_IDENTIFIER)) {
-    register_identifier(scanner, next);
+    register_identifier(yyscan, next);
   } else {
-    register_direct_declarator(scanner, next);
+    register_direct_declarator(yyscan, next);
   }
 }
-static void register_declarator(Scanner *scanner, Sexp *ast) {
+static void register_declarator(yyscan_t yyscan, Sexp *ast) {
   Sexp *next;
   assert(check_tag(ast, AST_DECLARATOR));
   next = sexp_at(ast, 1);
   if (check_tag(next, AST_POINTER)) {
     next = sexp_at(ast, 2);
   }
-  register_direct_declarator(scanner, next);
+  register_direct_declarator(yyscan, next);
 }
-static void register_init_declarator(Scanner *scanner, Sexp *ast) {
+static void register_init_declarator(yyscan_t yyscan, Sexp *ast) {
   assert(check_tag(ast, AST_INIT_DECLARATOR));
   ast = sexp_at(ast, 1);
-  register_declarator(scanner, ast);
+  register_declarator(yyscan, ast);
 }
-static void register_init_declarator_list(Scanner *scanner, Sexp *ast) {
+static void register_init_declarator_list(yyscan_t yyscan, Sexp *ast) {
   assert(check_tag(ast, AST_INIT_DECLARATOR_LIST));
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    register_init_declarator(scanner, sexp_car(ast));
+    register_init_declarator(yyscan, sexp_car(ast));
   }
 }
 void register_declaration(yyscan_t yyscan, Sexp *ast) {
   assert(check_tag(ast, AST_DECLARATION));
   if (is_typedef_declaration(ast)) {
     ast = sexp_at(ast, 2);
-    register_init_declarator_list(yyget_extra(yyscan), ast);
+    register_init_declarator_list(yyscan, ast);
   }
 }
