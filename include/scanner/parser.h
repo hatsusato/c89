@@ -4,6 +4,7 @@
 #include "ast/ast_tag.h"
 #include "register.h"
 #include "scanner.h"
+#include "scanner_impl.h"
 #include "sexp_type.h"
 #include "types.h"
 #include "yyscan.h"
@@ -40,7 +41,6 @@ Sexp *parser_token(yyscan_t);
 Sexp *parser_nil(void);
 Sexp *parser_cons(Sexp *, Sexp *);
 Sexp *parser_snoc(Sexp *, Sexp *);
-Bool parser_query(yyscan_t, const char *);
 void parser_finish(yyscan_t, Sexp *);
 
 #endif /* INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD */

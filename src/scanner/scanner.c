@@ -63,5 +63,5 @@ void scanner_register(yyscan_t yyscan, const char *symbol) {
   set_insert(scanner_typedefs(yyscan), (ElemType)symbol);
 }
 Bool scanner_query(yyscan_t yyscan, const char *symbol) {
-  return NULL != set_find(scanner_typedefs(yyscan), (ElemType)symbol);
+  return set_contains(scanner_typedefs(yyscan), (ElemType)symbol);
 }
