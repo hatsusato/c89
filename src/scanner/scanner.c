@@ -4,9 +4,7 @@
 #include "compare.h"
 #include "parser.tab.h"
 #include "scanner/scanner_impl.h"
-#include "scanner/yyscan.h"
 #include "set.h"
-#include "sexp.h"
 #include "utility.h"
 
 typedef struct {
@@ -20,6 +18,10 @@ static void scanner_init(yyscan_t yyscan) {
   yyset_extra(scanner, yyscan);
   scanner->ast = ast_new();
   scanner->typedefs = set_new(NULL, cmp);
+}
+static Ast *scanner_ast(yyscan_t yyscan) {
+  Scanner *scanner = yyget_extra(yyscan);
+  return scanner->ast;
 }
 static Set *scanner_typedefs(yyscan_t yyscan) {
   Scanner *scanner = yyget_extra(yyscan);
@@ -43,10 +45,6 @@ void scanner_delete(yyscan_t yyscan) {
 }
 int scanner_parse(yyscan_t yyscan) {
   return yyparse(yyscan);
-}
-Ast *scanner_ast(yyscan_t yyscan) {
-  Scanner *scanner = yyget_extra(yyscan);
-  return scanner->ast;
 }
 Sexp *scanner_get(yyscan_t yyscan) {
   return ast_get(scanner_ast(yyscan));
