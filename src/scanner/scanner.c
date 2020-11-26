@@ -4,6 +4,7 @@
 #include "compare.h"
 #include "parser.tab.h"
 #include "scanner/scanner_impl.h"
+#include "scanner/scanner_type.h"
 #include "scanner/yyscan.h"
 #include "set.h"
 #include "sexp.h"
@@ -40,9 +41,6 @@ int scanner_parse(yyscan_t yyscan) {
 Ast *scanner_ast(yyscan_t yyscan) {
   Scanner *scanner = yyget_extra(yyscan);
   return scanner->ast;
-}
-yyscan_t scanner_yyscan(Scanner *scanner) {
-  return scanner->yyscan;
 }
 void scanner_finish(yyscan_t yyscan, Sexp *ast) {
   Scanner *scanner = yyget_extra(yyscan);
