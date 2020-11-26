@@ -17,26 +17,28 @@ typedef struct {
 static Scanner *scanner_get(yyscan_t yyscan) {
   return yyget_extra(yyscan);
 }
-
-yyscan_t scanner_new(void) {
-  yyscan_t yyscan;
+static void scanner_init(yyscan_t yyscan) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
   Compare *cmp = compare_new(compare_strcmp);
-  int ret = yylex_init(&yyscan);
-  assert(0 == ret);
-  UTILITY_UNUSED(ret);
   yyset_extra(scanner, yyscan);
   scanner->ast = ast_new();
   scanner->typedefs = set_new(NULL, cmp);
+}
+
+yyscan_t scanner_new(void) {
+  yyscan_t yyscan;
+  int ret = yylex_init(&yyscan);
+  assert(0 == ret);
+  UTILITY_UNUSED(ret);
+  scanner_init(yyscan);
   scanner_register(yyscan, "__builtin_va_list");
   return yyscan;
 }
 void scanner_delete(yyscan_t yyscan) {
-  Scanner *scanner = scanner_get(yyscan);
-  set_delete(scanner->typedefs);
-  ast_delete(scanner->ast);
+  set_delete(scanner_get(yyscan)->typedefs);
+  ast_delete(scanner_get(yyscan)->ast);
+  UTILITY_FREE(scanner_get(yyscan));
   yylex_destroy(yyscan);
-  UTILITY_FREE(scanner);
 }
 int scanner_parse(yyscan_t yyscan) {
   return yyparse(yyscan);
