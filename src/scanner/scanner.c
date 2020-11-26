@@ -46,8 +46,8 @@ void scanner_delete(yyscan_t yyscan) {
 int scanner_parse(yyscan_t yyscan) {
   return yyparse(yyscan);
 }
-Sexp *scanner_get(yyscan_t yyscan) {
-  return ast_get(scanner_ast(yyscan));
+Ast *scanner_get(yyscan_t yyscan) {
+  return scanner_ast(yyscan);
 }
 
 void scanner_finish(yyscan_t yyscan, Sexp *ast) {
