@@ -21,11 +21,9 @@ static void scanner_init(yyscan_t yyscan) {
   scanner->ast = ast_new();
   scanner->typedefs = set_new(NULL, cmp);
 }
-static Scanner *scanner_get(yyscan_t yyscan) {
-  return yyget_extra(yyscan);
-}
 static Set *scanner_typedefs(yyscan_t yyscan) {
-  return scanner_get(yyscan)->typedefs;
+  Scanner *scanner = yyget_extra(yyscan);
+  return scanner->typedefs;
 }
 
 yyscan_t scanner_new(void) {
@@ -40,14 +38,15 @@ yyscan_t scanner_new(void) {
 void scanner_delete(yyscan_t yyscan) {
   set_delete(scanner_typedefs(yyscan));
   ast_delete(scanner_ast(yyscan));
-  UTILITY_FREE(scanner_get(yyscan));
+  UTILITY_FREE(yyget_extra(yyscan));
   yylex_destroy(yyscan);
 }
 int scanner_parse(yyscan_t yyscan) {
   return yyparse(yyscan);
 }
 Ast *scanner_ast(yyscan_t yyscan) {
-  return scanner_get(yyscan)->ast;
+  Scanner *scanner = yyget_extra(yyscan);
+  return scanner->ast;
 }
 void scanner_finish(yyscan_t yyscan, Sexp *ast) {
   ast_set(scanner_ast(yyscan), ast);
