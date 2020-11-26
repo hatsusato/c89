@@ -8,7 +8,7 @@
 
 void scanner_finish(Scanner *, Sexp *);
 Sexp *scanner_token(Scanner *);
-void scanner_register(Scanner *, const char *);
+void scanner_register(yyscan_t, const char *);
 Bool scanner_query(yyscan_t, const char *);
 
 #endif /* INCLUDE_GUARD_9DB08462_C244_4BCE_B291_9362A493469F */

@@ -24,7 +24,7 @@ Scanner *scanner_new(void) {
   yyset_extra(scanner, scanner->yyscan);
   scanner->ast = ast_new();
   scanner->typedefs = set_new(NULL, cmp);
-  scanner_register(scanner, "__builtin_va_list");
+  scanner_register(scanner->yyscan, "__builtin_va_list");
   return scanner;
 }
 void scanner_delete(Scanner *scanner) {
@@ -48,8 +48,9 @@ Sexp *scanner_token(Scanner *scanner) {
   const char *token = ast_symbol(scanner->ast, text, leng);
   return sexp_symbol(token);
 }
-void scanner_register(Scanner *scanner, const char *symbol) {
-  assert("redefinition of typedef" && !scanner_query(scanner->yyscan, symbol));
+void scanner_register(yyscan_t yyscan, const char *symbol) {
+  Scanner *scanner = yyget_extra(yyscan);
+  assert("redefinition of typedef" && !scanner_query(yyscan, symbol));
   set_insert(scanner->typedefs, (ElemType)symbol);
 }
 Bool scanner_query(yyscan_t yyscan, const char *symbol) {

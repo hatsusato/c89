@@ -1,7 +1,6 @@
 #include "scanner/register.h"
 
 #include "ast/ast_tag.h"
-#include "parser.tab.h"
 #include "scanner/scanner_impl.h"
 #include "sexp.h"
 #include "utility.h"
@@ -47,7 +46,7 @@ static void register_identifier(yyscan_t yyscan, Sexp *ast) {
   assert(check_tag(ast, AST_IDENTIFIER));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  scanner_register(yyget_extra(yyscan), sexp_get_symbol(ast));
+  scanner_register(yyscan, sexp_get_symbol(ast));
 }
 static void register_declarator(yyscan_t, Sexp *);
 static void register_direct_declarator(yyscan_t yyscan, Sexp *ast) {
