@@ -39,6 +39,6 @@ int compare_cmp(Compare *compare, ElemType lhs, ElemType rhs) {
   }
 }
 int compare_strcmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
-  (void)extra;
+  UTILITY_UNUSED(extra);
   return utility_strcmp(lhs, rhs);
 }

@@ -5,6 +5,7 @@
 
 #include "types.h"
 
+#define UTILITY_UNUSED(var) ((void)(var))
 #define UTILITY_SWAP(type, lhs, rhs) \
   do {                               \
     type tmp = (lhs);                \

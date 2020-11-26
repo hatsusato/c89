@@ -9,7 +9,7 @@ struct struct_List {
 };
 
 static void list_destructor_default(ElemType e) {
-  (void)e;
+  UTILITY_UNUSED(e);
 }
 
 List *list_new(Destructor dtor) {

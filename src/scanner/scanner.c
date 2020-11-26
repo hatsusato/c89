@@ -20,7 +20,7 @@ Scanner *scanner_new(void) {
   Compare *cmp = compare_new(compare_strcmp);
   int ret = yylex_init(&scanner->yyscan);
   assert(0 == ret);
-  (void)ret;
+  UTILITY_UNUSED(ret);
   yyset_extra(scanner, scanner->yyscan);
   scanner->ast = ast_new();
   scanner->typedefs = set_new(NULL, cmp);
