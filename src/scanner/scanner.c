@@ -39,6 +39,9 @@ int scanner_parse(Scanner *scanner) {
 Ast *scanner_ast(Scanner *scanner) {
   return scanner->ast;
 }
+yyscan_t scanner_yyscan(Scanner *scanner) {
+  return scanner->yyscan;
+}
 void scanner_finish(yyscan_t yyscan, Sexp *ast) {
   Scanner *scanner = yyget_extra(yyscan);
   ast_set(scanner->ast, ast);
