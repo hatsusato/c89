@@ -24,3 +24,6 @@ Sexp *parser_cons(Sexp *car, Sexp *cdr) {
 Sexp *parser_snoc(Sexp *xs, Sexp *x) {
   return sexp_snoc(xs, x);
 }
+Sexp *parser_list_atom(AstTag tag, Sexp *ast) {
+  return PARSER_LIST2(sexp_number(tag), ast);
+}
