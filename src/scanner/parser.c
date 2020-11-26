@@ -21,9 +21,10 @@ Sexp *parser_nil(void) {
 Sexp *parser_cons(Sexp *car, Sexp *cdr) {
   return sexp_pair(car, cdr);
 }
-Sexp *parser_snoc(Sexp *xs, Sexp *x) {
-  return sexp_snoc(xs, x);
-}
 Sexp *parser_list_atom(AstTag tag, Sexp *ast) {
   return PARSER_LIST2(sexp_number(tag), ast);
+}
+Sexp *parser_list_snoc(Sexp *list, Sexp *ast) {
+  assert(sexp_is_list(list));
+  return sexp_snoc(list, ast);
 }
