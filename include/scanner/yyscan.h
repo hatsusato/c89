@@ -6,4 +6,6 @@
 typedef void *yyscan_t;
 #endif
 
+void yyerror(yyscan_t, const char *);
+
 #endif /* INCLUDE_GUARD_AD2E6BDC_1852_434E_87C9_94003CD02072 */
