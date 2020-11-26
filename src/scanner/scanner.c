@@ -15,6 +15,10 @@ typedef struct {
   Set *typedefs;
 } Scanner;
 
+static Scanner *scanner_get(yyscan_t yyscan) {
+  return yyget_extra(yyscan);
+}
+
 yyscan_t scanner_new(void) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
   Compare *cmp = compare_new(compare_strcmp);
@@ -28,7 +32,7 @@ yyscan_t scanner_new(void) {
   return scanner->yyscan;
 }
 void scanner_delete(yyscan_t yyscan) {
-  Scanner *scanner = yyget_extra(yyscan);
+  Scanner *scanner = scanner_get(yyscan);
   set_delete(scanner->typedefs);
   ast_delete(scanner->ast);
   yylex_destroy(scanner->yyscan);
@@ -38,26 +42,21 @@ int scanner_parse(yyscan_t yyscan) {
   return yyparse(yyscan);
 }
 Ast *scanner_ast(yyscan_t yyscan) {
-  Scanner *scanner = yyget_extra(yyscan);
-  return scanner->ast;
+  return scanner_get(yyscan)->ast;
 }
 void scanner_finish(yyscan_t yyscan, Sexp *ast) {
-  Scanner *scanner = yyget_extra(yyscan);
-  ast_set(scanner->ast, ast);
+  ast_set(scanner_get(yyscan)->ast, ast);
 }
 Sexp *scanner_token(yyscan_t yyscan) {
-  Scanner *scanner = yyget_extra(yyscan);
   const char *text = yyget_text(yyscan);
   Size leng = yyget_leng(yyscan);
-  const char *token = ast_symbol(scanner->ast, text, leng);
+  const char *token = ast_symbol(scanner_get(yyscan)->ast, text, leng);
   return sexp_symbol(token);
 }
 void scanner_register(yyscan_t yyscan, const char *symbol) {
-  Scanner *scanner = yyget_extra(yyscan);
   assert("redefinition of typedef" && !scanner_query(yyscan, symbol));
-  set_insert(scanner->typedefs, (ElemType)symbol);
+  set_insert(scanner_get(yyscan)->typedefs, (ElemType)symbol);
 }
 Bool scanner_query(yyscan_t yyscan, const char *symbol) {
-  Scanner *scanner = yyget_extra(yyscan);
-  return NULL != set_find(scanner->typedefs, (ElemType)symbol);
+  return NULL != set_find(scanner_get(yyscan)->typedefs, (ElemType)symbol);
 }
