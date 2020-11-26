@@ -24,6 +24,9 @@ static void scanner_init(yyscan_t yyscan) {
 static Scanner *scanner_get(yyscan_t yyscan) {
   return yyget_extra(yyscan);
 }
+static Set *scanner_typedefs(yyscan_t yyscan) {
+  return scanner_get(yyscan)->typedefs;
+}
 
 yyscan_t scanner_new(void) {
   yyscan_t yyscan;
@@ -35,7 +38,7 @@ yyscan_t scanner_new(void) {
   return yyscan;
 }
 void scanner_delete(yyscan_t yyscan) {
-  set_delete(scanner_get(yyscan)->typedefs);
+  set_delete(scanner_typedefs(yyscan));
   ast_delete(scanner_ast(yyscan));
   UTILITY_FREE(scanner_get(yyscan));
   yylex_destroy(yyscan);
@@ -57,8 +60,8 @@ Sexp *scanner_token(yyscan_t yyscan) {
 }
 void scanner_register(yyscan_t yyscan, const char *symbol) {
   assert("redefinition of typedef" && !scanner_query(yyscan, symbol));
-  set_insert(scanner_get(yyscan)->typedefs, (ElemType)symbol);
+  set_insert(scanner_typedefs(yyscan), (ElemType)symbol);
 }
 Bool scanner_query(yyscan_t yyscan, const char *symbol) {
-  return NULL != set_find(scanner_get(yyscan)->typedefs, (ElemType)symbol);
+  return NULL != set_find(scanner_typedefs(yyscan), (ElemType)symbol);
 }
