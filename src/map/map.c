@@ -12,14 +12,14 @@ typedef struct {
   ElemType key, val;
 } Pair;
 
-static int map_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
+static int pair_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
   const Pair *l = lhs, *r = rhs;
   return compare_cmp(extra, l->key, r->key);
 }
 
 Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
-  Compare *compare = compare_new(map_compare);
+  Compare *compare = compare_new(pair_compare);
   compare_set_extra(compare, keycmp, (Destructor)compare_delete);
   map->set = set_new(NULL, compare);
   return map;
