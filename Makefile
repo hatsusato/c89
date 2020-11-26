@@ -20,14 +20,15 @@ scanner/yacc/prefix := $(scanner/outdir)/parser
 scanner/yacc/hdr := $(scanner/yacc/prefix).tab.h
 scanner/yacc/src := $(scanner/yacc/prefix).tab.c
 scanner/yacc := $(scanner/yacc/hdr) $(scanner/yacc/src)
+scanner/hdrs := $(scanner/lex/hdr) $(scanner/yacc/hdr)
 scanner/srcs := $(scanner/lex/src) $(scanner/yacc/src)
 scanner/objs := $(scanner/srcs:%.c=%.o)
 scanner/deps := $(scanner/objs:%.o=%.d)
-scanner/outs := $(objs) $(deps) $(scanner/objs) $(scanner/deps)
-scanner/outs := $(filter $(scanner/outdir)/%,$(scanner/outs))
+scanner/outs := $(filter $(scanner/outdir)/%,$(objs) $(deps))
+scanner/outs := $(scanner/outs) $(scanner/objs) $(scanner/deps)
 
 ldflags =
-cflags = -Wall -Wextra -ansi -pedantic -Iinclude -I$(<D:$(builddir)/%=%)
+cflags = -Wall -Wextra -ansi -pedantic -Iinclude
 dflags = $(cflags) -MF $@ -MG -MM -MP -MT $(@:%.d=%.o)
 lflags := --header-file=$(scanner/lex/hdr) --outfile=$(scanner/lex/src)
 yflags := -d -b $(scanner/yacc/prefix)
@@ -54,8 +55,6 @@ $(deps): $(builddir)/%.d: %.c
 	@mkdir -p $(@D)
 	$(CC) $(dflags) $<
 
-$(scanner/outs): cflags += -I$(@D)
-
 $(scanner/lex): $(scanner/lex/file)
 	@mkdir -p $(@D)
 	flex $(lflags) $<
@@ -64,15 +63,15 @@ $(scanner/yacc): $(scanner/yacc/file)
 	@mkdir -p $(@D)
 	bison $(yflags) $<
 
+$(scanner/outs): cflags += -I$(@D)
 $(scanner/objs): %.o: %.c
 	@mkdir -p $(@D)
 	$(CC) $(cflags) -c $< -o $@
 
+$(scanner/outs): $(scanner/hdrs)
 $(scanner/deps): %.d: %.c
 	@mkdir -p $(@D)
 	$(CC) $(dflags) $<
-
-$(scanner/yacc/prefix).tab.d: $(scanner/lex/prefix).d
 
 -include $(deps) $(scanner/deps)
 
