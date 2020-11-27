@@ -17,6 +17,9 @@ static Value *value_new(ValueKind kind, const void *value) {
   return v;
 }
 
+ValueKind value_kind(Value *value) {
+  return value->kind;
+}
 Value *value_register(Register *reg) {
   return value_new(VALUE_REGISTER, reg);
 }

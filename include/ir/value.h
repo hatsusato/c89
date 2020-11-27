@@ -3,9 +3,11 @@
 
 #include "ir/instruction.h"
 #include "ir/register_type.h"
+#include "ir/value_kind.h"
 #include "ir/value_type.h"
 #include "sexp_type.h"
 
+ValueKind value_kind(Value *);
 Value *value_register(Register *);
 Value *value_instruction(Instruction *);
 Value *value_integer_constant(Sexp *);
