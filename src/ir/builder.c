@@ -11,7 +11,6 @@
 
 struct struct_Builder {
   Vector *pool;
-  Vector *values;
   int reg, last;
 };
 
@@ -98,12 +97,10 @@ static void builder_map_translation_unit(Sexp *ast, void *builder) {
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->pool = vector_new(utility_free);
-  builder->values = value_pool_new();
   builder->reg = builder->last = 0;
   return builder;
 }
 void builder_delete(Builder *builder) {
-  value_pool_delete(builder->values);
   vector_delete(builder->pool);
   UTILITY_FREE(builder);
 }
