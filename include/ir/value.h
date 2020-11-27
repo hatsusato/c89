@@ -3,8 +3,11 @@
 
 #include "compare.h"
 #include "ir/value_type.h"
+#include "set/set_type.h"
 #include "sexp_type.h"
 
+Set *value_pool_new(void);
+void value_pool_delete(Set *);
 Value *value_register(void);
 Value *value_integer_constant(Sexp *);
 void value_delete(Value *);

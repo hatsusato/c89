@@ -1,6 +1,7 @@
 #include "ir/value.h"
 
 #include "ast/ast_tag.h"
+#include "set.h"
 #include "sexp.h"
 #include "utility.h"
 
@@ -19,6 +20,14 @@ static Value *value_new(ValueKind kind) {
   return value;
 }
 
+Set *value_pool_new(void) {
+  Compare *cmp = compare_new(value_compare);
+  Set *pool = set_new((Destructor)value_delete, cmp);
+  return pool;
+}
+void value_pool_delete(Set *pool) {
+  set_delete(pool);
+}
 Value *value_register(void) {
   Value *value = value_new(VALUE_REGISTER);
   value->value.reg = 0;
