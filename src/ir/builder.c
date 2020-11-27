@@ -7,8 +7,10 @@
 #include "ir/value.h"
 #include "sexp.h"
 #include "utility.h"
+#include "vector.h"
 
 struct struct_Builder {
+  Vector *pool;
   Vector *registers, *values;
   int reg, last;
 };
@@ -95,6 +97,7 @@ static void builder_map_translation_unit(Sexp *ast, void *builder) {
 
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
+  builder->pool = vector_new(utility_free);
   builder->registers = register_pool_new();
   builder->values = value_pool_new();
   builder->reg = builder->last = 0;
@@ -103,6 +106,7 @@ Builder *builder_new(void) {
 void builder_delete(Builder *builder) {
   value_pool_delete(builder->values);
   register_pool_delete(builder->registers);
+  vector_delete(builder->pool);
   UTILITY_FREE(builder);
 }
 void builder_build(Builder *builder, Sexp *ast) {
