@@ -9,6 +9,6 @@
 Vector *value_pool_new(void);
 void value_pool_delete(Vector *);
 Value *value_register(Register *);
-Value *value_integer_constant(Vector *, Sexp *);
+Value *value_integer_constant(Sexp *);
 
 #endif /* INCLUDE_GUARD_FE2AA6D9_B675_4B2E_839A_2B085264192A */

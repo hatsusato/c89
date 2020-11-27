@@ -30,12 +30,9 @@ void value_pool_delete(Vector *pool) {
 Value *value_register(Register *reg) {
   return value_new(VALUE_REGISTER, reg);
 }
-Value *value_integer_constant(Vector *pool, Sexp *ast) {
-  Value *value;
+Value *value_integer_constant(Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  value = value_new(VALUE_INTEGER_CONSTANT, sexp_get_symbol(ast));
-  vector_push(pool, value);
-  return value;
+  return value_new(VALUE_INTEGER_CONSTANT, sexp_get_symbol(ast));
 }
