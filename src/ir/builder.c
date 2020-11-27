@@ -49,6 +49,16 @@ static void builder_expression(Builder *builder, Sexp *ast) {
     break;
   }
 }
+static void builder_jump_statement(Builder *builder, Sexp *ast) {
+  assert(AST_JUMP_STATEMENT == get_tag(ast));
+  ast = sexp_at(ast, 2);
+  if (sexp_is_nil(ast)) {
+    puts("  ret void");
+  } else {
+    builder_expression(builder, ast);
+    printf("  ret i32 %%%d\n", builder->last);
+  }
+}
 
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
