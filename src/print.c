@@ -71,7 +71,7 @@ static void print_sexp(FILE *fp, Sexp *sexp, int indent) {
   }
 }
 void print_ast(Sexp *ast) {
-  FILE *fp = stdout;
+  FILE *fp = stderr;
   print_sexp(fp, ast, 0);
   print_newline(fp);
 }
