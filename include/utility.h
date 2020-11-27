@@ -24,5 +24,6 @@ void utility_free(ElemType);
 void utility_memcpy(void *, const void *, size_t);
 int utility_memcmp(const void *, const void *, size_t);
 int utility_strcmp(const char *, const char *);
+int utility_intcmp(int, int);
 
 #endif /* INCLUDE_GUARD_26FC0E3E_05C7_464D_8860_9F5E5E2F9210 */

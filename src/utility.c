@@ -18,3 +18,6 @@ int utility_memcmp(const void *lhs, const void *rhs, size_t count) {
 int utility_strcmp(const char *lhs, const char *rhs) {
   return strcmp(lhs, rhs);
 }
+int utility_intcmp(int lhs, int rhs) {
+  return (lhs < rhs) ? -1 : (lhs > rhs);
+}
