@@ -32,3 +32,6 @@ Value *value_integer_constant(Sexp *ast) {
   value->value.integer = sexp_get_symbol(ast);
   return value;
 }
+void value_delete(Value *value) {
+  UTILITY_FREE(value);
+}
