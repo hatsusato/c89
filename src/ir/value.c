@@ -1,7 +1,6 @@
 #include "ir/value.h"
 
 #include "ast/ast_tag.h"
-#include "compare.h"
 #include "sexp.h"
 #include "utility.h"
 #include "vector.h"
@@ -28,12 +27,17 @@ Vector *value_pool_new(void) {
 void value_pool_delete(Vector *pool) {
   vector_delete(pool);
 }
-Value *value_register(Register *reg) {
-  return value_new(VALUE_REGISTER, reg);
+Value *value_register(Vector *pool, Register *reg) {
+  Value *value = value_new(VALUE_REGISTER, reg);
+  vector_push(pool, value);
+  return value;
 }
-Value *value_integer_constant(Sexp *ast) {
+Value *value_integer_constant(Vector *pool, Sexp *ast) {
+  Value *value;
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  return value_new(VALUE_INTEGER_CONSTANT, sexp_get_symbol(ast));
+  value = value_new(VALUE_INTEGER_CONSTANT, sexp_get_symbol(ast));
+  vector_push(pool, value);
+  return value;
 }
