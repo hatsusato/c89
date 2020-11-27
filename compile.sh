@@ -26,10 +26,12 @@ error() {
 files=()
 eflag=
 sflag=
+xflag=
 for arg in "$@"; do
   case "$arg" in
     -E) eflag=on;;
     -S) sflag=on;;
+    -X) xflag=on;;
     -*) FLAGS+=("$arg");;
     *) files+=("$arg");;
   esac
@@ -42,6 +44,9 @@ for TARGET in "${files[@]}"; do
     print
   elif test "$sflag"; then
     print | "$main" 2>/dev/null
+  elif test "$xflag"; then
+    print | "$main" 2>/dev/null | llc | clang -x assembler -
+    ./a.out
   else
     print | "$main" >/dev/null
   fi
