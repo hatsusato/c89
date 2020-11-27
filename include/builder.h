@@ -10,7 +10,6 @@ Builder *builder_new(void);
 void builder_delete(Builder *);
 void builder_build(Builder *, Sexp *);
 Register *builder_register(Builder *);
-Value *builder_value_register(Builder *, Register *);
 Value *builder_value_integer_constant(Builder *, Sexp *);
 Value *builder_expression(Builder *, Sexp *);
 

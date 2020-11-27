@@ -110,11 +110,6 @@ Register *builder_register(Builder *builder) {
   vector_push(builder->pool, reg);
   return reg;
 }
-Value *builder_value_register(Builder *builder, Register *reg) {
-  Value *value = value_register(reg);
-  vector_push(builder->pool, value);
-  return value;
-}
 Value *builder_value_integer_constant(Builder *builder, Sexp *ast) {
   Value *value = value_integer_constant(ast);
   vector_push(builder->pool, value);
