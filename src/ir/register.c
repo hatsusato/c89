@@ -18,10 +18,9 @@ Vector *register_pool_new(void) {
 void register_pool_delete(Vector *pool) {
   vector_delete(pool);
 }
-Register *register_new(Vector *pool) {
+Register *register_new(void) {
   Register *reg = UTILITY_MALLOC(Register);
   reg->id = 0;
-  vector_push(pool, reg);
   return reg;
 }
 void register_set_id(Register *reg, int id) {
