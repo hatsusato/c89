@@ -4,10 +4,7 @@
 #include "ir/register_type.h"
 #include "ir/value_type.h"
 #include "sexp_type.h"
-#include "vector/vector_type.h"
 
-Vector *value_pool_new(void);
-void value_pool_delete(Vector *);
 Value *value_register(Register *);
 Value *value_integer_constant(Sexp *);
 

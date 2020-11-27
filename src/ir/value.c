@@ -3,7 +3,6 @@
 #include "ast/ast_tag.h"
 #include "sexp.h"
 #include "utility.h"
-#include "vector.h"
 
 typedef enum { VALUE_REGISTER, VALUE_INTEGER_CONSTANT } ValueKind;
 struct struct_Value {
@@ -17,16 +16,7 @@ static Value *value_new(ValueKind kind, const void *value) {
   v->value = value;
   return v;
 }
-static void value_delete(Value *value) {
-  UTILITY_FREE(value);
-}
 
-Vector *value_pool_new(void) {
-  return vector_new((Destructor)value_delete);
-}
-void value_pool_delete(Vector *pool) {
-  vector_delete(pool);
-}
 Value *value_register(Register *reg) {
   return value_new(VALUE_REGISTER, reg);
 }

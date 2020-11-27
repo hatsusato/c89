@@ -2,10 +2,7 @@
 #define INCLUDE_GUARD_CEF76A36_FC1B_4A04_BA5B_8E1A29C43165
 
 #include "register_type.h"
-#include "vector/vector_type.h"
 
-Vector *register_pool_new(void);
-void register_pool_delete(Vector *);
 Register *register_new(void);
 void register_set_id(Register *, int);
 
