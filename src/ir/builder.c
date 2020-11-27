@@ -59,6 +59,30 @@ static void builder_jump_statement(Builder *builder, Sexp *ast) {
     printf("  ret i32 %%%d\n", builder->last);
   }
 }
+static void builder_map_statement(Sexp *ast, void *builder) {
+  assert(AST_STATEMENT == get_tag(ast));
+  ast = sexp_at(ast, 1);
+  switch (get_tag(ast)) {
+  case AST_JUMP_STATEMENT:
+    builder_jump_statement(builder, ast);
+    break;
+  default:
+    assert(0);
+    break;
+  }
+}
+static void builder_function_definition(Builder *builder, Sexp *ast) {
+  assert(AST_FUNCTION_DEFINITION == get_tag(ast));
+  assert(5 == sexp_length(ast));
+  ast = sexp_at(ast, 4);
+  assert(AST_COMPOUND_STATEMENT == get_tag(ast));
+  ast = sexp_at(ast, 3);
+  assert(AST_STATEMENT_LIST == get_tag(ast));
+  puts("define i32 @main() {");
+  builder->reg = 1;
+  sexp_list_map(sexp_cdr(ast), builder, builder_map_statement);
+  puts("}");
+}
 
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
