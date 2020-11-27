@@ -35,3 +35,20 @@ Value *value_integer_constant(Sexp *ast) {
 void value_delete(Value *value) {
   UTILITY_FREE(value);
 }
+int value_compare(ElemType l, ElemType r, CompareExtra extra) {
+  Value *lhs = l, *rhs = r;
+  UTILITY_UNUSED(extra);
+  if (lhs->kind == rhs->kind) {
+    switch (lhs->kind) {
+    case VALUE_REGISTER:
+      return utility_intcmp(lhs->value.reg, rhs->value.reg);
+    case VALUE_INTEGER_CONSTANT:
+      return utility_strcmp(lhs->value.integer, rhs->value.integer);
+    default:
+      assert(0);
+      return 0;
+    }
+  } else {
+    return lhs->kind < rhs->kind ? -1 : 1;
+  }
+}
