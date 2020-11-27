@@ -20,6 +20,9 @@ static Value *value_new(ValueKind kind) {
   value->kind = kind;
   return value;
 }
+static void value_delete(Value *value) {
+  UTILITY_FREE(value);
+}
 static int value_compare(Value *lhs, Value *rhs, CompareExtra extra) {
   UTILITY_UNUSED(extra);
   if (lhs->kind == rhs->kind) {
@@ -57,7 +60,4 @@ Value *value_integer_constant(Sexp *ast) {
   assert(sexp_is_symbol(ast));
   value->value.integer = sexp_get_symbol(ast);
   return value;
-}
-void value_delete(Value *value) {
-  UTILITY_FREE(value);
 }
