@@ -8,8 +8,7 @@
 
 struct struct_Instruction {
   ValueKind kind;
-  Register *dst;
-  Value *lhs, *rhs;
+  Value *dst, *lhs, *rhs;
 };
 
 Value *instruction_binary(Builder *builder, Value *lhs, Value *rhs) {
