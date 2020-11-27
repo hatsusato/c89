@@ -10,7 +10,7 @@
 #include "vector.h"
 
 struct struct_Builder {
-  Vector *pool;
+  Vector *pool, *block;
   int reg, last;
 };
 
@@ -97,10 +97,12 @@ static void builder_map_translation_unit(Sexp *ast, void *builder) {
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->pool = vector_new(utility_free);
+  builder->block = vector_new(NULL);
   builder->reg = builder->last = 0;
   return builder;
 }
 void builder_delete(Builder *builder) {
+  vector_delete(builder->block);
   vector_delete(builder->pool);
   UTILITY_FREE(builder);
 }
