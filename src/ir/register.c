@@ -1,5 +1,6 @@
 #include "ir/register.h"
 
+#include "ir/register_type.h"
 #include "utility.h"
 #include "vector.h"
 
@@ -16,4 +17,10 @@ Vector *register_pool_new(void) {
 }
 void register_pool_delete(Vector *pool) {
   vector_delete(pool);
+}
+Register *register_new(Vector *pool) {
+  Register *reg = UTILITY_MALLOC(Register);
+  reg->id = 0;
+  vector_push(pool, reg);
+  return reg;
 }
