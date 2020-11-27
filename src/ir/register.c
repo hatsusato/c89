@@ -24,3 +24,6 @@ Register *register_new(Vector *pool) {
   vector_push(pool, reg);
   return reg;
 }
+void register_set_id(Register *reg, int id) {
+  reg->id = id;
+}
