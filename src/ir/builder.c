@@ -4,11 +4,12 @@
 
 #include "ast/ast_tag.h"
 #include "ir/register.h"
+#include "ir/value.h"
 #include "sexp.h"
 #include "utility.h"
 
 struct struct_Builder {
-  Vector *registers;
+  Vector *registers, *values;
   int reg, last;
 };
 
@@ -95,10 +96,12 @@ static void builder_map_translation_unit(Sexp *ast, void *builder) {
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->registers = register_pool_new();
+  builder->values = value_pool_new();
   builder->reg = builder->last = 0;
   return builder;
 }
 void builder_delete(Builder *builder) {
+  value_pool_delete(builder->values);
   register_pool_delete(builder->registers);
   UTILITY_FREE(builder);
 }
@@ -109,4 +112,10 @@ void builder_build(Builder *builder, Sexp *ast) {
 }
 Register *builder_register(Builder *builder) {
   return register_new(builder->registers);
+}
+Value *builder_value_register(Builder *builder, Register *reg) {
+  return value_register(builder->values, reg);
+}
+Value *builder_value_integer_constant(Builder *builder, Sexp *ast) {
+  return value_integer_constant(builder->values, ast);
 }
