@@ -21,3 +21,6 @@ int utility_strcmp(const char *lhs, const char *rhs) {
 int utility_intcmp(int lhs, int rhs) {
   return (lhs < rhs) ? -1 : (lhs > rhs);
 }
+int utility_ptrcmp(const void *lhs, const void *rhs) {
+  return (lhs < rhs) ? -1 : (lhs > rhs);
+}

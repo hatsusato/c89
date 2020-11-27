@@ -25,5 +25,6 @@ void utility_memcpy(void *, const void *, size_t);
 int utility_memcmp(const void *, const void *, size_t);
 int utility_strcmp(const char *, const char *);
 int utility_intcmp(int, int);
+int utility_ptrcmp(const void *, const void *);
 
 #endif /* INCLUDE_GUARD_26FC0E3E_05C7_464D_8860_9F5E5E2F9210 */
