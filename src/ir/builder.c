@@ -3,10 +3,12 @@
 #include <stdio.h>
 
 #include "ast/ast_tag.h"
+#include "ir/register.h"
 #include "sexp.h"
 #include "utility.h"
 
 struct struct_Builder {
+  Vector *registers;
   int reg, last;
 };
 
@@ -92,10 +94,12 @@ static void builder_map_translation_unit(Sexp *ast, void *builder) {
 
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
+  builder->registers = register_pool_new();
   builder->reg = builder->last = 0;
   return builder;
 }
 void builder_delete(Builder *builder) {
+  register_pool_delete(builder->registers);
   UTILITY_FREE(builder);
 }
 void builder_build(Builder *builder, Sexp *ast) {
