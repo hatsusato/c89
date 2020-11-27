@@ -9,10 +9,7 @@
 typedef enum { VALUE_REGISTER, VALUE_INTEGER_CONSTANT } ValueKind;
 struct struct_Value {
   ValueKind kind;
-  union {
-    int reg;
-    const char *integer;
-  } value;
+  const void *value;
 };
 
 static Value *value_new(ValueKind kind) {
@@ -28,15 +25,15 @@ static int value_compare(Value *lhs, Value *rhs, CompareExtra extra) {
   if (lhs->kind == rhs->kind) {
     switch (lhs->kind) {
     case VALUE_REGISTER:
-      return utility_intcmp(lhs->value.reg, rhs->value.reg);
+      return utility_ptrcmp(lhs->value, rhs->value);
     case VALUE_INTEGER_CONSTANT:
-      return utility_strcmp(lhs->value.integer, rhs->value.integer);
+      return utility_strcmp(lhs->value, rhs->value);
     default:
       assert(0);
       return 0;
     }
   } else {
-    return lhs->kind < rhs->kind ? -1 : 1;
+    return utility_intcmp(lhs->kind, rhs->kind);
   }
 }
 
@@ -48,9 +45,9 @@ Set *value_pool_new(void) {
 void value_pool_delete(Set *pool) {
   set_delete(pool);
 }
-Value *value_register(void) {
+Value *value_register(Register *reg) {
   Value *value = value_new(VALUE_REGISTER);
-  value->value.reg = 0;
+  value->value = reg;
   return value;
 }
 Value *value_integer_constant(Sexp *ast) {
@@ -58,6 +55,6 @@ Value *value_integer_constant(Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  value->value.integer = sexp_get_symbol(ast);
+  value->value = sexp_get_symbol(ast);
   return value;
 }
