@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "ast/ast_tag.h"
+#include "ir/instruction.h"
 #include "ir/register.h"
 #include "ir/value.h"
 #include "sexp.h"
@@ -14,38 +15,34 @@ struct struct_Builder {
   int reg, last;
 };
 
-static void builder_expression(Builder *, Sexp *);
-static void builder_integer_constant(Builder *builder, Sexp *ast) {
+static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
+  Value *value = value_integer_constant(ast);
+  vector_push(builder->pool, value);
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
   builder->last = builder->reg++;
   printf("  %%%d = add i32 0, %s\n", builder->last, sexp_get_symbol(ast));
+  return value;
 }
-static void builder_additive_expression(Builder *builder, Sexp *ast) {
-  int lhs, rhs;
+static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
+  Value *value, *lhs, *rhs;
+  Instruction *instr;
+  int idlhs, idrhs;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 2)));
   assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
-  builder_expression(builder, sexp_at(ast, 1));
-  lhs = builder->last;
-  builder_expression(builder, sexp_at(ast, 3));
-  rhs = builder->last;
+  lhs = builder_expression(builder, sexp_at(ast, 1));
+  idlhs = builder->last;
+  rhs = builder_expression(builder, sexp_at(ast, 3));
+  idrhs = builder->last;
   builder->last = builder->reg++;
-  printf("  %%%d = add i32 %%%d, %%%d\n", builder->last, lhs, rhs);
-}
-static void builder_expression(Builder *builder, Sexp *ast) {
-  switch (sexp_get_tag(ast)) {
-  case AST_INTEGER_CONSTANT:
-    builder_integer_constant(builder, ast);
-    break;
-  case AST_ADDITIVE_EXPRESSION:
-    builder_additive_expression(builder, ast);
-    break;
-  default:
-    assert(0);
-    break;
-  }
+  printf("  %%%d = add i32 %%%d, %%%d\n", builder->last, idlhs, idrhs);
+  instr = instruction_binary(builder, lhs, rhs);
+  vector_push(builder->pool, instr);
+  value = value_instruction(instr);
+  vector_push(builder->pool, value);
+  return value;
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
@@ -125,4 +122,15 @@ Value *builder_value_integer_constant(Builder *builder, Sexp *ast) {
   Value *value = value_integer_constant(ast);
   vector_push(builder->pool, value);
   return value;
+}
+Value *builder_expression(Builder *builder, Sexp *ast) {
+  switch (sexp_get_tag(ast)) {
+  case AST_INTEGER_CONSTANT:
+    return builder_integer_constant(builder, ast);
+  case AST_ADDITIVE_EXPRESSION:
+    return builder_additive_expression(builder, ast);
+  default:
+    assert(0);
+    return NULL;
+  }
 }
