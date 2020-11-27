@@ -10,15 +10,9 @@ struct struct_Builder {
   int reg, last;
 };
 
-static AstTag get_tag(Sexp *ast) {
-  assert(sexp_is_pair(ast));
-  ast = sexp_car(ast);
-  assert(sexp_is_number(ast));
-  return sexp_get_number(ast);
-}
 static void builder_expression(Builder *, Sexp *);
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
-  assert(AST_INTEGER_CONSTANT == get_tag(ast));
+  assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
   builder->last = builder->reg++;
@@ -26,7 +20,7 @@ static void builder_integer_constant(Builder *builder, Sexp *ast) {
 }
 static void builder_additive_expression(Builder *builder, Sexp *ast) {
   int lhs, rhs;
-  assert(AST_ADDITIVE_EXPRESSION == get_tag(ast));
+  assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 2)));
   assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
   builder_expression(builder, sexp_at(ast, 1));
@@ -37,7 +31,7 @@ static void builder_additive_expression(Builder *builder, Sexp *ast) {
   printf("  %%%d = add i32 %%%d, %%%d\n", builder->last, lhs, rhs);
 }
 static void builder_expression(Builder *builder, Sexp *ast) {
-  switch (get_tag(ast)) {
+  switch (sexp_get_tag(ast)) {
   case AST_INTEGER_CONSTANT:
     builder_integer_constant(builder, ast);
     break;
@@ -50,7 +44,7 @@ static void builder_expression(Builder *builder, Sexp *ast) {
   }
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
-  assert(AST_JUMP_STATEMENT == get_tag(ast));
+  assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
   if (sexp_is_nil(ast)) {
     puts("  ret void");
@@ -60,9 +54,9 @@ static void builder_jump_statement(Builder *builder, Sexp *ast) {
   }
 }
 static void builder_map_statement(Sexp *ast, void *builder) {
-  assert(AST_STATEMENT == get_tag(ast));
+  assert(AST_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
-  switch (get_tag(ast)) {
+  switch (sexp_get_tag(ast)) {
   case AST_JUMP_STATEMENT:
     builder_jump_statement(builder, ast);
     break;
@@ -72,19 +66,19 @@ static void builder_map_statement(Sexp *ast, void *builder) {
   }
 }
 static void builder_function_definition(Builder *builder, Sexp *ast) {
-  assert(AST_FUNCTION_DEFINITION == get_tag(ast));
+  assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   ast = sexp_at(ast, 4);
-  assert(AST_COMPOUND_STATEMENT == get_tag(ast));
+  assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 3);
-  assert(AST_STATEMENT_LIST == get_tag(ast));
+  assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
   puts("define i32 @main() {");
   builder->reg = 1;
   sexp_list_map(sexp_cdr(ast), builder, builder_map_statement);
   puts("}");
 }
 static void builder_map_translation_unit(Sexp *ast, void *builder) {
-  switch (get_tag(ast)) {
+  switch (sexp_get_tag(ast)) {
   case AST_EXTERNAL_DECLARATION:
     break;
   case AST_FUNCTION_DEFINITION:
@@ -105,7 +99,7 @@ void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
 void builder_build(Builder *builder, Sexp *ast) {
-  assert(AST_TRANSLATION_UNIT == get_tag(ast));
+  assert(AST_TRANSLATION_UNIT == sexp_get_tag(ast));
   puts("target triple = \"x86_64-pc-linux-gnu\"\n");
   sexp_list_map(sexp_cdr(ast), builder, builder_map_translation_unit);
 }
