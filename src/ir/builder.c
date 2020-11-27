@@ -83,6 +83,18 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   sexp_list_map(sexp_cdr(ast), builder, builder_map_statement);
   puts("}");
 }
+static void builder_map_translation_unit(Sexp *ast, void *builder) {
+  switch (get_tag(ast)) {
+  case AST_EXTERNAL_DECLARATION:
+    break;
+  case AST_FUNCTION_DEFINITION:
+    builder_function_definition(builder, ast);
+    break;
+  default:
+    assert(0);
+    break;
+  }
+}
 
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
@@ -91,4 +103,9 @@ Builder *builder_new(void) {
 }
 void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
+}
+void builder_build(Builder *builder, Sexp *ast) {
+  assert(AST_TRANSLATION_UNIT == get_tag(ast));
+  puts("target triple = \"x86_64-pc-linux-gnu\"\n");
+  sexp_list_map(sexp_cdr(ast), builder, builder_map_translation_unit);
 }
