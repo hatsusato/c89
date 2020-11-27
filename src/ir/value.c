@@ -20,9 +20,6 @@ static Value *value_new(ValueKind kind, const void *value) {
 ValueKind value_kind(Value *value) {
   return value->kind;
 }
-Value *value_register(Register *reg) {
-  return value_new(VALUE_REGISTER, reg);
-}
 Value *value_integer_constant(Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
