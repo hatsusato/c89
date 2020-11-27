@@ -26,7 +26,7 @@ static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   return value;
 }
 static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
-  Value *value, *lhs, *rhs, *instr;
+  Value *lhs, *rhs, *instr;
   int idlhs, idrhs;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 2)));
@@ -39,9 +39,7 @@ static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   printf("  %%%d = add i32 %%%d, %%%d\n", builder->last, idlhs, idrhs);
   instr = instruction_binary(builder, lhs, rhs);
   vector_push(builder->pool, instr);
-  value = value_instruction((Instruction *)instr);
-  vector_push(builder->pool, value);
-  return value;
+  return instr;
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));

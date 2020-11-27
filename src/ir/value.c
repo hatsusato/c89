@@ -23,9 +23,6 @@ ValueKind value_kind(Value *value) {
 Value *value_register(Register *reg) {
   return value_new(VALUE_REGISTER, reg);
 }
-Value *value_instruction(Instruction *instr) {
-  return value_new(VALUE_INSTRUCTION, instr);
-}
 Value *value_integer_constant(Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
