@@ -4,7 +4,7 @@
 #include "utility.h"
 
 struct struct_Builder {
-  int reg;
+  int reg, last;
 };
 
 static AstTag get_tag(Sexp *ast) {
@@ -16,7 +16,7 @@ static AstTag get_tag(Sexp *ast) {
 
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
-  builder->reg = 0;
+  builder->reg = builder->last = 0;
   return builder;
 }
 void builder_delete(Builder *builder) {
