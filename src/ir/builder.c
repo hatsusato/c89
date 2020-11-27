@@ -110,11 +110,6 @@ Value *builder_register(Builder *builder) {
   vector_push(builder->pool, reg);
   return reg;
 }
-Value *builder_value_integer_constant(Builder *builder, Sexp *ast) {
-  Value *value = value_integer_constant(ast);
-  vector_push(builder->pool, value);
-  return value;
-}
 Value *builder_expression(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_INTEGER_CONSTANT:
