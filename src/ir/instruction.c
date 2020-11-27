@@ -1,7 +1,6 @@
 #include "ir/instruction.h"
 
 #include "builder.h"
-#include "ir/instruction_type.h"
 #include "ir/value_kind.h"
 #include "utility.h"
 
@@ -9,6 +8,7 @@ struct struct_Instruction {
   ValueKind kind;
   Value *dst, *lhs, *rhs;
 };
+typedef struct struct_Instruction Instruction;
 
 Value *instruction_binary(Builder *builder, Value *lhs, Value *rhs) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
