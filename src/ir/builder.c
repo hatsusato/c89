@@ -109,7 +109,7 @@ void builder_build(Builder *builder, Sexp *ast) {
   sexp_list_map(sexp_cdr(ast), builder, builder_map_translation_unit);
 }
 Register *builder_register(Builder *builder) {
-  Register *reg = register_new();
+  Register *reg = (Register *)register_new();
   vector_push(builder->pool, reg);
   return reg;
 }

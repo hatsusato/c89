@@ -1,16 +1,22 @@
 #include "ir/register.h"
 
+#include "ir/register_type.h"
+#include "ir/value_kind.h"
 #include "utility.h"
 
 struct struct_Register {
+  ValueKind kind;
   int id;
 };
 
-Register *register_new(void) {
+Value *register_new(void) {
   Register *reg = UTILITY_MALLOC(Register);
+  reg->kind = VALUE_REGISTER;
   reg->id = 0;
-  return reg;
+  return (Value *)reg;
 }
-void register_set_id(Register *reg, int id) {
+void register_set_id(Value *value, int id) {
+  Register *reg = (Register *)value;
+  assert(VALUE_REGISTER == reg->kind);
   reg->id = id;
 }
