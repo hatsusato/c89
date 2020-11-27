@@ -27,10 +27,8 @@ Vector *value_pool_new(void) {
 void value_pool_delete(Vector *pool) {
   vector_delete(pool);
 }
-Value *value_register(Vector *pool, Register *reg) {
-  Value *value = value_new(VALUE_REGISTER, reg);
-  vector_push(pool, value);
-  return value;
+Value *value_register(Register *reg) {
+  return value_new(VALUE_REGISTER, reg);
 }
 Value *value_integer_constant(Vector *pool, Sexp *ast) {
   Value *value;
