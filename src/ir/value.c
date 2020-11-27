@@ -1,14 +1,10 @@
 #include "ir/value.h"
 
 #include "ast/ast_tag.h"
+#include "ir/value_kind.h"
 #include "sexp.h"
 #include "utility.h"
 
-typedef enum {
-  VALUE_REGISTER,
-  VALUE_INSTRUCTION,
-  VALUE_INTEGER_CONSTANT
-} ValueKind;
 struct struct_Value {
   ValueKind kind;
   const void *value;
