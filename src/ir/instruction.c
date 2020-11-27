@@ -2,7 +2,6 @@
 
 #include "builder.h"
 #include "ir/instruction_type.h"
-#include "ir/register_type.h"
 #include "ir/value_kind.h"
 #include "utility.h"
 
