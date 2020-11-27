@@ -12,10 +12,11 @@ struct struct_Value {
   const void *value;
 };
 
-static Value *value_new(ValueKind kind) {
-  Value *value = UTILITY_MALLOC(Value);
-  value->kind = kind;
-  return value;
+static Value *value_new(ValueKind kind, const void *value) {
+  Value *v = UTILITY_MALLOC(Value);
+  v->kind = kind;
+  v->value = value;
+  return v;
 }
 static void value_delete(Value *value) {
   UTILITY_FREE(value);
@@ -28,15 +29,11 @@ void value_pool_delete(Vector *pool) {
   vector_delete(pool);
 }
 Value *value_register(Register *reg) {
-  Value *value = value_new(VALUE_REGISTER);
-  value->value = reg;
-  return value;
+  return value_new(VALUE_REGISTER, reg);
 }
 Value *value_integer_constant(Sexp *ast) {
-  Value *value = value_new(VALUE_INTEGER_CONSTANT);
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  value->value = sexp_get_symbol(ast);
-  return value;
+  return value_new(VALUE_INTEGER_CONSTANT, sexp_get_symbol(ast));
 }
