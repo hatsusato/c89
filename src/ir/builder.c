@@ -6,6 +6,7 @@
 #include "ir/block.h"
 #include "ir/constant.h"
 #include "ir/instruction.h"
+#include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/value.h"
 #include "sexp.h"
@@ -14,6 +15,7 @@
 
 struct struct_Builder {
   Vector *vec;
+  Pool *pool;
   Block *block;
   RegisterGenerator *gen;
   int reg;
@@ -88,6 +90,7 @@ static void builder_map_translation_unit(Sexp *ast, void *builder) {
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->vec = vector_new(utility_free);
+  builder->pool = pool_new();
   builder->block = block_new();
   builder->gen = register_generator_new();
   builder->reg = 0;
@@ -96,6 +99,7 @@ Builder *builder_new(void) {
 void builder_delete(Builder *builder) {
   register_generator_delete(builder->gen);
   block_delete(builder->block);
+  pool_delete(builder->pool);
   vector_delete(builder->vec);
   UTILITY_FREE(builder);
 }
