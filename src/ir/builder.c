@@ -109,6 +109,8 @@ void builder_build(Builder *builder, Sexp *ast) {
   assert(AST_TRANSLATION_UNIT == sexp_get_tag(ast));
   puts("target triple = \"x86_64-pc-linux-gnu\"\n");
   sexp_list_map(sexp_cdr(ast), builder, builder_map_translation_unit);
+  block_set_id(builder, builder->block);
+  block_print(builder->block);
 }
 Value *builder_register(Builder *builder) {
   Value *reg = register_new();

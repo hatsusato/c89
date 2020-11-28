@@ -2,6 +2,7 @@
 
 #include "builder.h"
 #include "ir/block_type.h"
+#include "ir/instruction.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
 #include "utility.h"
@@ -34,5 +35,12 @@ void block_set_id(Builder *builder, Block *block) {
   block->id = builder_fresh_id(builder);
   for (; begin < end; ++begin) {
     value_set_id(builder, *begin);
+  }
+}
+void block_print(Block *block) {
+  ElemType *begin = vector_begin(block->instrs);
+  ElemType *end = vector_end(block->instrs);
+  for (; begin < end; ++begin) {
+    instruction_print(*begin);
   }
 }
