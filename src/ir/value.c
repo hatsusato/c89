@@ -26,6 +26,12 @@ void value_delete(Value *value) {
   vector_delete(value->vec);
   UTILITY_FREE(value);
 }
+void value_insert(Value *value, Value *elem) {
+  vector_push(value->vec, elem);
+}
+void value_set_value(Value *value, const void *val) {
+  value->value = val;
+}
 ValueKind value_kind(Value *value) {
   return value->header.kind;
 }

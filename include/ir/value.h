@@ -8,6 +8,8 @@
 
 Value *value_new(ValueKind);
 void value_delete(Value *);
+void value_insert(Value *, Value *);
+void value_set_value(Value *, const void *);
 ValueKind value_kind(Value *);
 void value_init(Value *, ValueKind);
 void value_print(Value *);
