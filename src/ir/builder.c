@@ -17,6 +17,11 @@ struct struct_Builder {
   int reg, last;
 };
 
+static Value *builder_instruction(Builder *builder, Value *instr) {
+  vector_push(builder->pool, instr);
+  block_insert(builder->block, instr);
+  return instr;
+}
 static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   Value *value = value_integer_constant(ast);
   vector_push(builder->pool, value);
@@ -28,7 +33,7 @@ static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   return value;
 }
 static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
-  Value *lhs, *rhs, *instr;
+  Value *lhs, *rhs;
   int idlhs, idrhs;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 2)));
@@ -39,9 +44,7 @@ static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   idrhs = builder->last;
   builder->last = builder->reg++;
   printf("  %%%d = add i32 %%%d, %%%d\n", builder->last, idlhs, idrhs);
-  instr = instruction_binary(builder, lhs, rhs);
-  vector_push(builder->pool, instr);
-  return instr;
+  return builder_instruction(builder, instruction_binary(builder, lhs, rhs));
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
