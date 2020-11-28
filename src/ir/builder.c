@@ -28,8 +28,9 @@ static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
   lhs = builder_expression(builder, sexp_at(ast, 1));
   rhs = builder_expression(builder, sexp_at(ast, 3));
-  instr = instruction_binary(lhs, rhs);
-  vector_push(builder->vec, instr);
+  instr = pool_alloc(builder->pool, VALUE_INSTRUCTION);
+  value_insert(instr, lhs);
+  value_insert(instr, rhs);
   block_insert(builder->block, instr);
   return instr;
 }

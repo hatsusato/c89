@@ -14,13 +14,13 @@ struct struct_Instruction {
 };
 typedef struct struct_Instruction Instruction;
 
-static void instruction_print_add(Instruction *instr) {
+static void instruction_print_add(Value *instr) {
   printf("  ");
-  value_print((Value *)instr);
+  value_print(instr);
   printf(" = add i32 ");
-  value_print(instr->lhs);
+  value_print(value_at(instr, 0));
   printf(", ");
-  value_print(instr->rhs);
+  value_print(value_at(instr, 1));
   printf("\n");
 }
 static void instruction_print_ret(Instruction *instr) {
@@ -33,13 +33,6 @@ static void instruction_print_ret(Instruction *instr) {
   printf("\n");
 }
 
-Value *instruction_binary(Value *lhs, Value *rhs) {
-  Instruction *instr = UTILITY_MALLOC(Instruction);
-  value_init((Value *)instr, VALUE_INSTRUCTION);
-  instr->lhs = lhs;
-  instr->rhs = rhs;
-  return (Value *)instr;
-}
 Value *instruction_ret(Value *val) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
   value_init((Value *)instr, VALUE_INSTRUCTION_RET);
@@ -50,7 +43,7 @@ Value *instruction_ret(Value *val) {
 void instruction_print(Value *instr) {
   switch (value_kind(instr)) {
   case VALUE_INSTRUCTION:
-    instruction_print_add((Instruction *)instr);
+    instruction_print_add(instr);
     break;
   case VALUE_INSTRUCTION_RET:
     instruction_print_ret((Instruction *)instr);
