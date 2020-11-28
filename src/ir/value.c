@@ -11,6 +11,7 @@
 struct struct_Value {
   ValueKind kind;
   int id;
+  ValueHeader header;
   const void *value;
 };
 
@@ -18,6 +19,7 @@ static Value *value_new(ValueKind kind, const void *value) {
   Value *v = UTILITY_MALLOC(Value);
   v->kind = kind;
   v->id = 0;
+  value_header_init(&v->header, kind);
   v->value = value;
   return v;
 }
