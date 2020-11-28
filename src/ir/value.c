@@ -33,6 +33,9 @@ void value_insert(Value *value, Value *elem) {
 void value_set_value(Value *value, const void *val) {
   value->value = val;
 }
+Value *value_at(Value *value, Index i) {
+  return vector_at(value->vec, i);
+}
 ValueKind value_kind(Value *value) {
   return value->header.kind;
 }
