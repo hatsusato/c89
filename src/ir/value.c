@@ -57,9 +57,15 @@ void value_print(Value *value) {
   }
 }
 void value_set_reg(RegisterGenerator *gen, Value *value) {
+  ElemType *begin = vector_begin(value->vec);
+  ElemType *end = vector_end(value->vec);
   switch (value_kind(value)) {
   case VALUE_BLOCK:
-    /* FALLTHROUGH */
+    register_set(gen, &value->header.reg);
+    for (; begin < end; ++begin) {
+      value_set_reg(gen, *begin);
+    }
+    break;
   case VALUE_INSTRUCTION:
     register_set(gen, &value->header.reg);
     break;

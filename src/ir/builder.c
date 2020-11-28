@@ -75,7 +75,7 @@ void builder_delete(Builder *builder) {
 void builder_build(Builder *builder, Sexp *ast) {
   assert(AST_TRANSLATION_UNIT == sexp_get_tag(ast));
   sexp_list_map(sexp_cdr(ast), builder, builder_map_translation_unit);
-  block_set_reg(builder->gen, builder->block);
+  value_set_reg(builder->gen, builder->block);
   puts("target triple = \"x86_64-pc-linux-gnu\"\n");
   puts("define i32 @main() {");
   block_print(builder->block);
