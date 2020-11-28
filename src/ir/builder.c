@@ -102,11 +102,14 @@ void builder_build(Builder *builder, Sexp *ast) {
   puts("}");
 }
 Value *builder_expression(Builder *builder, Sexp *ast) {
+  Value *value;
   switch (sexp_get_tag(ast)) {
   case AST_INTEGER_CONSTANT:
     return constant_new(builder->pool, ast);
   case AST_ADDITIVE_EXPRESSION:
-    return builder_additive_expression(builder, ast);
+    value = instruction_build(builder, builder->pool, ast);
+    block_insert(builder->block, value);
+    return value;
   default:
     assert(0);
     return NULL;
