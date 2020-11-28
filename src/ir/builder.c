@@ -5,6 +5,7 @@
 #include "ast/ast_tag.h"
 #include "ir/block.h"
 #include "ir/instruction.h"
+#include "ir/register.h"
 #include "ir/value.h"
 #include "sexp.h"
 #include "utility.h"
@@ -13,6 +14,7 @@
 struct struct_Builder {
   Vector *pool;
   Block *block;
+  RegisterGenerator *gen;
   int reg;
 };
 
@@ -86,10 +88,12 @@ Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->pool = vector_new(utility_free);
   builder->block = block_new();
+  builder->gen = register_generator_new();
   builder->reg = 0;
   return builder;
 }
 void builder_delete(Builder *builder) {
+  register_generator_delete(builder->gen);
   block_delete(builder->block);
   vector_delete(builder->pool);
   UTILITY_FREE(builder);
