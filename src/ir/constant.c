@@ -3,16 +3,8 @@
 #include "ast/ast_tag.h"
 #include "ir/pool.h"
 #include "ir/value.h"
-#include "ir/value_kind.h"
-#include "ir/value_type.h"
 #include "sexp.h"
 #include "utility.h"
-
-struct struct_Constant {
-  ValueHeader header;
-  const char *value;
-};
-typedef struct struct_Constant Constant;
 
 Value *constant_new(Pool *pool, Sexp *ast) {
   Value *value;
