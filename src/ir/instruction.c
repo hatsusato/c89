@@ -9,8 +9,6 @@
 #include "utility.h"
 
 struct struct_Instruction {
-  ValueKind kind;
-  int id;
   ValueHeader header;
   Value *lhs, *rhs;
 };
@@ -37,8 +35,6 @@ static void instruction_print_ret(Instruction *instr) {
 
 Value *instruction_binary(Value *lhs, Value *rhs) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
-  instr->kind = VALUE_INSTRUCTION;
-  instr->id = 0;
   value_header_init(&instr->header, VALUE_INSTRUCTION);
   instr->lhs = lhs;
   instr->rhs = rhs;
@@ -46,8 +42,6 @@ Value *instruction_binary(Value *lhs, Value *rhs) {
 }
 Value *instruction_ret(Value *val) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
-  instr->kind = VALUE_INSTRUCTION_RET;
-  instr->id = 0;
   value_header_init(&instr->header, VALUE_INSTRUCTION_RET);
   instr->lhs = val;
   instr->rhs = NULL;

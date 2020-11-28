@@ -11,8 +11,6 @@
 #include "vector.h"
 
 struct struct_Block {
-  ValueKind kind;
-  int id;
   ValueHeader header;
   Register reg;
   Vector *instrs;
@@ -20,8 +18,6 @@ struct struct_Block {
 
 Block *block_new(void) {
   Block *block = UTILITY_MALLOC(Block);
-  block->kind = VALUE_BLOCK;
-  block->id = 0;
   value_header_init(&block->header, VALUE_BLOCK);
   register_init(&block->reg);
   block->instrs = vector_new(NULL);
@@ -39,7 +35,7 @@ void block_insert(Block *block, Value *instr) {
 void block_set_id(Builder *builder, Block *block) {
   ElemType *begin = vector_begin(block->instrs);
   ElemType *end = vector_end(block->instrs);
-  block->header.id = block->id = builder_fresh_id(builder);
+  value_set_id(builder, (Value *)block);
   register_set(builder_generator(builder), &block->reg);
   for (; begin < end; ++begin) {
     value_set_id(builder, *begin);
