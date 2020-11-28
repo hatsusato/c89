@@ -28,7 +28,7 @@ static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  builder->last = builder->reg++;
+  builder->last = builder_fresh_id(builder);
   printf("  %%%d = add i32 0, %s\n", builder->last, sexp_get_symbol(ast));
   return value;
 }
@@ -42,7 +42,7 @@ static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   idlhs = builder->last;
   rhs = builder_expression(builder, sexp_at(ast, 3));
   idrhs = builder->last;
-  builder->last = builder->reg++;
+  builder->last = builder_fresh_id(builder);
   printf("  %%%d = add i32 %%%d, %%%d\n", builder->last, idlhs, idrhs);
   return builder_instruction(builder, instruction_binary(builder, lhs, rhs));
 }
@@ -125,4 +125,7 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     assert(0);
     return NULL;
   }
+}
+int builder_fresh_id(Builder *builder) {
+  return builder->reg++;
 }

@@ -10,5 +10,6 @@ void builder_delete(Builder *);
 void builder_build(Builder *, Sexp *);
 Value *builder_register(Builder *);
 Value *builder_expression(Builder *, Sexp *);
+int builder_fresh_id(Builder *);
 
 #endif /* INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E */
