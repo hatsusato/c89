@@ -57,7 +57,14 @@ void value_print(Value *value) {
   }
 }
 void value_pretty(Value *value) {
+  ElemType *begin = vector_begin(value->vec);
+  ElemType *end = vector_end(value->vec);
   switch (value_kind(value)) {
+  case VALUE_BLOCK:
+    for (; begin < end; ++begin) {
+      value_pretty(*begin);
+    }
+    break;
   case VALUE_INSTRUCTION:
     printf("  ");
     value_print(value);

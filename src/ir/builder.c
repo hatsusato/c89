@@ -78,7 +78,7 @@ void builder_build(Builder *builder, Sexp *ast) {
   value_set_reg(builder->gen, builder->block);
   puts("target triple = \"x86_64-pc-linux-gnu\"\n");
   puts("define i32 @main() {");
-  block_print(builder->block);
+  value_pretty(builder->block);
   puts("}");
 }
 Value *builder_expression(Builder *builder, Sexp *ast) {
