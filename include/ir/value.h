@@ -6,6 +6,8 @@
 #include "ir/value_type.h"
 #include "sexp_type.h"
 
+Value *value_new(ValueKind);
+void value_delete(Value *);
 ValueKind value_kind(Value *);
 void value_init(Value *, ValueKind);
 void value_print(Value *);

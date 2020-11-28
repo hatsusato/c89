@@ -8,12 +8,24 @@
 #include "ir/value_kind.h"
 #include "sexp.h"
 #include "utility.h"
+#include "vector.h"
 
 struct struct_Value {
   ValueHeader header;
   const void *value;
+  Vector *vec;
 };
 
+Value *value_new(ValueKind kind) {
+  Value *value = UTILITY_MALLOC(Value);
+  value_init(value, kind);
+  value->vec = vector_new(NULL);
+  return value;
+}
+void value_delete(Value *value) {
+  vector_delete(value->vec);
+  UTILITY_FREE(value);
+}
 ValueKind value_kind(Value *value) {
   return value->header.kind;
 }
