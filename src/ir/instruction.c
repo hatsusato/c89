@@ -4,18 +4,9 @@
 
 #include "ast/ast_tag.h"
 #include "builder.h"
-#include "ir/pool.h"
 #include "ir/value.h"
-#include "ir/value_kind.h"
-#include "ir/value_type.h"
 #include "sexp.h"
 #include "utility.h"
-
-struct struct_Instruction {
-  ValueHeader header;
-  Value *lhs, *rhs;
-};
-typedef struct struct_Instruction Instruction;
 
 static void instruction_print_add(Value *instr) {
   printf("  ");
