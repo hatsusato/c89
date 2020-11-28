@@ -49,19 +49,19 @@ void instruction_print(Value *instr) {
     break;
   }
 }
-Value *instruction_build(Builder *builder, Pool *pool, Sexp *ast) {
+Value *instruction_build(Builder *builder, Sexp *ast) {
   Value *instr;
   switch (sexp_get_tag(ast)) {
   case AST_ADDITIVE_EXPRESSION:
     assert(sexp_is_number(sexp_at(ast, 2)));
     assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
-    instr = pool_alloc(pool, VALUE_INSTRUCTION);
+    instr = builder_alloc_value(builder, VALUE_INSTRUCTION);
     value_insert(instr, builder_expression(builder, sexp_at(ast, 1)));
     value_insert(instr, builder_expression(builder, sexp_at(ast, 3)));
     break;
   case AST_JUMP_STATEMENT:
     ast = sexp_at(ast, 2);
-    instr = pool_alloc(pool, VALUE_INSTRUCTION_RET);
+    instr = builder_alloc_value(builder, VALUE_INSTRUCTION_RET);
     if (!sexp_is_nil(ast)) {
       value_insert(instr, builder_expression(builder, ast));
     }

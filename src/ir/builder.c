@@ -107,7 +107,7 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
   case AST_INTEGER_CONSTANT:
     return constant_new(builder->pool, ast);
   case AST_ADDITIVE_EXPRESSION:
-    value = instruction_build(builder, builder->pool, ast);
+    value = instruction_build(builder, ast);
     block_insert(builder->block, value);
     return value;
   default:
@@ -120,4 +120,7 @@ int builder_fresh_id(Builder *builder) {
 }
 RegisterGenerator *builder_generator(Builder *builder) {
   return builder->gen;
+}
+Value *builder_alloc_value(Builder *builder, ValueKind kind) {
+  return pool_alloc(builder->pool, kind);
 }

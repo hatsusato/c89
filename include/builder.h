@@ -13,5 +13,6 @@ Value *builder_register(Builder *);
 Value *builder_expression(Builder *, Sexp *);
 int builder_fresh_id(Builder *);
 RegisterGenerator *builder_generator(Builder *);
+Value *builder_alloc_value(Builder *, ValueKind);
 
 #endif /* INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E */

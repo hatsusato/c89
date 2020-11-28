@@ -7,6 +7,6 @@
 #include "sexp_type.h"
 
 void instruction_print(Value *);
-Value *instruction_build(Builder *, Pool *, Sexp *);
+Value *instruction_build(Builder *, Sexp *);
 
 #endif /* INCLUDE_GUARD_09C7931B_C0EE_4947_8485_E45CB53C286A */
