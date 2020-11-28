@@ -36,6 +36,9 @@ void value_set_value(Value *value, const void *val) {
 Value *value_at(Value *value, Index i) {
   return vector_at(value->vec, i);
 }
+Size value_length(Value *value) {
+  return vector_length(value->vec);
+}
 ValueKind value_kind(Value *value) {
   return value->header.kind;
 }
