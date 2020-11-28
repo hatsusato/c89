@@ -14,6 +14,7 @@ ElemType *vector_begin(const Vector *);
 ElemType *vector_end(const Vector *);
 ElemType vector_front(const Vector *);
 ElemType vector_back(const Vector *);
+ElemType vector_at(const Vector *, Index);
 void vector_push(Vector *, ElemType);
 void vector_pop(Vector *);
 void vector_clear(Vector *);

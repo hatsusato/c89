@@ -79,6 +79,11 @@ ElemType vector_back(const Vector *v) {
   assert(v);
   return vector_empty(v) ? NULL : v->end[-1];
 }
+ElemType vector_at(const Vector *v, Index i) {
+  assert(v);
+  assert(0 <= i && i < vector_length(v));
+  return v->begin[i];
+}
 void vector_push(Vector *v, ElemType elem) {
   assert(v);
   vector_alloc(v);
