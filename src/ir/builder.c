@@ -95,9 +95,6 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     return NULL;
   }
 }
-RegisterGenerator *builder_generator(Builder *builder) {
-  return builder->gen;
-}
 Value *builder_alloc_value(Builder *builder, ValueKind kind) {
   return pool_alloc(builder->pool, kind);
 }
