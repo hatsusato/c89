@@ -15,3 +15,9 @@ RegisterGenerator *register_generator_new(void) {
 void register_generator_delete(RegisterGenerator *gen) {
   UTILITY_FREE(gen);
 }
+void register_init(Register *reg) {
+  reg->id = 0;
+}
+void register_set(RegisterGenerator *gen, Register *reg) {
+  reg->id = gen->last++;
+}
