@@ -1,9 +1,9 @@
 #include "ir/block.h"
 
-#include "builder.h"
 #include "ir/block_type.h"
 #include "ir/instruction.h"
 #include "ir/register.h"
+#include "ir/register_type.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
 #include "ir/value_type.h"
@@ -30,12 +30,12 @@ void block_insert(Block *block, Value *instr) {
          VALUE_INSTRUCTION_RET == value_kind(instr));
   vector_push(block->instrs, instr);
 }
-void block_set_id(Builder *builder, Block *block) {
+void block_set_reg(RegisterGenerator *gen, Block *block) {
   ElemType *begin = vector_begin(block->instrs);
   ElemType *end = vector_end(block->instrs);
-  value_set_id(builder, (Value *)block);
+  value_set_reg(gen, (Value *)block);
   for (; begin < end; ++begin) {
-    value_set_id(builder, *begin);
+    value_set_reg(gen, *begin);
   }
 }
 void block_print(Block *block) {

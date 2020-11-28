@@ -3,8 +3,8 @@
 #include <stdio.h>
 
 #include "ast/ast_tag.h"
-#include "builder.h"
 #include "ir/register.h"
+#include "ir/register_type.h"
 #include "ir/value_kind.h"
 #include "sexp.h"
 #include "utility.h"
@@ -44,12 +44,12 @@ void value_print(Value *value) {
     break;
   }
 }
-void value_set_id(Builder *builder, Value *value) {
+void value_set_reg(RegisterGenerator *gen, Value *value) {
   switch (value_kind(value)) {
   case VALUE_BLOCK:
     /* FALLTHROUGH */
   case VALUE_INSTRUCTION:
-    register_set(builder_generator(builder), &value->header.reg);
+    register_set(gen, &value->header.reg);
     break;
   default:
     break;
