@@ -29,21 +29,16 @@ static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
   builder->last = builder_fresh_id(builder);
-  printf("  %%%d = add i32 0, %s\n", builder->last, sexp_get_symbol(ast));
   return value;
 }
 static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   Value *lhs, *rhs;
-  int idlhs, idrhs;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 2)));
   assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
   lhs = builder_expression(builder, sexp_at(ast, 1));
-  idlhs = builder->last;
   rhs = builder_expression(builder, sexp_at(ast, 3));
-  idrhs = builder->last;
   builder->last = builder_fresh_id(builder);
-  printf("  %%%d = add i32 %%%d, %%%d\n", builder->last, idlhs, idrhs);
   return builder_instruction(builder, instruction_binary(builder, lhs, rhs));
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
@@ -51,10 +46,8 @@ static void builder_jump_statement(Builder *builder, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
   if (sexp_is_nil(ast)) {
-    puts("  ret void");
   } else {
     val = builder_expression(builder, ast);
-    printf("  ret i32 %%%d\n", builder->last);
   }
   builder_instruction(builder, instruction_ret(val));
 }
@@ -77,10 +70,7 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 3);
   assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
-  puts("define i32 @main() {");
-  builder->reg = 1;
   sexp_list_map(sexp_cdr(ast), builder, builder_map_statement);
-  puts("}");
 }
 static void builder_map_translation_unit(Sexp *ast, void *builder) {
   switch (sexp_get_tag(ast)) {
@@ -109,10 +99,12 @@ void builder_delete(Builder *builder) {
 }
 void builder_build(Builder *builder, Sexp *ast) {
   assert(AST_TRANSLATION_UNIT == sexp_get_tag(ast));
-  puts("target triple = \"x86_64-pc-linux-gnu\"\n");
   sexp_list_map(sexp_cdr(ast), builder, builder_map_translation_unit);
   block_set_id(builder, builder->block);
+  puts("target triple = \"x86_64-pc-linux-gnu\"\n");
+  puts("define i32 @main() {");
   block_print(builder->block);
+  puts("}");
 }
 Value *builder_register(Builder *builder) {
   Value *reg = register_new();
