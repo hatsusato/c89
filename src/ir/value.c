@@ -4,6 +4,7 @@
 
 #include "ast/ast_tag.h"
 #include "builder.h"
+#include "ir/register.h"
 #include "ir/value_kind.h"
 #include "sexp.h"
 #include "utility.h"
@@ -25,7 +26,7 @@ ValueKind value_kind(Value *value) {
 }
 void value_header_init(ValueHeader *header, ValueKind kind) {
   header->kind = kind;
-  header->id = 0;
+  register_init(&header->reg);
 }
 Value *value_integer_constant(Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
@@ -39,19 +40,16 @@ void value_print(Value *value) {
     printf("%s", (const char *)value->value);
     break;
   default:
-    printf("%%%d", value->header.id);
+    printf("%%%d", value->header.reg.id);
     break;
   }
-}
-int value_get_id(Value *value) {
-  return value->header.id;
 }
 void value_set_id(Builder *builder, Value *value) {
   switch (value_kind(value)) {
   case VALUE_BLOCK:
     /* FALLTHROUGH */
   case VALUE_INSTRUCTION:
-    value->header.id = builder_fresh_id(builder);
+    register_set(builder_generator(builder), &value->header.reg);
     break;
   default:
     break;
