@@ -38,12 +38,11 @@ static void builder_jump_statement(Builder *builder, Sexp *ast) {
   Value *val = NULL, *instr;
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
-  if (sexp_is_nil(ast)) {
-  } else {
+  if (!sexp_is_nil(ast)) {
     val = builder_expression(builder, ast);
   }
-  instr = instruction_ret(val);
-  vector_push(builder->vec, instr);
+  instr = pool_alloc(builder->pool, VALUE_INSTRUCTION_RET);
+  value_insert(instr, val);
   block_insert(builder->block, instr);
 }
 static void builder_map_statement(Sexp *ast, void *builder) {
