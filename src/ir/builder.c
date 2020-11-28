@@ -121,3 +121,6 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
 int builder_fresh_id(Builder *builder) {
   return builder->reg++;
 }
+RegisterGenerator *builder_generator(Builder *builder) {
+  return builder->gen;
+}
