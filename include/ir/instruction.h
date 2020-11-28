@@ -4,7 +4,7 @@
 #include "ir/builder_type.h"
 #include "ir/value_type.h"
 
-Value *instruction_binary(Builder *, Value *, Value *);
+Value *instruction_binary(Value *, Value *);
 Value *instruction_ret(Value *);
 void instruction_print(Value *);
 

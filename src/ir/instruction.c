@@ -10,7 +10,7 @@
 struct struct_Instruction {
   ValueKind kind;
   int id;
-  Value *dst, *lhs, *rhs;
+  Value *lhs, *rhs;
 };
 typedef struct struct_Instruction Instruction;
 
@@ -33,11 +33,10 @@ static void instruction_print_ret(Instruction *instr) {
   printf("\n");
 }
 
-Value *instruction_binary(Builder *builder, Value *lhs, Value *rhs) {
+Value *instruction_binary(Value *lhs, Value *rhs) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
   instr->kind = VALUE_INSTRUCTION;
   instr->id = 0;
-  instr->dst = builder_register(builder);
   instr->lhs = lhs;
   instr->rhs = rhs;
   return (Value *)instr;
@@ -46,7 +45,6 @@ Value *instruction_ret(Value *val) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
   instr->kind = VALUE_INSTRUCTION_RET;
   instr->id = 0;
-  instr->dst = NULL;
   instr->lhs = val;
   instr->rhs = NULL;
   return (Value *)instr;

@@ -37,7 +37,7 @@ static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
   lhs = builder_expression(builder, sexp_at(ast, 1));
   rhs = builder_expression(builder, sexp_at(ast, 3));
-  return builder_instruction(builder, instruction_binary(builder, lhs, rhs));
+  return builder_instruction(builder, instruction_binary(lhs, rhs));
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
   Value *val = NULL;
