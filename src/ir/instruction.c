@@ -42,7 +42,16 @@ Value *instruction_binary(Builder *builder, Value *lhs, Value *rhs) {
   instr->rhs = rhs;
   return (Value *)instr;
 }
-void instruction_print(Value *value) {
-  assert(VALUE_INSTRUCTION == value_kind(value));
-  instruction_print_add((Instruction *)value);
+void instruction_print(Value *instr) {
+  switch (value_kind(instr)) {
+  case VALUE_INSTRUCTION:
+    instruction_print_add((Instruction *)instr);
+    break;
+  case VALUE_INSTRUCTION_RET:
+    instruction_print_ret((Instruction *)instr);
+    break;
+  default:
+    assert(0);
+    break;
+  }
 }
