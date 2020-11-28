@@ -14,7 +14,7 @@
 struct struct_Builder {
   Vector *pool;
   Block *block;
-  int reg, last;
+  int reg;
 };
 
 static Value *builder_instruction(Builder *builder, Value *instr) {
@@ -28,7 +28,6 @@ static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  builder->last = builder_fresh_id(builder);
   return value;
 }
 static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
@@ -38,7 +37,6 @@ static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
   lhs = builder_expression(builder, sexp_at(ast, 1));
   rhs = builder_expression(builder, sexp_at(ast, 3));
-  builder->last = builder_fresh_id(builder);
   return builder_instruction(builder, instruction_binary(builder, lhs, rhs));
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
@@ -89,7 +87,7 @@ Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->pool = vector_new(utility_free);
   builder->block = block_new();
-  builder->reg = builder->last = 0;
+  builder->reg = 0;
   return builder;
 }
 void builder_delete(Builder *builder) {
