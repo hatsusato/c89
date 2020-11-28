@@ -21,33 +21,15 @@ struct struct_Builder {
   int reg;
 };
 
-static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
-  Value *instr;
-  assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
-  assert(sexp_is_number(sexp_at(ast, 2)));
-  assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
-  instr = pool_alloc(builder->pool, VALUE_INSTRUCTION);
-  value_insert(instr, builder_expression(builder, sexp_at(ast, 1)));
-  value_insert(instr, builder_expression(builder, sexp_at(ast, 3)));
-  block_insert(builder->block, instr);
-  return instr;
-}
-static void builder_jump_statement(Builder *builder, Sexp *ast) {
-  Value *instr;
-  assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 2);
-  instr = pool_alloc(builder->pool, VALUE_INSTRUCTION_RET);
-  if (!sexp_is_nil(ast)) {
-    value_insert(instr, builder_expression(builder, ast));
-  }
-  block_insert(builder->block, instr);
-}
-static void builder_map_statement(Sexp *ast, void *builder) {
+static void builder_map_statement(Sexp *ast, void *extra) {
+  Builder *builder = extra;
+  Value *value;
   assert(AST_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   switch (sexp_get_tag(ast)) {
   case AST_JUMP_STATEMENT:
-    builder_jump_statement(builder, ast);
+    value = instruction_build(builder, ast);
+    block_insert(builder->block, value);
     break;
   default:
     assert(0);
