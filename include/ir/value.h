@@ -8,6 +8,7 @@
 
 ValueKind value_kind(Value *);
 Value *value_integer_constant(Sexp *);
+int value_get_id(Value *);
 void value_set_id(Builder *, Value *);
 
 #endif /* INCLUDE_GUARD_FE2AA6D9_B675_4B2E_839A_2B085264192A */

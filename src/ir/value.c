@@ -29,6 +29,9 @@ Value *value_integer_constant(Sexp *ast) {
   assert(sexp_is_symbol(ast));
   return value_new(VALUE_INTEGER_CONSTANT, sexp_get_symbol(ast));
 }
+int value_get_id(Value *value) {
+  return value->id;
+}
 void value_set_id(Builder *builder, Value *value) {
   value->id = builder_fresh_id(builder);
 }
