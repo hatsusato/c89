@@ -17,7 +17,7 @@ struct struct_Block {
 
 Block *block_new(void) {
   Block *block = UTILITY_MALLOC(Block);
-  value_header_init(&block->header, VALUE_BLOCK);
+  value_init((Value *)block, VALUE_BLOCK);
   block->instrs = vector_new(NULL);
   return block;
 }

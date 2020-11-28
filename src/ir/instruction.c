@@ -35,14 +35,14 @@ static void instruction_print_ret(Instruction *instr) {
 
 Value *instruction_binary(Value *lhs, Value *rhs) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
-  value_header_init(&instr->header, VALUE_INSTRUCTION);
+  value_init((Value *)instr, VALUE_INSTRUCTION);
   instr->lhs = lhs;
   instr->rhs = rhs;
   return (Value *)instr;
 }
 Value *instruction_ret(Value *val) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
-  value_header_init(&instr->header, VALUE_INSTRUCTION_RET);
+  value_init((Value *)instr, VALUE_INSTRUCTION_RET);
   instr->lhs = val;
   instr->rhs = NULL;
   return (Value *)instr;

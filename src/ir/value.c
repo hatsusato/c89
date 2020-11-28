@@ -16,7 +16,7 @@ struct struct_Value {
 
 static Value *value_new(ValueKind kind, const void *value) {
   Value *v = UTILITY_MALLOC(Value);
-  value_header_init(&v->header, kind);
+  value_init(v, kind);
   v->value = value;
   return v;
 }
@@ -24,9 +24,9 @@ static Value *value_new(ValueKind kind, const void *value) {
 ValueKind value_kind(Value *value) {
   return value->header.kind;
 }
-void value_header_init(ValueHeader *header, ValueKind kind) {
-  header->kind = kind;
-  register_init(&header->reg);
+void value_init(Value *value, ValueKind kind) {
+  value->header.kind = kind;
+  register_init(&value->header.reg);
 }
 Value *value_integer_constant(Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
