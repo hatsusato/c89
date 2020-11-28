@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 #include "ast/ast_tag.h"
-#include "ir/block.h"
 #include "ir/constant.h"
 #include "ir/instruction.h"
 #include "ir/pool.h"
