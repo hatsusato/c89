@@ -1,5 +1,6 @@
 #include "ir/block.h"
 
+#include "builder.h"
 #include "ir/block_type.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
@@ -26,4 +27,12 @@ void block_delete(Block *block) {
 void block_insert(Block *block, Value *instr) {
   assert(VALUE_INSTRUCTION == value_kind(instr));
   vector_push(block->instrs, instr);
+}
+void block_set_id(Builder *builder, Block *block) {
+  ElemType *begin = vector_begin(block->instrs);
+  ElemType *end = vector_end(block->instrs);
+  block->id = builder_fresh_id(builder);
+  for (; begin < end; ++begin) {
+    value_set_id(builder, *begin);
+  }
 }
