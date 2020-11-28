@@ -45,5 +45,13 @@ int value_get_id(Value *value) {
   return value->id;
 }
 void value_set_id(Builder *builder, Value *value) {
-  value->id = builder_fresh_id(builder);
+  switch (value_kind(value)) {
+  case VALUE_BLOCK:
+    /* FALLTHROUGH */
+  case VALUE_INSTRUCTION:
+    value->id = builder_fresh_id(builder);
+    break;
+  default:
+    break;
+  }
 }
