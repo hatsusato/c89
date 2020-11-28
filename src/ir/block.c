@@ -15,33 +15,27 @@ struct struct_Block {
   Vector *instrs;
 };
 
-Block *block_new(void) {
-  Block *block = UTILITY_MALLOC(Block);
-  value_init((Value *)block, VALUE_BLOCK);
-  block->instrs = vector_new(NULL);
-  return block;
+Value *block_new(void) {
+  return value_new(VALUE_BLOCK);
 }
-void block_delete(Block *block) {
-  vector_delete(block->instrs);
-  UTILITY_FREE(block);
+void block_delete(Value *block) {
+  value_delete(block);
 }
-void block_insert(Block *block, Value *instr) {
+void block_insert(Value *block, Value *instr) {
   assert(VALUE_INSTRUCTION == value_kind(instr) ||
          VALUE_INSTRUCTION_RET == value_kind(instr));
-  vector_push(block->instrs, instr);
+  value_insert(block, instr);
 }
-void block_set_reg(RegisterGenerator *gen, Block *block) {
-  ElemType *begin = vector_begin(block->instrs);
-  ElemType *end = vector_end(block->instrs);
-  value_set_reg(gen, (Value *)block);
-  for (; begin < end; ++begin) {
-    value_set_reg(gen, *begin);
+void block_set_reg(RegisterGenerator *gen, Value *block) {
+  Index i, size = value_length(block);
+  value_set_reg(gen, block);
+  for (i = 0; i < size; ++i) {
+    value_set_reg(gen, value_at(block, i));
   }
 }
-void block_print(Block *block) {
-  ElemType *begin = vector_begin(block->instrs);
-  ElemType *end = vector_end(block->instrs);
-  for (; begin < end; ++begin) {
-    instruction_print(*begin);
+void block_print(Value *block) {
+  Index i, size = value_length(block);
+  for (i = 0; i < size; ++i) {
+    instruction_print(value_at(block, i));
   }
 }

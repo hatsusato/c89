@@ -16,7 +16,7 @@
 struct struct_Builder {
   Vector *vec;
   Pool *pool;
-  Block *block;
+  Value *block;
   RegisterGenerator *gen;
 };
 
