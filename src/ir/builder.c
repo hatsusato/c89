@@ -47,14 +47,16 @@ static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   return builder_instruction(builder, instruction_binary(builder, lhs, rhs));
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
+  Value *val = NULL;
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
   if (sexp_is_nil(ast)) {
     puts("  ret void");
   } else {
-    builder_expression(builder, ast);
+    val = builder_expression(builder, ast);
     printf("  ret i32 %%%d\n", builder->last);
   }
+  builder_instruction(builder, instruction_ret(val));
 }
 static void builder_map_statement(Sexp *ast, void *builder) {
   assert(AST_STATEMENT == sexp_get_tag(ast));

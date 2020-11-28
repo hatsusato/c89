@@ -42,6 +42,15 @@ Value *instruction_binary(Builder *builder, Value *lhs, Value *rhs) {
   instr->rhs = rhs;
   return (Value *)instr;
 }
+Value *instruction_ret(Value *val) {
+  Instruction *instr = UTILITY_MALLOC(Instruction);
+  instr->kind = VALUE_INSTRUCTION_RET;
+  instr->id = 0;
+  instr->dst = NULL;
+  instr->lhs = val;
+  instr->rhs = NULL;
+  return (Value *)instr;
+}
 void instruction_print(Value *instr) {
   switch (value_kind(instr)) {
   case VALUE_INSTRUCTION:
