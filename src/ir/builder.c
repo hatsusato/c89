@@ -18,7 +18,6 @@ struct struct_Builder {
   Pool *pool;
   Block *block;
   RegisterGenerator *gen;
-  int reg;
 };
 
 static void builder_map_statement(Sexp *ast, void *extra) {
@@ -64,7 +63,6 @@ Builder *builder_new(void) {
   builder->pool = pool_new();
   builder->block = block_new();
   builder->gen = register_generator_new();
-  builder->reg = 0;
   return builder;
 }
 void builder_delete(Builder *builder) {
@@ -96,9 +94,6 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     assert(0);
     return NULL;
   }
-}
-int builder_fresh_id(Builder *builder) {
-  return builder->reg++;
 }
 RegisterGenerator *builder_generator(Builder *builder) {
   return builder->gen;

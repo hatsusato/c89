@@ -11,7 +11,6 @@ void builder_delete(Builder *);
 void builder_build(Builder *, Sexp *);
 Value *builder_register(Builder *);
 Value *builder_expression(Builder *, Sexp *);
-int builder_fresh_id(Builder *);
 RegisterGenerator *builder_generator(Builder *);
 Value *builder_alloc_value(Builder *, ValueKind);
 
