@@ -4,6 +4,7 @@
 
 #include "ast/ast_tag.h"
 #include "ir/block.h"
+#include "ir/constant.h"
 #include "ir/instruction.h"
 #include "ir/register.h"
 #include "ir/value.h"
@@ -24,7 +25,7 @@ static Value *builder_instruction(Builder *builder, Value *instr) {
   return instr;
 }
 static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
-  Value *value = value_integer_constant(ast);
+  Value *value = constant_new(ast);
   vector_push(builder->pool, value);
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);

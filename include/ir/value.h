@@ -8,7 +8,6 @@
 
 ValueKind value_kind(Value *);
 void value_init(Value *, ValueKind);
-Value *value_integer_constant(Sexp *);
 void value_print(Value *);
 void value_set_reg(RegisterGenerator *, Value *);
 
