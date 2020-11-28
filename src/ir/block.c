@@ -14,15 +14,3 @@ struct struct_Block {
   ValueHeader header;
   Vector *instrs;
 };
-
-Value *block_new(void) {
-  return value_new(VALUE_BLOCK);
-}
-void block_delete(Value *block) {
-  value_delete(block);
-}
-void block_insert(Value *block, Value *instr) {
-  assert(VALUE_INSTRUCTION == value_kind(instr) ||
-         VALUE_INSTRUCTION_RET == value_kind(instr));
-  value_insert(block, instr);
-}

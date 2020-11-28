@@ -28,7 +28,7 @@ static void builder_map_statement(Sexp *ast, void *extra) {
   switch (sexp_get_tag(ast)) {
   case AST_JUMP_STATEMENT:
     value = instruction_build(builder, ast);
-    block_insert(builder->block, value);
+    value_insert(builder->block, value);
     break;
   default:
     assert(0);
@@ -61,13 +61,13 @@ Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->vec = vector_new(utility_free);
   builder->pool = pool_new();
-  builder->block = block_new();
+  builder->block = value_new(VALUE_BLOCK);
   builder->gen = register_generator_new();
   return builder;
 }
 void builder_delete(Builder *builder) {
   register_generator_delete(builder->gen);
-  block_delete(builder->block);
+  value_delete(builder->block);
   pool_delete(builder->pool);
   vector_delete(builder->vec);
   UTILITY_FREE(builder);
@@ -88,7 +88,7 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     return constant_new(builder->pool, ast);
   case AST_ADDITIVE_EXPRESSION:
     value = instruction_build(builder, ast);
-    block_insert(builder->block, value);
+    value_insert(builder->block, value);
     return value;
   default:
     assert(0);
