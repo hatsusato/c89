@@ -7,6 +7,7 @@
 #include "sexp_type.h"
 
 ValueKind value_kind(Value *);
+void value_header_init(ValueHeader *, ValueKind);
 Value *value_integer_constant(Sexp *);
 void value_print(Value *);
 int value_get_id(Value *);

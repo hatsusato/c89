@@ -25,6 +25,10 @@ static Value *value_new(ValueKind kind, const void *value) {
 ValueKind value_kind(Value *value) {
   return value->kind;
 }
+void value_header_init(ValueHeader *header, ValueKind kind) {
+  header->kind = kind;
+  header->id = 0;
+}
 Value *value_integer_constant(Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
