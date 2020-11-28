@@ -26,7 +26,8 @@ void block_delete(Block *block) {
   UTILITY_FREE(block);
 }
 void block_insert(Block *block, Value *instr) {
-  assert(VALUE_INSTRUCTION == value_kind(instr));
+  assert(VALUE_INSTRUCTION == value_kind(instr) ||
+         VALUE_INSTRUCTION_RET == value_kind(instr));
   vector_push(block->instrs, instr);
 }
 void block_set_id(Builder *builder, Block *block) {
