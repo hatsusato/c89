@@ -21,29 +21,29 @@ struct struct_Builder {
   int reg;
 };
 
-static Value *builder_instruction(Builder *builder, Value *instr) {
-  vector_push(builder->vec, instr);
-  block_insert(builder->block, instr);
-  return instr;
-}
 static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
-  Value *lhs, *rhs;
+  Value *lhs, *rhs, *instr;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 2)));
   assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
   lhs = builder_expression(builder, sexp_at(ast, 1));
   rhs = builder_expression(builder, sexp_at(ast, 3));
-  return builder_instruction(builder, instruction_binary(lhs, rhs));
+  instr = instruction_binary(lhs, rhs);
+  vector_push(builder->vec, instr);
+  block_insert(builder->block, instr);
+  return instr;
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
-  Value *val = NULL;
+  Value *val = NULL, *instr;
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
   if (sexp_is_nil(ast)) {
   } else {
     val = builder_expression(builder, ast);
   }
-  builder_instruction(builder, instruction_ret(val));
+  instr = instruction_ret(val);
+  vector_push(builder->vec, instr);
+  block_insert(builder->block, instr);
 }
 static void builder_map_statement(Sexp *ast, void *builder) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
