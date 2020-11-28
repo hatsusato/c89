@@ -5,11 +5,13 @@
 #include "builder.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
+#include "ir/value_type.h"
 #include "utility.h"
 
 struct struct_Instruction {
   ValueKind kind;
   int id;
+  ValueHeader header;
   Value *lhs, *rhs;
 };
 typedef struct struct_Instruction Instruction;
@@ -37,6 +39,7 @@ Value *instruction_binary(Value *lhs, Value *rhs) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
   instr->kind = VALUE_INSTRUCTION;
   instr->id = 0;
+  value_header_init(&instr->header, VALUE_INSTRUCTION);
   instr->lhs = lhs;
   instr->rhs = rhs;
   return (Value *)instr;
@@ -45,6 +48,7 @@ Value *instruction_ret(Value *val) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
   instr->kind = VALUE_INSTRUCTION_RET;
   instr->id = 0;
+  value_header_init(&instr->header, VALUE_INSTRUCTION_RET);
   instr->lhs = val;
   instr->rhs = NULL;
   return (Value *)instr;
