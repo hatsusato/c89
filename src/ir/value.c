@@ -56,6 +56,31 @@ void value_print(Value *value) {
     break;
   }
 }
+void value_pretty(Value *value) {
+  switch (value_kind(value)) {
+  case VALUE_INSTRUCTION:
+    printf("  ");
+    value_print(value);
+    printf(" = add i32 ");
+    value_print(value_at(value, 0));
+    printf(", ");
+    value_print(value_at(value, 1));
+    printf("\n");
+    break;
+  case VALUE_INSTRUCTION_RET:
+    if (0 == value_length(value)) {
+      printf("  ret void");
+    } else {
+      printf("  ret i32 ");
+      value_print(value_at(value, 0));
+    }
+    printf("\n");
+    break;
+  default:
+    assert(0);
+    break;
+  }
+}
 void value_set_reg(RegisterGenerator *gen, Value *value) {
   ElemType *begin = vector_begin(value->vec);
   ElemType *end = vector_end(value->vec);

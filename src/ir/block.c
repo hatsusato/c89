@@ -29,6 +29,6 @@ void block_insert(Value *block, Value *instr) {
 void block_print(Value *block) {
   Index i, size = value_length(block);
   for (i = 0; i < size; ++i) {
-    instruction_print(value_at(block, i));
+    value_pretty(value_at(block, i));
   }
 }
