@@ -1,6 +1,7 @@
 #include "ir/constant.h"
 
 #include "ast/ast_tag.h"
+#include "ir/pool.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
 #include "ir/value_type.h"
@@ -13,13 +14,12 @@ struct struct_Constant {
 };
 typedef struct struct_Constant Constant;
 
-Value *constant_new(Sexp *ast) {
-  Constant *constant;
+Value *constant_new(Pool *pool, Sexp *ast) {
+  Value *value;
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  constant = UTILITY_MALLOC(Constant);
-  value_init((Value *)constant, VALUE_INTEGER_CONSTANT);
-  constant->value = sexp_get_symbol(ast);
-  return (Value *)constant;
+  value = pool_alloc(pool, VALUE_INTEGER_CONSTANT);
+  value_set_value(value, sexp_get_symbol(ast));
+  return value;
 }

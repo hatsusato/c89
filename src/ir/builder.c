@@ -26,14 +26,6 @@ static Value *builder_instruction(Builder *builder, Value *instr) {
   block_insert(builder->block, instr);
   return instr;
 }
-static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
-  Value *value = constant_new(ast);
-  vector_push(builder->vec, value);
-  assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(sexp_is_symbol(ast));
-  return value;
-}
 static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   Value *lhs, *rhs;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
@@ -115,7 +107,7 @@ void builder_build(Builder *builder, Sexp *ast) {
 Value *builder_expression(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_INTEGER_CONSTANT:
-    return builder_integer_constant(builder, ast);
+    return constant_new(builder->pool, ast);
   case AST_ADDITIVE_EXPRESSION:
     return builder_additive_expression(builder, ast);
   default:
