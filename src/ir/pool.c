@@ -18,3 +18,8 @@ void pool_delete(Pool *pool) {
   vector_delete(pool->pool);
   UTILITY_FREE(pool);
 }
+Value *pool_alloc(Pool *pool, ValueKind kind) {
+  Value *value = value_new(kind);
+  vector_push(pool->pool, value);
+  return value;
+}

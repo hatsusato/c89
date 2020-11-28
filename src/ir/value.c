@@ -19,6 +19,7 @@ struct struct_Value {
 Value *value_new(ValueKind kind) {
   Value *value = UTILITY_MALLOC(Value);
   value_init(value, kind);
+  value->value = NULL;
   value->vec = vector_new(NULL);
   return value;
 }
