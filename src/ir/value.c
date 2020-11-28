@@ -1,5 +1,7 @@
 #include "ir/value.h"
 
+#include <stdio.h>
+
 #include "ast/ast_tag.h"
 #include "builder.h"
 #include "ir/value_kind.h"
@@ -28,6 +30,16 @@ Value *value_integer_constant(Sexp *ast) {
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
   return value_new(VALUE_INTEGER_CONSTANT, sexp_get_symbol(ast));
+}
+void value_print(Value *value) {
+  switch (value_kind(value)) {
+  case VALUE_INTEGER_CONSTANT:
+    printf("%s", (const char *)value->value);
+    break;
+  default:
+    printf("%%%d", value->id);
+    break;
+  }
 }
 int value_get_id(Value *value) {
   return value->id;

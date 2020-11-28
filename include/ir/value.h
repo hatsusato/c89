@@ -8,6 +8,7 @@
 
 ValueKind value_kind(Value *);
 Value *value_integer_constant(Sexp *);
+void value_print(Value *);
 int value_get_id(Value *);
 void value_set_id(Builder *, Value *);
 

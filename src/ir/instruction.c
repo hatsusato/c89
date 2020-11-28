@@ -26,6 +26,11 @@ Value *instruction_binary(Builder *builder, Value *lhs, Value *rhs) {
 void instruction_print(Value *value) {
   Instruction *instr = (Instruction *)value;
   assert(VALUE_INSTRUCTION == value_kind(value));
-  printf("  %%%d = add i32 %%%d, %%%d\n", value_get_id(instr),
-         value_get_id(instr->lhs), value_get_id(instr->rhs));
+  printf("  ");
+  value_print(value);
+  printf(" = add i32 ");
+  value_print(instr->lhs);
+  printf(", ");
+  value_print(instr->rhs);
+  printf("\n");
 }
