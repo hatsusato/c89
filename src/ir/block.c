@@ -12,14 +12,12 @@
 
 struct struct_Block {
   ValueHeader header;
-  Register reg;
   Vector *instrs;
 };
 
 Block *block_new(void) {
   Block *block = UTILITY_MALLOC(Block);
   value_header_init(&block->header, VALUE_BLOCK);
-  register_init(&block->reg);
   block->instrs = vector_new(NULL);
   return block;
 }
@@ -36,7 +34,6 @@ void block_set_id(Builder *builder, Block *block) {
   ElemType *begin = vector_begin(block->instrs);
   ElemType *end = vector_end(block->instrs);
   value_set_id(builder, (Value *)block);
-  register_set(builder_generator(builder), &block->reg);
   for (; begin < end; ++begin) {
     value_set_id(builder, *begin);
   }
