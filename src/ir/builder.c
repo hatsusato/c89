@@ -13,20 +13,20 @@
 #include "vector.h"
 
 struct struct_Builder {
-  Vector *pool;
+  Vector *vec;
   Block *block;
   RegisterGenerator *gen;
   int reg;
 };
 
 static Value *builder_instruction(Builder *builder, Value *instr) {
-  vector_push(builder->pool, instr);
+  vector_push(builder->vec, instr);
   block_insert(builder->block, instr);
   return instr;
 }
 static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   Value *value = constant_new(ast);
-  vector_push(builder->pool, value);
+  vector_push(builder->vec, value);
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
@@ -87,7 +87,7 @@ static void builder_map_translation_unit(Sexp *ast, void *builder) {
 
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
-  builder->pool = vector_new(utility_free);
+  builder->vec = vector_new(utility_free);
   builder->block = block_new();
   builder->gen = register_generator_new();
   builder->reg = 0;
@@ -96,7 +96,7 @@ Builder *builder_new(void) {
 void builder_delete(Builder *builder) {
   register_generator_delete(builder->gen);
   block_delete(builder->block);
-  vector_delete(builder->pool);
+  vector_delete(builder->vec);
   UTILITY_FREE(builder);
 }
 void builder_build(Builder *builder, Sexp *ast) {
