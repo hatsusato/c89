@@ -5,7 +5,6 @@
 #include "ast/ast_tag.h"
 #include "ir/block.h"
 #include "ir/instruction.h"
-#include "ir/register.h"
 #include "ir/value.h"
 #include "sexp.h"
 #include "utility.h"
@@ -103,11 +102,6 @@ void builder_build(Builder *builder, Sexp *ast) {
   puts("define i32 @main() {");
   block_print(builder->block);
   puts("}");
-}
-Value *builder_register(Builder *builder) {
-  Value *reg = register_new();
-  vector_push(builder->pool, reg);
-  return reg;
 }
 Value *builder_expression(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
