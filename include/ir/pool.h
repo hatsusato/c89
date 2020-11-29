@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_3328774C_9C13_4B31_8826_622558B21C09
 
 #include "ir/pool_type.h"
+#include "ir/value_kind.h"
 #include "ir/value_type.h"
 
 Pool *pool_new(void);

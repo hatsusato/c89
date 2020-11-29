@@ -11,9 +11,10 @@
 #include "vector.h"
 
 struct struct_Value {
-  ValueHeader header;
-  const void *value;
+  ValueKind kind;
+  Register reg;
   Vector *vec;
+  const void *value;
 };
 
 Value *value_new(ValueKind kind) {
@@ -40,11 +41,11 @@ Size value_length(Value *value) {
   return vector_length(value->vec);
 }
 ValueKind value_kind(Value *value) {
-  return value->header.kind;
+  return value->kind;
 }
 void value_init(Value *value, ValueKind kind) {
-  value->header.kind = kind;
-  register_init(&value->header.reg);
+  value->kind = kind;
+  register_init(&value->reg);
 }
 void value_print(Value *value) {
   switch (value_kind(value)) {
@@ -52,7 +53,7 @@ void value_print(Value *value) {
     printf("%s", (const char *)value->value);
     break;
   default:
-    printf("%%%d", value->header.reg.id);
+    printf("%%%d", value->reg.id);
     break;
   }
 }
@@ -112,7 +113,7 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
   ElemType *end = vector_end(value->vec);
   switch (value_kind(value)) {
   case VALUE_BLOCK:
-    register_set(gen, &value->header.reg);
+    register_set(gen, &value->reg);
     for (; begin < end; ++begin) {
       value_set_reg(gen, *begin);
     }
@@ -122,7 +123,7 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
   case VALUE_INSTRUCTION_ALLOC:
     /* FALLTHROUGH */
   case VALUE_INSTRUCTION_LOAD:
-    register_set(gen, &value->header.reg);
+    register_set(gen, &value->reg);
     break;
   default:
     break;
