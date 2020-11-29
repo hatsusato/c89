@@ -3,4 +3,7 @@
 
 #include "ir/table_type.h"
 
+Table *table_new(void);
+void table_delete(Table *);
+
 #endif /* INCLUDE_GUARD_CA82BAF1_F8AF_418B_A275_3129D9D3F1FB */
