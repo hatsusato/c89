@@ -4,7 +4,6 @@
 
 #include "ast/ast_tag.h"
 #include "ir/constant.h"
-#include "ir/instruction.h"
 #include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/table.h"
