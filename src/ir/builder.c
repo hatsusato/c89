@@ -55,10 +55,10 @@ static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_ADD);
   builder_stack_push(builder, value);
-  value_insert(value, builder_ast(builder, sexp_at(ast, 1)));
-  builder_stack_pop(builder);
-  value_insert(value, builder_ast(builder, sexp_at(ast, 3)));
-  builder_stack_pop(builder);
+  builder_ast(builder, sexp_at(ast, 1));
+  value_insert(value, builder_stack_pop(builder));
+  builder_ast(builder, sexp_at(ast, 3));
+  value_insert(value, builder_stack_pop(builder));
   value_insert(builder->block, value);
   return value;
 }
@@ -67,8 +67,8 @@ static Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(sexp_at(ast, 1)));
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_STORE);
   builder_stack_push(builder, value);
-  value_insert(value, builder_ast(builder, sexp_at(ast, 3)));
-  builder_stack_pop(builder);
+  builder_ast(builder, sexp_at(ast, 3));
+  value_insert(value, builder_stack_pop(builder));
   value_insert(value, table_find(builder->table, sexp_at(ast, 1)));
   value_insert(builder->block, value);
   return value;
@@ -80,8 +80,8 @@ static Value *builder_jump_statement(Builder *builder, Sexp *ast) {
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_RET);
   builder_stack_push(builder, value);
   if (!sexp_is_nil(ast)) {
-    value_insert(value, builder_ast(builder, ast));
-    builder_stack_pop(builder);
+    builder_ast(builder, ast);
+    value_insert(value, builder_stack_pop(builder));
   }
   value_insert(builder->block, value);
   builder_stack_pop(builder);
@@ -108,20 +108,18 @@ static Value *builder_declaration(Builder *builder, Sexp *ast) {
   return value;
 }
 static Value *builder_expression_statement(Builder *builder, Sexp *ast) {
-  Value *value = NULL;
   assert(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   if (!sexp_is_nil(ast)) {
-    value = builder_ast(builder, ast);
-    builder_stack_pop(builder);
+    builder_ast(builder, ast);
+    return builder_stack_pop(builder);
   }
   return NULL;
 }
 static Value *builder_statement(Builder *builder, Sexp *ast) {
-  Value *value;
   assert(AST_STATEMENT == sexp_get_tag(ast));
-  value = builder_ast(builder, sexp_at(ast, 1));
-  return value;
+  builder_ast(builder, sexp_at(ast, 1));
+  return NULL;
 }
 static Value *builder_compound_statement(Builder *builder, Sexp *ast) {
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
@@ -170,39 +168,52 @@ void builder_build(Builder *builder, Sexp *ast) {
   value_pretty(builder->block);
   puts("}");
 }
-Value *builder_ast(Builder *builder, Sexp *ast) {
+void builder_ast(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
-    return builder_identifier(builder, ast);
+    builder_identifier(builder, ast);
+    break;
   case AST_INTEGER_CONSTANT:
-    return builder_integer_constant(builder, ast);
+    builder_integer_constant(builder, ast);
+    break;
   case AST_ADDITIVE_EXPRESSION:
-    return builder_additive_expression(builder, ast);
+    builder_additive_expression(builder, ast);
+    break;
   case AST_ASSIGNMENT_EXPRESSION:
-    return builder_assignment_expression(builder, ast);
+    builder_assignment_expression(builder, ast);
+    break;
   case AST_DECLARATION:
-    return builder_declaration(builder, ast);
+    builder_declaration(builder, ast);
+    break;
   case AST_STATEMENT:
-    return builder_statement(builder, ast);
+    builder_statement(builder, ast);
+    break;
   case AST_COMPOUND_STATEMENT:
-    return builder_compound_statement(builder, ast);
+    builder_compound_statement(builder, ast);
+    break;
   case AST_DECLARATION_LIST:
-    return builder_ast_map(builder, ast);
+    builder_ast_map(builder, ast);
+    break;
   case AST_STATEMENT_LIST:
-    return builder_ast_map(builder, ast);
+    builder_ast_map(builder, ast);
+    break;
   case AST_EXPRESSION_STATEMENT:
-    return builder_expression_statement(builder, ast);
+    builder_expression_statement(builder, ast);
+    break;
   case AST_JUMP_STATEMENT:
-    return builder_jump_statement(builder, ast);
+    builder_jump_statement(builder, ast);
+    break;
   case AST_TRANSLATION_UNIT:
-    return builder_ast_map(builder, ast);
+    builder_ast_map(builder, ast);
+    break;
   case AST_EXTERNAL_DECLARATION:
-    return NULL;
+    break;
   case AST_FUNCTION_DEFINITION:
-    return builder_function_definition(builder, ast);
+    builder_function_definition(builder, ast);
+    break;
   default:
     assert(0);
-    return NULL;
+    break;
   }
 }
 Value *builder_alloc_value(Builder *builder, ValueKind kind) {
