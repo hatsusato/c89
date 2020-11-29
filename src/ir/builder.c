@@ -24,10 +24,8 @@ struct struct_Builder {
 static Value *builder_identifier(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(sexp_is_symbol(ast));
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_LOAD);
-  value_insert(value, table_find(builder->table, sexp_get_symbol(ast)));
+  value_insert(value, table_find(builder->table, ast));
   value_insert(builder->block, value);
   return value;
 }
@@ -43,16 +41,11 @@ static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   return value;
 }
 static Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
-  Value *value, *lhsval, *rhsval;
-  Sexp *lhs = sexp_at(ast, 1), *rhs = sexp_at(ast, 3);
-  assert(AST_IDENTIFIER == sexp_get_tag(lhs));
-  lhs = sexp_at(lhs, 1);
-  assert(sexp_is_symbol(lhs));
+  Value *value;
+  assert(AST_IDENTIFIER == sexp_get_tag(sexp_at(ast, 1)));
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_STORE);
-  lhsval = table_find(builder->table, sexp_get_symbol(lhs));
-  rhsval = builder_expression(builder, rhs);
-  value_insert(value, rhsval);
-  value_insert(value, lhsval);
+  value_insert(value, builder_expression(builder, sexp_at(ast, 3)));
+  value_insert(value, table_find(builder->table, sexp_at(ast, 1)));
   value_insert(builder->block, value);
   return value;
 }
