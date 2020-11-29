@@ -154,11 +154,6 @@ void builder_delete(Builder *builder) {
 void builder_build(Builder *builder, Sexp *ast) {
   builder_ast(builder, ast);
   assert(vector_empty(builder->stack));
-  value_set_reg(builder->gen, builder->block);
-  puts("target triple = \"x86_64-pc-linux-gnu\"\n");
-  puts("define i32 @main() {");
-  value_pretty(builder->block);
-  puts("}");
 }
 void builder_ast(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
@@ -207,4 +202,11 @@ void builder_ast(Builder *builder, Sexp *ast) {
     assert(0);
     break;
   }
+}
+void builder_print(Builder *builder) {
+  value_set_reg(builder->gen, builder->block);
+  puts("target triple = \"x86_64-pc-linux-gnu\"\n");
+  puts("define i32 @main() {");
+  value_pretty(builder->block);
+  puts("}");
 }

@@ -6,6 +6,7 @@
 static void build(Sexp *ast) {
   Builder *builder = builder_new();
   builder_build(builder, ast);
+  builder_print(builder);
   builder_delete(builder);
 }
 
