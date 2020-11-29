@@ -75,21 +75,21 @@ void value_pretty(Value *value) {
   case VALUE_INSTRUCTION_ALLOC:
     printf("  ");
     value_print(value);
-    printf(" = alloca i32\n");
+    printf(" = alloca i32, align 4\n");
     break;
   case VALUE_INSTRUCTION_STORE:
     printf("  store i32 ");
     value_print(value_at(value, 0));
     printf(", i32* ");
     value_print(value_at(value, 1));
-    printf("\n");
+    printf(", align 4\n");
     break;
   case VALUE_INSTRUCTION_LOAD:
     printf("  ");
     value_print(value);
     printf(" = load i32, i32* ");
     value_print(value_at(value, 0));
-    printf("\n");
+    printf(", align 4\n");
     break;
   case VALUE_INSTRUCTION_RET:
     if (0 == value_length(value)) {
