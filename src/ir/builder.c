@@ -21,6 +21,15 @@ struct struct_Builder {
   RegisterGenerator *gen;
 };
 
+static Value *builder_identifier(Builder *builder, Sexp *ast) {
+  Value *value;
+  assert(AST_IDENTIFIER == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(sexp_is_symbol(ast));
+  value = builder_alloc_value(builder, VALUE_INSTRUCTION_LOAD);
+  value_insert(value, table_find(builder->table, sexp_get_symbol(ast)));
+  return value;
+}
 static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
@@ -161,10 +170,8 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     value_insert(builder->block, value);
     return value;
   case AST_IDENTIFIER:
-    value = builder_alloc_value(builder, VALUE_INSTRUCTION_LOAD);
+    value = builder_identifier(builder, ast);
     value_insert(builder->block, value);
-    value_insert(value,
-                 table_find(builder->table, sexp_get_symbol(sexp_at(ast, 1))));
     return value;
   default:
     assert(0);
