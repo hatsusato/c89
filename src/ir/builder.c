@@ -99,7 +99,7 @@ static Value *builder_map_statement(Builder *builder, Sexp *ast) {
   ast = sexp_at(ast, 1);
   switch (sexp_get_tag(ast)) {
   case AST_JUMP_STATEMENT:
-    builder_jump_statement(builder, ast);
+    builder_expression(builder, ast);
     break;
   case AST_EXPRESSION_STATEMENT:
     builder_expression(builder, sexp_at(ast, 1));
@@ -173,6 +173,8 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     return builder_ast_map(builder, ast, builder_map_declaration);
   case AST_STATEMENT_LIST:
     return builder_ast_map(builder, ast, builder_map_statement);
+  case AST_JUMP_STATEMENT:
+    return builder_jump_statement(builder, ast);
   case AST_TRANSLATION_UNIT:
     return builder_ast_map(builder, ast, builder_expression);
   case AST_EXTERNAL_DECLARATION:
