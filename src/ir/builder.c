@@ -28,6 +28,7 @@ static Value *builder_identifier(Builder *builder, Sexp *ast) {
   assert(sexp_is_symbol(ast));
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_LOAD);
   value_insert(value, table_find(builder->table, sexp_get_symbol(ast)));
+  value_insert(builder->block, value);
   return value;
 }
 static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
@@ -38,6 +39,7 @@ static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_ADD);
   value_insert(value, builder_expression(builder, sexp_at(ast, 1)));
   value_insert(value, builder_expression(builder, sexp_at(ast, 3)));
+  value_insert(builder->block, value);
   return value;
 }
 static Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
@@ -51,6 +53,7 @@ static Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
   rhsval = builder_expression(builder, rhs);
   value_insert(value, rhsval);
   value_insert(value, lhsval);
+  value_insert(builder->block, value);
   return value;
 }
 static Value *builder_jump_statement(Builder *builder, Sexp *ast) {
@@ -61,6 +64,7 @@ static Value *builder_jump_statement(Builder *builder, Sexp *ast) {
   if (!sexp_is_nil(ast)) {
     value_insert(value, builder_expression(builder, ast));
   }
+  value_insert(builder->block, value);
   return value;
 }
 static void builder_map_declaration(Sexp *ast, void *extra) {
@@ -89,13 +93,11 @@ static void builder_declaration_list(Builder *builder, Sexp *ast) {
 }
 static void builder_map_statement(Sexp *ast, void *extra) {
   Builder *builder = extra;
-  Value *value;
   assert(AST_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   switch (sexp_get_tag(ast)) {
   case AST_JUMP_STATEMENT:
-    value = builder_jump_statement(builder, ast);
-    value_insert(builder->block, value);
+    builder_jump_statement(builder, ast);
     break;
   case AST_EXPRESSION_STATEMENT:
     builder_expression(builder, sexp_at(ast, 1));
@@ -157,22 +159,15 @@ void builder_build(Builder *builder, Sexp *ast) {
   puts("}");
 }
 Value *builder_expression(Builder *builder, Sexp *ast) {
-  Value *value;
   switch (sexp_get_tag(ast)) {
   case AST_INTEGER_CONSTANT:
     return constant_new(builder->pool, ast);
   case AST_ADDITIVE_EXPRESSION:
-    value = builder_additive_expression(builder, ast);
-    value_insert(builder->block, value);
-    return value;
+    return builder_additive_expression(builder, ast);
   case AST_ASSIGNMENT_EXPRESSION:
-    value = builder_assignment_expression(builder, ast);
-    value_insert(builder->block, value);
-    return value;
+    return builder_assignment_expression(builder, ast);
   case AST_IDENTIFIER:
-    value = builder_identifier(builder, ast);
-    value_insert(builder->block, value);
-    return value;
+    return builder_identifier(builder, ast);
   default:
     assert(0);
     return NULL;
