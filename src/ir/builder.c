@@ -21,6 +21,12 @@ struct struct_Builder {
   RegisterGenerator *gen;
 };
 
+static void builder_ast_map(Builder *builder, Sexp *ast,
+                            void (*map)(Builder *, Sexp *)) {
+  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    map(builder, sexp_car(ast));
+  }
+}
 static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
@@ -69,8 +75,7 @@ static Value *builder_jump_statement(Builder *builder, Sexp *ast) {
   value_insert(builder->block, value);
   return value;
 }
-static void builder_map_declaration(Sexp *ast, void *extra) {
-  Builder *builder = extra;
+static void builder_map_declaration(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_DECLARATION == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
@@ -89,10 +94,9 @@ static void builder_map_declaration(Sexp *ast, void *extra) {
 }
 static void builder_declaration_list(Builder *builder, Sexp *ast) {
   assert(AST_DECLARATION_LIST == sexp_get_tag(ast));
-  sexp_list_map(sexp_cdr(ast), builder, builder_map_declaration);
+  builder_ast_map(builder, ast, builder_map_declaration);
 }
-static void builder_map_statement(Sexp *ast, void *extra) {
-  Builder *builder = extra;
+static void builder_map_statement(Builder *builder, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   switch (sexp_get_tag(ast)) {
@@ -109,7 +113,7 @@ static void builder_map_statement(Sexp *ast, void *extra) {
 }
 static void builder_statement_list(Builder *builder, Sexp *ast) {
   assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
-  sexp_list_map(sexp_cdr(ast), builder, builder_map_statement);
+  builder_ast_map(builder, ast, builder_map_statement);
 }
 static void builder_function_definition(Builder *builder, Sexp *ast) {
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
@@ -119,7 +123,7 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   builder_declaration_list(builder, sexp_at(ast, 2));
   builder_statement_list(builder, sexp_at(ast, 3));
 }
-static void builder_map_translation_unit(Sexp *ast, void *builder) {
+static void builder_map_translation_unit(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_EXTERNAL_DECLARATION:
     break;
@@ -178,7 +182,7 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
   case AST_ASSIGNMENT_EXPRESSION:
     return builder_assignment_expression(builder, ast);
   case AST_TRANSLATION_UNIT:
-    sexp_list_map(sexp_cdr(ast), builder, builder_map_translation_unit);
+    builder_ast_map(builder, ast, builder_map_translation_unit);
     return NULL;
   default:
     assert(0);
