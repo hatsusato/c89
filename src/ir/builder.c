@@ -124,7 +124,9 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     value_insert(builder->block, value);
     return value;
   case AST_IDENTIFIER:
-    return builder_alloc_value(builder, VALUE_BLOCK);
+    value = table_find(builder->table, sexp_get_symbol(sexp_at(ast, 1)));
+    assert(value);
+    return value;
   default:
     assert(0);
     return NULL;
