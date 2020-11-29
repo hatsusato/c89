@@ -19,7 +19,8 @@ struct struct_Value {
 
 Value *value_new(ValueKind kind) {
   Value *value = UTILITY_MALLOC(Value);
-  value_init(value, kind);
+  value->kind = kind;
+  register_init(&value->reg);
   value->value = NULL;
   value->vec = vector_new(NULL);
   return value;
@@ -42,10 +43,6 @@ Size value_length(Value *value) {
 }
 ValueKind value_kind(Value *value) {
   return value->kind;
-}
-void value_init(Value *value, ValueKind kind) {
-  value->kind = kind;
-  register_init(&value->reg);
 }
 void value_print(Value *value) {
   switch (value_kind(value)) {
