@@ -25,3 +25,10 @@ void table_delete(Table *table) {
   map_delete(table->table);
   UTILITY_FREE(table);
 }
+void table_insert(Table *table, const char *key, Value *val) {
+  map_insert(table->table, (ElemType)key, val);
+}
+Value *table_find(Table *table, const char *key) {
+  ElemType *found = map_find(table->table, (ElemType)key);
+  return found ? *found : NULL;
+}
