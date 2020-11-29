@@ -37,14 +37,16 @@ static void builder_map_statement(Sexp *ast, void *extra) {
     break;
   }
 }
+static void builder_statement_list(Builder *builder, Sexp *ast) {
+  assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
+  sexp_list_map(sexp_cdr(ast), builder, builder_map_statement);
+}
 static void builder_function_definition(Builder *builder, Sexp *ast) {
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   ast = sexp_at(ast, 4);
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 3);
-  assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
-  sexp_list_map(sexp_cdr(ast), builder, builder_map_statement);
+  builder_statement_list(builder, sexp_at(ast, 3));
 }
 static void builder_map_translation_unit(Sexp *ast, void *builder) {
   switch (sexp_get_tag(ast)) {
