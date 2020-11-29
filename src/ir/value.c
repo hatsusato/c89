@@ -86,6 +86,13 @@ void value_pretty(Value *value) {
     value_print(value_at(value, 1));
     printf("\n");
     break;
+  case VALUE_INSTRUCTION_LOAD:
+    printf("  ");
+    value_print(value);
+    printf(" = load i32, i32* ");
+    value_print(value_at(value, 0));
+    printf("\n");
+    break;
   case VALUE_INSTRUCTION_RET:
     if (0 == value_length(value)) {
       printf("  ret void");
@@ -113,6 +120,8 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
   case VALUE_INSTRUCTION:
     /* FALLTHROUGH */
   case VALUE_INSTRUCTION_ALLOC:
+    /* FALLTHROUGH */
+  case VALUE_INSTRUCTION_LOAD:
     register_set(gen, &value->header.reg);
     break;
   default:
