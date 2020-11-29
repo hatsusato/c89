@@ -2,7 +2,7 @@
 
 #include <ctype.h>
 
-#include "ast.h"
+#include "ast/ast_tag.h"
 #include "sexp.h"
 #include "utility.h"
 
@@ -46,8 +46,8 @@ void print_verbatim(FILE *fp, const char *text, int leng) {
 }
 void print_symbol(FILE *fp, Sexp *sexp) {
   const char *msg = NULL;
-  if (sexp_is_string(sexp)) {
-    msg = sexp_get_string(sexp);
+  if (sexp_is_symbol(sexp)) {
+    msg = sexp_get_symbol(sexp);
   } else if (sexp_is_number(sexp)) {
     msg = ast_show(sexp_get_number(sexp));
   }
@@ -60,7 +60,7 @@ static void print_sexp(FILE *fp, Sexp *sexp, int indent) {
     print_sexp_list(fp, sexp, indent + 1);
     print_message(fp, suffix);
   } else {
-    if (sexp_is_string(sexp)) {
+    if (sexp_is_symbol(sexp)) {
       prefix = suffix = "\"";
     } else if (sexp_is_number(sexp)) {
       prefix = suffix = "'";
@@ -71,7 +71,7 @@ static void print_sexp(FILE *fp, Sexp *sexp, int indent) {
   }
 }
 void print_ast(Sexp *ast) {
-  FILE *fp = stdout;
+  FILE *fp = stderr;
   print_sexp(fp, ast, 0);
   print_newline(fp);
 }

@@ -1,18 +1,23 @@
-#include "module.h"
+#include "ast.h"
+#include "builder.h"
 #include "print.h"
-#include "result.h"
+#include "scanner.h"
+
+static void build(Sexp *ast) {
+  Builder *builder = builder_new();
+  builder_build(builder, ast);
+  builder_print(builder);
+  builder_delete(builder);
+}
 
 int main(void) {
-  Result *result = result_new();
-  int ret = result_parse(result);
+  yyscan_t scanner = scanner_new();
+  int ret = scanner_parse(scanner);
   if (0 == ret) {
-    Sexp *ast = result_get_sexp(result);
-    Module *module = module_new();
+    Sexp *ast = ast_get(scanner_get(scanner));
     print_ast(ast);
-    module_build(module, ast);
-    module_print(stdout, module);
-    module_delete(module);
+    build(ast);
   }
-  result_delete(result);
+  scanner_delete(scanner);
   return ret;
 }

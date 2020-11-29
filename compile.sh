@@ -2,11 +2,15 @@
 
 set -eu
 
+MAIN_DIR=build
+
+TARGET=
+FLAGS=()
 print() {
-  local opts=(-Wall -Wextra -Werror -ansi -pedantic -x c)
-  local target="$1"
-  shift
-  cat - "$target" <<EOF | gcc "$@" "${opts[@]}" -
+  local opts=("$@" "${FLAGS[@]}")
+  opts+=(-Wall -Wextra -Werror -ansi -pedantic)
+  opts+=(-x c -P -E -)
+  cat - "$TARGET" <<EOF | gcc "${opts[@]}"
 #define __attribute__(x)
 #define __asm__(x)
 #define __extension__
@@ -18,23 +22,32 @@ error() {
   echo ERROR: "$@" >&2
   exit 1
 }
-check() {
-  print "$1" -Isrc -fsyntax-only >/dev/null || error "$1"
-}
-compile() {
-  print "$1" -Isrc -E
-}
 
+files=()
 eflag=
-if [[ "$1" == -E ]]; then
-  eflag=on
-  shift
-fi
+sflag=
+xflag=
 for arg in "$@"; do
-  check "$arg"
+  case "$arg" in
+    -E) eflag=on;;
+    -S) sflag=on;;
+    -X) xflag=on;;
+    -*) FLAGS+=("$arg");;
+    *) files+=("$arg");;
+  esac
+done
+
+main=${MAIN_DIR-.}/main.out
+for TARGET in "${files[@]}"; do
+  print -fsyntax-only >/dev/null || error "$TARGET"
   if test "$eflag"; then
-    compile "$arg"
+    print
+  elif test "$sflag"; then
+    print | "$main" 2>/dev/null
+  elif test "$xflag"; then
+    print | "$main" 2>/dev/null | llc | clang -x assembler -
+    ./a.out
   else
-    compile "$arg" | ./main.out
+    print | "$main" >/dev/null
   fi
 done

@@ -1,6 +1,6 @@
 #include "pretty.h"
 
-#include "ast.h"
+#include "ast/ast_tag.h"
 #include "print.h"
 #include "sexp.h"
 #include "utility.h"
@@ -21,13 +21,13 @@ static Sexp *pretty_prefix(Sexp *ast, int indent, AstTag prefix) {
     return ast;
   case AST_NEWLINE:
     for (; 0 < indent; --indent) {
-      ast = sexp_cons(sexp_number(AST_INDENT), ast);
+      ast = sexp_pair(sexp_number(AST_INDENT), ast);
     }
     break;
   default:
     break;
   }
-  return sexp_cons(sexp_number(prefix), ast);
+  return sexp_pair(sexp_number(prefix), ast);
 }
 static Sexp *pretty_suffix(Sexp *ast, AstTag suffix) {
   switch (suffix) {
@@ -40,7 +40,7 @@ static Sexp *pretty_suffix(Sexp *ast, AstTag suffix) {
 static Sexp *pretty_snoc(Sexp *pretty, Sexp *ast, int indent, AstTag prefix) {
   if (!sexp_is_nil(ast)) {
     ast = pretty_convert(ast, indent);
-    ast = sexp_cons(ast, sexp_nil());
+    ast = sexp_pair(ast, sexp_nil());
     ast = pretty_prefix(ast, indent, prefix);
     pretty = sexp_snoc(pretty, ast);
   }

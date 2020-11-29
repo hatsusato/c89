@@ -1,57 +1,82 @@
 #!/usr/bin/make -f
 
-LEX := flex
-YACC := bison
-target := main.out
-lex_prefix := src/lexer
-yacc_prefix := src/parser
-files := ast block declaration function instruction list main module node parser pretty print register result scanner set sexp statement str symbol table utility value vector
+builddir := build
+target := $(builddir)/main.out
 
-ldflags =
-cflags = -Wall -Wextra -ansi -pedantic
-dflags = -MF $@ -MG -MM -MP -MT $(@:%.d=%.o)
-release_cflags := -O3 -DNDEBUG
-debug_cflags := -g
-lflags := --header-file=$(lex_prefix).h --outfile=$(lex_prefix).c
-yflags := -d -b $(yacc_prefix)
-lex_intermeds := $(addprefix $(lex_prefix),.c .h)
-yacc_intermeds := $(addprefix $(yacc_prefix),.tab.c .tab.h)
-intermeds := $(lex_intermeds) $(yacc_intermeds)
-srcs := $(files:%=src/%.c) $(filter %.c,$(intermeds))
-objs := $(srcs:src/%.c=obj/%.o)
+srcs != git ls-files src/
+srcs := $(filter %.c,$(srcs))
+objs := $(srcs:%.c=$(builddir)/%.o)
 deps := $(objs:%.o=%.d)
 
-.PHONY: all release debug
-all: release
-release debug: $(target)
-release: cflags += $(release_cflags)
-debug: cflags += $(debug_cflags)
+scanner/srcdir := src/scanner
+scanner/outdir := $(builddir)/$(scanner/srcdir)
+scanner/lex/file := $(scanner/srcdir)/lexer.l
+scanner/lex/prefix := $(scanner/outdir)/lexer
+scanner/lex/hdr := $(scanner/lex/prefix).h
+scanner/lex/src := $(scanner/lex/prefix).c
+scanner/lex := $(scanner/lex/hdr) $(scanner/lex/src)
+scanner/yacc/file := $(scanner/srcdir)/parser.y
+scanner/yacc/prefix := $(scanner/outdir)/parser
+scanner/yacc/hdr := $(scanner/yacc/prefix).tab.h
+scanner/yacc/src := $(scanner/yacc/prefix).tab.c
+scanner/yacc := $(scanner/yacc/hdr) $(scanner/yacc/src)
+scanner/hdrs := $(scanner/lex/hdr) $(scanner/yacc/hdr)
+scanner/srcs := $(scanner/lex/src) $(scanner/yacc/src)
+scanner/objs := $(scanner/srcs:%.c=%.o)
+scanner/deps := $(scanner/objs:%.o=%.d)
+scanner/outs := $(filter $(scanner/outdir)/%,$(objs) $(deps))
+scanner/outs := $(scanner/outs) $(scanner/objs) $(scanner/deps)
+
+ldflags =
+cflags = -Wall -Wextra -ansi -pedantic -Iinclude
+dflags = $(cflags) -MF $@ -MG -MM -MP -MT $(@:%.d=%.o)
+lflags := --header-file=$(scanner/lex/hdr) --outfile=$(scanner/lex/src)
+yflags := -d -b $(scanner/yacc/prefix)
+
+ifeq (,$(wildcard .develop))
+cflags += -O3 -DNDEBUG
+else
+cflags += -O0 -g
+endif
 
 .SUFFIXES:
 
-$(target): $(objs)
+.PHONY: all
+all: $(target)
+
+$(target): $(objs) $(scanner/objs)
 	$(CC) $(ldflags) $^ -o $@
 
-$(lex_intermeds): $(lex_prefix).l $(yacc_prefix).tab.h
-	$(LEX) $(lflags) $<
-
-$(yacc_intermeds): $(yacc_prefix).y
-	$(YACC) $(yflags) $<
-
-$(objs): obj/%.o: src/%.c | obj
+$(objs): $(builddir)/%.o: %.c
+	@mkdir -p $(@D)
 	$(CC) $(cflags) -c $< -o $@
 
-obj/parser.tab.d: src/lexer.h
-$(deps): obj/%.d: src/%.c | obj
+$(deps): $(builddir)/%.d: %.c
+	@mkdir -p $(@D)
 	$(CC) $(dflags) $<
 
--include $(deps)
+$(scanner/lex): $(scanner/lex/file)
+	@mkdir -p $(@D)
+	flex $(lflags) $<
 
-obj:
-	mkdir -p $@
+$(scanner/yacc): $(scanner/yacc/file)
+	@mkdir -p $(@D)
+	bison $(yflags) $<
 
-.PHONY: clean distclean
+$(scanner/outs): cflags += -I$(@D)
+$(scanner/objs): %.o: %.c
+	@mkdir -p $(@D)
+	$(CC) $(cflags) -c $< -o $@
+
+$(scanner/outs): $(scanner/hdrs)
+$(scanner/deps): %.d: %.c
+	@mkdir -p $(@D)
+	$(CC) $(dflags) $<
+
+-include $(deps) $(scanner/deps)
+
+.PHONY: clean
 clean:
-	$(RM) -r obj $(intermeds)
-distclean: clean
-	$(RM) $(target)
+	@$(RM) $(deps) $(scanner/deps)
+	$(RM) $(objs) $(target)
+	$(RM) $(scanner/objs) $(scanner/lex) $(scanner/yacc)
