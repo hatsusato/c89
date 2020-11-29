@@ -8,6 +8,7 @@
 #include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/value.h"
+#include "ir/value_kind.h"
 #include "sexp.h"
 #include "utility.h"
 #include "vector.h"
@@ -28,6 +29,8 @@ static void builder_map_statement(Sexp *ast, void *extra) {
   case AST_JUMP_STATEMENT:
     value = instruction_build(builder, ast);
     value_insert(builder->block, value);
+    break;
+  case AST_EXPRESSION_STATEMENT:
     break;
   default:
     assert(0);
@@ -89,6 +92,8 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     value = instruction_build(builder, ast);
     value_insert(builder->block, value);
     return value;
+  case AST_IDENTIFIER:
+    return builder_alloc_value(builder, VALUE_BLOCK);
   default:
     assert(0);
     return NULL;
