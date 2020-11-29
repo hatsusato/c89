@@ -21,7 +21,19 @@ struct struct_Builder {
   RegisterGenerator *gen;
 };
 
-static void builder_stack_push(Builder *builder, Value *value) {
+static void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
+  Value *value = builder_alloc_value(builder, kind);
+  switch (kind) {
+  case VALUE_INTEGER_CONSTANT:
+    assert(sexp_is_symbol(ast));
+    value_set_value(value, sexp_get_symbol(ast));
+    break;
+  case VALUE_INSTRUCTION_ALLOC:
+    table_insert(builder->table, ast, value);
+    break;
+  default:
+    break;
+  }
   vector_push(builder->stack, value);
 }
 static Value *builder_stack_pop(Builder *builder) {
@@ -42,48 +54,35 @@ static void builder_stack_insert(Builder *builder, Sexp *ast) {
   value_insert(value, table_find(builder->table, ast));
 }
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
-  Value *value;
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(sexp_is_symbol(ast));
-  value = builder_alloc_value(builder, VALUE_INTEGER_CONSTANT);
-  builder_stack_push(builder, value);
-  value_set_value(value, sexp_get_symbol(ast));
+  builder_stack_push(builder, VALUE_INTEGER_CONSTANT, sexp_at(ast, 1));
 }
 static void builder_identifier(Builder *builder, Sexp *ast) {
-  Value *value;
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  value = builder_alloc_value(builder, VALUE_INSTRUCTION_LOAD);
-  builder_stack_push(builder, value);
+  builder_stack_push(builder, VALUE_INSTRUCTION_LOAD, ast);
   builder_stack_insert(builder, ast);
 }
 static void builder_additive_expression(Builder *builder, Sexp *ast) {
-  Value *value;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 2)));
   assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
-  value = builder_alloc_value(builder, VALUE_INSTRUCTION_ADD);
-  builder_stack_push(builder, value);
+  builder_stack_push(builder, VALUE_INSTRUCTION_ADD, ast);
   builder_ast(builder, sexp_at(ast, 1));
   builder_stack_pop_insert(builder);
   builder_ast(builder, sexp_at(ast, 3));
   builder_stack_pop_insert(builder);
 }
 static void builder_assignment_expression(Builder *builder, Sexp *ast) {
-  Value *value;
   assert(AST_IDENTIFIER == sexp_get_tag(sexp_at(ast, 1)));
-  value = builder_alloc_value(builder, VALUE_INSTRUCTION_STORE);
-  builder_stack_push(builder, value);
+  builder_stack_push(builder, VALUE_INSTRUCTION_STORE, ast);
   builder_ast(builder, sexp_at(ast, 3));
   builder_stack_pop_insert(builder);
   builder_stack_insert(builder, sexp_at(ast, 1));
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
-  Value *value;
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
-  value = builder_alloc_value(builder, VALUE_INSTRUCTION_RET);
-  builder_stack_push(builder, value);
+  builder_stack_push(builder, VALUE_INSTRUCTION_RET, ast);
   if (!sexp_is_nil(ast)) {
     builder_ast(builder, ast);
     builder_stack_pop_insert(builder);
@@ -91,7 +90,6 @@ static void builder_jump_statement(Builder *builder, Sexp *ast) {
   builder_stack_pop(builder);
 }
 static void builder_declaration(Builder *builder, Sexp *ast) {
-  Value *value;
   assert(AST_DECLARATION == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
   assert(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));
@@ -103,9 +101,7 @@ static void builder_declaration(Builder *builder, Sexp *ast) {
   assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  value = builder_alloc_value(builder, VALUE_INSTRUCTION_ALLOC);
-  builder_stack_push(builder, value);
-  table_insert(builder->table, ast, value);
+  builder_stack_push(builder, VALUE_INSTRUCTION_ALLOC, ast);
   builder_stack_pop(builder);
 }
 static void builder_expression_statement(Builder *builder, Sexp *ast) {
