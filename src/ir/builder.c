@@ -27,6 +27,9 @@ static void builder_stack_push(Builder *builder, Value *value) {
 static Value *builder_stack_pop(Builder *builder) {
   Value *value = vector_back(builder->stack);
   vector_pop(builder->stack);
+  if (value_is_instruction(value)) {
+    value_insert(builder->block, value);
+  }
   return value;
 }
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
@@ -44,7 +47,6 @@ static void builder_identifier(Builder *builder, Sexp *ast) {
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_LOAD);
   builder_stack_push(builder, value);
   value_insert(value, table_find(builder->table, ast));
-  value_insert(builder->block, value);
 }
 static void builder_additive_expression(Builder *builder, Sexp *ast) {
   Value *value;
@@ -57,7 +59,6 @@ static void builder_additive_expression(Builder *builder, Sexp *ast) {
   value_insert(value, builder_stack_pop(builder));
   builder_ast(builder, sexp_at(ast, 3));
   value_insert(value, builder_stack_pop(builder));
-  value_insert(builder->block, value);
 }
 static void builder_assignment_expression(Builder *builder, Sexp *ast) {
   Value *value;
@@ -67,7 +68,6 @@ static void builder_assignment_expression(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 3));
   value_insert(value, builder_stack_pop(builder));
   value_insert(value, table_find(builder->table, sexp_at(ast, 1)));
-  value_insert(builder->block, value);
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
   Value *value;
@@ -79,7 +79,6 @@ static void builder_jump_statement(Builder *builder, Sexp *ast) {
     builder_ast(builder, ast);
     value_insert(value, builder_stack_pop(builder));
   }
-  value_insert(builder->block, value);
   builder_stack_pop(builder);
 }
 static void builder_declaration(Builder *builder, Sexp *ast) {
@@ -98,7 +97,6 @@ static void builder_declaration(Builder *builder, Sexp *ast) {
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_ALLOC);
   builder_stack_push(builder, value);
   table_insert(builder->table, ast, value);
-  value_insert(builder->block, value);
   builder_stack_pop(builder);
 }
 static void builder_expression_statement(Builder *builder, Sexp *ast) {
