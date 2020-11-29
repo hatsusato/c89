@@ -22,6 +22,16 @@ struct struct_Builder {
   RegisterGenerator *gen;
 };
 
+static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
+  Value *value;
+  assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
+  assert(sexp_is_number(sexp_at(ast, 2)));
+  assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
+  value = builder_alloc_value(builder, VALUE_INSTRUCTION_ADD);
+  value_insert(value, builder_expression(builder, sexp_at(ast, 1)));
+  value_insert(value, builder_expression(builder, sexp_at(ast, 3)));
+  return value;
+}
 static Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
   Value *value, *lhsval, *rhsval;
   Sexp *lhs = sexp_at(ast, 1), *rhs = sexp_at(ast, 3);
@@ -134,7 +144,7 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
   case AST_INTEGER_CONSTANT:
     return constant_new(builder->pool, ast);
   case AST_ADDITIVE_EXPRESSION:
-    value = instruction_build(builder, ast);
+    value = builder_additive_expression(builder, ast);
     value_insert(builder->block, value);
     return value;
   case AST_ASSIGNMENT_EXPRESSION:
