@@ -76,7 +76,7 @@ static Value *builder_jump_statement(Builder *builder, Sexp *ast) {
   value_insert(builder->block, value);
   return value;
 }
-static Value *builder_map_declaration(Builder *builder, Sexp *ast) {
+static Value *builder_declaration(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_DECLARATION == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
@@ -163,12 +163,14 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     return builder_additive_expression(builder, ast);
   case AST_ASSIGNMENT_EXPRESSION:
     return builder_assignment_expression(builder, ast);
+  case AST_DECLARATION:
+    return builder_declaration(builder, ast);
   case AST_STATEMENT:
     return builder_statement(builder, ast);
   case AST_COMPOUND_STATEMENT:
     return builder_compound_statement(builder, ast);
   case AST_DECLARATION_LIST:
-    return builder_ast_map(builder, ast, builder_map_declaration);
+    return builder_ast_map(builder, ast, builder_declaration);
   case AST_STATEMENT_LIST:
     return builder_ast_map(builder, ast, builder_statement);
   case AST_EXPRESSION_STATEMENT:
