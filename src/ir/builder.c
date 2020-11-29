@@ -22,6 +22,19 @@ struct struct_Builder {
   RegisterGenerator *gen;
 };
 
+static Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
+  Value *value, *lhsval, *rhsval;
+  Sexp *lhs = sexp_at(ast, 1), *rhs = sexp_at(ast, 3);
+  assert(AST_IDENTIFIER == sexp_get_tag(lhs));
+  lhs = sexp_at(lhs, 1);
+  assert(sexp_is_symbol(lhs));
+  value = builder_alloc_value(builder, VALUE_INSTRUCTION_STORE);
+  lhsval = table_find(builder->table, sexp_get_symbol(lhs));
+  rhsval = builder_expression(builder, rhs);
+  value_insert(value, rhsval);
+  value_insert(value, lhsval);
+  return value;
+}
 static void builder_map_declaration(Sexp *ast, void *extra) {
   Builder *builder = extra;
   Value *instr;
@@ -57,6 +70,7 @@ static void builder_map_statement(Sexp *ast, void *extra) {
     value_insert(builder->block, value);
     break;
   case AST_EXPRESSION_STATEMENT:
+    builder_expression(builder, sexp_at(ast, 1));
     break;
   default:
     assert(0);
@@ -121,6 +135,10 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     return constant_new(builder->pool, ast);
   case AST_ADDITIVE_EXPRESSION:
     value = instruction_build(builder, ast);
+    value_insert(builder->block, value);
+    return value;
+  case AST_ASSIGNMENT_EXPRESSION:
+    value = builder_assignment_expression(builder, ast);
     value_insert(builder->block, value);
     return value;
   case AST_IDENTIFIER:
