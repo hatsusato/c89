@@ -128,19 +128,34 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
 }
 const char *value_kind_show(Value *value) {
   switch (value_kind(value)) {
-#define VALUE_KIND_SHOW(k) \
-  case k:                  \
+#define VALUE_KIND_HANDLER(k) \
+  case k:                     \
     return #k
-    VALUE_KIND_SHOW(VALUE_BLOCK);
-    VALUE_KIND_SHOW(VALUE_INSTRUCTION_ADD);
-    VALUE_KIND_SHOW(VALUE_INSTRUCTION_ALLOC);
-    VALUE_KIND_SHOW(VALUE_INSTRUCTION_STORE);
-    VALUE_KIND_SHOW(VALUE_INSTRUCTION_LOAD);
-    VALUE_KIND_SHOW(VALUE_INSTRUCTION_RET);
-    VALUE_KIND_SHOW(VALUE_INTEGER_CONSTANT);
-#undef VALUE_KIND_SHOW
+    VALUE_KIND_HANDLER(VALUE_BLOCK);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOC);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
+    VALUE_KIND_HANDLER(VALUE_INTEGER_CONSTANT);
+#undef VALUE_KIND_HANDLER
   default:
     assert(VALUE_KIND_END == value_kind(value));
     return NULL;
+  }
+}
+Bool value_is_instruction(Value *value) {
+  switch (value_kind(value)) {
+#define VALUE_KIND_HANDLER(k) \
+  case k:                     \
+    return true
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOC);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
+#undef VALUE_KIND_HANDLER
+  default:
+    return false;
   }
 }
