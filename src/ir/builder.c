@@ -21,11 +21,12 @@ struct struct_Builder {
   RegisterGenerator *gen;
 };
 
-static void builder_ast_map(Builder *builder, Sexp *ast,
-                            Value *(*map)(Builder *, Sexp *)) {
+static Value *builder_ast_map(Builder *builder, Sexp *ast,
+                              Value *(*map)(Builder *, Sexp *)) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     map(builder, sexp_car(ast));
   }
+  return NULL;
 }
 static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   Value *value;
@@ -93,10 +94,6 @@ static Value *builder_map_declaration(Builder *builder, Sexp *ast) {
   value_insert(builder->block, value);
   return value;
 }
-static void builder_declaration_list(Builder *builder, Sexp *ast) {
-  assert(AST_DECLARATION_LIST == sexp_get_tag(ast));
-  builder_ast_map(builder, ast, builder_map_declaration);
-}
 static Value *builder_map_statement(Builder *builder, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
@@ -113,14 +110,10 @@ static Value *builder_map_statement(Builder *builder, Sexp *ast) {
   }
   return NULL;
 }
-static void builder_statement_list(Builder *builder, Sexp *ast) {
-  assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
-  builder_ast_map(builder, ast, builder_map_statement);
-}
 static Value *builder_compound_statement(Builder *builder, Sexp *ast) {
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
-  builder_declaration_list(builder, sexp_at(ast, 2));
-  builder_statement_list(builder, sexp_at(ast, 3));
+  builder_expression(builder, sexp_at(ast, 2));
+  builder_expression(builder, sexp_at(ast, 3));
   return NULL;
 }
 static Value *builder_function_definition(Builder *builder, Sexp *ast) {
@@ -176,9 +169,12 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     return builder_assignment_expression(builder, ast);
   case AST_COMPOUND_STATEMENT:
     return builder_compound_statement(builder, ast);
+  case AST_DECLARATION_LIST:
+    return builder_ast_map(builder, ast, builder_map_declaration);
+  case AST_STATEMENT_LIST:
+    return builder_ast_map(builder, ast, builder_map_statement);
   case AST_TRANSLATION_UNIT:
-    builder_ast_map(builder, ast, builder_expression);
-    return NULL;
+    return builder_ast_map(builder, ast, builder_expression);
   case AST_EXTERNAL_DECLARATION:
     return NULL;
   case AST_FUNCTION_DEFINITION:
