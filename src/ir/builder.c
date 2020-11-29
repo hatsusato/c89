@@ -32,6 +32,11 @@ static Value *builder_stack_pop(Builder *builder) {
   }
   return value;
 }
+static void builder_stack_pop_insert(Builder *builder) {
+  Value *pop = builder_stack_pop(builder);
+  Value *value = vector_back(builder->stack);
+  value_insert(value, pop);
+}
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
@@ -56,9 +61,9 @@ static void builder_additive_expression(Builder *builder, Sexp *ast) {
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_ADD);
   builder_stack_push(builder, value);
   builder_ast(builder, sexp_at(ast, 1));
-  value_insert(value, builder_stack_pop(builder));
+  builder_stack_pop_insert(builder);
   builder_ast(builder, sexp_at(ast, 3));
-  value_insert(value, builder_stack_pop(builder));
+  builder_stack_pop_insert(builder);
 }
 static void builder_assignment_expression(Builder *builder, Sexp *ast) {
   Value *value;
@@ -66,7 +71,7 @@ static void builder_assignment_expression(Builder *builder, Sexp *ast) {
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_STORE);
   builder_stack_push(builder, value);
   builder_ast(builder, sexp_at(ast, 3));
-  value_insert(value, builder_stack_pop(builder));
+  builder_stack_pop_insert(builder);
   value_insert(value, table_find(builder->table, sexp_at(ast, 1)));
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
@@ -77,7 +82,7 @@ static void builder_jump_statement(Builder *builder, Sexp *ast) {
   builder_stack_push(builder, value);
   if (!sexp_is_nil(ast)) {
     builder_ast(builder, ast);
-    value_insert(value, builder_stack_pop(builder));
+    builder_stack_pop_insert(builder);
   }
   builder_stack_pop(builder);
 }
