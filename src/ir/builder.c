@@ -160,8 +160,7 @@ void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
 void builder_build(Builder *builder, Sexp *ast) {
-  assert(AST_TRANSLATION_UNIT == sexp_get_tag(ast));
-  sexp_list_map(sexp_cdr(ast), builder, builder_map_translation_unit);
+  builder_expression(builder, ast);
   value_set_reg(builder->gen, builder->block);
   puts("target triple = \"x86_64-pc-linux-gnu\"\n");
   puts("define i32 @main() {");
@@ -170,14 +169,17 @@ void builder_build(Builder *builder, Sexp *ast) {
 }
 Value *builder_expression(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
+  case AST_IDENTIFIER:
+    return builder_identifier(builder, ast);
   case AST_INTEGER_CONSTANT:
     return builder_integer_constant(builder, ast);
   case AST_ADDITIVE_EXPRESSION:
     return builder_additive_expression(builder, ast);
   case AST_ASSIGNMENT_EXPRESSION:
     return builder_assignment_expression(builder, ast);
-  case AST_IDENTIFIER:
-    return builder_identifier(builder, ast);
+  case AST_TRANSLATION_UNIT:
+    sexp_list_map(sexp_cdr(ast), builder, builder_map_translation_unit);
+    return NULL;
   default:
     assert(0);
     return NULL;
