@@ -23,6 +23,8 @@ struct struct_Builder {
 };
 
 static void builder_map_declaration(Sexp *ast, void *extra) {
+  Builder *builder = extra;
+  Value *instr;
   assert(AST_DECLARATION == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
   assert(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));
@@ -33,9 +35,12 @@ static void builder_map_declaration(Sexp *ast, void *extra) {
   ast = sexp_at(ast, 1);
   assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
-  assert(AST_IDENTIFIER);
+  assert(AST_IDENTIFIER == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
+  instr = builder_alloc_value(builder, VALUE_INSTRUCTION_ALLOC);
+  value_insert(builder->block, instr);
+  table_insert(builder->table, sexp_get_symbol(ast), instr);
 }
 static void builder_declaration_list(Builder *builder, Sexp *ast) {
   assert(AST_DECLARATION_LIST == sexp_get_tag(ast));
