@@ -117,14 +117,16 @@ static void builder_statement_list(Builder *builder, Sexp *ast) {
   assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
   builder_ast_map(builder, ast, builder_map_statement);
 }
-static Value *builder_function_definition(Builder *builder, Sexp *ast) {
-  assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
-  assert(5 == sexp_length(ast));
-  ast = sexp_at(ast, 4);
+static Value *builder_compound_statement(Builder *builder, Sexp *ast) {
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
   builder_declaration_list(builder, sexp_at(ast, 2));
   builder_statement_list(builder, sexp_at(ast, 3));
   return NULL;
+}
+static Value *builder_function_definition(Builder *builder, Sexp *ast) {
+  assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
+  assert(5 == sexp_length(ast));
+  return builder_expression(builder, sexp_at(ast, 4));
 }
 static void builder_stack_push(Builder *builder, Value *value) {
   vector_push(builder->stack, value);
@@ -172,6 +174,8 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     return builder_additive_expression(builder, ast);
   case AST_ASSIGNMENT_EXPRESSION:
     return builder_assignment_expression(builder, ast);
+  case AST_COMPOUND_STATEMENT:
+    return builder_compound_statement(builder, ast);
   case AST_TRANSLATION_UNIT:
     builder_ast_map(builder, ast, builder_expression);
     return NULL;
