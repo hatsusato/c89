@@ -5,6 +5,7 @@
 #include "ast/ast_tag.h"
 #include "ir/pool.h"
 #include "ir/register.h"
+#include "ir/register_type.h"
 #include "ir/table.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
@@ -13,12 +14,10 @@
 #include "vector.h"
 
 struct struct_Builder {
-  Vector *vec;
   Pool *pool;
   Table *table;
   Vector *stack;
   Value *block;
-  RegisterGenerator *gen;
 };
 
 static void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
@@ -134,21 +133,17 @@ static void builder_ast_map(Builder *builder, Sexp *ast) {
 
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
-  builder->vec = vector_new(utility_free);
   builder->pool = pool_new();
   builder->table = table_new();
   builder->stack = vector_new(NULL);
   builder->block = value_new(VALUE_BLOCK);
-  builder->gen = register_generator_new();
   return builder;
 }
 void builder_delete(Builder *builder) {
-  register_generator_delete(builder->gen);
   value_delete(builder->block);
   vector_delete(builder->stack);
   table_delete(builder->table);
   pool_delete(builder->pool);
-  vector_delete(builder->vec);
   UTILITY_FREE(builder);
 }
 void builder_build(Builder *builder, Sexp *ast) {
@@ -204,7 +199,9 @@ void builder_ast(Builder *builder, Sexp *ast) {
   }
 }
 void builder_print(Builder *builder) {
-  value_set_reg(builder->gen, builder->block);
+  RegisterGenerator *gen = register_generator_new();
+  value_set_reg(gen, builder->block);
+  register_generator_delete(gen);
   puts("target triple = \"x86_64-pc-linux-gnu\"\n");
   puts("define i32 @main() {");
   value_pretty(builder->block);
