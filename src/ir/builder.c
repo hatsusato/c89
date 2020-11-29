@@ -37,6 +37,10 @@ static void builder_stack_pop_insert(Builder *builder) {
   Value *value = vector_back(builder->stack);
   value_insert(value, pop);
 }
+static void builder_stack_insert(Builder *builder, Sexp *ast) {
+  Value *value = vector_back(builder->stack);
+  value_insert(value, table_find(builder->table, ast));
+}
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
@@ -51,7 +55,7 @@ static void builder_identifier(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_LOAD);
   builder_stack_push(builder, value);
-  value_insert(value, table_find(builder->table, ast));
+  builder_stack_insert(builder, ast);
 }
 static void builder_additive_expression(Builder *builder, Sexp *ast) {
   Value *value;
@@ -72,7 +76,7 @@ static void builder_assignment_expression(Builder *builder, Sexp *ast) {
   builder_stack_push(builder, value);
   builder_ast(builder, sexp_at(ast, 3));
   builder_stack_pop_insert(builder);
-  value_insert(value, table_find(builder->table, sexp_at(ast, 1)));
+  builder_stack_insert(builder, sexp_at(ast, 1));
 }
 static void builder_jump_statement(Builder *builder, Sexp *ast) {
   Value *value;
