@@ -102,21 +102,9 @@ static Value *builder_expression_statement(Builder *builder, Sexp *ast) {
   }
   return NULL;
 }
-static Value *builder_map_statement(Builder *builder, Sexp *ast) {
+static Value *builder_statement(Builder *builder, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  switch (sexp_get_tag(ast)) {
-  case AST_JUMP_STATEMENT:
-    builder_expression(builder, ast);
-    break;
-  case AST_EXPRESSION_STATEMENT:
-    builder_expression(builder, ast);
-    break;
-  default:
-    assert(0);
-    break;
-  }
-  return NULL;
+  return builder_expression(builder, sexp_at(ast, 1));
 }
 static Value *builder_compound_statement(Builder *builder, Sexp *ast) {
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
@@ -175,12 +163,14 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     return builder_additive_expression(builder, ast);
   case AST_ASSIGNMENT_EXPRESSION:
     return builder_assignment_expression(builder, ast);
+  case AST_STATEMENT:
+    return builder_statement(builder, ast);
   case AST_COMPOUND_STATEMENT:
     return builder_compound_statement(builder, ast);
   case AST_DECLARATION_LIST:
     return builder_ast_map(builder, ast, builder_map_declaration);
   case AST_STATEMENT_LIST:
-    return builder_ast_map(builder, ast, builder_map_statement);
+    return builder_ast_map(builder, ast, builder_statement);
   case AST_EXPRESSION_STATEMENT:
     return builder_expression_statement(builder, ast);
   case AST_JUMP_STATEMENT:
