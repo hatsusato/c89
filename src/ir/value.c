@@ -53,7 +53,7 @@ void value_print(Value *value) {
     printf("%s", (const char *)value->value);
     break;
   default:
-    printf("%%%d", value->reg.id);
+    register_print(&value->reg);
     break;
   }
 }
