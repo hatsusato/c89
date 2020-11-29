@@ -2,8 +2,6 @@
 
 set -eu
 
-MAIN_DIR=build
-
 TARGET=
 FLAGS=()
 print() {
@@ -37,7 +35,7 @@ for arg in "$@"; do
   esac
 done
 
-main=${MAIN_DIR-.}/main.out
+main=${MAIN_DIR-./build}/main.out
 for TARGET in "${files[@]}"; do
   print -fsyntax-only >/dev/null || error "$TARGET"
   if test "$eflag"; then
