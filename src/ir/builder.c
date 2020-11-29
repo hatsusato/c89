@@ -7,6 +7,7 @@
 #include "ir/instruction.h"
 #include "ir/pool.h"
 #include "ir/register.h"
+#include "ir/table.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
 #include "sexp.h"
@@ -16,6 +17,7 @@
 struct struct_Builder {
   Vector *vec;
   Pool *pool;
+  Table *table;
   Value *block;
   RegisterGenerator *gen;
 };
@@ -85,6 +87,7 @@ Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->vec = vector_new(utility_free);
   builder->pool = pool_new();
+  builder->table = table_new();
   builder->block = value_new(VALUE_BLOCK);
   builder->gen = register_generator_new();
   return builder;
@@ -92,6 +95,7 @@ Builder *builder_new(void) {
 void builder_delete(Builder *builder) {
   register_generator_delete(builder->gen);
   value_delete(builder->block);
+  table_delete(builder->table);
   pool_delete(builder->pool);
   vector_delete(builder->vec);
   UTILITY_FREE(builder);
