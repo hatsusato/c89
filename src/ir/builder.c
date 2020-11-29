@@ -22,7 +22,7 @@ struct struct_Builder {
 };
 
 static void builder_ast_map(Builder *builder, Sexp *ast,
-                            void (*map)(Builder *, Sexp *)) {
+                            Value *(*map)(Builder *, Sexp *)) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     map(builder, sexp_car(ast));
   }
@@ -75,7 +75,7 @@ static Value *builder_jump_statement(Builder *builder, Sexp *ast) {
   value_insert(builder->block, value);
   return value;
 }
-static void builder_map_declaration(Builder *builder, Sexp *ast) {
+static Value *builder_map_declaration(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_DECLARATION == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
@@ -91,12 +91,13 @@ static void builder_map_declaration(Builder *builder, Sexp *ast) {
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_ALLOC);
   table_insert(builder->table, ast, value);
   value_insert(builder->block, value);
+  return value;
 }
 static void builder_declaration_list(Builder *builder, Sexp *ast) {
   assert(AST_DECLARATION_LIST == sexp_get_tag(ast));
   builder_ast_map(builder, ast, builder_map_declaration);
 }
-static void builder_map_statement(Builder *builder, Sexp *ast) {
+static Value *builder_map_statement(Builder *builder, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   switch (sexp_get_tag(ast)) {
@@ -110,30 +111,20 @@ static void builder_map_statement(Builder *builder, Sexp *ast) {
     assert(0);
     break;
   }
+  return NULL;
 }
 static void builder_statement_list(Builder *builder, Sexp *ast) {
   assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
   builder_ast_map(builder, ast, builder_map_statement);
 }
-static void builder_function_definition(Builder *builder, Sexp *ast) {
+static Value *builder_function_definition(Builder *builder, Sexp *ast) {
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   ast = sexp_at(ast, 4);
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
   builder_declaration_list(builder, sexp_at(ast, 2));
   builder_statement_list(builder, sexp_at(ast, 3));
-}
-static void builder_map_translation_unit(Builder *builder, Sexp *ast) {
-  switch (sexp_get_tag(ast)) {
-  case AST_EXTERNAL_DECLARATION:
-    break;
-  case AST_FUNCTION_DEFINITION:
-    builder_function_definition(builder, ast);
-    break;
-  default:
-    assert(0);
-    break;
-  }
+  return NULL;
 }
 static void builder_stack_push(Builder *builder, Value *value) {
   vector_push(builder->stack, value);
@@ -182,8 +173,12 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
   case AST_ASSIGNMENT_EXPRESSION:
     return builder_assignment_expression(builder, ast);
   case AST_TRANSLATION_UNIT:
-    builder_ast_map(builder, ast, builder_map_translation_unit);
+    builder_ast_map(builder, ast, builder_expression);
     return NULL;
+  case AST_EXTERNAL_DECLARATION:
+    return NULL;
+  case AST_FUNCTION_DEFINITION:
+    return builder_function_definition(builder, ast);
   default:
     assert(0);
     return NULL;
