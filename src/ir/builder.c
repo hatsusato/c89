@@ -20,6 +20,25 @@ struct struct_Builder {
   RegisterGenerator *gen;
 };
 
+static void builder_map_declaration(Sexp *ast, void *extra) {
+  assert(AST_DECLARATION == sexp_get_tag(ast));
+  ast = sexp_at(ast, 2);
+  assert(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(AST_DECLARATOR == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(AST_IDENTIFIER);
+  ast = sexp_at(ast, 1);
+  assert(sexp_is_symbol(ast));
+}
+static void builder_declaration_list(Builder *builder, Sexp *ast) {
+  assert(AST_DECLARATION_LIST == sexp_get_tag(ast));
+  sexp_list_map(sexp_cdr(ast), builder, builder_map_declaration);
+}
 static void builder_map_statement(Sexp *ast, void *extra) {
   Builder *builder = extra;
   Value *value;
@@ -46,6 +65,7 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   assert(5 == sexp_length(ast));
   ast = sexp_at(ast, 4);
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
+  builder_declaration_list(builder, sexp_at(ast, 2));
   builder_statement_list(builder, sexp_at(ast, 3));
 }
 static void builder_map_translation_unit(Sexp *ast, void *builder) {
