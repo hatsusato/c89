@@ -22,7 +22,7 @@ struct struct_Builder {
 };
 
 static void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
-  Value *value = builder_alloc_value(builder, kind);
+  Value *value = pool_alloc(builder->pool, kind);
   switch (kind) {
   case VALUE_INTEGER_CONSTANT:
     assert(sexp_is_symbol(ast));
@@ -207,7 +207,4 @@ void builder_ast(Builder *builder, Sexp *ast) {
     assert(0);
     break;
   }
-}
-Value *builder_alloc_value(Builder *builder, ValueKind kind) {
-  return pool_alloc(builder->pool, kind);
 }
