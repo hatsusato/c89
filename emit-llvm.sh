@@ -3,5 +3,7 @@
 cflags=(-O0 -S -emit-llvm)
 
 for f in "$@"; do
-  clang "${cflags[@]}" -c "$f" -o "${f%.c}.ll"
+  l=${f%.c}.ll
+  clang "${cflags[@]}" -c "$f" -o "$l"
+  cat "$l"
 done
