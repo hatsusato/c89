@@ -123,6 +123,14 @@ static void builder_map_translation_unit(Sexp *ast, void *builder) {
     break;
   }
 }
+static void builder_stack_push(Builder *builder, Value *value) {
+  vector_push(builder->stack, value);
+}
+static Value *builder_stack_pop(Builder *builder) {
+  Value *value = vector_back(builder->stack);
+  vector_pop(builder->stack);
+  return value;
+}
 
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
