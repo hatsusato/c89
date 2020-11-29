@@ -94,6 +94,14 @@ static Value *builder_map_declaration(Builder *builder, Sexp *ast) {
   value_insert(builder->block, value);
   return value;
 }
+static Value *builder_expression_statement(Builder *builder, Sexp *ast) {
+  assert(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  if (!sexp_is_nil(ast)) {
+    return builder_expression(builder, ast);
+  }
+  return NULL;
+}
 static Value *builder_map_statement(Builder *builder, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
@@ -102,7 +110,7 @@ static Value *builder_map_statement(Builder *builder, Sexp *ast) {
     builder_expression(builder, ast);
     break;
   case AST_EXPRESSION_STATEMENT:
-    builder_expression(builder, sexp_at(ast, 1));
+    builder_expression(builder, ast);
     break;
   default:
     assert(0);
@@ -173,6 +181,8 @@ Value *builder_expression(Builder *builder, Sexp *ast) {
     return builder_ast_map(builder, ast, builder_map_declaration);
   case AST_STATEMENT_LIST:
     return builder_ast_map(builder, ast, builder_map_statement);
+  case AST_EXPRESSION_STATEMENT:
+    return builder_expression_statement(builder, ast);
   case AST_JUMP_STATEMENT:
     return builder_jump_statement(builder, ast);
   case AST_TRANSLATION_UNIT:
