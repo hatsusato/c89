@@ -29,7 +29,7 @@ static Value *builder_stack_pop(Builder *builder) {
   vector_pop(builder->stack);
   return value;
 }
-static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
+static void builder_integer_constant(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
@@ -37,18 +37,16 @@ static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   value = builder_alloc_value(builder, VALUE_INTEGER_CONSTANT);
   builder_stack_push(builder, value);
   value_set_value(value, sexp_get_symbol(ast));
-  return value;
 }
-static Value *builder_identifier(Builder *builder, Sexp *ast) {
+static void builder_identifier(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_LOAD);
   builder_stack_push(builder, value);
   value_insert(value, table_find(builder->table, ast));
   value_insert(builder->block, value);
-  return value;
 }
-static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
+static void builder_additive_expression(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 2)));
@@ -60,9 +58,8 @@ static Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 3));
   value_insert(value, builder_stack_pop(builder));
   value_insert(builder->block, value);
-  return value;
 }
-static Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
+static void builder_assignment_expression(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_IDENTIFIER == sexp_get_tag(sexp_at(ast, 1)));
   value = builder_alloc_value(builder, VALUE_INSTRUCTION_STORE);
@@ -71,9 +68,8 @@ static Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
   value_insert(value, builder_stack_pop(builder));
   value_insert(value, table_find(builder->table, sexp_at(ast, 1)));
   value_insert(builder->block, value);
-  return value;
 }
-static Value *builder_jump_statement(Builder *builder, Sexp *ast) {
+static void builder_jump_statement(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
@@ -85,9 +81,8 @@ static Value *builder_jump_statement(Builder *builder, Sexp *ast) {
   }
   value_insert(builder->block, value);
   builder_stack_pop(builder);
-  return value;
 }
-static Value *builder_declaration(Builder *builder, Sexp *ast) {
+static void builder_declaration(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_DECLARATION == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
@@ -105,39 +100,33 @@ static Value *builder_declaration(Builder *builder, Sexp *ast) {
   table_insert(builder->table, ast, value);
   value_insert(builder->block, value);
   builder_stack_pop(builder);
-  return value;
 }
-static Value *builder_expression_statement(Builder *builder, Sexp *ast) {
+static void builder_expression_statement(Builder *builder, Sexp *ast) {
   assert(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   if (!sexp_is_nil(ast)) {
     builder_ast(builder, ast);
-    return builder_stack_pop(builder);
+    builder_stack_pop(builder);
   }
-  return NULL;
 }
-static Value *builder_statement(Builder *builder, Sexp *ast) {
+static void builder_statement(Builder *builder, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
   builder_ast(builder, sexp_at(ast, 1));
-  return NULL;
 }
-static Value *builder_compound_statement(Builder *builder, Sexp *ast) {
+static void builder_compound_statement(Builder *builder, Sexp *ast) {
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
   builder_ast(builder, sexp_at(ast, 2));
   builder_ast(builder, sexp_at(ast, 3));
-  return NULL;
 }
-static Value *builder_function_definition(Builder *builder, Sexp *ast) {
+static void builder_function_definition(Builder *builder, Sexp *ast) {
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   builder_ast(builder, sexp_at(ast, 4));
-  return NULL;
 }
-static Value *builder_ast_map(Builder *builder, Sexp *ast) {
+static void builder_ast_map(Builder *builder, Sexp *ast) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     builder_ast(builder, sexp_car(ast));
   }
-  return NULL;
 }
 
 Builder *builder_new(void) {
