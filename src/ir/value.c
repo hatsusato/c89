@@ -79,6 +79,13 @@ void value_pretty(Value *value) {
     value_print(value);
     printf(" = alloca i32\n");
     break;
+  case VALUE_INSTRUCTION_STORE:
+    printf("  store i32 ");
+    value_print(value_at(value, 0));
+    printf(", i32* ");
+    value_print(value_at(value, 1));
+    printf("\n");
+    break;
   case VALUE_INSTRUCTION_RET:
     if (0 == value_length(value)) {
       printf("  ret void");
