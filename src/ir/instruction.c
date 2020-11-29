@@ -14,7 +14,7 @@ Value *instruction_build(Builder *builder, Sexp *ast) {
   case AST_ADDITIVE_EXPRESSION:
     assert(sexp_is_number(sexp_at(ast, 2)));
     assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
-    instr = builder_alloc_value(builder, VALUE_INSTRUCTION);
+    instr = builder_alloc_value(builder, VALUE_INSTRUCTION_ADD);
     value_insert(instr, builder_expression(builder, sexp_at(ast, 1)));
     value_insert(instr, builder_expression(builder, sexp_at(ast, 3)));
     break;

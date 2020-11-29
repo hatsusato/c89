@@ -65,7 +65,7 @@ void value_pretty(Value *value) {
       value_pretty(*begin);
     }
     break;
-  case VALUE_INSTRUCTION:
+  case VALUE_INSTRUCTION_ADD:
     printf("  ");
     value_print(value);
     printf(" = add i32 ");
@@ -117,7 +117,7 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
       value_set_reg(gen, *begin);
     }
     break;
-  case VALUE_INSTRUCTION:
+  case VALUE_INSTRUCTION_ADD:
     /* FALLTHROUGH */
   case VALUE_INSTRUCTION_ALLOC:
     /* FALLTHROUGH */
