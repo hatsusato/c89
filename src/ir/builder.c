@@ -22,6 +22,15 @@ struct struct_Builder {
   RegisterGenerator *gen;
 };
 
+static Value *builder_integer_constant(Builder *builder, Sexp *ast) {
+  Value *value;
+  assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(sexp_is_symbol(ast));
+  value = builder_alloc_value(builder, VALUE_INTEGER_CONSTANT);
+  value_set_value(value, sexp_get_symbol(ast));
+  return value;
+}
 static Value *builder_identifier(Builder *builder, Sexp *ast) {
   Value *value;
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
@@ -163,7 +172,7 @@ void builder_build(Builder *builder, Sexp *ast) {
 Value *builder_expression(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_INTEGER_CONSTANT:
-    return constant_new(builder->pool, ast);
+    return builder_integer_constant(builder, ast);
   case AST_ADDITIVE_EXPRESSION:
     return builder_additive_expression(builder, ast);
   case AST_ASSIGNMENT_EXPRESSION:
