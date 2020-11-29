@@ -45,6 +45,16 @@ static Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
   value_insert(value, lhsval);
   return value;
 }
+static Value *builder_jump_statement(Builder *builder, Sexp *ast) {
+  Value *value;
+  assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 2);
+  value = builder_alloc_value(builder, VALUE_INSTRUCTION_RET);
+  if (!sexp_is_nil(ast)) {
+    value_insert(value, builder_expression(builder, ast));
+  }
+  return value;
+}
 static void builder_map_declaration(Sexp *ast, void *extra) {
   Builder *builder = extra;
   Value *instr;
@@ -76,7 +86,7 @@ static void builder_map_statement(Sexp *ast, void *extra) {
   ast = sexp_at(ast, 1);
   switch (sexp_get_tag(ast)) {
   case AST_JUMP_STATEMENT:
-    value = instruction_build(builder, ast);
+    value = builder_jump_statement(builder, ast);
     value_insert(builder->block, value);
     break;
   case AST_EXPRESSION_STATEMENT:
