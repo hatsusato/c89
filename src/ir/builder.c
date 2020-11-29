@@ -21,10 +21,9 @@ struct struct_Builder {
   RegisterGenerator *gen;
 };
 
-static Value *builder_ast_map(Builder *builder, Sexp *ast,
-                              Value *(*map)(Builder *, Sexp *)) {
+static Value *builder_ast_map(Builder *builder, Sexp *ast) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    map(builder, sexp_car(ast));
+    builder_ast(builder, sexp_car(ast));
   }
   return NULL;
 }
@@ -170,15 +169,15 @@ Value *builder_ast(Builder *builder, Sexp *ast) {
   case AST_COMPOUND_STATEMENT:
     return builder_compound_statement(builder, ast);
   case AST_DECLARATION_LIST:
-    return builder_ast_map(builder, ast, builder_declaration);
+    return builder_ast_map(builder, ast);
   case AST_STATEMENT_LIST:
-    return builder_ast_map(builder, ast, builder_statement);
+    return builder_ast_map(builder, ast);
   case AST_EXPRESSION_STATEMENT:
     return builder_expression_statement(builder, ast);
   case AST_JUMP_STATEMENT:
     return builder_jump_statement(builder, ast);
   case AST_TRANSLATION_UNIT:
-    return builder_ast_map(builder, ast, builder_ast);
+    return builder_ast_map(builder, ast);
   case AST_EXTERNAL_DECLARATION:
     return NULL;
   case AST_FUNCTION_DEFINITION:
