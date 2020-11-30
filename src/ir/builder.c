@@ -21,7 +21,7 @@ struct struct_Builder {
   Pool *pool;
   Table *table;
   Vector *blocks, *stack;
-  Value *func, *block;
+  Value *func;
 };
 
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
@@ -37,9 +37,8 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   builder->func = pool_alloc(builder->pool, VALUE_FUNCTION);
-  builder->block = pool_alloc(builder->pool, VALUE_BLOCK);
-  vector_push(builder->blocks, builder->block);
-  value_insert(builder->func, builder->block);
+  vector_push(builder->blocks, pool_alloc(builder->pool, VALUE_BLOCK));
+  value_insert(builder->func, vector_back(builder->blocks));
   builder_ast(builder, sexp_at(ast, 4));
   vector_pop(builder->blocks);
   ast = sexp_at(ast, 2);
@@ -66,7 +65,7 @@ Builder *builder_new(void) {
   builder->table = table_new();
   builder->blocks = vector_new(NULL);
   builder->stack = vector_new(NULL);
-  builder->func = builder->block = NULL;
+  builder->func = NULL;
   return builder;
 }
 void builder_delete(Builder *builder) {
@@ -108,7 +107,7 @@ Value *builder_stack_pop(Builder *builder) {
   Value *value = vector_back(builder->stack);
   vector_pop(builder->stack);
   if (value_is_instruction(value)) {
-    value_insert(builder->block, value);
+    value_insert(vector_back(builder->blocks), value);
   }
   return value;
 }
