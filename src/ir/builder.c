@@ -21,7 +21,7 @@ struct struct_Builder {
   Pool *pool;
   Table *table;
   Vector *blocks, *stack;
-  Value *func;
+  Value *func, *block;
 };
 
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
@@ -64,7 +64,7 @@ Builder *builder_new(void) {
   builder->table = table_new();
   builder->blocks = vector_new(NULL);
   builder->stack = vector_new(NULL);
-  builder->func = NULL;
+  builder->func = builder->block = NULL;
   return builder;
 }
 void builder_delete(Builder *builder) {
@@ -133,14 +133,16 @@ Value *builder_stack_top(Builder *builder) {
 void builder_blocks_new(Builder *builder) {
   Value *value = pool_alloc(builder->pool, VALUE_BLOCK);
   value_insert(builder->func, value);
-  vector_push(builder->blocks, value);
+  builder_blocks_push(builder, value);
 }
 void builder_blocks_push(Builder *builder, Value *value) {
   vector_push(builder->blocks, value);
+  builder->block = value;
 }
 Value *builder_blocks_pop(Builder *builder) {
   Value *value = builder_blocks_top(builder);
   vector_pop(builder->blocks);
+  builder->block = NULL;
   return value;
 }
 Value *builder_blocks_top(Builder *builder) {
