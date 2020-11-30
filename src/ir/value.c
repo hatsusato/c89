@@ -58,6 +58,18 @@ void value_pretty(Value *value) {
   ElemType *begin = vector_begin(value->vec);
   ElemType *end = vector_end(value->vec);
   switch (value_kind(value)) {
+  case VALUE_FUNCTION:
+    printf("define i32 @main() {\n");
+    assert(begin != end);
+    value_pretty(*begin++);
+    for (; begin < end; ++begin) {
+      printf("\n");
+      value_print(*begin);
+      printf(":\n");
+      value_pretty(*begin);
+    }
+    printf("}\n");
+    break;
   case VALUE_BLOCK:
     for (; begin < end; ++begin) {
       value_pretty(*begin);
@@ -109,6 +121,11 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
   ElemType *begin = vector_begin(value->vec);
   ElemType *end = vector_end(value->vec);
   switch (value_kind(value)) {
+  case VALUE_FUNCTION:
+    for (; begin < end; ++begin) {
+      value_set_reg(gen, *begin);
+    }
+    break;
   case VALUE_BLOCK:
     register_set(gen, &value->reg);
     for (; begin < end; ++begin) {
@@ -131,6 +148,7 @@ const char *value_kind_show(Value *value) {
 #define VALUE_KIND_HANDLER(k) \
   case k:                     \
     return #k
+    VALUE_KIND_HANDLER(VALUE_FUNCTION);
     VALUE_KIND_HANDLER(VALUE_BLOCK);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOC);
