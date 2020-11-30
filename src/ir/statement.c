@@ -24,12 +24,18 @@ void builder_expression_statement(Builder *builder, Sexp *ast) {
   }
 }
 void builder_selection_statement(Builder *builder, Sexp *ast) {
+  Sexp *zero = sexp_symbol("0");
   assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 1)));
   assert(AST_IF == sexp_get_number(sexp_at(ast, 1)));
   assert(6 == sexp_length(ast));
-  UTILITY_UNUSED(builder);
-  UTILITY_UNUSED(ast);
+  builder_stack_push(builder, VALUE_INSTRUCTION_ICMP_NE, ast);
+  builder_ast(builder, sexp_at(ast, 3));
+  builder_stack_pop_insert(builder);
+  builder_stack_push(builder, VALUE_INTEGER_CONSTANT, zero);
+  builder_stack_pop_insert(builder);
+  builder_stack_pop(builder);
+  sexp_delete(zero);
 }
 void builder_jump_statement(Builder *builder, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
