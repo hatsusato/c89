@@ -95,6 +95,14 @@ void value_pretty(Value *value) {
     printf("br label ");
     value_print(value_at(value, 0));
     break;
+  case VALUE_INSTRUCTION_BR_COND:
+    printf("br i1 ");
+    value_print(value_at(value, 0));
+    printf(", label ");
+    value_print(value_at(value, 1));
+    printf(", label ");
+    value_print(value_at(value, 2));
+    break;
   case VALUE_INSTRUCTION_ADD:
     value_print(value);
     printf(" = add nsw i32 ");
@@ -152,6 +160,7 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
     VALUE_KIND_HANDLER(VALUE_INTEGER_CONSTANT);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
 #undef VALUE_KIND_HANDLER
   default:
@@ -169,6 +178,7 @@ const char *value_kind_show(Value *value) {
     VALUE_KIND_HANDLER(VALUE_INTEGER_CONSTANT);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
@@ -187,6 +197,7 @@ Bool value_is_instruction(Value *value) {
     return true
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
