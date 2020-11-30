@@ -20,6 +20,8 @@ fi
 for f in $(ls test/src); do
   c=test/src/$f
   ll=test/ans/${f%.c}.ll
+  test -f "$c" || continue
+  test -f "$ll" || continue
   if diff <("$main" <"$c" 2>/dev/null) "$ll" &>/dev/null; then
     echo "$bold${green}OK$normal: $f"
   else
