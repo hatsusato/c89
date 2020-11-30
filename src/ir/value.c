@@ -60,6 +60,9 @@ void value_print(Value *value) {
 void value_pretty(Value *value) {
   ElemType *begin = vector_begin(value->vec);
   ElemType *end = vector_end(value->vec);
+  if (value_is_instruction(value)) {
+    printf("  ");
+  }
   switch (value_kind(value)) {
   case VALUE_FUNCTION:
     printf("define dso_local ");
@@ -73,62 +76,56 @@ void value_pretty(Value *value) {
       printf(":\n");
       value_pretty(*begin);
     }
-    printf("}\n");
+    printf("}");
     break;
   case VALUE_BLOCK:
     for (; begin < end; ++begin) {
       value_pretty(*begin);
     }
-    break;
+    return;
   case VALUE_INSTRUCTION_RET:
     if (0 == value_length(value)) {
-      printf("  ret void");
+      printf("ret void");
     } else {
-      printf("  ret i32 ");
+      printf("ret i32 ");
       value_print(value_at(value, 0));
     }
-    printf("\n");
     break;
   case VALUE_INSTRUCTION_ADD:
-    printf("  ");
     value_print(value);
     printf(" = add nsw i32 ");
     value_print(value_at(value, 0));
     printf(", ");
     value_print(value_at(value, 1));
-    printf("\n");
     break;
   case VALUE_INSTRUCTION_ALLOCA:
-    printf("  ");
     value_print(value);
-    printf(" = alloca i32, align 4\n");
+    printf(" = alloca i32, align 4");
     break;
   case VALUE_INSTRUCTION_LOAD:
-    printf("  ");
     value_print(value);
     printf(" = load i32, i32* ");
     value_print(value_at(value, 0));
-    printf(", align 4\n");
+    printf(", align 4");
     break;
   case VALUE_INSTRUCTION_STORE:
-    printf("  store i32 ");
+    printf("store i32 ");
     value_print(value_at(value, 0));
     printf(", i32* ");
     value_print(value_at(value, 1));
-    printf(", align 4\n");
+    printf(", align 4");
     break;
   case VALUE_INSTRUCTION_ICMP_NE:
-    printf("  ");
     value_print(value);
     printf(" = icmp ne i32 ");
     value_print(value_at(value, 0));
     printf(", ");
     value_print(value_at(value, 1));
-    printf("\n");
   default:
     assert(0);
     break;
   }
+  printf("\n");
 }
 void value_set_reg(RegisterGenerator *gen, Value *value) {
   ElemType *begin = vector_begin(value->vec);
