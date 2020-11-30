@@ -38,6 +38,7 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   assert(5 == sexp_length(ast));
   builder->func = pool_alloc(builder->pool, VALUE_FUNCTION);
   builder->block = pool_alloc(builder->pool, VALUE_BLOCK);
+  value_insert(builder->func, builder->block);
   builder_ast(builder, sexp_at(ast, 4));
   ast = sexp_at(ast, 2);
   assert(AST_DECLARATOR == sexp_get_tag(ast));
@@ -77,12 +78,10 @@ void builder_build(Builder *builder, Sexp *ast) {
 }
 void builder_print(Builder *builder) {
   RegisterGenerator *gen = register_generator_new();
-  value_set_reg(gen, builder->block);
+  value_set_reg(gen, builder->func);
   register_generator_delete(gen);
   puts("target triple = \"x86_64-pc-linux-gnu\"\n");
-  puts("define i32 @main() {");
-  value_pretty(builder->block);
-  puts("}");
+  value_pretty(builder->func);
 }
 
 void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
