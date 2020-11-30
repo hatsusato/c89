@@ -133,6 +133,7 @@ void value_pretty(Value *value) {
     value_print(value_at(value, 0));
     printf(", ");
     value_print(value_at(value, 1));
+    break;
   default:
     assert(0);
     break;
