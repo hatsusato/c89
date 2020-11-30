@@ -142,16 +142,15 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
       value_set_reg(gen, *begin);
     }
     break;
-  case VALUE_INSTRUCTION_ADD:
-    /* FALLTHROUGH */
-  case VALUE_INSTRUCTION_ALLOCA:
-    /* FALLTHROUGH */
-  case VALUE_INSTRUCTION_LOAD:
-    /* FALLTHROUGH */
-  case VALUE_INSTRUCTION_ICMP_NE:
-    register_set(gen, &value->reg);
-    break;
+#define VALUE_KIND_HANDLER(k) \
+  case k:                     \
+    break
+    VALUE_KIND_HANDLER(VALUE_INTEGER_CONSTANT);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
+#undef VALUE_KIND_HANDLER
   default:
+    register_set(gen, &value->reg);
     break;
   }
 }
