@@ -4,6 +4,7 @@
 
 #include "ast/ast_tag.h"
 #include "ir/builder_impl.h"
+#include "ir/declaration.h"
 #include "ir/expression.h"
 #include "ir/pool.h"
 #include "ir/register.h"
@@ -71,21 +72,6 @@ static void builder_jump_statement(Builder *builder, Sexp *ast) {
     builder_ast(builder, ast);
     builder_stack_pop_insert(builder);
   }
-  builder_stack_pop(builder);
-}
-static void builder_declaration(Builder *builder, Sexp *ast) {
-  assert(AST_DECLARATION == sexp_get_tag(ast));
-  ast = sexp_at(ast, 2);
-  assert(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(AST_DECLARATOR == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  builder_stack_push(builder, VALUE_INSTRUCTION_ALLOC, ast);
   builder_stack_pop(builder);
 }
 static void builder_expression_statement(Builder *builder, Sexp *ast) {
