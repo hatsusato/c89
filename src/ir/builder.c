@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "ast/ast_tag.h"
+#include "ir/builder_impl.h"
 #include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/register_type.h"
@@ -20,7 +21,7 @@ struct struct_Builder {
   Value *block;
 };
 
-static void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
+void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
   Value *value = pool_alloc(builder->pool, kind);
   switch (kind) {
   case VALUE_INTEGER_CONSTANT:
@@ -35,7 +36,7 @@ static void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
   }
   vector_push(builder->stack, value);
 }
-static Value *builder_stack_pop(Builder *builder) {
+Value *builder_stack_pop(Builder *builder) {
   Value *value = vector_back(builder->stack);
   vector_pop(builder->stack);
   if (value_is_instruction(value)) {
@@ -43,12 +44,12 @@ static Value *builder_stack_pop(Builder *builder) {
   }
   return value;
 }
-static void builder_stack_pop_insert(Builder *builder) {
+void builder_stack_pop_insert(Builder *builder) {
   Value *pop = builder_stack_pop(builder);
   Value *value = vector_back(builder->stack);
   value_insert(value, pop);
 }
-static void builder_stack_insert(Builder *builder, Sexp *ast) {
+void builder_stack_insert(Builder *builder, Sexp *ast) {
   Value *value = vector_back(builder->stack);
   value_insert(value, table_find(builder->table, ast));
 }
