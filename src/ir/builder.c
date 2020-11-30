@@ -24,38 +24,6 @@ struct struct_Builder {
   Value *block;
 };
 
-void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
-  Value *value = pool_alloc(builder->pool, kind);
-  switch (kind) {
-  case VALUE_INTEGER_CONSTANT:
-    assert(sexp_is_symbol(ast));
-    value_set_value(value, sexp_get_symbol(ast));
-    break;
-  case VALUE_INSTRUCTION_ALLOC:
-    table_insert(builder->table, ast, value);
-    break;
-  default:
-    break;
-  }
-  vector_push(builder->stack, value);
-}
-Value *builder_stack_pop(Builder *builder) {
-  Value *value = vector_back(builder->stack);
-  vector_pop(builder->stack);
-  if (value_is_instruction(value)) {
-    value_insert(builder->block, value);
-  }
-  return value;
-}
-void builder_stack_pop_insert(Builder *builder) {
-  Value *pop = builder_stack_pop(builder);
-  Value *value = vector_back(builder->stack);
-  value_insert(value, pop);
-}
-void builder_stack_insert(Builder *builder, Sexp *ast) {
-  Value *value = vector_back(builder->stack);
-  value_insert(value, table_find(builder->table, ast));
-}
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   builder_stack_push(builder, VALUE_INTEGER_CONSTANT, sexp_at(ast, 1));
@@ -94,6 +62,48 @@ void builder_delete(Builder *builder) {
 void builder_build(Builder *builder, Sexp *ast) {
   builder_ast(builder, ast);
   assert(vector_empty(builder->stack));
+}
+void builder_print(Builder *builder) {
+  RegisterGenerator *gen = register_generator_new();
+  value_set_reg(gen, builder->block);
+  register_generator_delete(gen);
+  puts("target triple = \"x86_64-pc-linux-gnu\"\n");
+  puts("define i32 @main() {");
+  value_pretty(builder->block);
+  puts("}");
+}
+
+void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
+  Value *value = pool_alloc(builder->pool, kind);
+  switch (kind) {
+  case VALUE_INTEGER_CONSTANT:
+    assert(sexp_is_symbol(ast));
+    value_set_value(value, sexp_get_symbol(ast));
+    break;
+  case VALUE_INSTRUCTION_ALLOC:
+    table_insert(builder->table, ast, value);
+    break;
+  default:
+    break;
+  }
+  vector_push(builder->stack, value);
+}
+Value *builder_stack_pop(Builder *builder) {
+  Value *value = vector_back(builder->stack);
+  vector_pop(builder->stack);
+  if (value_is_instruction(value)) {
+    value_insert(builder->block, value);
+  }
+  return value;
+}
+void builder_stack_pop_insert(Builder *builder) {
+  Value *pop = builder_stack_pop(builder);
+  Value *value = vector_back(builder->stack);
+  value_insert(value, pop);
+}
+void builder_stack_insert(Builder *builder, Sexp *ast) {
+  Value *value = vector_back(builder->stack);
+  value_insert(value, table_find(builder->table, ast));
 }
 void builder_ast(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
@@ -142,13 +152,4 @@ void builder_ast(Builder *builder, Sexp *ast) {
     assert(0);
     break;
   }
-}
-void builder_print(Builder *builder) {
-  RegisterGenerator *gen = register_generator_new();
-  value_set_reg(gen, builder->block);
-  register_generator_delete(gen);
-  puts("target triple = \"x86_64-pc-linux-gnu\"\n");
-  puts("define i32 @main() {");
-  value_pretty(builder->block);
-  puts("}");
 }
