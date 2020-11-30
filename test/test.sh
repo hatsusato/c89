@@ -26,5 +26,6 @@ for f in $(ls test/src); do
     echo "$bold${green}OK$normal: $f"
   else
     echo "$bold${red}NG$normal: $f"
+    diff <("$main" <"$c" 2>/dev/null) "$ll"
   fi
 done
