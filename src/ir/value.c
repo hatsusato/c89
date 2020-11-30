@@ -117,6 +117,14 @@ void value_pretty(Value *value) {
     value_print(value_at(value, 1));
     printf(", align 4\n");
     break;
+  case VALUE_INSTRUCTION_ICMP_NE:
+    printf("  ");
+    value_print(value);
+    printf(" = icmp ne i32 ");
+    value_print(value_at(value, 0));
+    printf(", ");
+    value_print(value_at(value, 1));
+    printf("\n");
   default:
     assert(0);
     break;
@@ -142,6 +150,8 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
   case VALUE_INSTRUCTION_ALLOCA:
     /* FALLTHROUGH */
   case VALUE_INSTRUCTION_LOAD:
+    /* FALLTHROUGH */
+  case VALUE_INSTRUCTION_ICMP_NE:
     register_set(gen, &value->reg);
     break;
   default:
@@ -161,6 +171,7 @@ const char *value_kind_show(Value *value) {
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ICMP_NE);
 #undef VALUE_KIND_HANDLER
   default:
     assert(VALUE_KIND_END == value_kind(value));
@@ -177,6 +188,7 @@ Bool value_is_instruction(Value *value) {
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ICMP_NE);
 #undef VALUE_KIND_HANDLER
   default:
     return false;
