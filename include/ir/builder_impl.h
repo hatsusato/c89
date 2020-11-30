@@ -11,6 +11,8 @@ Value *builder_stack_pop(Builder *);
 void builder_stack_pop_insert(Builder *);
 void builder_stack_insert(Builder *, Sexp *);
 Value *builder_stack_top(Builder *);
+void builder_blocks_push(Builder *, Value *value);
+Value *builder_blocks_pop(Builder *);
 Value *builder_blocks_top(Builder *);
 void builder_ast(Builder *, Sexp *);
 

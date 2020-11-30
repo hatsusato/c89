@@ -38,8 +38,10 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   assert(5 == sexp_length(ast));
   builder->func = pool_alloc(builder->pool, VALUE_FUNCTION);
   builder_stack_push(builder, VALUE_BLOCK, ast);
+  builder_blocks_push(builder, builder_stack_top(builder));
   builder_ast(builder, sexp_at(ast, 4));
   builder_stack_pop(builder);
+  builder_blocks_pop(builder);
   ast = sexp_at(ast, 2);
   assert(AST_DECLARATOR == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
@@ -90,10 +92,6 @@ void builder_print(Builder *builder) {
 void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
   Value *value = pool_alloc(builder->pool, kind);
   switch (kind) {
-  case VALUE_BLOCK:
-    value_insert(builder->func, value);
-    vector_push(builder->blocks, value);
-    break;
   case VALUE_INTEGER_CONSTANT:
     assert(sexp_is_symbol(ast));
     value_set_value(value, sexp_get_symbol(ast));
@@ -109,9 +107,6 @@ void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
 Value *builder_stack_pop(Builder *builder) {
   Value *value = builder_stack_top(builder);
   vector_pop(builder->stack);
-  if (VALUE_BLOCK == value_kind(value)) {
-    vector_pop(builder->blocks);
-  }
   if (value_is_instruction(value)) {
     value_insert(builder_blocks_top(builder), value);
   }
@@ -129,6 +124,15 @@ void builder_stack_insert(Builder *builder, Sexp *ast) {
 Value *builder_stack_top(Builder *builder) {
   assert(!vector_empty(builder->stack));
   return vector_back(builder->stack);
+}
+void builder_blocks_push(Builder *builder, Value *value) {
+  value_insert(builder->func, value);
+  vector_push(builder->blocks, value);
+}
+Value *builder_blocks_pop(Builder *builder) {
+  Value *value = builder_blocks_top(builder);
+  vector_pop(builder->blocks);
+  return value;
 }
 Value *builder_blocks_top(Builder *builder) {
   assert(!vector_empty(builder->blocks));
