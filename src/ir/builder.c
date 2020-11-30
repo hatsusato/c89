@@ -152,6 +152,9 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case AST_EXPRESSION_STATEMENT:
     builder_expression_statement(builder, ast);
     break;
+  case AST_SELECTION_STATEMENT:
+    builder_selection_statement(builder, ast);
+    break;
   case AST_JUMP_STATEMENT:
     builder_jump_statement(builder, ast);
     break;
