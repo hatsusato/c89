@@ -53,7 +53,7 @@ void value_print(Value *value) {
     printf("%s", (const char *)value->value);
     break;
   default:
-    register_print(&value->reg);
+    register_print(&value->reg, true);
     break;
   }
 }
@@ -72,7 +72,7 @@ void value_pretty(Value *value) {
     value_pretty(*begin++);
     for (; begin < end; ++begin) {
       printf("\n");
-      value_print(*begin);
+      register_print(&((Value *)*begin)->reg, false);
       printf(":\n");
       value_pretty(*begin);
     }
