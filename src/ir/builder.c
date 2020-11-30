@@ -39,6 +39,17 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   builder->func = pool_alloc(builder->pool, VALUE_FUNCTION);
   builder->block = pool_alloc(builder->pool, VALUE_BLOCK);
   builder_ast(builder, sexp_at(ast, 4));
+  ast = sexp_at(ast, 2);
+  assert(AST_DECLARATOR == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(AST_IDENTIFIER == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(sexp_is_symbol(ast));
+  value_set_value(builder->func, sexp_get_symbol(ast));
 }
 static void builder_ast_map(Builder *builder, Sexp *ast) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {

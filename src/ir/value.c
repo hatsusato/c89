@@ -46,6 +46,9 @@ ValueKind value_kind(Value *value) {
 }
 void value_print(Value *value) {
   switch (value_kind(value)) {
+  case VALUE_FUNCTION:
+    printf("i32 @%s()", (const char *)value->value);
+    break;
   case VALUE_INTEGER_CONSTANT:
     printf("%s", (const char *)value->value);
     break;
@@ -59,7 +62,9 @@ void value_pretty(Value *value) {
   ElemType *end = vector_end(value->vec);
   switch (value_kind(value)) {
   case VALUE_FUNCTION:
-    printf("define i32 @main() {\n");
+    printf("define dso_local ");
+    value_print(value);
+    printf(" {\n");
     assert(begin != end);
     value_pretty(*begin++);
     for (; begin < end; ++begin) {
@@ -78,7 +83,7 @@ void value_pretty(Value *value) {
   case VALUE_INSTRUCTION_ADD:
     printf("  ");
     value_print(value);
-    printf(" = add i32 ");
+    printf(" = add nsw i32 ");
     value_print(value_at(value, 0));
     printf(", ");
     value_print(value_at(value, 1));
