@@ -10,6 +10,8 @@ void builder_stack_push(Builder *, ValueKind, Sexp *);
 Value *builder_stack_pop(Builder *);
 void builder_stack_pop_insert(Builder *);
 void builder_stack_insert(Builder *, Sexp *);
+Value *builder_stack_top(Builder *);
+Value *builder_blocks_top(Builder *);
 void builder_ast(Builder *, Sexp *);
 
 #endif /* INCLUDE_GUARD_7E55B423_2396_4FF0_8B3A_C8FAFB3D11F3 */

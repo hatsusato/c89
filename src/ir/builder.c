@@ -107,24 +107,32 @@ void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
   vector_push(builder->stack, value);
 }
 Value *builder_stack_pop(Builder *builder) {
-  Value *value = vector_back(builder->stack);
+  Value *value = builder_stack_top(builder);
   vector_pop(builder->stack);
   if (VALUE_BLOCK == value_kind(value)) {
     vector_pop(builder->blocks);
   }
   if (value_is_instruction(value)) {
-    value_insert(vector_back(builder->blocks), value);
+    value_insert(builder_blocks_top(builder), value);
   }
   return value;
 }
 void builder_stack_pop_insert(Builder *builder) {
   Value *pop = builder_stack_pop(builder);
-  Value *value = vector_back(builder->stack);
+  Value *value = builder_stack_top(builder);
   value_insert(value, pop);
 }
 void builder_stack_insert(Builder *builder, Sexp *ast) {
-  Value *value = vector_back(builder->stack);
+  Value *value = builder_stack_top(builder);
   value_insert(value, table_find(builder->table, ast));
+}
+Value *builder_stack_top(Builder *builder) {
+  assert(!vector_empty(builder->stack));
+  return vector_back(builder->stack);
+}
+Value *builder_blocks_top(Builder *builder) {
+  assert(!vector_empty(builder->blocks));
+  return vector_back(builder->blocks);
 }
 void builder_ast(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
