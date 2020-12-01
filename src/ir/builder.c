@@ -138,17 +138,18 @@ void builder_blocks_new(Builder *builder) {
 }
 void builder_blocks_push(Builder *builder, Value *value) {
   vector_push(builder->blocks, value);
-  builder->block = value;
 }
 Value *builder_blocks_pop(Builder *builder) {
   Value *value = builder_blocks_top(builder);
   vector_pop(builder->blocks);
-  builder->block = NULL;
   return value;
 }
 Value *builder_blocks_top(Builder *builder) {
   assert(!vector_empty(builder->blocks));
   return vector_back(builder->blocks);
+}
+void builder_block_set(Builder *builder, Value *value) {
+  builder->block = value;
 }
 void builder_ast(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
