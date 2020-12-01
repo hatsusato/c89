@@ -60,12 +60,13 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
     builder_stack_pop(builder);
   }
   {
-    builder_block_set(builder, then);
+    builder_stack_push_block(builder, then);
+    builder_block_pop_set(builder);
     builder_stack_push_block(builder, next);
     builder_ast(builder, sexp_at(ast, 5));
-    builder_stack_pop(builder);
+    assert(builder_stack_top(builder) == next);
+    builder_block_pop_set(builder);
   }
-  builder_block_set(builder, next);
 }
 void builder_jump_statement(Builder *builder, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
