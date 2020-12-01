@@ -22,7 +22,6 @@ void builder_compound_statement(Builder *builder, Sexp *ast) {
     builder_stack_insert(builder);
     builder_stack_swap(builder);
     builder_stack_register(builder);
-    builder_stack_drop(builder);
   }
 }
 void builder_expression_statement(Builder *builder, Sexp *ast) {
@@ -63,7 +62,6 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
   builder_stack_insert(builder);
   builder_stack_swap(builder);
   builder_stack_register(builder);
-  builder_stack_drop(builder);
   builder_stack_swap(builder);
   builder_stack_pop_block(builder);
   builder_ast(builder, sexp_at(ast, 5));
@@ -79,5 +77,4 @@ void builder_jump_statement(Builder *builder, Sexp *ast) {
     builder_stack_drop(builder);
   }
   builder_stack_register(builder);
-  builder_stack_drop(builder);
 }

@@ -130,6 +130,9 @@ void builder_stack_register(Builder *builder) {
   Value *value = builder_stack_top(builder);
   assert(value_is_instruction(value));
   value_insert(builder->block, value);
+  if (value_is_terminator(value)) {
+    builder_stack_drop(builder);
+  }
 }
 Value *builder_stack_drop(Builder *builder) {
   Value *value = builder_stack_top(builder);
