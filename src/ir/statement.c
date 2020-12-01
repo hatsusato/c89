@@ -18,9 +18,9 @@ void builder_compound_statement(Builder *builder, Sexp *ast) {
   if (!builder_stack_empty(builder)) {
     assert(VALUE_BLOCK == builder_stack_top_kind(builder));
     builder_stack_push(builder, VALUE_INSTRUCTION_BR);
-    builder_stack_over(builder);
+    builder_stack_swap(builder);
     builder_stack_insert(builder);
-    builder_stack_drop(builder);
+    builder_stack_swap(builder);
     builder_stack_register(builder);
     builder_stack_drop(builder);
   }
@@ -53,31 +53,23 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
   assert(sexp_is_number(sexp_at(ast, 1)));
   assert(AST_IF == sexp_get_number(sexp_at(ast, 1)));
   assert(6 == sexp_length(ast));
-  {
-    builder_stack_push(builder, VALUE_INSTRUCTION_BR_COND);
-    builder_icmp_ne_zero(builder, sexp_at(ast, 3));
-    builder_stack_insert(builder);
-    builder_stack_register(builder);
-    builder_stack_drop(builder);
-    builder_stack_push(builder, VALUE_BLOCK);
-    builder_stack_swap(builder);
-    builder_stack_over(builder);
-    builder_stack_insert(builder);
-    builder_stack_drop(builder);
-    builder_stack_push(builder, VALUE_BLOCK);
-    builder_stack_swap(builder);
-    builder_stack_over(builder);
-    builder_stack_insert(builder);
-    builder_stack_drop(builder);
-    builder_stack_register(builder);
-    builder_stack_drop(builder);
-  }
-  {
-    builder_stack_swap(builder);
-    builder_stack_pop_block(builder);
-    builder_ast(builder, sexp_at(ast, 5));
-    builder_stack_pop_block(builder);
-  }
+  builder_stack_push(builder, VALUE_INSTRUCTION_BR_COND);
+  builder_icmp_ne_zero(builder, sexp_at(ast, 3));
+  builder_stack_insert(builder);
+  builder_stack_register(builder);
+  builder_stack_drop(builder);
+  builder_stack_push(builder, VALUE_BLOCK);
+  builder_stack_insert(builder);
+  builder_stack_swap(builder);
+  builder_stack_push(builder, VALUE_BLOCK);
+  builder_stack_insert(builder);
+  builder_stack_swap(builder);
+  builder_stack_register(builder);
+  builder_stack_drop(builder);
+  builder_stack_swap(builder);
+  builder_stack_pop_block(builder);
+  builder_ast(builder, sexp_at(ast, 5));
+  builder_stack_pop_block(builder);
 }
 void builder_jump_statement(Builder *builder, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));

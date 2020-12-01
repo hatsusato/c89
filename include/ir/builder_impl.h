@@ -15,10 +15,7 @@ void builder_stack_register(Builder *);
 Value *builder_stack_drop(Builder *);
 void builder_stack_insert(Builder *);
 ValueKind builder_stack_top_kind(Builder *);
-void builder_stack_dup(Builder *);
-void builder_stack_over(Builder *);
 void builder_stack_swap(Builder *);
-void builder_stack_rot(Builder *);
 void builder_stack_pop_block(Builder *);
 void builder_ast(Builder *, Sexp *);
 

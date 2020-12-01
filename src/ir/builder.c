@@ -143,18 +143,6 @@ void builder_stack_insert(Builder *builder) {
 ValueKind builder_stack_top_kind(Builder *builder) {
   return value_kind(builder_stack_top(builder));
 }
-void builder_stack_dup(Builder *builder) {
-  Value *first = vector_back(builder->stack);
-  vector_push(builder->stack, first);
-}
-void builder_stack_over(Builder *builder) {
-  Value *first, *second;
-  first = vector_back(builder->stack);
-  vector_pop(builder->stack);
-  second = vector_back(builder->stack);
-  vector_push(builder->stack, first);
-  vector_push(builder->stack, second);
-}
 void builder_stack_swap(Builder *builder) {
   Value *first, *second;
   first = vector_back(builder->stack);
@@ -163,18 +151,6 @@ void builder_stack_swap(Builder *builder) {
   vector_pop(builder->stack);
   vector_push(builder->stack, first);
   vector_push(builder->stack, second);
-}
-void builder_stack_rot(Builder *builder) {
-  Value *first, *second, *third;
-  first = vector_back(builder->stack);
-  vector_pop(builder->stack);
-  second = vector_back(builder->stack);
-  vector_pop(builder->stack);
-  third = vector_back(builder->stack);
-  vector_pop(builder->stack);
-  vector_push(builder->stack, second);
-  vector_push(builder->stack, first);
-  vector_push(builder->stack, third);
 }
 void builder_stack_pop_block(Builder *builder) {
   assert(VALUE_BLOCK == builder_stack_top_kind(builder));
