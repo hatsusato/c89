@@ -21,5 +21,5 @@ void builder_declaration(Builder *builder, Sexp *ast) {
   builder_stack_new_value(builder, VALUE_INSTRUCTION_ALLOCA);
   builder_stack_init(builder, ast);
   builder_stack_register(builder);
-  builder_stack_drop(builder);
+  builder_stack_pop(builder);
 }

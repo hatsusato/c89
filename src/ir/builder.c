@@ -34,7 +34,7 @@ static void builder_identifier(Builder *builder, Sexp *ast) {
   builder_stack_new_value(builder, VALUE_INSTRUCTION_LOAD);
   builder_stack_push_identifier(builder, ast);
   builder_stack_insert(builder);
-  builder_stack_drop(builder);
+  builder_stack_pop(builder);
   builder_stack_register(builder);
 }
 static void builder_function_definition(Builder *builder, Sexp *ast) {
@@ -131,16 +131,16 @@ void builder_stack_register(Builder *builder) {
   assert(value_is_instruction(value));
   value_insert(builder->block, value);
   if (value_is_terminator(value)) {
-    builder_stack_drop(builder);
+    builder_stack_pop(builder);
   }
 }
-Value *builder_stack_drop(Builder *builder) {
+Value *builder_stack_pop(Builder *builder) {
   Value *value = builder_stack_top(builder);
   vector_pop(builder->stack);
   return value;
 }
 void builder_stack_insert(Builder *builder) {
-  Value *src = builder_stack_drop(builder);
+  Value *src = builder_stack_pop(builder);
   Value *dst = builder_stack_top(builder);
   value_insert(dst, src);
   builder_stack_push(builder, src);
@@ -149,14 +149,14 @@ ValueKind builder_stack_top_kind(Builder *builder) {
   return value_kind(builder_stack_top(builder));
 }
 void builder_stack_swap(Builder *builder) {
-  Value *first = builder_stack_drop(builder);
-  Value *second = builder_stack_drop(builder);
+  Value *first = builder_stack_pop(builder);
+  Value *second = builder_stack_pop(builder);
   builder_stack_push(builder, first);
   builder_stack_push(builder, second);
 }
 void builder_stack_pop_block(Builder *builder) {
   assert(VALUE_BLOCK == builder_stack_top_kind(builder));
-  builder->block = builder_stack_drop(builder);
+  builder->block = builder_stack_pop(builder);
 }
 void builder_ast(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {

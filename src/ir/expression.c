@@ -13,10 +13,10 @@ void builder_additive_expression(Builder *builder, Sexp *ast) {
   builder_stack_new_value(builder, VALUE_INSTRUCTION_ADD);
   builder_ast(builder, sexp_at(ast, 1));
   builder_stack_insert(builder);
-  builder_stack_drop(builder);
+  builder_stack_pop(builder);
   builder_ast(builder, sexp_at(ast, 3));
   builder_stack_insert(builder);
-  builder_stack_drop(builder);
+  builder_stack_pop(builder);
   builder_stack_register(builder);
 }
 void builder_assignment_expression(Builder *builder, Sexp *ast) {
@@ -24,9 +24,9 @@ void builder_assignment_expression(Builder *builder, Sexp *ast) {
   builder_stack_new_value(builder, VALUE_INSTRUCTION_STORE);
   builder_ast(builder, sexp_at(ast, 3));
   builder_stack_insert(builder);
-  builder_stack_drop(builder);
+  builder_stack_pop(builder);
   builder_stack_push_identifier(builder, sexp_at(ast, 1));
   builder_stack_insert(builder);
-  builder_stack_drop(builder);
+  builder_stack_pop(builder);
   builder_stack_register(builder);
 }
