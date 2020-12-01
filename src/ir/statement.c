@@ -16,10 +16,9 @@ void builder_compound_statement(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 2));
   builder_ast(builder, sexp_at(ast, 3));
   if (!builder_stack_empty(builder)) {
-    Value *next = builder_stack_top(builder);
-    assert(VALUE_BLOCK == value_kind(next));
+    assert(VALUE_BLOCK == value_kind(builder_stack_top(builder)));
     builder_stack_push(builder, VALUE_INSTRUCTION_BR);
-    builder_stack_push_block(builder, next);
+    builder_stack_over(builder);
     builder_stack_pop_insert(builder);
     builder_stack_pop(builder);
   }
@@ -54,17 +53,19 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
     builder_icmp_ne_zero(builder, sexp_at(ast, 3));
     builder_stack_pop_insert(builder);
     builder_stack_push(builder, VALUE_BLOCK);
-    then = builder_stack_pop_insert(builder);
+    builder_stack_swap(builder);
+    builder_stack_over(builder);
+    builder_stack_pop_insert(builder);
     builder_stack_push(builder, VALUE_BLOCK);
-    next = builder_stack_pop_insert(builder);
+    builder_stack_swap(builder);
+    builder_stack_over(builder);
+    builder_stack_pop_insert(builder);
     builder_stack_pop(builder);
   }
   {
-    builder_stack_push_block(builder, then);
+    builder_stack_swap(builder);
     builder_block_pop_set(builder);
-    builder_stack_push_block(builder, next);
     builder_ast(builder, sexp_at(ast, 5));
-    assert(builder_stack_top(builder) == next);
     builder_block_pop_set(builder);
   }
 }

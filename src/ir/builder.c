@@ -111,10 +111,6 @@ void builder_stack_init(Builder *builder, Sexp *ast) {
     break;
   }
 }
-void builder_stack_push_block(Builder *builder, Value *block) {
-  assert(VALUE_BLOCK == value_kind(block));
-  vector_push(builder->stack, block);
-}
 Value *builder_stack_pop(Builder *builder) {
   Value *value = builder_stack_top(builder);
   vector_pop(builder->stack);

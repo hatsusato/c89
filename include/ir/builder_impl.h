@@ -10,7 +10,6 @@
 Bool builder_stack_empty(Builder *);
 void builder_stack_push(Builder *, ValueKind);
 void builder_stack_init(Builder *, Sexp *);
-void builder_stack_push_block(Builder *, Value *);
 Value *builder_stack_pop(Builder *);
 Value *builder_stack_pop_insert(Builder *);
 void builder_stack_insert(Builder *, Sexp *);
