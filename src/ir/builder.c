@@ -93,6 +93,9 @@ Bool builder_stack_empty(Builder *builder) {
 void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
   Value *value = pool_alloc(builder->pool, kind);
   switch (kind) {
+  case VALUE_BLOCK:
+    value_insert(builder->func, value);
+    break;
   case VALUE_INTEGER_CONSTANT:
     assert(sexp_is_symbol(ast));
     value_set_value(value, sexp_get_symbol(ast));
