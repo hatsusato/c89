@@ -48,13 +48,9 @@ static void builder_icmp_ne_zero(Builder *builder, Sexp *ast) {
   builder_stack_pop_insert(builder);
   builder_stack_register(builder);
 }
-void builder_selection_statement(Builder *builder, Sexp *ast) {
-  assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
-  assert(sexp_is_number(sexp_at(ast, 1)));
-  assert(AST_IF == sexp_get_number(sexp_at(ast, 1)));
-  assert(6 == sexp_length(ast));
+static void builder_br_cond(Builder *builder, Sexp *ast) {
   builder_stack_new_value(builder, VALUE_INSTRUCTION_BR_COND);
-  builder_icmp_ne_zero(builder, sexp_at(ast, 3));
+  builder_icmp_ne_zero(builder, ast);
   builder_stack_pop_insert(builder);
   builder_stack_new_block(builder);
   builder_stack_insert(builder);
@@ -64,6 +60,13 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
   builder_stack_swap(builder);
   builder_stack_register(builder);
   builder_stack_swap(builder);
+}
+void builder_selection_statement(Builder *builder, Sexp *ast) {
+  assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
+  assert(sexp_is_number(sexp_at(ast, 1)));
+  assert(AST_IF == sexp_get_number(sexp_at(ast, 1)));
+  assert(6 == sexp_length(ast));
+  builder_br_cond(builder, sexp_at(ast, 3));
   builder_stack_pop_block(builder);
   builder_ast(builder, sexp_at(ast, 5));
   builder_stack_pop_block(builder);
