@@ -96,9 +96,6 @@ void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
   case VALUE_BLOCK:
     value_insert(builder->func, value);
     break;
-  case VALUE_INSTRUCTION_ALLOCA:
-    table_insert(builder->table, ast, value);
-    break;
   default:
     break;
   }
@@ -112,6 +109,9 @@ void builder_stack_init(Builder *builder, Sexp *ast) {
     ast = sexp_at(ast, 1);
     assert(sexp_is_symbol(ast));
     value_set_value(value, sexp_get_symbol(ast));
+    break;
+  case VALUE_INSTRUCTION_ALLOCA:
+    table_insert(builder->table, ast, value);
     break;
   default:
     break;
