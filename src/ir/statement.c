@@ -39,10 +39,6 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
   assert(sexp_is_number(sexp_at(ast, 1)));
   assert(AST_IF == sexp_get_number(sexp_at(ast, 1)));
   assert(6 == sexp_length(ast));
-  builder_blocks_new(builder);
-  then = builder_blocks_pop(builder);
-  builder_blocks_new(builder);
-  next = builder_blocks_pop(builder);
   {
     builder_stack_push(builder, VALUE_INSTRUCTION_BR_COND, NULL);
     {
@@ -60,12 +56,12 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
       builder_stack_pop_insert(builder);
     }
     {
-      builder_stack_push_block(builder, then);
-      builder_stack_pop_insert(builder);
+      builder_stack_push(builder, VALUE_BLOCK, NULL);
+      then = builder_stack_pop_insert(builder);
     }
     {
-      builder_stack_push_block(builder, next);
-      builder_stack_pop_insert(builder);
+      builder_stack_push(builder, VALUE_BLOCK, NULL);
+      next = builder_stack_pop_insert(builder);
     }
     builder_stack_pop(builder);
   }
