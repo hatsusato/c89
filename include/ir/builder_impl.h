@@ -11,6 +11,7 @@ Bool builder_stack_empty(Builder *);
 void builder_stack_push(Builder *, ValueKind);
 void builder_stack_push_identifier(Builder *, Sexp *);
 void builder_stack_init(Builder *, Sexp *);
+void builder_stack_register(Builder *);
 Value *builder_stack_pop(Builder *);
 Value *builder_stack_drop(Builder *);
 void builder_stack_insert(Builder *);

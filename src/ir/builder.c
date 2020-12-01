@@ -123,12 +123,15 @@ void builder_stack_init(Builder *builder, Sexp *ast) {
     break;
   }
 }
-Value *builder_stack_pop(Builder *builder) {
-  Value *value = builder_stack_drop(builder);
+void builder_stack_register(Builder *builder) {
+  Value *value = builder_stack_top(builder);
   if (value_is_instruction(value)) {
     value_insert(builder->block, value);
   }
-  return value;
+}
+Value *builder_stack_pop(Builder *builder) {
+  builder_stack_register(builder);
+  return builder_stack_drop(builder);
 }
 Value *builder_stack_drop(Builder *builder) {
   Value *value = builder_stack_top(builder);
