@@ -12,21 +12,17 @@ void builder_additive_expression(Builder *builder, Sexp *ast) {
   assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
   builder_stack_new_value(builder, VALUE_INSTRUCTION_ADD);
   builder_ast(builder, sexp_at(ast, 1));
-  builder_stack_insert(builder);
-  builder_stack_pop(builder);
+  builder_stack_pop_insert(builder);
   builder_ast(builder, sexp_at(ast, 3));
-  builder_stack_insert(builder);
-  builder_stack_pop(builder);
+  builder_stack_pop_insert(builder);
   builder_stack_register(builder);
 }
 void builder_assignment_expression(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(sexp_at(ast, 1)));
   builder_stack_new_value(builder, VALUE_INSTRUCTION_STORE);
   builder_ast(builder, sexp_at(ast, 3));
-  builder_stack_insert(builder);
-  builder_stack_pop(builder);
+  builder_stack_pop_insert(builder);
   builder_stack_push_identifier(builder, sexp_at(ast, 1));
-  builder_stack_insert(builder);
-  builder_stack_pop(builder);
+  builder_stack_pop_insert(builder);
   builder_stack_register(builder);
 }

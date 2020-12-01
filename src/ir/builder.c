@@ -33,8 +33,7 @@ static void builder_identifier(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
   builder_stack_new_value(builder, VALUE_INSTRUCTION_LOAD);
   builder_stack_push_identifier(builder, ast);
-  builder_stack_insert(builder);
-  builder_stack_pop(builder);
+  builder_stack_pop_insert(builder);
   builder_stack_register(builder);
 }
 static void builder_function_definition(Builder *builder, Sexp *ast) {
@@ -144,6 +143,10 @@ void builder_stack_insert(Builder *builder) {
   Value *dst = builder_stack_top(builder);
   value_insert(dst, src);
   builder_stack_push(builder, src);
+}
+void builder_stack_pop_insert(Builder *builder) {
+  builder_stack_insert(builder);
+  builder_stack_pop(builder);
 }
 ValueKind builder_stack_top_kind(Builder *builder) {
   return value_kind(builder_stack_top(builder));
