@@ -131,12 +131,6 @@ Value *builder_stack_drop(Builder *builder) {
   vector_pop(builder->stack);
   return value;
 }
-Value *builder_stack_pop_insert(Builder *builder) {
-  Value *pop = builder_stack_pop(builder);
-  Value *value = builder_stack_top(builder);
-  value_insert(value, pop);
-  return pop;
-}
 void builder_stack_insert(Builder *builder) {
   Value *src = builder_stack_drop(builder);
   Value *dst = builder_stack_top(builder);
