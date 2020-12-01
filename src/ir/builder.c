@@ -133,6 +133,31 @@ Value *builder_stack_top(Builder *builder) {
   assert(!vector_empty(builder->stack));
   return vector_back(builder->stack);
 }
+void builder_stack_dup(Builder *builder) {
+  Value *first = vector_back(builder->stack);
+  vector_push(builder->stack, first);
+}
+void builder_stack_swap(Builder *builder) {
+  Value *first, *second;
+  first = vector_back(builder->stack);
+  vector_pop(builder->stack);
+  second = vector_back(builder->stack);
+  vector_pop(builder->stack);
+  vector_push(builder->stack, first);
+  vector_push(builder->stack, second);
+}
+void builder_stack_rot(Builder *builder) {
+  Value *first, *second, *third;
+  first = vector_back(builder->stack);
+  vector_pop(builder->stack);
+  second = vector_back(builder->stack);
+  vector_pop(builder->stack);
+  third = vector_back(builder->stack);
+  vector_pop(builder->stack);
+  vector_push(builder->stack, second);
+  vector_push(builder->stack, first);
+  vector_push(builder->stack, third);
+}
 void builder_block_set(Builder *builder, Value *value) {
   builder->block = value;
 }
