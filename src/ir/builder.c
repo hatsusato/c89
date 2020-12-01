@@ -87,6 +87,10 @@ void builder_print(Builder *builder) {
   value_pretty(builder->func);
 }
 
+static Value *builder_stack_top(Builder *builder) {
+  assert(!vector_empty(builder->stack));
+  return vector_back(builder->stack);
+}
 Bool builder_stack_empty(Builder *builder) {
   return vector_empty(builder->stack);
 }
@@ -136,10 +140,6 @@ void builder_stack_insert(Builder *builder) {
   Value *dst = builder_stack_top(builder);
   value_insert(dst, src);
   vector_push(builder->stack, src);
-}
-Value *builder_stack_top(Builder *builder) {
-  assert(!vector_empty(builder->stack));
-  return vector_back(builder->stack);
 }
 ValueKind builder_stack_top_kind(Builder *builder) {
   return value_kind(builder_stack_top(builder));
