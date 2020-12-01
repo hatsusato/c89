@@ -19,7 +19,7 @@ void builder_stack_dup(Builder *);
 void builder_stack_over(Builder *);
 void builder_stack_swap(Builder *);
 void builder_stack_rot(Builder *);
-void builder_block_pop_set(Builder *);
+void builder_stack_pop_block(Builder *);
 void builder_ast(Builder *, Sexp *);
 
 #endif /* INCLUDE_GUARD_7E55B423_2396_4FF0_8B3A_C8FAFB3D11F3 */

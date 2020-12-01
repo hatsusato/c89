@@ -74,9 +74,9 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
   }
   {
     builder_stack_swap(builder);
-    builder_block_pop_set(builder);
+    builder_stack_pop_block(builder);
     builder_ast(builder, sexp_at(ast, 5));
-    builder_block_pop_set(builder);
+    builder_stack_pop_block(builder);
   }
 }
 void builder_jump_statement(Builder *builder, Sexp *ast) {
