@@ -12,6 +12,7 @@ void builder_stack_push(Builder *, ValueKind);
 void builder_stack_push_identifier(Builder *, Sexp *);
 void builder_stack_init(Builder *, Sexp *);
 Value *builder_stack_pop(Builder *);
+Value *builder_stack_drop(Builder *);
 Value *builder_stack_pop_insert(Builder *);
 void builder_stack_insert(Builder *, Sexp *);
 Value *builder_stack_top(Builder *);

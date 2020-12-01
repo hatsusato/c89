@@ -118,11 +118,15 @@ void builder_stack_init(Builder *builder, Sexp *ast) {
   }
 }
 Value *builder_stack_pop(Builder *builder) {
-  Value *value = builder_stack_top(builder);
-  vector_pop(builder->stack);
+  Value *value = builder_stack_drop(builder);
   if (value_is_instruction(value)) {
     value_insert(builder->block, value);
   }
+  return value;
+}
+Value *builder_stack_drop(Builder *builder) {
+  Value *value = builder_stack_top(builder);
+  vector_pop(builder->stack);
   return value;
 }
 Value *builder_stack_pop_insert(Builder *builder) {
