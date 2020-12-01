@@ -52,10 +52,10 @@ static void builder_br_cond(Builder *builder, Sexp *ast) {
   builder_stack_new_value(builder, VALUE_INSTRUCTION_BR_COND);
   builder_icmp_ne_zero(builder, ast);
   builder_stack_pop_insert(builder);
-  builder_stack_new_block(builder);
+  builder_stack_new_value(builder, VALUE_BLOCK);
   builder_stack_insert(builder);
   builder_stack_swap(builder);
-  builder_stack_new_block(builder);
+  builder_stack_new_value(builder, VALUE_BLOCK);
   builder_stack_insert(builder);
   builder_stack_swap(builder);
   builder_stack_register(builder);

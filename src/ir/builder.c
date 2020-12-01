@@ -40,7 +40,7 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   builder->func = pool_alloc(builder->pool, VALUE_FUNCTION);
-  builder_stack_new_block(builder);
+  builder_stack_new_value(builder, VALUE_BLOCK);
   builder_stack_pop_block(builder);
   builder_ast(builder, sexp_at(ast, 4));
   ast = sexp_at(ast, 2);
@@ -101,10 +101,6 @@ Bool builder_stack_empty(Builder *builder) {
 Value *builder_stack_new_value(Builder *builder, ValueKind kind) {
   return builder_stack_push(builder, pool_alloc(builder->pool, kind));
 }
-void builder_stack_new_block(Builder *builder) {
-  Value *value = builder_stack_new_value(builder, VALUE_BLOCK);
-  value_insert(builder->func, value);
-}
 void builder_stack_push_identifier(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
   builder_stack_push(builder, table_find(builder->table, ast));
@@ -160,6 +156,7 @@ void builder_stack_swap(Builder *builder) {
 void builder_stack_pop_block(Builder *builder) {
   assert(VALUE_BLOCK == builder_stack_top_kind(builder));
   builder->block = builder_stack_pop(builder);
+  value_insert(builder->func, builder->block);
 }
 void builder_ast(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
