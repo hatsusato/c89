@@ -34,10 +34,14 @@ static void builder_identifier(Builder *builder, Sexp *ast) {
   builder_stack_insert(builder, ast);
 }
 static void builder_function_definition(Builder *builder, Sexp *ast) {
+  Value *block;
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   builder->func = pool_alloc(builder->pool, VALUE_FUNCTION);
-  builder_blocks_new(builder);
+  builder_stack_push(builder, VALUE_BLOCK, NULL);
+  block = builder_stack_pop(builder);
+  builder_block_set(builder, block);
+  builder_blocks_push(builder, block);
   builder_ast(builder, sexp_at(ast, 4));
   builder_blocks_pop(builder);
   ast = sexp_at(ast, 2);
@@ -133,11 +137,6 @@ void builder_stack_insert(Builder *builder, Sexp *ast) {
 Value *builder_stack_top(Builder *builder) {
   assert(!vector_empty(builder->stack));
   return vector_back(builder->stack);
-}
-void builder_blocks_new(Builder *builder) {
-  Value *value = pool_alloc(builder->pool, VALUE_BLOCK);
-  value_insert(builder->func, value);
-  builder_blocks_push(builder, value);
 }
 void builder_blocks_push(Builder *builder, Value *value) {
   vector_push(builder->blocks, value);
