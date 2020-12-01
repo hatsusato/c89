@@ -33,11 +33,13 @@ void builder_expression_statement(Builder *builder, Sexp *ast) {
   }
 }
 static void builder_icmp_ne_zero(Builder *builder, Sexp *ast) {
-  Sexp *zero = sexp_symbol("0");
+  Sexp *zero = sexp_pair(sexp_symbol("0"), sexp_nil());
+  zero = sexp_pair(sexp_number(AST_INTEGER_CONSTANT), zero);
   builder_stack_push(builder, VALUE_INSTRUCTION_ICMP_NE, NULL);
   builder_ast(builder, ast);
   builder_stack_pop_insert(builder);
-  builder_stack_push(builder, VALUE_INTEGER_CONSTANT, zero);
+  builder_stack_push(builder, VALUE_INTEGER_CONSTANT, NULL);
+  builder_stack_init(builder, zero);
   builder_stack_pop_insert(builder);
   sexp_delete(zero);
 }

@@ -26,7 +26,8 @@ struct struct_Builder {
 
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
-  builder_stack_push(builder, VALUE_INTEGER_CONSTANT, sexp_at(ast, 1));
+  builder_stack_push(builder, VALUE_INTEGER_CONSTANT, NULL);
+  builder_stack_init(builder, ast);
 }
 static void builder_identifier(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
@@ -95,10 +96,6 @@ void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
   case VALUE_BLOCK:
     value_insert(builder->func, value);
     break;
-  case VALUE_INTEGER_CONSTANT:
-    assert(sexp_is_symbol(ast));
-    value_set_value(value, sexp_get_symbol(ast));
-    break;
   case VALUE_INSTRUCTION_ALLOCA:
     table_insert(builder->table, ast, value);
     break;
@@ -106,6 +103,19 @@ void builder_stack_push(Builder *builder, ValueKind kind, Sexp *ast) {
     break;
   }
   vector_push(builder->stack, value);
+}
+void builder_stack_init(Builder *builder, Sexp *ast) {
+  Value *value = builder_stack_top(builder);
+  switch (value_kind(value)) {
+  case VALUE_INTEGER_CONSTANT:
+    assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
+    ast = sexp_at(ast, 1);
+    assert(sexp_is_symbol(ast));
+    value_set_value(value, sexp_get_symbol(ast));
+    break;
+  default:
+    break;
+  }
 }
 void builder_stack_push_block(Builder *builder, Value *block) {
   assert(VALUE_BLOCK == value_kind(block));
