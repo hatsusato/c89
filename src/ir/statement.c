@@ -32,17 +32,21 @@ void builder_expression_statement(Builder *builder, Sexp *ast) {
     builder_stack_pop(builder);
   }
 }
-static void builder_icmp_ne_zero(Builder *builder, Sexp *ast) {
-  Sexp *zero = sexp_pair(sexp_symbol("0"), sexp_nil());
+static void builder_new_integer_constant(Builder *builder,
+                                         const char *integer) {
+  Sexp *zero = sexp_pair(sexp_symbol(integer), sexp_nil());
   zero = sexp_pair(sexp_number(AST_INTEGER_CONSTANT), zero);
+  builder_stack_new_value(builder, VALUE_INTEGER_CONSTANT);
+  builder_stack_init(builder, zero);
+  sexp_delete(zero);
+}
+static void builder_icmp_ne_zero(Builder *builder, Sexp *ast) {
   builder_stack_new_value(builder, VALUE_INSTRUCTION_ICMP_NE);
   builder_ast(builder, ast);
   builder_stack_pop_insert(builder);
-  builder_stack_new_value(builder, VALUE_INTEGER_CONSTANT);
-  builder_stack_init(builder, zero);
+  builder_new_integer_constant(builder, "0");
   builder_stack_pop_insert(builder);
   builder_stack_register(builder);
-  sexp_delete(zero);
 }
 void builder_selection_statement(Builder *builder, Sexp *ast) {
   assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
