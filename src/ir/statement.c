@@ -16,7 +16,7 @@ void builder_compound_statement(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 2));
   builder_ast(builder, sexp_at(ast, 3));
   if (!builder_stack_empty(builder)) {
-    assert(VALUE_BLOCK == value_kind(builder_stack_top(builder)));
+    assert(VALUE_BLOCK == builder_stack_top_kind(builder));
     builder_stack_push(builder, VALUE_INSTRUCTION_BR);
     builder_stack_over(builder);
     builder_stack_insert(builder);

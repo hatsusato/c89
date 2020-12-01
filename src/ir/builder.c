@@ -105,7 +105,7 @@ void builder_stack_push_identifier(Builder *builder, Sexp *ast) {
 }
 void builder_stack_init(Builder *builder, Sexp *ast) {
   Value *value = builder_stack_top(builder);
-  switch (value_kind(value)) {
+  switch (builder_stack_top_kind(builder)) {
   case VALUE_INTEGER_CONSTANT:
     assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
     ast = sexp_at(ast, 1);
@@ -141,6 +141,9 @@ Value *builder_stack_top(Builder *builder) {
   assert(!vector_empty(builder->stack));
   return vector_back(builder->stack);
 }
+ValueKind builder_stack_top_kind(Builder *builder) {
+  return value_kind(builder_stack_top(builder));
+}
 void builder_stack_dup(Builder *builder) {
   Value *first = vector_back(builder->stack);
   vector_push(builder->stack, first);
@@ -175,7 +178,7 @@ void builder_stack_rot(Builder *builder) {
   vector_push(builder->stack, third);
 }
 void builder_block_pop_set(Builder *builder) {
-  assert(VALUE_BLOCK == value_kind(builder_stack_top(builder)));
+  assert(VALUE_BLOCK == builder_stack_top_kind(builder));
   builder->block = builder_stack_pop(builder);
 }
 void builder_ast(Builder *builder, Sexp *ast) {
