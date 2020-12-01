@@ -58,10 +58,10 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
   builder_stack_insert(builder);
   builder_stack_register(builder);
   builder_stack_drop(builder);
-  builder_stack_push(builder, VALUE_BLOCK);
+  builder_stack_new_block(builder);
   builder_stack_insert(builder);
   builder_stack_swap(builder);
-  builder_stack_push(builder, VALUE_BLOCK);
+  builder_stack_new_block(builder);
   builder_stack_insert(builder);
   builder_stack_swap(builder);
   builder_stack_register(builder);
