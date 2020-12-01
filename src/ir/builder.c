@@ -147,16 +147,19 @@ void builder_stack_pop_insert(Builder *builder) {
 ValueKind builder_stack_top_kind(Builder *builder) {
   return value_kind(builder_stack_top(builder));
 }
+void builder_stack_pop_block(Builder *builder) {
+  assert(VALUE_BLOCK == builder_stack_top_kind(builder));
+  builder->block = builder_stack_pop(builder);
+  value_insert(builder->func, builder->block);
+}
+void builder_stack_dup(Builder *builder) {
+  builder_stack_push(builder, builder_stack_top(builder));
+}
 void builder_stack_swap(Builder *builder) {
   Value *first = builder_stack_pop(builder);
   Value *second = builder_stack_pop(builder);
   builder_stack_push(builder, first);
   builder_stack_push(builder, second);
-}
-void builder_stack_pop_block(Builder *builder) {
-  assert(VALUE_BLOCK == builder_stack_top_kind(builder));
-  builder->block = builder_stack_pop(builder);
-  value_insert(builder->func, builder->block);
 }
 void builder_ast(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {

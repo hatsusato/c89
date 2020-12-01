@@ -16,8 +16,9 @@ Value *builder_stack_pop(Builder *);
 void builder_stack_insert(Builder *);
 void builder_stack_pop_insert(Builder *);
 ValueKind builder_stack_top_kind(Builder *);
-void builder_stack_swap(Builder *);
 void builder_stack_pop_block(Builder *);
+void builder_stack_dup(Builder *);
+void builder_stack_swap(Builder *);
 void builder_ast(Builder *, Sexp *);
 
 #endif /* INCLUDE_GUARD_7E55B423_2396_4FF0_8B3A_C8FAFB3D11F3 */
