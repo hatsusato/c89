@@ -18,7 +18,7 @@ void builder_declaration(Builder *builder, Sexp *ast) {
   assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  builder_stack_push(builder, VALUE_INSTRUCTION_ALLOCA);
+  builder_stack_new_value(builder, VALUE_INSTRUCTION_ALLOCA);
   builder_stack_init(builder, ast);
   builder_stack_register(builder);
   builder_stack_drop(builder);

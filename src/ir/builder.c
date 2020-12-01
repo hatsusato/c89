@@ -26,12 +26,12 @@ struct struct_Builder {
 
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
-  builder_stack_push(builder, VALUE_INTEGER_CONSTANT);
+  builder_stack_new_value(builder, VALUE_INTEGER_CONSTANT);
   builder_stack_init(builder, ast);
 }
 static void builder_identifier(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  builder_stack_push(builder, VALUE_INSTRUCTION_LOAD);
+  builder_stack_new_value(builder, VALUE_INSTRUCTION_LOAD);
   builder_stack_push_identifier(builder, ast);
   builder_stack_insert(builder);
   builder_stack_drop(builder);
@@ -94,15 +94,14 @@ static Value *builder_stack_top(Builder *builder) {
 Bool builder_stack_empty(Builder *builder) {
   return vector_empty(builder->stack);
 }
-void builder_stack_push(Builder *builder, ValueKind kind) {
+Value *builder_stack_new_value(Builder *builder, ValueKind kind) {
   Value *value = pool_alloc(builder->pool, kind);
-  assert(VALUE_BLOCK != kind);
   vector_push(builder->stack, value);
+  return value;
 }
 void builder_stack_new_block(Builder *builder) {
-  Value *value = pool_alloc(builder->pool, VALUE_BLOCK);
+  Value *value = builder_stack_new_value(builder, VALUE_BLOCK);
   value_insert(builder->func, value);
-  vector_push(builder->stack, value);
 }
 void builder_stack_push_identifier(Builder *builder, Sexp *ast) {
   Value *value;

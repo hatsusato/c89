@@ -8,7 +8,7 @@
 #include "types.h"
 
 Bool builder_stack_empty(Builder *);
-void builder_stack_push(Builder *, ValueKind);
+Value *builder_stack_new_value(Builder *, ValueKind);
 void builder_stack_new_block(Builder *);
 void builder_stack_push_identifier(Builder *, Sexp *);
 void builder_stack_init(Builder *, Sexp *);
