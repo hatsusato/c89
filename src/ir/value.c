@@ -46,83 +46,126 @@ ValueKind value_kind(Value *value) {
 }
 void value_print(Value *value) {
   switch (value_kind(value)) {
+  case VALUE_FUNCTION:
+    printf("i32 @%s()", (const char *)value->value);
+    break;
   case VALUE_INTEGER_CONSTANT:
     printf("%s", (const char *)value->value);
     break;
   default:
-    register_print(&value->reg);
+    register_print(&value->reg, true);
     break;
   }
 }
 void value_pretty(Value *value) {
   ElemType *begin = vector_begin(value->vec);
   ElemType *end = vector_end(value->vec);
+  if (value_is_instruction(value)) {
+    printf("  ");
+  }
   switch (value_kind(value)) {
+  case VALUE_FUNCTION:
+    printf("define dso_local ");
+    value_print(value);
+    printf(" {\n");
+    assert(begin != end);
+    value_pretty(*begin++);
+    for (; begin < end; ++begin) {
+      printf("\n");
+      register_print(&((Value *)*begin)->reg, false);
+      printf(":\n");
+      value_pretty(*begin);
+    }
+    printf("}");
+    break;
   case VALUE_BLOCK:
     for (; begin < end; ++begin) {
       value_pretty(*begin);
     }
+    return;
+  case VALUE_INSTRUCTION_RET:
+    if (0 == value_length(value)) {
+      printf("ret void");
+    } else {
+      printf("ret i32 ");
+      value_print(value_at(value, 0));
+    }
+    break;
+  case VALUE_INSTRUCTION_BR:
+    printf("br label ");
+    value_print(value_at(value, 0));
+    break;
+  case VALUE_INSTRUCTION_BR_COND:
+    printf("br i1 ");
+    value_print(value_at(value, 0));
+    printf(", label ");
+    value_print(value_at(value, 1));
+    printf(", label ");
+    value_print(value_at(value, 2));
     break;
   case VALUE_INSTRUCTION_ADD:
-    printf("  ");
     value_print(value);
-    printf(" = add i32 ");
+    printf(" = add nsw i32 ");
     value_print(value_at(value, 0));
     printf(", ");
     value_print(value_at(value, 1));
-    printf("\n");
     break;
-  case VALUE_INSTRUCTION_ALLOC:
-    printf("  ");
+  case VALUE_INSTRUCTION_ALLOCA:
     value_print(value);
-    printf(" = alloca i32, align 4\n");
-    break;
-  case VALUE_INSTRUCTION_STORE:
-    printf("  store i32 ");
-    value_print(value_at(value, 0));
-    printf(", i32* ");
-    value_print(value_at(value, 1));
-    printf(", align 4\n");
+    printf(" = alloca i32, align 4");
     break;
   case VALUE_INSTRUCTION_LOAD:
-    printf("  ");
     value_print(value);
     printf(" = load i32, i32* ");
     value_print(value_at(value, 0));
-    printf(", align 4\n");
+    printf(", align 4");
     break;
-  case VALUE_INSTRUCTION_RET:
-    if (0 == value_length(value)) {
-      printf("  ret void");
-    } else {
-      printf("  ret i32 ");
-      value_print(value_at(value, 0));
-    }
-    printf("\n");
+  case VALUE_INSTRUCTION_STORE:
+    printf("store i32 ");
+    value_print(value_at(value, 0));
+    printf(", i32* ");
+    value_print(value_at(value, 1));
+    printf(", align 4");
+    break;
+  case VALUE_INSTRUCTION_ICMP_NE:
+    value_print(value);
+    printf(" = icmp ne i32 ");
+    value_print(value_at(value, 0));
+    printf(", ");
+    value_print(value_at(value, 1));
     break;
   default:
     assert(0);
     break;
   }
+  printf("\n");
 }
 void value_set_reg(RegisterGenerator *gen, Value *value) {
   ElemType *begin = vector_begin(value->vec);
   ElemType *end = vector_end(value->vec);
   switch (value_kind(value)) {
+  case VALUE_FUNCTION:
+    for (; begin < end; ++begin) {
+      value_set_reg(gen, *begin);
+    }
+    break;
   case VALUE_BLOCK:
     register_set(gen, &value->reg);
     for (; begin < end; ++begin) {
       value_set_reg(gen, *begin);
     }
     break;
-  case VALUE_INSTRUCTION_ADD:
-    /* FALLTHROUGH */
-  case VALUE_INSTRUCTION_ALLOC:
-    /* FALLTHROUGH */
-  case VALUE_INSTRUCTION_LOAD:
-    register_set(gen, &value->reg);
-    break;
+#define VALUE_KIND_HANDLER(k) \
+  case k:                     \
+    break
+    VALUE_KIND_HANDLER(VALUE_INTEGER_CONSTANT);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
+#undef VALUE_KIND_HANDLER
   default:
+    register_set(gen, &value->reg);
     break;
   }
 }
@@ -131,13 +174,17 @@ const char *value_kind_show(Value *value) {
 #define VALUE_KIND_HANDLER(k) \
   case k:                     \
     return #k
+    VALUE_KIND_HANDLER(VALUE_FUNCTION);
     VALUE_KIND_HANDLER(VALUE_BLOCK);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOC);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
     VALUE_KIND_HANDLER(VALUE_INTEGER_CONSTANT);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ICMP_NE);
 #undef VALUE_KIND_HANDLER
   default:
     assert(VALUE_KIND_END == value_kind(value));
@@ -149,11 +196,27 @@ Bool value_is_instruction(Value *value) {
 #define VALUE_KIND_HANDLER(k) \
   case k:                     \
     return true
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOC);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ICMP_NE);
+#undef VALUE_KIND_HANDLER
+  default:
+    return false;
+  }
+}
+Bool value_is_terminator(Value *value) {
+  switch (value_kind(value)) {
+#define VALUE_KIND_HANDLER(k) \
+  case k:                     \
+    return true
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
 #undef VALUE_KIND_HANDLER
   default:
     return false;

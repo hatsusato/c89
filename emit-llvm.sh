@@ -6,7 +6,7 @@ number() {
 }
 filter() {
   local opts=(-v -e '^[!;]' -e '^attributes')
-  grep "${opts[@]}" | sed -e 's/ #[0-9]* / /'
+  grep "${opts[@]}" | sed -e 's/ #[0-9]* / /' -e 's/[ ]*;.*$//'
 }
 
 cflags=(-O0 -S -emit-llvm)
