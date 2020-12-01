@@ -143,6 +143,14 @@ void builder_stack_dup(Builder *builder) {
   Value *first = vector_back(builder->stack);
   vector_push(builder->stack, first);
 }
+void builder_stack_over(Builder *builder) {
+  Value *first, *second;
+  first = vector_back(builder->stack);
+  vector_pop(builder->stack);
+  second = vector_back(builder->stack);
+  vector_push(builder->stack, first);
+  vector_push(builder->stack, second);
+}
 void builder_stack_swap(Builder *builder) {
   Value *first, *second;
   first = vector_back(builder->stack);
