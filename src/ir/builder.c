@@ -20,7 +20,7 @@
 struct struct_Builder {
   Pool *pool;
   Table *table;
-  Vector *blocks, *stack;
+  Vector *stack;
   Value *func, *block;
 };
 
@@ -64,21 +64,18 @@ Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->pool = pool_new();
   builder->table = table_new();
-  builder->blocks = vector_new(NULL);
   builder->stack = vector_new(NULL);
   builder->func = builder->block = NULL;
   return builder;
 }
 void builder_delete(Builder *builder) {
   vector_delete(builder->stack);
-  vector_delete(builder->blocks);
   table_delete(builder->table);
   pool_delete(builder->pool);
   UTILITY_FREE(builder);
 }
 void builder_build(Builder *builder, Sexp *ast) {
   builder_ast(builder, ast);
-  assert(vector_empty(builder->blocks));
   assert(vector_empty(builder->stack));
 }
 void builder_print(Builder *builder) {
