@@ -120,7 +120,7 @@ Value *builder_stack_pop(Builder *builder) {
   Value *value = builder_stack_top(builder);
   vector_pop(builder->stack);
   if (value_is_instruction(value)) {
-    value_insert(builder_blocks_top(builder), value);
+    value_insert(builder->block, value);
   }
   return value;
 }
