@@ -117,10 +117,11 @@ Value *builder_stack_pop(Builder *builder) {
   }
   return value;
 }
-void builder_stack_pop_insert(Builder *builder) {
+Value *builder_stack_pop_insert(Builder *builder) {
   Value *pop = builder_stack_pop(builder);
   Value *value = builder_stack_top(builder);
   value_insert(value, pop);
+  return pop;
 }
 void builder_stack_insert(Builder *builder, Sexp *ast) {
   Value *value = builder_stack_top(builder);

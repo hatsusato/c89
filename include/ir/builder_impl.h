@@ -11,7 +11,7 @@ Bool builder_stack_empty(Builder *);
 void builder_stack_push(Builder *, ValueKind, Sexp *);
 void builder_stack_push_block(Builder *, Value *);
 Value *builder_stack_pop(Builder *);
-void builder_stack_pop_insert(Builder *);
+Value *builder_stack_pop_insert(Builder *);
 void builder_stack_insert(Builder *, Sexp *);
 Value *builder_stack_top(Builder *);
 void builder_blocks_new(Builder *);
