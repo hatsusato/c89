@@ -21,5 +21,7 @@ void builder_assignment_expression(Builder *builder, Sexp *ast) {
   builder_stack_push(builder, VALUE_INSTRUCTION_STORE);
   builder_ast(builder, sexp_at(ast, 3));
   builder_stack_pop_insert(builder);
-  builder_stack_insert(builder, sexp_at(ast, 1));
+  builder_stack_push_identifier(builder, sexp_at(ast, 1));
+  builder_stack_insert(builder);
+  builder_stack_drop(builder);
 }
