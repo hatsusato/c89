@@ -20,8 +20,9 @@ void builder_compound_statement(Builder *builder, Sexp *ast) {
     builder_stack_push(builder, VALUE_INSTRUCTION_BR);
     builder_stack_over(builder);
     builder_stack_insert(builder);
-    builder_stack_pop(builder);
-    builder_stack_pop(builder);
+    builder_stack_drop(builder);
+    builder_stack_register(builder);
+    builder_stack_drop(builder);
   }
 }
 void builder_expression_statement(Builder *builder, Sexp *ast) {
@@ -29,7 +30,8 @@ void builder_expression_statement(Builder *builder, Sexp *ast) {
   ast = sexp_at(ast, 1);
   if (!sexp_is_nil(ast)) {
     builder_ast(builder, ast);
-    builder_stack_pop(builder);
+    builder_stack_register(builder);
+    builder_stack_drop(builder);
   }
 }
 static void builder_icmp_ne_zero(Builder *builder, Sexp *ast) {
@@ -38,11 +40,12 @@ static void builder_icmp_ne_zero(Builder *builder, Sexp *ast) {
   builder_stack_push(builder, VALUE_INSTRUCTION_ICMP_NE);
   builder_ast(builder, ast);
   builder_stack_insert(builder);
-  builder_stack_pop(builder);
+  builder_stack_register(builder);
+  builder_stack_drop(builder);
   builder_stack_push(builder, VALUE_INTEGER_CONSTANT);
   builder_stack_init(builder, zero);
   builder_stack_insert(builder);
-  builder_stack_pop(builder);
+  builder_stack_drop(builder);
   sexp_delete(zero);
 }
 void builder_selection_statement(Builder *builder, Sexp *ast) {
@@ -54,18 +57,20 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
     builder_stack_push(builder, VALUE_INSTRUCTION_BR_COND);
     builder_icmp_ne_zero(builder, sexp_at(ast, 3));
     builder_stack_insert(builder);
-    builder_stack_pop(builder);
+    builder_stack_register(builder);
+    builder_stack_drop(builder);
     builder_stack_push(builder, VALUE_BLOCK);
     builder_stack_swap(builder);
     builder_stack_over(builder);
     builder_stack_insert(builder);
-    builder_stack_pop(builder);
+    builder_stack_drop(builder);
     builder_stack_push(builder, VALUE_BLOCK);
     builder_stack_swap(builder);
     builder_stack_over(builder);
     builder_stack_insert(builder);
-    builder_stack_pop(builder);
-    builder_stack_pop(builder);
+    builder_stack_drop(builder);
+    builder_stack_register(builder);
+    builder_stack_drop(builder);
   }
   {
     builder_stack_swap(builder);
@@ -81,7 +86,9 @@ void builder_jump_statement(Builder *builder, Sexp *ast) {
   if (!sexp_is_nil(ast)) {
     builder_ast(builder, ast);
     builder_stack_insert(builder);
-    builder_stack_pop(builder);
+    builder_stack_register(builder);
+    builder_stack_drop(builder);
   }
-  builder_stack_pop(builder);
+  builder_stack_register(builder);
+  builder_stack_drop(builder);
 }

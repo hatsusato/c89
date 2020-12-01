@@ -129,10 +129,6 @@ void builder_stack_register(Builder *builder) {
     value_insert(builder->block, value);
   }
 }
-Value *builder_stack_pop(Builder *builder) {
-  builder_stack_register(builder);
-  return builder_stack_drop(builder);
-}
 Value *builder_stack_drop(Builder *builder) {
   Value *value = builder_stack_top(builder);
   vector_pop(builder->stack);
@@ -182,7 +178,7 @@ void builder_stack_rot(Builder *builder) {
 }
 void builder_block_pop_set(Builder *builder) {
   assert(VALUE_BLOCK == builder_stack_top_kind(builder));
-  builder->block = builder_stack_pop(builder);
+  builder->block = builder_stack_drop(builder);
 }
 void builder_ast(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
