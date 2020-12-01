@@ -87,6 +87,10 @@ void builder_print(Builder *builder) {
   value_pretty(builder->func);
 }
 
+static Value *builder_stack_push(Builder *builder, Value *value) {
+  vector_push(builder->stack, value);
+  return value;
+}
 static Value *builder_stack_top(Builder *builder) {
   assert(!vector_empty(builder->stack));
   return vector_back(builder->stack);
@@ -95,19 +99,15 @@ Bool builder_stack_empty(Builder *builder) {
   return vector_empty(builder->stack);
 }
 Value *builder_stack_new_value(Builder *builder, ValueKind kind) {
-  Value *value = pool_alloc(builder->pool, kind);
-  vector_push(builder->stack, value);
-  return value;
+  return builder_stack_push(builder, pool_alloc(builder->pool, kind));
 }
 void builder_stack_new_block(Builder *builder) {
   Value *value = builder_stack_new_value(builder, VALUE_BLOCK);
   value_insert(builder->func, value);
 }
 void builder_stack_push_identifier(Builder *builder, Sexp *ast) {
-  Value *value;
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  value = table_find(builder->table, ast);
-  vector_push(builder->stack, value);
+  builder_stack_push(builder, table_find(builder->table, ast));
 }
 void builder_stack_init(Builder *builder, Sexp *ast) {
   Value *value = builder_stack_top(builder);
@@ -140,7 +140,7 @@ void builder_stack_insert(Builder *builder) {
   Value *src = builder_stack_drop(builder);
   Value *dst = builder_stack_top(builder);
   value_insert(dst, src);
-  vector_push(builder->stack, src);
+  builder_stack_push(builder, src);
 }
 ValueKind builder_stack_top_kind(Builder *builder) {
   return value_kind(builder_stack_top(builder));
@@ -148,8 +148,8 @@ ValueKind builder_stack_top_kind(Builder *builder) {
 void builder_stack_swap(Builder *builder) {
   Value *first = builder_stack_drop(builder);
   Value *second = builder_stack_drop(builder);
-  vector_push(builder->stack, first);
-  vector_push(builder->stack, second);
+  builder_stack_push(builder, first);
+  builder_stack_push(builder, second);
 }
 void builder_stack_pop_block(Builder *builder) {
   assert(VALUE_BLOCK == builder_stack_top_kind(builder));
