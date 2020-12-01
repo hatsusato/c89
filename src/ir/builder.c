@@ -95,6 +95,12 @@ void builder_stack_push(Builder *builder, ValueKind kind) {
   }
   vector_push(builder->stack, value);
 }
+void builder_stack_push_identifier(Builder *builder, Sexp *ast) {
+  Value *value;
+  assert(AST_IDENTIFIER == sexp_get_tag(ast));
+  value = table_find(builder->table, ast);
+  vector_push(builder->stack, value);
+}
 void builder_stack_init(Builder *builder, Sexp *ast) {
   Value *value = builder_stack_top(builder);
   switch (value_kind(value)) {
