@@ -144,11 +144,8 @@ ValueKind builder_stack_top_kind(Builder *builder) {
   return value_kind(builder_stack_top(builder));
 }
 void builder_stack_swap(Builder *builder) {
-  Value *first, *second;
-  first = vector_back(builder->stack);
-  vector_pop(builder->stack);
-  second = vector_back(builder->stack);
-  vector_pop(builder->stack);
+  Value *first = builder_stack_drop(builder);
+  Value *second = builder_stack_drop(builder);
   vector_push(builder->stack, first);
   vector_push(builder->stack, second);
 }
