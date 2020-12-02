@@ -89,14 +89,6 @@ void builder_jump_statement(Builder *builder, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
   assert(!sexp_is_nil(ast));
-  if (builder_multiple_return(builder)) {
-    builder_ast(builder, ast);
-    builder_stack_push_symbol(builder, "$retval");
-    builder_instruction_store(builder);
-    builder_stack_pop(builder);
-  } else {
-    builder_ast(builder, ast);
-    builder_instruction_ret(builder);
-  }
-  builder_stack_set_next_block(builder, NULL);
+  builder_ast(builder, ast);
+  builder_stack_return(builder);
 }
