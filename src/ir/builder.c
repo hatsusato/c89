@@ -117,7 +117,10 @@ void builder_stack_init(Builder *builder, Sexp *ast) {
     value_set_value(value, sexp_get_symbol(ast));
     break;
   case VALUE_INSTRUCTION_ALLOCA:
-    table_insert(builder->table, ast, value);
+    assert(AST_IDENTIFIER == sexp_get_tag(ast));
+    ast = sexp_at(ast, 1);
+    assert(sexp_get_symbol(ast));
+    table_insert(builder->table, sexp_get_symbol(ast), value);
     break;
   default:
     break;
