@@ -9,7 +9,7 @@
 
 Bool builder_stack_empty(Builder *);
 Value *builder_stack_new_value(Builder *, ValueKind);
-void builder_stack_push_identifier(Builder *, Sexp *);
+void builder_stack_push_symbol(Builder *, const char *);
 void builder_stack_insert_symbol(Builder *, const char *);
 void builder_stack_set_symbol(Builder *, const char *);
 void builder_stack_register(Builder *);

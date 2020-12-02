@@ -33,8 +33,10 @@ static void builder_integer_constant(Builder *builder, Sexp *ast) {
 }
 static void builder_identifier(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(sexp_is_symbol(ast));
   builder_stack_new_value(builder, VALUE_INSTRUCTION_LOAD);
-  builder_stack_push_identifier(builder, ast);
+  builder_stack_push_symbol(builder, sexp_get_symbol(ast));
   builder_stack_pop_insert(builder);
   builder_stack_register(builder);
 }
@@ -105,11 +107,10 @@ Bool builder_stack_empty(Builder *builder) {
 Value *builder_stack_new_value(Builder *builder, ValueKind kind) {
   return builder_stack_push(builder, pool_alloc(builder->pool, kind));
 }
-void builder_stack_push_identifier(Builder *builder, Sexp *ast) {
-  assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(sexp_is_symbol(ast));
-  builder_stack_push(builder, table_find(builder->table, sexp_get_symbol(ast)));
+void builder_stack_push_symbol(Builder *builder, const char *symbol) {
+  Value *value = table_find(builder->table, symbol);
+  builder_stack_push(builder, value);
+  assert(VALUE_INSTRUCTION_ALLOCA == builder_stack_top_kind(builder));
 }
 void builder_stack_insert_symbol(Builder *builder, const char *symbol) {
   assert(VALUE_INSTRUCTION_ALLOCA == builder_stack_top_kind(builder));
