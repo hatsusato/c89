@@ -72,15 +72,17 @@ static void stack_function_definition(Stack *stack, Sexp *ast) {
   Value *entry = stack_new_block(stack);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
-  stack->ret = 1 < stack_count_return(ast) ? stack_new_block(stack) : NULL;
-  if (stack->ret) {
+  if (1 < stack_count_return(ast)) {
+    stack_ret_init(stack);
+  }
+  if (stack_ret(stack)) {
     stack_instruction_alloca(stack, "$retval");
     stack_pop(stack);
   }
-  stack_change_flow(stack, entry, stack->ret);
+  stack_change_flow(stack, entry, stack_ret(stack));
   stack_ast(stack, sexp_at(ast, 4));
-  if (stack->ret) {
-    stack_change_flow(stack, stack->ret, NULL);
+  if (stack_ret(stack)) {
+    stack_change_flow(stack, stack_ret(stack), NULL);
     stack_push_symbol(stack, "$retval");
     stack_instruction_load(stack);
     stack_instruction_ret(stack);
@@ -261,4 +263,11 @@ void stack_ast(Stack *stack, Sexp *ast) {
     assert(0);
     break;
   }
+}
+
+void stack_ret_init(Stack *stack) {
+  stack->ret = stack_new_block(stack);
+}
+Value *stack_ret(Stack *stack) {
+  return stack->ret;
 }

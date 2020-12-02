@@ -28,4 +28,7 @@ void stack_set_current_block(Stack *, Value *);
 void stack_swap(Stack *);
 void stack_ast(Stack *, Sexp *);
 
+void stack_ret_init(Stack *);
+Value *stack_ret(Stack *);
+
 #endif /* INCLUDE_GUARD_7E55B423_2396_4FF0_8B3A_C8FAFB3D11F3 */
