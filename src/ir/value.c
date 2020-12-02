@@ -145,14 +145,14 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
   ElemType *end = vector_end(value->vec);
   switch (value_kind(value)) {
   case VALUE_FUNCTION:
-    for (; begin < end; ++begin) {
-      value_set_reg(gen, *begin);
+    while (begin < end) {
+      value_set_reg(gen, *begin++);
     }
     break;
   case VALUE_BLOCK:
     register_set(gen, &value->reg);
-    for (; begin < end; ++begin) {
-      value_set_reg(gen, *begin);
+    while (begin < end) {
+      value_set_reg(gen, *begin++);
     }
     break;
 #define VALUE_KIND_HANDLER(k) \
