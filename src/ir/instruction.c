@@ -35,3 +35,8 @@ void builder_instruction_add(Builder *builder) {
   builder_stack_add(builder, second);
   builder_stack_register(builder);
 }
+void builder_instruction_alloca(Builder *builder, const char *symbol) {
+  builder_stack_new_value(builder, VALUE_INSTRUCTION_ALLOCA);
+  builder_stack_insert_symbol(builder, symbol);
+  builder_stack_register(builder);
+}

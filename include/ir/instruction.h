@@ -11,5 +11,7 @@ void builder_instruction_br(Builder *);
 void builder_instruction_br_cond(Builder *);
 /* add %1, %2: (%1 %2 -- ) */
 void builder_instruction_add(Builder *);
+/* alloca: ( -- %1)*/
+void builder_instruction_alloca(Builder *, const char *);
 
 #endif /* INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E */
