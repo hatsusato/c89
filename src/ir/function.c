@@ -20,3 +20,6 @@ Function *function_new(Pool *pool) {
 void function_delete(Function *func) {
   UTILITY_FREE(func);
 }
+void function_insert_allocs(Function *func) {
+  value_prepend(value_at(func->func, 0), func->allocs);
+}
