@@ -146,16 +146,6 @@ Value *builder_stack_pop(Builder *builder) {
   vector_pop(builder->stack);
   return value;
 }
-void builder_stack_insert(Builder *builder) {
-  Value *src = builder_stack_pop(builder);
-  Value *dst = builder_stack_top(builder);
-  value_insert(dst, src);
-  builder_stack_push(builder, src);
-}
-void builder_stack_pop_insert(Builder *builder) {
-  builder_stack_insert(builder);
-  builder_stack_pop(builder);
-}
 Value *builder_stack_top(Builder *builder) {
   assert(!vector_empty(builder->stack));
   return vector_back(builder->stack);
@@ -167,9 +157,6 @@ void builder_stack_pop_block(Builder *builder) {
   assert(VALUE_BLOCK == builder_stack_top_kind(builder));
   builder->block = builder_stack_pop(builder);
   value_insert(builder->func, builder->block);
-}
-void builder_stack_dup(Builder *builder) {
-  builder_stack_push(builder, builder_stack_top(builder));
 }
 void builder_stack_swap(Builder *builder) {
   Value *first = builder_stack_pop(builder);
