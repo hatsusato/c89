@@ -9,3 +9,9 @@ void builder_instruction_ret(Builder *builder) {
   builder_stack_add(builder, first);
   builder_stack_register(builder);
 }
+void builder_instruction_br(Builder *builder) {
+  Value *first = builder_stack_top(builder);
+  builder_stack_new_value(builder, VALUE_INSTRUCTION_BR);
+  builder_stack_add(builder, first);
+  builder_stack_register(builder);
+}
