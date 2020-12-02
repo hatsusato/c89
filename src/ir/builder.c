@@ -105,7 +105,9 @@ Value *builder_stack_new_value(Builder *builder, ValueKind kind) {
 }
 void builder_stack_push_identifier(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  builder_stack_push(builder, table_find(builder->table, ast));
+  ast = sexp_at(ast, 1);
+  assert(sexp_is_symbol(ast));
+  builder_stack_push(builder, table_find(builder->table, sexp_get_symbol(ast)));
 }
 void builder_stack_init(Builder *builder, Sexp *ast) {
   Value *value = builder_stack_top(builder);
