@@ -29,6 +29,11 @@ void function_insert_to_allocs(Function *func, Value *value) {
 void function_insert_to_current(Function *func, Value *value) {
   value_insert(func->current, value);
 }
+void function_set_current(Function *func, Value *value) {
+  assert(VALUE_BLOCK == value_kind(value));
+  func->current = value;
+  value_insert(func->func, value);
+}
 Value *function_get_return(Function *func) {
   return func->ret;
 }
