@@ -10,6 +10,7 @@
 Bool builder_multiple_return(Builder *);
 Bool builder_stack_empty(Builder *);
 Value *builder_stack_new_value(Builder *, ValueKind);
+Value *builder_stack_new_block(Builder *);
 void builder_stack_push_symbol(Builder *, const char *);
 void builder_stack_insert_symbol(Builder *, const char *);
 void builder_stack_set_symbol(Builder *, const char *);

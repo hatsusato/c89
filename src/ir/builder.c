@@ -122,6 +122,9 @@ Bool builder_stack_empty(Builder *builder) {
 Value *builder_stack_new_value(Builder *builder, ValueKind kind) {
   return builder_stack_push(builder, pool_alloc(builder->pool, kind));
 }
+Value *builder_stack_new_block(Builder *builder) {
+  return pool_alloc(builder->pool, VALUE_BLOCK);
+}
 void builder_stack_push_symbol(Builder *builder, const char *symbol) {
   Value *value = table_find(builder->table, symbol);
   builder_stack_push(builder, value);
