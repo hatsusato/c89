@@ -27,3 +27,11 @@ void builder_instruction_br_cond(Builder *builder) {
   builder_stack_push(builder, second);
   builder_stack_push(builder, third);
 }
+void builder_instruction_add(Builder *builder) {
+  Value *second = builder_stack_pop(builder);
+  Value *first = builder_stack_pop(builder);
+  builder_stack_new_value(builder, VALUE_INSTRUCTION_ADD);
+  builder_stack_add(builder, first);
+  builder_stack_add(builder, second);
+  builder_stack_register(builder);
+}
