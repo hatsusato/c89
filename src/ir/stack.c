@@ -6,6 +6,7 @@
 #include "ir/declaration.h"
 #include "ir/expression.h"
 #include "ir/instruction.h"
+#include "ir/lexical.h"
 #include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/register_type.h"
