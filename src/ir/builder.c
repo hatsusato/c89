@@ -103,10 +103,6 @@ static Value *builder_stack_push(Builder *builder, Value *value) {
   vector_push(builder->stack, value);
   return value;
 }
-static Value *builder_stack_top(Builder *builder) {
-  assert(!vector_empty(builder->stack));
-  return vector_back(builder->stack);
-}
 static int count_return(Sexp *ast) {
   if (sexp_is_pair(ast)) {
     return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
@@ -164,6 +160,10 @@ void builder_stack_insert(Builder *builder) {
 void builder_stack_pop_insert(Builder *builder) {
   builder_stack_insert(builder);
   builder_stack_pop(builder);
+}
+Value *builder_stack_top(Builder *builder) {
+  assert(!vector_empty(builder->stack));
+  return vector_back(builder->stack);
 }
 ValueKind builder_stack_top_kind(Builder *builder) {
   return value_kind(builder_stack_top(builder));
