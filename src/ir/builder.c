@@ -22,7 +22,7 @@ struct struct_Builder {
   Pool *pool;
   Table *table;
   Vector *stack;
-  Value *func, *block, *allocs;
+  Value *func, *block, *allocs, *next;
   Sexp *body;
 };
 
@@ -84,7 +84,7 @@ Builder *builder_new(void) {
   builder->pool = pool_new();
   builder->table = table_new();
   builder->stack = vector_new(NULL);
-  builder->func = builder->block = builder->allocs = NULL;
+  builder->func = builder->block = builder->allocs = builder->next = NULL;
   builder->body = sexp_nil();
   return builder;
 }
@@ -164,6 +164,13 @@ Value *builder_stack_top(Builder *builder) {
 }
 ValueKind builder_stack_top_kind(Builder *builder) {
   return value_kind(builder_stack_top(builder));
+}
+void builder_stack_set_next_block(Builder *builder, Value *block) {
+  assert(VALUE_BLOCK == value_kind(block));
+  builder->next = block;
+}
+Value *builder_stack_get_next_block(Builder *builder) {
+  return builder->next;
 }
 void builder_stack_pop_block(Builder *builder) {
   assert(VALUE_BLOCK == builder_stack_top_kind(builder));
