@@ -24,10 +24,7 @@ void builder_assignment_expression(Builder *builder, Sexp *ast) {
   assert(sexp_is_number(op) && AST_ASSIGN == sexp_get_number(op));
   lhs = sexp_at(lhs, 1);
   assert(sexp_is_symbol(lhs));
-  builder_stack_new_value(builder, VALUE_INSTRUCTION_STORE);
   builder_ast(builder, rhs);
-  builder_stack_pop_insert(builder);
   builder_stack_push_symbol(builder, sexp_get_symbol(lhs));
-  builder_stack_pop_insert(builder);
-  builder_stack_register(builder);
+  builder_instruction_store(builder);
 }

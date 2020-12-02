@@ -38,16 +38,16 @@ static void builder_declarator(Builder *builder, Sexp *ast) {
 }
 static void builder_init_declarator(Builder *builder, Sexp *ast) {
   assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
-  builder_declarator(builder, sexp_at(ast, 1));
   if (4 == sexp_length(ast)) {
-    builder_stack_new_value(builder, VALUE_INSTRUCTION_STORE);
+    builder_declarator(builder, sexp_at(ast, 1));
     builder_ast(builder, sexp_at(ast, 3));
-    builder_stack_pop_insert(builder);
     builder_stack_swap(builder);
-    builder_stack_pop_insert(builder);
-    builder_stack_register(builder);
+    builder_instruction_store(builder);
+    builder_stack_pop(builder);
+  } else {
+    builder_declarator(builder, sexp_at(ast, 1));
+    builder_stack_pop(builder);
   }
-  builder_stack_pop(builder);
 }
 void builder_declaration(Builder *builder, Sexp *ast) {
   assert(AST_DECLARATION == sexp_get_tag(ast));
