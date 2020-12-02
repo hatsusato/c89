@@ -30,6 +30,7 @@ void stack_ast(Stack *, Sexp *);
 
 void stack_ret_init(Stack *);
 Value *stack_ret(Stack *);
+void stack_insert_allocs(Stack *);
 void stack_set_function_name(Stack *, Sexp *);
 
 #endif /* INCLUDE_GUARD_7E55B423_2396_4FF0_8B3A_C8FAFB3D11F3 */

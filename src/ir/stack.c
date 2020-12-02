@@ -54,7 +54,7 @@ static void stack_function_definition(Stack *stack, Sexp *ast) {
     stack_instruction_load(stack);
     stack_instruction_ret(stack);
   }
-  value_prepend(value_at(stack->func, 0), stack->allocs);
+  stack_insert_allocs(stack);
   stack_set_function_name(stack, ast);
 }
 static void stack_ast_map(Stack *stack, Sexp *ast) {
@@ -237,6 +237,9 @@ void stack_ret_init(Stack *stack) {
 }
 Value *stack_ret(Stack *stack) {
   return stack->ret;
+}
+void stack_insert_allocs(Stack *stack) {
+  value_prepend(value_at(stack->func, 0), stack->allocs);
 }
 void stack_set_function_name(Stack *stack, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
