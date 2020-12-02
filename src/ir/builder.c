@@ -31,14 +31,17 @@ static void builder_integer_constant(Builder *builder, Sexp *ast) {
   builder_stack_new_value(builder, VALUE_INTEGER_CONSTANT);
   builder_stack_set_symbol(builder, sexp_get_symbol(ast));
 }
+static void builder_load_symbol(Builder *builder, const char *symbol) {
+  builder_stack_new_value(builder, VALUE_INSTRUCTION_LOAD);
+  builder_stack_push_symbol(builder, symbol);
+  builder_stack_pop_insert(builder);
+  builder_stack_register(builder);
+}
 static void builder_identifier(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  builder_stack_new_value(builder, VALUE_INSTRUCTION_LOAD);
-  builder_stack_push_symbol(builder, sexp_get_symbol(ast));
-  builder_stack_pop_insert(builder);
-  builder_stack_register(builder);
+  builder_load_symbol(builder, sexp_get_symbol(ast));
 }
 static void builder_function_definition(Builder *builder, Sexp *ast) {
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
