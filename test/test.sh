@@ -43,7 +43,7 @@ check() {
     echo "$bold${green}OK$normal: $i"
   else
     echo "$bold${red}NG$normal: $i"
-    test "$diff_flag" && compare "$c" -u
+    test "$diff_flag" && compare "$i" -u
   fi
 }
 
