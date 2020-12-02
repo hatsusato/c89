@@ -48,7 +48,18 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   builder->body = sexp_at(ast, 4);
   builder_stack_new_value(builder, VALUE_BLOCK);
   builder_stack_pop_block(builder);
-  builder_ast(builder, builder->body);
+  if (builder_multiple_return(builder)) {
+    builder_instruction_alloca(builder, "$retval");
+    builder_stack_pop(builder);
+    builder_stack_new_value(builder, VALUE_BLOCK);
+    builder_ast(builder, builder->body);
+    builder_stack_pop_block(builder);
+    builder_stack_push_symbol(builder, "$retval");
+    builder_instruction_load(builder);
+    builder_instruction_ret(builder);
+  } else {
+    builder_ast(builder, builder->body);
+  }
   value_prepend(value_at(builder->func, 0), builder->allocs);
   ast = sexp_at(ast, 2);
   assert(AST_DECLARATOR == sexp_get_tag(ast));
