@@ -17,8 +17,11 @@ void builder_compound_statement(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 2));
   builder_ast(builder, sexp_at(ast, 3));
   if (!builder_stack_empty(builder)) {
+    Value *next;
     assert(VALUE_BLOCK == builder_stack_top_kind(builder));
+    next = builder_stack_top(builder);
     builder_instruction_br(builder);
+    builder_stack_push(builder, next);
   }
 }
 void builder_expression_statement(Builder *builder, Sexp *ast) {

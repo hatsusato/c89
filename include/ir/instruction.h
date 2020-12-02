@@ -5,7 +5,7 @@
 
 /* ret %1: (%1 -- ) */
 void builder_instruction_ret(Builder *);
-/* br label %1: (%1 -- %1) */
+/* br label %1: (%1 -- ) */
 void builder_instruction_br(Builder *);
 /* br %1, label %2, label %3: (%1 %2 %3 -- ) */
 void builder_instruction_br_cond(Builder *);

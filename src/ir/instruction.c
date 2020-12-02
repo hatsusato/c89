@@ -31,7 +31,7 @@ void builder_instruction_ret(Builder *builder) {
   builder_instruction_unary(builder, VALUE_INSTRUCTION_RET, first);
 }
 void builder_instruction_br(Builder *builder) {
-  Value *first = builder_stack_top(builder);
+  Value *first = builder_stack_pop(builder);
   builder_instruction_unary(builder, VALUE_INSTRUCTION_BR, first);
 }
 void builder_instruction_br_cond(Builder *builder) {
