@@ -16,3 +16,7 @@ void builder_delete(Builder *builder) {
   stack_delete(builder->stack);
   UTILITY_FREE(builder);
 }
+void builder_build(Builder *builder, Sexp *ast) {
+  stack_build(builder->stack, ast);
+  stack_print(builder->stack);
+}
