@@ -81,9 +81,9 @@ static void stack_ast_map(Stack *stack, Sexp *ast) {
   }
 }
 
-Stack *stack_new(void) {
+Stack *stack_new(Pool *pool) {
   Stack *stack = UTILITY_MALLOC(Stack);
-  stack->pool = pool_new();
+  stack->pool = pool;
   stack->table = table_new();
   stack->stack = vector_new(NULL);
   stack->func = stack->current = stack->allocs = stack->next = stack->ret =
@@ -94,7 +94,6 @@ Stack *stack_new(void) {
 void stack_delete(Stack *stack) {
   vector_delete(stack->stack);
   table_delete(stack->table);
-  pool_delete(stack->pool);
   UTILITY_FREE(stack);
 }
 void stack_build(Stack *stack, Sexp *ast) {
