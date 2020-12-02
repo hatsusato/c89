@@ -99,10 +99,6 @@ void builder_print(Builder *builder) {
   value_pretty(builder->func);
 }
 
-static Value *builder_stack_push(Builder *builder, Value *value) {
-  vector_push(builder->stack, value);
-  return value;
-}
 static int count_return(Sexp *ast) {
   if (sexp_is_pair(ast)) {
     return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
@@ -142,6 +138,10 @@ void builder_stack_register(Builder *builder) {
   if (value_is_terminator(value)) {
     builder_stack_pop(builder);
   }
+}
+Value *builder_stack_push(Builder *builder, Value *value) {
+  vector_push(builder->stack, value);
+  return value;
 }
 void builder_stack_add(Builder *builder, Value *value) {
   value_insert(builder_stack_top(builder), value);

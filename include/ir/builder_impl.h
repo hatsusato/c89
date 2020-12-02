@@ -14,6 +14,7 @@ void builder_stack_push_symbol(Builder *, const char *);
 void builder_stack_insert_symbol(Builder *, const char *);
 void builder_stack_set_symbol(Builder *, const char *);
 void builder_stack_register(Builder *);
+Value *builder_stack_push(Builder *, Value *);
 void builder_stack_add(Builder *, Value *);
 Value *builder_stack_pop(Builder *);
 void builder_stack_insert(Builder *);
