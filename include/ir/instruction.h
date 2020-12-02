@@ -3,7 +3,11 @@
 
 #include "ir/builder_type.h"
 
+/* ret %1: (%1 -- ) */
 void builder_instruction_ret(Builder *);
+/* br label %1: (%1 -- %1) */
 void builder_instruction_br(Builder *);
+/* br %1, label %2, label %3: (%1 %2 %3 -- %2 %3) */
+void builder_instruction_br_cond(Builder *);
 
 #endif /* INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E */
