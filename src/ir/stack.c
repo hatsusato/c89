@@ -6,6 +6,7 @@
 #include "ir/declaration.h"
 #include "ir/definition.h"
 #include "ir/expression.h"
+#include "ir/function.h"
 #include "ir/instruction.h"
 #include "ir/lexical.h"
 #include "ir/pool.h"
@@ -24,8 +25,7 @@ struct struct_Stack {
   Pool *pool;
   Table *table;
   Vector *stack;
-  Value *func, *allocs;
-  Value *current, *next, *ret;
+  Function *func;
 };
 
 Stack *stack_new(Pool *pool) {
@@ -33,12 +33,11 @@ Stack *stack_new(Pool *pool) {
   stack->pool = pool;
   stack->table = table_new();
   stack->stack = vector_new(NULL);
-  stack->func = pool_alloc(stack->pool, VALUE_FUNCTION);
-  stack->allocs = pool_alloc(stack->pool, VALUE_BLOCK);
-  stack->current = stack->next = stack->ret = NULL;
+  stack->func = function_new(pool);
   return stack;
 }
 void stack_delete(Stack *stack) {
+  function_delete(stack->func);
   vector_delete(stack->stack);
   table_delete(stack->table);
   UTILITY_FREE(stack);
@@ -47,13 +46,13 @@ Value *stack_build(Stack *stack, Sexp *ast) {
   RegisterGenerator *gen = register_generator_new();
   stack_ast(stack, ast);
   assert(vector_empty(stack->stack));
-  value_set_reg(gen, stack->func);
+  value_set_reg(gen, function_get_func(stack->func));
   register_generator_delete(gen);
-  return stack->func;
+  return function_get_func(stack->func);
 }
 void stack_print(Stack *stack) {
   puts("target triple = \"x86_64-pc-linux-gnu\"\n");
-  value_pretty(stack->func);
+  value_pretty(function_get_func(stack->func));
 }
 
 Bool stack_empty(Stack *stack) {
@@ -81,9 +80,9 @@ void stack_register(Stack *stack) {
   Value *value = stack_top(stack);
   assert(value_is_instruction(value));
   if (VALUE_INSTRUCTION_ALLOCA == stack_top_kind(stack)) {
-    value_insert(stack->allocs, value);
+    function_insert_to_allocs(stack->func, value);
   } else {
-    value_insert(stack->current, value);
+    function_insert_to_current(stack->func, value);
   }
   if (value_is_terminator(value)) {
     stack_pop(stack);
@@ -109,35 +108,30 @@ ValueKind stack_top_kind(Stack *stack) {
   return value_kind(stack_top(stack));
 }
 void stack_set_next_block(Stack *stack, Value *block) {
-  assert(!block || VALUE_BLOCK == value_kind(block));
-  stack->next = block;
+  function_set_next(stack->func, block);
 }
 Value *stack_get_next_block(Stack *stack) {
-  return stack->next;
+  return function_get_next(stack->func);
 }
 void stack_change_flow(Stack *stack, Value *current, Value *next) {
-  assert(VALUE_BLOCK == value_kind(current));
   assert(!next || VALUE_BLOCK == value_kind(next));
-  stack->current = current;
-  stack->next = next;
-  value_insert(stack->func, current);
+  function_set_current(stack->func, current);
+  function_set_next(stack->func, next);
 }
 void stack_return(Stack *stack) {
-  if (stack->ret) {
+  if (function_get_return(stack->func)) {
     stack_push_symbol(stack, "$retval");
     stack_instruction_store(stack);
     stack_pop(stack);
-    stack_push(stack, stack->ret);
+    stack_push(stack, function_get_return(stack->func));
     stack_instruction_br(stack);
   } else {
     stack_instruction_ret(stack);
   }
-  stack->next = NULL;
+  function_set_next(stack->func, NULL);
 }
 void stack_set_current_block(Stack *stack, Value *block) {
-  assert(VALUE_BLOCK == value_kind(block));
-  stack->current = block;
-  value_insert(stack->func, block);
+  function_set_current(stack->func, block);
 }
 void stack_swap(Stack *stack) {
   Value *first = stack_pop(stack);
@@ -147,13 +141,13 @@ void stack_swap(Stack *stack) {
 }
 
 void stack_ret_init(Stack *stack) {
-  stack->ret = stack_new_block(stack);
+  function_set_return(stack->func, stack_new_block(stack));
 }
 Value *stack_ret(Stack *stack) {
-  return stack->ret;
+  return function_get_return(stack->func);
 }
 void stack_insert_allocs(Stack *stack) {
-  value_prepend(value_at(stack->func, 0), stack->allocs);
+  function_insert_allocs(stack->func);
 }
 void stack_set_function_name(Stack *stack, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
@@ -161,7 +155,7 @@ void stack_set_function_name(Stack *stack, Sexp *ast) {
     assert(2 == sexp_length(ast));
     ast = sexp_at(ast, 1);
     assert(sexp_is_symbol(ast));
-    value_set_value(stack->func, sexp_get_symbol(ast));
+    value_set_value(function_get_func(stack->func), sexp_get_symbol(ast));
     break;
   case AST_DECLARATOR:
     switch (sexp_length(ast)) {
