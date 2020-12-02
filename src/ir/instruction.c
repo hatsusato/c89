@@ -9,6 +9,13 @@ static void builder_instruction_unary(Builder *builder, ValueKind kind,
   builder_stack_add(builder, first);
   builder_stack_register(builder);
 }
+static void builder_instruction_binary(Builder *builder, ValueKind kind,
+                                       Value *first, Value *second) {
+  builder_stack_new_value(builder, kind);
+  builder_stack_add(builder, first);
+  builder_stack_add(builder, second);
+  builder_stack_register(builder);
+}
 
 void builder_instruction_ret(Builder *builder) {
   Value *first = builder_stack_pop(builder);
@@ -33,10 +40,7 @@ void builder_instruction_br_cond(Builder *builder) {
 void builder_instruction_add(Builder *builder) {
   Value *second = builder_stack_pop(builder);
   Value *first = builder_stack_pop(builder);
-  builder_stack_new_value(builder, VALUE_INSTRUCTION_ADD);
-  builder_stack_add(builder, first);
-  builder_stack_add(builder, second);
-  builder_stack_register(builder);
+  builder_instruction_binary(builder, VALUE_INSTRUCTION_ADD, first, second);
 }
 void builder_instruction_alloca(Builder *builder, const char *symbol) {
   builder_stack_new_value(builder, VALUE_INSTRUCTION_ALLOCA);
@@ -50,16 +54,10 @@ void builder_instruction_load(Builder *builder) {
 void builder_instruction_store(Builder *builder) {
   Value *second = builder_stack_pop(builder);
   Value *first = builder_stack_pop(builder);
-  builder_stack_new_value(builder, VALUE_INSTRUCTION_STORE);
-  builder_stack_add(builder, first);
-  builder_stack_add(builder, second);
-  builder_stack_register(builder);
+  builder_instruction_binary(builder, VALUE_INSTRUCTION_STORE, first, second);
 }
 void builder_instruction_icmp_ne(Builder *builder) {
   Value *second = builder_stack_pop(builder);
   Value *first = builder_stack_pop(builder);
-  builder_stack_new_value(builder, VALUE_INSTRUCTION_ICMP_NE);
-  builder_stack_add(builder, first);
-  builder_stack_add(builder, second);
-  builder_stack_register(builder);
+  builder_instruction_binary(builder, VALUE_INSTRUCTION_ICMP_NE, first, second);
 }
