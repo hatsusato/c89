@@ -79,6 +79,13 @@ void value_pretty(Value *value) {
     printf("  ");
   }
   switch (value_kind(value)) {
+  case VALUE_MODULE:
+    puts("target triple = \"x86_64-pc-linux-gnu\"");
+    for (; begin < end; ++begin) {
+      printf("\n");
+      value_pretty(*begin);
+    }
+    break;
   case VALUE_FUNCTION:
     printf("define dso_local ");
     value_print(value);
@@ -189,6 +196,7 @@ const char *value_kind_show(Value *value) {
 #define VALUE_KIND_HANDLER(k) \
   case k:                     \
     return #k
+    VALUE_KIND_HANDLER(VALUE_MODULE);
     VALUE_KIND_HANDLER(VALUE_FUNCTION);
     VALUE_KIND_HANDLER(VALUE_BLOCK);
     VALUE_KIND_HANDLER(VALUE_INTEGER_CONSTANT);
