@@ -22,7 +22,8 @@ struct struct_Stack {
   Pool *pool;
   Table *table;
   Vector *stack;
-  Value *func, *current, *allocs, *next, *ret;
+  Value *func, *allocs;
+  Value *current, *next, *ret;
   Sexp *body;
 };
 
@@ -44,8 +45,6 @@ static void stack_function_definition(Stack *stack, Sexp *ast) {
   Value *entry = stack_new_block(stack);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
-  stack->func = pool_alloc(stack->pool, VALUE_FUNCTION);
-  stack->allocs = stack_new_block(stack);
   stack->body = sexp_at(ast, 4);
   if (stack_multiple_return(stack)) {
     Value *next = stack_new_block(stack);
@@ -86,8 +85,9 @@ Stack *stack_new(Pool *pool) {
   stack->pool = pool;
   stack->table = table_new();
   stack->stack = vector_new(NULL);
-  stack->func = stack->current = stack->allocs = stack->next = stack->ret =
-      NULL;
+  stack->func = pool_alloc(stack->pool, VALUE_FUNCTION);
+  stack->allocs = pool_alloc(stack->pool, VALUE_BLOCK);
+  stack->current = stack->next = stack->ret = NULL;
   stack->body = sexp_nil();
   return stack;
 }
