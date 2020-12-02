@@ -1,8 +1,8 @@
 #include "ir/declaration.h"
 
 #include "ast/ast_tag.h"
-#include "ir/builder_impl.h"
 #include "ir/instruction.h"
+#include "ir/stack_impl.h"
 #include "ir/value_kind.h"
 #include "sexp.h"
 #include "utility.h"

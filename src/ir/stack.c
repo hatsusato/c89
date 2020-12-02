@@ -1,15 +1,15 @@
-#include "builder.h"
+#include "ir/stack.h"
 
 #include <stdio.h>
 
 #include "ast/ast_tag.h"
-#include "ir/builder_impl.h"
 #include "ir/declaration.h"
 #include "ir/expression.h"
 #include "ir/instruction.h"
 #include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/register_type.h"
+#include "ir/stack_impl.h"
 #include "ir/statement.h"
 #include "ir/table.h"
 #include "ir/value.h"

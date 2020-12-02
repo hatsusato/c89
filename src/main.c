@@ -1,5 +1,5 @@
 #include "ast.h"
-#include "builder.h"
+#include "ir/stack.h"
 #include "print.h"
 #include "scanner.h"
 

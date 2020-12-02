@@ -1,6 +1,6 @@
 #include "ir/instruction.h"
 
-#include "ir/builder_impl.h"
+#include "ir/stack_impl.h"
 #include "ir/value_kind.h"
 
 static void builder_instruction_unary(Builder *builder, ValueKind kind) {
