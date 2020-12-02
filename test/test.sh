@@ -3,6 +3,7 @@
 set -eu
 
 main=./build/main.out
+diff_flag=
 
 compare() {
   local e=$'\e'
@@ -14,10 +15,13 @@ compare() {
   local ll=test/ans/$1.ll
   test -f "$c" || return
   test -f "$ll" || return
-  if diff <("$main" <"$c" 2>/dev/null) "$ll" &>/dev/null; then
+  if diff "$ll" <("$main" <"$c" 2>/dev/null) &>/dev/null; then
     echo "$bold${green}OK$normal: $i"
   else
     echo "$bold${red}NG$normal: $i"
+    if test "$diff_flag"; then
+      diff -u "$ll" <("$main" <"$c" 2>/dev/null) || :
+    fi
   fi
 }
 
@@ -28,7 +32,9 @@ if ! test -x "$main"; then
   echo "ERROR: $main not found"
   exit 1
 fi
-if (($# == 0)); then
+if (($#)); then
+  diff_flag=on
+else
   for f in $(ls test/src); do
     set -- "$@" "${f%.c}"
   done
