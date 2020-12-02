@@ -48,6 +48,39 @@ static int stack_count_return(Sexp *ast) {
     return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
   }
 }
+static const char *stack_function_name(Sexp *ast) {
+  switch (sexp_get_tag(ast)) {
+  case AST_IDENTIFIER:
+    assert(2 == sexp_length(ast));
+    ast = sexp_at(ast, 1);
+    assert(sexp_is_symbol(ast));
+    return sexp_get_symbol(ast);
+  case AST_DECLARATOR:
+    switch (sexp_length(ast)) {
+    case 2:
+      return stack_function_name(sexp_at(ast, 1));
+    case 3:
+      return stack_function_name(sexp_at(ast, 2));
+    default:
+      assert(0);
+      return NULL;
+    }
+  case AST_DIRECT_DECLARATOR:
+    switch (sexp_length(ast)) {
+    case 2:
+      return stack_function_name(sexp_at(ast, 1));
+    case 4:
+      return stack_function_name(sexp_at(ast, 2));
+    default:
+      return stack_function_name(sexp_at(ast, 1));
+    }
+  case AST_FUNCTION_DEFINITION:
+    return stack_function_name(sexp_at(ast, 2));
+  default:
+    assert(0);
+    return NULL;
+  }
+}
 static void stack_function_definition(Stack *stack, Sexp *ast) {
   Value *entry = stack_new_block(stack);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
@@ -66,17 +99,7 @@ static void stack_function_definition(Stack *stack, Sexp *ast) {
     stack_instruction_ret(stack);
   }
   value_prepend(value_at(stack->func, 0), stack->allocs);
-  ast = sexp_at(ast, 2);
-  assert(AST_DECLARATOR == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(sexp_is_symbol(ast));
-  value_set_value(stack->func, sexp_get_symbol(ast));
+  value_set_value(stack->func, stack_function_name(ast));
 }
 static void stack_ast_map(Stack *stack, Sexp *ast) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
