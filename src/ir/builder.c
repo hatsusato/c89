@@ -26,8 +26,10 @@ struct struct_Builder {
 
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(sexp_is_symbol(ast));
   builder_stack_new_value(builder, VALUE_INTEGER_CONSTANT);
-  builder_stack_init(builder, ast);
+  builder_stack_set_symbol(builder, sexp_get_symbol(ast));
 }
 static void builder_identifier(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
@@ -148,6 +150,9 @@ void builder_stack_insert(Builder *builder) {
 void builder_stack_insert_symbol(Builder *builder, const char *symbol) {
   assert(VALUE_INSTRUCTION_ALLOCA == builder_stack_top_kind(builder));
   table_insert(builder->table, symbol, builder_stack_top(builder));
+}
+void builder_stack_set_symbol(Builder *builder, const char *symbol) {
+  value_set_value(builder_stack_top(builder), symbol);
 }
 void builder_stack_pop_insert(Builder *builder) {
   builder_stack_insert(builder);
