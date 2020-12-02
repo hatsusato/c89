@@ -26,20 +26,6 @@ struct struct_Stack {
   Value *current, *next, *ret;
 };
 
-static void stack_integer_constant(Stack *stack, Sexp *ast) {
-  assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(sexp_is_symbol(ast));
-  stack_new_value(stack, VALUE_INTEGER_CONSTANT);
-  stack_set_symbol(stack, sexp_get_symbol(ast));
-}
-static void stack_identifier(Stack *stack, Sexp *ast) {
-  assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(sexp_is_symbol(ast));
-  stack_push_symbol(stack, sexp_get_symbol(ast));
-  stack_instruction_load(stack);
-}
 static int stack_count_return(Sexp *ast) {
   if (sexp_is_pair(ast)) {
     return stack_count_return(sexp_car(ast)) +
