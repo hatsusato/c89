@@ -111,6 +111,13 @@ void builder_stack_push_identifier(Builder *builder, Sexp *ast) {
   assert(sexp_is_symbol(ast));
   builder_stack_push(builder, table_find(builder->table, sexp_get_symbol(ast)));
 }
+void builder_stack_insert_symbol(Builder *builder, const char *symbol) {
+  assert(VALUE_INSTRUCTION_ALLOCA == builder_stack_top_kind(builder));
+  table_insert(builder->table, symbol, builder_stack_top(builder));
+}
+void builder_stack_set_symbol(Builder *builder, const char *symbol) {
+  value_set_value(builder_stack_top(builder), symbol);
+}
 void builder_stack_register(Builder *builder) {
   Value *value = builder_stack_top(builder);
   assert(value_is_instruction(value));
@@ -133,13 +140,6 @@ void builder_stack_insert(Builder *builder) {
   Value *dst = builder_stack_top(builder);
   value_insert(dst, src);
   builder_stack_push(builder, src);
-}
-void builder_stack_insert_symbol(Builder *builder, const char *symbol) {
-  assert(VALUE_INSTRUCTION_ALLOCA == builder_stack_top_kind(builder));
-  table_insert(builder->table, symbol, builder_stack_top(builder));
-}
-void builder_stack_set_symbol(Builder *builder, const char *symbol) {
-  value_set_value(builder_stack_top(builder), symbol);
 }
 void builder_stack_pop_insert(Builder *builder) {
   builder_stack_insert(builder);
