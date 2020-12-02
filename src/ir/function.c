@@ -23,6 +23,12 @@ void function_delete(Function *func) {
 void function_insert_allocs(Function *func) {
   value_prepend(value_at(func->func, 0), func->allocs);
 }
+void function_insert_to_allocs(Function *func, Value *value) {
+  value_insert(func->allocs, value);
+}
+void function_insert_to_current(Function *func, Value *value) {
+  value_insert(func->current, value);
+}
 Value *function_get_return(Function *func) {
   return func->ret;
 }

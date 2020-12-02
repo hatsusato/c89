@@ -3,10 +3,13 @@
 
 #include "ir/function_type.h"
 #include "ir/pool.h"
+#include "ir/value_type.h"
 
 Function *function_new(Pool *);
 void function_delete(Function *);
 void function_insert_allocs(Function *);
+void function_insert_to_allocs(Function *, Value *);
+void function_insert_to_current(Function *, Value *);
 Value *function_get_return(Function *);
 void function_set_return(Function *, Value *);
 
