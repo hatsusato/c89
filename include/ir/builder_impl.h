@@ -21,6 +21,7 @@ Value *builder_stack_top(Builder *);
 ValueKind builder_stack_top_kind(Builder *);
 void builder_stack_set_next_block(Builder *, Value *);
 Value *builder_stack_get_next_block(Builder *);
+void builder_stack_set_current_block(Builder *, Value *);
 void builder_stack_pop_block(Builder *);
 void builder_stack_swap(Builder *);
 void builder_ast(Builder *, Sexp *);

@@ -172,10 +172,13 @@ void builder_stack_set_next_block(Builder *builder, Value *block) {
 Value *builder_stack_get_next_block(Builder *builder) {
   return builder->next;
 }
+void builder_stack_set_current_block(Builder *builder, Value *block) {
+  assert(VALUE_BLOCK == value_kind(block));
+  builder->block = block;
+  value_insert(builder->func, block);
+}
 void builder_stack_pop_block(Builder *builder) {
-  assert(VALUE_BLOCK == builder_stack_top_kind(builder));
-  builder->block = builder_stack_pop(builder);
-  value_insert(builder->func, builder->block);
+  builder_stack_set_current_block(builder, builder_stack_pop(builder));
 }
 void builder_stack_swap(Builder *builder) {
   Value *first = builder_stack_pop(builder);
