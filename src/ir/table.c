@@ -28,18 +28,11 @@ void table_delete(Table *table) {
   map_delete(table->table);
   UTILITY_FREE(table);
 }
-void table_insert(Table *table, Sexp *key, Value *val) {
-  assert(AST_IDENTIFIER == sexp_get_tag(key));
-  key = sexp_at(key, 1);
-  assert(sexp_is_symbol(key));
-  map_insert(table->table, (ElemType)sexp_get_symbol(key), val);
+void table_insert(Table *table, const char *key, Value *val) {
+  map_insert(table->table, key, val);
 }
-Value *table_find(Table *table, Sexp *ast) {
-  ElemType *found;
-  assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(sexp_is_symbol(ast));
-  found = map_find(table->table, (ElemType)sexp_get_symbol(ast));
+Value *table_find(Table *table, const char *key) {
+  ElemType *found = map_find(table->table, key);
   assert(found);
   return *found;
 }

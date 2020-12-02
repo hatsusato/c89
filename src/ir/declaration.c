@@ -2,6 +2,7 @@
 
 #include "ast/ast_tag.h"
 #include "ir/builder_impl.h"
+#include "ir/instruction.h"
 #include "ir/value_kind.h"
 #include "sexp.h"
 #include "utility.h"
@@ -13,9 +14,9 @@ static void builder_direct_declarator(Builder *builder, Sexp *ast) {
   case 2:
     ast = sexp_at(ast, 1);
     assert(AST_IDENTIFIER == sexp_get_tag(ast));
-    builder_stack_new_value(builder, VALUE_INSTRUCTION_ALLOCA);
-    builder_stack_init(builder, ast);
-    builder_stack_register(builder);
+    ast = sexp_at(ast, 1);
+    assert(sexp_get_symbol(ast));
+    builder_instruction_alloca(builder, sexp_get_symbol(ast));
     break;
   case 4:
     ast = sexp_at(ast, 2);
@@ -38,16 +39,16 @@ static void builder_declarator(Builder *builder, Sexp *ast) {
 }
 static void builder_init_declarator(Builder *builder, Sexp *ast) {
   assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
-  builder_declarator(builder, sexp_at(ast, 1));
   if (4 == sexp_length(ast)) {
-    builder_stack_new_value(builder, VALUE_INSTRUCTION_STORE);
+    builder_declarator(builder, sexp_at(ast, 1));
     builder_ast(builder, sexp_at(ast, 3));
-    builder_stack_pop_insert(builder);
     builder_stack_swap(builder);
-    builder_stack_pop_insert(builder);
-    builder_stack_register(builder);
+    builder_instruction_store(builder);
+    builder_stack_pop(builder);
+  } else {
+    builder_declarator(builder, sexp_at(ast, 1));
+    builder_stack_pop(builder);
   }
-  builder_stack_pop(builder);
 }
 void builder_declaration(Builder *builder, Sexp *ast) {
   assert(AST_DECLARATION == sexp_get_tag(ast));

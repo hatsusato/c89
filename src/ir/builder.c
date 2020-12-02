@@ -6,6 +6,7 @@
 #include "ir/builder_impl.h"
 #include "ir/declaration.h"
 #include "ir/expression.h"
+#include "ir/instruction.h"
 #include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/register_type.h"
@@ -21,29 +22,46 @@ struct struct_Builder {
   Pool *pool;
   Table *table;
   Vector *stack;
-  Value *func, *block, *allocs;
+  Value *func, *current, *allocs, *next, *ret;
+  Sexp *body;
 };
 
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(sexp_is_symbol(ast));
   builder_stack_new_value(builder, VALUE_INTEGER_CONSTANT);
-  builder_stack_init(builder, ast);
+  builder_stack_set_symbol(builder, sexp_get_symbol(ast));
 }
 static void builder_identifier(Builder *builder, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  builder_stack_new_value(builder, VALUE_INSTRUCTION_LOAD);
-  builder_stack_push_identifier(builder, ast);
-  builder_stack_pop_insert(builder);
-  builder_stack_register(builder);
+  ast = sexp_at(ast, 1);
+  assert(sexp_is_symbol(ast));
+  builder_stack_push_symbol(builder, sexp_get_symbol(ast));
+  builder_instruction_load(builder);
 }
 static void builder_function_definition(Builder *builder, Sexp *ast) {
+  Value *entry = builder_stack_new_block(builder);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   builder->func = pool_alloc(builder->pool, VALUE_FUNCTION);
-  builder->allocs = pool_alloc(builder->pool, VALUE_BLOCK);
-  builder_stack_new_value(builder, VALUE_BLOCK);
-  builder_stack_pop_block(builder);
-  builder_ast(builder, sexp_at(ast, 4));
+  builder->allocs = builder_stack_new_block(builder);
+  builder->body = sexp_at(ast, 4);
+  if (builder_multiple_return(builder)) {
+    Value *next = builder_stack_new_block(builder);
+    builder->ret = next;
+    builder_instruction_alloca(builder, "$retval");
+    builder_stack_pop(builder);
+    builder_stack_change_flow(builder, entry, next);
+    builder_ast(builder, builder->body);
+    builder_stack_change_flow(builder, next, NULL);
+    builder_stack_push_symbol(builder, "$retval");
+    builder_instruction_load(builder);
+    builder_instruction_ret(builder);
+  } else {
+    builder_stack_change_flow(builder, entry, NULL);
+    builder_ast(builder, builder->body);
+  }
   value_prepend(value_at(builder->func, 0), builder->allocs);
   ast = sexp_at(ast, 2);
   assert(AST_DECLARATOR == sexp_get_tag(ast));
@@ -68,7 +86,9 @@ Builder *builder_new(void) {
   builder->pool = pool_new();
   builder->table = table_new();
   builder->stack = vector_new(NULL);
-  builder->func = builder->block = builder->allocs = NULL;
+  builder->func = builder->current = builder->allocs = builder->next =
+      builder->ret = NULL;
+  builder->body = sexp_nil();
   return builder;
 }
 void builder_delete(Builder *builder) {
@@ -89,13 +109,15 @@ void builder_print(Builder *builder) {
   value_pretty(builder->func);
 }
 
-static Value *builder_stack_push(Builder *builder, Value *value) {
-  vector_push(builder->stack, value);
-  return value;
+static int count_return(Sexp *ast) {
+  if (sexp_is_pair(ast)) {
+    return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
+  } else {
+    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
+  }
 }
-static Value *builder_stack_top(Builder *builder) {
-  assert(!vector_empty(builder->stack));
-  return vector_back(builder->stack);
+Bool builder_multiple_return(Builder *builder) {
+  return 1 < count_return(builder->body);
 }
 Bool builder_stack_empty(Builder *builder) {
   return vector_empty(builder->stack);
@@ -103,25 +125,20 @@ Bool builder_stack_empty(Builder *builder) {
 Value *builder_stack_new_value(Builder *builder, ValueKind kind) {
   return builder_stack_push(builder, pool_alloc(builder->pool, kind));
 }
-void builder_stack_push_identifier(Builder *builder, Sexp *ast) {
-  assert(AST_IDENTIFIER == sexp_get_tag(ast));
-  builder_stack_push(builder, table_find(builder->table, ast));
+Value *builder_stack_new_block(Builder *builder) {
+  return pool_alloc(builder->pool, VALUE_BLOCK);
 }
-void builder_stack_init(Builder *builder, Sexp *ast) {
-  Value *value = builder_stack_top(builder);
-  switch (builder_stack_top_kind(builder)) {
-  case VALUE_INTEGER_CONSTANT:
-    assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
-    ast = sexp_at(ast, 1);
-    assert(sexp_is_symbol(ast));
-    value_set_value(value, sexp_get_symbol(ast));
-    break;
-  case VALUE_INSTRUCTION_ALLOCA:
-    table_insert(builder->table, ast, value);
-    break;
-  default:
-    break;
-  }
+void builder_stack_push_symbol(Builder *builder, const char *symbol) {
+  Value *value = table_find(builder->table, symbol);
+  builder_stack_push(builder, value);
+  assert(VALUE_INSTRUCTION_ALLOCA == builder_stack_top_kind(builder));
+}
+void builder_stack_insert_symbol(Builder *builder, const char *symbol) {
+  assert(VALUE_INSTRUCTION_ALLOCA == builder_stack_top_kind(builder));
+  table_insert(builder->table, symbol, builder_stack_top(builder));
+}
+void builder_stack_set_symbol(Builder *builder, const char *symbol) {
+  value_set_value(builder_stack_top(builder), symbol);
 }
 void builder_stack_register(Builder *builder) {
   Value *value = builder_stack_top(builder);
@@ -129,37 +146,61 @@ void builder_stack_register(Builder *builder) {
   if (VALUE_INSTRUCTION_ALLOCA == builder_stack_top_kind(builder)) {
     value_insert(builder->allocs, value);
   } else {
-    value_insert(builder->block, value);
+    value_insert(builder->current, value);
   }
   if (value_is_terminator(value)) {
     builder_stack_pop(builder);
   }
+}
+Value *builder_stack_push(Builder *builder, Value *value) {
+  vector_push(builder->stack, value);
+  return value;
+}
+void builder_stack_add(Builder *builder, Value *value) {
+  value_insert(builder_stack_top(builder), value);
 }
 Value *builder_stack_pop(Builder *builder) {
   Value *value = builder_stack_top(builder);
   vector_pop(builder->stack);
   return value;
 }
-void builder_stack_insert(Builder *builder) {
-  Value *src = builder_stack_pop(builder);
-  Value *dst = builder_stack_top(builder);
-  value_insert(dst, src);
-  builder_stack_push(builder, src);
-}
-void builder_stack_pop_insert(Builder *builder) {
-  builder_stack_insert(builder);
-  builder_stack_pop(builder);
+Value *builder_stack_top(Builder *builder) {
+  assert(!vector_empty(builder->stack));
+  return vector_back(builder->stack);
 }
 ValueKind builder_stack_top_kind(Builder *builder) {
   return value_kind(builder_stack_top(builder));
 }
-void builder_stack_pop_block(Builder *builder) {
-  assert(VALUE_BLOCK == builder_stack_top_kind(builder));
-  builder->block = builder_stack_pop(builder);
-  value_insert(builder->func, builder->block);
+void builder_stack_set_next_block(Builder *builder, Value *block) {
+  assert(!block || VALUE_BLOCK == value_kind(block));
+  builder->next = block;
 }
-void builder_stack_dup(Builder *builder) {
-  builder_stack_push(builder, builder_stack_top(builder));
+Value *builder_stack_get_next_block(Builder *builder) {
+  return builder->next;
+}
+void builder_stack_change_flow(Builder *builder, Value *current, Value *next) {
+  assert(VALUE_BLOCK == value_kind(current));
+  assert(!next || VALUE_BLOCK == value_kind(next));
+  builder->current = current;
+  builder->next = next;
+  value_insert(builder->func, current);
+}
+void builder_stack_return(Builder *builder) {
+  if (builder->ret) {
+    builder_stack_push_symbol(builder, "$retval");
+    builder_instruction_store(builder);
+    builder_stack_pop(builder);
+    builder_stack_push(builder, builder->ret);
+    builder_instruction_br(builder);
+  } else {
+    builder_instruction_ret(builder);
+  }
+  builder->next = NULL;
+}
+void builder_stack_set_current_block(Builder *builder, Value *block) {
+  assert(VALUE_BLOCK == value_kind(block));
+  builder->current = block;
+  value_insert(builder->func, block);
 }
 void builder_stack_swap(Builder *builder) {
   Value *first = builder_stack_pop(builder);

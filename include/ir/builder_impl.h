@@ -7,17 +7,24 @@
 #include "sexp_type.h"
 #include "types.h"
 
+Bool builder_multiple_return(Builder *);
 Bool builder_stack_empty(Builder *);
 Value *builder_stack_new_value(Builder *, ValueKind);
-void builder_stack_push_identifier(Builder *, Sexp *);
-void builder_stack_init(Builder *, Sexp *);
+Value *builder_stack_new_block(Builder *);
+void builder_stack_push_symbol(Builder *, const char *);
+void builder_stack_insert_symbol(Builder *, const char *);
+void builder_stack_set_symbol(Builder *, const char *);
 void builder_stack_register(Builder *);
+Value *builder_stack_push(Builder *, Value *);
+void builder_stack_add(Builder *, Value *);
 Value *builder_stack_pop(Builder *);
-void builder_stack_insert(Builder *);
-void builder_stack_pop_insert(Builder *);
+Value *builder_stack_top(Builder *);
 ValueKind builder_stack_top_kind(Builder *);
-void builder_stack_pop_block(Builder *);
-void builder_stack_dup(Builder *);
+void builder_stack_set_next_block(Builder *, Value *);
+Value *builder_stack_get_next_block(Builder *);
+void builder_stack_change_flow(Builder *, Value *, Value *);
+void builder_stack_return(Builder *);
+void builder_stack_set_current_block(Builder *, Value *);
 void builder_stack_swap(Builder *);
 void builder_ast(Builder *, Sexp *);
 

@@ -11,7 +11,6 @@ filter() {
 
 cflags=(-O0 -S -emit-llvm)
 for f in "$@"; do
-  l=${f%.c}.ll
   out=$(clang "${cflags[@]}" -c "$f" -o - | filter)
   beg=$(<<<$out grep -n '^target triple' | number)
   end=$(<<<$out grep -n -v ^$ | number)
