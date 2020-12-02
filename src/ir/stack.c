@@ -41,19 +41,28 @@ static void stack_identifier(Stack *stack, Sexp *ast) {
   stack_push_symbol(stack, sexp_get_symbol(ast));
   stack_instruction_load(stack);
 }
+static int stack_count_return(Sexp *ast) {
+  if (sexp_is_pair(ast)) {
+    return stack_count_return(sexp_car(ast)) +
+           stack_count_return(sexp_cdr(ast));
+  } else {
+    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
+  }
+}
 static void stack_function_definition(Stack *stack, Sexp *ast) {
   Value *entry = stack_new_block(stack);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
+  if (1 < stack_count_return(ast)) {
+    stack->ret = stack_new_block(stack);
+  }
   stack->body = sexp_at(ast, 4);
-  if (stack_multiple_return(stack)) {
-    Value *next = stack_new_block(stack);
-    stack->ret = next;
+  if (stack->ret) {
     stack_instruction_alloca(stack, "$retval");
     stack_pop(stack);
-    stack_change_flow(stack, entry, next);
+    stack_change_flow(stack, entry, stack->ret);
     stack_ast(stack, stack->body);
-    stack_change_flow(stack, next, NULL);
+    stack_change_flow(stack, stack->ret, NULL);
     stack_push_symbol(stack, "$retval");
     stack_instruction_load(stack);
     stack_instruction_ret(stack);
