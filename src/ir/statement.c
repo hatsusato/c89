@@ -86,10 +86,7 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
 void builder_jump_statement(Builder *builder, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
-  builder_stack_new_value(builder, VALUE_INSTRUCTION_RET);
-  if (!sexp_is_nil(ast)) {
-    builder_ast(builder, ast);
-    builder_stack_pop_insert(builder);
-  }
-  builder_stack_register(builder);
+  assert(!sexp_is_nil(ast));
+  builder_ast(builder, ast);
+  builder_instruction_ret(builder);
 }
