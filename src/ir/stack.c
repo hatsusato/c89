@@ -97,13 +97,13 @@ void stack_delete(Stack *stack) {
   UTILITY_FREE(stack);
 }
 void stack_build(Stack *stack, Sexp *ast) {
+  RegisterGenerator *gen = register_generator_new();
   stack_ast(stack, ast);
   assert(vector_empty(stack->stack));
-}
-void stack_print(Stack *stack) {
-  RegisterGenerator *gen = register_generator_new();
   value_set_reg(gen, stack->func);
   register_generator_delete(gen);
+}
+void stack_print(Stack *stack) {
   puts("target triple = \"x86_64-pc-linux-gnu\"\n");
   value_pretty(stack->func);
 }
