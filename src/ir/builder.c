@@ -147,6 +147,9 @@ void builder_stack_register(Builder *builder) {
     builder_stack_pop(builder);
   }
 }
+void builder_stack_add(Builder *builder, Value *value) {
+  value_insert(builder_stack_top(builder), value);
+}
 Value *builder_stack_pop(Builder *builder) {
   Value *value = builder_stack_top(builder);
   vector_pop(builder->stack);
