@@ -22,6 +22,7 @@ struct struct_Builder {
   Table *table;
   Vector *stack;
   Value *func, *block, *allocs;
+  Sexp *body;
 };
 
 static void builder_integer_constant(Builder *builder, Sexp *ast) {
@@ -48,9 +49,10 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   assert(5 == sexp_length(ast));
   builder->func = pool_alloc(builder->pool, VALUE_FUNCTION);
   builder->allocs = pool_alloc(builder->pool, VALUE_BLOCK);
+  builder->body = sexp_at(ast, 4);
   builder_stack_new_value(builder, VALUE_BLOCK);
   builder_stack_pop_block(builder);
-  builder_ast(builder, sexp_at(ast, 4));
+  builder_ast(builder, builder->body);
   value_prepend(value_at(builder->func, 0), builder->allocs);
   ast = sexp_at(ast, 2);
   assert(AST_DECLARATOR == sexp_get_tag(ast));
@@ -76,6 +78,7 @@ Builder *builder_new(void) {
   builder->table = table_new();
   builder->stack = vector_new(NULL);
   builder->func = builder->block = builder->allocs = NULL;
+  builder->body = sexp_nil();
   return builder;
 }
 void builder_delete(Builder *builder) {
