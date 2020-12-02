@@ -7,5 +7,7 @@
 Function *function_new(Pool *);
 void function_delete(Function *);
 void function_insert_allocs(Function *);
+Value *function_get_return(Function *);
+void function_set_return(Function *, Value *);
 
 #endif /* INCLUDE_GUARD_B55311C7_57F5_41B3_92DD_0759ECC346E7 */
