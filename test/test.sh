@@ -12,8 +12,8 @@ compare() {
   local normal=$e[0m
   local c=test/src/$1.c
   local ll=test/ans/$1.ll
-  test -f "$c" || continue
-  test -f "$ll" || continue
+  test -f "$c" || return
+  test -f "$ll" || return
   if diff <("$main" <"$c" 2>/dev/null) "$ll" &>/dev/null; then
     echo "$bold${green}OK$normal: $i"
   else
