@@ -13,15 +13,14 @@ void builder_statement(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 1));
 }
 void builder_compound_statement(Builder *builder, Sexp *ast) {
+  Value *next;
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
   builder_ast(builder, sexp_at(ast, 2));
   builder_ast(builder, sexp_at(ast, 3));
-  if (!builder_stack_empty(builder)) {
-    Value *next;
-    assert(VALUE_BLOCK == builder_stack_top_kind(builder));
-    next = builder_stack_top(builder);
-    builder_instruction_br(builder);
+  next = builder_stack_get_next_block(builder);
+  if (next) {
     builder_stack_push(builder, next);
+    builder_instruction_br(builder);
   }
 }
 void builder_expression_statement(Builder *builder, Sexp *ast) {
@@ -40,6 +39,7 @@ static void builder_new_integer_constant(Builder *builder,
 void builder_selection_statement(Builder *builder, Sexp *ast) {
   Value *if_then = builder_stack_new_block(builder);
   Value *if_else = builder_stack_new_block(builder);
+  Value *prev = builder_stack_get_next_block(builder);
   Value *next;
   assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
   assert(AST_IF == sexp_get_number(sexp_at(ast, 1)));
@@ -52,10 +52,12 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
     builder_stack_push(builder, if_else);
     builder_instruction_br_cond(builder);
     builder_stack_set_current_block(builder, if_then);
+    builder_stack_set_next_block(builder, if_else);
     builder_stack_push(builder, if_else);
     builder_ast(builder, sexp_at(ast, 5));
     builder_stack_pop(builder);
     builder_stack_set_current_block(builder, if_else);
+    builder_stack_set_next_block(builder, prev);
     break;
   case 8:
     next = builder_stack_new_block(builder);
@@ -66,16 +68,17 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
     builder_stack_push(builder, if_else);
     builder_instruction_br_cond(builder);
     builder_stack_set_current_block(builder, if_then);
-    builder_stack_push(builder, if_else);
+    builder_stack_set_next_block(builder, next);
     builder_stack_push(builder, next);
     builder_ast(builder, sexp_at(ast, 5));
     builder_stack_pop(builder);
-    builder_stack_pop(builder);
     builder_stack_set_current_block(builder, if_else);
+    builder_stack_set_next_block(builder, next);
     builder_stack_push(builder, next);
     builder_ast(builder, sexp_at(ast, 7));
     builder_stack_pop(builder);
     builder_stack_set_current_block(builder, next);
+    builder_stack_set_next_block(builder, prev);
     break;
   default:
     assert(0);
@@ -95,4 +98,5 @@ void builder_jump_statement(Builder *builder, Sexp *ast) {
     builder_ast(builder, ast);
     builder_instruction_ret(builder);
   }
+  builder_stack_set_next_block(builder, NULL);
 }

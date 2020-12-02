@@ -50,6 +50,7 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   builder_stack_set_current_block(builder, block);
   if (builder_multiple_return(builder)) {
     Value *next = builder_stack_new_block(builder);
+    builder_stack_set_next_block(builder, next);
     builder_instruction_alloca(builder, "$retval");
     builder_stack_pop(builder);
     builder_stack_push(builder, next);
@@ -171,7 +172,7 @@ ValueKind builder_stack_top_kind(Builder *builder) {
   return value_kind(builder_stack_top(builder));
 }
 void builder_stack_set_next_block(Builder *builder, Value *block) {
-  assert(VALUE_BLOCK == value_kind(block));
+  assert(!block || VALUE_BLOCK == value_kind(block));
   builder->next = block;
 }
 Value *builder_stack_get_next_block(Builder *builder) {
