@@ -40,8 +40,6 @@ void builder_instruction_br_cond(Builder *builder) {
   Value *first = builder_stack_pop(builder);
   builder_instruction_ternary(builder, VALUE_INSTRUCTION_BR_COND, first, second,
                               third);
-  builder_stack_push(builder, second);
-  builder_stack_push(builder, third);
 }
 void builder_instruction_add(Builder *builder) {
   Value *second = builder_stack_pop(builder);
