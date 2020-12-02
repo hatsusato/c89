@@ -111,19 +111,6 @@ void builder_stack_push_identifier(Builder *builder, Sexp *ast) {
   assert(sexp_is_symbol(ast));
   builder_stack_push(builder, table_find(builder->table, sexp_get_symbol(ast)));
 }
-void builder_stack_init(Builder *builder, Sexp *ast) {
-  Value *value = builder_stack_top(builder);
-  switch (builder_stack_top_kind(builder)) {
-  case VALUE_INTEGER_CONSTANT:
-    assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
-    ast = sexp_at(ast, 1);
-    assert(sexp_is_symbol(ast));
-    value_set_value(value, sexp_get_symbol(ast));
-    break;
-  default:
-    break;
-  }
-}
 void builder_stack_register(Builder *builder) {
   Value *value = builder_stack_top(builder);
   assert(value_is_instruction(value));

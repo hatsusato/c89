@@ -34,11 +34,8 @@ void builder_expression_statement(Builder *builder, Sexp *ast) {
 }
 static void builder_new_integer_constant(Builder *builder,
                                          const char *integer) {
-  Sexp *zero = sexp_pair(sexp_symbol(integer), sexp_nil());
-  zero = sexp_pair(sexp_number(AST_INTEGER_CONSTANT), zero);
   builder_stack_new_value(builder, VALUE_INTEGER_CONSTANT);
-  builder_stack_init(builder, zero);
-  sexp_delete(zero);
+  builder_stack_set_symbol(builder, integer);
 }
 static void builder_icmp_ne_zero(Builder *builder, Sexp *ast) {
   builder_stack_new_value(builder, VALUE_INSTRUCTION_ICMP_NE);
