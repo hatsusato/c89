@@ -9,9 +9,11 @@ void builder_instruction_ret(Builder *);
 void builder_instruction_br(Builder *);
 /* br %1, label %2, label %3: (%1 %2 %3 -- %2 %3) */
 void builder_instruction_br_cond(Builder *);
-/* add %1, %2: (%1 %2 -- ) */
+/* add %1, %2: (%1 %2 -- %0) */
 void builder_instruction_add(Builder *);
-/* alloca: ( -- %1)*/
+/* alloca: ( -- %0)*/
 void builder_instruction_alloca(Builder *, const char *);
+/* load %1: (%1 -- %0) */
+void builder_instruction_load(Builder *);
 
 #endif /* INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E */
