@@ -54,3 +54,11 @@ void builder_instruction_store(Builder *builder) {
   builder_stack_add(builder, second);
   builder_stack_register(builder);
 }
+void builder_instruction_icmp_ne(Builder *builder) {
+  Value *second = builder_stack_pop(builder);
+  Value *first = builder_stack_pop(builder);
+  builder_stack_new_value(builder, VALUE_INSTRUCTION_ICMP_NE);
+  builder_stack_add(builder, first);
+  builder_stack_add(builder, second);
+  builder_stack_register(builder);
+}

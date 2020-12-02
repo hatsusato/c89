@@ -33,16 +33,10 @@ static void builder_new_integer_constant(Builder *builder,
   builder_stack_new_value(builder, VALUE_INTEGER_CONSTANT);
   builder_stack_set_symbol(builder, integer);
 }
-static void builder_icmp_ne_zero(Builder *builder, Sexp *ast) {
-  builder_stack_new_value(builder, VALUE_INSTRUCTION_ICMP_NE);
-  builder_ast(builder, ast);
-  builder_stack_pop_insert(builder);
-  builder_new_integer_constant(builder, "0");
-  builder_stack_pop_insert(builder);
-  builder_stack_register(builder);
-}
 static void builder_br_cond(Builder *builder, Sexp *ast) {
-  builder_icmp_ne_zero(builder, ast);
+  builder_ast(builder, ast);
+  builder_new_integer_constant(builder, "0");
+  builder_instruction_icmp_ne(builder);
   builder_stack_new_value(builder, VALUE_BLOCK);
   builder_stack_new_value(builder, VALUE_BLOCK);
   builder_instruction_br_cond(builder);
