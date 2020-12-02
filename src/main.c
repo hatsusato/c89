@@ -4,10 +4,10 @@
 #include "scanner.h"
 
 static void build(Sexp *ast) {
-  Builder *builder = builder_new();
-  builder_build(builder, ast);
-  builder_print(builder);
-  builder_delete(builder);
+  Stack *stack = stack_new();
+  stack_build(stack, ast);
+  stack_print(stack);
+  stack_delete(stack);
 }
 
 int main(void) {

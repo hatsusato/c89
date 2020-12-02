@@ -7,25 +7,25 @@
 #include "sexp_type.h"
 #include "types.h"
 
-Bool builder_multiple_return(Builder *);
-Bool builder_stack_empty(Builder *);
-Value *builder_stack_new_value(Builder *, ValueKind);
-Value *builder_stack_new_block(Builder *);
-void builder_stack_push_symbol(Builder *, const char *);
-void builder_stack_insert_symbol(Builder *, const char *);
-void builder_stack_set_symbol(Builder *, const char *);
-void builder_stack_register(Builder *);
-Value *builder_stack_push(Builder *, Value *);
-void builder_stack_add(Builder *, Value *);
-Value *builder_stack_pop(Builder *);
-Value *builder_stack_top(Builder *);
-ValueKind builder_stack_top_kind(Builder *);
-void builder_stack_set_next_block(Builder *, Value *);
-Value *builder_stack_get_next_block(Builder *);
-void builder_stack_change_flow(Builder *, Value *, Value *);
-void builder_stack_return(Builder *);
-void builder_stack_set_current_block(Builder *, Value *);
-void builder_stack_swap(Builder *);
-void builder_ast(Builder *, Sexp *);
+Bool stack_multiple_return(Stack *);
+Bool stack_empty(Stack *);
+Value *stack_new_value(Stack *, ValueKind);
+Value *stack_new_block(Stack *);
+void stack_push_symbol(Stack *, const char *);
+void stack_insert_symbol(Stack *, const char *);
+void stack_set_symbol(Stack *, const char *);
+void stack_register(Stack *);
+Value *stack_push(Stack *, Value *);
+void stack_add(Stack *, Value *);
+Value *stack_pop(Stack *);
+Value *stack_top(Stack *);
+ValueKind stack_top_kind(Stack *);
+void stack_set_next_block(Stack *, Value *);
+Value *stack_get_next_block(Stack *);
+void stack_change_flow(Stack *, Value *, Value *);
+void stack_return(Stack *);
+void stack_set_current_block(Stack *, Value *);
+void stack_swap(Stack *);
+void stack_ast(Stack *, Sexp *);
 
 #endif /* INCLUDE_GUARD_7E55B423_2396_4FF0_8B3A_C8FAFB3D11F3 */

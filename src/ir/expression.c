@@ -7,15 +7,15 @@
 #include "sexp.h"
 #include "utility.h"
 
-void builder_additive_expression(Builder *builder, Sexp *ast) {
+void stack_additive_expression(Stack *stack, Sexp *ast) {
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 2)));
   assert(AST_PLUS == sexp_get_number(sexp_at(ast, 2)));
-  builder_ast(builder, sexp_at(ast, 1));
-  builder_ast(builder, sexp_at(ast, 3));
-  builder_instruction_add(builder);
+  stack_ast(stack, sexp_at(ast, 1));
+  stack_ast(stack, sexp_at(ast, 3));
+  stack_instruction_add(stack);
 }
-void builder_assignment_expression(Builder *builder, Sexp *ast) {
+void stack_assignment_expression(Stack *stack, Sexp *ast) {
   Sexp *lhs, *op, *rhs;
   assert(AST_ASSIGNMENT_EXPRESSION == sexp_get_tag(ast));
   lhs = sexp_at(ast, 1);
@@ -25,7 +25,7 @@ void builder_assignment_expression(Builder *builder, Sexp *ast) {
   assert(sexp_is_number(op) && AST_ASSIGN == sexp_get_number(op));
   lhs = sexp_at(lhs, 1);
   assert(sexp_is_symbol(lhs));
-  builder_ast(builder, rhs);
-  builder_stack_push_symbol(builder, sexp_get_symbol(lhs));
-  builder_instruction_store(builder);
+  stack_ast(stack, rhs);
+  stack_push_symbol(stack, sexp_get_symbol(lhs));
+  stack_instruction_store(stack);
 }
