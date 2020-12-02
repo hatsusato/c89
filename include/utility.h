@@ -6,11 +6,11 @@
 #include "types.h"
 
 #define UTILITY_UNUSED(var) ((void)(var))
-#define UTILITY_SWAP(type, lhs, rhs) \
-  do {                               \
-    type tmp = (lhs);                \
-    (lhs) = (rhs);                   \
-    (rhs) = tmp;                     \
+#define UTILITY_SWAP(type, lhs, rhs)                       \
+  do {                                                     \
+    type tmp_5ca07651_e06d_4402_8a63_2c9e8b91903a = (lhs); \
+    (lhs) = (rhs);                                         \
+    (rhs) = tmp_5ca07651_e06d_4402_8a63_2c9e8b91903a;      \
   } while (0);
 #define UTILITY_MALLOC(type) (type *)utility_malloc(sizeof(type))
 #define UTILITY_MALLOC_ARRAY(type, count) \

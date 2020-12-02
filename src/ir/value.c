@@ -32,6 +32,21 @@ void value_delete(Value *value) {
 void value_insert(Value *value, Value *elem) {
   vector_push(value->vec, elem);
 }
+void value_prepend(Value *dst, const Value *src) {
+  Vector *tmp = vector_new(NULL);
+  ElemType *begin = vector_begin(src->vec);
+  ElemType *end = vector_end(src->vec);
+  while (begin < end) {
+    vector_push(tmp, *begin++);
+  }
+  begin = vector_begin(dst->vec);
+  end = vector_end(dst->vec);
+  while (begin < end) {
+    vector_push(tmp, *begin++);
+  }
+  UTILITY_SWAP(Vector *, dst->vec, tmp);
+  vector_delete(tmp);
+}
 void value_set_value(Value *value, const void *val) {
   value->value = val;
 }
@@ -145,14 +160,14 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
   ElemType *end = vector_end(value->vec);
   switch (value_kind(value)) {
   case VALUE_FUNCTION:
-    for (; begin < end; ++begin) {
-      value_set_reg(gen, *begin);
+    while (begin < end) {
+      value_set_reg(gen, *begin++);
     }
     break;
   case VALUE_BLOCK:
     register_set(gen, &value->reg);
-    for (; begin < end; ++begin) {
-      value_set_reg(gen, *begin);
+    while (begin < end) {
+      value_set_reg(gen, *begin++);
     }
     break;
 #define VALUE_KIND_HANDLER(k) \
