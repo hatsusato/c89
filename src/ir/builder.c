@@ -41,17 +41,19 @@ static void builder_identifier(Builder *builder, Sexp *ast) {
   builder_instruction_load(builder);
 }
 static void builder_function_definition(Builder *builder, Sexp *ast) {
+  Value *block = builder_stack_new_block(builder);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   builder->func = pool_alloc(builder->pool, VALUE_FUNCTION);
-  builder->allocs = pool_alloc(builder->pool, VALUE_BLOCK);
+  builder->allocs = builder_stack_new_block(builder);
   builder->body = sexp_at(ast, 4);
-  builder_stack_new_value(builder, VALUE_BLOCK);
+  builder_stack_push(builder, block);
   builder_stack_pop_block(builder);
   if (builder_multiple_return(builder)) {
+    Value *next = builder_stack_new_block(builder);
     builder_instruction_alloca(builder, "$retval");
     builder_stack_pop(builder);
-    builder_stack_new_value(builder, VALUE_BLOCK);
+    builder_stack_push(builder, next);
     builder_ast(builder, builder->body);
     builder_stack_pop_block(builder);
     builder_stack_push_symbol(builder, "$retval");
