@@ -24,7 +24,6 @@ struct struct_Stack {
   Vector *stack;
   Value *func, *allocs;
   Value *current, *next, *ret;
-  Sexp *body;
 };
 
 static void stack_integer_constant(Stack *stack, Sexp *ast) {
@@ -53,22 +52,18 @@ static void stack_function_definition(Stack *stack, Sexp *ast) {
   Value *entry = stack_new_block(stack);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
-  if (1 < stack_count_return(ast)) {
-    stack->ret = stack_new_block(stack);
-  }
-  stack->body = sexp_at(ast, 4);
+  stack->ret = 1 < stack_count_return(ast) ? stack_new_block(stack) : NULL;
   if (stack->ret) {
     stack_instruction_alloca(stack, "$retval");
     stack_pop(stack);
-    stack_change_flow(stack, entry, stack->ret);
-    stack_ast(stack, stack->body);
+  }
+  stack_change_flow(stack, entry, stack->ret);
+  stack_ast(stack, sexp_at(ast, 4));
+  if (stack->ret) {
     stack_change_flow(stack, stack->ret, NULL);
     stack_push_symbol(stack, "$retval");
     stack_instruction_load(stack);
     stack_instruction_ret(stack);
-  } else {
-    stack_change_flow(stack, entry, NULL);
-    stack_ast(stack, stack->body);
   }
   value_prepend(value_at(stack->func, 0), stack->allocs);
   ast = sexp_at(ast, 2);
@@ -97,7 +92,6 @@ Stack *stack_new(Pool *pool) {
   stack->func = pool_alloc(stack->pool, VALUE_FUNCTION);
   stack->allocs = pool_alloc(stack->pool, VALUE_BLOCK);
   stack->current = stack->next = stack->ret = NULL;
-  stack->body = sexp_nil();
   return stack;
 }
 void stack_delete(Stack *stack) {
