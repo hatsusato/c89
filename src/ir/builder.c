@@ -22,7 +22,7 @@ struct struct_Builder {
   Pool *pool;
   Table *table;
   Vector *stack;
-  Value *func, *block, *allocs, *next, *ret;
+  Value *func, *current, *allocs, *next, *ret;
   Sexp *body;
 };
 
@@ -41,25 +41,25 @@ static void builder_identifier(Builder *builder, Sexp *ast) {
   builder_instruction_load(builder);
 }
 static void builder_function_definition(Builder *builder, Sexp *ast) {
-  Value *block = builder_stack_new_block(builder);
+  Value *entry = builder_stack_new_block(builder);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   builder->func = pool_alloc(builder->pool, VALUE_FUNCTION);
   builder->allocs = builder_stack_new_block(builder);
   builder->body = sexp_at(ast, 4);
-  builder_stack_set_current_block(builder, block);
   if (builder_multiple_return(builder)) {
     Value *next = builder_stack_new_block(builder);
     builder->ret = next;
-    builder_stack_set_next_block(builder, next);
     builder_instruction_alloca(builder, "$retval");
     builder_stack_pop(builder);
+    builder_stack_change_flow(builder, entry, next);
     builder_ast(builder, builder->body);
-    builder_stack_set_current_block(builder, next);
+    builder_stack_change_flow(builder, next, NULL);
     builder_stack_push_symbol(builder, "$retval");
     builder_instruction_load(builder);
     builder_instruction_ret(builder);
   } else {
+    builder_stack_change_flow(builder, entry, NULL);
     builder_ast(builder, builder->body);
   }
   value_prepend(value_at(builder->func, 0), builder->allocs);
@@ -86,7 +86,7 @@ Builder *builder_new(void) {
   builder->pool = pool_new();
   builder->table = table_new();
   builder->stack = vector_new(NULL);
-  builder->func = builder->block = builder->allocs = builder->next =
+  builder->func = builder->current = builder->allocs = builder->next =
       builder->ret = NULL;
   builder->body = sexp_nil();
   return builder;
@@ -146,7 +146,7 @@ void builder_stack_register(Builder *builder) {
   if (VALUE_INSTRUCTION_ALLOCA == builder_stack_top_kind(builder)) {
     value_insert(builder->allocs, value);
   } else {
-    value_insert(builder->block, value);
+    value_insert(builder->current, value);
   }
   if (value_is_terminator(value)) {
     builder_stack_pop(builder);
@@ -178,6 +178,13 @@ void builder_stack_set_next_block(Builder *builder, Value *block) {
 Value *builder_stack_get_next_block(Builder *builder) {
   return builder->next;
 }
+void builder_stack_change_flow(Builder *builder, Value *current, Value *next) {
+  assert(VALUE_BLOCK == value_kind(current));
+  assert(!next || VALUE_BLOCK == value_kind(next));
+  builder->current = current;
+  builder->next = next;
+  value_insert(builder->func, current);
+}
 void builder_stack_return(Builder *builder) {
   if (builder->ret) {
     builder_stack_push_symbol(builder, "$retval");
@@ -192,7 +199,7 @@ void builder_stack_return(Builder *builder) {
 }
 void builder_stack_set_current_block(Builder *builder, Value *block) {
   assert(VALUE_BLOCK == value_kind(block));
-  builder->block = block;
+  builder->current = block;
   value_insert(builder->func, block);
 }
 void builder_stack_swap(Builder *builder) {
