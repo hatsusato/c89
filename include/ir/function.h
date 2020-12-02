@@ -14,4 +14,9 @@ void function_set_current(Function *, Value *);
 Value *function_get_return(Function *);
 void function_set_return(Function *, Value *);
 
+Value *function_get_func(Function *);
+void function_set_func(Function *, Value *);
+Value *function_get_next(Function *);
+void function_set_next(Function *, Value *);
+
 #endif /* INCLUDE_GUARD_B55311C7_57F5_41B3_92DD_0759ECC346E7 */

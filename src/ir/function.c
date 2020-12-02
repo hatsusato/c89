@@ -40,3 +40,14 @@ Value *function_get_return(Function *func) {
 void function_set_return(Function *func, Value *ret) {
   func->ret = ret;
 }
+
+Value *function_get_func(Function *func) {
+  return func->func;
+}
+Value *function_get_next(Function *func) {
+  return func->next;
+}
+void function_set_next(Function *func, Value *value) {
+  assert(!value || VALUE_BLOCK == value_kind(value));
+  func->next = value;
+}
