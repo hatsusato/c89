@@ -107,6 +107,16 @@ static Value *builder_stack_top(Builder *builder) {
   assert(!vector_empty(builder->stack));
   return vector_back(builder->stack);
 }
+static int count_return(Sexp *ast) {
+  if (sexp_is_pair(ast)) {
+    return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
+  } else {
+    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
+  }
+}
+Bool builder_multiple_return(Builder *builder) {
+  return 1 < count_return(builder->body);
+}
 Bool builder_stack_empty(Builder *builder) {
   return vector_empty(builder->stack);
 }

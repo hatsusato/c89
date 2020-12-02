@@ -7,6 +7,7 @@
 #include "sexp_type.h"
 #include "types.h"
 
+Bool builder_multiple_return(Builder *);
 Bool builder_stack_empty(Builder *);
 Value *builder_stack_new_value(Builder *, ValueKind);
 void builder_stack_push_symbol(Builder *, const char *);
