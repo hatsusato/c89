@@ -118,16 +118,6 @@ void stack_print(Stack *stack) {
   value_pretty(stack->func);
 }
 
-static int count_return(Sexp *ast) {
-  if (sexp_is_pair(ast)) {
-    return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
-  } else {
-    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
-  }
-}
-Bool stack_multiple_return(Stack *stack) {
-  return 1 < count_return(stack->body);
-}
 Bool stack_empty(Stack *stack) {
   return vector_empty(stack->stack);
 }
