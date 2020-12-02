@@ -47,15 +47,15 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
   builder->func = pool_alloc(builder->pool, VALUE_FUNCTION);
   builder->allocs = builder_stack_new_block(builder);
   builder->body = sexp_at(ast, 4);
-  builder_stack_push(builder, block);
-  builder_stack_pop_block(builder);
+  builder_stack_set_current_block(builder, block);
   if (builder_multiple_return(builder)) {
     Value *next = builder_stack_new_block(builder);
     builder_instruction_alloca(builder, "$retval");
     builder_stack_pop(builder);
     builder_stack_push(builder, next);
     builder_ast(builder, builder->body);
-    builder_stack_pop_block(builder);
+    builder_stack_pop(builder);
+    builder_stack_set_current_block(builder, next);
     builder_stack_push_symbol(builder, "$retval");
     builder_instruction_load(builder);
     builder_instruction_ret(builder);
@@ -181,9 +181,6 @@ void builder_stack_set_current_block(Builder *builder, Value *block) {
   assert(VALUE_BLOCK == value_kind(block));
   builder->block = block;
   value_insert(builder->func, block);
-}
-void builder_stack_pop_block(Builder *builder) {
-  builder_stack_set_current_block(builder, builder_stack_pop(builder));
 }
 void builder_stack_swap(Builder *builder) {
   Value *first = builder_stack_pop(builder);
