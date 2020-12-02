@@ -54,9 +54,7 @@ static void builder_function_definition(Builder *builder, Sexp *ast) {
     builder_stack_set_next_block(builder, next);
     builder_instruction_alloca(builder, "$retval");
     builder_stack_pop(builder);
-    builder_stack_push(builder, next);
     builder_ast(builder, builder->body);
-    builder_stack_pop(builder);
     builder_stack_set_current_block(builder, next);
     builder_stack_push_symbol(builder, "$retval");
     builder_instruction_load(builder);

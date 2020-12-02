@@ -53,9 +53,7 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
     builder_instruction_br_cond(builder);
     builder_stack_set_current_block(builder, if_then);
     builder_stack_set_next_block(builder, if_else);
-    builder_stack_push(builder, if_else);
     builder_ast(builder, sexp_at(ast, 5));
-    builder_stack_pop(builder);
     builder_stack_set_current_block(builder, if_else);
     builder_stack_set_next_block(builder, prev);
     break;
@@ -69,14 +67,10 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
     builder_instruction_br_cond(builder);
     builder_stack_set_current_block(builder, if_then);
     builder_stack_set_next_block(builder, next);
-    builder_stack_push(builder, next);
     builder_ast(builder, sexp_at(ast, 5));
-    builder_stack_pop(builder);
     builder_stack_set_current_block(builder, if_else);
     builder_stack_set_next_block(builder, next);
-    builder_stack_push(builder, next);
     builder_ast(builder, sexp_at(ast, 7));
-    builder_stack_pop(builder);
     builder_stack_set_current_block(builder, next);
     builder_stack_set_next_block(builder, prev);
     break;
