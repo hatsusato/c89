@@ -118,12 +118,6 @@ void builder_stack_init(Builder *builder, Sexp *ast) {
     assert(sexp_is_symbol(ast));
     value_set_value(value, sexp_get_symbol(ast));
     break;
-  case VALUE_INSTRUCTION_ALLOCA:
-    assert(AST_IDENTIFIER == sexp_get_tag(ast));
-    ast = sexp_at(ast, 1);
-    assert(sexp_get_symbol(ast));
-    table_insert(builder->table, sexp_get_symbol(ast), value);
-    break;
   default:
     break;
   }
@@ -150,6 +144,10 @@ void builder_stack_insert(Builder *builder) {
   Value *dst = builder_stack_top(builder);
   value_insert(dst, src);
   builder_stack_push(builder, src);
+}
+void builder_stack_insert_symbol(Builder *builder, const char *symbol) {
+  assert(VALUE_INSTRUCTION_ALLOCA == builder_stack_top_kind(builder));
+  table_insert(builder->table, symbol, builder_stack_top(builder));
 }
 void builder_stack_pop_insert(Builder *builder) {
   builder_stack_insert(builder);

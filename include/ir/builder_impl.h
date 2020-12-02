@@ -14,6 +14,7 @@ void builder_stack_init(Builder *, Sexp *);
 void builder_stack_register(Builder *);
 Value *builder_stack_pop(Builder *);
 void builder_stack_insert(Builder *);
+void builder_stack_insert_symbol(Builder *, const char *);
 void builder_stack_pop_insert(Builder *);
 ValueKind builder_stack_top_kind(Builder *);
 void builder_stack_pop_block(Builder *);
