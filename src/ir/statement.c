@@ -25,10 +25,6 @@ void stack_expression_statement(Stack *stack, Sexp *ast) {
     stack_pop(stack);
   }
 }
-static void stack_new_integer_constant(Stack *stack, const char *integer) {
-  stack_new_value(stack, VALUE_INTEGER_CONSTANT);
-  stack_set_symbol(stack, integer);
-}
 void stack_selection_statement(Stack *stack, Sexp *ast) {
   Value *if_then = stack_new_block(stack);
   Value *if_else = stack_new_block(stack);
@@ -39,7 +35,7 @@ void stack_selection_statement(Stack *stack, Sexp *ast) {
   switch (sexp_length(ast)) {
   case 6:
     stack_ast(stack, sexp_at(ast, 3));
-    stack_new_integer_constant(stack, "0");
+    stack_push_integer(stack, "0");
     stack_instruction_icmp_ne(stack);
     stack_push(stack, if_then);
     stack_push(stack, if_else);
@@ -51,7 +47,7 @@ void stack_selection_statement(Stack *stack, Sexp *ast) {
   case 8:
     next = stack_new_block(stack);
     stack_ast(stack, sexp_at(ast, 3));
-    stack_new_integer_constant(stack, "0");
+    stack_push_integer(stack, "0");
     stack_instruction_icmp_ne(stack);
     stack_push(stack, if_then);
     stack_push(stack, if_else);

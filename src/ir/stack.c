@@ -46,6 +46,10 @@ Value *stack_new_value(Stack *stack, ValueKind kind) {
 Value *stack_new_block(Stack *stack) {
   return pool_alloc(stack->pool, VALUE_BLOCK);
 }
+void stack_push_integer(Stack *stack, const char *value) {
+  stack_new_value(stack, VALUE_INTEGER_CONSTANT);
+  stack_set_symbol(stack, value);
+}
 void stack_push_symbol(Stack *stack, const char *symbol) {
   Value *value = table_find(stack->table, symbol);
   stack_push(stack, value);

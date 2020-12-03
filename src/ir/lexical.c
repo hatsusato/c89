@@ -13,6 +13,5 @@ void stack_integer_constant(Stack *stack, Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  stack_new_value(stack, VALUE_INTEGER_CONSTANT);
-  stack_set_symbol(stack, sexp_get_symbol(ast));
+  stack_push_integer(stack, sexp_get_symbol(ast));
 }
