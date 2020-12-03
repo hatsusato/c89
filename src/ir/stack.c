@@ -5,8 +5,6 @@
 #include "ast/ast_tag.h"
 #include "ir/function.h"
 #include "ir/pool.h"
-#include "ir/register.h"
-#include "ir/register_type.h"
 #include "ir/stack_impl.h"
 #include "ir/table.h"
 #include "ir/value.h"
@@ -37,12 +35,9 @@ void stack_delete(Stack *stack) {
   UTILITY_FREE(stack);
 }
 Value *stack_build(Stack *stack, Sexp *ast) {
-  RegisterGenerator *gen = register_generator_new();
   stack_ast(stack, ast);
   assert(vector_empty(stack->stack));
-  value_set_reg(gen, function_get_func(stack->func));
-  register_generator_delete(gen);
-  return function_get_func(stack->func);
+  return function_finish(stack->func);
 }
 void stack_print(Stack *stack) {
   puts("target triple = \"x86_64-pc-linux-gnu\"\n");

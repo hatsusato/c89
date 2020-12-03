@@ -18,6 +18,7 @@ Function *function_new(Pool *);
 void function_delete(Function *);
 Value *function_get(Function *, FunctionMember);
 void function_set(Function *, FunctionMember, Value *);
+Value *function_finish(Function *);
 
 void function_insert_allocs(Function *);
 void function_insert_to_allocs(Function *, Value *);

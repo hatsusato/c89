@@ -29,7 +29,6 @@ static void stack_function_definition(Stack *stack, Sexp *ast) {
     stack_instruction_load(stack);
     stack_instruction_ret(stack);
   }
-  stack_insert_allocs(stack);
   stack_set_function_name(stack, ast);
 }
 static void stack_ast_map(Stack *stack, Sexp *ast) {
