@@ -77,12 +77,13 @@ void stack_insert_to_block(Stack *stack) {
   assert(value_is_instruction(value));
   value_insert(block, value);
 }
+void stack_insert_as_operand(Stack *stack, Value *value) {
+  value_insert(stack_top(stack), value);
+}
+
 Value *stack_push(Stack *stack, Value *value) {
   vector_push(stack->stack, value);
   return value;
-}
-void stack_add(Stack *stack, Value *value) {
-  value_insert(stack_top(stack), value);
 }
 Value *stack_pop(Stack *stack) {
   Value *value = stack_top(stack);

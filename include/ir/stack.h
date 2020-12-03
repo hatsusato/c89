@@ -18,8 +18,9 @@ void stack_load_from_symbol(Stack *, const char *);
 void stack_store_to_symbol(Stack *, const char *);
 void stack_alloca(Stack *, const char *);
 void stack_insert_to_block(Stack *);
+void stack_insert_as_operand(Stack *, Value *);
+
 Value *stack_push(Stack *, Value *);
-void stack_add(Stack *, Value *);
 Value *stack_pop(Stack *);
 Value *stack_top(Stack *);
 ValueKind stack_top_kind(Stack *);
