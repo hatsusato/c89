@@ -1,14 +1,6 @@
 #include "ir/definition.h"
 
-#include "ast/ast_tag.h"
-#include "ir/declaration.h"
-#include "ir/expression.h"
-#include "ir/instruction.h"
-#include "ir/lexical.h"
 #include "ir/stack_impl.h"
-#include "ir/statement.h"
-#include "sexp.h"
-#include "utility.h"
 
 static int stack_count_return(Sexp *ast) {
   if (sexp_is_pair(ast)) {

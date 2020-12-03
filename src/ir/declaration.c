@@ -1,11 +1,6 @@
 #include "ir/declaration.h"
 
-#include "ast/ast_tag.h"
-#include "ir/instruction.h"
 #include "ir/stack_impl.h"
-#include "ir/value_kind.h"
-#include "sexp.h"
-#include "utility.h"
 
 static void stack_declarator(Stack *, Sexp *);
 static void stack_direct_declarator(Stack *stack, Sexp *ast) {

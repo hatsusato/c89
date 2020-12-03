@@ -3,17 +3,11 @@
 #include <stdio.h>
 
 #include "ast/ast_tag.h"
-#include "ir/declaration.h"
-#include "ir/definition.h"
-#include "ir/expression.h"
 #include "ir/function.h"
-#include "ir/instruction.h"
-#include "ir/lexical.h"
 #include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/register_type.h"
 #include "ir/stack_impl.h"
-#include "ir/statement.h"
 #include "ir/table.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
@@ -55,9 +49,6 @@ void stack_print(Stack *stack) {
   value_pretty(function_get_func(stack->func));
 }
 
-Bool stack_empty(Stack *stack) {
-  return vector_empty(stack->stack);
-}
 Value *stack_new_value(Stack *stack, ValueKind kind) {
   return stack_push(stack, pool_alloc(stack->pool, kind));
 }
@@ -107,9 +98,6 @@ Value *stack_top(Stack *stack) {
 ValueKind stack_top_kind(Stack *stack) {
   return value_kind(stack_top(stack));
 }
-void stack_set_next_block(Stack *stack, Value *block) {
-  function_set_next(stack->func, block);
-}
 Value *stack_get_next_block(Stack *stack) {
   return function_get_next(stack->func);
 }
@@ -129,9 +117,6 @@ void stack_return(Stack *stack) {
     stack_instruction_ret(stack);
   }
   function_set_next(stack->func, NULL);
-}
-void stack_set_current_block(Stack *stack, Value *block) {
-  function_set_current(stack->func, block);
 }
 void stack_swap(Stack *stack) {
   Value *first = stack_pop(stack);

@@ -1,11 +1,6 @@
 #include "ir/expression.h"
 
-#include "ast/ast_tag.h"
-#include "ir/instruction.h"
 #include "ir/stack_impl.h"
-#include "ir/value_kind.h"
-#include "sexp.h"
-#include "utility.h"
 
 void stack_additive_expression(Stack *stack, Sexp *ast) {
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));

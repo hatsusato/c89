@@ -1,7 +1,6 @@
 #include "ir/instruction.h"
 
 #include "ir/stack_impl.h"
-#include "ir/value_kind.h"
 
 static void stack_instruction_unary(Stack *stack, ValueKind kind) {
   Value *first = stack_pop(stack);

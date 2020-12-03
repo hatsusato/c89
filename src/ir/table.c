@@ -29,10 +29,10 @@ void table_delete(Table *table) {
   UTILITY_FREE(table);
 }
 void table_insert(Table *table, const char *key, Value *val) {
-  map_insert(table->table, key, val);
+  map_insert(table->table, (ElemType)key, val);
 }
 Value *table_find(Table *table, const char *key) {
-  ElemType *found = map_find(table->table, key);
+  ElemType *found = map_find(table->table, (ElemType)key);
   assert(found);
   return *found;
 }

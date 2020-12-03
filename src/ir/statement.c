@@ -1,12 +1,6 @@
 #include "ir/statement.h"
 
-#include "ast/ast_tag.h"
-#include "ir/instruction.h"
 #include "ir/stack_impl.h"
-#include "ir/value.h"
-#include "ir/value_kind.h"
-#include "sexp.h"
-#include "utility.h"
 
 void stack_statement(Stack *stack, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));

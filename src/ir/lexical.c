@@ -1,11 +1,6 @@
 #include "ir/lexical.h"
 
-#include "ast/ast_tag.h"
-#include "ir/instruction.h"
-#include "ir/stack.h"
 #include "ir/stack_impl.h"
-#include "sexp.h"
-#include "utility.h"
 
 void stack_identifier(Stack *stack, Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));
