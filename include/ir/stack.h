@@ -11,6 +11,8 @@ Stack *stack_new(Pool *);
 void stack_delete(Stack *);
 Value *stack_build(Stack *, Sexp *);
 
+void stack_push(Stack *, Value *);
+Value *stack_pop(Stack *);
 Value *stack_new_value(Stack *, ValueKind);
 Value *stack_new_block(Stack *);
 void stack_push_integer(Stack *, const char *);
@@ -20,8 +22,6 @@ void stack_alloca(Stack *, const char *);
 void stack_insert_to_block(Stack *);
 void stack_insert_as_operand(Stack *, Value *);
 
-Value *stack_push(Stack *, Value *);
-Value *stack_pop(Stack *);
 Value *stack_top(Stack *);
 ValueKind stack_top_kind(Stack *);
 Value *stack_get_next_block(Stack *);

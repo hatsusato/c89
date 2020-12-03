@@ -46,8 +46,18 @@ static void stack_push_symbol(Stack *stack, const char *symbol) {
   stack_push(stack, value);
 }
 
+void stack_push(Stack *stack, Value *value) {
+  vector_push(stack->stack, value);
+}
+Value *stack_pop(Stack *stack) {
+  Value *value = stack_top(stack);
+  vector_pop(stack->stack);
+  return value;
+}
 Value *stack_new_value(Stack *stack, ValueKind kind) {
-  return stack_push(stack, pool_alloc(stack->pool, kind));
+  Value *value = pool_alloc(stack->pool, kind);
+  stack_push(stack, value);
+  return value;
 }
 Value *stack_new_block(Stack *stack) {
   return pool_alloc(stack->pool, VALUE_BLOCK);
@@ -81,15 +91,6 @@ void stack_insert_as_operand(Stack *stack, Value *value) {
   value_insert(stack_top(stack), value);
 }
 
-Value *stack_push(Stack *stack, Value *value) {
-  vector_push(stack->stack, value);
-  return value;
-}
-Value *stack_pop(Stack *stack) {
-  Value *value = stack_top(stack);
-  vector_pop(stack->stack);
-  return value;
-}
 Value *stack_top(Stack *stack) {
   assert(!vector_empty(stack->stack));
   return vector_back(stack->stack);
