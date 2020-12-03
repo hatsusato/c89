@@ -50,6 +50,12 @@ void stack_push_integer(Stack *stack, const char *value) {
   stack_new_value(stack, VALUE_INTEGER_CONSTANT);
   stack_set_symbol(stack, value);
 }
+void stack_load_from_symbol(Stack *stack, const char *symbol) {
+  Value *value = table_find(stack->table, symbol);
+  assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
+  stack_push(stack, value);
+  stack_instruction_load(stack);
+}
 void stack_push_symbol(Stack *stack, const char *symbol) {
   Value *value = table_find(stack->table, symbol);
   stack_push(stack, value);

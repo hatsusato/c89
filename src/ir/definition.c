@@ -25,8 +25,7 @@ static void stack_function_definition(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 4));
   if (stack_ret(stack)) {
     stack_change_flow(stack, stack_ret(stack), NULL);
-    stack_push_symbol(stack, "$retval");
-    stack_instruction_load(stack);
+    stack_load_from_symbol(stack, "$retval");
     stack_instruction_ret(stack);
   }
   stack_set_function_name(stack, ast);
