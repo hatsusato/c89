@@ -54,7 +54,7 @@ Value *stack_new_block(Stack *stack) {
 }
 void stack_push_integer(Stack *stack, const char *value) {
   stack_new_value(stack, VALUE_INTEGER_CONSTANT);
-  stack_set_symbol(stack, value);
+  value_set_value(stack_top(stack), value);
 }
 void stack_load_from_symbol(Stack *stack, const char *symbol) {
   stack_push_symbol(stack, symbol);
@@ -70,9 +70,6 @@ void stack_alloca(Stack *stack, const char *symbol) {
   table_insert(stack->table, symbol, value);
   value_insert(allocs, value);
   stack_push(stack, value);
-}
-void stack_set_symbol(Stack *stack, const char *symbol) {
-  value_set_value(stack_top(stack), symbol);
 }
 void stack_register(Stack *stack) {
   Value *value = stack_top(stack);
