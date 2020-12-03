@@ -64,9 +64,12 @@ void stack_store_to_symbol(Stack *stack, const char *symbol) {
   stack_push_symbol(stack, symbol);
   stack_instruction_store(stack);
 }
-void stack_insert_symbol(Stack *stack, const char *symbol) {
-  assert(VALUE_INSTRUCTION_ALLOCA == stack_top_kind(stack));
-  table_insert(stack->table, symbol, stack_top(stack));
+void stack_alloca(Stack *stack, const char *symbol) {
+  Value *allocs = function_get(stack->func, FUNCTION_ALLOCS);
+  Value *value = pool_alloc(stack->pool, VALUE_INSTRUCTION_ALLOCA);
+  table_insert(stack->table, symbol, value);
+  value_insert(allocs, value);
+  stack_push(stack, value);
 }
 void stack_set_symbol(Stack *stack, const char *symbol) {
   value_set_value(stack_top(stack), symbol);
@@ -74,11 +77,7 @@ void stack_set_symbol(Stack *stack, const char *symbol) {
 void stack_register(Stack *stack) {
   Value *value = stack_top(stack);
   assert(value_is_instruction(value));
-  if (VALUE_INSTRUCTION_ALLOCA == stack_top_kind(stack)) {
-    function_insert_to_allocs(stack->func, value);
-  } else {
-    function_insert_to_current(stack->func, value);
-  }
+  function_insert_to_current(stack->func, value);
 }
 Value *stack_push(Stack *stack, Value *value) {
   vector_push(stack->stack, value);
