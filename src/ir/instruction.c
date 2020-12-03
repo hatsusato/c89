@@ -29,12 +29,15 @@ static void stack_instruction_ternary(Stack *stack, ValueKind kind) {
 
 void stack_instruction_ret(Stack *stack) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_RET);
+  stack_pop(stack);
 }
 void stack_instruction_br(Stack *stack) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_BR);
+  stack_pop(stack);
 }
 void stack_instruction_br_cond(Stack *stack) {
   stack_instruction_ternary(stack, VALUE_INSTRUCTION_BR_COND);
+  stack_pop(stack);
 }
 void stack_instruction_add(Stack *stack) {
   stack_instruction_binary(stack, VALUE_INSTRUCTION_ADD);

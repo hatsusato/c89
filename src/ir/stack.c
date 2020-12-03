@@ -75,9 +75,6 @@ void stack_register(Stack *stack) {
   } else {
     function_insert_to_current(stack->func, value);
   }
-  if (value_is_terminator(value)) {
-    stack_pop(stack);
-  }
 }
 Value *stack_push(Stack *stack, Value *value) {
   vector_push(stack->stack, value);
