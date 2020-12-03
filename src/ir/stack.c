@@ -56,6 +56,12 @@ void stack_load_from_symbol(Stack *stack, const char *symbol) {
   stack_push(stack, value);
   stack_instruction_load(stack);
 }
+void stack_store_to_symbol(Stack *stack, const char *symbol) {
+  Value *value = table_find(stack->table, symbol);
+  assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
+  stack_push(stack, value);
+  stack_instruction_store(stack);
+}
 void stack_push_symbol(Stack *stack, const char *symbol) {
   Value *value = table_find(stack->table, symbol);
   stack_push(stack, value);
@@ -106,8 +112,7 @@ void stack_change_flow(Stack *stack, Value *current, Value *next) {
 }
 void stack_return(Stack *stack) {
   if (function_get_return(stack->func)) {
-    stack_push_symbol(stack, "$retval");
-    stack_instruction_store(stack);
+    stack_store_to_symbol(stack, "$retval");
     stack_pop(stack);
     stack_push(stack, function_get_return(stack->func));
     stack_instruction_br(stack);

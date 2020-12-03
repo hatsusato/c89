@@ -21,6 +21,5 @@ void stack_assignment_expression(Stack *stack, Sexp *ast) {
   lhs = sexp_at(lhs, 1);
   assert(sexp_is_symbol(lhs));
   stack_ast(stack, rhs);
-  stack_push_symbol(stack, sexp_get_symbol(lhs));
-  stack_instruction_store(stack);
+  stack_store_to_symbol(stack, sexp_get_symbol(lhs));
 }
