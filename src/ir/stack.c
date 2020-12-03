@@ -71,10 +71,11 @@ void stack_alloca(Stack *stack, const char *symbol) {
   value_insert(allocs, value);
   stack_push(stack, value);
 }
-void stack_register(Stack *stack) {
+void stack_insert_to_block(Stack *stack) {
+  Value *block = function_get(stack->func, FUNCTION_CURRENT);
   Value *value = stack_top(stack);
   assert(value_is_instruction(value));
-  function_insert_to_current(stack->func, value);
+  value_insert(block, value);
 }
 Value *stack_push(Stack *stack, Value *value) {
   vector_push(stack->stack, value);

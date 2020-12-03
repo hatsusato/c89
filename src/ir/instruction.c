@@ -6,7 +6,7 @@ static void stack_instruction_unary(Stack *stack, ValueKind kind) {
   Value *first = stack_pop(stack);
   stack_new_value(stack, kind);
   stack_add(stack, first);
-  stack_register(stack);
+  stack_insert_to_block(stack);
 }
 static void stack_instruction_binary(Stack *stack, ValueKind kind) {
   Value *second = stack_pop(stack);
@@ -14,7 +14,7 @@ static void stack_instruction_binary(Stack *stack, ValueKind kind) {
   stack_new_value(stack, kind);
   stack_add(stack, first);
   stack_add(stack, second);
-  stack_register(stack);
+  stack_insert_to_block(stack);
 }
 static void stack_instruction_ternary(Stack *stack, ValueKind kind) {
   Value *third = stack_pop(stack);
@@ -24,7 +24,7 @@ static void stack_instruction_ternary(Stack *stack, ValueKind kind) {
   stack_add(stack, first);
   stack_add(stack, second);
   stack_add(stack, third);
-  stack_register(stack);
+  stack_insert_to_block(stack);
 }
 
 void stack_instruction_ret(Stack *stack) {
