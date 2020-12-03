@@ -16,7 +16,6 @@ Value *stack_new_block(Stack *);
 void stack_push_integer(Stack *, const char *);
 void stack_load_from_symbol(Stack *, const char *);
 void stack_store_to_symbol(Stack *, const char *);
-void stack_push_symbol(Stack *, const char *);
 void stack_insert_symbol(Stack *, const char *);
 void stack_set_symbol(Stack *, const char *);
 void stack_register(Stack *);

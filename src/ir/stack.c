@@ -40,6 +40,12 @@ Value *stack_build(Stack *stack, Sexp *ast) {
   return function_finish(stack->func);
 }
 
+static void stack_push_symbol(Stack *stack, const char *symbol) {
+  Value *value = table_find(stack->table, symbol);
+  assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
+  stack_push(stack, value);
+}
+
 Value *stack_new_value(Stack *stack, ValueKind kind) {
   return stack_push(stack, pool_alloc(stack->pool, kind));
 }
@@ -51,21 +57,12 @@ void stack_push_integer(Stack *stack, const char *value) {
   stack_set_symbol(stack, value);
 }
 void stack_load_from_symbol(Stack *stack, const char *symbol) {
-  Value *value = table_find(stack->table, symbol);
-  assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
-  stack_push(stack, value);
+  stack_push_symbol(stack, symbol);
   stack_instruction_load(stack);
 }
 void stack_store_to_symbol(Stack *stack, const char *symbol) {
-  Value *value = table_find(stack->table, symbol);
-  assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
-  stack_push(stack, value);
+  stack_push_symbol(stack, symbol);
   stack_instruction_store(stack);
-}
-void stack_push_symbol(Stack *stack, const char *symbol) {
-  Value *value = table_find(stack->table, symbol);
-  stack_push(stack, value);
-  assert(VALUE_INSTRUCTION_ALLOCA == stack_top_kind(stack));
 }
 void stack_insert_symbol(Stack *stack, const char *symbol) {
   assert(VALUE_INSTRUCTION_ALLOCA == stack_top_kind(stack));
