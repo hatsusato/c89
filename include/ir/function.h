@@ -5,6 +5,15 @@
 #include "ir/pool.h"
 #include "ir/value_type.h"
 
+typedef enum {
+  FUNCTION_FUNC,
+  FUNCTION_ALLOCS,
+  FUNCTION_CURRENT,
+  FUNCTION_NEXT,
+  FUNCTION_RET,
+  FUNCTION_COUNT
+} FunctionMember;
+
 Function *function_new(Pool *);
 void function_delete(Function *);
 void function_insert_allocs(Function *);
