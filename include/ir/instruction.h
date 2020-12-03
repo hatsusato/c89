@@ -11,8 +11,6 @@ void stack_instruction_br(Stack *);
 void stack_instruction_br_cond(Stack *);
 /* add %1, %2: (%1 %2 -- %0) */
 void stack_instruction_add(Stack *);
-/* alloca: ( -- %0)*/
-void stack_instruction_alloca(Stack *, const char *);
 /* load %1: (%1 -- %0) */
 void stack_instruction_load(Stack *);
 /* store %1, %2: (%1 %2 -- %0) */

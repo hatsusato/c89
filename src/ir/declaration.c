@@ -11,7 +11,7 @@ static void stack_direct_declarator(Stack *stack, Sexp *ast) {
     assert(AST_IDENTIFIER == sexp_get_tag(ast));
     ast = sexp_at(ast, 1);
     assert(sexp_get_symbol(ast));
-    stack_instruction_alloca(stack, sexp_get_symbol(ast));
+    stack_alloca(stack, sexp_get_symbol(ast));
     break;
   case 4:
     ast = sexp_at(ast, 2);

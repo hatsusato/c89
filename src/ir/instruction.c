@@ -42,9 +42,6 @@ void stack_instruction_br_cond(Stack *stack) {
 void stack_instruction_add(Stack *stack) {
   stack_instruction_binary(stack, VALUE_INSTRUCTION_ADD);
 }
-void stack_instruction_alloca(Stack *stack, const char *symbol) {
-  stack_alloca(stack, symbol);
-}
 void stack_instruction_load(Stack *stack) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_LOAD);
 }

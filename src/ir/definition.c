@@ -18,7 +18,7 @@ static void stack_function_definition(Stack *stack, Sexp *ast) {
     stack_ret_init(stack);
   }
   if (stack_ret(stack)) {
-    stack_instruction_alloca(stack, "$retval");
+    stack_alloca(stack, "$retval");
     stack_pop(stack);
   }
   stack_change_flow(stack, entry, stack_ret(stack));
