@@ -45,6 +45,10 @@ static void stack_push_symbol(Stack *stack, const char *symbol) {
   assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
   stack_push(stack, value);
 }
+static Value *stack_top(Stack *stack) {
+  assert(!vector_empty(stack->stack));
+  return vector_back(stack->stack);
+}
 
 void stack_push(Stack *stack, Value *value) {
   vector_push(stack->stack, value);
@@ -91,10 +95,6 @@ void stack_insert_as_operand(Stack *stack, Value *value) {
   value_insert(stack_top(stack), value);
 }
 
-Value *stack_top(Stack *stack) {
-  assert(!vector_empty(stack->stack));
-  return vector_back(stack->stack);
-}
 ValueKind stack_top_kind(Stack *stack) {
   return value_kind(stack_top(stack));
 }
