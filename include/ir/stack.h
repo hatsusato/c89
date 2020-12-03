@@ -21,9 +21,9 @@ void stack_store_to_symbol(Stack *, const char *);
 void stack_alloca(Stack *, const char *);
 void stack_insert_to_block(Stack *);
 void stack_insert_as_operand(Stack *, Value *);
+Value *stack_get_next_block(Stack *);
 
 ValueKind stack_top_kind(Stack *);
-Value *stack_get_next_block(Stack *);
 void stack_change_flow(Stack *, Value *, Value *);
 void stack_return(Stack *);
 void stack_swap(Stack *);

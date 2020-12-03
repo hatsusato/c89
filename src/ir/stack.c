@@ -94,12 +94,12 @@ void stack_insert_to_block(Stack *stack) {
 void stack_insert_as_operand(Stack *stack, Value *value) {
   value_insert(stack_top(stack), value);
 }
+Value *stack_get_next_block(Stack *stack) {
+  return function_get(stack->func, FUNCTION_NEXT);
+}
 
 ValueKind stack_top_kind(Stack *stack) {
   return value_kind(stack_top(stack));
-}
-Value *stack_get_next_block(Stack *stack) {
-  return function_get_next(stack->func);
 }
 void stack_change_flow(Stack *stack, Value *current, Value *next) {
   assert(!next || VALUE_BLOCK == value_kind(next));
