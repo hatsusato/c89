@@ -39,10 +39,6 @@ Value *stack_build(Stack *stack, Sexp *ast) {
   assert(vector_empty(stack->stack));
   return function_finish(stack->func);
 }
-void stack_print(Stack *stack) {
-  puts("target triple = \"x86_64-pc-linux-gnu\"\n");
-  value_pretty(function_get_func(stack->func));
-}
 
 Value *stack_new_value(Stack *stack, ValueKind kind) {
   return stack_push(stack, pool_alloc(stack->pool, kind));

@@ -10,7 +10,6 @@
 Stack *stack_new(Pool *);
 void stack_delete(Stack *);
 Value *stack_build(Stack *, Sexp *);
-void stack_print(Stack *);
 
 Value *stack_new_value(Stack *, ValueKind);
 Value *stack_new_block(Stack *);
