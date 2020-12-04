@@ -125,30 +125,6 @@ Value *stack_init_return_block(Stack *stack) {
   return block;
 }
 
-ValueKind stack_top_kind(Stack *stack) {
-  return value_kind(stack_top(stack));
-}
-void stack_return(Stack *stack) {
-  if (function_get_return(stack->func)) {
-    stack_store_to_symbol(stack, "$retval");
-    stack_pop(stack);
-    stack_push(stack, function_get_return(stack->func));
-    stack_instruction_br(stack);
-  } else {
-    stack_instruction_ret(stack);
-  }
-  function_set_next(stack->func, NULL);
-}
-
-void stack_ret_init(Stack *stack) {
-  function_set_return(stack->func, stack_new_block(stack));
-}
-Value *stack_ret(Stack *stack) {
-  return function_get_return(stack->func);
-}
-void stack_insert_allocs(Stack *stack) {
-  function_insert_allocs(stack->func);
-}
 void stack_set_function_name(Stack *stack, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:

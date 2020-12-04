@@ -28,12 +28,6 @@ void stack_set_next_block(Stack *, Value *);
 Value *stack_get_return_block(Stack *);
 Value *stack_init_return_block(Stack *);
 
-ValueKind stack_top_kind(Stack *);
-void stack_return(Stack *);
-
-void stack_ret_init(Stack *);
-Value *stack_ret(Stack *);
-void stack_insert_allocs(Stack *);
 void stack_set_function_name(Stack *, Sexp *);
 
 #endif /* INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E */
