@@ -39,21 +39,6 @@ void value_append(Value *dst, const Value *src) {
     vector_push(dst->vec, *begin++);
   }
 }
-void value_prepend(Value *dst, const Value *src) {
-  Vector *tmp = vector_new(NULL);
-  ElemType *begin = vector_begin(src->vec);
-  ElemType *end = vector_end(src->vec);
-  while (begin < end) {
-    vector_push(tmp, *begin++);
-  }
-  begin = vector_begin(dst->vec);
-  end = vector_end(dst->vec);
-  while (begin < end) {
-    vector_push(tmp, *begin++);
-  }
-  UTILITY_SWAP(Vector *, dst->vec, tmp);
-  vector_delete(tmp);
-}
 void value_set_value(Value *value, const void *val) {
   value->value = val;
 }
