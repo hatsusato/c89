@@ -35,6 +35,7 @@ void stack_delete(Stack *stack) {
   UTILITY_FREE(stack);
 }
 Value *stack_build(Stack *stack, Sexp *ast) {
+  function_init(stack->func, stack->pool, ast);
   stack_ast(stack, ast);
   assert(vector_empty(stack->stack));
   return function_finish(stack->func);

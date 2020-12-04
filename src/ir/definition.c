@@ -40,16 +40,13 @@ static const char *stack_function_name(Sexp *ast) {
   }
 }
 void stack_function_definition(Stack *stack, Sexp *ast) {
-  Value *entry = stack_new_block(stack);
-  Value *ret = NULL;
+  Value *ret = stack_get_next_block(stack);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
-  if (1 < stack_count_return(ast)) {
-    ret = stack_init_return_block(stack);
+  if (ret) {
     stack_alloca(stack, "$retval");
     stack_pop(stack);
   }
-  stack_change_flow(stack, entry, NULL);
   stack_ast(stack, sexp_at(ast, 4));
   if (ret) {
     stack_change_flow(stack, ret, NULL);
