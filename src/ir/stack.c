@@ -118,6 +118,12 @@ void stack_set_next_block(Stack *stack, Value *block) {
 Value *stack_get_return_block(Stack *stack) {
   return function_get(stack->func, FUNCTION_RET);
 }
+Value *stack_init_return_block(Stack *stack) {
+  Value *block = stack_new_block(stack);
+  function_set(stack->func, FUNCTION_RET, block);
+  function_set(stack->func, FUNCTION_NEXT, block);
+  return block;
+}
 
 ValueKind stack_top_kind(Stack *stack) {
   return value_kind(stack_top(stack));

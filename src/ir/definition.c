@@ -12,19 +12,18 @@ static int stack_count_return(Sexp *ast) {
 }
 static void stack_function_definition(Stack *stack, Sexp *ast) {
   Value *entry = stack_new_block(stack);
+  Value *ret = NULL;
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   if (1 < stack_count_return(ast)) {
-    stack_ret_init(stack);
-  }
-  if (stack_ret(stack)) {
+    ret = stack_init_return_block(stack);
     stack_alloca(stack, "$retval");
     stack_pop(stack);
   }
-  stack_change_flow(stack, entry, stack_ret(stack));
+  stack_change_flow(stack, entry, NULL);
   stack_ast(stack, sexp_at(ast, 4));
-  if (stack_ret(stack)) {
-    stack_change_flow(stack, stack_ret(stack), NULL);
+  if (ret) {
+    stack_change_flow(stack, ret, NULL);
     stack_load_from_symbol(stack, "$retval");
     stack_instruction_ret(stack);
   }
