@@ -32,6 +32,13 @@ void value_delete(Value *value) {
 void value_insert(Value *value, Value *elem) {
   vector_push(value->vec, elem);
 }
+void value_append(Value *dst, const Value *src) {
+  ElemType *begin = vector_begin(src->vec);
+  ElemType *end = vector_end(src->vec);
+  while (begin < end) {
+    vector_push(dst->vec, *begin++);
+  }
+}
 void value_prepend(Value *dst, const Value *src) {
   Vector *tmp = vector_new(NULL);
   ElemType *begin = vector_begin(src->vec);
