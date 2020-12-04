@@ -47,6 +47,7 @@ void function_init(Function *f, Pool *pool, Sexp *ast) {
   }
   function_set(f, FUNCTION_FUNC, func);
   function_set(f, FUNCTION_ALLOCS, allocs);
+  function_set(f, FUNCTION_ENTRY, entry);
   function_set(f, FUNCTION_CURRENT, entry);
   function_set(f, FUNCTION_NEXT, ret);
   function_set(f, FUNCTION_RET, ret);
@@ -56,8 +57,8 @@ Value *function_finish(Function *func) {
   RegisterGenerator *gen = register_generator_new();
   Value *f = function_get(func, FUNCTION_FUNC);
   Value *a = function_get(func, FUNCTION_ALLOCS);
-  Value *entry = value_at(f, 0);
-  value_prepend(entry, a);
+  Value *e = function_get(func, FUNCTION_ENTRY);
+  value_prepend(e, a);
   value_set_reg(gen, f);
   register_generator_delete(gen);
   return f;
