@@ -20,14 +20,12 @@ static int count_return(Sexp *ast) {
   }
 }
 
-Function *function_new(Pool *pool) {
+Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
-  UTILITY_UNUSED(pool);
-  function_set(func, FUNCTION_FUNC, NULL);
-  function_set(func, FUNCTION_ALLOCS, NULL);
-  function_set(func, FUNCTION_CURRENT, NULL);
-  function_set(func, FUNCTION_NEXT, NULL);
-  function_set(func, FUNCTION_RET, NULL);
+  int i;
+  for (i = 0; i < FUNCTION_COUNT; ++i) {
+    func->members[i] = NULL;
+  }
   return func;
 }
 void function_delete(Function *func) {

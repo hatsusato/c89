@@ -25,7 +25,7 @@ Stack *stack_new(Pool *pool) {
   stack->pool = pool;
   stack->table = table_new();
   stack->stack = vector_new(NULL);
-  stack->func = function_new(pool);
+  stack->func = function_new();
   return stack;
 }
 void stack_delete(Stack *stack) {
