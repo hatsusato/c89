@@ -85,6 +85,15 @@ void stack_alloca(Stack *stack, const char *symbol) {
   value_insert(allocs, value);
   stack_push(stack, value);
 }
+void stack_change_flow(Stack *stack, Value *current, Value *next) {
+  assert(VALUE_BLOCK == value_kind(current));
+  function_set(stack->func, FUNCTION_CURRENT, current);
+  value_insert(function_get(stack->func, FUNCTION_FUNC), current);
+  if (next) {
+    assert(VALUE_BLOCK == value_kind(next));
+    function_set(stack->func, FUNCTION_NEXT, next);
+  }
+}
 void stack_insert_to_block(Stack *stack) {
   Value *block = function_get(stack->func, FUNCTION_CURRENT);
   Value *value = stack_top(stack);
@@ -100,11 +109,6 @@ Value *stack_get_next_block(Stack *stack) {
 
 ValueKind stack_top_kind(Stack *stack) {
   return value_kind(stack_top(stack));
-}
-void stack_change_flow(Stack *stack, Value *current, Value *next) {
-  assert(!next || VALUE_BLOCK == value_kind(next));
-  function_set_current(stack->func, current);
-  function_set_next(stack->func, next);
 }
 void stack_return(Stack *stack) {
   if (function_get_return(stack->func)) {
