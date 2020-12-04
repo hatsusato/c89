@@ -35,9 +35,8 @@ static void stack_declarator(Stack *stack, Sexp *ast) {
 static void stack_init_declarator(Stack *stack, Sexp *ast) {
   assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
   if (4 == sexp_length(ast)) {
-    stack_declarator(stack, sexp_at(ast, 1));
     stack_ast(stack, sexp_at(ast, 3));
-    stack_swap(stack);
+    stack_declarator(stack, sexp_at(ast, 1));
     stack_instruction_store(stack);
     stack_pop(stack);
   } else {
