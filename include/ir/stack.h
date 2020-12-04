@@ -13,6 +13,7 @@ Value *stack_build(Stack *, Sexp *);
 
 void stack_push(Stack *, Value *);
 Value *stack_pop(Stack *);
+void stack_swap(Stack *);
 Value *stack_new_value(Stack *, ValueKind);
 Value *stack_new_block(Stack *);
 void stack_push_integer(Stack *, const char *);
@@ -28,7 +29,6 @@ Value *stack_get_return_block(Stack *);
 
 ValueKind stack_top_kind(Stack *);
 void stack_return(Stack *);
-void stack_swap(Stack *);
 
 void stack_ret_init(Stack *);
 Value *stack_ret(Stack *);

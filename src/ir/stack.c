@@ -58,6 +58,12 @@ Value *stack_pop(Stack *stack) {
   vector_pop(stack->stack);
   return value;
 }
+void stack_swap(Stack *stack) {
+  Value *first = stack_pop(stack);
+  Value *second = stack_pop(stack);
+  stack_push(stack, first);
+  stack_push(stack, second);
+}
 Value *stack_new_value(Stack *stack, ValueKind kind) {
   Value *value = pool_alloc(stack->pool, kind);
   stack_push(stack, value);
@@ -126,12 +132,6 @@ void stack_return(Stack *stack) {
     stack_instruction_ret(stack);
   }
   function_set_next(stack->func, NULL);
-}
-void stack_swap(Stack *stack) {
-  Value *first = stack_pop(stack);
-  Value *second = stack_pop(stack);
-  stack_push(stack, first);
-  stack_push(stack, second);
 }
 
 void stack_ret_init(Stack *stack) {
