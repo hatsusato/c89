@@ -27,7 +27,6 @@ Value *stack_get_next_block(Stack *);
 void stack_set_next_block(Stack *, Value *);
 Value *stack_get_return_block(Stack *);
 Value *stack_init_return_block(Stack *);
-
-void stack_set_function_name(Stack *, Sexp *);
+void stack_set_function_name(Stack *, const char *);
 
 #endif /* INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E */

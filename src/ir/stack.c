@@ -124,46 +124,7 @@ Value *stack_init_return_block(Stack *stack) {
   function_set(stack->func, FUNCTION_NEXT, block);
   return block;
 }
-
-void stack_set_function_name(Stack *stack, Sexp *ast) {
-  switch (sexp_get_tag(ast)) {
-  case AST_IDENTIFIER:
-    assert(2 == sexp_length(ast));
-    ast = sexp_at(ast, 1);
-    assert(sexp_is_symbol(ast));
-    value_set_value(function_get_func(stack->func), sexp_get_symbol(ast));
-    break;
-  case AST_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      stack_set_function_name(stack, sexp_at(ast, 1));
-      break;
-    case 3:
-      stack_set_function_name(stack, sexp_at(ast, 2));
-      break;
-    default:
-      assert(0);
-      break;
-    }
-    break;
-  case AST_DIRECT_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      stack_set_function_name(stack, sexp_at(ast, 1));
-      break;
-    case 4:
-      stack_set_function_name(stack, sexp_at(ast, 2));
-      break;
-    default:
-      stack_set_function_name(stack, sexp_at(ast, 1));
-      break;
-    }
-    break;
-  case AST_FUNCTION_DEFINITION:
-    stack_set_function_name(stack, sexp_at(ast, 2));
-    break;
-  default:
-    assert(0);
-    break;
-  }
+void stack_set_function_name(Stack *stack, const char *name) {
+  Value *func = function_get(stack->func, FUNCTION_FUNC);
+  value_set_value(func, name);
 }
