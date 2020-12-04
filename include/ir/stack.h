@@ -23,6 +23,8 @@ void stack_change_flow(Stack *, Value *, Value *);
 void stack_insert_to_block(Stack *);
 void stack_insert_as_operand(Stack *, Value *);
 Value *stack_get_next_block(Stack *);
+void stack_set_next_block(Stack *, Value *);
+Value *stack_get_return_block(Stack *);
 
 ValueKind stack_top_kind(Stack *);
 void stack_return(Stack *);
