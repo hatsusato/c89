@@ -2,14 +2,6 @@
 
 #include "ir/stack_impl.h"
 
-static int stack_count_return(Sexp *ast) {
-  if (sexp_is_pair(ast)) {
-    return stack_count_return(sexp_car(ast)) +
-           stack_count_return(sexp_cdr(ast));
-  } else {
-    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
-  }
-}
 static const char *stack_function_name(Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:

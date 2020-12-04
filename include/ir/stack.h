@@ -26,7 +26,6 @@ void stack_insert_as_operand(Stack *, Value *);
 Value *stack_get_next_block(Stack *);
 void stack_set_next_block(Stack *, Value *);
 Value *stack_get_return_block(Stack *);
-Value *stack_init_return_block(Stack *);
 void stack_set_function_name(Stack *, const char *);
 void stack_ast(Stack *, Sexp *);
 

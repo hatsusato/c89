@@ -119,12 +119,6 @@ void stack_set_next_block(Stack *stack, Value *block) {
 Value *stack_get_return_block(Stack *stack) {
   return function_get(stack->func, FUNCTION_RET);
 }
-Value *stack_init_return_block(Stack *stack) {
-  Value *block = stack_new_block(stack);
-  function_set(stack->func, FUNCTION_RET, block);
-  function_set(stack->func, FUNCTION_NEXT, block);
-  return block;
-}
 void stack_set_function_name(Stack *stack, const char *name) {
   Value *func = function_get(stack->func, FUNCTION_FUNC);
   value_set_value(func, name);
