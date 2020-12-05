@@ -74,6 +74,13 @@ void stack_selection_statement(Stack *stack, Sexp *ast) {
     break;
   }
 }
+static void stack_break_statement(Stack *stack, Sexp *ast) {
+  Value *next = stack_get_next_block(stack);
+  stack_push(stack, next);
+  stack_instruction_br(stack);
+  stack_set_next_block(stack, NULL);
+  UTILITY_UNUSED(ast);
+}
 static void stack_return_statement(Stack *stack, Sexp *ast) {
   Value *ret = stack_get_return_block(stack);
   assert(!sexp_is_nil(sexp_at(ast, 2)));
@@ -92,6 +99,9 @@ void stack_jump_statement(Stack *stack, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 1)));
   switch (sexp_get_number(sexp_at(ast, 1))) {
+  case AST_BREAK:
+    stack_break_statement(stack, ast);
+    break;
   case AST_RETURN:
     stack_return_statement(stack, ast);
     break;
