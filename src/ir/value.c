@@ -130,7 +130,7 @@ void value_pretty(Value *value) {
       value_print(*begin++);
       printf("\n");
     }
-    printf(" ]");
+    printf("  ]");
     break;
   case VALUE_INSTRUCTION_ADD:
     value_print(value);
