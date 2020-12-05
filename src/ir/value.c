@@ -32,6 +32,9 @@ void value_delete(Value *value) {
 void value_insert(Value *value, Value *elem) {
   vector_push(value->vec, elem);
 }
+void value_pop(Value *value) {
+  vector_pop(value->vec);
+}
 void value_append(Value *dst, const Value *src) {
   ElemType *begin = vector_begin(src->vec);
   ElemType *end = vector_end(src->vec);
