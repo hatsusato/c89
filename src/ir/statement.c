@@ -35,9 +35,21 @@ static void stack_default_statement(Stack *stack, Sexp *ast) {
   stack_change_flow(stack, next, NULL);
   stack_ast(stack, sexp_at(ast, 3));
 }
+static void stack_case_statement(Stack *stack, Sexp *ast) {
+  Value *next = stack_new_block(stack);
+  stack_ast(stack, sexp_at(ast, 2));
+  stack_push(stack, next);
+  stack_instruction_switch_case(stack);
+  stack_change_flow(stack, next, NULL);
+  stack_ast(stack, sexp_at(ast, 4));
+}
 void stack_labeled_statement(Stack *stack, Sexp *ast) {
   assert(AST_LABELED_STATEMENT == sexp_get_tag(ast));
+  assert(sexp_is_number(sexp_at(ast, 1)));
   switch (sexp_get_number(sexp_at(ast, 1))) {
+  case AST_CASE:
+    stack_case_statement(stack, ast);
+    break;
   case AST_DEFAULT:
     stack_default_statement(stack, ast);
     break;
