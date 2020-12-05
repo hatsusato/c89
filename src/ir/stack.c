@@ -38,7 +38,8 @@ Value *stack_build(Stack *stack, Sexp *ast) {
   function_init(stack->func, stack->pool, ast);
   stack_ast(stack, ast);
   assert(vector_empty(stack->stack));
-  return function_finish(stack->func);
+  function_finish(stack->func);
+  return function_get(stack->func, FUNCTION_FUNC);
 }
 
 static void stack_push_symbol(Stack *stack, const char *symbol) {
