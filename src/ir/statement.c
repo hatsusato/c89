@@ -30,11 +30,21 @@ void stack_statement(Stack *stack, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
   stack_ast(stack, sexp_at(ast, 1));
 }
-void stack_labeled_statement(Stack *stack, Sexp *ast) {
+static void stack_default_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_default_block(stack);
-  assert(AST_DEFAULT == sexp_get_number(sexp_at(ast, 1)));
   stack_change_flow(stack, next, NULL);
   stack_ast(stack, sexp_at(ast, 3));
+}
+void stack_labeled_statement(Stack *stack, Sexp *ast) {
+  assert(AST_LABELED_STATEMENT == sexp_get_tag(ast));
+  switch (sexp_get_number(sexp_at(ast, 1))) {
+  case AST_DEFAULT:
+    stack_default_statement(stack, ast);
+    break;
+  default:
+    assert(0);
+    break;
+  }
 }
 void stack_compound_statement(Stack *stack, Sexp *ast) {
   Value *next;
