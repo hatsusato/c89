@@ -2,6 +2,7 @@
 
 builddir := build
 target := $(builddir)/main.out
+develop-mode := $(if $(wildcard .develop),ON,)
 
 srcs != git ls-files src/
 srcs := $(filter %.c,$(srcs))
@@ -33,10 +34,10 @@ dflags = $(cflags) -MF $@ -MG -MM -MP -MT $(@:%.d=%.o)
 lflags := --header-file=$(scanner/lex/hdr) --outfile=$(scanner/lex/src)
 yflags := -d -b $(scanner/yacc/prefix)
 
-ifeq (,$(wildcard .develop))
-cflags += -O3 -DNDEBUG
-else
+ifeq (ON,$(develop-mode))
 cflags += -O0 -g
+else
+cflags += -O3 -DNDEBUG
 endif
 
 .SUFFIXES:
@@ -51,10 +52,6 @@ $(objs): $(builddir)/%.o: %.c
 	@mkdir -p $(@D)
 	$(CC) $(cflags) -c $< -o $@
 
-$(deps): $(builddir)/%.d: %.c
-	@mkdir -p $(@D)
-	$(CC) $(dflags) $<
-
 $(scanner/lex): $(scanner/lex/file)
 	@mkdir -p $(@D)
 	flex $(lflags) $<
@@ -63,17 +60,24 @@ $(scanner/yacc): $(scanner/yacc/file)
 	@mkdir -p $(@D)
 	bison $(yflags) $<
 
-$(scanner/outs): cflags += -I$(@D)
 $(scanner/objs): %.o: %.c
 	@mkdir -p $(@D)
 	$(CC) $(cflags) -c $< -o $@
 
+$(scanner/outs): cflags += -I$(@D)
 $(scanner/outs): $(scanner/hdrs)
+
+ifeq (ON,$(develop-mode))
+$(deps): $(builddir)/%.d: %.c
+	@mkdir -p $(@D)
+	$(CC) $(dflags) $<
+
 $(scanner/deps): %.d: %.c
 	@mkdir -p $(@D)
 	$(CC) $(dflags) $<
 
 -include $(deps) $(scanner/deps)
+endif
 
 .PHONY: clean
 clean:

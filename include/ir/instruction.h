@@ -1,23 +1,21 @@
 #ifndef INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 #define INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 
-#include "ir/builder_type.h"
+#include "ir/stack_type.h"
 
 /* ret %1: (%1 -- ) */
-void builder_instruction_ret(Builder *);
+void stack_instruction_ret(Stack *);
 /* br label %1: (%1 -- ) */
-void builder_instruction_br(Builder *);
+void stack_instruction_br(Stack *);
 /* br %1, label %2, label %3: (%1 %2 %3 -- ) */
-void builder_instruction_br_cond(Builder *);
+void stack_instruction_br_cond(Stack *);
 /* add %1, %2: (%1 %2 -- %0) */
-void builder_instruction_add(Builder *);
-/* alloca: ( -- %0)*/
-void builder_instruction_alloca(Builder *, const char *);
+void stack_instruction_add(Stack *);
 /* load %1: (%1 -- %0) */
-void builder_instruction_load(Builder *);
+void stack_instruction_load(Stack *);
 /* store %1, %2: (%1 %2 -- %0) */
-void builder_instruction_store(Builder *);
+void stack_instruction_store(Stack *);
 /* icmp ne %1, %2: (%1 %2 -- %0) */
-void builder_instruction_icmp_ne(Builder *);
+void stack_instruction_icmp_ne(Stack *);
 
 #endif /* INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E */

@@ -1,12 +1,12 @@
 #include "ast.h"
 #include "builder.h"
+#include "ir/stack.h"
 #include "print.h"
 #include "scanner.h"
 
 static void build(Sexp *ast) {
   Builder *builder = builder_new();
   builder_build(builder, ast);
-  builder_print(builder);
   builder_delete(builder);
 }
 

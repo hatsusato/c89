@@ -26,6 +26,7 @@ compare() {
     echo "ERROR: $c not found"
     exit 1
   fi
+  "$main" <"$c" &>/dev/null || return $?
   if test -f "$ll"; then
     diff "$@" "$ll" <("$main" <"$c" 2>/dev/null)
   else
@@ -39,12 +40,13 @@ check() {
   local red=$e[31m
   local normal=$e[0m
   local ret=0
-  if compare "$1"; then
-    echo "$bold${green}OK$normal: $i"
-  else
-    echo "$bold${red}NG$normal: $i"
-    test "$diff_flag" && compare "$c" -u
-  fi
+  compare "$1" || ret=$?
+  case $ret in
+    0) echo "$bold${green}OK$normal: $1";;
+    1) echo "$bold${red}NG$normal: $1";
+       test "$diff_flag" && compare "$1" -u;;
+    *) exit $ret;;
+  esac
 }
 
 if (($#)); then

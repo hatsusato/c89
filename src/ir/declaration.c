@@ -1,14 +1,9 @@
 #include "ir/declaration.h"
 
-#include "ast/ast_tag.h"
-#include "ir/builder_impl.h"
-#include "ir/instruction.h"
-#include "ir/value_kind.h"
-#include "sexp.h"
-#include "utility.h"
+#include "ir/stack_impl.h"
 
-static void builder_declarator(Builder *, Sexp *);
-static void builder_direct_declarator(Builder *builder, Sexp *ast) {
+static void stack_declarator(Stack *, Sexp *);
+static void stack_direct_declarator(Stack *stack, Sexp *ast) {
   assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
@@ -16,44 +11,43 @@ static void builder_direct_declarator(Builder *builder, Sexp *ast) {
     assert(AST_IDENTIFIER == sexp_get_tag(ast));
     ast = sexp_at(ast, 1);
     assert(sexp_get_symbol(ast));
-    builder_instruction_alloca(builder, sexp_get_symbol(ast));
+    stack_alloca(stack, sexp_get_symbol(ast));
     break;
   case 4:
     ast = sexp_at(ast, 2);
-    builder_declarator(builder, ast);
+    stack_declarator(stack, ast);
     break;
   case 5:
     ast = sexp_at(ast, 1);
-    builder_direct_declarator(builder, ast);
+    stack_direct_declarator(stack, ast);
     break;
   default:
     assert(0);
     break;
   }
 }
-static void builder_declarator(Builder *builder, Sexp *ast) {
+static void stack_declarator(Stack *stack, Sexp *ast) {
   assert(AST_DECLARATOR == sexp_get_tag(ast));
   assert(2 == sexp_length(ast) || 3 == sexp_length(ast));
   ast = sexp_at(ast, sexp_length(ast) - 1);
-  builder_direct_declarator(builder, ast);
+  stack_direct_declarator(stack, ast);
 }
-static void builder_init_declarator(Builder *builder, Sexp *ast) {
+static void stack_init_declarator(Stack *stack, Sexp *ast) {
   assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
   if (4 == sexp_length(ast)) {
-    builder_declarator(builder, sexp_at(ast, 1));
-    builder_ast(builder, sexp_at(ast, 3));
-    builder_stack_swap(builder);
-    builder_instruction_store(builder);
-    builder_stack_pop(builder);
+    stack_ast(stack, sexp_at(ast, 3));
+    stack_declarator(stack, sexp_at(ast, 1));
+    stack_instruction_store(stack);
+    stack_pop(stack);
   } else {
-    builder_declarator(builder, sexp_at(ast, 1));
-    builder_stack_pop(builder);
+    stack_declarator(stack, sexp_at(ast, 1));
+    stack_pop(stack);
   }
 }
-void builder_declaration(Builder *builder, Sexp *ast) {
+void stack_declaration(Stack *stack, Sexp *ast) {
   assert(AST_DECLARATION == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
   assert(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
-  builder_init_declarator(builder, ast);
+  stack_init_declarator(stack, ast);
 }

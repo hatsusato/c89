@@ -1,83 +1,81 @@
 #include "ir/statement.h"
 
-#include "ast/ast_tag.h"
-#include "ir/builder_impl.h"
-#include "ir/instruction.h"
-#include "ir/value.h"
-#include "ir/value_kind.h"
-#include "sexp.h"
-#include "utility.h"
+#include "ir/stack_impl.h"
 
-void builder_statement(Builder *builder, Sexp *ast) {
+void stack_statement(Stack *stack, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
-  builder_ast(builder, sexp_at(ast, 1));
+  stack_ast(stack, sexp_at(ast, 1));
 }
-void builder_compound_statement(Builder *builder, Sexp *ast) {
+void stack_compound_statement(Stack *stack, Sexp *ast) {
   Value *next;
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
-  builder_ast(builder, sexp_at(ast, 2));
-  builder_ast(builder, sexp_at(ast, 3));
-  next = builder_stack_get_next_block(builder);
+  stack_ast(stack, sexp_at(ast, 2));
+  stack_ast(stack, sexp_at(ast, 3));
+  next = stack_get_next_block(stack);
   if (next) {
-    builder_stack_push(builder, next);
-    builder_instruction_br(builder);
+    stack_push(stack, next);
+    stack_instruction_br(stack);
   }
 }
-void builder_expression_statement(Builder *builder, Sexp *ast) {
+void stack_expression_statement(Stack *stack, Sexp *ast) {
   assert(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   if (!sexp_is_nil(ast)) {
-    builder_ast(builder, ast);
-    builder_stack_pop(builder);
+    stack_ast(stack, ast);
+    stack_pop(stack);
   }
 }
-static void builder_new_integer_constant(Builder *builder,
-                                         const char *integer) {
-  builder_stack_new_value(builder, VALUE_INTEGER_CONSTANT);
-  builder_stack_set_symbol(builder, integer);
-}
-void builder_selection_statement(Builder *builder, Sexp *ast) {
-  Value *if_then = builder_stack_new_block(builder);
-  Value *if_else = builder_stack_new_block(builder);
-  Value *prev = builder_stack_get_next_block(builder);
+void stack_selection_statement(Stack *stack, Sexp *ast) {
+  Value *if_then = stack_new_block(stack);
+  Value *if_else = stack_new_block(stack);
+  Value *prev = stack_get_next_block(stack);
   Value *next;
   assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
   assert(AST_IF == sexp_get_number(sexp_at(ast, 1)));
   switch (sexp_length(ast)) {
   case 6:
-    builder_ast(builder, sexp_at(ast, 3));
-    builder_new_integer_constant(builder, "0");
-    builder_instruction_icmp_ne(builder);
-    builder_stack_push(builder, if_then);
-    builder_stack_push(builder, if_else);
-    builder_instruction_br_cond(builder);
-    builder_stack_change_flow(builder, if_then, if_else);
-    builder_ast(builder, sexp_at(ast, 5));
-    builder_stack_change_flow(builder, if_else, prev);
+    stack_ast(stack, sexp_at(ast, 3));
+    stack_push_integer(stack, "0");
+    stack_instruction_icmp_ne(stack);
+    stack_push(stack, if_then);
+    stack_push(stack, if_else);
+    stack_instruction_br_cond(stack);
+    stack_change_flow(stack, if_then, if_else);
+    stack_ast(stack, sexp_at(ast, 5));
+    stack_change_flow(stack, if_else, prev);
     break;
   case 8:
-    next = builder_stack_new_block(builder);
-    builder_ast(builder, sexp_at(ast, 3));
-    builder_new_integer_constant(builder, "0");
-    builder_instruction_icmp_ne(builder);
-    builder_stack_push(builder, if_then);
-    builder_stack_push(builder, if_else);
-    builder_instruction_br_cond(builder);
-    builder_stack_change_flow(builder, if_then, next);
-    builder_ast(builder, sexp_at(ast, 5));
-    builder_stack_change_flow(builder, if_else, next);
-    builder_ast(builder, sexp_at(ast, 7));
-    builder_stack_change_flow(builder, next, prev);
+    next = stack_new_block(stack);
+    stack_ast(stack, sexp_at(ast, 3));
+    stack_push_integer(stack, "0");
+    stack_instruction_icmp_ne(stack);
+    stack_push(stack, if_then);
+    stack_push(stack, if_else);
+    stack_instruction_br_cond(stack);
+    stack_change_flow(stack, if_then, next);
+    stack_ast(stack, sexp_at(ast, 5));
+    stack_change_flow(stack, if_else, next);
+    stack_ast(stack, sexp_at(ast, 7));
+    stack_change_flow(stack, next, prev);
     break;
   default:
     assert(0);
     break;
   }
 }
-void builder_jump_statement(Builder *builder, Sexp *ast) {
+void stack_jump_statement(Stack *stack, Sexp *ast) {
+  Value *ret = stack_get_return_block(stack);
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 2);
   assert(!sexp_is_nil(ast));
-  builder_ast(builder, ast);
-  builder_stack_return(builder);
+  stack_ast(stack, ast);
+  if (ret) {
+    stack_store_to_symbol(stack, "$retval");
+    stack_pop(stack);
+    stack_push(stack, ret);
+    stack_instruction_br(stack);
+  } else {
+    stack_instruction_ret(stack);
+  }
+  stack_set_next_block(stack, NULL);
 }

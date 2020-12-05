@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_8A0F6BC3_B226_43CF_8302_30923264A4FF
 #define INCLUDE_GUARD_8A0F6BC3_B226_43CF_8302_30923264A4FF
 
-struct struct_Builder;
-typedef struct struct_Builder Builder;
+struct struct_Stack;
+typedef struct struct_Stack Stack;
 
 #endif /* INCLUDE_GUARD_8A0F6BC3_B226_43CF_8302_30923264A4FF */
