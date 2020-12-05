@@ -245,3 +245,17 @@ Bool value_is_instruction(Value *value) {
     return false;
   }
 }
+Bool value_is_terminator(Value *value) {
+  switch (value_kind(value)) {
+#define VALUE_KIND_HANDLER(k) \
+  case k:                     \
+    return true
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
+#undef VALUE_KIND_HANDLER
+  default:
+    return false;
+  }
+}

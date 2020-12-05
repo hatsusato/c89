@@ -21,5 +21,6 @@ void value_pretty(Value *);
 void value_set_reg(RegisterGenerator *, Value *);
 const char *value_kind_show(Value *);
 Bool value_is_instruction(Value *);
+Bool value_is_terminator(Value *);
 
 #endif /* INCLUDE_GUARD_FE2AA6D9_B675_4B2E_839A_2B085264192A */
