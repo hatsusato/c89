@@ -111,6 +111,11 @@ Value *stack_get_next_block(Stack *stack) {
 void stack_set_next_block(Stack *stack, Value *block) {
   function_set(stack->func, FUNCTION_NEXT, block);
 }
+Value *stack_get_default_block(Stack *stack) {
+  Value *value = stack_top(stack);
+  assert(VALUE_INSTRUCTION_SWITCH == value_kind(value));
+  return value_at(value, 1);
+}
 Value *stack_get_return_block(Stack *stack) {
   return function_get(stack->func, FUNCTION_RET);
 }
