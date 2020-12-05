@@ -2,6 +2,30 @@
 
 #include "ir/stack_impl.h"
 
+static Bool have_default(Sexp *ast) {
+  assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
+  assert(sexp_is_number(sexp_at(ast, 1)));
+  assert(AST_SWITCH == sexp_get_number(sexp_at(ast, 1)));
+  ast = sexp_at(ast, 5);
+  assert(AST_STATEMENT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 3);
+  assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
+  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+    Sexp *stmt = sexp_car(ast);
+    assert(AST_STATEMENT == sexp_get_tag(stmt));
+    stmt = sexp_at(stmt, 1);
+    if (AST_LABELED_STATEMENT == sexp_get_tag(stmt)) {
+      stmt = sexp_at(stmt, 1);
+      if (sexp_is_number(stmt) && AST_DEFAULT == sexp_get_number(stmt)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 void stack_statement(Stack *stack, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
   stack_ast(stack, sexp_at(ast, 1));
@@ -59,9 +83,10 @@ static void stack_if_statement(Stack *stack, Sexp *ast) {
 static void stack_switch_statement(Stack *stack, Sexp *ast) {
   Value *prev = stack_get_next_block(stack);
   Value *next = stack_new_block(stack);
+  Value *dflt = have_default(ast) ? stack_new_block(stack) : next;
   stack_set_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
-  stack_push(stack, stack_new_block(stack));
+  stack_push(stack, dflt);
   stack_instruction_switch(stack);
   ast = sexp_at(ast, 5);
   stack_ast(stack, ast);
