@@ -28,18 +28,13 @@ check() {
   local red=$e[31m
   local normal=$e[0m
   local ret=0
-  compare || ret=$?
-  case $ret in
-    0) echo "$bold${green}OK$normal: $1";;
-    1) echo "$bold${red}NG$normal: $1";;
-    *) exit $ret;;
-  esac
-  if test "$diff_flag"; then
-    if (($ret)); then
-      compare -u || :
-    else
-      "$comp" -S "$target"
-    fi
+  "$comp" -S "$target" >/dev/null || exit
+  if compare; then
+    echo "$bold${green}OK$normal: $1"
+    test "$diff_flag" && compare -u || :
+  else
+    echo "$bold${red}NG$normal: $1"
+    test "$diff_flag" && "$comp" -S "$target"
   fi
 }
 
