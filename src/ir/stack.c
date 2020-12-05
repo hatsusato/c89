@@ -141,6 +141,12 @@ void stack_ast(Stack *stack, Sexp *ast) {
   case AST_DECLARATION:
     stack_declaration(stack, ast);
     break;
+  case AST_INIT_DECLARATOR_LIST:
+    stack_ast_map(stack, ast);
+    break;
+  case AST_INIT_DECLARATOR:
+    stack_init_declarator(stack, ast);
+    break;
   case AST_STATEMENT:
     stack_statement(stack, ast);
     break;

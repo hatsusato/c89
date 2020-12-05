@@ -32,7 +32,13 @@ static void stack_declarator(Stack *stack, Sexp *ast) {
   ast = sexp_at(ast, sexp_length(ast) - 1);
   stack_direct_declarator(stack, ast);
 }
-static void stack_init_declarator(Stack *stack, Sexp *ast) {
+
+void stack_declaration(Stack *stack, Sexp *ast) {
+  assert(AST_DECLARATION == sexp_get_tag(ast));
+  ast = sexp_at(ast, 2);
+  stack_ast(stack, ast);
+}
+void stack_init_declarator(Stack *stack, Sexp *ast) {
   assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
   if (4 == sexp_length(ast)) {
     stack_ast(stack, sexp_at(ast, 3));
@@ -43,11 +49,4 @@ static void stack_init_declarator(Stack *stack, Sexp *ast) {
     stack_declarator(stack, sexp_at(ast, 1));
     stack_pop(stack);
   }
-}
-void stack_declaration(Stack *stack, Sexp *ast) {
-  assert(AST_DECLARATION == sexp_get_tag(ast));
-  ast = sexp_at(ast, 2);
-  assert(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  stack_init_declarator(stack, ast);
 }
