@@ -74,12 +74,10 @@ void stack_selection_statement(Stack *stack, Sexp *ast) {
     break;
   }
 }
-void stack_jump_statement(Stack *stack, Sexp *ast) {
+static void stack_return_statement(Stack *stack, Sexp *ast) {
   Value *ret = stack_get_return_block(stack);
-  assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 2);
-  assert(!sexp_is_nil(ast));
-  stack_ast(stack, ast);
+  assert(!sexp_is_nil(sexp_at(ast, 2)));
+  stack_ast(stack, sexp_at(ast, 2));
   if (ret) {
     stack_store_to_symbol(stack, "$retval");
     stack_pop(stack);
@@ -89,4 +87,15 @@ void stack_jump_statement(Stack *stack, Sexp *ast) {
     stack_instruction_ret(stack);
   }
   stack_set_next_block(stack, NULL);
+}
+void stack_jump_statement(Stack *stack, Sexp *ast) {
+  assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
+  assert(sexp_is_number(sexp_at(ast, 1)));
+  switch (sexp_get_number(sexp_at(ast, 1))) {
+  case AST_RETURN:
+    stack_return_statement(stack, ast);
+    break;
+  default:
+    break;
+  }
 }
