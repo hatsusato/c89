@@ -25,13 +25,11 @@ void stack_expression_statement(Stack *stack, Sexp *ast) {
     stack_pop(stack);
   }
 }
-void stack_selection_statement(Stack *stack, Sexp *ast) {
+static void stack_if_statement(Stack *stack, Sexp *ast) {
   Value *if_then = stack_new_block(stack);
   Value *if_else = stack_new_block(stack);
   Value *prev = stack_get_next_block(stack);
   Value *next;
-  assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
-  assert(AST_IF == sexp_get_number(sexp_at(ast, 1)));
   switch (sexp_length(ast)) {
   case 6:
     stack_ast(stack, sexp_at(ast, 3));
@@ -57,6 +55,20 @@ void stack_selection_statement(Stack *stack, Sexp *ast) {
     stack_change_flow(stack, if_else, next);
     stack_ast(stack, sexp_at(ast, 7));
     stack_change_flow(stack, next, prev);
+    break;
+  default:
+    assert(0);
+    break;
+  }
+}
+void stack_selection_statement(Stack *stack, Sexp *ast) {
+  assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
+  assert(sexp_is_number(sexp_at(ast, 1)));
+  switch (sexp_get_number(sexp_at(ast, 1))) {
+  case AST_IF:
+    stack_if_statement(stack, ast);
+    break;
+  case AST_SWITCH:
     break;
   default:
     assert(0);
