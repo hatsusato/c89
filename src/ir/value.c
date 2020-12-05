@@ -117,6 +117,21 @@ void value_pretty(Value *value) {
     printf(", label ");
     value_print(value_at(value, 2));
     break;
+  case VALUE_INSTRUCTION_SWITCH:
+    printf("switch i32 ");
+    value_print(*begin++);
+    printf(", label ");
+    value_print(*begin++);
+    printf(" [\n");
+    while (begin < end) {
+      printf("    i32 ");
+      value_print(*begin++);
+      printf(", label ");
+      value_print(*begin++);
+      printf("\n");
+    }
+    printf(" ]");
+    break;
   case VALUE_INSTRUCTION_ADD:
     value_print(value);
     printf(" = add nsw i32 ");
@@ -176,6 +191,7 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
 #undef VALUE_KIND_HANDLER
   default:
@@ -195,6 +211,7 @@ const char *value_kind_show(Value *value) {
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
@@ -214,6 +231,7 @@ Bool value_is_instruction(Value *value) {
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
