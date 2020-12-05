@@ -15,6 +15,7 @@ void value_append(Value *, const Value *);
 void value_set_value(Value *, const void *);
 Value *value_at(Value *, Index);
 Size value_length(Value *);
+Value *value_last(Value *);
 ValueKind value_kind(Value *);
 void value_print(Value *);
 void value_pretty(Value *);

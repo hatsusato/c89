@@ -51,6 +51,9 @@ Value *value_at(Value *value, Index i) {
 Size value_length(Value *value) {
   return vector_length(value->vec);
 }
+Value *value_last(Value *value) {
+  return vector_back(value->vec);
+}
 ValueKind value_kind(Value *value) {
   return value->kind;
 }
