@@ -64,7 +64,7 @@ void stack_compound_statement(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 2));
   stack_ast(stack, sexp_at(ast, 3));
   next = stack_get_next_block(stack);
-  if (next) {
+  if (next && !stack_last_terminator(stack)) {
     stack_push(stack, next);
     stack_instruction_br(stack);
   }
@@ -134,7 +134,6 @@ static void stack_break_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_next_block(stack);
   stack_push(stack, next);
   stack_instruction_br(stack);
-  stack_set_next_block(stack, NULL);
   UTILITY_UNUSED(ast);
 }
 static void stack_return_statement(Stack *stack, Sexp *ast) {
