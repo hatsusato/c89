@@ -96,6 +96,13 @@ void stack_change_flow(Stack *stack, Value *current, Value *next) {
     function_set(stack->func, FUNCTION_NEXT, next);
   }
 }
+Bool stack_last_terminator(Stack *stack) {
+  Value *block = function_get(stack->func, FUNCTION_CURRENT);
+  Value *last;
+  assert(block);
+  last = value_last(block);
+  return last && value_is_terminator(last);
+}
 void stack_insert_to_block(Stack *stack) {
   Value *block = function_get(stack->func, FUNCTION_CURRENT);
   Value *value = stack_top(stack);

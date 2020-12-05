@@ -6,6 +6,7 @@
 #include "ir/value_kind.h"
 #include "ir/value_type.h"
 #include "sexp_type.h"
+#include "types.h"
 
 Stack *stack_new(Pool *);
 void stack_delete(Stack *);
@@ -20,6 +21,7 @@ void stack_load_from_symbol(Stack *, const char *);
 void stack_store_to_symbol(Stack *, const char *);
 void stack_alloca(Stack *, const char *);
 void stack_change_flow(Stack *, Value *, Value *);
+Bool stack_last_terminator(Stack *);
 void stack_insert_to_block(Stack *);
 void stack_insert_as_operand(Stack *, Value *);
 Value *stack_get_next_block(Stack *);
