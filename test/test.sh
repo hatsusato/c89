@@ -29,12 +29,12 @@ check() {
   local normal=$e[0m
   local ret=0
   "$comp" -S "$target" >/dev/null || exit
-  if compare; then
+  if compare >/dev/null; then
     echo "$bold${green}OK$normal: $1"
-    test "$diff_flag" && compare -u || :
+    test "$diff_flag" && "$comp" -S "$target" || :
   else
     echo "$bold${red}NG$normal: $1"
-    test "$diff_flag" && "$comp" -S "$target"
+    test "$diff_flag" && compare -u || :
   fi
 }
 
