@@ -21,3 +21,8 @@ int f4(void) {
   z = x + y;
   return x + y + z;
 }
+int f5(void) {
+  int x = 1, y = 2, z;
+  z = x + y;
+  return x + y + z;
+}
