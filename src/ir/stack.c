@@ -155,6 +155,9 @@ void stack_ast(Stack *stack, Sexp *ast) {
   case AST_STATEMENT:
     stack_statement(stack, ast);
     break;
+  case AST_LABELED_STATEMENT:
+    stack_labeled_statement(stack, ast);
+    break;
   case AST_COMPOUND_STATEMENT:
     stack_compound_statement(stack, ast);
     break;

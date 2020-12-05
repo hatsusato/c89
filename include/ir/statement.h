@@ -5,6 +5,7 @@
 #include "sexp_type.h"
 
 void stack_statement(Stack *, Sexp *);
+void stack_labeled_statement(Stack *, Sexp *);
 void stack_compound_statement(Stack *, Sexp *);
 void stack_expression_statement(Stack *, Sexp *);
 void stack_selection_statement(Stack *, Sexp *);

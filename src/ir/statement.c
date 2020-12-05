@@ -6,6 +6,12 @@ void stack_statement(Stack *stack, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
   stack_ast(stack, sexp_at(ast, 1));
 }
+void stack_labeled_statement(Stack *stack, Sexp *ast) {
+  Value *next = stack_get_default_block(stack);
+  assert(AST_DEFAULT == sexp_get_number(sexp_at(ast, 1)));
+  stack_change_flow(stack, next, NULL);
+  stack_ast(stack, sexp_at(ast, 3));
+}
 void stack_compound_statement(Stack *stack, Sexp *ast) {
   Value *next;
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
@@ -53,9 +59,12 @@ static void stack_if_statement(Stack *stack, Sexp *ast) {
 static void stack_switch_statement(Stack *stack, Sexp *ast) {
   Value *prev = stack_get_next_block(stack);
   Value *next = stack_new_block(stack);
+  stack_set_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
-  stack_push(stack, next);
+  stack_push(stack, stack_new_block(stack));
   stack_instruction_switch(stack);
+  ast = sexp_at(ast, 5);
+  stack_ast(stack, ast);
   stack_pop(stack);
   stack_change_flow(stack, next, prev);
 }
