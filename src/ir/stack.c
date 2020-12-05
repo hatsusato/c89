@@ -143,6 +143,9 @@ void stack_ast(Stack *stack, Sexp *ast) {
   case AST_ASSIGNMENT_EXPRESSION:
     stack_assignment_expression(stack, ast);
     break;
+  case AST_CONSTANT_EXPRESSION:
+    stack_constant_expression(stack, ast);
+    break;
   case AST_DECLARATION:
     stack_declaration(stack, ast);
     break;

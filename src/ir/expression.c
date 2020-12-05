@@ -23,3 +23,7 @@ void stack_assignment_expression(Stack *stack, Sexp *ast) {
   stack_ast(stack, rhs);
   stack_store_to_symbol(stack, sexp_get_symbol(lhs));
 }
+void stack_constant_expression(Stack *stack, Sexp *ast) {
+  assert(AST_CONSTANT_EXPRESSION == sexp_get_tag(ast));
+  stack_ast(stack, sexp_at(ast, 1));
+}
