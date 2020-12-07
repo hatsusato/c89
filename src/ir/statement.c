@@ -36,11 +36,13 @@ static Bool have_default(Sexp *ast) {
   }
   return false;
 }
-static Bool switch_initial_case(Stack *stack) {
+static Bool switch_new_case(Stack *stack) {
+  Value *curr = stack_get_current_block(stack);
+  Value *dflt = stack_get_default_block(stack);
   Value *top = stack_pop(stack);
   stack_push(stack, top);
   assert(VALUE_INSTRUCTION_SWITCH == value_kind(top));
-  return 2 == value_length(top);
+  return 2 == value_length(top) || value_length(curr) || dflt == curr;
 }
 
 void stack_statement(Stack *stack, Sexp *ast) {
@@ -58,10 +60,9 @@ static void stack_default_statement(Stack *stack, Sexp *ast) {
 }
 static void stack_case_statement(Stack *stack, Sexp *ast) {
   Value *curr = stack_get_current_block(stack);
-  Value *next = switch_initial_case(stack) || value_length(curr)
-                    ? stack_new_block(stack)
-                    : curr;
-  if (next != curr) {
+  Value *next = curr;
+  if (switch_new_case(stack)) {
+    next = stack_new_block(stack);
     if (!stack_last_terminator(stack)) {
       stack_push(stack, next);
       stack_instruction_br(stack);
