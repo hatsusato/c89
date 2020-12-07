@@ -77,3 +77,20 @@ int f8(void) {
     return x;
   }
 }
+int f9(void) {
+  int x = 1;
+  switch (x) {
+  case 0:
+  case 1:
+    x = x + 1;
+    x = x + 1;
+    return x;
+  case 2:
+    break;
+  default:
+  case 3:
+    x = x + 1;
+    break;
+  }
+  return 0;
+}
