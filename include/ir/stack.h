@@ -12,6 +12,7 @@ Stack *stack_new(Pool *);
 void stack_delete(Stack *);
 Value *stack_build(Stack *, Sexp *);
 
+Bool stack_empty(Stack *);
 void stack_push(Stack *, Value *);
 Value *stack_pop(Stack *);
 Value *stack_new_value(Stack *, ValueKind);

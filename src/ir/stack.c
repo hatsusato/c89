@@ -37,7 +37,7 @@ void stack_delete(Stack *stack) {
 Value *stack_build(Stack *stack, Sexp *ast) {
   function_init(stack->func, stack->pool, ast);
   stack_ast(stack, ast);
-  assert(vector_empty(stack->stack));
+  assert(stack_empty(stack));
   function_finish(stack->func);
   return function_get(stack->func, FUNCTION_FUNC);
 }
@@ -48,10 +48,13 @@ static void stack_push_symbol(Stack *stack, const char *symbol) {
   stack_push(stack, value);
 }
 static Value *stack_top(Stack *stack) {
-  assert(!vector_empty(stack->stack));
+  assert(!stack_empty(stack));
   return vector_back(stack->stack);
 }
 
+Bool stack_empty(Stack *stack) {
+  return vector_empty(stack->stack);
+}
 void stack_push(Stack *stack, Value *value) {
   vector_push(stack->stack, value);
 }
