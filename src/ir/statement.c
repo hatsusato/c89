@@ -42,11 +42,20 @@ static void stack_default_statement(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 3));
 }
 static void stack_case_statement(Stack *stack, Sexp *ast) {
-  Value *next = stack_new_block(stack);
+  Value *curr = stack_get_current_block(stack);
+  Value *next = switch_initial_case(stack) || value_length(curr)
+                    ? stack_new_block(stack)
+                    : curr;
+  if (next != curr) {
+    if (!stack_last_terminator(stack)) {
+      stack_push(stack, next);
+      stack_instruction_br(stack);
+    }
+    stack_change_flow(stack, next, NULL);
+  }
   stack_ast(stack, sexp_at(ast, 2));
   stack_push(stack, next);
   stack_instruction_switch_case(stack);
-  stack_change_flow(stack, next, NULL);
   stack_ast(stack, sexp_at(ast, 4));
 }
 void stack_labeled_statement(Stack *stack, Sexp *ast) {
