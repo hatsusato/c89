@@ -30,6 +30,7 @@ void stack_set_next_block(Stack *, Value *);
 Value *stack_get_current_block(Stack *);
 Value *stack_get_default_block(Stack *);
 Value *stack_get_return_block(Stack *);
+Value *stack_get_switch_instruction(Stack *);
 void stack_set_function_name(Stack *, const char *);
 void stack_ast(Stack *, Sexp *);
 

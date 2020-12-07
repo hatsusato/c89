@@ -82,15 +82,6 @@ static Bool has_break_statement(Sexp *ast) {
     return false;
   }
 }
-static Value *top_switch(Stack *stack) {
-  Value *top;
-  if (stack_empty(stack)) {
-    return NULL;
-  }
-  top = stack_pop(stack);
-  stack_push(stack, top);
-  return VALUE_INSTRUCTION_SWITCH == value_kind(top) ? top : NULL;
-}
 static Bool switch_exists_next(Sexp *ast) {
   if (!switch_has_default(ast)) {
     return true;
@@ -105,7 +96,7 @@ static Bool switch_exists_next(Sexp *ast) {
 static Bool switch_new_case(Stack *stack) {
   Value *curr = stack_get_current_block(stack);
   Value *dflt = stack_get_default_block(stack);
-  Value *top = top_switch(stack);
+  Value *top = stack_get_switch_instruction(stack);
   assert(top);
   return 2 == value_length(top) || value_length(curr) || dflt == curr;
 }

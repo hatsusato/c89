@@ -125,12 +125,16 @@ Value *stack_get_current_block(Stack *stack) {
   return function_get(stack->func, FUNCTION_CURRENT);
 }
 Value *stack_get_default_block(Stack *stack) {
-  Value *value = stack_top(stack);
-  assert(VALUE_INSTRUCTION_SWITCH == value_kind(value));
+  Value *value = stack_get_switch_instruction(stack);
+  assert(value);
   return value_at(value, 1);
 }
 Value *stack_get_return_block(Stack *stack) {
   return function_get(stack->func, FUNCTION_RET);
+}
+Value *stack_get_switch_instruction(Stack *stack) {
+  Value *value = stack_top(stack);
+  return VALUE_INSTRUCTION_SWITCH == value_kind(value) ? value : NULL;
 }
 void stack_set_function_name(Stack *stack, const char *name) {
   Value *func = function_get(stack->func, FUNCTION_FUNC);
