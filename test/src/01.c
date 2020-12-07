@@ -22,7 +22,6 @@ int f4(void) {
   return x + y + z;
 }
 int f5(void) {
-  int x = 1, y = 2, z;
-  z = x + y;
+  int x = 1, y = 2, z = x + y;
   return x + y + z;
 }

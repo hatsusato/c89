@@ -37,7 +37,7 @@ void stack_delete(Stack *stack) {
 Value *stack_build(Stack *stack, Sexp *ast) {
   function_init(stack->func, stack->pool, ast);
   stack_ast(stack, ast);
-  assert(vector_empty(stack->stack));
+  assert(stack_empty(stack));
   function_finish(stack->func);
   return function_get(stack->func, FUNCTION_FUNC);
 }
@@ -48,10 +48,13 @@ static void stack_push_symbol(Stack *stack, const char *symbol) {
   stack_push(stack, value);
 }
 static Value *stack_top(Stack *stack) {
-  assert(!vector_empty(stack->stack));
+  assert(!stack_empty(stack));
   return vector_back(stack->stack);
 }
 
+Bool stack_empty(Stack *stack) {
+  return vector_empty(stack->stack);
+}
 void stack_push(Stack *stack, Value *value) {
   vector_push(stack->stack, value);
 }
@@ -96,6 +99,13 @@ void stack_change_flow(Stack *stack, Value *current, Value *next) {
     function_set(stack->func, FUNCTION_NEXT, next);
   }
 }
+Bool stack_last_terminator(Stack *stack) {
+  Value *block = function_get(stack->func, FUNCTION_CURRENT);
+  Value *last;
+  assert(block);
+  last = value_last(block);
+  return last && value_is_terminator(last);
+}
 void stack_insert_to_block(Stack *stack) {
   Value *block = function_get(stack->func, FUNCTION_CURRENT);
   Value *value = stack_top(stack);
@@ -110,6 +120,14 @@ Value *stack_get_next_block(Stack *stack) {
 }
 void stack_set_next_block(Stack *stack, Value *block) {
   function_set(stack->func, FUNCTION_NEXT, block);
+}
+Value *stack_get_current_block(Stack *stack) {
+  return function_get(stack->func, FUNCTION_CURRENT);
+}
+Value *stack_get_default_block(Stack *stack) {
+  Value *value = stack_top(stack);
+  assert(VALUE_INSTRUCTION_SWITCH == value_kind(value));
+  return value_at(value, 1);
 }
 Value *stack_get_return_block(Stack *stack) {
   return function_get(stack->func, FUNCTION_RET);
@@ -138,6 +156,9 @@ void stack_ast(Stack *stack, Sexp *ast) {
   case AST_ASSIGNMENT_EXPRESSION:
     stack_assignment_expression(stack, ast);
     break;
+  case AST_CONSTANT_EXPRESSION:
+    stack_constant_expression(stack, ast);
+    break;
   case AST_DECLARATION:
     stack_declaration(stack, ast);
     break;
@@ -149,6 +170,9 @@ void stack_ast(Stack *stack, Sexp *ast) {
     break;
   case AST_STATEMENT:
     stack_statement(stack, ast);
+    break;
+  case AST_LABELED_STATEMENT:
+    stack_labeled_statement(stack, ast);
     break;
   case AST_COMPOUND_STATEMENT:
     stack_compound_statement(stack, ast);

@@ -39,6 +39,15 @@ void stack_instruction_br_cond(Stack *stack) {
   stack_instruction_ternary(stack, VALUE_INSTRUCTION_BR_COND);
   stack_pop(stack);
 }
+void stack_instruction_switch(Stack *stack) {
+  stack_instruction_binary(stack, VALUE_INSTRUCTION_SWITCH);
+}
+void stack_instruction_switch_case(Stack *stack) {
+  Value *second = stack_pop(stack);
+  Value *first = stack_pop(stack);
+  stack_insert_as_operand(stack, first);
+  stack_insert_as_operand(stack, second);
+}
 void stack_instruction_add(Stack *stack) {
   stack_instruction_binary(stack, VALUE_INSTRUCTION_ADD);
 }

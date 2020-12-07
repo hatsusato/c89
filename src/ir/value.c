@@ -32,6 +32,9 @@ void value_delete(Value *value) {
 void value_insert(Value *value, Value *elem) {
   vector_push(value->vec, elem);
 }
+void value_pop(Value *value) {
+  vector_pop(value->vec);
+}
 void value_append(Value *dst, const Value *src) {
   ElemType *begin = vector_begin(src->vec);
   ElemType *end = vector_end(src->vec);
@@ -47,6 +50,9 @@ Value *value_at(Value *value, Index i) {
 }
 Size value_length(Value *value) {
   return vector_length(value->vec);
+}
+Value *value_last(Value *value) {
+  return vector_back(value->vec);
 }
 ValueKind value_kind(Value *value) {
   return value->kind;
@@ -117,6 +123,21 @@ void value_pretty(Value *value) {
     printf(", label ");
     value_print(value_at(value, 2));
     break;
+  case VALUE_INSTRUCTION_SWITCH:
+    printf("switch i32 ");
+    value_print(*begin++);
+    printf(", label ");
+    value_print(*begin++);
+    printf(" [\n");
+    while (begin < end) {
+      printf("    i32 ");
+      value_print(*begin++);
+      printf(", label ");
+      value_print(*begin++);
+      printf("\n");
+    }
+    printf("  ]");
+    break;
   case VALUE_INSTRUCTION_ADD:
     value_print(value);
     printf(" = add nsw i32 ");
@@ -176,6 +197,7 @@ void value_set_reg(RegisterGenerator *gen, Value *value) {
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
 #undef VALUE_KIND_HANDLER
   default:
@@ -195,6 +217,7 @@ const char *value_kind_show(Value *value) {
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
@@ -214,11 +237,26 @@ Bool value_is_instruction(Value *value) {
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ICMP_NE);
+#undef VALUE_KIND_HANDLER
+  default:
+    return false;
+  }
+}
+Bool value_is_terminator(Value *value) {
+  switch (value_kind(value)) {
+#define VALUE_KIND_HANDLER(k) \
+  case k:                     \
+    return true
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
 #undef VALUE_KIND_HANDLER
   default:
     return false;
