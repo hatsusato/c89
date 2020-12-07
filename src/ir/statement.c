@@ -2,6 +2,23 @@
 
 #include "ir/stack_impl.h"
 
+static Bool is_default_statement(Sexp *ast) {
+  assert(AST_STATEMENT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  if (AST_LABELED_STATEMENT == sexp_get_tag(ast)) {
+    Sexp *head = sexp_at(ast, 1);
+    if (!sexp_is_number(head)) {
+      assert(AST_IDENTIFIER == sexp_get_tag(head));
+      return is_default_statement(sexp_at(ast, 3));
+    } else if (AST_CASE == sexp_get_number(head)) {
+      return is_default_statement(sexp_at(ast, 4));
+    } else {
+      assert(AST_DEFAULT == sexp_get_number(head));
+      return true;
+    }
+  }
+  return false;
+}
 static Bool have_default(Sexp *ast) {
   assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 1)));
@@ -13,14 +30,8 @@ static Bool have_default(Sexp *ast) {
   ast = sexp_at(ast, 3);
   assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    Sexp *stmt = sexp_car(ast);
-    assert(AST_STATEMENT == sexp_get_tag(stmt));
-    stmt = sexp_at(stmt, 1);
-    if (AST_LABELED_STATEMENT == sexp_get_tag(stmt)) {
-      stmt = sexp_at(stmt, 1);
-      if (sexp_is_number(stmt) && AST_DEFAULT == sexp_get_number(stmt)) {
-        return true;
-      }
+    if (is_default_statement(sexp_car(ast))) {
+      return true;
     }
   }
   return false;
