@@ -36,6 +36,52 @@ static Bool switch_has_default(Sexp *ast) {
   }
   return false;
 }
+static Bool has_break_statement(Sexp *ast) {
+  Sexp *head;
+  assert(AST_STATEMENT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  switch (sexp_get_tag(ast)) {
+  case AST_LABELED_STATEMENT:
+    head = sexp_at(ast, 1);
+    if (sexp_is_number(head) && AST_CASE == sexp_get_number(head)) {
+      return has_break_statement(sexp_at(ast, 4));
+    } else {
+      assert(sexp_is_number(head) || AST_IDENTIFIER == sexp_get_tag(head));
+      assert(!sexp_is_number(head) || AST_DEFAULT == sexp_get_number(head));
+      return has_break_statement(sexp_at(ast, 3));
+    }
+  case AST_COMPOUND_STATEMENT:
+    ast = sexp_at(ast, 3);
+    assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
+    for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+      if (has_break_statement(sexp_car(ast))) {
+        return true;
+      }
+    }
+    return false;
+  case AST_SELECTION_STATEMENT:
+    head = sexp_at(ast, 1);
+    assert(sexp_is_number(head));
+    if (AST_IF == sexp_get_number(head)) {
+      if (6 == sexp_length(ast)) {
+        return has_break_statement(sexp_at(ast, 5));
+      } else {
+        assert(8 == sexp_length(ast));
+        return has_break_statement(sexp_at(ast, 5)) ||
+               has_break_statement(sexp_at(ast, 7));
+      }
+    } else {
+      assert(AST_SWITCH == sexp_get_number(head));
+      return false;
+    }
+  case AST_JUMP_STATEMENT:
+    head = sexp_at(ast, 1);
+    assert(sexp_is_number(head));
+    return AST_BREAK == sexp_get_number(head);
+  default:
+    return false;
+  }
+}
 static Bool switch_new_case(Stack *stack) {
   Value *curr = stack_get_current_block(stack);
   Value *dflt = stack_get_default_block(stack);
