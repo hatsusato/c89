@@ -38,6 +38,10 @@ void stack_statement(Stack *stack, Sexp *ast) {
 }
 static void stack_default_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_default_block(stack);
+  if (!stack_last_terminator(stack)) {
+    stack_push(stack, next);
+    stack_instruction_br(stack);
+  }
   stack_change_flow(stack, next, NULL);
   stack_ast(stack, sexp_at(ast, 3));
 }
@@ -125,8 +129,7 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 3));
   stack_push(stack, dflt);
   stack_instruction_switch(stack);
-  ast = sexp_at(ast, 5);
-  stack_ast(stack, ast);
+  stack_ast(stack, sexp_at(ast, 5));
   stack_pop(stack);
   stack_change_flow(stack, next, prev);
 }
