@@ -245,9 +245,6 @@ static void stack_return_statement(Stack *stack, Sexp *ast) {
   } else {
     stack_instruction_ret(stack);
   }
-  if (!top_switch(stack)) {
-    stack_set_next_block(stack, NULL);
-  }
 }
 void stack_jump_statement(Stack *stack, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
