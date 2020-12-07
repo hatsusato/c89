@@ -9,6 +9,7 @@
 #include "ir/lexical.h"
 #include "ir/stack.h"
 #include "ir/statement.h"
+#include "ir/value.h"
 #include "sexp.h"
 #include "utility.h"
 

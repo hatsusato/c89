@@ -25,6 +25,12 @@ static Bool have_default(Sexp *ast) {
   }
   return false;
 }
+static Bool switch_initial_case(Stack *stack) {
+  Value *top = stack_pop(stack);
+  stack_push(stack, top);
+  assert(VALUE_INSTRUCTION_SWITCH == value_kind(top));
+  return 2 == value_length(top);
+}
 
 void stack_statement(Stack *stack, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
