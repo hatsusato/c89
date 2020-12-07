@@ -19,12 +19,6 @@ static int count_return(Sexp *ast) {
     return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
   }
 }
-static void function_remove_empty_block(Value *func) {
-  Value *last = value_at(func, value_length(func) - 1);
-  if (0 == value_length(last)) {
-    value_pop(func);
-  }
-}
 
 Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
@@ -65,7 +59,6 @@ void function_finish(Function *func) {
   Value *a = function_get(func, FUNCTION_ALLOCS);
   Value *e = function_get(func, FUNCTION_ENTRY);
   value_append(a, e);
-  function_remove_empty_block(f);
   value_set_reg(gen, f);
   register_generator_delete(gen);
 }

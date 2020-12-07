@@ -82,6 +82,17 @@ static Bool has_break_statement(Sexp *ast) {
     return false;
   }
 }
+static Bool switch_exists_next(Sexp *ast) {
+  if (!switch_has_default(ast)) {
+    return true;
+  }
+  assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
+  assert(sexp_is_number(sexp_at(ast, 1)));
+  assert(AST_SWITCH == sexp_get_number(sexp_at(ast, 1)));
+  ast = sexp_at(ast, 5);
+  assert(AST_STATEMENT == sexp_get_tag(ast));
+  return has_break_statement(ast);
+}
 static Bool switch_new_case(Stack *stack) {
   Value *curr = stack_get_current_block(stack);
   Value *dflt = stack_get_default_block(stack);
@@ -189,7 +200,9 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
   stack_instruction_switch(stack);
   stack_ast(stack, sexp_at(ast, 5));
   stack_pop(stack);
-  stack_change_flow(stack, next, prev);
+  if (switch_exists_next(ast)) {
+    stack_change_flow(stack, next, prev);
+  }
 }
 void stack_selection_statement(Stack *stack, Sexp *ast) {
   assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
