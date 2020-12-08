@@ -1,16 +1,9 @@
 #include "ir/stack.h"
 
-#include <stdio.h>
-
-#include "ast/ast_tag.h"
 #include "ir/function.h"
 #include "ir/pool.h"
 #include "ir/stack_impl.h"
 #include "ir/table.h"
-#include "ir/value.h"
-#include "ir/value_kind.h"
-#include "sexp.h"
-#include "utility.h"
 #include "vector.h"
 
 struct struct_Stack {
@@ -56,6 +49,7 @@ Bool stack_empty(Stack *stack) {
   return vector_empty(stack->stack);
 }
 void stack_push(Stack *stack, Value *value) {
+  assert(value && VALUE_BLOCK != value_kind(value));
   vector_push(stack->stack, value);
 }
 Value *stack_pop(Stack *stack) {
