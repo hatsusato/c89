@@ -23,21 +23,21 @@ void stack_instruction_ret(Stack *stack) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_RET);
   stack_pop(stack);
 }
-void stack_instruction_br(Stack *stack, Value *next) {
-  if (!next) {
-    next = stack_get_next_block(stack);
+void stack_instruction_br(Stack *stack, Value *label) {
+  if (!label) {
+    label = stack_get_next_block(stack);
   }
   if (!stack_last_terminator(stack)) {
     stack_instruction_new(stack, VALUE_INSTRUCTION_BR);
-    stack_insert_as_operand(stack, next);
+    stack_insert_as_operand(stack, label);
     stack_pop(stack);
   }
 }
-void stack_instruction_br_cond(Stack *stack, Value *then_block,
-                               Value *else_block) {
+void stack_instruction_br_cond(Stack *stack, Value *then_label,
+                               Value *else_label) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_BR_COND);
-  stack_insert_as_operand(stack, then_block);
-  stack_insert_as_operand(stack, else_block);
+  stack_insert_as_operand(stack, then_label);
+  stack_insert_as_operand(stack, else_label);
   stack_pop(stack);
 }
 void stack_instruction_switch(Stack *stack) {
