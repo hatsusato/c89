@@ -31,9 +31,12 @@ void stack_instruction_ret(Stack *stack) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_RET);
   stack_pop(stack);
 }
-void stack_instruction_br(Stack *stack) {
-  stack_instruction_unary(stack, VALUE_INSTRUCTION_BR);
-  stack_pop(stack);
+void stack_instruction_br(Stack *stack, Value *next) {
+  if (!stack_last_terminator(stack)) {
+    stack_push(stack, next);
+    stack_instruction_unary(stack, VALUE_INSTRUCTION_BR);
+    stack_pop(stack);
+  }
 }
 void stack_instruction_br_cond(Stack *stack) {
   stack_instruction_ternary(stack, VALUE_INSTRUCTION_BR_COND);

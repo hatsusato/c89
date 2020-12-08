@@ -2,11 +2,12 @@
 #define INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 
 #include "ir/stack_type.h"
+#include "ir/value_type.h"
 
 /* ret %1: (%1 -- ) */
 void stack_instruction_ret(Stack *);
-/* br label %1: (%1 -- ) */
-void stack_instruction_br(Stack *);
+/* br label %1 */
+void stack_instruction_br(Stack *, Value *);
 /* br %1, label %2, label %3: (%1 %2 %3 -- ) */
 void stack_instruction_br_cond(Stack *);
 /* switch %1, label %2: (%1 %2 -- ) */

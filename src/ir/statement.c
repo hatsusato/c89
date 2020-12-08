@@ -107,10 +107,7 @@ void stack_statement(Stack *stack, Sexp *ast) {
 }
 static void stack_default_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_default_block(stack);
-  if (!stack_last_terminator(stack)) {
-    stack_push(stack, next);
-    stack_instruction_br(stack);
-  }
+  stack_instruction_br(stack, next);
   stack_into_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
 }
@@ -119,10 +116,7 @@ static void stack_case_statement(Stack *stack, Sexp *ast) {
   Value *next = curr;
   if (switch_new_case(stack)) {
     next = stack_new_block(stack);
-    if (!stack_last_terminator(stack)) {
-      stack_push(stack, next);
-      stack_instruction_br(stack);
-    }
+    stack_instruction_br(stack, next);
     stack_into_next_block(stack, next);
   }
   stack_ast(stack, sexp_at(ast, 2));
@@ -151,10 +145,7 @@ void stack_compound_statement(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 2));
   stack_ast(stack, sexp_at(ast, 3));
   next = stack_get_next_block(stack);
-  if (next && !stack_last_terminator(stack)) {
-    stack_push(stack, next);
-    stack_instruction_br(stack);
-  }
+  stack_instruction_br(stack, next);
 }
 void stack_expression_statement(Stack *stack, Sexp *ast) {
   assert(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
@@ -224,8 +215,7 @@ void stack_selection_statement(Stack *stack, Sexp *ast) {
 }
 static void stack_break_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_next_block(stack);
-  stack_push(stack, next);
-  stack_instruction_br(stack);
+  stack_instruction_br(stack, next);
   UTILITY_UNUSED(ast);
 }
 static void stack_return_statement(Stack *stack, Sexp *ast) {
@@ -235,8 +225,7 @@ static void stack_return_statement(Stack *stack, Sexp *ast) {
   if (ret) {
     stack_store_to_symbol(stack, "$retval");
     stack_pop(stack);
-    stack_push(stack, ret);
-    stack_instruction_br(stack);
+    stack_instruction_br(stack, ret);
   } else {
     stack_instruction_ret(stack);
   }
