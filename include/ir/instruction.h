@@ -6,10 +6,10 @@
 
 /* ret %1: (%1 -- ) */
 void stack_instruction_ret(Stack *);
-/* br label %1 */
+/* br label %1: ( -- ) */
 void stack_instruction_br(Stack *, Value *);
-/* br %1, label %2, label %3: (%1 %2 %3 -- ) */
-void stack_instruction_br_cond(Stack *);
+/* br %1, label %2, label %3: (%1 -- ) */
+void stack_instruction_br_cond(Stack *, Value *, Value *);
 /* switch %1, label %2: (%1 %2 -- ) */
 void stack_instruction_switch(Stack *);
 /* [ %1, label %2 ... ]: (%1 %2 -- ) */

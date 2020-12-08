@@ -167,9 +167,7 @@ static void stack_if_statement(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 3));
   stack_push_integer(stack, "0");
   stack_instruction_icmp_ne(stack);
-  stack_push(stack, if_then);
-  stack_push(stack, if_else);
-  stack_instruction_br_cond(stack);
+  stack_instruction_br_cond(stack, if_then, if_else);
   stack_into_next_block(stack, if_then);
   stack_set_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 5));
