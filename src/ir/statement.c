@@ -185,8 +185,7 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
   Value *dflt = switch_has_default(ast) ? stack_new_block(stack) : next;
   stack_set_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
-  stack_push(stack, dflt);
-  stack_instruction_switch(stack);
+  stack_instruction_switch(stack, dflt);
   stack_ast(stack, sexp_at(ast, 5));
   stack_pop(stack);
   if (switch_exists_next(ast)) {
