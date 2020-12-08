@@ -1,0 +1,15 @@
+language: c
+compiler: clang
+dist: bionic
+addons:
+  apt:
+    packages:
+      - flex
+      - bison
+install:
+  - clang --version
+  - flex --version
+  - bison --version
+  - make
+script:
+  - ./test.sh
