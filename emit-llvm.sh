@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 number() {
   cut -d: -f1 | tail -n1
 }
