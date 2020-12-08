@@ -32,6 +32,9 @@ void stack_instruction_ret(Stack *stack) {
   stack_pop(stack);
 }
 void stack_instruction_br(Stack *stack, Value *next) {
+  if (!next) {
+    next = stack_get_next_block(stack);
+  }
   if (!stack_last_terminator(stack)) {
     stack_push(stack, next);
     stack_instruction_unary(stack, VALUE_INSTRUCTION_BR);

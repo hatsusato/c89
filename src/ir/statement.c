@@ -140,12 +140,10 @@ void stack_labeled_statement(Stack *stack, Sexp *ast) {
   }
 }
 void stack_compound_statement(Stack *stack, Sexp *ast) {
-  Value *next;
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
   stack_ast(stack, sexp_at(ast, 2));
   stack_ast(stack, sexp_at(ast, 3));
-  next = stack_get_next_block(stack);
-  stack_instruction_br(stack, next);
+  stack_instruction_br(stack, NULL);
 }
 void stack_expression_statement(Stack *stack, Sexp *ast) {
   assert(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
@@ -214,8 +212,7 @@ void stack_selection_statement(Stack *stack, Sexp *ast) {
   }
 }
 static void stack_break_statement(Stack *stack, Sexp *ast) {
-  Value *next = stack_get_next_block(stack);
-  stack_instruction_br(stack, next);
+  stack_instruction_br(stack, NULL);
   UTILITY_UNUSED(ast);
 }
 static void stack_return_statement(Stack *stack, Sexp *ast) {
