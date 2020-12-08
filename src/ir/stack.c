@@ -90,10 +90,6 @@ void stack_alloca(Stack *stack, const char *symbol) {
   value_insert(allocs, value);
   stack_push(stack, value);
 }
-void stack_change_flow(Stack *stack, Value *current, Value *next) {
-  stack_into_next_block(stack, current);
-  stack_set_next_block(stack, next);
-}
 void stack_into_next_block(Stack *stack, Value *next) {
   Value *func = function_get(stack->func, FUNCTION_FUNC);
   assert(next && VALUE_BLOCK == value_kind(next));

@@ -111,7 +111,7 @@ static void stack_default_statement(Stack *stack, Sexp *ast) {
     stack_push(stack, next);
     stack_instruction_br(stack);
   }
-  stack_change_flow(stack, next, NULL);
+  stack_into_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
 }
 static void stack_case_statement(Stack *stack, Sexp *ast) {
@@ -123,7 +123,7 @@ static void stack_case_statement(Stack *stack, Sexp *ast) {
       stack_push(stack, next);
       stack_instruction_br(stack);
     }
-    stack_change_flow(stack, next, NULL);
+    stack_into_next_block(stack, next);
   }
   stack_ast(stack, sexp_at(ast, 2));
   stack_push(stack, next);
@@ -181,13 +181,16 @@ static void stack_if_statement(Stack *stack, Sexp *ast) {
   stack_push(stack, if_then);
   stack_push(stack, if_else);
   stack_instruction_br_cond(stack);
-  stack_change_flow(stack, if_then, next);
+  stack_into_next_block(stack, if_then);
+  stack_set_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 5));
   if (8 == sexp_length(ast)) {
-    stack_change_flow(stack, if_else, next);
+    stack_into_next_block(stack, if_else);
+    stack_set_next_block(stack, next);
     stack_ast(stack, sexp_at(ast, 7));
   }
-  stack_change_flow(stack, next, prev);
+  stack_into_next_block(stack, next);
+  stack_set_next_block(stack, prev);
 }
 static void stack_switch_statement(Stack *stack, Sexp *ast) {
   Value *prev = stack_get_next_block(stack);
@@ -200,7 +203,8 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 5));
   stack_pop(stack);
   if (switch_exists_next(ast)) {
-    stack_change_flow(stack, next, prev);
+    stack_into_next_block(stack, next);
+    stack_set_next_block(stack, prev);
   }
 }
 void stack_selection_statement(Stack *stack, Sexp *ast) {

@@ -21,7 +21,6 @@ void stack_push_integer(Stack *, const char *);
 void stack_load_from_symbol(Stack *, const char *);
 void stack_store_to_symbol(Stack *, const char *);
 void stack_alloca(Stack *, const char *);
-void stack_change_flow(Stack *, Value *, Value *);
 void stack_into_next_block(Stack *, Value *);
 Bool stack_last_terminator(Stack *);
 void stack_insert_to_block(Stack *);
