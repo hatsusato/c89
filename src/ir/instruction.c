@@ -44,11 +44,10 @@ void stack_instruction_switch(Stack *stack, Value *default_label) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_SWITCH);
   stack_insert_as_operand(stack, default_label);
 }
-void stack_instruction_switch_case(Stack *stack) {
-  Value *second = stack_pop(stack);
+void stack_instruction_switch_case(Stack *stack, Value *label) {
   Value *first = stack_pop(stack);
   stack_insert_as_operand(stack, first);
-  stack_insert_as_operand(stack, second);
+  stack_insert_as_operand(stack, label);
 }
 void stack_instruction_add(Stack *stack) {
   stack_instruction_binary(stack, VALUE_INSTRUCTION_ADD);

@@ -120,8 +120,7 @@ static void stack_case_statement(Stack *stack, Sexp *ast) {
     stack_into_next_block(stack, next);
   }
   stack_ast(stack, sexp_at(ast, 2));
-  stack_push(stack, next);
-  stack_instruction_switch_case(stack);
+  stack_instruction_switch_case(stack, next);
   stack_ast(stack, sexp_at(ast, 4));
 }
 void stack_labeled_statement(Stack *stack, Sexp *ast) {
