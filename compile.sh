@@ -3,12 +3,10 @@
 set -eu
 
 TARGET=
-FLAGS=()
+FLAGS=(-x c -P -E -)
+FLAGS+=(-Wall -Wextra -Werror -ansi -pedantic)
 print() {
-  local opts=("$@" "${FLAGS[@]}")
-  opts+=(-Wall -Wextra -Werror -ansi -pedantic)
-  opts+=(-x c -P -E -)
-  cat - "$TARGET" <<EOF | clang "${opts[@]}"
+  cat - "$TARGET" <<EOF | clang "${FLAGS[@]}"
 #define __attribute__(x)
 #define __asm__(x)
 #define __extension__
