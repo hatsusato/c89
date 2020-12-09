@@ -4,7 +4,7 @@ builddir := build
 target := $(builddir)/main.out
 develop-mode := $(if $(wildcard .develop),ON,)
 
-srcs != git ls-files src/
+srcs := $(shell git ls-files src/)
 srcs := $(filter %.c,$(srcs))
 objs := $(srcs:%.c=$(builddir)/%.o)
 deps := $(objs:%.o=%.d)

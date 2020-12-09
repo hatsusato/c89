@@ -8,9 +8,9 @@ filter() {
   grep "${opts[@]}" | sed -e 's/ #[0-9]* / /' -e 's/[ ]*;.*$//'
 }
 
-cflags=(-O0 -S -emit-llvm)
+cflags=(-O0 -S -emit-llvm -target x86_64-unknown-linux-gnu)
 for f in "$@"; do
-  out=$(clang "${cflags[@]}" -c "$f" -o - | filter)
+  out=$(clang "${cflags[@]}" -c "$f" -o - | sed -e 's/^; <label>://' | filter)
   beg=$(<<<$out grep -n '^target triple' | number)
   end=$(<<<$out grep -n -v ^$ | number)
   <<<$out sed -n "$beg,$end"p

@@ -78,7 +78,7 @@ void value_pretty(Value *value) {
   }
   switch (value_kind(value)) {
   case VALUE_MODULE:
-    puts("target triple = \"x86_64-pc-linux-gnu\"");
+    puts("target triple = \"x86_64-unknown-linux-gnu\"");
     for (; begin < end; ++begin) {
       printf("\n");
       value_pretty(*begin);
