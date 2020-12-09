@@ -2,7 +2,7 @@
 
 set -eu
 
-cd $(dirname "$BASH_SOURCE")/..
+cd $(dirname "$BASH_SOURCE")
 make &>/dev/null
 
 comp=./compile.sh
@@ -27,7 +27,6 @@ check() {
   local green=$e[32m
   local red=$e[31m
   local normal=$e[0m
-  local ret=0
   "$comp" -S "$target" >/dev/null || exit
   if compare >/dev/null; then
     echo "$bold${green}OK$normal: $1"
@@ -35,18 +34,21 @@ check() {
   else
     echo "$bold${red}NG$normal: $1"
     test "$diff_flag" && compare -u || :
+    return 1
   fi
 }
 
 if (($#)); then
   diff_flag=on
 else
-  for f in $(ls test/src); do
+  for f in $(ls test/); do
     set -- "$@" "${f%.c}"
   done
 fi
+count=0
 for i in "$@"; do
-  target=test/src/$i.c
+  target=test/$i.c
   test -f "$target" || error "$target not found"
-  check "$i"
+  check "$i" || ((++count))
 done
+exit $count

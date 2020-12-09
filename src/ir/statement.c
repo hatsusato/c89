@@ -82,15 +82,6 @@ static Bool has_break_statement(Sexp *ast) {
     return false;
   }
 }
-static Value *top_switch(Stack *stack) {
-  Value *top;
-  if (stack_empty(stack)) {
-    return NULL;
-  }
-  top = stack_pop(stack);
-  stack_push(stack, top);
-  return VALUE_INSTRUCTION_SWITCH == value_kind(top) ? top : NULL;
-}
 static Bool switch_exists_next(Sexp *ast) {
   if (!switch_has_default(ast)) {
     return true;
@@ -105,7 +96,7 @@ static Bool switch_exists_next(Sexp *ast) {
 static Bool switch_new_case(Stack *stack) {
   Value *curr = stack_get_current_block(stack);
   Value *dflt = stack_get_default_block(stack);
-  Value *top = top_switch(stack);
+  Value *top = stack_get_switch_instruction(stack);
   assert(top);
   return 2 == value_length(top) || value_length(curr) || dflt == curr;
 }
@@ -116,11 +107,8 @@ void stack_statement(Stack *stack, Sexp *ast) {
 }
 static void stack_default_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_default_block(stack);
-  if (!stack_last_terminator(stack)) {
-    stack_push(stack, next);
-    stack_instruction_br(stack);
-  }
-  stack_change_flow(stack, next, NULL);
+  stack_instruction_br(stack, next);
+  stack_into_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
 }
 static void stack_case_statement(Stack *stack, Sexp *ast) {
@@ -128,15 +116,11 @@ static void stack_case_statement(Stack *stack, Sexp *ast) {
   Value *next = curr;
   if (switch_new_case(stack)) {
     next = stack_new_block(stack);
-    if (!stack_last_terminator(stack)) {
-      stack_push(stack, next);
-      stack_instruction_br(stack);
-    }
-    stack_change_flow(stack, next, NULL);
+    stack_instruction_br(stack, next);
+    stack_into_next_block(stack, next);
   }
   stack_ast(stack, sexp_at(ast, 2));
-  stack_push(stack, next);
-  stack_instruction_switch_case(stack);
+  stack_instruction_switch_case(stack, next);
   stack_ast(stack, sexp_at(ast, 4));
 }
 void stack_labeled_statement(Stack *stack, Sexp *ast) {
@@ -155,15 +139,10 @@ void stack_labeled_statement(Stack *stack, Sexp *ast) {
   }
 }
 void stack_compound_statement(Stack *stack, Sexp *ast) {
-  Value *next;
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
   stack_ast(stack, sexp_at(ast, 2));
   stack_ast(stack, sexp_at(ast, 3));
-  next = stack_get_next_block(stack);
-  if (next && !stack_last_terminator(stack)) {
-    stack_push(stack, next);
-    stack_instruction_br(stack);
-  }
+  stack_instruction_br(stack, NULL);
 }
 void stack_expression_statement(Stack *stack, Sexp *ast) {
   assert(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
@@ -187,16 +166,17 @@ static void stack_if_statement(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 3));
   stack_push_integer(stack, "0");
   stack_instruction_icmp_ne(stack);
-  stack_push(stack, if_then);
-  stack_push(stack, if_else);
-  stack_instruction_br_cond(stack);
-  stack_change_flow(stack, if_then, next);
+  stack_instruction_br_cond(stack, if_then, if_else);
+  stack_into_next_block(stack, if_then);
+  stack_set_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 5));
   if (8 == sexp_length(ast)) {
-    stack_change_flow(stack, if_else, next);
+    stack_into_next_block(stack, if_else);
+    stack_set_next_block(stack, next);
     stack_ast(stack, sexp_at(ast, 7));
   }
-  stack_change_flow(stack, next, prev);
+  stack_into_next_block(stack, next);
+  stack_set_next_block(stack, prev);
 }
 static void stack_switch_statement(Stack *stack, Sexp *ast) {
   Value *prev = stack_get_next_block(stack);
@@ -204,12 +184,12 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
   Value *dflt = switch_has_default(ast) ? stack_new_block(stack) : next;
   stack_set_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
-  stack_push(stack, dflt);
-  stack_instruction_switch(stack);
+  stack_instruction_switch(stack, dflt);
   stack_ast(stack, sexp_at(ast, 5));
   stack_pop(stack);
   if (switch_exists_next(ast)) {
-    stack_change_flow(stack, next, prev);
+    stack_into_next_block(stack, next);
+    stack_set_next_block(stack, prev);
   }
 }
 void stack_selection_statement(Stack *stack, Sexp *ast) {
@@ -228,9 +208,7 @@ void stack_selection_statement(Stack *stack, Sexp *ast) {
   }
 }
 static void stack_break_statement(Stack *stack, Sexp *ast) {
-  Value *next = stack_get_next_block(stack);
-  stack_push(stack, next);
-  stack_instruction_br(stack);
+  stack_instruction_br(stack, NULL);
   UTILITY_UNUSED(ast);
 }
 static void stack_return_statement(Stack *stack, Sexp *ast) {
@@ -240,13 +218,9 @@ static void stack_return_statement(Stack *stack, Sexp *ast) {
   if (ret) {
     stack_store_to_symbol(stack, "$retval");
     stack_pop(stack);
-    stack_push(stack, ret);
-    stack_instruction_br(stack);
+    stack_instruction_br(stack, ret);
   } else {
     stack_instruction_ret(stack);
-  }
-  if (!top_switch(stack)) {
-    stack_set_next_block(stack, NULL);
   }
 }
 void stack_jump_statement(Stack *stack, Sexp *ast) {

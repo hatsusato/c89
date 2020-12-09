@@ -1,0 +1,24 @@
+language: c
+compiler: clang
+os: linux
+dist: focal
+jobs:
+  include:
+    - dist: trusty
+    - dist: xenial
+    - dist: bionic
+    - dist: focal
+addons:
+  apt:
+    packages:
+      - flex
+      - bison
+before_install:
+  - $CC --version
+  - flex --version
+  - bison --version
+  - make --version
+install:
+  - make
+script:
+  - ./test.sh

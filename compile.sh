@@ -3,12 +3,10 @@
 set -eu
 
 TARGET=
-FLAGS=()
+FLAGS=(-x c -P -E -)
+FLAGS+=(-Wall -Wextra -Werror -ansi -pedantic)
 print() {
-  local opts=("$@" "${FLAGS[@]}")
-  opts+=(-Wall -Wextra -Werror -ansi -pedantic)
-  opts+=(-x c -P -E -)
-  cat - "$TARGET" <<EOF | gcc "${opts[@]}"
+  cat - "$TARGET" <<EOF | clang "${FLAGS[@]}"
 #define __attribute__(x)
 #define __asm__(x)
 #define __extension__
@@ -37,7 +35,7 @@ done
 
 main=${MAIN_DIR-./build}/main.out
 for TARGET in "${files[@]}"; do
-  print -fsyntax-only >/dev/null || error "$TARGET"
+  print >/dev/null || error "$TARGET"
   if test "$eflag"; then
     print
   elif test "$sflag"; then

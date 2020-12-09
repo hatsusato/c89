@@ -1,16 +1,9 @@
 #include "ir/stack.h"
 
-#include <stdio.h>
-
-#include "ast/ast_tag.h"
 #include "ir/function.h"
 #include "ir/pool.h"
 #include "ir/stack_impl.h"
 #include "ir/table.h"
-#include "ir/value.h"
-#include "ir/value_kind.h"
-#include "sexp.h"
-#include "utility.h"
 #include "vector.h"
 
 struct struct_Stack {
@@ -56,6 +49,7 @@ Bool stack_empty(Stack *stack) {
   return vector_empty(stack->stack);
 }
 void stack_push(Stack *stack, Value *value) {
+  assert(value && VALUE_BLOCK != value_kind(value));
   vector_push(stack->stack, value);
 }
 Value *stack_pop(Stack *stack) {
@@ -90,14 +84,11 @@ void stack_alloca(Stack *stack, const char *symbol) {
   value_insert(allocs, value);
   stack_push(stack, value);
 }
-void stack_change_flow(Stack *stack, Value *current, Value *next) {
-  assert(VALUE_BLOCK == value_kind(current));
-  function_set(stack->func, FUNCTION_CURRENT, current);
-  value_insert(function_get(stack->func, FUNCTION_FUNC), current);
-  if (next) {
-    assert(VALUE_BLOCK == value_kind(next));
-    function_set(stack->func, FUNCTION_NEXT, next);
-  }
+void stack_into_next_block(Stack *stack, Value *next) {
+  Value *func = function_get(stack->func, FUNCTION_FUNC);
+  assert(next && VALUE_BLOCK == value_kind(next));
+  function_set(stack->func, FUNCTION_CURRENT, next);
+  value_insert(func, next);
 }
 Bool stack_last_terminator(Stack *stack) {
   Value *block = function_get(stack->func, FUNCTION_CURRENT);
@@ -119,18 +110,25 @@ Value *stack_get_next_block(Stack *stack) {
   return function_get(stack->func, FUNCTION_NEXT);
 }
 void stack_set_next_block(Stack *stack, Value *block) {
-  function_set(stack->func, FUNCTION_NEXT, block);
+  if (block) {
+    assert(VALUE_BLOCK == value_kind(block));
+    function_set(stack->func, FUNCTION_NEXT, block);
+  }
 }
 Value *stack_get_current_block(Stack *stack) {
   return function_get(stack->func, FUNCTION_CURRENT);
 }
 Value *stack_get_default_block(Stack *stack) {
-  Value *value = stack_top(stack);
-  assert(VALUE_INSTRUCTION_SWITCH == value_kind(value));
+  Value *value = stack_get_switch_instruction(stack);
+  assert(value);
   return value_at(value, 1);
 }
 Value *stack_get_return_block(Stack *stack) {
   return function_get(stack->func, FUNCTION_RET);
+}
+Value *stack_get_switch_instruction(Stack *stack) {
+  Value *value = stack_top(stack);
+  return VALUE_INSTRUCTION_SWITCH == value_kind(value) ? value : NULL;
 }
 void stack_set_function_name(Stack *stack, const char *name) {
   Value *func = function_get(stack->func, FUNCTION_FUNC);
