@@ -263,6 +263,7 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
   stack_into_next_block(stack, body);
   stack_set_next_block(stack, step);
   stack_ast(stack, sexp_at(ast, 9));
+  stack_instruction_br(stack, step);
   stack_into_next_block(stack, step);
   stack_set_next_block(stack, guard);
   if (!sexp_is_nil(sexp_at(ast, 7))) {
