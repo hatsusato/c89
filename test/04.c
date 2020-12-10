@@ -4,6 +4,7 @@ int f1(void) {
     s = s + i;
     i = i + 1;
   }
+  while (i) i = i - 1;
   return s;
 }
 int f2(void) {
@@ -12,6 +13,7 @@ int f2(void) {
     s = s + i;
     i = i + 1;
   } while (i - 10);
+  do i = i - 1; while (i);
   return s;
 }
 int f3(void) {

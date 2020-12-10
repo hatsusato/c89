@@ -221,6 +221,7 @@ static void stack_while_statement(Stack *stack, Sexp *ast) {
   stack_into_next_block(stack, body);
   stack_set_next_block(stack, guard);
   stack_ast(stack, sexp_at(ast, 5));
+  stack_instruction_br(stack, guard);
   stack_into_next_block(stack, next);
   stack_set_next_block(stack, prev);
 }
@@ -233,6 +234,7 @@ static void stack_do_while_statement(Stack *stack, Sexp *ast) {
   stack_into_next_block(stack, body);
   stack_set_next_block(stack, guard);
   stack_ast(stack, sexp_at(ast, 2));
+  stack_instruction_br(stack, guard);
   stack_into_next_block(stack, guard);
   stack_ast(stack, sexp_at(ast, 5));
   stack_push_integer(stack, "0");
