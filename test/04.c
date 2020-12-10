@@ -23,7 +23,19 @@ int f3(void) {
   }
   for (i = 0; i - 10; i = i + 1) s = s + i;
   for (i = 0; i - 10;) {
+    i = i + 1;
+  }
+  for (i = 0; i - 10;) i = i + 1;
+  i = 0;
+  for (; i - 10; i = i + 1) {
     s = s + i;
+  }
+  i = 0;
+  for (; i - 10; i = i - 1) s = s + 1;
+  i = 0;
+  for (; i; ) i = i + 1;
+  i = 0;
+  for (; i; ) {
     i = i + 1;
   }
   return s;
