@@ -249,7 +249,7 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
   Value *body = stack_new_block(stack);
   Value *next = stack_new_block(stack);
   Value *prev = stack_get_next_block(stack);
-  if (sexp_at(ast, 3)) {
+  if (!sexp_is_nil(sexp_at(ast, 3))) {
     stack_ast(stack, sexp_at(ast, 3));
     stack_pop(stack);
   }
@@ -265,9 +265,10 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 9));
   stack_into_next_block(stack, step);
   stack_set_next_block(stack, guard);
-  assert(sexp_at(ast, 7));
-  stack_ast(stack, sexp_at(ast, 7));
-  stack_pop(stack);
+  if (!sexp_is_nil(sexp_at(ast, 7))) {
+    stack_ast(stack, sexp_at(ast, 7));
+    stack_pop(stack);
+  }
   stack_instruction_br(stack, guard);
   stack_into_next_block(stack, next);
   stack_set_next_block(stack, prev);
