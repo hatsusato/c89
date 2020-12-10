@@ -14,3 +14,11 @@ int f2(void) {
   } while (i - 10);
   return s;
 }
+int f3(void) {
+  int i = 0, s = 0;
+  for (i = 0; i - 10; i = i + 1) {
+    s = s + i;
+    i = i + 1;
+  }
+  return s;
+}

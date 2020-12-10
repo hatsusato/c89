@@ -241,6 +241,35 @@ static void stack_do_while_statement(Stack *stack, Sexp *ast) {
   stack_into_next_block(stack, next);
   stack_set_next_block(stack, prev);
 }
+static void stack_for_statement(Stack *stack, Sexp *ast) {
+  Value *guard = stack_new_block(stack);
+  Value *step = stack_new_block(stack);
+  Value *body = stack_new_block(stack);
+  Value *next = stack_new_block(stack);
+  Value *prev = stack_get_next_block(stack);
+  if (sexp_at(ast, 3)) {
+    stack_ast(stack, sexp_at(ast, 3));
+    stack_pop(stack);
+  }
+  stack_instruction_br(stack, guard);
+  stack_into_next_block(stack, guard);
+  assert(sexp_at(ast, 5));
+  stack_ast(stack, sexp_at(ast, 5));
+  stack_push_integer(stack, "0");
+  stack_instruction_icmp_ne(stack);
+  stack_instruction_br_cond(stack, body, next);
+  stack_into_next_block(stack, body);
+  stack_set_next_block(stack, step);
+  stack_ast(stack, sexp_at(ast, 9));
+  stack_into_next_block(stack, step);
+  stack_set_next_block(stack, guard);
+  assert(sexp_at(ast, 7));
+  stack_ast(stack, sexp_at(ast, 7));
+  stack_pop(stack);
+  stack_instruction_br(stack, guard);
+  stack_into_next_block(stack, next);
+  stack_set_next_block(stack, prev);
+}
 void stack_iteration_statement(Stack *stack, Sexp *ast) {
   assert(AST_ITERATION_STATEMENT == sexp_get_tag(ast));
   assert(sexp_is_number(sexp_at(ast, 1)));
@@ -250,6 +279,9 @@ void stack_iteration_statement(Stack *stack, Sexp *ast) {
     break;
   case AST_DO:
     stack_do_while_statement(stack, ast);
+    break;
+  case AST_FOR:
+    stack_for_statement(stack, ast);
     break;
   default:
     assert(0);
