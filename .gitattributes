@@ -1,4 +1,6 @@
-src/*.c linguist-language=C
-src/*.h linguist-language=C
-src/*.l linguist-language=Lex
-src/*.y linguist-language=Bison
+*.c linguist-language=C
+*.def linguist-language=C
+*.h linguist-language=C
+*.l linguist-language=Lex
+*.y linguist-language=Bison
+test/** linguist-documentation
