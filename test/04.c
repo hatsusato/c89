@@ -22,5 +22,9 @@ int f3(void) {
     s = s + i;
   }
   for (i = 0; i - 10; i = i + 1) s = s + i;
+  for (i = 0; i - 10;) {
+    s = s + i;
+    i = i + 1;
+  }
   return s;
 }

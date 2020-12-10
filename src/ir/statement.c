@@ -245,8 +245,8 @@ static void stack_do_while_statement(Stack *stack, Sexp *ast) {
 }
 static void stack_for_statement(Stack *stack, Sexp *ast) {
   Value *guard = stack_new_block(stack);
-  Value *step = stack_new_block(stack);
   Value *body = stack_new_block(stack);
+  Value *step = sexp_is_nil(sexp_at(ast, 7)) ? guard : stack_new_block(stack);
   Value *next = stack_new_block(stack);
   Value *prev = stack_get_next_block(stack);
   if (!sexp_is_nil(sexp_at(ast, 3))) {
@@ -264,13 +264,13 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
   stack_set_next_block(stack, step);
   stack_ast(stack, sexp_at(ast, 9));
   stack_instruction_br(stack, step);
-  stack_into_next_block(stack, step);
-  stack_set_next_block(stack, guard);
   if (!sexp_is_nil(sexp_at(ast, 7))) {
+    stack_into_next_block(stack, step);
+    stack_set_next_block(stack, guard);
     stack_ast(stack, sexp_at(ast, 7));
     stack_pop(stack);
+    stack_instruction_br(stack, guard);
   }
-  stack_instruction_br(stack, guard);
   stack_into_next_block(stack, next);
   stack_set_next_block(stack, prev);
 }
