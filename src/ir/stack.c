@@ -187,6 +187,9 @@ void stack_ast(Stack *stack, Sexp *ast) {
   case AST_SELECTION_STATEMENT:
     stack_selection_statement(stack, ast);
     break;
+  case AST_ITERATION_STATEMENT:
+    stack_iteration_statement(stack, ast);
+    break;
   case AST_JUMP_STATEMENT:
     stack_jump_statement(stack, ast);
     break;

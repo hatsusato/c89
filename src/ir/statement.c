@@ -207,6 +207,18 @@ void stack_selection_statement(Stack *stack, Sexp *ast) {
     break;
   }
 }
+void stack_iteration_statement(Stack *stack, Sexp *ast) {
+  assert(AST_ITERATION_STATEMENT == sexp_get_tag(ast));
+  assert(sexp_is_number(sexp_at(ast, 1)));
+  switch (sexp_get_number(sexp_at(ast, 1))) {
+  case AST_WHILE:
+    break;
+  default:
+    assert(0);
+    break;
+  }
+  UTILITY_UNUSED(stack);
+}
 static void stack_break_statement(Stack *stack, Sexp *ast) {
   stack_instruction_br(stack, NULL);
   UTILITY_UNUSED(ast);
