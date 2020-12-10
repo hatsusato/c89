@@ -52,6 +52,9 @@ void stack_instruction_switch_case(Stack *stack, Value *label) {
 void stack_instruction_add(Stack *stack) {
   stack_instruction_binary(stack, VALUE_INSTRUCTION_ADD);
 }
+void stack_instruction_sub(Stack *stack) {
+  stack_instruction_binary(stack, VALUE_INSTRUCTION_SUB);
+}
 void stack_instruction_load(Stack *stack) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_LOAD);
 }
