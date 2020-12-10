@@ -85,7 +85,7 @@ void value_pretty(Value *value) {
     }
     return;
   case VALUE_FUNCTION:
-    printf("define dso_local ");
+    printf("define ");
     value_print(value);
     printf(" {\n");
     assert(begin != end);
