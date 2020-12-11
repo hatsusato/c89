@@ -111,15 +111,6 @@ void stack_insert_to_block(Stack *stack) {
 void stack_insert_as_operand(Stack *stack, Value *value) {
   value_insert(stack_top(stack), value);
 }
-Value *stack_get_next_block(Stack *stack) {
-  return function_get(stack->func, FUNCTION_NEXT);
-}
-void stack_set_next_block(Stack *stack, Value *block) {
-  if (block) {
-    assert(VALUE_BLOCK == value_kind(block));
-    function_set(stack->func, FUNCTION_NEXT, block);
-  }
-}
 Value *stack_get_current_block(Stack *stack) {
   return function_get(stack->func, FUNCTION_CURRENT);
 }

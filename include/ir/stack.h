@@ -27,8 +27,6 @@ void stack_into_next_block(Stack *, Value *);
 Bool stack_last_terminator(Stack *);
 void stack_insert_to_block(Stack *);
 void stack_insert_as_operand(Stack *, Value *);
-Value *stack_get_next_block(Stack *);
-void stack_set_next_block(Stack *, Value *);
 Value *stack_get_current_block(Stack *);
 Value *stack_get_default_block(Stack *);
 Value *stack_get_return_block(Stack *);

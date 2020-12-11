@@ -32,7 +32,7 @@ static const char *stack_function_name(Sexp *ast) {
   }
 }
 void stack_function_definition(Stack *stack, Sexp *ast) {
-  Value *ret = stack_get_next_block(stack);
+  Value *ret = stack_get_return_block(stack);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   if (ret) {

@@ -155,7 +155,7 @@ void stack_expression_statement(Stack *stack, Sexp *ast) {
 static void stack_if_statement(Stack *stack, Sexp *ast) {
   Value *if_then = stack_new_block(stack);
   Value *if_else = stack_new_block(stack);
-  Value *prev = stack_get_next_block(stack);
+  Value *prev = stack_get_next(stack, STACK_NEXT_BLOCK);
   Value *next;
   if (8 == sexp_length(ast)) {
     next = stack_new_block(stack);
@@ -168,28 +168,28 @@ static void stack_if_statement(Stack *stack, Sexp *ast) {
   stack_instruction_icmp_ne(stack);
   stack_instruction_br_cond(stack, if_then, if_else);
   stack_into_next_block(stack, if_then);
-  stack_set_next_block(stack, next);
+  stack_set_next(stack, STACK_NEXT_BLOCK, next);
   stack_ast(stack, sexp_at(ast, 5));
   if (8 == sexp_length(ast)) {
     stack_into_next_block(stack, if_else);
-    stack_set_next_block(stack, next);
+    stack_set_next(stack, STACK_NEXT_BLOCK, next);
     stack_ast(stack, sexp_at(ast, 7));
   }
   stack_into_next_block(stack, next);
-  stack_set_next_block(stack, prev);
+  stack_set_next(stack, STACK_NEXT_BLOCK, prev);
 }
 static void stack_switch_statement(Stack *stack, Sexp *ast) {
-  Value *prev = stack_get_next_block(stack);
+  Value *prev = stack_get_next(stack, STACK_NEXT_BLOCK);
   Value *next = stack_new_block(stack);
   Value *dflt = switch_has_default(ast) ? stack_new_block(stack) : next;
-  stack_set_next_block(stack, next);
+  stack_set_next(stack, STACK_NEXT_BLOCK, next);
   stack_ast(stack, sexp_at(ast, 3));
   stack_instruction_switch(stack, dflt);
   stack_ast(stack, sexp_at(ast, 5));
   stack_pop(stack);
   if (switch_exists_next(ast)) {
     stack_into_next_block(stack, next);
-    stack_set_next_block(stack, prev);
+    stack_set_next(stack, STACK_NEXT_BLOCK, prev);
   }
 }
 void stack_selection_statement(Stack *stack, Sexp *ast) {
@@ -211,7 +211,7 @@ static void stack_while_statement(Stack *stack, Sexp *ast) {
   Value *guard = stack_new_block(stack);
   Value *body = stack_new_block(stack);
   Value *next = stack_new_block(stack);
-  Value *prev = stack_get_next_block(stack);
+  Value *prev = stack_get_next(stack, STACK_NEXT_BLOCK);
   stack_instruction_br(stack, guard);
   stack_into_next_block(stack, guard);
   stack_ast(stack, sexp_at(ast, 3));
@@ -219,20 +219,20 @@ static void stack_while_statement(Stack *stack, Sexp *ast) {
   stack_instruction_icmp_ne(stack);
   stack_instruction_br_cond(stack, body, next);
   stack_into_next_block(stack, body);
-  stack_set_next_block(stack, guard);
+  stack_set_next(stack, STACK_NEXT_BLOCK, guard);
   stack_ast(stack, sexp_at(ast, 5));
   stack_instruction_br(stack, guard);
   stack_into_next_block(stack, next);
-  stack_set_next_block(stack, prev);
+  stack_set_next(stack, STACK_NEXT_BLOCK, prev);
 }
 static void stack_do_while_statement(Stack *stack, Sexp *ast) {
   Value *body = stack_new_block(stack);
   Value *guard = stack_new_block(stack);
   Value *next = stack_new_block(stack);
-  Value *prev = stack_get_next_block(stack);
+  Value *prev = stack_get_next(stack, STACK_NEXT_BLOCK);
   stack_instruction_br(stack, body);
   stack_into_next_block(stack, body);
-  stack_set_next_block(stack, guard);
+  stack_set_next(stack, STACK_NEXT_BLOCK, guard);
   stack_ast(stack, sexp_at(ast, 2));
   stack_instruction_br(stack, guard);
   stack_into_next_block(stack, guard);
@@ -241,14 +241,14 @@ static void stack_do_while_statement(Stack *stack, Sexp *ast) {
   stack_instruction_icmp_ne(stack);
   stack_instruction_br_cond(stack, body, next);
   stack_into_next_block(stack, next);
-  stack_set_next_block(stack, prev);
+  stack_set_next(stack, STACK_NEXT_BLOCK, prev);
 }
 static void stack_for_statement(Stack *stack, Sexp *ast) {
   Value *guard = stack_new_block(stack);
   Value *body = stack_new_block(stack);
   Value *step = sexp_is_nil(sexp_at(ast, 7)) ? guard : stack_new_block(stack);
   Value *next = stack_new_block(stack);
-  Value *prev = stack_get_next_block(stack);
+  Value *prev = stack_get_next(stack, STACK_NEXT_BLOCK);
   if (!sexp_is_nil(sexp_at(ast, 3))) {
     stack_ast(stack, sexp_at(ast, 3));
     stack_pop(stack);
@@ -261,18 +261,18 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
   stack_instruction_icmp_ne(stack);
   stack_instruction_br_cond(stack, body, next);
   stack_into_next_block(stack, body);
-  stack_set_next_block(stack, step);
+  stack_set_next(stack, STACK_NEXT_BLOCK, step);
   stack_ast(stack, sexp_at(ast, 9));
   stack_instruction_br(stack, step);
   if (!sexp_is_nil(sexp_at(ast, 7))) {
     stack_into_next_block(stack, step);
-    stack_set_next_block(stack, guard);
+    stack_set_next(stack, STACK_NEXT_BLOCK, guard);
     stack_ast(stack, sexp_at(ast, 7));
     stack_pop(stack);
     stack_instruction_br(stack, guard);
   }
   stack_into_next_block(stack, next);
-  stack_set_next_block(stack, prev);
+  stack_set_next(stack, STACK_NEXT_BLOCK, prev);
 }
 void stack_iteration_statement(Stack *stack, Sexp *ast) {
   assert(AST_ITERATION_STATEMENT == sexp_get_tag(ast));
