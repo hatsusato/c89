@@ -8,7 +8,11 @@
 #include "sexp_type.h"
 #include "types.h"
 
-typedef enum { STACK_NEXT_BLOCK, STACK_NEXT_COUNT } StackNextTag;
+typedef enum {
+  STACK_NEXT_BLOCK,
+  STACK_NEXT_CURRENT,
+  STACK_NEXT_COUNT
+} StackNextTag;
 
 Stack *stack_new(Pool *);
 void stack_delete(Stack *);
@@ -27,7 +31,6 @@ void stack_into_next_block(Stack *, Value *);
 Bool stack_last_terminator(Stack *);
 void stack_insert_to_block(Stack *);
 void stack_insert_as_operand(Stack *, Value *);
-Value *stack_get_current_block(Stack *);
 Value *stack_get_default_block(Stack *);
 Value *stack_get_return_block(Stack *);
 Value *stack_get_switch_instruction(Stack *);

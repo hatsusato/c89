@@ -34,6 +34,8 @@ void stack_delete(Stack *stack) {
 }
 Value *stack_build(Stack *stack, Sexp *ast) {
   function_init(stack->func, stack->pool, ast);
+  stack_set_next(stack, STACK_NEXT_CURRENT,
+                 function_get(stack->func, FUNCTION_ENTRY));
   stack_ast(stack, ast);
   assert(stack_empty(stack));
   function_finish(stack->func);
@@ -92,27 +94,24 @@ void stack_alloca(Stack *stack, const char *symbol) {
 void stack_into_next_block(Stack *stack, Value *next) {
   Value *func = function_get(stack->func, FUNCTION_FUNC);
   assert(next && VALUE_BLOCK == value_kind(next));
-  function_set(stack->func, FUNCTION_CURRENT, next);
+  stack_set_next(stack, STACK_NEXT_CURRENT, next);
   value_insert(func, next);
 }
 Bool stack_last_terminator(Stack *stack) {
-  Value *block = function_get(stack->func, FUNCTION_CURRENT);
+  Value *block = stack_get_next(stack, STACK_NEXT_CURRENT);
   Value *last;
   assert(block);
   last = value_last(block);
   return last && value_is_terminator(last);
 }
 void stack_insert_to_block(Stack *stack) {
-  Value *block = function_get(stack->func, FUNCTION_CURRENT);
+  Value *block = stack_get_next(stack, STACK_NEXT_CURRENT);
   Value *value = stack_top(stack);
   assert(value_is_instruction(value));
   value_insert(block, value);
 }
 void stack_insert_as_operand(Stack *stack, Value *value) {
   value_insert(stack_top(stack), value);
-}
-Value *stack_get_current_block(Stack *stack) {
-  return function_get(stack->func, FUNCTION_CURRENT);
 }
 Value *stack_get_default_block(Stack *stack) {
   Value *value = stack_get_switch_instruction(stack);

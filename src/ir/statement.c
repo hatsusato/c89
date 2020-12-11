@@ -94,7 +94,7 @@ static Bool switch_exists_next(Sexp *ast) {
   return has_break_statement(ast);
 }
 static Bool switch_new_case(Stack *stack) {
-  Value *curr = stack_get_current_block(stack);
+  Value *curr = stack_get_next(stack, STACK_NEXT_CURRENT);
   Value *dflt = stack_get_default_block(stack);
   Value *top = stack_get_switch_instruction(stack);
   assert(top);
@@ -112,8 +112,7 @@ static void stack_default_statement(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 3));
 }
 static void stack_case_statement(Stack *stack, Sexp *ast) {
-  Value *curr = stack_get_current_block(stack);
-  Value *next = curr;
+  Value *next = stack_get_next(stack, STACK_NEXT_CURRENT);
   if (switch_new_case(stack)) {
     next = stack_new_block(stack);
     stack_instruction_br(stack, next);
