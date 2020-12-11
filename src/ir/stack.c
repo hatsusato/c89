@@ -2,6 +2,7 @@
 
 #include "ir/function.h"
 #include "ir/pool.h"
+#include "ir/register.h"
 #include "ir/stack_impl.h"
 #include "ir/table.h"
 #include "vector.h"
@@ -41,6 +42,7 @@ void stack_delete(Stack *stack) {
   UTILITY_FREE(stack);
 }
 Value *stack_build(Stack *stack, Sexp *ast) {
+  RegisterGenerator *gen;
   Value *alloc = stack_new_block(stack);
   Value *entry = stack_new_block(stack);
   Value *ret = 1 < count_return(ast) ? stack_new_block(stack) : NULL;
@@ -52,7 +54,9 @@ Value *stack_build(Stack *stack, Sexp *ast) {
   stack_ast(stack, ast);
   assert(stack_empty(stack));
   value_append(alloc, entry);
-  function_finish(stack->func);
+  gen = register_generator_new();
+  value_set_reg(gen, function_get(stack->func, FUNCTION_FUNC));
+  register_generator_delete(gen);
   return function_get(stack->func, FUNCTION_FUNC);
 }
 

@@ -2,7 +2,6 @@
 
 #include "ast/ast_tag.h"
 #include "ir/pool.h"
-#include "ir/register.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
 #include "sexp.h"
@@ -35,10 +34,4 @@ void function_init(Function *f, Pool *pool, Sexp *ast) {
   function_set(f, FUNCTION_FUNC, func);
   function_set(f, FUNCTION_ALLOCS, allocs);
   UTILITY_UNUSED(ast);
-}
-void function_finish(Function *func) {
-  RegisterGenerator *gen = register_generator_new();
-  Value *f = function_get(func, FUNCTION_FUNC);
-  value_set_reg(gen, f);
-  register_generator_delete(gen);
 }

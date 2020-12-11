@@ -13,6 +13,5 @@ void function_delete(Function *);
 Value *function_get(Function *, FunctionMember);
 void function_set(Function *, FunctionMember, Value *);
 void function_init(Function *, Pool *, Sexp *);
-void function_finish(Function *);
 
 #endif /* INCLUDE_GUARD_B55311C7_57F5_41B3_92DD_0759ECC346E7 */
