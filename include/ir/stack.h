@@ -29,6 +29,7 @@ Value *stack_pop(Stack *);
 Value *stack_top(Stack *);
 Value *stack_new_value(Stack *, ValueKind);
 Value *stack_new_block(Stack *);
+void stack_insert_block(Stack *, Value *);
 void stack_push_integer(Stack *, const char *);
 void stack_load_from_symbol(Stack *, const char *);
 void stack_store_to_symbol(Stack *, const char *);

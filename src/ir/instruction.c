@@ -32,26 +32,26 @@ void stack_instruction_br(Stack *stack, Value *label) {
   assert(label && VALUE_BLOCK == value_kind(label));
   if (!stack_last_terminator(stack)) {
     stack_instruction_new(stack, VALUE_INSTRUCTION_BR);
-    insert_operand(stack, label);
+    stack_insert_block(stack, label);
     stack_pop(stack);
   }
 }
 void stack_instruction_br_cond(Stack *stack, Value *then_label,
                                Value *else_label) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_BR_COND);
-  insert_operand(stack, then_label);
-  insert_operand(stack, else_label);
+  stack_insert_block(stack, then_label);
+  stack_insert_block(stack, else_label);
   stack_pop(stack);
 }
 void stack_instruction_switch(Stack *stack, Value *default_label) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_SWITCH);
-  insert_operand(stack, default_label);
+  stack_insert_block(stack, default_label);
   stack_set_next(stack, STACK_NEXT_DEFAULT, default_label);
 }
 void stack_instruction_switch_case(Stack *stack, Value *label) {
   Value *first = stack_pop(stack);
   insert_operand(stack, first);
-  insert_operand(stack, label);
+  stack_insert_block(stack, label);
 }
 void stack_instruction_add(Stack *stack) {
   stack_instruction_binary(stack, VALUE_INSTRUCTION_ADD);

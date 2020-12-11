@@ -95,6 +95,13 @@ Value *stack_new_value(Stack *stack, ValueKind kind) {
 Value *stack_new_block(Stack *stack) {
   return pool_alloc(stack->pool, VALUE_BLOCK);
 }
+void stack_insert_block(Stack *stack, Value *block) {
+  assert(block && VALUE_BLOCK == value_kind(block));
+  value_insert(stack_top(stack), block);
+  if (!set_contains(stack->blocks, block)) {
+    set_insert(stack->blocks, block);
+  }
+}
 void stack_push_integer(Stack *stack, const char *value) {
   stack_new_value(stack, VALUE_INTEGER_CONSTANT);
   value_set_value(stack_top(stack), value);
