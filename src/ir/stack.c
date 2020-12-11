@@ -106,16 +106,6 @@ void stack_jump_block(Stack *stack, Value *next, Value *dest) {
 void stack_next_block(Stack *stack, Value *next) {
   stack_jump_block(stack, next, next);
 }
-void stack_into_next_block(Stack *stack, Value *next) {
-  Value *func = function_get(stack->func, FUNCTION_FUNC);
-  Value *prev = stack_get_next(stack, STACK_NEXT_BLOCK);
-  assert(next && VALUE_BLOCK == value_kind(next));
-  if (prev) {
-    stack_instruction_br(stack, prev);
-  }
-  stack_set_next(stack, STACK_NEXT_CURRENT, next);
-  value_insert(func, next);
-}
 Bool stack_last_terminator(Stack *stack) {
   Value *block = stack_get_next(stack, STACK_NEXT_CURRENT);
   Value *last;
