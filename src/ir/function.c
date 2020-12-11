@@ -34,7 +34,6 @@ void function_init(Function *f, Pool *pool, Sexp *ast) {
   Value *allocs = pool_alloc(pool, VALUE_BLOCK);
   function_set(f, FUNCTION_FUNC, func);
   function_set(f, FUNCTION_ALLOCS, allocs);
-  value_insert(func, allocs);
   UTILITY_UNUSED(ast);
 }
 void function_finish(Function *func) {

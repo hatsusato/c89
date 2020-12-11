@@ -9,6 +9,7 @@
 #include "types.h"
 
 typedef enum {
+  STACK_NEXT_ALLOC,
   STACK_NEXT_BREAK,
   STACK_NEXT_CURRENT,
   STACK_NEXT_DEFAULT,

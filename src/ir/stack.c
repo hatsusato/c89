@@ -41,14 +41,17 @@ void stack_delete(Stack *stack) {
   UTILITY_FREE(stack);
 }
 Value *stack_build(Stack *stack, Sexp *ast) {
+  Value *alloc = stack_new_block(stack);
   Value *entry = stack_new_block(stack);
   Value *ret = 1 < count_return(ast) ? stack_new_block(stack) : NULL;
   function_init(stack->func, stack->pool, ast);
+  value_insert(function_get(stack->func, FUNCTION_FUNC), alloc);
+  stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
   stack_ast(stack, ast);
   assert(stack_empty(stack));
-  value_append(function_get(stack->func, FUNCTION_ALLOCS), entry);
+  value_append(alloc, entry);
   function_finish(stack->func);
   return function_get(stack->func, FUNCTION_FUNC);
 }
@@ -96,10 +99,10 @@ void stack_store_to_symbol(Stack *stack, const char *symbol) {
   stack_instruction_store(stack);
 }
 void stack_alloca(Stack *stack, const char *symbol) {
-  Value *allocs = function_get(stack->func, FUNCTION_ALLOCS);
+  Value *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
   Value *value = pool_alloc(stack->pool, VALUE_INSTRUCTION_ALLOCA);
   table_insert(stack->table, symbol, value);
-  value_insert(allocs, value);
+  value_insert(alloc, value);
   stack_push(stack, value);
 }
 void stack_jump_block(Stack *stack, Value *next, Value *dest) {
