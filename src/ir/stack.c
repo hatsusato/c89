@@ -1,9 +1,11 @@
 #include "ir/stack.h"
 
+#include "compare.h"
 #include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/stack_impl.h"
 #include "ir/table.h"
+#include "set.h"
 #include "vector.h"
 
 struct struct_Stack {
@@ -13,6 +15,7 @@ struct struct_Stack {
   Sexp *ast;
   Value *func;
   Value *next[STACK_NEXT_COUNT];
+  Set *blocks;
 };
 
 static int count_return(Sexp *ast) {
@@ -34,9 +37,11 @@ Stack *stack_new(Pool *pool, Sexp *ast) {
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
   }
+  stack->blocks = set_new(NULL, compare_new(NULL));
   return stack;
 }
 void stack_delete(Stack *stack) {
+  set_delete(stack->blocks);
   vector_delete(stack->stack);
   table_delete(stack->table);
   UTILITY_FREE(stack);
