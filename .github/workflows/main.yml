@@ -17,7 +17,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    name: Build on ${{ matrix.on }}
+    name: Build on ${{ matrix.os }}
     # The type of runner that the job will run on
     runs-on: ${{ matrix.os }}
     strategy:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Versions
-        run: for cmd in $CC flex bison make; do $cmd --version; done
+        run: for cmd in clang flex bison make; do $cmd --version | head -n1; done
 
       - name: Make
         run: make
