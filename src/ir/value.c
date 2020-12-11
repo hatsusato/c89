@@ -35,6 +35,21 @@ void value_insert(Value *value, Value *elem) {
 void value_pop(Value *value) {
   vector_pop(value->vec);
 }
+void value_function_clean(Value *value) {
+  Vector *blocks = vector_new(NULL);
+  ElemType *begin = vector_begin(value->vec);
+  ElemType *end = vector_end(value->vec);
+  assert(VALUE_FUNCTION == value_kind(value));
+  while (begin < end) {
+    Value *block = *begin++;
+    assert(VALUE_BLOCK == value_kind(block));
+    if (value_length(block)) {
+      vector_push(blocks, block);
+    }
+  }
+  UTILITY_SWAP(Vector *, blocks, value->vec);
+  vector_delete(blocks);
+}
 void value_append(Value *dst, const Value *src) {
   ElemType *begin = vector_begin(src->vec);
   ElemType *end = vector_end(src->vec);

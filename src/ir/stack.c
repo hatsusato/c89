@@ -53,6 +53,7 @@ Value *stack_build(Stack *stack) {
   stack_ast(stack, stack->ast);
   assert(stack_empty(stack));
   value_append(alloc, entry);
+  value_function_clean(stack->func);
   gen = register_generator_new();
   value_set_reg(gen, stack->func);
   register_generator_delete(gen);
