@@ -95,7 +95,7 @@ static Bool switch_exists_next(Sexp *ast) {
 }
 static Bool switch_new_case(Stack *stack) {
   Value *curr = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Value *dflt = stack_get_default_block(stack);
+  Value *dflt = stack_get_next(stack, STACK_NEXT_DEFAULT);
   Value *top = stack_get_switch_instruction(stack);
   assert(top);
   return 2 == value_length(top) || value_length(curr) || dflt == curr;
@@ -106,7 +106,7 @@ void stack_statement(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 1));
 }
 static void stack_default_statement(Stack *stack, Sexp *ast) {
-  Value *next = stack_get_default_block(stack);
+  Value *next = stack_get_next(stack, STACK_NEXT_DEFAULT);
   stack_instruction_br(stack, next);
   stack_into_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
@@ -180,7 +180,10 @@ static void stack_if_statement(Stack *stack, Sexp *ast) {
 static void stack_switch_statement(Stack *stack, Sexp *ast) {
   Value *prev = stack_get_next(stack, STACK_NEXT_BLOCK);
   Value *next = stack_new_block(stack);
-  Value *dflt = switch_has_default(ast) ? stack_new_block(stack) : next;
+  Value *dflt = next;
+  if (switch_has_default(ast)) {
+    dflt = stack_new_block(stack);
+  }
   stack_set_next(stack, STACK_NEXT_BLOCK, next);
   stack_ast(stack, sexp_at(ast, 3));
   stack_instruction_switch(stack, dflt);

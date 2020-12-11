@@ -113,11 +113,6 @@ void stack_insert_to_block(Stack *stack) {
 void stack_insert_as_operand(Stack *stack, Value *value) {
   value_insert(stack_top(stack), value);
 }
-Value *stack_get_default_block(Stack *stack) {
-  Value *value = stack_get_switch_instruction(stack);
-  assert(value);
-  return value_at(value, 1);
-}
 Value *stack_get_return_block(Stack *stack) {
   return function_get(stack->func, FUNCTION_RET);
 }
