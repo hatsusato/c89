@@ -135,6 +135,14 @@ Value *stack_get_switch_instruction(Stack *stack) {
   Value *value = stack_top(stack);
   return VALUE_INSTRUCTION_SWITCH == value_kind(value) ? value : NULL;
 }
+Value *stack_get_next(Stack *stack, StackNextTag tag) {
+  return stack->next[tag];
+}
+Value *stack_set_next(Stack *stack, StackNextTag tag, Value *next) {
+  assert(0 <= tag && tag < STACK_NEXT_COUNT);
+  UTILITY_SWAP(Value *, stack->next[tag], next);
+  return next;
+}
 void stack_set_function_name(Stack *stack, const char *name) {
   Value *func = function_get(stack->func, FUNCTION_FUNC);
   value_set_value(func, name);

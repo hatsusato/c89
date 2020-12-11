@@ -33,6 +33,8 @@ Value *stack_get_current_block(Stack *);
 Value *stack_get_default_block(Stack *);
 Value *stack_get_return_block(Stack *);
 Value *stack_get_switch_instruction(Stack *);
+Value *stack_get_next(Stack *, StackNextTag);
+Value *stack_set_next(Stack *, StackNextTag, Value *);
 void stack_set_function_name(Stack *, const char *);
 void stack_ast(Stack *, Sexp *);
 
