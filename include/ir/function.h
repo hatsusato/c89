@@ -6,12 +6,7 @@
 #include "ir/value_type.h"
 #include "sexp_type.h"
 
-typedef enum {
-  FUNCTION_FUNC,
-  FUNCTION_ALLOCS,
-  FUNCTION_ENTRY,
-  FUNCTION_COUNT
-} FunctionMember;
+typedef enum { FUNCTION_FUNC, FUNCTION_ALLOCS, FUNCTION_COUNT } FunctionMember;
 
 Function *function_new(void);
 void function_delete(Function *);

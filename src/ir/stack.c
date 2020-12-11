@@ -41,13 +41,14 @@ void stack_delete(Stack *stack) {
   UTILITY_FREE(stack);
 }
 Value *stack_build(Stack *stack, Sexp *ast) {
+  Value *entry = stack_new_block(stack);
   Value *ret = 1 < count_return(ast) ? stack_new_block(stack) : NULL;
   function_init(stack->func, stack->pool, ast);
-  stack_set_next(stack, STACK_NEXT_CURRENT,
-                 function_get(stack->func, FUNCTION_ENTRY));
+  stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
   stack_ast(stack, ast);
   assert(stack_empty(stack));
+  value_append(function_get(stack->func, FUNCTION_ALLOCS), entry);
   function_finish(stack->func);
   return function_get(stack->func, FUNCTION_FUNC);
 }
