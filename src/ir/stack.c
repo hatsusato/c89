@@ -14,6 +14,14 @@ struct struct_Stack {
   Value *next[STACK_NEXT_COUNT];
 };
 
+static int count_return(Sexp *ast) {
+  if (sexp_is_pair(ast)) {
+    return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
+  } else {
+    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
+  }
+}
+
 Stack *stack_new(Pool *pool) {
   int i;
   Stack *stack = UTILITY_MALLOC(Stack);
@@ -33,11 +41,11 @@ void stack_delete(Stack *stack) {
   UTILITY_FREE(stack);
 }
 Value *stack_build(Stack *stack, Sexp *ast) {
+  Value *ret = 1 < count_return(ast) ? stack_new_block(stack) : NULL;
   function_init(stack->func, stack->pool, ast);
   stack_set_next(stack, STACK_NEXT_CURRENT,
                  function_get(stack->func, FUNCTION_ENTRY));
-  stack_set_next(stack, STACK_NEXT_RETURN,
-                 function_get(stack->func, FUNCTION_RET));
+  stack_set_next(stack, STACK_NEXT_RETURN, ret);
   stack_ast(stack, ast);
   assert(stack_empty(stack));
   function_finish(stack->func);

@@ -12,14 +12,6 @@ struct struct_Function {
   Value *members[FUNCTION_COUNT];
 };
 
-static int count_return(Sexp *ast) {
-  if (sexp_is_pair(ast)) {
-    return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
-  } else {
-    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
-  }
-}
-
 Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
   int i;
@@ -41,17 +33,11 @@ void function_init(Function *f, Pool *pool, Sexp *ast) {
   Value *func = pool_alloc(pool, VALUE_FUNCTION);
   Value *allocs = pool_alloc(pool, VALUE_BLOCK);
   Value *entry = pool_alloc(pool, VALUE_BLOCK);
-  Value *ret = NULL;
-  if (1 < count_return(ast)) {
-    ret = pool_alloc(pool, VALUE_BLOCK);
-  }
   function_set(f, FUNCTION_FUNC, func);
   function_set(f, FUNCTION_ALLOCS, allocs);
   function_set(f, FUNCTION_ENTRY, entry);
-  function_set(f, FUNCTION_CURRENT, entry);
-  function_set(f, FUNCTION_NEXT, ret);
-  function_set(f, FUNCTION_RET, ret);
   value_insert(func, allocs);
+  UTILITY_UNUSED(ast);
 }
 void function_finish(Function *func) {
   RegisterGenerator *gen = register_generator_new();
