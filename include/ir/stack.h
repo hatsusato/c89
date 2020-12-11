@@ -12,6 +12,7 @@ typedef enum {
   STACK_NEXT_BLOCK,
   STACK_NEXT_CURRENT,
   STACK_NEXT_DEFAULT,
+  STACK_NEXT_RETURN,
   STACK_NEXT_COUNT
 } StackNextTag;
 
@@ -32,7 +33,6 @@ void stack_into_next_block(Stack *, Value *);
 Bool stack_last_terminator(Stack *);
 void stack_insert_to_block(Stack *);
 void stack_insert_as_operand(Stack *, Value *);
-Value *stack_get_return_block(Stack *);
 Value *stack_get_switch_instruction(Stack *);
 Value *stack_get_next(Stack *, StackNextTag);
 Value *stack_set_next(Stack *, StackNextTag, Value *);

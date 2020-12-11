@@ -300,7 +300,7 @@ static void stack_break_statement(Stack *stack, Sexp *ast) {
   UTILITY_UNUSED(ast);
 }
 static void stack_return_statement(Stack *stack, Sexp *ast) {
-  Value *ret = stack_get_return_block(stack);
+  Value *ret = stack_get_next(stack, STACK_NEXT_RETURN);
   assert(!sexp_is_nil(sexp_at(ast, 2)));
   stack_ast(stack, sexp_at(ast, 2));
   if (ret) {

@@ -36,6 +36,8 @@ Value *stack_build(Stack *stack, Sexp *ast) {
   function_init(stack->func, stack->pool, ast);
   stack_set_next(stack, STACK_NEXT_CURRENT,
                  function_get(stack->func, FUNCTION_ENTRY));
+  stack_set_next(stack, STACK_NEXT_RETURN,
+                 function_get(stack->func, FUNCTION_RET));
   stack_ast(stack, ast);
   assert(stack_empty(stack));
   function_finish(stack->func);
@@ -112,9 +114,6 @@ void stack_insert_to_block(Stack *stack) {
 }
 void stack_insert_as_operand(Stack *stack, Value *value) {
   value_insert(stack_top(stack), value);
-}
-Value *stack_get_return_block(Stack *stack) {
-  return function_get(stack->func, FUNCTION_RET);
 }
 Value *stack_get_switch_instruction(Stack *stack) {
   Value *value = stack_top(stack);
