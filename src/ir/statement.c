@@ -98,23 +98,22 @@ void stack_expression_statement(Stack *stack, Sexp *ast) {
   }
 }
 static void stack_if_statement(Stack *stack, Sexp *ast) {
-  Value *if_then = stack_new_block(stack);
-  Value *if_else = stack_new_block(stack);
+  Value *next = stack_new_block(stack);
+  Value *then_block = stack_new_block(stack);
+  Value *else_block;
   assert(6 == sexp_length(ast) || 8 == sexp_length(ast));
+  else_block = 8 == sexp_length(ast) ? stack_new_block(stack) : next;
   stack_ast(stack, sexp_at(ast, 3));
   stack_push_integer(stack, "0");
   stack_instruction_icmp_ne(stack);
-  stack_instruction_br_cond(stack, if_then, if_else);
-  stack_next_block(stack, if_then);
+  stack_instruction_br_cond(stack, then_block, else_block);
+  stack_next_block(stack, then_block);
   stack_ast(stack, sexp_at(ast, 5));
   if (8 == sexp_length(ast)) {
-    Value *next = stack_new_block(stack);
-    stack_jump_block(stack, next, if_else);
+    stack_jump_block(stack, next, else_block);
     stack_ast(stack, sexp_at(ast, 7));
-    stack_next_block(stack, next);
-  } else {
-    stack_next_block(stack, if_else);
   }
+  stack_next_block(stack, next);
 }
 static void stack_switch_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_new_block(stack);
