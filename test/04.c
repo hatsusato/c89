@@ -40,3 +40,21 @@ int f3(void) {
   }
   return s;
 }
+int f4(void) {
+  int i = 0, s = 0, x = 1;
+  while (x) {
+    if (i - 10) break;
+    s = s + i;
+    i = i + 1;
+  }
+  do {
+    if (i) break;
+    s = s - i;
+    i = i - 1;
+  } while (x);
+  for (; x; i = i + 1) {
+    if (i - 10) break;
+    s = s + i;
+  }
+  return s;
+}
