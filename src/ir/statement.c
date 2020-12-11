@@ -102,8 +102,12 @@ static Bool switch_new_case(Stack *stack) {
 }
 
 void stack_statement(Stack *stack, Sexp *ast) {
+  Value *next = stack_get_next(stack, STACK_NEXT_BLOCK);
   assert(AST_STATEMENT == sexp_get_tag(ast));
   stack_ast(stack, sexp_at(ast, 1));
+  if (stack_get_next(stack, STACK_NEXT_BLOCK) != next) {
+    assert(0);
+  }
 }
 static void stack_default_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_next(stack, STACK_NEXT_DEFAULT);
@@ -191,8 +195,8 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
   stack_pop(stack);
   if (switch_exists_next(ast)) {
     stack_into_next_block(stack, next);
-    stack_set_next(stack, STACK_NEXT_BLOCK, prev);
   }
+  stack_set_next(stack, STACK_NEXT_BLOCK, prev);
 }
 void stack_selection_statement(Stack *stack, Sexp *ast) {
   assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
@@ -293,7 +297,6 @@ void stack_iteration_statement(Stack *stack, Sexp *ast) {
     assert(0);
     break;
   }
-  UTILITY_UNUSED(stack);
 }
 static void stack_break_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_next(stack, STACK_NEXT_BREAK);
