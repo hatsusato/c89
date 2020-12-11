@@ -65,10 +65,6 @@ static void stack_push_symbol(Stack *stack, const char *symbol) {
   assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
   stack_push(stack, value);
 }
-static Value *stack_top(Stack *stack) {
-  assert(!stack_empty(stack));
-  return vector_back(stack->stack);
-}
 
 Bool stack_empty(Stack *stack) {
   return vector_empty(stack->stack);
@@ -81,6 +77,10 @@ Value *stack_pop(Stack *stack) {
   Value *value = stack_top(stack);
   vector_pop(stack->stack);
   return value;
+}
+Value *stack_top(Stack *stack) {
+  assert(!stack_empty(stack));
+  return vector_back(stack->stack);
 }
 Value *stack_new_value(Stack *stack, ValueKind kind) {
   Value *value = pool_alloc(stack->pool, kind);

@@ -24,6 +24,7 @@ Value *stack_build(Stack *);
 Bool stack_empty(Stack *);
 void stack_push(Stack *, Value *);
 Value *stack_pop(Stack *);
+Value *stack_top(Stack *);
 Value *stack_new_value(Stack *, ValueKind);
 Value *stack_new_block(Stack *);
 void stack_push_integer(Stack *, const char *);
