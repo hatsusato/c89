@@ -29,11 +29,12 @@ void stack_instruction_ret(Stack *stack) {
   stack_pop(stack);
 }
 void stack_instruction_br(Stack *stack, Value *label) {
-  assert(label);
-  assert(!stack_last_terminator(stack));
-  stack_instruction_new(stack, VALUE_INSTRUCTION_BR);
-  insert_operand(stack, label);
-  stack_pop(stack);
+  assert(label && VALUE_BLOCK == value_kind(label));
+  if (!stack_last_terminator(stack)) {
+    stack_instruction_new(stack, VALUE_INSTRUCTION_BR);
+    insert_operand(stack, label);
+    stack_pop(stack);
+  }
 }
 void stack_instruction_br_cond(Stack *stack, Value *then_label,
                                Value *else_label) {
