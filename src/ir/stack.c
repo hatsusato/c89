@@ -128,10 +128,6 @@ Bool stack_last_terminator(Stack *stack) {
   last = value_last(block);
   return last && value_is_terminator(last);
 }
-Value *stack_get_switch_instruction(Stack *stack) {
-  Value *value = stack_top(stack);
-  return VALUE_INSTRUCTION_SWITCH == value_kind(value) ? value : NULL;
-}
 Value *stack_get_next(Stack *stack, StackNextTag tag) {
   return stack->next[tag];
 }
