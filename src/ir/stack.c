@@ -11,7 +11,7 @@ struct struct_Stack {
   Pool *pool;
   Table *table;
   Vector *stack;
-  Function *func;
+  Value *func;
   Value *next[STACK_NEXT_COUNT];
 };
 
@@ -29,14 +29,13 @@ Stack *stack_new(Pool *pool) {
   stack->pool = pool;
   stack->table = table_new();
   stack->stack = vector_new(NULL);
-  stack->func = function_new();
+  stack->func = pool_alloc(pool, VALUE_FUNCTION);
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
   }
   return stack;
 }
 void stack_delete(Stack *stack) {
-  function_delete(stack->func);
   vector_delete(stack->stack);
   table_delete(stack->table);
   UTILITY_FREE(stack);
@@ -46,8 +45,7 @@ Value *stack_build(Stack *stack, Sexp *ast) {
   Value *alloc = stack_new_block(stack);
   Value *entry = stack_new_block(stack);
   Value *ret = 1 < count_return(ast) ? stack_new_block(stack) : NULL;
-  function_init(stack->func, stack->pool, ast);
-  value_insert(function_get(stack->func, FUNCTION_FUNC), alloc);
+  value_insert(stack->func, alloc);
   stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
@@ -55,9 +53,9 @@ Value *stack_build(Stack *stack, Sexp *ast) {
   assert(stack_empty(stack));
   value_append(alloc, entry);
   gen = register_generator_new();
-  value_set_reg(gen, function_get(stack->func, FUNCTION_FUNC));
+  value_set_reg(gen, stack->func);
   register_generator_delete(gen);
-  return function_get(stack->func, FUNCTION_FUNC);
+  return stack->func;
 }
 
 static void stack_push_symbol(Stack *stack, const char *symbol) {
@@ -110,14 +108,13 @@ void stack_alloca(Stack *stack, const char *symbol) {
   stack_push(stack, value);
 }
 void stack_jump_block(Stack *stack, Value *next, Value *dest) {
-  Value *func = function_get(stack->func, FUNCTION_FUNC);
   assert(next && VALUE_BLOCK == value_kind(next));
   assert(dest && VALUE_BLOCK == value_kind(dest));
   if (!stack_last_terminator(stack)) {
     stack_instruction_br(stack, next);
   }
   stack_set_next(stack, STACK_NEXT_CURRENT, dest);
-  value_insert(func, dest);
+  value_insert(stack->func, dest);
 }
 void stack_next_block(Stack *stack, Value *next) {
   stack_jump_block(stack, next, next);
@@ -151,8 +148,7 @@ Value *stack_set_next(Stack *stack, StackNextTag tag, Value *next) {
   return next;
 }
 void stack_set_function_name(Stack *stack, const char *name) {
-  Value *func = function_get(stack->func, FUNCTION_FUNC);
-  value_set_value(func, name);
+  value_set_value(stack->func, name);
 }
 
 static void stack_ast_map(Stack *stack, Sexp *ast) {
