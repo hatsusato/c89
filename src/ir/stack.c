@@ -11,14 +11,19 @@ struct struct_Stack {
   Table *table;
   Vector *stack;
   Function *func;
+  Value *next[STACK_NEXT_COUNT];
 };
 
 Stack *stack_new(Pool *pool) {
+  int i;
   Stack *stack = UTILITY_MALLOC(Stack);
   stack->pool = pool;
   stack->table = table_new();
   stack->stack = vector_new(NULL);
   stack->func = function_new();
+  for (i = 0; i < STACK_NEXT_COUNT; ++i) {
+    stack->next[i] = NULL;
+  }
   return stack;
 }
 void stack_delete(Stack *stack) {

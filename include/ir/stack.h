@@ -8,6 +8,8 @@
 #include "sexp_type.h"
 #include "types.h"
 
+typedef enum { STACK_NEXT_BLOCK, STACK_NEXT_COUNT } StackNextTag;
+
 Stack *stack_new(Pool *);
 void stack_delete(Stack *);
 Value *stack_build(Stack *, Sexp *);
