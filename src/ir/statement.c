@@ -185,6 +185,7 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
     dflt = stack_new_block(stack);
   }
   stack_set_next(stack, STACK_NEXT_BLOCK, next);
+  stack_set_next(stack, STACK_NEXT_BREAK, next);
   stack_ast(stack, sexp_at(ast, 3));
   stack_instruction_switch(stack, dflt);
   stack_ast(stack, sexp_at(ast, 5));
@@ -296,7 +297,8 @@ void stack_iteration_statement(Stack *stack, Sexp *ast) {
   UTILITY_UNUSED(stack);
 }
 static void stack_break_statement(Stack *stack, Sexp *ast) {
-  stack_instruction_br(stack, NULL);
+  Value *next = stack_get_next(stack, STACK_NEXT_BREAK);
+  stack_instruction_br(stack, next);
   UTILITY_UNUSED(ast);
 }
 static void stack_return_statement(Stack *stack, Sexp *ast) {
