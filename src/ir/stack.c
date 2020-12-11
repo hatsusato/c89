@@ -128,15 +128,6 @@ Bool stack_last_terminator(Stack *stack) {
   last = value_last(block);
   return last && value_is_terminator(last);
 }
-void stack_insert_to_block(Stack *stack) {
-  Value *block = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Value *value = stack_top(stack);
-  assert(value_is_instruction(value));
-  value_insert(block, value);
-}
-void stack_insert_as_operand(Stack *stack, Value *value) {
-  value_insert(stack_top(stack), value);
-}
 Value *stack_get_switch_instruction(Stack *stack) {
   Value *value = stack_top(stack);
   return VALUE_INSTRUCTION_SWITCH == value_kind(value) ? value : NULL;
