@@ -25,11 +25,10 @@ void stack_instruction_ret(Stack *stack) {
 }
 void stack_instruction_br(Stack *stack, Value *label) {
   assert(label);
-  if (!stack_last_terminator(stack)) {
-    stack_instruction_new(stack, VALUE_INSTRUCTION_BR);
-    stack_insert_as_operand(stack, label);
-    stack_pop(stack);
-  }
+  assert(!stack_last_terminator(stack));
+  stack_instruction_new(stack, VALUE_INSTRUCTION_BR);
+  stack_insert_as_operand(stack, label);
+  stack_pop(stack);
 }
 void stack_instruction_br_cond(Stack *stack, Value *then_label,
                                Value *else_label) {
