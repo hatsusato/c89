@@ -14,9 +14,9 @@ struct struct_Builder {
 };
 
 static void builder_function_definition(Builder *builder, Sexp *ast) {
-  Stack *stack = stack_new(builder->pool);
+  Stack *stack = stack_new(builder->pool, ast);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
-  value_insert(builder->module, stack_build(stack, ast));
+  value_insert(builder->module, stack_build(stack));
   stack_delete(stack);
 }
 static void builder_translation_unit(Builder *builder, Sexp *ast) {

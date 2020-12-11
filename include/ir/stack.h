@@ -17,9 +17,9 @@ typedef enum {
   STACK_NEXT_COUNT
 } StackNextTag;
 
-Stack *stack_new(Pool *);
+Stack *stack_new(Pool *, Sexp *);
 void stack_delete(Stack *);
-Value *stack_build(Stack *, Sexp *);
+Value *stack_build(Stack *);
 
 Bool stack_empty(Stack *);
 void stack_push(Stack *, Value *);

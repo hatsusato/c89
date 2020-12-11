@@ -10,6 +10,7 @@ struct struct_Stack {
   Pool *pool;
   Table *table;
   Vector *stack;
+  Sexp *ast;
   Value *func;
   Value *next[STACK_NEXT_COUNT];
 };
@@ -22,12 +23,13 @@ static int count_return(Sexp *ast) {
   }
 }
 
-Stack *stack_new(Pool *pool) {
+Stack *stack_new(Pool *pool, Sexp *ast) {
   int i;
   Stack *stack = UTILITY_MALLOC(Stack);
   stack->pool = pool;
   stack->table = table_new();
   stack->stack = vector_new(NULL);
+  stack->ast = ast;
   stack->func = pool_alloc(pool, VALUE_FUNCTION);
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
@@ -39,16 +41,16 @@ void stack_delete(Stack *stack) {
   table_delete(stack->table);
   UTILITY_FREE(stack);
 }
-Value *stack_build(Stack *stack, Sexp *ast) {
+Value *stack_build(Stack *stack) {
   RegisterGenerator *gen;
   Value *alloc = stack_new_block(stack);
   Value *entry = stack_new_block(stack);
-  Value *ret = 1 < count_return(ast) ? stack_new_block(stack) : NULL;
+  Value *ret = 1 < count_return(stack->ast) ? stack_new_block(stack) : NULL;
   value_insert(stack->func, alloc);
   stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
-  stack_ast(stack, ast);
+  stack_ast(stack, stack->ast);
   assert(stack_empty(stack));
   value_append(alloc, entry);
   gen = register_generator_new();
