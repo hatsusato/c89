@@ -95,7 +95,11 @@ void stack_alloca(Stack *stack, const char *symbol) {
 }
 void stack_into_next_block(Stack *stack, Value *next) {
   Value *func = function_get(stack->func, FUNCTION_FUNC);
+  Value *prev = stack_get_next(stack, STACK_NEXT_BLOCK);
   assert(next && VALUE_BLOCK == value_kind(next));
+  if (prev) {
+    stack_instruction_br(stack, prev);
+  }
   stack_set_next(stack, STACK_NEXT_CURRENT, next);
   value_insert(func, next);
 }

@@ -24,9 +24,7 @@ void stack_instruction_ret(Stack *stack) {
   stack_pop(stack);
 }
 void stack_instruction_br(Stack *stack, Value *label) {
-  if (!label) {
-    label = stack_get_next(stack, STACK_NEXT_BLOCK);
-  }
+  assert(label);
   if (!stack_last_terminator(stack)) {
     stack_instruction_new(stack, VALUE_INSTRUCTION_BR);
     stack_insert_as_operand(stack, label);
