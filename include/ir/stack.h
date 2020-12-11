@@ -30,6 +30,8 @@ void stack_push_integer(Stack *, const char *);
 void stack_load_from_symbol(Stack *, const char *);
 void stack_store_to_symbol(Stack *, const char *);
 void stack_alloca(Stack *, const char *);
+void stack_jump_block(Stack *, Value *, Value *);
+void stack_next_block(Stack *, Value *);
 void stack_into_next_block(Stack *, Value *);
 Bool stack_last_terminator(Stack *);
 void stack_insert_to_block(Stack *);

@@ -93,6 +93,19 @@ void stack_alloca(Stack *stack, const char *symbol) {
   value_insert(allocs, value);
   stack_push(stack, value);
 }
+void stack_jump_block(Stack *stack, Value *next, Value *dest) {
+  Value *func = function_get(stack->func, FUNCTION_FUNC);
+  assert(next && VALUE_BLOCK == value_kind(next));
+  assert(dest && VALUE_BLOCK == value_kind(dest));
+  if (!stack_last_terminator(stack)) {
+    stack_instruction_br(stack, next);
+  }
+  stack_set_next(stack, STACK_NEXT_CURRENT, dest);
+  value_insert(func, dest);
+}
+void stack_next_block(Stack *stack, Value *next) {
+  stack_jump_block(stack, next, next);
+}
 void stack_into_next_block(Stack *stack, Value *next) {
   Value *func = function_get(stack->func, FUNCTION_FUNC);
   Value *prev = stack_get_next(stack, STACK_NEXT_BLOCK);
