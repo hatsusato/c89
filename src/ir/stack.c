@@ -1,6 +1,5 @@
 #include "ir/stack.h"
 
-#include "ir/function.h"
 #include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/stack_impl.h"
