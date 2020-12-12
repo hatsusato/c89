@@ -58,3 +58,21 @@ int f4(void) {
   }
   return s;
 }
+int f5(void) {
+  int i = 0, s = 0, x = 1;
+  while (x) {
+    s = s + i;
+    i = i + 1;
+    if (i - 10) break; else continue;
+  }
+  do {
+    s = s - i;
+    i = i - 1;
+    if (i) break; else continue;
+  } while (x);
+  for (; x; i = i + 1) {
+    s = s + i;
+    if (i - 10) break; else continue;
+  }
+  return s;
+}
