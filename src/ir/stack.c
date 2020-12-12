@@ -123,8 +123,10 @@ void stack_alloca(Stack *stack, const char *symbol) {
 }
 void stack_jump_into_block(Stack *stack, Value *dest) {
   assert(dest && VALUE_BLOCK == value_kind(dest));
-  stack_set_next(stack, STACK_NEXT_CURRENT, dest);
-  value_insert(stack->func, dest);
+  if (!set_contains(stack->blocks, dest)) {
+    stack_set_next(stack, STACK_NEXT_CURRENT, dest);
+    value_insert(stack->func, dest);
+  }
 }
 void stack_jump_block(Stack *stack, Value *next, Value *dest) {
   assert(next && VALUE_BLOCK == value_kind(next));
