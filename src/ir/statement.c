@@ -118,23 +118,20 @@ static void stack_if_else_statement(Stack *stack, Sexp *ast) {
   stack_instruction_icmp_ne(stack);
   stack_instruction_br_cond(stack, then_block, else_block);
   stack_jump_into_block(stack, then_block);
-  stack_set_next_block(stack, next);
+  stack_set_next(stack, STACK_NEXT_BLOCK, next);
   stack_ast(stack, sexp_at(ast, 5));
   then_next = stack_get_next(stack, STACK_NEXT_BLOCK);
-  if (then_next) {
-    assert(then_next == next);
-    stack_instruction_br(stack, next);
-  }
+  assert(!then_next || then_next == next);
+  stack_instruction_br(stack, next);
   stack_jump_into_block(stack, else_block);
-  stack_set_next_block(stack, next);
+  stack_set_next(stack, STACK_NEXT_BLOCK, next);
   stack_ast(stack, sexp_at(ast, 7));
   else_next = stack_get_next(stack, STACK_NEXT_BLOCK);
-  if (else_next) {
-    assert(else_next == next);
-    stack_instruction_br(stack, next);
-  }
+  assert(!else_next || else_next == next);
+  stack_instruction_br(stack, next);
   if (then_next || else_next) {
     stack_jump_into_block(stack, next);
+    stack_set_next(stack, STACK_NEXT_BLOCK, next);
   }
 }
 static void stack_switch_statement(Stack *stack, Sexp *ast) {

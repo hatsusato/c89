@@ -37,7 +37,6 @@ void stack_alloca(Stack *, const char *);
 void stack_jump_into_block(Stack *, Value *);
 void stack_jump_block(Stack *, Value *, Value *);
 void stack_next_block(Stack *, Value *);
-void stack_set_next_block(Stack *, Value *);
 Bool stack_last_terminator(Stack *);
 Value *stack_get_next(Stack *, StackNextTag);
 Value *stack_set_next(Stack *, StackNextTag, Value *);

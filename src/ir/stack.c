@@ -127,9 +127,6 @@ void stack_jump_block(Stack *stack, Value *next, Value *dest) {
 void stack_next_block(Stack *stack, Value *next) {
   stack_jump_block(stack, next, next);
 }
-void stack_set_next_block(Stack *stack, Value *next) {
-  stack_set_next(stack, STACK_NEXT_BLOCK, next);
-}
 Bool stack_last_terminator(Stack *stack) {
   Value *block = stack_get_next(stack, STACK_NEXT_CURRENT);
   Value *last;
