@@ -5,7 +5,6 @@
 #include "ir/register.h"
 #include "ir/stack_impl.h"
 #include "ir/table.h"
-#include "set.h"
 #include "vector.h"
 
 struct struct_Stack {
@@ -15,7 +14,6 @@ struct struct_Stack {
   Sexp *ast;
   Value *func;
   Value *next[STACK_NEXT_COUNT];
-  Set *blocks;
 };
 
 static int count_return(Sexp *ast) {
@@ -37,11 +35,9 @@ Stack *stack_new(Pool *pool, Sexp *ast) {
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
   }
-  stack->blocks = set_new(NULL, compare_new(NULL));
   return stack;
 }
 void stack_delete(Stack *stack) {
-  set_delete(stack->blocks);
   vector_delete(stack->stack);
   table_delete(stack->table);
   UTILITY_FREE(stack);
@@ -98,9 +94,6 @@ Value *stack_new_block(Stack *stack) {
 void stack_insert_block(Stack *stack, Value *block) {
   assert(block && VALUE_BLOCK == value_kind(block));
   value_insert(stack_top(stack), block);
-  if (!set_contains(stack->blocks, block)) {
-    set_insert(stack->blocks, block);
-  }
 }
 void stack_push_integer(Stack *stack, const char *value) {
   stack_new_value(stack, VALUE_INTEGER_CONSTANT);
@@ -123,10 +116,8 @@ void stack_alloca(Stack *stack, const char *symbol) {
 }
 void stack_jump_into_block(Stack *stack, Value *dest) {
   assert(dest && VALUE_BLOCK == value_kind(dest));
-  if (!set_contains(stack->blocks, dest)) {
-    stack_set_next(stack, STACK_NEXT_CURRENT, dest);
-    value_insert(stack->func, dest);
-  }
+  stack_set_next(stack, STACK_NEXT_CURRENT, dest);
+  value_insert(stack->func, dest);
 }
 void stack_jump_block(Stack *stack, Value *next, Value *dest) {
   assert(next && VALUE_BLOCK == value_kind(next));
