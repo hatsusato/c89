@@ -245,12 +245,14 @@ static void stack_continue_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_next(stack, STACK_NEXT_CONTINUE);
   assert(next);
   stack_instruction_br(stack, next);
+  stack_set_next(stack, STACK_NEXT_BLOCK, NULL);
   UTILITY_UNUSED(ast);
 }
 static void stack_break_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_next(stack, STACK_NEXT_BREAK);
   assert(next);
   stack_instruction_br(stack, next);
+  stack_set_next(stack, STACK_NEXT_BLOCK, NULL);
   UTILITY_UNUSED(ast);
 }
 static void stack_return_statement(Stack *stack, Sexp *ast) {
