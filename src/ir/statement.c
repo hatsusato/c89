@@ -100,20 +100,42 @@ void stack_expression_statement(Stack *stack, Sexp *ast) {
 static void stack_if_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_new_block(stack);
   Value *then_block = stack_new_block(stack);
-  Value *else_block;
-  assert(6 == sexp_length(ast) || 8 == sexp_length(ast));
-  else_block = 8 == sexp_length(ast) ? stack_new_block(stack) : next;
+  stack_ast(stack, sexp_at(ast, 3));
+  stack_push_integer(stack, "0");
+  stack_instruction_icmp_ne(stack);
+  stack_instruction_br_cond(stack, then_block, next);
+  stack_next_block(stack, then_block);
+  stack_ast(stack, sexp_at(ast, 5));
+  stack_next_block(stack, next);
+}
+static void stack_if_else_statement(Stack *stack, Sexp *ast) {
+  Value *next = stack_new_block(stack);
+  Value *then_block = stack_new_block(stack);
+  Value *else_block = stack_new_block(stack);
+  Value *then_next, *else_next;
   stack_ast(stack, sexp_at(ast, 3));
   stack_push_integer(stack, "0");
   stack_instruction_icmp_ne(stack);
   stack_instruction_br_cond(stack, then_block, else_block);
-  stack_next_block(stack, then_block);
+  stack_jump_into_block(stack, then_block);
+  stack_set_next_block(stack, next);
   stack_ast(stack, sexp_at(ast, 5));
-  if (8 == sexp_length(ast)) {
-    stack_jump_block(stack, next, else_block);
-    stack_ast(stack, sexp_at(ast, 7));
+  then_next = stack_get_next(stack, STACK_NEXT_BLOCK);
+  if (then_next) {
+    assert(then_next == next);
+    stack_instruction_br(stack, next);
   }
-  stack_next_block(stack, next);
+  stack_jump_into_block(stack, else_block);
+  stack_set_next_block(stack, next);
+  stack_ast(stack, sexp_at(ast, 7));
+  else_next = stack_get_next(stack, STACK_NEXT_BLOCK);
+  if (else_next) {
+    assert(else_next == next);
+    stack_instruction_br(stack, next);
+  }
+  if (then_next || else_next) {
+    stack_jump_into_block(stack, next);
+  }
 }
 static void stack_switch_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_new_block(stack);
@@ -130,7 +152,12 @@ void stack_selection_statement(Stack *stack, Sexp *ast) {
   assert(sexp_is_number(sexp_at(ast, 1)));
   switch (sexp_get_number(sexp_at(ast, 1))) {
   case AST_IF:
-    stack_if_statement(stack, ast);
+    assert(6 == sexp_length(ast) || 8 == sexp_length(ast));
+    if (6 == sexp_length(ast)) {
+      stack_if_statement(stack, ast);
+    } else if (8 == sexp_length(ast)) {
+      stack_if_else_statement(stack, ast);
+    }
     break;
   case AST_SWITCH:
     stack_switch_statement(stack, ast);
