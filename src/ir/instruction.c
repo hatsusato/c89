@@ -46,7 +46,6 @@ void stack_instruction_br_cond(Stack *stack, Value *then_label,
 void stack_instruction_switch(Stack *stack, Value *default_label) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_SWITCH);
   stack_insert_block(stack, default_label);
-  stack_set_next(stack, STACK_NEXT_DEFAULT, default_label);
 }
 void stack_instruction_switch_case(Stack *stack, Value *label) {
   Value *first = stack_pop(stack);
