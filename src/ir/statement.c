@@ -211,12 +211,15 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
   stack_push_integer(stack, "0");
   stack_instruction_icmp_ne(stack);
   stack_instruction_br_cond(stack, body, next);
-  stack_next_block(stack, body);
+  stack_jump_into_block(stack, body);
   stack_set_next(stack, STACK_NEXT_BREAK, next);
-  stack_set_next(stack, STACK_NEXT_CONTINUE, guard);
-  stack_ast(stack, sexp_at(ast, 9));
-  if (!sexp_is_nil(sexp_at(ast, 7))) {
+  if (sexp_is_nil(sexp_at(ast, 7))) {
+    stack_set_next(stack, STACK_NEXT_CONTINUE, guard);
+    stack_ast(stack, sexp_at(ast, 9));
+  } else {
     Value *step = stack_new_block(stack);
+    stack_set_next(stack, STACK_NEXT_CONTINUE, step);
+    stack_ast(stack, sexp_at(ast, 9));
     stack_next_block(stack, step);
     stack_ast(stack, sexp_at(ast, 7));
     stack_pop(stack);
