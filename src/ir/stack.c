@@ -118,13 +118,6 @@ void stack_jump_block(Stack *stack, Value *dest) {
   stack_set_next(stack, STACK_NEXT_CURRENT, dest);
   value_insert(stack->func, dest);
 }
-Bool stack_last_terminator(Stack *stack) {
-  Value *block = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Value *last;
-  assert(block);
-  last = value_last(block);
-  return last && value_is_terminator(last);
-}
 Value *stack_get_next(Stack *stack, StackNextTag tag) {
   return stack->next[tag];
 }
