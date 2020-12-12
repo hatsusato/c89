@@ -23,6 +23,18 @@ static int count_return(Sexp *ast) {
     return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
   }
 }
+static Bool stack_empty(Stack *stack) {
+  return vector_empty(stack->stack);
+}
+static void stack_push(Stack *stack, Value *value) {
+  assert(value && VALUE_BLOCK != value_kind(value));
+  vector_push(stack->stack, value);
+}
+static void stack_push_symbol(Stack *stack, const char *symbol) {
+  Value *value = table_find(stack->table, symbol);
+  assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
+  stack_push(stack, value);
+}
 
 Stack *stack_new(Pool *pool, Sexp *ast) {
   int i;
@@ -61,19 +73,6 @@ Value *stack_build(Stack *stack) {
   return stack->func;
 }
 
-static void stack_push_symbol(Stack *stack, const char *symbol) {
-  Value *value = table_find(stack->table, symbol);
-  assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
-  stack_push(stack, value);
-}
-
-Bool stack_empty(Stack *stack) {
-  return vector_empty(stack->stack);
-}
-void stack_push(Stack *stack, Value *value) {
-  assert(value && VALUE_BLOCK != value_kind(value));
-  vector_push(stack->stack, value);
-}
 Value *stack_pop(Stack *stack) {
   Value *value = stack_top(stack);
   vector_pop(stack->stack);
