@@ -41,7 +41,8 @@ void stack_function_definition(Stack *stack, Sexp *ast) {
   }
   stack_ast(stack, sexp_at(ast, 4));
   if (ret) {
-    stack_next_block(stack, ret);
+    stack_instruction_br(stack, ret);
+    stack_jump_into_block(stack, ret);
     stack_load_from_symbol(stack, "$retval");
     stack_instruction_ret(stack);
   }
