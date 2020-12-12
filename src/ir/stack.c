@@ -114,15 +114,10 @@ void stack_alloca(Stack *stack, const char *symbol) {
   value_insert(alloc, value);
   stack_push(stack, value);
 }
-void stack_jump_into_block(Stack *stack, Value *dest) {
+void stack_jump_block(Stack *stack, Value *dest) {
   assert(dest && VALUE_BLOCK == value_kind(dest));
   stack_set_next(stack, STACK_NEXT_CURRENT, dest);
   value_insert(stack->func, dest);
-}
-void stack_jump_block(Stack *stack, Value *next, Value *dest) {
-  assert(next && VALUE_BLOCK == value_kind(next));
-  stack_instruction_br(stack, next);
-  stack_jump_into_block(stack, dest);
 }
 Bool stack_last_terminator(Stack *stack) {
   Value *block = stack_get_next(stack, STACK_NEXT_CURRENT);
