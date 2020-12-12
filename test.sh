@@ -30,10 +30,9 @@ check() {
   "$comp" -S "$target" >/dev/null || exit
   if compare >/dev/null; then
     echo "$bold${green}OK$normal: $1"
-    test "$diff_flag" && "$comp" -S "$target" || :
   else
     echo "$bold${red}NG$normal: $1"
-    test "$diff_flag" && compare -u || :
+    test "$diff_flag" && compare -y || :
     return 1
   fi
 }
