@@ -11,6 +11,7 @@ Value *value_new(ValueKind);
 void value_delete(Value *);
 void value_insert(Value *, Value *);
 void value_pop(Value *);
+void value_function_clean(Value *);
 void value_append(Value *, const Value *);
 void value_set_value(Value *, const void *);
 Value *value_at(Value *, Index);

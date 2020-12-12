@@ -1,7 +1,8 @@
 #include "ir/stack.h"
 
-#include "ir/function.h"
+#include "compare.h"
 #include "ir/pool.h"
+#include "ir/register.h"
 #include "ir/stack_impl.h"
 #include "ir/table.h"
 #include "vector.h"
@@ -10,52 +11,76 @@ struct struct_Stack {
   Pool *pool;
   Table *table;
   Vector *stack;
-  Function *func;
+  Sexp *ast;
+  Value *func;
+  Value *next[STACK_NEXT_COUNT];
 };
 
-Stack *stack_new(Pool *pool) {
-  Stack *stack = UTILITY_MALLOC(Stack);
-  stack->pool = pool;
-  stack->table = table_new();
-  stack->stack = vector_new(NULL);
-  stack->func = function_new();
-  return stack;
+static int count_return(Sexp *ast) {
+  if (sexp_is_pair(ast)) {
+    return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
+  } else {
+    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
+  }
 }
-void stack_delete(Stack *stack) {
-  function_delete(stack->func);
-  vector_delete(stack->stack);
-  table_delete(stack->table);
-  UTILITY_FREE(stack);
+static Bool stack_empty(Stack *stack) {
+  return vector_empty(stack->stack);
 }
-Value *stack_build(Stack *stack, Sexp *ast) {
-  function_init(stack->func, stack->pool, ast);
-  stack_ast(stack, ast);
-  assert(stack_empty(stack));
-  function_finish(stack->func);
-  return function_get(stack->func, FUNCTION_FUNC);
+static void stack_push(Stack *stack, Value *value) {
+  assert(value && VALUE_BLOCK != value_kind(value));
+  vector_push(stack->stack, value);
 }
-
 static void stack_push_symbol(Stack *stack, const char *symbol) {
   Value *value = table_find(stack->table, symbol);
   assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
   stack_push(stack, value);
 }
-static Value *stack_top(Stack *stack) {
-  assert(!stack_empty(stack));
-  return vector_back(stack->stack);
+
+Stack *stack_new(Pool *pool, Sexp *ast) {
+  int i;
+  Stack *stack = UTILITY_MALLOC(Stack);
+  stack->pool = pool;
+  stack->table = table_new();
+  stack->stack = vector_new(NULL);
+  stack->ast = ast;
+  stack->func = pool_alloc(pool, VALUE_FUNCTION);
+  for (i = 0; i < STACK_NEXT_COUNT; ++i) {
+    stack->next[i] = NULL;
+  }
+  return stack;
+}
+void stack_delete(Stack *stack) {
+  vector_delete(stack->stack);
+  table_delete(stack->table);
+  UTILITY_FREE(stack);
+}
+Value *stack_build(Stack *stack) {
+  RegisterGenerator *gen;
+  Value *alloc = stack_new_block(stack);
+  Value *entry = stack_new_block(stack);
+  Value *ret = 1 < count_return(stack->ast) ? stack_new_block(stack) : NULL;
+  value_insert(stack->func, alloc);
+  stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
+  stack_set_next(stack, STACK_NEXT_CURRENT, entry);
+  stack_set_next(stack, STACK_NEXT_RETURN, ret);
+  stack_ast(stack, stack->ast);
+  assert(stack_empty(stack));
+  value_append(alloc, entry);
+  value_function_clean(stack->func);
+  gen = register_generator_new();
+  value_set_reg(gen, stack->func);
+  register_generator_delete(gen);
+  return stack->func;
 }
 
-Bool stack_empty(Stack *stack) {
-  return vector_empty(stack->stack);
-}
-void stack_push(Stack *stack, Value *value) {
-  assert(value && VALUE_BLOCK != value_kind(value));
-  vector_push(stack->stack, value);
-}
 Value *stack_pop(Stack *stack) {
   Value *value = stack_top(stack);
   vector_pop(stack->stack);
   return value;
+}
+Value *stack_top(Stack *stack) {
+  assert(!stack_empty(stack));
+  return vector_back(stack->stack);
 }
 Value *stack_new_value(Stack *stack, ValueKind kind) {
   Value *value = pool_alloc(stack->pool, kind);
@@ -64,6 +89,10 @@ Value *stack_new_value(Stack *stack, ValueKind kind) {
 }
 Value *stack_new_block(Stack *stack) {
   return pool_alloc(stack->pool, VALUE_BLOCK);
+}
+void stack_insert_block(Stack *stack, Value *block) {
+  assert(block && VALUE_BLOCK == value_kind(block));
+  value_insert(stack_top(stack), block);
 }
 void stack_push_integer(Stack *stack, const char *value) {
   stack_new_value(stack, VALUE_INTEGER_CONSTANT);
@@ -78,61 +107,27 @@ void stack_store_to_symbol(Stack *stack, const char *symbol) {
   stack_instruction_store(stack);
 }
 void stack_alloca(Stack *stack, const char *symbol) {
-  Value *allocs = function_get(stack->func, FUNCTION_ALLOCS);
+  Value *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
   Value *value = pool_alloc(stack->pool, VALUE_INSTRUCTION_ALLOCA);
   table_insert(stack->table, symbol, value);
-  value_insert(allocs, value);
+  value_insert(alloc, value);
   stack_push(stack, value);
 }
-void stack_into_next_block(Stack *stack, Value *next) {
-  Value *func = function_get(stack->func, FUNCTION_FUNC);
-  assert(next && VALUE_BLOCK == value_kind(next));
-  function_set(stack->func, FUNCTION_CURRENT, next);
-  value_insert(func, next);
+void stack_jump_block(Stack *stack, Value *dest) {
+  assert(dest && VALUE_BLOCK == value_kind(dest));
+  stack_set_next(stack, STACK_NEXT_CURRENT, dest);
+  value_insert(stack->func, dest);
 }
-Bool stack_last_terminator(Stack *stack) {
-  Value *block = function_get(stack->func, FUNCTION_CURRENT);
-  Value *last;
-  assert(block);
-  last = value_last(block);
-  return last && value_is_terminator(last);
+Value *stack_get_next(Stack *stack, StackNextTag tag) {
+  return stack->next[tag];
 }
-void stack_insert_to_block(Stack *stack) {
-  Value *block = function_get(stack->func, FUNCTION_CURRENT);
-  Value *value = stack_top(stack);
-  assert(value_is_instruction(value));
-  value_insert(block, value);
-}
-void stack_insert_as_operand(Stack *stack, Value *value) {
-  value_insert(stack_top(stack), value);
-}
-Value *stack_get_next_block(Stack *stack) {
-  return function_get(stack->func, FUNCTION_NEXT);
-}
-void stack_set_next_block(Stack *stack, Value *block) {
-  if (block) {
-    assert(VALUE_BLOCK == value_kind(block));
-    function_set(stack->func, FUNCTION_NEXT, block);
-  }
-}
-Value *stack_get_current_block(Stack *stack) {
-  return function_get(stack->func, FUNCTION_CURRENT);
-}
-Value *stack_get_default_block(Stack *stack) {
-  Value *value = stack_get_switch_instruction(stack);
-  assert(value);
-  return value_at(value, 1);
-}
-Value *stack_get_return_block(Stack *stack) {
-  return function_get(stack->func, FUNCTION_RET);
-}
-Value *stack_get_switch_instruction(Stack *stack) {
-  Value *value = stack_top(stack);
-  return VALUE_INSTRUCTION_SWITCH == value_kind(value) ? value : NULL;
+Value *stack_set_next(Stack *stack, StackNextTag tag, Value *next) {
+  assert(0 <= tag && tag < STACK_NEXT_COUNT);
+  UTILITY_SWAP(Value *, stack->next[tag], next);
+  return next;
 }
 void stack_set_function_name(Stack *stack, const char *name) {
-  Value *func = function_get(stack->func, FUNCTION_FUNC);
-  value_set_value(func, name);
+  value_set_value(stack->func, name);
 }
 
 static void stack_ast_map(Stack *stack, Sexp *ast) {
@@ -186,6 +181,9 @@ void stack_ast(Stack *stack, Sexp *ast) {
     break;
   case AST_SELECTION_STATEMENT:
     stack_selection_statement(stack, ast);
+    break;
+  case AST_ITERATION_STATEMENT:
+    stack_iteration_statement(stack, ast);
     break;
   case AST_JUMP_STATEMENT:
     stack_jump_statement(stack, ast);

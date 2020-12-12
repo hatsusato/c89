@@ -35,6 +35,21 @@ void value_insert(Value *value, Value *elem) {
 void value_pop(Value *value) {
   vector_pop(value->vec);
 }
+void value_function_clean(Value *value) {
+  Vector *blocks = vector_new(NULL);
+  ElemType *begin = vector_begin(value->vec);
+  ElemType *end = vector_end(value->vec);
+  assert(VALUE_FUNCTION == value_kind(value));
+  while (begin < end) {
+    Value *block = *begin++;
+    assert(VALUE_BLOCK == value_kind(block));
+    if (value_length(block)) {
+      vector_push(blocks, block);
+    }
+  }
+  UTILITY_SWAP(Vector *, blocks, value->vec);
+  vector_delete(blocks);
+}
 void value_append(Value *dst, const Value *src) {
   ElemType *begin = vector_begin(src->vec);
   ElemType *end = vector_end(src->vec);
@@ -145,6 +160,13 @@ void value_pretty(Value *value) {
     printf(", ");
     value_print(value_at(value, 1));
     break;
+  case VALUE_INSTRUCTION_SUB:
+    value_print(value);
+    printf(" = sub nsw i32 ");
+    value_print(value_at(value, 0));
+    printf(", ");
+    value_print(value_at(value, 1));
+    break;
   case VALUE_INSTRUCTION_ALLOCA:
     value_print(value);
     printf(" = alloca i32, align 4");
@@ -219,6 +241,7 @@ const char *value_kind_show(Value *value) {
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SUB);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
@@ -239,6 +262,7 @@ Bool value_is_instruction(Value *value) {
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SUB);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
     VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);

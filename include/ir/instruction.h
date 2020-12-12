@@ -16,6 +16,8 @@ void stack_instruction_switch(Stack *, Value *);
 void stack_instruction_switch_case(Stack *, Value *);
 /* add %1, %2: (%1 %2 -- %0) */
 void stack_instruction_add(Stack *);
+/* sub %1, %2: (%1 %2 -- %0) */
+void stack_instruction_sub(Stack *);
 /* load %1: (%1 -- %0) */
 void stack_instruction_load(Stack *);
 /* store %1, %2: (%1 %2 -- %0) */
