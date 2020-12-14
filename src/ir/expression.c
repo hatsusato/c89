@@ -3,17 +3,19 @@
 #include "ir/stack_impl.h"
 
 void stack_additive_expression(Stack *stack, Sexp *ast) {
-  AstTag op;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
-  assert(sexp_is_number(sexp_at(ast, 2)));
-  op = sexp_get_number(sexp_at(ast, 2));
   stack_ast(stack, sexp_at(ast, 1));
   stack_ast(stack, sexp_at(ast, 3));
-  if (AST_PLUS == op) {
+  switch (sexp_get_tag(sexp_at(ast, 2))) {
+  case AST_PLUS:
     stack_instruction_add(stack);
-  } else {
-    assert(AST_MINUS == op);
+    break;
+  case AST_MINUS:
     stack_instruction_sub(stack);
+    break;
+  default:
+    assert(0);
+    break;
   }
 }
 void stack_assignment_expression(Stack *stack, Sexp *ast) {
