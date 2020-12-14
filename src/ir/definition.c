@@ -5,10 +5,7 @@
 static const char *stack_function_name(Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
-    assert(2 == sexp_length(ast));
-    ast = sexp_at(ast, 1);
-    assert(sexp_is_symbol(ast));
-    return sexp_get_symbol(ast);
+    return stack_identifier_symbol(ast);
   case AST_DECLARATOR:
     switch (sexp_length(ast)) {
     case 2:
