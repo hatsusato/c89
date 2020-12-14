@@ -42,15 +42,10 @@ void stack_direct_declarator(Stack *stack, Sexp *ast) {
   assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
-    ast = sexp_at(ast, 1);
-    assert(AST_IDENTIFIER == sexp_get_tag(ast));
-    ast = sexp_at(ast, 1);
-    assert(sexp_get_symbol(ast));
-    stack_alloca(stack, sexp_get_symbol(ast));
+    stack_identifier_alloca(stack, sexp_at(ast, 1));
     break;
   case 4:
-    ast = sexp_at(ast, 2);
-    stack_declarator(stack, ast);
+    stack_declarator(stack, sexp_at(ast, 2));
     break;
   case 5:
     /* FALLTHROUGH */
