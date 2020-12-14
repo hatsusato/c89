@@ -98,6 +98,16 @@ Value *stack_new_value(Stack *stack, ValueKind kind) {
 Value *stack_new_block(Stack *stack) {
   return pool_alloc(stack->pool, VALUE_BLOCK);
 }
+Value *stack_label(Stack *stack, const char *label) {
+  ElemType key = (ElemType)label;
+  if (map_contains(stack->labels, key)) {
+    return *map_find(stack->labels, key);
+  } else {
+    Value *block = stack_new_block(stack);
+    map_insert(stack->labels, key, block);
+    return block;
+  }
+}
 void stack_insert_block(Stack *stack, Value *block) {
   assert(block && VALUE_BLOCK == value_kind(block));
   value_insert(stack_top(stack), block);
