@@ -143,8 +143,10 @@ void sexp_list_map(Sexp *sexp, void *extra, SexpMap map) {
   }
 }
 int sexp_get_tag(Sexp *sexp) {
-  assert(sexp_is_pair(sexp));
-  sexp = sexp_car(sexp);
-  assert(sexp_is_number(sexp));
-  return sexp_get_number(sexp);
+  if (sexp_is_pair(sexp)) {
+    return sexp_get_tag(sexp_car(sexp));
+  } else {
+    assert(sexp_is_number(sexp));
+    return sexp_get_number(sexp);
+  }
 }
