@@ -48,6 +48,13 @@ void stack_statement(Stack *stack, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
   stack_ast(stack, sexp_at(ast, 1));
 }
+static void stack_label_statement(Stack *stack, Sexp *ast) {
+  const char *label = stack_identifier_symbol(sexp_at(ast, 1));
+  Value *next = stack_label(stack, label);
+  stack_instruction_br(stack, next);
+  stack_jump_block(stack, next);
+  stack_ast(stack, sexp_at(ast, 3));
+}
 static void stack_case_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_next(stack, STACK_NEXT_CURRENT);
   if (switch_new_case(stack)) {
@@ -68,6 +75,9 @@ static void stack_default_statement(Stack *stack, Sexp *ast) {
 void stack_labeled_statement(Stack *stack, Sexp *ast) {
   assert(AST_LABELED_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
+  case AST_IDENTIFIER:
+    stack_label_statement(stack, ast);
+    break;
   case AST_CASE:
     stack_case_statement(stack, ast);
     break;
