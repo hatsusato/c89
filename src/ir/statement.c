@@ -6,23 +6,23 @@ static Bool has_default_statement(Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   if (AST_LABELED_STATEMENT == sexp_get_tag(ast)) {
-    Sexp *head = sexp_at(ast, 1);
-    if (!sexp_is_number(head)) {
-      assert(AST_IDENTIFIER == sexp_get_tag(head));
+    switch (sexp_get_tag(sexp_at(ast, 1))) {
+    case AST_IDENTIFIER:
       return has_default_statement(sexp_at(ast, 3));
-    } else if (AST_CASE == sexp_get_number(head)) {
+    case AST_CASE:
       return has_default_statement(sexp_at(ast, 4));
-    } else {
-      assert(AST_DEFAULT == sexp_get_number(head));
+    case AST_DEFAULT:
       return true;
+    default:
+      assert(0);
+      break;
     }
   }
   return false;
 }
 static Bool switch_has_default(Sexp *ast) {
   assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
-  assert(sexp_is_number(sexp_at(ast, 1)));
-  assert(AST_SWITCH == sexp_get_number(sexp_at(ast, 1)));
+  assert(AST_SWITCH == sexp_get_tag(sexp_at(ast, 1)));
   ast = sexp_at(ast, 5);
   assert(AST_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
@@ -67,8 +67,7 @@ static void stack_default_statement(Stack *stack, Sexp *ast) {
 }
 void stack_labeled_statement(Stack *stack, Sexp *ast) {
   assert(AST_LABELED_STATEMENT == sexp_get_tag(ast));
-  assert(sexp_is_number(sexp_at(ast, 1)));
-  switch (sexp_get_number(sexp_at(ast, 1))) {
+  switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_CASE:
     stack_case_statement(stack, ast);
     break;
@@ -161,14 +160,18 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
 }
 void stack_selection_statement(Stack *stack, Sexp *ast) {
   assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
-  assert(sexp_is_number(sexp_at(ast, 1)));
-  switch (sexp_get_number(sexp_at(ast, 1))) {
+  switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_IF:
-    assert(6 == sexp_length(ast) || 8 == sexp_length(ast));
-    if (6 == sexp_length(ast)) {
+    switch (sexp_length(ast)) {
+    case 6:
       stack_if_statement(stack, ast);
-    } else if (8 == sexp_length(ast)) {
+      break;
+    case 8:
       stack_if_else_statement(stack, ast);
+      break;
+    default:
+      assert(0);
+      break;
     }
     break;
   case AST_SWITCH:
@@ -263,8 +266,7 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
 }
 void stack_iteration_statement(Stack *stack, Sexp *ast) {
   assert(AST_ITERATION_STATEMENT == sexp_get_tag(ast));
-  assert(sexp_is_number(sexp_at(ast, 1)));
-  switch (sexp_get_number(sexp_at(ast, 1))) {
+  switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_WHILE:
     stack_while_statement(stack, ast);
     break;
@@ -293,8 +295,7 @@ static void stack_return_statement(Stack *stack, Sexp *ast) {
 }
 void stack_jump_statement(Stack *stack, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
-  assert(sexp_is_number(sexp_at(ast, 1)));
-  switch (sexp_get_number(sexp_at(ast, 1))) {
+  switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_CONTINUE:
     stack_instruction_br(stack, stack_get_next(stack, STACK_NEXT_CONTINUE));
     break;
