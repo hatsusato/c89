@@ -2,8 +2,43 @@
 
 #include "ir/stack_impl.h"
 
-static void stack_declarator(Stack *, Sexp *);
-static void stack_direct_declarator(Stack *stack, Sexp *ast) {
+void stack_declaration(Stack *stack, Sexp *ast) {
+  assert(AST_DECLARATION == sexp_get_tag(ast));
+  stack_ast(stack, sexp_at(ast, 2));
+}
+void stack_init_declarator(Stack *stack, Sexp *ast) {
+  assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
+  switch (sexp_length(ast)) {
+  case 2:
+    stack_declarator(stack, sexp_at(ast, 1));
+    stack_pop(stack);
+    break;
+  case 4:
+    stack_ast(stack, sexp_at(ast, 3));
+    stack_declarator(stack, sexp_at(ast, 1));
+    stack_instruction_store(stack);
+    stack_pop(stack);
+    break;
+  default:
+    assert(0);
+    break;
+  }
+}
+void stack_declarator(Stack *stack, Sexp *ast) {
+  assert(AST_DECLARATOR == sexp_get_tag(ast));
+  switch (sexp_length(ast)) {
+  case 2:
+    stack_direct_declarator(stack, sexp_at(ast, 1));
+    break;
+  case 3:
+    stack_direct_declarator(stack, sexp_at(ast, 2));
+    break;
+  default:
+    assert(0);
+    break;
+  }
+}
+void stack_direct_declarator(Stack *stack, Sexp *ast) {
   assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
@@ -18,35 +53,9 @@ static void stack_direct_declarator(Stack *stack, Sexp *ast) {
     stack_declarator(stack, ast);
     break;
   case 5:
-    ast = sexp_at(ast, 1);
-    stack_direct_declarator(stack, ast);
-    break;
+    /* FALLTHROUGH */
   default:
     assert(0);
     break;
-  }
-}
-static void stack_declarator(Stack *stack, Sexp *ast) {
-  assert(AST_DECLARATOR == sexp_get_tag(ast));
-  assert(2 == sexp_length(ast) || 3 == sexp_length(ast));
-  ast = sexp_at(ast, sexp_length(ast) - 1);
-  stack_direct_declarator(stack, ast);
-}
-
-void stack_declaration(Stack *stack, Sexp *ast) {
-  assert(AST_DECLARATION == sexp_get_tag(ast));
-  ast = sexp_at(ast, 2);
-  stack_ast(stack, ast);
-}
-void stack_init_declarator(Stack *stack, Sexp *ast) {
-  assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
-  if (4 == sexp_length(ast)) {
-    stack_ast(stack, sexp_at(ast, 3));
-    stack_declarator(stack, sexp_at(ast, 1));
-    stack_instruction_store(stack);
-    stack_pop(stack);
-  } else {
-    stack_declarator(stack, sexp_at(ast, 1));
-    stack_pop(stack);
   }
 }
