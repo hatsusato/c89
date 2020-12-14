@@ -5,27 +5,29 @@
 static const char *stack_function_name(Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
-    assert(2 == sexp_length(ast));
-    ast = sexp_at(ast, 1);
-    assert(sexp_is_symbol(ast));
-    return sexp_get_symbol(ast);
+    return stack_identifier_symbol(ast);
   case AST_DECLARATOR:
-    if (2 == sexp_length(ast)) {
+    switch (sexp_length(ast)) {
+    case 2:
       return stack_function_name(sexp_at(ast, 1));
-    } else if (3 == sexp_length(ast)) {
+    case 3:
       return stack_function_name(sexp_at(ast, 2));
-    } else {
+    default:
       assert(0);
       return NULL;
     }
   case AST_DIRECT_DECLARATOR:
-    if (4 == sexp_length(ast)) {
-      return stack_function_name(sexp_at(ast, 2));
-    } else {
+    switch (sexp_length(ast)) {
+    case 2:
       return stack_function_name(sexp_at(ast, 1));
+    case 4:
+      return stack_function_name(sexp_at(ast, 2));
+    case 5:
+      return stack_function_name(sexp_at(ast, 1));
+    default:
+      assert(0);
+      return NULL;
     }
-  case AST_FUNCTION_DEFINITION:
-    return stack_function_name(sexp_at(ast, 2));
   default:
     assert(0);
     return NULL;
@@ -46,5 +48,5 @@ void stack_function_definition(Stack *stack, Sexp *ast) {
     stack_load_from_symbol(stack, "$retval");
     stack_instruction_ret(stack);
   }
-  stack_set_function_name(stack, stack_function_name(ast));
+  stack_set_function_name(stack, stack_function_name(sexp_at(ast, 2)));
 }

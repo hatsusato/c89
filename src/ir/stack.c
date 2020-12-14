@@ -5,17 +5,23 @@
 #include "ir/register.h"
 #include "ir/stack_impl.h"
 #include "ir/table.h"
+#include "map.h"
 #include "vector.h"
 
 struct struct_Stack {
   Pool *pool;
   Table *table;
+  Map *labels;
   Vector *stack;
   Sexp *ast;
   Value *func;
   Value *next[STACK_NEXT_COUNT];
 };
 
+static int labels_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
+  UTILITY_UNUSED(extra);
+  return utility_strcmp(lhs, rhs);
+}
 static int count_return(Sexp *ast) {
   if (sexp_is_pair(ast)) {
     return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
@@ -41,6 +47,7 @@ Stack *stack_new(Pool *pool, Sexp *ast) {
   Stack *stack = UTILITY_MALLOC(Stack);
   stack->pool = pool;
   stack->table = table_new();
+  stack->labels = map_new(compare_new(labels_compare));
   stack->stack = vector_new(NULL);
   stack->ast = ast;
   stack->func = pool_alloc(pool, VALUE_FUNCTION);
@@ -51,6 +58,7 @@ Stack *stack_new(Pool *pool, Sexp *ast) {
 }
 void stack_delete(Stack *stack) {
   vector_delete(stack->stack);
+  map_delete(stack->labels);
   table_delete(stack->table);
   UTILITY_FREE(stack);
 }
@@ -89,6 +97,16 @@ Value *stack_new_value(Stack *stack, ValueKind kind) {
 }
 Value *stack_new_block(Stack *stack) {
   return pool_alloc(stack->pool, VALUE_BLOCK);
+}
+Value *stack_label(Stack *stack, const char *label) {
+  ElemType key = (ElemType)label;
+  if (map_contains(stack->labels, key)) {
+    return *map_find(stack->labels, key);
+  } else {
+    Value *block = stack_new_block(stack);
+    map_insert(stack->labels, key, block);
+    return block;
+  }
 }
 void stack_insert_block(Stack *stack, Value *block) {
   assert(block && VALUE_BLOCK == value_kind(block));
