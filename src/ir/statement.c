@@ -291,6 +291,11 @@ void stack_iteration_statement(Stack *stack, Sexp *ast) {
     break;
   }
 }
+static void stack_goto_statement(Stack *stack, Sexp *ast) {
+  const char *label = stack_identifier_symbol(sexp_at(ast, 2));
+  Value *next = stack_label(stack, label);
+  stack_instruction_br(stack, next);
+}
 static void stack_return_statement(Stack *stack, Sexp *ast) {
   Value *ret = stack_get_next(stack, STACK_NEXT_RETURN);
   assert(!sexp_is_nil(sexp_at(ast, 2)));
@@ -306,6 +311,9 @@ static void stack_return_statement(Stack *stack, Sexp *ast) {
 void stack_jump_statement(Stack *stack, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
+  case AST_GOTO:
+    stack_goto_statement(stack, ast);
+    break;
   case AST_CONTINUE:
     stack_instruction_br(stack, stack_get_next(stack, STACK_NEXT_CONTINUE));
     break;
