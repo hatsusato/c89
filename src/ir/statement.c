@@ -239,7 +239,7 @@ static void stack_do_while_statement(Stack *stack, Sexp *ast) {
   stack_jump_block(stack, next);
 }
 static void stack_for_statement(Stack *stack, Sexp *ast) {
-  Value *guard = stack_new_block(stack);
+  Value *guard;
   Value *body = stack_new_block(stack);
   Value *next = stack_new_block(stack);
   Value *step;
@@ -247,8 +247,9 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
     stack_ast(stack, sexp_at(ast, 3));
     stack_pop(stack);
   }
+  guard = sexp_is_nil(sexp_at(ast, 5)) ? body : stack_new_block(stack);
   stack_instruction_br(stack, guard);
-  {
+  if (!sexp_is_nil(sexp_at(ast, 5))) {
     stack_jump_block(stack, guard);
     assert(sexp_at(ast, 5));
     stack_ast(stack, sexp_at(ast, 5));

@@ -38,6 +38,12 @@ int f3(void) {
   for (; i; ) {
     i = i + 1;
   }
+  for (i = 0; ; i = i + 1) if (i - 10) break;
+  i = 0;
+  for (; ; i = i + 1) if (i - 10) break;
+  for (i = 0; ; ) if (i - 10) break; else i = i + 1;
+  i = 0;
+  for (; ; ) if (i - 10) break; else i = i + 1;
   return s;
 }
 int f4(void) {
