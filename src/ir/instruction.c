@@ -33,9 +33,9 @@ static void stack_instruction_binary(Stack *stack, ValueKind kind) {
   insert_operand(stack, second);
 }
 
-void stack_instruction_ret(Stack *stack) {
-  stack_instruction_unary(stack, VALUE_INSTRUCTION_RET);
-  stack_pop(stack);
+void stack_instruction_ret(Stack *stack, Value *expr) {
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_RET);
+  value_insert(instr, expr);
 }
 void stack_instruction_br(Stack *stack, Value *label) {
   assert(label && VALUE_BLOCK == value_kind(label));

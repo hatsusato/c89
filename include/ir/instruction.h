@@ -4,8 +4,8 @@
 #include "ir/stack_type.h"
 #include "ir/value_type.h"
 
-/* ret %1: (%1 -- ) */
-void stack_instruction_ret(Stack *);
+/* ret %1 */
+void stack_instruction_ret(Stack *, Value *);
 /* br label %1 */
 void stack_instruction_br(Stack *, Value *);
 /* br %1, label %2, label %3: (%1 -- ) */

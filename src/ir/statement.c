@@ -306,7 +306,7 @@ static void stack_return_statement(Stack *stack, Sexp *ast) {
     stack_pop(stack);
     stack_instruction_br(stack, ret);
   } else {
-    stack_instruction_ret(stack);
+    stack_instruction_ret(stack, stack_pop(stack));
   }
 }
 void stack_jump_statement(Stack *stack, Sexp *ast) {

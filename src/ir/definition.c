@@ -46,7 +46,7 @@ void stack_function_definition(Stack *stack, Sexp *ast) {
     stack_instruction_br(stack, ret);
     stack_jump_block(stack, ret);
     stack_load_from_symbol(stack, "$retval");
-    stack_instruction_ret(stack);
+    stack_instruction_ret(stack, stack_pop(stack));
   }
   stack_set_function_name(stack, stack_function_name(sexp_at(ast, 2)));
 }
