@@ -30,13 +30,6 @@ static int count_return(Sexp *ast) {
     return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
   }
 }
-static Bool stack_empty(Stack *stack) {
-  return vector_empty(stack->stack);
-}
-void stack_push(Stack *stack, Value *value) {
-  assert(value && VALUE_BLOCK != value_kind(value));
-  vector_push(stack->stack, value);
-}
 
 Stack *stack_new(Pool *pool, Sexp *ast) {
   int i;
@@ -69,7 +62,6 @@ Value *stack_build(Stack *stack) {
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
   stack_ast(stack, stack->ast);
-  assert(stack_empty(stack));
   value_append(alloc, entry);
   value_function_clean(stack->func);
   gen = register_generator_new();
@@ -78,15 +70,6 @@ Value *stack_build(Stack *stack) {
   return stack->func;
 }
 
-Value *stack_pop(Stack *stack) {
-  Value *value = stack_top(stack);
-  vector_pop(stack->stack);
-  return value;
-}
-Value *stack_top(Stack *stack) {
-  assert(!stack_empty(stack));
-  return vector_back(stack->stack);
-}
 Value *stack_new_value(Stack *stack, ValueKind kind) {
   return pool_alloc(stack->pool, kind);
 }
@@ -113,10 +96,6 @@ Bool stack_last_terminator(Stack *stack) {
   Value *last = value_last(current);
   assert(current && VALUE_BLOCK == value_kind(current));
   return last && value_is_terminator(last);
-}
-void stack_insert_block(Stack *stack, Value *block) {
-  assert(block && VALUE_BLOCK == value_kind(block));
-  value_insert(stack_top(stack), block);
 }
 void stack_load_from_symbol(Stack *stack, const char *symbol) {
   Value *src = stack_find_alloca(stack, symbol);
