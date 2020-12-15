@@ -33,14 +33,9 @@ static int count_return(Sexp *ast) {
 static Bool stack_empty(Stack *stack) {
   return vector_empty(stack->stack);
 }
-static void stack_push(Stack *stack, Value *value) {
+void stack_push(Stack *stack, Value *value) {
   assert(value && VALUE_BLOCK != value_kind(value));
   vector_push(stack->stack, value);
-}
-static void stack_push_symbol(Stack *stack, const char *symbol) {
-  Value *value = table_find(stack->table, symbol);
-  assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
-  stack_push(stack, value);
 }
 
 Stack *stack_new(Pool *pool, Sexp *ast) {
@@ -119,11 +114,13 @@ void stack_push_integer(Stack *stack, const char *value) {
   value_set_value(stack_top(stack), value);
 }
 void stack_load_from_symbol(Stack *stack, const char *symbol) {
-  stack_push_symbol(stack, symbol);
+  Value *value = stack_find_alloca(stack, symbol);
+  stack_push(stack, value);
   stack_instruction_load(stack);
 }
 void stack_store_to_symbol(Stack *stack, const char *symbol) {
-  stack_push_symbol(stack, symbol);
+  Value *value = stack_find_alloca(stack, symbol);
+  stack_push(stack, value);
   stack_instruction_store(stack);
 }
 void stack_alloca(Stack *stack, const char *symbol) {
