@@ -3,8 +3,12 @@
 #include "ir/stack_impl.h"
 
 static Value *instruction_new(Stack *stack, ValueKind kind) {
-  stack_new_value(stack, kind);
-  return stack_pop(stack);
+  Value *current = stack_get_next(stack, STACK_NEXT_CURRENT);
+  Value *top = stack_new_value(stack, kind);
+  stack_pop(stack);
+  assert(value_is_instruction(top));
+  value_insert(current, top);
+  return top;
 }
 static void insert_operand(Stack *stack, Value *value) {
   value_insert(stack_top(stack), value);
