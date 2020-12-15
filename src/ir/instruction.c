@@ -37,11 +37,13 @@ void stack_instruction_switch_finish(Stack *stack, Value *instr) {
   Value *default_label = stack_get_next(stack, STACK_NEXT_DEFAULT);
   Value *break_label = stack_get_next(stack, STACK_NEXT_BREAK);
   Value *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
-  if (!default_label) {
-    default_label = break_label;
-  }
-  value_insert(instr, default_label);
+  Value *next = break_label ? break_label : stack_new_block(stack);
+  stack_instruction_br(stack, next);
+  value_insert(instr, default_label ? default_label : next);
   value_insert(instr, switch_block);
+  if (break_label || !default_label) {
+    stack_jump_block(stack, next);
+  }
 }
 void stack_instruction_switch_case(Stack *stack, Value *constant,
                                    Value *label) {
