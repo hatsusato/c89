@@ -33,6 +33,7 @@ void stack_push_integer(Stack *, const char *);
 void stack_load_from_symbol(Stack *, const char *);
 void stack_store_to_symbol(Stack *, const char *);
 void stack_alloca(Stack *, const char *);
+Value *stack_find_alloca(Stack *, const char *);
 void stack_jump_block(Stack *, Value *);
 Value *stack_get_prev(Stack *);
 Value *stack_set_prev(Stack *, Value *);

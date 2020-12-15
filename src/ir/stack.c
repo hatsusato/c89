@@ -133,6 +133,11 @@ void stack_alloca(Stack *stack, const char *symbol) {
   value_insert(alloc, value);
   stack_push(stack, value);
 }
+Value *stack_find_alloca(Stack *stack, const char *symbol) {
+  Value *value = table_find(stack->table, symbol);
+  assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
+  return value;
+}
 void stack_jump_block(Stack *stack, Value *dest) {
   assert(dest && VALUE_BLOCK == value_kind(dest));
   stack_set_next(stack, STACK_NEXT_CURRENT, dest);
