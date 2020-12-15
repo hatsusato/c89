@@ -130,12 +130,9 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
     Value *next_break = stack_set_next(stack, STACK_NEXT_BREAK, next);
     Value *next_default = stack_set_next(stack, STACK_NEXT_DEFAULT, NULL);
     Value *next_switch = stack_set_next(stack, STACK_NEXT_SWITCH, block);
-    Value *dflt;
     stack_ast(stack, sexp_at(ast, 5));
     stack_instruction_br(stack, next);
-    dflt = stack_get_next(stack, STACK_NEXT_DEFAULT);
-    value_insert(instr, dflt ? dflt : next);
-    value_insert(instr, block);
+    stack_instruction_switch_finish(stack, instr);
     stack_set_next(stack, STACK_NEXT_BREAK, next_break);
     stack_set_next(stack, STACK_NEXT_DEFAULT, next_default);
     stack_set_next(stack, STACK_NEXT_SWITCH, next_switch);
