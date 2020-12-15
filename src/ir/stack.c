@@ -14,7 +14,6 @@ struct struct_Stack {
   Map *labels;
   Sexp *ast;
   Value *func;
-  Value *prev;
   Value *next[STACK_NEXT_COUNT];
 };
 
@@ -38,7 +37,6 @@ Stack *stack_new(Pool *pool, Sexp *ast) {
   stack->labels = map_new(compare_new(labels_compare));
   stack->ast = ast;
   stack->func = pool_alloc(pool, VALUE_FUNCTION);
-  stack->prev = NULL;
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
   }
@@ -110,13 +108,6 @@ void stack_jump_block(Stack *stack, Value *dest) {
   assert(dest && VALUE_BLOCK == value_kind(dest));
   stack_set_next(stack, STACK_NEXT_CURRENT, dest);
   value_insert(stack->func, dest);
-}
-Value *stack_get_prev(Stack *stack) {
-  return stack->prev;
-}
-Value *stack_set_prev(Stack *stack, Value *prev) {
-  UTILITY_SWAP(Value *, stack->prev, prev);
-  return prev;
 }
 Value *stack_get_next(Stack *stack, StackNextTag tag) {
   return stack->next[tag];
