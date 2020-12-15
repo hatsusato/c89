@@ -22,7 +22,7 @@ void stack_instruction_sub(Stack *);
 void stack_instruction_load(Stack *);
 /* store %1, %2: (%1 %2 -- %0) */
 void stack_instruction_store(Stack *);
-/* icmp ne %1, %2: (%1 %2 -- %0) */
-void stack_instruction_icmp_ne(Stack *);
+/* icmp ne %1, %2 */
+Value *stack_instruction_icmp_ne(Stack *, Value *, Value *);
 
 #endif /* INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E */

@@ -72,6 +72,9 @@ void stack_instruction_load(Stack *stack) {
 void stack_instruction_store(Stack *stack) {
   stack_instruction_binary(stack, VALUE_INSTRUCTION_STORE);
 }
-void stack_instruction_icmp_ne(Stack *stack) {
-  stack_instruction_binary(stack, VALUE_INSTRUCTION_ICMP_NE);
+Value *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_ICMP_NE);
+  value_insert(instr, lhs);
+  value_insert(instr, rhs);
+  return instr;
 }

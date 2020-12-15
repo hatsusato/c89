@@ -106,10 +106,13 @@ static void stack_if_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_new_block(stack);
   Value *then_block = stack_new_block(stack);
   {
+    Value *lhs, *rhs, *icmp;
     stack_ast(stack, sexp_at(ast, 3));
+    lhs = stack_pop(stack);
     stack_push_integer(stack, "0");
-    stack_instruction_icmp_ne(stack);
-    stack_instruction_br_cond(stack, stack_pop(stack), then_block, next);
+    rhs = stack_pop(stack);
+    icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
+    stack_instruction_br_cond(stack, icmp, then_block, next);
   }
   {
     stack_jump_block(stack, then_block);
@@ -124,10 +127,13 @@ static void stack_if_else_statement(Stack *stack, Sexp *ast) {
   Value *else_block = stack_new_block(stack);
   Value *then_next, *else_next;
   {
+    Value *lhs, *rhs, *icmp;
     stack_ast(stack, sexp_at(ast, 3));
+    lhs = stack_pop(stack);
     stack_push_integer(stack, "0");
-    stack_instruction_icmp_ne(stack);
-    stack_instruction_br_cond(stack, stack_pop(stack), then_block, else_block);
+    rhs = stack_pop(stack);
+    icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
+    stack_instruction_br_cond(stack, icmp, then_block, else_block);
   }
   stack_set_next(stack, STACK_NEXT_BLOCK, next);
   {
@@ -198,11 +204,14 @@ static void stack_while_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_new_block(stack);
   stack_instruction_br(stack, guard);
   {
+    Value *lhs, *rhs, *icmp;
     stack_jump_block(stack, guard);
     stack_ast(stack, sexp_at(ast, 3));
+    lhs = stack_pop(stack);
     stack_push_integer(stack, "0");
-    stack_instruction_icmp_ne(stack);
-    stack_instruction_br_cond(stack, stack_pop(stack), body, next);
+    rhs = stack_pop(stack);
+    icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
+    stack_instruction_br_cond(stack, icmp, body, next);
   }
   {
     Value *next_break = stack_set_next(stack, STACK_NEXT_BREAK, next);
@@ -230,11 +239,14 @@ static void stack_do_while_statement(Stack *stack, Sexp *ast) {
     stack_set_next(stack, STACK_NEXT_CONTINUE, next_continue);
   }
   {
+    Value *lhs, *rhs, *icmp;
     stack_jump_block(stack, guard);
     stack_ast(stack, sexp_at(ast, 5));
+    lhs = stack_pop(stack);
     stack_push_integer(stack, "0");
-    stack_instruction_icmp_ne(stack);
-    stack_instruction_br_cond(stack, stack_pop(stack), body, next);
+    rhs = stack_pop(stack);
+    icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
+    stack_instruction_br_cond(stack, icmp, body, next);
   }
   stack_jump_block(stack, next);
 }
@@ -250,12 +262,15 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
   guard = sexp_is_nil(sexp_at(ast, 5)) ? body : stack_new_block(stack);
   stack_instruction_br(stack, guard);
   if (!sexp_is_nil(sexp_at(ast, 5))) {
+    Value *lhs, *rhs, *icmp;
     stack_jump_block(stack, guard);
     assert(sexp_at(ast, 5));
     stack_ast(stack, sexp_at(ast, 5));
+    lhs = stack_pop(stack);
     stack_push_integer(stack, "0");
-    stack_instruction_icmp_ne(stack);
-    stack_instruction_br_cond(stack, stack_pop(stack), body, next);
+    rhs = stack_pop(stack);
+    icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
+    stack_instruction_br_cond(stack, icmp, body, next);
   }
   step = sexp_is_nil(sexp_at(ast, 7)) ? guard : stack_new_block(stack);
   {
