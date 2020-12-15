@@ -5,11 +5,12 @@
 static void insert_operand(Stack *stack, Value *value) {
   value_insert(stack_top(stack), value);
 }
-static void stack_instruction_new(Stack *stack, ValueKind kind) {
+static Value *stack_instruction_new(Stack *stack, ValueKind kind) {
   Value *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  stack_new_value(stack, kind);
-  assert(value_is_instruction(stack_top(stack)));
-  value_insert(current, stack_top(stack));
+  Value *top = stack_new_value(stack, kind);
+  assert(value_is_instruction(top));
+  value_insert(current, top);
+  return top;
 }
 static void stack_instruction_unary(Stack *stack, ValueKind kind) {
   Value *first = stack_pop(stack);
