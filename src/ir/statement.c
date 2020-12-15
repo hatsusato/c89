@@ -39,9 +39,8 @@ static Bool switch_has_default(Sexp *ast) {
 static Bool switch_new_case(Stack *stack) {
   Value *curr = stack_get_next(stack, STACK_NEXT_CURRENT);
   Value *dflt = stack_get_next(stack, STACK_NEXT_DEFAULT);
-  Value *top = stack_top(stack);
-  assert(VALUE_INSTRUCTION_SWITCH == value_kind(top));
-  return 2 == value_length(top) || value_length(curr) || dflt == curr;
+  Value *swch = stack_get_next(stack, STACK_NEXT_SWITCH);
+  return 0 == value_length(swch) || 0 < value_length(curr) || dflt == curr;
 }
 
 void stack_statement(Stack *stack, Sexp *ast) {
