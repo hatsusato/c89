@@ -110,8 +110,7 @@ static void stack_if_statement(Stack *stack, Sexp *ast) {
     Value *lhs, *rhs, *icmp;
     stack_ast(stack, sexp_at(ast, 3));
     lhs = stack_pop(stack);
-    stack_push_integer(stack, "0");
-    rhs = stack_pop(stack);
+    rhs = stack_new_integer(stack, "0");
     icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
     stack_instruction_br_cond(stack, icmp, then_block, next);
   }
@@ -131,8 +130,7 @@ static void stack_if_else_statement(Stack *stack, Sexp *ast) {
     Value *lhs, *rhs, *icmp;
     stack_ast(stack, sexp_at(ast, 3));
     lhs = stack_pop(stack);
-    stack_push_integer(stack, "0");
-    rhs = stack_pop(stack);
+    rhs = stack_new_integer(stack, "0");
     icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
     stack_instruction_br_cond(stack, icmp, then_block, else_block);
   }
@@ -213,8 +211,7 @@ static void stack_while_statement(Stack *stack, Sexp *ast) {
     stack_jump_block(stack, guard);
     stack_ast(stack, sexp_at(ast, 3));
     lhs = stack_pop(stack);
-    stack_push_integer(stack, "0");
-    rhs = stack_pop(stack);
+    rhs = stack_new_integer(stack, "0");
     icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
     stack_instruction_br_cond(stack, icmp, body, next);
   }
@@ -248,8 +245,7 @@ static void stack_do_while_statement(Stack *stack, Sexp *ast) {
     stack_jump_block(stack, guard);
     stack_ast(stack, sexp_at(ast, 5));
     lhs = stack_pop(stack);
-    stack_push_integer(stack, "0");
-    rhs = stack_pop(stack);
+    rhs = stack_new_integer(stack, "0");
     icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
     stack_instruction_br_cond(stack, icmp, body, next);
   }
@@ -272,8 +268,7 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
     assert(sexp_at(ast, 5));
     stack_ast(stack, sexp_at(ast, 5));
     lhs = stack_pop(stack);
-    stack_push_integer(stack, "0");
-    rhs = stack_pop(stack);
+    rhs = stack_new_integer(stack, "0");
     icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
     stack_instruction_br_cond(stack, icmp, body, next);
   }

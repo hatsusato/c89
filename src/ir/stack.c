@@ -118,11 +118,6 @@ void stack_insert_block(Stack *stack, Value *block) {
   assert(block && VALUE_BLOCK == value_kind(block));
   value_insert(stack_top(stack), block);
 }
-void stack_push_integer(Stack *stack, const char *value) {
-  Value *constant = stack_new_value(stack, VALUE_INTEGER_CONSTANT);
-  stack_push(stack, constant);
-  value_set_value(constant, value);
-}
 void stack_load_from_symbol(Stack *stack, const char *symbol) {
   Value *src = stack_find_alloca(stack, symbol);
   Value *load = stack_instruction_load(stack, src);
