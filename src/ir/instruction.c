@@ -28,12 +28,10 @@ void stack_instruction_br_cond(Stack *stack, Value *expr, Value *then_label,
   value_insert(instr, then_label);
   value_insert(instr, else_label);
 }
-void stack_instruction_switch(Stack *stack, Value *expr, Value *label,
-                              Value *block) {
+Value *stack_instruction_switch(Stack *stack, Value *expr) {
   Value *instr = instruction_new(stack, VALUE_INSTRUCTION_SWITCH);
   value_insert(instr, expr);
-  value_insert(instr, label);
-  value_insert(instr, block);
+  return instr;
 }
 void stack_instruction_switch_case(Stack *stack, Value *constant,
                                    Value *label) {

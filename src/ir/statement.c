@@ -157,16 +157,16 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
   Value *block = stack_new_block(stack);
   Value *next = stack_new_block(stack);
   Value *dflt = switch_has_default(ast) ? stack_new_block(stack) : next;
-  {
-    Value *expr = stack_ast(stack, sexp_at(ast, 3));
-    stack_instruction_switch(stack, expr, dflt, block);
-  }
+  Value *expr = stack_ast(stack, sexp_at(ast, 3));
+  Value *instr = stack_instruction_switch(stack, expr);
   {
     Value *next_break = stack_set_next(stack, STACK_NEXT_BREAK, next);
     Value *next_default = stack_set_next(stack, STACK_NEXT_DEFAULT, dflt);
     Value *next_switch = stack_set_next(stack, STACK_NEXT_SWITCH, block);
     stack_ast(stack, sexp_at(ast, 5));
     stack_instruction_br(stack, next);
+    value_insert(instr, dflt);
+    value_insert(instr, block);
     stack_set_next(stack, STACK_NEXT_BREAK, next_break);
     stack_set_next(stack, STACK_NEXT_DEFAULT, next_default);
     stack_set_next(stack, STACK_NEXT_SWITCH, next_switch);
