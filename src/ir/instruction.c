@@ -44,12 +44,12 @@ void stack_instruction_br(Stack *stack, Value *label) {
     value_insert(instr, label);
   }
 }
-void stack_instruction_br_cond(Stack *stack, Value *then_label,
+void stack_instruction_br_cond(Stack *stack, Value *expr, Value *then_label,
                                Value *else_label) {
-  stack_instruction_unary(stack, VALUE_INSTRUCTION_BR_COND);
-  stack_insert_block(stack, then_label);
-  stack_insert_block(stack, else_label);
-  stack_pop(stack);
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_BR_COND);
+  value_insert(instr, expr);
+  value_insert(instr, then_label);
+  value_insert(instr, else_label);
 }
 void stack_instruction_switch(Stack *stack, Value *default_label) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_SWITCH);
