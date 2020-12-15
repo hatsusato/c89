@@ -19,6 +19,7 @@ Size value_length(Value *);
 Value *value_last(Value *);
 ValueKind value_kind(Value *);
 void value_print(Value *);
+void value_print_switch_block(Value *);
 void value_pretty(Value *);
 void value_set_reg(RegisterGenerator *, Value *);
 const char *value_kind_show(Value *);
