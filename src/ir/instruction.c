@@ -10,28 +10,6 @@ static Value *instruction_new(Stack *stack, ValueKind kind) {
   value_insert(current, top);
   return top;
 }
-static void insert_operand(Stack *stack, Value *value) {
-  value_insert(stack_top(stack), value);
-}
-static Value *stack_instruction_new(Stack *stack, ValueKind kind) {
-  Value *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Value *top = stack_new_value(stack, kind);
-  assert(value_is_instruction(top));
-  value_insert(current, top);
-  return top;
-}
-static void stack_instruction_unary(Stack *stack, ValueKind kind) {
-  Value *first = stack_pop(stack);
-  stack_instruction_new(stack, kind);
-  insert_operand(stack, first);
-}
-static void stack_instruction_binary(Stack *stack, ValueKind kind) {
-  Value *second = stack_pop(stack);
-  Value *first = stack_pop(stack);
-  stack_instruction_new(stack, kind);
-  insert_operand(stack, first);
-  insert_operand(stack, second);
-}
 
 void stack_instruction_ret(Stack *stack, Value *expr) {
   Value *instr = instruction_new(stack, VALUE_INSTRUCTION_RET);
