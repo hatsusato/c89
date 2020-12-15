@@ -318,7 +318,8 @@ static void stack_return_statement(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 2));
   src = stack_get_prev(stack);
   if (ret) {
-    stack_store_to_symbol(stack, src, "$retval");
+    Value *dst = stack_find_alloca(stack, "$retval");
+    stack_instruction_store(stack, src, dst);
     stack_instruction_br(stack, ret);
   } else {
     stack_instruction_ret(stack, src);
