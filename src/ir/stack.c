@@ -93,6 +93,11 @@ Value *stack_new_value(Stack *stack, ValueKind kind) {
 Value *stack_new_block(Stack *stack) {
   return pool_alloc(stack->pool, VALUE_BLOCK);
 }
+Value *stack_new_integer(Stack *stack, const char *integer) {
+  Value *value = stack_new_value(stack, VALUE_INTEGER_CONSTANT);
+  value_set_value(value, integer);
+  return value;
+}
 Value *stack_label(Stack *stack, const char *label) {
   ElemType key = (ElemType)label;
   if (map_contains(stack->labels, key)) {

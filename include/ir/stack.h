@@ -29,6 +29,7 @@ Value *stack_pop(Stack *);
 Value *stack_top(Stack *);
 Value *stack_new_value(Stack *, ValueKind);
 Value *stack_new_block(Stack *);
+Value *stack_new_integer(Stack *, const char *);
 Value *stack_label(Stack *, const char *);
 Bool stack_last_terminator(Stack *);
 void stack_insert_block(Stack *, Value *);
