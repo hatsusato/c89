@@ -57,13 +57,15 @@ static void stack_label_statement(Stack *stack, Sexp *ast) {
 }
 static void stack_case_statement(Stack *stack, Sexp *ast) {
   Value *next = stack_get_next(stack, STACK_NEXT_CURRENT);
+  Value *constant;
   if (switch_new_case(stack)) {
     next = stack_new_block(stack);
     stack_instruction_br(stack, next);
     stack_jump_block(stack, next);
   }
   stack_ast(stack, sexp_at(ast, 2));
-  stack_instruction_switch_case(stack, next);
+  constant = stack_pop(stack);
+  stack_instruction_switch_case(stack, constant, next);
   stack_ast(stack, sexp_at(ast, 4));
 }
 static void stack_default_statement(Stack *stack, Sexp *ast) {

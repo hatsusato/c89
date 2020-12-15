@@ -55,10 +55,11 @@ void stack_instruction_switch(Stack *stack, Value *default_label) {
   stack_instruction_unary(stack, VALUE_INSTRUCTION_SWITCH);
   stack_insert_block(stack, default_label);
 }
-void stack_instruction_switch_case(Stack *stack, Value *label) {
-  Value *first = stack_pop(stack);
-  insert_operand(stack, first);
-  stack_insert_block(stack, label);
+void stack_instruction_switch_case(Stack *stack, Value *constant,
+                                   Value *label) {
+  Value *cases = stack_get_next(stack, STACK_NEXT_SWITCH);
+  value_insert(cases, constant);
+  value_insert(cases, label);
 }
 Value *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
   Value *instr = instruction_new(stack, VALUE_INSTRUCTION_ADD);
