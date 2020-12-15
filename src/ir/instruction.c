@@ -2,6 +2,10 @@
 
 #include "ir/stack_impl.h"
 
+static Value *instruction_new(Stack *stack, ValueKind kind) {
+  stack_new_value(stack, kind);
+  return stack_pop(stack);
+}
 static void insert_operand(Stack *stack, Value *value) {
   value_insert(stack_top(stack), value);
 }
