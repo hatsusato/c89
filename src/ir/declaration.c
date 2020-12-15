@@ -40,10 +40,14 @@ void stack_declarator(Stack *stack, Sexp *ast) {
   }
 }
 void stack_direct_declarator(Stack *stack, Sexp *ast) {
+  const char *symbol;
+  Value *alloca;
   assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
-    stack_identifier_alloca(stack, sexp_at(ast, 1));
+    symbol = stack_identifier_symbol(sexp_at(ast, 1));
+    alloca = stack_alloca(stack, symbol);
+    stack_set_prev(stack, alloca);
     break;
   case 4:
     stack_declarator(stack, sexp_at(ast, 2));
