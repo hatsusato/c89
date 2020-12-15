@@ -85,6 +85,18 @@ void value_print(Value *value) {
     break;
   }
 }
+void value_print_switch_block(Value *block) {
+  ElemType *begin = vector_begin(block->vec);
+  ElemType *end = vector_end(block->vec);
+  assert(VALUE_BLOCK == value_kind(block));
+  while (begin < end) {
+    printf("    i32 ");
+    value_print(*begin++);
+    printf(", label ");
+    value_print(*begin++);
+    printf("\n");
+  }
+}
 void value_pretty(Value *value) {
   ElemType *begin = vector_begin(value->vec);
   ElemType *end = vector_end(value->vec);
@@ -144,13 +156,7 @@ void value_pretty(Value *value) {
     printf(", label ");
     value_print(*begin++);
     printf(" [\n");
-    while (begin < end) {
-      printf("    i32 ");
-      value_print(*begin++);
-      printf(", label ");
-      value_print(*begin++);
-      printf("\n");
-    }
+    value_print_switch_block(*begin++);
     printf("  ]");
     break;
   case VALUE_INSTRUCTION_ADD:

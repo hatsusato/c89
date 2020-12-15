@@ -33,20 +33,22 @@ static const char *stack_function_name(Sexp *ast) {
     return NULL;
   }
 }
-void stack_function_definition(Stack *stack, Sexp *ast) {
+Value *stack_function_definition(Stack *stack, Sexp *ast) {
   Value *ret = stack_get_next(stack, STACK_NEXT_RETURN);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   if (ret) {
     stack_alloca(stack, "$retval");
-    stack_pop(stack);
   }
   stack_ast(stack, sexp_at(ast, 4));
   if (ret) {
+    Value *expr;
     stack_instruction_br(stack, ret);
     stack_jump_block(stack, ret);
-    stack_load_from_symbol(stack, "$retval");
-    stack_instruction_ret(stack);
+    expr = stack_find_alloca(stack, "$retval");
+    expr = stack_instruction_load(stack, expr);
+    stack_instruction_ret(stack, expr);
   }
   stack_set_function_name(stack, stack_function_name(sexp_at(ast, 2)));
+  return NULL;
 }

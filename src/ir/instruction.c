@@ -2,72 +2,81 @@
 
 #include "ir/stack_impl.h"
 
-static void insert_operand(Stack *stack, Value *value) {
-  value_insert(stack_top(stack), value);
-}
-static void stack_instruction_new(Stack *stack, ValueKind kind) {
+static Value *instruction_new(Stack *stack, ValueKind kind) {
   Value *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  stack_new_value(stack, kind);
-  assert(value_is_instruction(stack_top(stack)));
-  value_insert(current, stack_top(stack));
-}
-static void stack_instruction_unary(Stack *stack, ValueKind kind) {
-  Value *first = stack_pop(stack);
-  stack_instruction_new(stack, kind);
-  insert_operand(stack, first);
-}
-static void stack_instruction_binary(Stack *stack, ValueKind kind) {
-  Value *second = stack_pop(stack);
-  Value *first = stack_pop(stack);
-  stack_instruction_new(stack, kind);
-  insert_operand(stack, first);
-  insert_operand(stack, second);
+  Value *value = stack_new_value(stack, kind);
+  assert(value_is_instruction(value));
+  value_insert(current, value);
+  return value;
 }
 
-void stack_instruction_ret(Stack *stack) {
-  stack_instruction_unary(stack, VALUE_INSTRUCTION_RET);
-  stack_pop(stack);
+void stack_instruction_ret(Stack *stack, Value *expr) {
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_RET);
+  value_insert(instr, expr);
 }
 void stack_instruction_br(Stack *stack, Value *label) {
-  Value *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Value *last;
   assert(label && VALUE_BLOCK == value_kind(label));
-  assert(current && VALUE_BLOCK == value_kind(current));
-  last = value_last(current);
-  if (!last || !value_is_terminator(last)) {
-    stack_instruction_new(stack, VALUE_INSTRUCTION_BR);
-    stack_insert_block(stack, label);
-    stack_pop(stack);
+  if (!stack_last_terminator(stack)) {
+    Value *instr = instruction_new(stack, VALUE_INSTRUCTION_BR);
+    value_insert(instr, label);
   }
 }
-void stack_instruction_br_cond(Stack *stack, Value *then_label,
+void stack_instruction_br_cond(Stack *stack, Value *expr, Value *then_label,
                                Value *else_label) {
-  stack_instruction_unary(stack, VALUE_INSTRUCTION_BR_COND);
-  stack_insert_block(stack, then_label);
-  stack_insert_block(stack, else_label);
-  stack_pop(stack);
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_BR_COND);
+  value_insert(instr, expr);
+  value_insert(instr, then_label);
+  value_insert(instr, else_label);
 }
-void stack_instruction_switch(Stack *stack, Value *default_label) {
-  stack_instruction_unary(stack, VALUE_INSTRUCTION_SWITCH);
-  stack_insert_block(stack, default_label);
+Value *stack_instruction_switch(Stack *stack, Value *expr) {
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_SWITCH);
+  value_insert(instr, expr);
+  return instr;
 }
-void stack_instruction_switch_case(Stack *stack, Value *label) {
-  Value *first = stack_pop(stack);
-  insert_operand(stack, first);
-  stack_insert_block(stack, label);
+void stack_instruction_switch_finish(Stack *stack, Value *instr) {
+  Value *default_label = stack_get_next(stack, STACK_NEXT_DEFAULT);
+  Value *break_label = stack_get_next(stack, STACK_NEXT_BREAK);
+  Value *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
+  Value *next = break_label ? break_label : stack_new_block(stack);
+  stack_instruction_br(stack, next);
+  value_insert(instr, default_label ? default_label : next);
+  value_insert(instr, switch_block);
+  if (break_label || !default_label) {
+    stack_jump_block(stack, next);
+  }
 }
-void stack_instruction_add(Stack *stack) {
-  stack_instruction_binary(stack, VALUE_INSTRUCTION_ADD);
+void stack_instruction_switch_case(Stack *stack, Value *constant,
+                                   Value *label) {
+  Value *cases = stack_get_next(stack, STACK_NEXT_SWITCH);
+  value_insert(cases, constant);
+  value_insert(cases, label);
 }
-void stack_instruction_sub(Stack *stack) {
-  stack_instruction_binary(stack, VALUE_INSTRUCTION_SUB);
+Value *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_ADD);
+  value_insert(instr, lhs);
+  value_insert(instr, rhs);
+  return instr;
 }
-void stack_instruction_load(Stack *stack) {
-  stack_instruction_unary(stack, VALUE_INSTRUCTION_LOAD);
+Value *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_SUB);
+  value_insert(instr, lhs);
+  value_insert(instr, rhs);
+  return instr;
 }
-void stack_instruction_store(Stack *stack) {
-  stack_instruction_binary(stack, VALUE_INSTRUCTION_STORE);
+Value *stack_instruction_load(Stack *stack, Value *src) {
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_LOAD);
+  value_insert(instr, src);
+  return instr;
 }
-void stack_instruction_icmp_ne(Stack *stack) {
-  stack_instruction_binary(stack, VALUE_INSTRUCTION_ICMP_NE);
+Value *stack_instruction_store(Stack *stack, Value *src, Value *dst) {
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_STORE);
+  value_insert(instr, src);
+  value_insert(instr, dst);
+  return instr;
+}
+Value *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_ICMP_NE);
+  value_insert(instr, lhs);
+  value_insert(instr, rhs);
+  return instr;
 }

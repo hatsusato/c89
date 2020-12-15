@@ -16,6 +16,7 @@ typedef enum {
   STACK_NEXT_CURRENT,
   STACK_NEXT_DEFAULT,
   STACK_NEXT_RETURN,
+  STACK_NEXT_SWITCH,
   STACK_NEXT_COUNT
 } StackNextTag;
 
@@ -23,20 +24,17 @@ Stack *stack_new(Pool *, Sexp *);
 void stack_delete(Stack *);
 Value *stack_build(Stack *);
 
-Value *stack_pop(Stack *);
-Value *stack_top(Stack *);
 Value *stack_new_value(Stack *, ValueKind);
 Value *stack_new_block(Stack *);
+Value *stack_new_integer(Stack *, const char *);
 Value *stack_label(Stack *, const char *);
-void stack_insert_block(Stack *, Value *);
-void stack_push_integer(Stack *, const char *);
-void stack_load_from_symbol(Stack *, const char *);
-void stack_store_to_symbol(Stack *, const char *);
-void stack_alloca(Stack *, const char *);
+Bool stack_last_terminator(Stack *);
+Value *stack_alloca(Stack *, const char *);
+Value *stack_find_alloca(Stack *, const char *);
 void stack_jump_block(Stack *, Value *);
 Value *stack_get_next(Stack *, StackNextTag);
 Value *stack_set_next(Stack *, StackNextTag, Value *);
 void stack_set_function_name(Stack *, const char *);
-void stack_ast(Stack *, Sexp *);
+Value *stack_ast(Stack *, Sexp *);
 
 #endif /* INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E */

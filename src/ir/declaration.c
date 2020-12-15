@@ -2,55 +2,50 @@
 
 #include "ir/stack_impl.h"
 
-void stack_declaration(Stack *stack, Sexp *ast) {
+Value *stack_declaration(Stack *stack, Sexp *ast) {
   assert(AST_DECLARATION == sexp_get_tag(ast));
-  stack_ast(stack, sexp_at(ast, 2));
+  return stack_ast(stack, sexp_at(ast, 2));
 }
-void stack_init_declarator(Stack *stack, Sexp *ast) {
+Value *stack_init_declarator(Stack *stack, Sexp *ast) {
   assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
-    stack_declarator(stack, sexp_at(ast, 1));
-    stack_pop(stack);
-    break;
-  case 4:
-    stack_ast(stack, sexp_at(ast, 3));
-    stack_declarator(stack, sexp_at(ast, 1));
-    stack_instruction_store(stack);
-    stack_pop(stack);
-    break;
+    return stack_declarator(stack, sexp_at(ast, 1));
+  case 4: {
+    Value *src = stack_ast(stack, sexp_at(ast, 3));
+    Value *dst = stack_declarator(stack, sexp_at(ast, 1));
+    return stack_instruction_store(stack, src, dst);
+  }
   default:
     assert(0);
-    break;
+    return NULL;
   }
 }
-void stack_declarator(Stack *stack, Sexp *ast) {
+Value *stack_declarator(Stack *stack, Sexp *ast) {
   assert(AST_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
-    stack_direct_declarator(stack, sexp_at(ast, 1));
-    break;
+    return stack_direct_declarator(stack, sexp_at(ast, 1));
   case 3:
-    stack_direct_declarator(stack, sexp_at(ast, 2));
-    break;
+    return stack_direct_declarator(stack, sexp_at(ast, 2));
   default:
     assert(0);
-    break;
+    return NULL;
   }
 }
-void stack_direct_declarator(Stack *stack, Sexp *ast) {
+Value *stack_direct_declarator(Stack *stack, Sexp *ast) {
   assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
-  case 2:
-    stack_identifier_alloca(stack, sexp_at(ast, 1));
-    break;
+  case 2: {
+    const char *symbol = stack_identifier_symbol(sexp_at(ast, 1));
+    return stack_alloca(stack, symbol);
+  }
   case 4:
-    stack_declarator(stack, sexp_at(ast, 2));
-    break;
+    return stack_declarator(stack, sexp_at(ast, 2));
   case 5:
     /* FALLTHROUGH */
   default:
     assert(0);
-    break;
+    return NULL;
   }
 }

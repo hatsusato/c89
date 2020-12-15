@@ -60,3 +60,26 @@ int f4(void) {
   }
   return x;
 }
+int f5(void) {
+  int x = 0;
+  switch (x) {
+  case 0:
+    goto case1;
+  case 1:
+    goto case2;
+  case 2:
+    goto case1;
+  default:
+    goto case2;
+  case1:
+    x = 1;
+    goto end1;
+  case2:
+    x = 2;
+    goto end2;
+  }
+end1:
+  return x;
+end2:
+  return x;
+}

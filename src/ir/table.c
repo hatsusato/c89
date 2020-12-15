@@ -33,6 +33,6 @@ void table_insert(Table *table, const char *key, Value *val) {
 }
 Value *table_find(Table *table, const char *key) {
   ElemType *found = map_find(table->table, (ElemType)key);
-  assert(found);
+  assert(found && *found);
   return *found;
 }

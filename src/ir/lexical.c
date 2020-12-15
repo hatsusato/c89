@@ -8,18 +8,14 @@ const char *stack_identifier_symbol(Sexp *ast) {
   assert(sexp_is_symbol(ast));
   return sexp_get_symbol(ast);
 }
-void stack_identifier(Stack *stack, Sexp *ast) {
-  stack_load_from_symbol(stack, stack_identifier_symbol(ast));
+Value *stack_identifier(Stack *stack, Sexp *ast) {
+  const char *symbol = stack_identifier_symbol(ast);
+  Value *expr = stack_find_alloca(stack, symbol);
+  return stack_instruction_load(stack, expr);
 }
-void stack_identifier_alloca(Stack *stack, Sexp *ast) {
-  stack_alloca(stack, stack_identifier_symbol(ast));
-}
-void stack_identifier_store(Stack *stack, Sexp *ast) {
-  stack_store_to_symbol(stack, stack_identifier_symbol(ast));
-}
-void stack_integer_constant(Stack *stack, Sexp *ast) {
+Value *stack_integer_constant(Stack *stack, Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  stack_push_integer(stack, sexp_get_symbol(ast));
+  return stack_new_integer(stack, sexp_get_symbol(ast));
 }
