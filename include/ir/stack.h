@@ -16,6 +16,7 @@ typedef enum {
   STACK_NEXT_CURRENT,
   STACK_NEXT_DEFAULT,
   STACK_NEXT_RETURN,
+  STACK_NEXT_SWITCH,
   STACK_NEXT_COUNT
 } StackNextTag;
 void stack_push(Stack *, Value *);

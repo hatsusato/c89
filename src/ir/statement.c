@@ -165,10 +165,13 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
     {
       Value *next_break = stack_set_next(stack, STACK_NEXT_BREAK, next);
       Value *next_default = stack_set_next(stack, STACK_NEXT_DEFAULT, dflt);
+      Value *next_switch =
+          stack_set_next(stack, STACK_NEXT_SWITCH, stack_top(stack));
       stack_ast(stack, sexp_at(ast, 5));
       stack_instruction_br(stack, next);
       stack_set_next(stack, STACK_NEXT_BREAK, next_break);
       stack_set_next(stack, STACK_NEXT_DEFAULT, next_default);
+      stack_set_next(stack, STACK_NEXT_SWITCH, next_switch);
     }
     stack_pop(stack);
   }
@@ -291,6 +294,7 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
   stack_jump_block(stack, next);
 }
 void stack_iteration_statement(Stack *stack, Sexp *ast) {
+  Value *next_switch = stack_set_next(stack, STACK_NEXT_SWITCH, NULL);
   assert(AST_ITERATION_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_WHILE:
@@ -306,6 +310,7 @@ void stack_iteration_statement(Stack *stack, Sexp *ast) {
     assert(0);
     break;
   }
+  stack_set_next(stack, STACK_NEXT_SWITCH, next_switch);
 }
 static void stack_goto_statement(Stack *stack, Sexp *ast) {
   const char *label = stack_identifier_symbol(sexp_at(ast, 2));
