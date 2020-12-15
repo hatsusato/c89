@@ -2,7 +2,7 @@
 
 #include "ir/stack_impl.h"
 
-void stack_additive_expression(Stack *stack, Sexp *ast) {
+Value *stack_additive_expression(Stack *stack, Sexp *ast) {
   Value *lhs, *rhs, *expr;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   stack_ast(stack, sexp_at(ast, 1));
@@ -13,17 +13,17 @@ void stack_additive_expression(Stack *stack, Sexp *ast) {
   case AST_PLUS:
     expr = stack_instruction_add(stack, lhs, rhs);
     stack_set_prev(stack, expr);
-    break;
+    return expr;
   case AST_MINUS:
     expr = stack_instruction_sub(stack, lhs, rhs);
     stack_set_prev(stack, expr);
-    break;
+    return expr;
   default:
     assert(0);
-    break;
+    return NULL;
   }
 }
-void stack_assignment_expression(Stack *stack, Sexp *ast) {
+Value *stack_assignment_expression(Stack *stack, Sexp *ast) {
   const char *symbol;
   Value *lhs, *rhs;
   assert(AST_ASSIGNMENT_EXPRESSION == sexp_get_tag(ast));
@@ -32,9 +32,9 @@ void stack_assignment_expression(Stack *stack, Sexp *ast) {
   lhs = stack_find_alloca(stack, symbol);
   stack_ast(stack, sexp_at(ast, 3));
   rhs = stack_get_prev(stack);
-  stack_instruction_store(stack, rhs, lhs);
+  return stack_instruction_store(stack, rhs, lhs);
 }
-void stack_constant_expression(Stack *stack, Sexp *ast) {
+Value *stack_constant_expression(Stack *stack, Sexp *ast) {
   assert(AST_CONSTANT_EXPRESSION == sexp_get_tag(ast));
-  stack_ast(stack, sexp_at(ast, 1));
+  return stack_ast(stack, sexp_at(ast, 1));
 }

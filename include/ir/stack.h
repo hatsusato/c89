@@ -37,6 +37,6 @@ Value *stack_set_prev(Stack *, Value *);
 Value *stack_get_next(Stack *, StackNextTag);
 Value *stack_set_next(Stack *, StackNextTag, Value *);
 void stack_set_function_name(Stack *, const char *);
-void stack_ast(Stack *, Sexp *);
+Value *stack_ast(Stack *, Sexp *);
 
 #endif /* INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E */

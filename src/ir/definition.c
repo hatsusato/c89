@@ -33,7 +33,7 @@ static const char *stack_function_name(Sexp *ast) {
     return NULL;
   }
 }
-void stack_function_definition(Stack *stack, Sexp *ast) {
+Value *stack_function_definition(Stack *stack, Sexp *ast) {
   Value *ret = stack_get_next(stack, STACK_NEXT_RETURN);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
@@ -50,4 +50,5 @@ void stack_function_definition(Stack *stack, Sexp *ast) {
     stack_instruction_ret(stack, expr);
   }
   stack_set_function_name(stack, stack_function_name(sexp_at(ast, 2)));
+  return NULL;
 }

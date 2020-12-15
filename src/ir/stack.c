@@ -130,74 +130,56 @@ void stack_set_function_name(Stack *stack, const char *name) {
   value_set_value(stack->func, name);
 }
 
-static void stack_ast_map(Stack *stack, Sexp *ast) {
+static Value *stack_ast_map(Stack *stack, Sexp *ast) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     stack_ast(stack, sexp_car(ast));
   }
+  return NULL;
 }
-void stack_ast(Stack *stack, Sexp *ast) {
+Value *stack_ast(Stack *stack, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
-    stack_identifier(stack, ast);
-    break;
+    return stack_identifier(stack, ast);
   case AST_INTEGER_CONSTANT:
-    stack_integer_constant(stack, ast);
-    break;
+    return stack_integer_constant(stack, ast);
   case AST_ADDITIVE_EXPRESSION:
-    stack_additive_expression(stack, ast);
-    break;
+    return stack_additive_expression(stack, ast);
   case AST_ASSIGNMENT_EXPRESSION:
-    stack_assignment_expression(stack, ast);
-    break;
+    return stack_assignment_expression(stack, ast);
   case AST_CONSTANT_EXPRESSION:
-    stack_constant_expression(stack, ast);
-    break;
+    return stack_constant_expression(stack, ast);
   case AST_DECLARATION:
-    stack_declaration(stack, ast);
-    break;
+    return stack_declaration(stack, ast);
   case AST_INIT_DECLARATOR_LIST:
-    stack_ast_map(stack, ast);
-    break;
+    return stack_ast_map(stack, ast);
   case AST_INIT_DECLARATOR:
-    stack_init_declarator(stack, ast);
-    break;
+    return stack_init_declarator(stack, ast);
   case AST_STATEMENT:
-    stack_statement(stack, ast);
-    break;
+    return stack_statement(stack, ast);
   case AST_LABELED_STATEMENT:
-    stack_labeled_statement(stack, ast);
-    break;
+    return stack_labeled_statement(stack, ast);
   case AST_COMPOUND_STATEMENT:
-    stack_compound_statement(stack, ast);
-    break;
+    return stack_compound_statement(stack, ast);
   case AST_DECLARATION_LIST:
-    stack_ast_map(stack, ast);
-    break;
+    return stack_ast_map(stack, ast);
   case AST_STATEMENT_LIST:
-    stack_ast_map(stack, ast);
-    break;
+    return stack_ast_map(stack, ast);
   case AST_EXPRESSION_STATEMENT:
-    stack_expression_statement(stack, ast);
-    break;
+    return stack_expression_statement(stack, ast);
   case AST_SELECTION_STATEMENT:
-    stack_selection_statement(stack, ast);
-    break;
+    return stack_selection_statement(stack, ast);
   case AST_ITERATION_STATEMENT:
-    stack_iteration_statement(stack, ast);
-    break;
+    return stack_iteration_statement(stack, ast);
   case AST_JUMP_STATEMENT:
-    stack_jump_statement(stack, ast);
-    break;
+    return stack_jump_statement(stack, ast);
   case AST_TRANSLATION_UNIT:
-    stack_ast_map(stack, ast);
-    break;
+    return stack_ast_map(stack, ast);
   case AST_EXTERNAL_DECLARATION:
-    break;
+    return NULL;
   case AST_FUNCTION_DEFINITION:
-    stack_function_definition(stack, ast);
-    break;
+    return stack_function_definition(stack, ast);
   default:
     assert(0);
-    break;
+    return NULL;
   }
 }
