@@ -11,9 +11,8 @@ void stack_additive_expression(Stack *stack, Sexp *ast) {
   rhs = stack_pop(stack);
   switch (sexp_get_tag(sexp_at(ast, 2))) {
   case AST_PLUS:
-    stack_push(stack, lhs);
-    stack_push(stack, rhs);
-    stack_instruction_add(stack);
+    expr = stack_instruction_add(stack, lhs, rhs);
+    stack_push(stack, expr);
     break;
   case AST_MINUS:
     expr = stack_instruction_sub(stack, lhs, rhs);

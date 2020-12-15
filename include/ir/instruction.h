@@ -14,8 +14,8 @@ void stack_instruction_br_cond(Stack *, Value *, Value *, Value *);
 void stack_instruction_switch(Stack *, Value *);
 /* [ %1, label %2 ... ]: (%1 -- ) */
 void stack_instruction_switch_case(Stack *, Value *);
-/* add %1, %2: (%1 %2 -- %0) */
-void stack_instruction_add(Stack *);
+/* add %1, %2 */
+Value *stack_instruction_add(Stack *, Value *, Value *);
 /* sub %1, %2 */
 Value *stack_instruction_sub(Stack *, Value *, Value *);
 /* load %1 */

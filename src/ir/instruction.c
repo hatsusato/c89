@@ -60,8 +60,11 @@ void stack_instruction_switch_case(Stack *stack, Value *label) {
   insert_operand(stack, first);
   stack_insert_block(stack, label);
 }
-void stack_instruction_add(Stack *stack) {
-  stack_instruction_binary(stack, VALUE_INSTRUCTION_ADD);
+Value *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_ADD);
+  value_insert(instr, lhs);
+  value_insert(instr, rhs);
+  return instr;
 }
 Value *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
   Value *instr = instruction_new(stack, VALUE_INSTRUCTION_SUB);
