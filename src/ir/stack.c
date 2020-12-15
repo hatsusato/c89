@@ -88,9 +88,7 @@ Value *stack_top(Stack *stack) {
   return vector_back(stack->stack);
 }
 Value *stack_new_value(Stack *stack, ValueKind kind) {
-  Value *value = pool_alloc(stack->pool, kind);
-  stack_push(stack, value);
-  return value;
+  return pool_alloc(stack->pool, kind);
 }
 Value *stack_new_block(Stack *stack) {
   return pool_alloc(stack->pool, VALUE_BLOCK);
@@ -116,8 +114,9 @@ void stack_insert_block(Stack *stack, Value *block) {
   value_insert(stack_top(stack), block);
 }
 void stack_push_integer(Stack *stack, const char *value) {
-  stack_new_value(stack, VALUE_INTEGER_CONSTANT);
-  value_set_value(stack_top(stack), value);
+  Value *constant = stack_new_value(stack, VALUE_INTEGER_CONSTANT);
+  stack_push(stack, constant);
+  value_set_value(constant, value);
 }
 void stack_load_from_symbol(Stack *stack, const char *symbol) {
   Value *src = stack_find_alloca(stack, symbol);

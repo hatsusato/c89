@@ -4,11 +4,10 @@
 
 static Value *instruction_new(Stack *stack, ValueKind kind) {
   Value *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Value *top = stack_new_value(stack, kind);
-  stack_pop(stack);
-  assert(value_is_instruction(top));
-  value_insert(current, top);
-  return top;
+  Value *value = stack_new_value(stack, kind);
+  assert(value_is_instruction(value));
+  value_insert(current, value);
+  return value;
 }
 
 void stack_instruction_ret(Stack *stack, Value *expr) {
