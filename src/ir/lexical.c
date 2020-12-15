@@ -9,7 +9,10 @@ const char *stack_identifier_symbol(Sexp *ast) {
   return sexp_get_symbol(ast);
 }
 void stack_identifier(Stack *stack, Sexp *ast) {
-  stack_load_from_symbol(stack, stack_identifier_symbol(ast));
+  const char *symbol = stack_identifier_symbol(ast);
+  Value *expr = stack_find_alloca(stack, symbol);
+  expr = stack_instruction_load(stack, expr);
+  stack_set_prev(stack, expr);
 }
 void stack_integer_constant(Stack *stack, Sexp *ast) {
   Value *value;

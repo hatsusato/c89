@@ -94,11 +94,6 @@ Bool stack_last_terminator(Stack *stack) {
   assert(current && VALUE_BLOCK == value_kind(current));
   return last && value_is_terminator(last);
 }
-void stack_load_from_symbol(Stack *stack, const char *symbol) {
-  Value *src = stack_find_alloca(stack, symbol);
-  Value *load = stack_instruction_load(stack, src);
-  stack_set_prev(stack, load);
-}
 Value *stack_alloca(Stack *stack, const char *symbol) {
   Value *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
   Value *value = pool_alloc(stack->pool, VALUE_INSTRUCTION_ALLOCA);
