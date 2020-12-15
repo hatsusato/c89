@@ -6,17 +6,17 @@ void stack_additive_expression(Stack *stack, Sexp *ast) {
   Value *lhs, *rhs, *expr;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   stack_ast(stack, sexp_at(ast, 1));
-  lhs = stack_pop(stack);
+  lhs = stack_get_prev(stack);
   stack_ast(stack, sexp_at(ast, 3));
-  rhs = stack_pop(stack);
+  rhs = stack_get_prev(stack);
   switch (sexp_get_tag(sexp_at(ast, 2))) {
   case AST_PLUS:
     expr = stack_instruction_add(stack, lhs, rhs);
-    stack_push(stack, expr);
+    stack_set_prev(stack, expr);
     break;
   case AST_MINUS:
     expr = stack_instruction_sub(stack, lhs, rhs);
-    stack_push(stack, expr);
+    stack_set_prev(stack, expr);
     break;
   default:
     assert(0);

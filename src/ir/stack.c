@@ -121,19 +121,19 @@ void stack_insert_block(Stack *stack, Value *block) {
 void stack_load_from_symbol(Stack *stack, const char *symbol) {
   Value *src = stack_find_alloca(stack, symbol);
   Value *load = stack_instruction_load(stack, src);
-  stack_push(stack, load);
+  stack_set_prev(stack, load);
 }
 void stack_store_to_symbol(Stack *stack, Value *src, const char *symbol) {
   Value *dst = stack_find_alloca(stack, symbol);
   Value *store = stack_instruction_store(stack, src, dst);
-  stack_push(stack, store);
+  stack_set_prev(stack, store);
 }
 void stack_alloca(Stack *stack, const char *symbol) {
   Value *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
   Value *value = pool_alloc(stack->pool, VALUE_INSTRUCTION_ALLOCA);
   table_insert(stack->table, symbol, value);
   value_insert(alloc, value);
-  stack_push(stack, value);
+  stack_set_prev(stack, value);
 }
 Value *stack_find_alloca(Stack *stack, const char *symbol) {
   Value *value = table_find(stack->table, symbol);

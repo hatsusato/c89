@@ -12,13 +12,12 @@ void stack_init_declarator(Stack *stack, Sexp *ast) {
   switch (sexp_length(ast)) {
   case 2:
     stack_declarator(stack, sexp_at(ast, 1));
-    stack_pop(stack);
     break;
   case 4:
     stack_ast(stack, sexp_at(ast, 3));
-    src = stack_pop(stack);
+    src = stack_get_prev(stack);
     stack_declarator(stack, sexp_at(ast, 1));
-    dst = stack_pop(stack);
+    dst = stack_get_prev(stack);
     store = stack_instruction_store(stack, src, dst);
     break;
   default:
