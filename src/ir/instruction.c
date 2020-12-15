@@ -40,9 +40,8 @@ void stack_instruction_ret(Stack *stack) {
 void stack_instruction_br(Stack *stack, Value *label) {
   assert(label && VALUE_BLOCK == value_kind(label));
   if (!stack_last_terminator(stack)) {
-    stack_instruction_new(stack, VALUE_INSTRUCTION_BR);
-    stack_insert_block(stack, label);
-    stack_pop(stack);
+    Value *instr = instruction_new(stack, VALUE_INSTRUCTION_BR);
+    value_insert(instr, label);
   }
 }
 void stack_instruction_br_cond(Stack *stack, Value *then_label,
