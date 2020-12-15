@@ -34,12 +34,8 @@ void stack_instruction_ret(Stack *stack) {
   stack_pop(stack);
 }
 void stack_instruction_br(Stack *stack, Value *label) {
-  Value *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Value *last;
   assert(label && VALUE_BLOCK == value_kind(label));
-  assert(current && VALUE_BLOCK == value_kind(current));
-  last = value_last(current);
-  if (!last || !value_is_terminator(last)) {
+  if (!stack_last_terminator(stack)) {
     stack_instruction_new(stack, VALUE_INSTRUCTION_BR);
     stack_insert_block(stack, label);
     stack_pop(stack);

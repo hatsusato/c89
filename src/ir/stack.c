@@ -105,6 +105,12 @@ Value *stack_label(Stack *stack, const char *label) {
     return block;
   }
 }
+Bool stack_last_terminator(Stack *stack) {
+  Value *current = stack_get_next(stack, STACK_NEXT_CURRENT);
+  Value *last = value_last(current);
+  assert(current && VALUE_BLOCK == value_kind(current));
+  return last && value_is_terminator(last);
+}
 void stack_insert_block(Stack *stack, Value *block) {
   assert(block && VALUE_BLOCK == value_kind(block));
   value_insert(stack_top(stack), block);
