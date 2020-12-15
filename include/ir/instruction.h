@@ -10,8 +10,8 @@ void stack_instruction_ret(Stack *, Value *);
 void stack_instruction_br(Stack *, Value *);
 /* br %1, label %2, label %3 */
 void stack_instruction_br_cond(Stack *, Value *, Value *, Value *);
-/* switch %1, label %2: (%1 -- ) */
-void stack_instruction_switch(Stack *, Value *);
+/* switch %1, label %2 [%3]:  */
+void stack_instruction_switch(Stack *, Value *, Value *, Value *);
 /* [ %1, label %2 ... ] */
 void stack_instruction_switch_case(Stack *, Value *, Value *);
 /* add %1, %2 */

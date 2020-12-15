@@ -158,23 +158,24 @@ static void stack_if_else_statement(Stack *stack, Sexp *ast) {
   }
 }
 static void stack_switch_statement(Stack *stack, Sexp *ast) {
+  Value *block = stack_new_block(stack);
   Value *next = stack_new_block(stack);
   Value *dflt = switch_has_default(ast) ? stack_new_block(stack) : next;
   {
+    Value *expr;
     stack_ast(stack, sexp_at(ast, 3));
-    stack_instruction_switch(stack, dflt);
-    {
-      Value *next_break = stack_set_next(stack, STACK_NEXT_BREAK, next);
-      Value *next_default = stack_set_next(stack, STACK_NEXT_DEFAULT, dflt);
-      Value *next_switch =
-          stack_set_next(stack, STACK_NEXT_SWITCH, stack_top(stack));
-      stack_ast(stack, sexp_at(ast, 5));
-      stack_instruction_br(stack, next);
-      stack_set_next(stack, STACK_NEXT_BREAK, next_break);
-      stack_set_next(stack, STACK_NEXT_DEFAULT, next_default);
-      stack_set_next(stack, STACK_NEXT_SWITCH, next_switch);
-    }
-    stack_pop(stack);
+    expr = stack_pop(stack);
+    stack_instruction_switch(stack, expr, dflt, block);
+  }
+  {
+    Value *next_break = stack_set_next(stack, STACK_NEXT_BREAK, next);
+    Value *next_default = stack_set_next(stack, STACK_NEXT_DEFAULT, dflt);
+    Value *next_switch = stack_set_next(stack, STACK_NEXT_SWITCH, block);
+    stack_ast(stack, sexp_at(ast, 5));
+    stack_instruction_br(stack, next);
+    stack_set_next(stack, STACK_NEXT_BREAK, next_break);
+    stack_set_next(stack, STACK_NEXT_DEFAULT, next_default);
+    stack_set_next(stack, STACK_NEXT_SWITCH, next_switch);
   }
   stack_jump_block(stack, next);
 }
