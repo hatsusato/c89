@@ -66,8 +66,10 @@ void stack_instruction_add(Stack *stack) {
 void stack_instruction_sub(Stack *stack) {
   stack_instruction_binary(stack, VALUE_INSTRUCTION_SUB);
 }
-void stack_instruction_load(Stack *stack) {
-  stack_instruction_unary(stack, VALUE_INSTRUCTION_LOAD);
+Value *stack_instruction_load(Stack *stack, Value *src) {
+  Value *instr = instruction_new(stack, VALUE_INSTRUCTION_LOAD);
+  value_insert(instr, src);
+  return instr;
 }
 Value *stack_instruction_store(Stack *stack, Value *src, Value *dst) {
   Value *instr = instruction_new(stack, VALUE_INSTRUCTION_STORE);

@@ -18,8 +18,8 @@ void stack_instruction_switch_case(Stack *, Value *);
 void stack_instruction_add(Stack *);
 /* sub %1, %2: (%1 %2 -- %0) */
 void stack_instruction_sub(Stack *);
-/* load %1: (%1 -- %0) */
-void stack_instruction_load(Stack *);
+/* load %1 */
+Value *stack_instruction_load(Stack *, Value *);
 /* store %1, %2 */
 Value *stack_instruction_store(Stack *, Value *, Value *);
 /* icmp ne %1, %2 */

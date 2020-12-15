@@ -120,9 +120,9 @@ void stack_push_integer(Stack *stack, const char *value) {
   value_set_value(stack_top(stack), value);
 }
 void stack_load_from_symbol(Stack *stack, const char *symbol) {
-  Value *value = stack_find_alloca(stack, symbol);
-  stack_push(stack, value);
-  stack_instruction_load(stack);
+  Value *src = stack_find_alloca(stack, symbol);
+  Value *load = stack_instruction_load(stack, src);
+  stack_push(stack, load);
 }
 void stack_store_to_symbol(Stack *stack, const char *symbol) {
   Value *src = stack_pop(stack);
