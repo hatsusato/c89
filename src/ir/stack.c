@@ -12,7 +12,6 @@ struct struct_Stack {
   Pool *pool;
   Table *table;
   Map *labels;
-  Vector *stack;
   Sexp *ast;
   Value *func;
   Value *prev;
@@ -37,7 +36,6 @@ Stack *stack_new(Pool *pool, Sexp *ast) {
   stack->pool = pool;
   stack->table = table_new();
   stack->labels = map_new(compare_new(labels_compare));
-  stack->stack = vector_new(NULL);
   stack->ast = ast;
   stack->func = pool_alloc(pool, VALUE_FUNCTION);
   stack->prev = NULL;
@@ -47,7 +45,6 @@ Stack *stack_new(Pool *pool, Sexp *ast) {
   return stack;
 }
 void stack_delete(Stack *stack) {
-  vector_delete(stack->stack);
   map_delete(stack->labels);
   table_delete(stack->table);
   UTILITY_FREE(stack);
