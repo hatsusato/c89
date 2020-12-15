@@ -2,40 +2,6 @@
 
 #include "ir/stack_impl.h"
 
-static Bool has_default_statement(Sexp *ast) {
-  assert(AST_STATEMENT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  if (AST_LABELED_STATEMENT == sexp_get_tag(ast)) {
-    switch (sexp_get_tag(sexp_at(ast, 1))) {
-    case AST_IDENTIFIER:
-      return has_default_statement(sexp_at(ast, 3));
-    case AST_CASE:
-      return has_default_statement(sexp_at(ast, 4));
-    case AST_DEFAULT:
-      return true;
-    default:
-      assert(0);
-      break;
-    }
-  }
-  return false;
-}
-static Bool switch_has_default(Sexp *ast) {
-  assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
-  assert(AST_SWITCH == sexp_get_tag(sexp_at(ast, 1)));
-  ast = sexp_at(ast, 5);
-  assert(AST_STATEMENT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 3);
-  assert(AST_STATEMENT_LIST == sexp_get_tag(ast));
-  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    if (has_default_statement(sexp_car(ast))) {
-      return true;
-    }
-  }
-  return false;
-}
 static Bool switch_new_case(Stack *stack) {
   Value *curr = stack_get_next(stack, STACK_NEXT_CURRENT);
   Value *dflt = stack_get_next(stack, STACK_NEXT_DEFAULT);
@@ -68,7 +34,9 @@ static void stack_case_statement(Stack *stack, Sexp *ast) {
   }
 }
 static void stack_default_statement(Stack *stack, Sexp *ast) {
-  Value *next = stack_get_next(stack, STACK_NEXT_DEFAULT);
+  Value *next = stack_new_block(stack);
+  assert(!stack_get_next(stack, STACK_NEXT_DEFAULT));
+  stack_set_next(stack, STACK_NEXT_DEFAULT, next);
   stack_instruction_br(stack, next);
   stack_jump_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
@@ -156,16 +124,17 @@ static void stack_if_else_statement(Stack *stack, Sexp *ast) {
 static void stack_switch_statement(Stack *stack, Sexp *ast) {
   Value *block = stack_new_block(stack);
   Value *next = stack_new_block(stack);
-  Value *dflt = switch_has_default(ast) ? stack_new_block(stack) : next;
   Value *expr = stack_ast(stack, sexp_at(ast, 3));
   Value *instr = stack_instruction_switch(stack, expr);
   {
     Value *next_break = stack_set_next(stack, STACK_NEXT_BREAK, next);
-    Value *next_default = stack_set_next(stack, STACK_NEXT_DEFAULT, dflt);
+    Value *next_default = stack_set_next(stack, STACK_NEXT_DEFAULT, NULL);
     Value *next_switch = stack_set_next(stack, STACK_NEXT_SWITCH, block);
+    Value *dflt;
     stack_ast(stack, sexp_at(ast, 5));
     stack_instruction_br(stack, next);
-    value_insert(instr, dflt);
+    dflt = stack_get_next(stack, STACK_NEXT_DEFAULT);
+    value_insert(instr, dflt ? dflt : next);
     value_insert(instr, block);
     stack_set_next(stack, STACK_NEXT_BREAK, next_break);
     stack_set_next(stack, STACK_NEXT_DEFAULT, next_default);
