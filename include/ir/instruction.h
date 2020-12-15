@@ -20,8 +20,8 @@ void stack_instruction_add(Stack *);
 void stack_instruction_sub(Stack *);
 /* load %1: (%1 -- %0) */
 void stack_instruction_load(Stack *);
-/* store %1, %2: (%1 %2 -- %0) */
-void stack_instruction_store(Stack *);
+/* store %1, %2 */
+Value *stack_instruction_store(Stack *, Value *, Value *);
 /* icmp ne %1, %2 */
 Value *stack_instruction_icmp_ne(Stack *, Value *, Value *);
 

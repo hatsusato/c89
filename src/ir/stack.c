@@ -125,9 +125,10 @@ void stack_load_from_symbol(Stack *stack, const char *symbol) {
   stack_instruction_load(stack);
 }
 void stack_store_to_symbol(Stack *stack, const char *symbol) {
-  Value *value = stack_find_alloca(stack, symbol);
-  stack_push(stack, value);
-  stack_instruction_store(stack);
+  Value *src = stack_pop(stack);
+  Value *dst = stack_find_alloca(stack, symbol);
+  Value *store = stack_instruction_store(stack, src, dst);
+  stack_push(stack, store);
 }
 void stack_alloca(Stack *stack, const char *symbol) {
   Value *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
