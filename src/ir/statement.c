@@ -316,10 +316,12 @@ static void stack_goto_statement(Stack *stack, Sexp *ast) {
 }
 static void stack_return_statement(Stack *stack, Sexp *ast) {
   Value *ret = stack_get_next(stack, STACK_NEXT_RETURN);
+  Value *src;
   assert(!sexp_is_nil(sexp_at(ast, 2)));
   stack_ast(stack, sexp_at(ast, 2));
   if (ret) {
-    stack_store_to_symbol(stack, "$retval");
+    src = stack_pop(stack);
+    stack_store_to_symbol(stack, src, "$retval");
     stack_pop(stack);
     stack_instruction_br(stack, ret);
   } else {

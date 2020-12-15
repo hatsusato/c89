@@ -15,7 +15,8 @@ void stack_identifier_alloca(Stack *stack, Sexp *ast) {
   stack_alloca(stack, stack_identifier_symbol(ast));
 }
 void stack_identifier_store(Stack *stack, Sexp *ast) {
-  stack_store_to_symbol(stack, stack_identifier_symbol(ast));
+  Value *src = stack_pop(stack);
+  stack_store_to_symbol(stack, src, stack_identifier_symbol(ast));
 }
 void stack_integer_constant(Stack *stack, Sexp *ast) {
   Value *value;

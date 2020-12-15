@@ -123,8 +123,7 @@ void stack_load_from_symbol(Stack *stack, const char *symbol) {
   Value *load = stack_instruction_load(stack, src);
   stack_push(stack, load);
 }
-void stack_store_to_symbol(Stack *stack, const char *symbol) {
-  Value *src = stack_pop(stack);
+void stack_store_to_symbol(Stack *stack, Value *src, const char *symbol) {
   Value *dst = stack_find_alloca(stack, symbol);
   Value *store = stack_instruction_store(stack, src, dst);
   stack_push(stack, store);
