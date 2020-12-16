@@ -38,8 +38,7 @@ Stack *stack_new(Pool *pool, Sexp *ast) {
   stack->table = table_new();
   stack->labels = map_new(compare_new(labels_compare));
   stack->ast = ast;
-  stack->func = function_new();
-  pool_insert(pool, value_of(stack->func));
+  stack->func = (Function *)pool_alloc(pool, VALUE_FUNCTION);
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
   }
@@ -69,9 +68,7 @@ Value *stack_new_value(Stack *stack, ValueKind kind) {
   return pool_alloc(stack->pool, kind);
 }
 Block *stack_new_block(Stack *stack) {
-  Block *block = block_new();
-  pool_insert(stack->pool, value_of(block));
-  return block;
+  return (Block *)pool_alloc(stack->pool, VALUE_BLOCK);
 }
 Value *stack_new_integer(Stack *stack, const char *integer) {
   Value *value = stack_new_value(stack, VALUE_INTEGER_CONSTANT);

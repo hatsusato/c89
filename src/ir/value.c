@@ -3,6 +3,8 @@
 #include <stdio.h>
 
 #include "ast/ast_tag.h"
+#include "ir/block.h"
+#include "ir/function.h"
 #include "ir/register.h"
 #include "ir/register_type.h"
 #include "ir/value_kind.h"
@@ -18,16 +20,34 @@ struct struct_Value {
 };
 
 Value *value_new(ValueKind kind) {
-  Value *value = UTILITY_MALLOC(Value);
-  value->kind = kind;
-  register_init(&value->reg);
-  value->value = NULL;
-  value->vec = vector_new(NULL);
-  return value;
+  Value *value;
+  switch (kind) {
+  case VALUE_FUNCTION:
+    return value_of(function_new());
+  case VALUE_BLOCK:
+    return value_of(block_new());
+  default:
+    value = UTILITY_MALLOC(Value);
+    value->kind = kind;
+    register_init(&value->reg);
+    value->value = NULL;
+    value->vec = vector_new(NULL);
+    return value;
+  }
 }
 void value_delete(Value *value) {
-  vector_delete(value->vec);
-  UTILITY_FREE(value);
+  switch (value_kind(value)) {
+  case VALUE_FUNCTION:
+    function_delete((Function *)value);
+    break;
+  case VALUE_BLOCK:
+    block_delete((Block *)value);
+    break;
+  default:
+    vector_delete(value->vec);
+    UTILITY_FREE(value);
+    break;
+  }
 }
 Value *value_of(void *value) {
   return (Value *)value;
