@@ -61,7 +61,7 @@ Function *stack_build(Stack *stack) {
   stack_ast(stack, stack->ast);
   value_append(alloc, entry);
   value_function_clean(value_of(stack->func));
-  function_set_register(stack->func);
+  function_finish(stack->func);
   return stack->func;
 }
 

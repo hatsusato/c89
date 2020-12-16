@@ -69,7 +69,7 @@ void function_init(Function *func, Sexp *ast) {
 void function_insert(Function *func, Value *block) {
   vector_push(func->vec, block);
 }
-void function_set_register(Function *func) {
+void function_finish(Function *func) {
   RegisterGenerator *gen = register_generator_new();
   ElemType *begin = vector_begin(func->vec);
   ElemType *end = vector_end(func->vec);
