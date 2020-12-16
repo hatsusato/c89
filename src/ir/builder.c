@@ -48,5 +48,5 @@ void builder_delete(Builder *builder) {
 }
 void builder_build(Builder *builder, Sexp *ast) {
   builder_translation_unit(builder, ast);
-  value_pretty(builder->module);
+  module_pretty(builder->module);
 }
