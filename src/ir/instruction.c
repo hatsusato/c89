@@ -3,10 +3,10 @@
 #include "ir/stack_impl.h"
 
 static Value *instruction_new(Stack *stack, ValueKind kind) {
-  Value *current = stack_get_next(stack, STACK_NEXT_CURRENT);
+  Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
   Value *value = stack_new_value(stack, kind);
   assert(value_is_instruction(value));
-  value_insert(current, value);
+  value_insert(value_of(current), value);
   return value;
 }
 
@@ -34,22 +34,22 @@ Value *stack_instruction_switch(Stack *stack, Value *expr) {
   return instr;
 }
 void stack_instruction_switch_finish(Stack *stack, Value *instr) {
-  Value *default_label = stack_get_next(stack, STACK_NEXT_DEFAULT);
-  Value *break_label = stack_get_next(stack, STACK_NEXT_BREAK);
-  Value *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
-  Value *next = break_label ? break_label : stack_new_block(stack);
+  Block *default_label = stack_get_next(stack, STACK_NEXT_DEFAULT);
+  Block *break_label = stack_get_next(stack, STACK_NEXT_BREAK);
+  Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
+  Value *next = break_label ? value_of(break_label) : stack_new_block(stack);
   stack_instruction_br(stack, next);
-  value_insert(instr, default_label ? default_label : next);
-  value_insert(instr, switch_block);
+  value_insert(instr, default_label ? value_of(default_label) : next);
+  value_insert(instr, value_of(switch_block));
   if (break_label || !default_label) {
     stack_jump_block(stack, next);
   }
 }
 void stack_instruction_switch_case(Stack *stack, Value *constant,
                                    Value *label) {
-  Value *cases = stack_get_next(stack, STACK_NEXT_SWITCH);
-  value_insert(cases, constant);
-  value_insert(cases, label);
+  Block *cases = stack_get_next(stack, STACK_NEXT_SWITCH);
+  value_insert(value_of(cases), constant);
+  value_insert(value_of(cases), label);
 }
 Value *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
   Value *instr = instruction_new(stack, VALUE_INSTRUCTION_ADD);

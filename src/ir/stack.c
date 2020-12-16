@@ -56,9 +56,9 @@ Function *stack_build(Stack *stack) {
   Value *ret = 1 < count_return(stack->ast) ? stack_new_block(stack) : NULL;
   function_init(stack->func, stack->ast);
   function_insert(stack->func, alloc);
-  stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
-  stack_set_next(stack, STACK_NEXT_CURRENT, entry);
-  stack_set_next(stack, STACK_NEXT_RETURN, ret);
+  stack_set_next(stack, STACK_NEXT_ALLOC, (Block *)alloc);
+  stack_set_next(stack, STACK_NEXT_CURRENT, (Block *)entry);
+  stack_set_next(stack, STACK_NEXT_RETURN, (Block *)ret);
   stack_ast(stack, stack->ast);
   value_append(alloc, entry);
   function_finish(stack->func);
@@ -87,16 +87,16 @@ Value *stack_label(Stack *stack, const char *label) {
   }
 }
 Bool stack_last_terminator(Stack *stack) {
-  Value *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Value *last = value_last(current);
-  assert(current && VALUE_BLOCK == value_kind(current));
+  Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
+  Value *last = value_last(value_of(current));
+  assert(current);
   return last && value_is_terminator(last);
 }
 Value *stack_alloca(Stack *stack, const char *symbol) {
-  Value *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
+  Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
   Value *value = pool_alloc(stack->pool, VALUE_INSTRUCTION_ALLOCA);
   table_insert(stack->table, symbol, value);
-  value_insert(alloc, value);
+  value_insert(value_of(alloc), value);
   return value;
 }
 Value *stack_find_alloca(Stack *stack, const char *symbol) {
@@ -106,17 +106,16 @@ Value *stack_find_alloca(Stack *stack, const char *symbol) {
 }
 void stack_jump_block(Stack *stack, Value *dest) {
   assert(dest && VALUE_BLOCK == value_kind(dest));
-  stack_set_next(stack, STACK_NEXT_CURRENT, dest);
+  stack_set_next(stack, STACK_NEXT_CURRENT, (Block *)dest);
   function_insert(stack->func, dest);
 }
-Value *stack_get_next(Stack *stack, StackNextTag tag) {
-  return value_of(stack->next[tag]);
+Block *stack_get_next(Stack *stack, StackNextTag tag) {
+  return stack->next[tag];
 }
-Value *stack_set_next(Stack *stack, StackNextTag tag, Value *next) {
-  Block *block = (Block *)next;
+Block *stack_set_next(Stack *stack, StackNextTag tag, Block *next) {
   assert(0 <= tag && tag < STACK_NEXT_COUNT);
-  UTILITY_SWAP(Block *, stack->next[tag], block);
-  return value_of(block);
+  UTILITY_SWAP(Block *, stack->next[tag], next);
+  return next;
 }
 
 static Value *stack_ast_map(Stack *stack, Sexp *ast) {
