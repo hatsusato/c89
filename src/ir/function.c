@@ -24,3 +24,6 @@ void function_delete(Function *func) {
   vector_delete(func->vec);
   UTILITY_FREE(func);
 }
+void function_insert(Function *func, Value *block) {
+  vector_push(func->vec, block);
+}
