@@ -1,6 +1,7 @@
 #include "ir/stack.h"
 
 #include "compare.h"
+#include "ir/function.h"
 #include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/stack_impl.h"
@@ -13,7 +14,7 @@ struct struct_Stack {
   Table *table;
   Map *labels;
   Sexp *ast;
-  Value *func;
+  Function *func;
   Value *next[STACK_NEXT_COUNT];
 };
 
@@ -37,7 +38,7 @@ Stack *stack_new(Pool *pool, Sexp *ast) {
   stack->labels = map_new(compare_new(labels_compare));
   stack->ast = ast;
   stack->func = function_new();
-  pool_insert(pool, stack->func);
+  pool_insert(pool, value_of(stack->func));
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
   }
@@ -53,17 +54,17 @@ Value *stack_build(Stack *stack) {
   Value *alloc = stack_new_block(stack);
   Value *entry = stack_new_block(stack);
   Value *ret = 1 < count_return(stack->ast) ? stack_new_block(stack) : NULL;
-  value_insert(stack->func, alloc);
+  function_insert(stack->func, alloc);
   stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
   stack_ast(stack, stack->ast);
   value_append(alloc, entry);
-  value_function_clean(stack->func);
+  value_function_clean(value_of(stack->func));
   gen = register_generator_new();
-  value_set_reg(gen, stack->func);
+  value_set_reg(gen, value_of(stack->func));
   register_generator_delete(gen);
-  return stack->func;
+  return value_of(stack->func);
 }
 
 Value *stack_new_value(Stack *stack, ValueKind kind) {
@@ -108,7 +109,7 @@ Value *stack_find_alloca(Stack *stack, const char *symbol) {
 void stack_jump_block(Stack *stack, Value *dest) {
   assert(dest && VALUE_BLOCK == value_kind(dest));
   stack_set_next(stack, STACK_NEXT_CURRENT, dest);
-  value_insert(stack->func, dest);
+  function_insert(stack->func, dest);
 }
 Value *stack_get_next(Stack *stack, StackNextTag tag) {
   return stack->next[tag];
@@ -119,7 +120,7 @@ Value *stack_set_next(Stack *stack, StackNextTag tag, Value *next) {
   return next;
 }
 void stack_set_function_name(Stack *stack, const char *name) {
-  value_set_value(stack->func, name);
+  value_set_value(value_of(stack->func), name);
 }
 
 static Value *stack_ast_map(Stack *stack, Sexp *ast) {
