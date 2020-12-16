@@ -25,8 +25,8 @@ void block_delete(Block *block) {
   vector_delete(block->vec);
   UTILITY_FREE(block);
 }
-Bool block_empty(Block *block) {
-  return vector_empty(block->vec);
+void block_insert(Block *block, Value *instr) {
+  vector_push(block->vec, instr);
 }
 void block_append(Block *dst, Block *src) {
   ElemType *begin = vector_begin(src->vec);
@@ -34,6 +34,9 @@ void block_append(Block *dst, Block *src) {
   while (begin < end) {
     vector_push(dst->vec, *begin++);
   }
+}
+Bool block_empty(Block *block) {
+  return vector_empty(block->vec);
 }
 Bool block_is_terminated(Block *block) {
   Value *last = vector_back(block->vec);

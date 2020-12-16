@@ -97,7 +97,7 @@ Value *stack_alloca(Stack *stack, const char *symbol) {
   Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
   Value *value = pool_alloc(stack->pool, VALUE_INSTRUCTION_ALLOCA);
   table_insert(stack->table, symbol, value);
-  value_insert(value_of(alloc), value);
+  block_insert(alloc, value);
   return value;
 }
 Value *stack_find_alloca(Stack *stack, const char *symbol) {
