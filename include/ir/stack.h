@@ -33,7 +33,7 @@ Value *stack_label(Stack *, const char *);
 Bool stack_last_terminator(Stack *);
 Value *stack_alloca(Stack *, const char *);
 Value *stack_find_alloca(Stack *, const char *);
-void stack_jump_block(Stack *, Value *);
+void stack_jump_block(Stack *, Block *);
 Block *stack_get_next(Stack *, StackNextTag);
 Block *stack_set_next(Stack *, StackNextTag, Block *);
 Value *stack_ast(Stack *, Sexp *);

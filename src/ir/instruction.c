@@ -42,7 +42,7 @@ void stack_instruction_switch_finish(Stack *stack, Value *instr) {
   value_insert(instr, value_of(default_label ? default_label : next));
   value_insert(instr, value_of(switch_block));
   if (break_label || !default_label) {
-    stack_jump_block(stack, value_of(next));
+    stack_jump_block(stack, next);
   }
 }
 void stack_instruction_switch_case(Stack *stack, Value *constant,
