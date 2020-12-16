@@ -22,28 +22,31 @@ static Instruction *instruction_new(Stack *stack, ValueKind kind) {
   block_insert(current, value_of(instr));
   return instr;
 }
+static void instruction_insert(Instruction *instr, Value *value) {
+  vector_push(instr->vec, value);
+}
 
 void stack_instruction_ret(Stack *stack, Value *expr) {
   Instruction *instr = instruction_new(stack, VALUE_INSTRUCTION_RET);
-  value_insert(value_of(instr), expr);
+  instruction_insert(instr, expr);
 }
 void stack_instruction_br(Stack *stack, Block *label) {
   assert(label);
   if (!stack_last_terminator(stack)) {
     Instruction *instr = instruction_new(stack, VALUE_INSTRUCTION_BR);
-    value_insert_block(value_of(instr), label);
+    instruction_insert(instr, value_of(label));
   }
 }
 void stack_instruction_br_cond(Stack *stack, Value *expr, Block *then_label,
                                Block *else_label) {
   Instruction *instr = instruction_new(stack, VALUE_INSTRUCTION_BR_COND);
-  value_insert(value_of(instr), expr);
-  value_insert_block(value_of(instr), then_label);
-  value_insert_block(value_of(instr), else_label);
+  instruction_insert(instr, expr);
+  instruction_insert(instr, value_of(then_label));
+  instruction_insert(instr, value_of(else_label));
 }
 Value *stack_instruction_switch(Stack *stack, Value *expr) {
   Instruction *instr = instruction_new(stack, VALUE_INSTRUCTION_SWITCH);
-  value_insert(value_of(instr), expr);
+  instruction_insert(instr, expr);
   return value_of(instr);
 }
 void stack_instruction_switch_finish(Stack *stack, Value *instr) {
@@ -66,30 +69,30 @@ void stack_instruction_switch_case(Stack *stack, Value *constant,
 }
 Value *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = instruction_new(stack, VALUE_INSTRUCTION_ADD);
-  value_insert(value_of(instr), lhs);
-  value_insert(value_of(instr), rhs);
+  instruction_insert(instr, lhs);
+  instruction_insert(instr, rhs);
   return value_of(instr);
 }
 Value *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = instruction_new(stack, VALUE_INSTRUCTION_SUB);
-  value_insert(value_of(instr), lhs);
-  value_insert(value_of(instr), rhs);
+  instruction_insert(instr, lhs);
+  instruction_insert(instr, rhs);
   return value_of(instr);
 }
 Value *stack_instruction_load(Stack *stack, Value *src) {
   Instruction *instr = instruction_new(stack, VALUE_INSTRUCTION_LOAD);
-  value_insert(value_of(instr), src);
+  instruction_insert(instr, src);
   return value_of(instr);
 }
 Value *stack_instruction_store(Stack *stack, Value *src, Value *dst) {
   Instruction *instr = instruction_new(stack, VALUE_INSTRUCTION_STORE);
-  value_insert(value_of(instr), src);
-  value_insert(value_of(instr), dst);
+  instruction_insert(instr, src);
+  instruction_insert(instr, dst);
   return value_of(instr);
 }
 Value *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = instruction_new(stack, VALUE_INSTRUCTION_ICMP_NE);
-  value_insert(value_of(instr), lhs);
-  value_insert(value_of(instr), rhs);
+  instruction_insert(instr, lhs);
+  instruction_insert(instr, rhs);
   return value_of(instr);
 }
