@@ -38,13 +38,6 @@ void value_insert(Value *value, Value *elem) {
 void value_pop(Value *value) {
   vector_pop(value->vec);
 }
-void value_append(Value *dst, const Value *src) {
-  ElemType *begin = vector_begin(src->vec);
-  ElemType *end = vector_end(src->vec);
-  while (begin < end) {
-    vector_push(dst->vec, *begin++);
-  }
-}
 void value_set_value(Value *value, const void *val) {
   value->value = val;
 }

@@ -28,6 +28,13 @@ void block_delete(Block *block) {
 Bool block_empty(Block *block) {
   return vector_empty(block->vec);
 }
+void block_append(Block *dst, Block *src) {
+  ElemType *begin = vector_begin(src->vec);
+  ElemType *end = vector_end(src->vec);
+  while (begin < end) {
+    vector_push(dst->vec, *begin++);
+  }
+}
 Bool block_is_terminated(Block *block) {
   Value *last = vector_back(block->vec);
   return last && value_is_terminator(last);

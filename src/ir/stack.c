@@ -60,7 +60,7 @@ Function *stack_build(Stack *stack) {
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
   stack_ast(stack, stack->ast);
-  value_append(value_of(alloc), value_of(entry));
+  block_append(alloc, entry);
   function_finish(stack->func);
   return stack->func;
 }
