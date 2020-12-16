@@ -7,5 +7,6 @@
 Block *block_new(void);
 void block_delete(Block *);
 Bool block_empty(Block *);
+Bool block_is_terminated(Block *);
 
 #endif /* INCLUDE_GUARD_158B0FE3_07C7_4187_B41D_C9D59FB58195 */

@@ -1,6 +1,7 @@
 #include "ir/block.h"
 
 #include "ir/register.h"
+#include "ir/value.h"
 #include "ir/value_kind.h"
 #include "utility.h"
 #include "vector.h"
@@ -26,4 +27,8 @@ void block_delete(Block *block) {
 }
 Bool block_empty(Block *block) {
   return vector_empty(block->vec);
+}
+Bool block_is_terminated(Block *block) {
+  Value *last = vector_back(block->vec);
+  return last && value_is_terminator(last);
 }

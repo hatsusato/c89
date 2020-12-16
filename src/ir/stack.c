@@ -90,9 +90,8 @@ Block *stack_label(Stack *stack, const char *label) {
 }
 Bool stack_last_terminator(Stack *stack) {
   Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Value *last = value_last(value_of(current));
   assert(current);
-  return last && value_is_terminator(last);
+  return block_is_terminated(current);
 }
 Value *stack_alloca(Stack *stack, const char *symbol) {
   Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
