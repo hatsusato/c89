@@ -1,6 +1,7 @@
 #include "ir/stack.h"
 
 #include "compare.h"
+#include "ir/block.h"
 #include "ir/function.h"
 #include "ir/pool.h"
 #include "ir/register.h"
@@ -15,7 +16,7 @@ struct struct_Stack {
   Map *labels;
   Sexp *ast;
   Function *func;
-  Value *next[STACK_NEXT_COUNT];
+  Block *next[STACK_NEXT_COUNT];
 };
 
 static int labels_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
@@ -109,12 +110,13 @@ void stack_jump_block(Stack *stack, Value *dest) {
   function_insert(stack->func, dest);
 }
 Value *stack_get_next(Stack *stack, StackNextTag tag) {
-  return stack->next[tag];
+  return value_of(stack->next[tag]);
 }
 Value *stack_set_next(Stack *stack, StackNextTag tag, Value *next) {
+  Block *block = (Block *)next;
   assert(0 <= tag && tag < STACK_NEXT_COUNT);
-  UTILITY_SWAP(Value *, stack->next[tag], next);
-  return next;
+  UTILITY_SWAP(Block *, stack->next[tag], block);
+  return value_of(block);
 }
 
 static Value *stack_ast_map(Stack *stack, Sexp *ast) {
