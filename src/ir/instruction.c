@@ -46,10 +46,10 @@ void stack_instruction_switch_finish(Stack *stack, Value *instr) {
   }
 }
 void stack_instruction_switch_case(Stack *stack, Value *constant,
-                                   Value *label) {
+                                   Block *label) {
   Block *cases = stack_get_next(stack, STACK_NEXT_SWITCH);
   value_insert(value_of(cases), constant);
-  value_insert(value_of(cases), label);
+  value_insert(value_of(cases), value_of(label));
 }
 Value *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
   Value *instr = instruction_new(stack, VALUE_INSTRUCTION_ADD);

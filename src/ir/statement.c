@@ -30,7 +30,7 @@ static void stack_case_statement(Stack *stack, Sexp *ast) {
   }
   {
     Value *constant = stack_ast(stack, sexp_at(ast, 2));
-    stack_instruction_switch_case(stack, constant, value_of(next));
+    stack_instruction_switch_case(stack, constant, next);
     stack_ast(stack, sexp_at(ast, 4));
   }
 }
