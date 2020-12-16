@@ -68,7 +68,12 @@ Value *stack_new_value(Stack *stack, ValueKind kind) {
   return pool_alloc(stack->pool, kind);
 }
 Block *stack_new_block(Stack *stack) {
-  return (Block *)pool_alloc(stack->pool, VALUE_BLOCK);
+  Block *block = block_new();
+  stack_pool_register(stack, value_of(block));
+  return block;
+}
+void stack_pool_register(Stack *stack, Value *value) {
+  pool_insert(stack->pool, value);
 }
 Value *stack_new_integer(Stack *stack, const char *integer) {
   Value *value = stack_new_value(stack, VALUE_INTEGER_CONSTANT);

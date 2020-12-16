@@ -19,6 +19,7 @@ static Instruction *instruction_new(Stack *stack, ValueKind kind) {
   register_init(&instr->reg);
   instr->vec = vector_new(NULL);
   instr->value = NULL;
+  stack_pool_register(stack, value_of(instr));
   block_insert(current, value_of(instr));
   return instr;
 }
