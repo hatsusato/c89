@@ -1,6 +1,7 @@
 #include "ir/instruction.h"
 
 #include "ir/block.h"
+#include "ir/register.h"
 #include "ir/stack_impl.h"
 #include "vector.h"
 
@@ -13,10 +14,13 @@ struct struct_Instruction {
 
 static Value *instruction_new(Stack *stack, ValueKind kind) {
   Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Value *value = stack_new_value(stack, kind);
-  assert(value_is_instruction(value));
-  block_insert(current, value);
-  return value;
+  Instruction *instr = UTILITY_MALLOC(Instruction);
+  instr->kind = kind;
+  register_init(&instr->reg);
+  instr->vec = vector_new(NULL);
+  instr->value = NULL;
+  block_insert(current, instr);
+  return instr;
 }
 
 void stack_instruction_ret(Stack *stack, Value *expr) {
