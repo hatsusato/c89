@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 #define INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 
+#include "ir/function_type.h"
 #include "ir/pool_type.h"
 #include "ir/stack_type.h"
 #include "ir/value_kind.h"
@@ -22,7 +23,7 @@ typedef enum {
 
 Stack *stack_new(Pool *, Sexp *);
 void stack_delete(Stack *);
-Value *stack_build(Stack *);
+Function *stack_build(Stack *);
 
 Value *stack_new_value(Stack *, ValueKind);
 Value *stack_new_block(Stack *);

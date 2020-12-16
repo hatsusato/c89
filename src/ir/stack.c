@@ -49,7 +49,7 @@ void stack_delete(Stack *stack) {
   table_delete(stack->table);
   UTILITY_FREE(stack);
 }
-Value *stack_build(Stack *stack) {
+Function *stack_build(Stack *stack) {
   Value *alloc = stack_new_block(stack);
   Value *entry = stack_new_block(stack);
   Value *ret = 1 < count_return(stack->ast) ? stack_new_block(stack) : NULL;
@@ -61,7 +61,7 @@ Value *stack_build(Stack *stack) {
   value_append(alloc, entry);
   value_function_clean(value_of(stack->func));
   function_set_register(stack->func);
-  return value_of(stack->func);
+  return stack->func;
 }
 
 Value *stack_new_value(Stack *stack, ValueKind kind) {

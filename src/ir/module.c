@@ -24,6 +24,6 @@ void module_delete(Module *module) {
   vector_delete(module->vec);
   UTILITY_FREE(module);
 }
-void module_insert(Module *module, Value *func) {
+void module_insert(Module *module, Function *func) {
   vector_push(module->vec, func);
 }
