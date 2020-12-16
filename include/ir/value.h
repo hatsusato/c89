@@ -9,6 +9,7 @@
 
 Value *value_new(ValueKind);
 void value_delete(Value *);
+Value *value_of(void *);
 void value_insert(Value *, Value *);
 void value_pop(Value *);
 void value_function_clean(Value *);

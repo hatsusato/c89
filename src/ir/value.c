@@ -29,6 +29,9 @@ void value_delete(Value *value) {
   vector_delete(value->vec);
   UTILITY_FREE(value);
 }
+Value *value_of(void *value) {
+  return (Value *)value;
+}
 void value_insert(Value *value, Value *elem) {
   vector_push(value->vec, elem);
 }
