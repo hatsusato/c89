@@ -60,7 +60,6 @@ Function *stack_build(Stack *stack) {
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
   stack_ast(stack, stack->ast);
   value_append(alloc, entry);
-  value_function_clean(value_of(stack->func));
   function_finish(stack->func);
   return stack->func;
 }
@@ -116,9 +115,6 @@ Value *stack_set_next(Stack *stack, StackNextTag tag, Value *next) {
   assert(0 <= tag && tag < STACK_NEXT_COUNT);
   UTILITY_SWAP(Value *, stack->next[tag], next);
   return next;
-}
-void stack_set_function_name(Stack *stack, const char *name) {
-  value_set_value(value_of(stack->func), name);
 }
 
 static Value *stack_ast_map(Stack *stack, Sexp *ast) {
