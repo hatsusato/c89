@@ -1,0 +1,7 @@
+#ifndef INCLUDE_GUARD_060D8D4A_B218_4B2A_AB32_4FC554F4BC11
+#define INCLUDE_GUARD_060D8D4A_B218_4B2A_AB32_4FC554F4BC11
+
+struct struct_Instruction;
+typedef struct struct_Instruction Instruction;
+
+#endif /* INCLUDE_GUARD_060D8D4A_B218_4B2A_AB32_4FC554F4BC11 */

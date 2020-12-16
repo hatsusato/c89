@@ -2,6 +2,14 @@
 
 #include "ir/block.h"
 #include "ir/stack_impl.h"
+#include "vector.h"
+
+struct struct_Instruction {
+  ValueKind kind;
+  Register reg;
+  Vector *vec;
+  const void *value;
+};
 
 static Value *instruction_new(Stack *stack, ValueKind kind) {
   Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);

@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 
 #include "ir/block_type.h"
+#include "ir/instruction_type.h"
 #include "ir/stack_type.h"
 #include "ir/value_type.h"
 
