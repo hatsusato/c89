@@ -36,7 +36,8 @@ Stack *stack_new(Pool *pool, Sexp *ast) {
   stack->table = table_new();
   stack->labels = map_new(compare_new(labels_compare));
   stack->ast = ast;
-  stack->func = pool_alloc(pool, VALUE_FUNCTION);
+  stack->func = function_new();
+  pool_insert(pool, stack->func);
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
   }

@@ -23,3 +23,6 @@ Value *pool_alloc(Pool *pool, ValueKind kind) {
   vector_push(pool->pool, value);
   return value;
 }
+void pool_insert(Pool *pool, Value *value) {
+  vector_push(pool->pool, value);
+}
