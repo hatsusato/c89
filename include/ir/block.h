@@ -3,4 +3,7 @@
 
 #include "ir/block_type.h"
 
+Block *block_new(void);
+void block_delete(Block *);
+
 #endif /* INCLUDE_GUARD_158B0FE3_07C7_4187_B41D_C9D59FB58195 */
