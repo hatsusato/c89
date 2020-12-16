@@ -1,6 +1,7 @@
 #include "ir/function.h"
 
 #include "ir/register.h"
+#include "ir/value.h"
 #include "ir/value_kind.h"
 #include "utility.h"
 #include "vector.h"
@@ -26,4 +27,13 @@ void function_delete(Function *func) {
 }
 void function_insert(Function *func, Value *block) {
   vector_push(func->vec, block);
+}
+void function_set_register(Function *func) {
+  RegisterGenerator *gen = register_generator_new();
+  ElemType *begin = vector_begin(func->vec);
+  ElemType *end = vector_end(func->vec);
+  while (begin < end) {
+    value_set_reg(gen, *begin++);
+  }
+  register_generator_delete(gen);
 }

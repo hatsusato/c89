@@ -50,7 +50,6 @@ void stack_delete(Stack *stack) {
   UTILITY_FREE(stack);
 }
 Value *stack_build(Stack *stack) {
-  RegisterGenerator *gen;
   Value *alloc = stack_new_block(stack);
   Value *entry = stack_new_block(stack);
   Value *ret = 1 < count_return(stack->ast) ? stack_new_block(stack) : NULL;
@@ -61,9 +60,7 @@ Value *stack_build(Stack *stack) {
   stack_ast(stack, stack->ast);
   value_append(alloc, entry);
   value_function_clean(value_of(stack->func));
-  gen = register_generator_new();
-  value_set_reg(gen, value_of(stack->func));
-  register_generator_delete(gen);
+  function_set_register(stack->func);
   return value_of(stack->func);
 }
 
