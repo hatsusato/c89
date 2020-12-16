@@ -19,15 +19,15 @@ void stack_instruction_br(Stack *stack, Block *label) {
   assert(label);
   if (!stack_last_terminator(stack)) {
     Value *instr = instruction_new(stack, VALUE_INSTRUCTION_BR);
-    value_insert(instr, value_of(label));
+    value_insert_block(instr, label);
   }
 }
 void stack_instruction_br_cond(Stack *stack, Value *expr, Block *then_label,
                                Block *else_label) {
   Value *instr = instruction_new(stack, VALUE_INSTRUCTION_BR_COND);
   value_insert(instr, expr);
-  value_insert(instr, value_of(then_label));
-  value_insert(instr, value_of(else_label));
+  value_insert_block(instr, then_label);
+  value_insert_block(instr, else_label);
 }
 Value *stack_instruction_switch(Stack *stack, Value *expr) {
   Value *instr = instruction_new(stack, VALUE_INSTRUCTION_SWITCH);
@@ -40,8 +40,8 @@ void stack_instruction_switch_finish(Stack *stack, Value *instr) {
   Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
   Block *next = break_label ? break_label : stack_new_block(stack);
   stack_instruction_br(stack, next);
-  value_insert(instr, value_of(default_label ? default_label : next));
-  value_insert(instr, value_of(switch_block));
+  value_insert_block(instr, default_label ? default_label : next);
+  value_insert_block(instr, switch_block);
   if (break_label || !default_label) {
     stack_jump_block(stack, next);
   }

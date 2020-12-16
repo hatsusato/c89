@@ -35,6 +35,9 @@ Value *value_of(void *value) {
 void value_insert(Value *value, Value *elem) {
   vector_push(value->vec, elem);
 }
+void value_insert_block(Value *value, Block *block) {
+  vector_push(value->vec, block);
+}
 void value_pop(Value *value) {
   vector_pop(value->vec);
 }
