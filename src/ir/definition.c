@@ -12,7 +12,7 @@ Value *stack_function_definition(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 4));
   if (ret) {
     Value *expr;
-    stack_instruction_br(stack, value_of(ret));
+    stack_instruction_br(stack, ret);
     stack_jump_block(stack, ret);
     expr = stack_find_alloca(stack, "$retval");
     expr = stack_instruction_load(stack, expr);
