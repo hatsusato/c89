@@ -51,16 +51,16 @@ void stack_delete(Stack *stack) {
   UTILITY_FREE(stack);
 }
 Function *stack_build(Stack *stack) {
-  Value *alloc = stack_new_block(stack);
-  Value *entry = stack_new_block(stack);
-  Value *ret = 1 < count_return(stack->ast) ? stack_new_block(stack) : NULL;
+  Block *alloc = stack_new_block(stack);
+  Block *entry = stack_new_block(stack);
+  Block *ret = 1 < count_return(stack->ast) ? stack_new_block(stack) : NULL;
   function_init(stack->func, stack->ast);
-  function_insert(stack->func, alloc);
-  stack_set_next(stack, STACK_NEXT_ALLOC, (Block *)alloc);
-  stack_set_next(stack, STACK_NEXT_CURRENT, (Block *)entry);
-  stack_set_next(stack, STACK_NEXT_RETURN, (Block *)ret);
+  function_insert(stack->func, value_of(alloc));
+  stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
+  stack_set_next(stack, STACK_NEXT_CURRENT, entry);
+  stack_set_next(stack, STACK_NEXT_RETURN, ret);
   stack_ast(stack, stack->ast);
-  value_append(alloc, entry);
+  value_append(value_of(alloc), value_of(entry));
   function_finish(stack->func);
   return stack->func;
 }
@@ -68,8 +68,10 @@ Function *stack_build(Stack *stack) {
 Value *stack_new_value(Stack *stack, ValueKind kind) {
   return pool_alloc(stack->pool, kind);
 }
-Value *stack_new_block(Stack *stack) {
-  return pool_alloc(stack->pool, VALUE_BLOCK);
+Block *stack_new_block(Stack *stack) {
+  Block *block = block_new();
+  pool_insert(stack->pool, value_of(block));
+  return block;
 }
 Value *stack_new_integer(Stack *stack, const char *integer) {
   Value *value = stack_new_value(stack, VALUE_INTEGER_CONSTANT);
@@ -81,9 +83,9 @@ Value *stack_label(Stack *stack, const char *label) {
   if (map_contains(stack->labels, key)) {
     return *map_find(stack->labels, key);
   } else {
-    Value *block = stack_new_block(stack);
+    Block *block = stack_new_block(stack);
     map_insert(stack->labels, key, block);
-    return block;
+    return value_of(block);
   }
 }
 Bool stack_last_terminator(Stack *stack) {
