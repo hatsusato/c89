@@ -16,9 +16,9 @@ Value *stack_statement(Stack *stack, Sexp *ast) {
 }
 static void stack_label_statement(Stack *stack, Sexp *ast) {
   const char *label = stack_identifier_symbol(sexp_at(ast, 1));
-  Value *next = stack_label(stack, label);
-  stack_instruction_br(stack, next);
-  stack_jump_block(stack, (Block *)next);
+  Block *next = stack_label(stack, label);
+  stack_instruction_br(stack, value_of(next));
+  stack_jump_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
 }
 static void stack_case_statement(Stack *stack, Sexp *ast) {
@@ -269,8 +269,8 @@ Value *stack_iteration_statement(Stack *stack, Sexp *ast) {
 }
 static void stack_goto_statement(Stack *stack, Sexp *ast) {
   const char *label = stack_identifier_symbol(sexp_at(ast, 2));
-  Value *next = stack_label(stack, label);
-  stack_instruction_br(stack, next);
+  Block *next = stack_label(stack, label);
+  stack_instruction_br(stack, value_of(next));
 }
 static void stack_continue_statement(Stack *stack) {
   Block *next = stack_get_next(stack, STACK_NEXT_CONTINUE);

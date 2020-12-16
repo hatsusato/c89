@@ -78,14 +78,14 @@ Value *stack_new_integer(Stack *stack, const char *integer) {
   value_set_value(value, integer);
   return value;
 }
-Value *stack_label(Stack *stack, const char *label) {
+Block *stack_label(Stack *stack, const char *label) {
   ElemType key = (ElemType)label;
   if (map_contains(stack->labels, key)) {
     return *map_find(stack->labels, key);
   } else {
     Block *block = stack_new_block(stack);
     map_insert(stack->labels, key, block);
-    return value_of(block);
+    return block;
   }
 }
 Bool stack_last_terminator(Stack *stack) {

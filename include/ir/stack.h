@@ -29,7 +29,7 @@ Function *stack_build(Stack *);
 Value *stack_new_value(Stack *, ValueKind);
 Block *stack_new_block(Stack *);
 Value *stack_new_integer(Stack *, const char *);
-Value *stack_label(Stack *, const char *);
+Block *stack_label(Stack *, const char *);
 Bool stack_last_terminator(Stack *);
 Value *stack_alloca(Stack *, const char *);
 Value *stack_find_alloca(Stack *, const char *);
