@@ -1,5 +1,7 @@
 #include "ir/function.h"
 
+#include <stdio.h>
+
 #include "ast/ast_tag.h"
 #include "ir/register.h"
 #include "ir/value.h"
@@ -77,4 +79,17 @@ void function_finish(Function *func) {
     value_set_reg(gen, *begin++);
   }
   register_generator_delete(gen);
+}
+void function_pretty(Function *func) {
+  ElemType *begin = vector_begin(func->vec);
+  ElemType *end = vector_end(func->vec);
+  printf("define i32 @%s() {\n", (const char *)func->value);
+  assert(begin != end);
+  value_pretty(*begin++);
+  for (; begin < end; ++begin) {
+    printf("\n");
+    value_print_block_label(*begin);
+    value_pretty(*begin);
+  }
+  printf("}\n");
 }

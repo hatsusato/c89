@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 
+#include "ir/function.h"
 #include "ir/register.h"
-#include "ir/value.h"
 #include "ir/value_kind.h"
 #include "utility.h"
 #include "vector.h"
@@ -36,6 +36,6 @@ void module_pretty(Module *module) {
   puts("target triple = \"x86_64-unknown-linux-gnu\"");
   while (begin < end) {
     puts("");
-    value_pretty(*begin++);
+    function_pretty(*begin++);
   }
 }
