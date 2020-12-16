@@ -55,7 +55,7 @@ Function *stack_build(Stack *stack) {
   Block *entry = stack_new_block(stack);
   Block *ret = 1 < count_return(stack->ast) ? stack_new_block(stack) : NULL;
   function_init(stack->func, stack->ast);
-  function_insert(stack->func, value_of(alloc));
+  function_insert(stack->func, alloc);
   stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
@@ -109,7 +109,7 @@ Value *stack_find_alloca(Stack *stack, const char *symbol) {
 void stack_jump_block(Stack *stack, Block *dest) {
   assert(dest);
   stack_set_next(stack, STACK_NEXT_CURRENT, dest);
-  function_insert(stack->func, value_of(dest));
+  function_insert(stack->func, dest);
 }
 Block *stack_get_next(Stack *stack, StackNextTag tag) {
   return stack->next[tag];

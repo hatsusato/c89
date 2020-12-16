@@ -68,7 +68,7 @@ void function_delete(Function *func) {
 void function_init(Function *func, Sexp *ast) {
   func->value = function_name(ast);
 }
-void function_insert(Function *func, Value *block) {
+void function_insert(Function *func, Block *block) {
   vector_push(func->vec, block);
 }
 void function_finish(Function *func) {
