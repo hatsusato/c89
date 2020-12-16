@@ -3,4 +3,7 @@
 
 #include "ir/module_type.h"
 
+Module *module_new(void);
+void module_delete(Module *);
+
 #endif /* INCLUDE_GUARD_2066624D_9BD2_42A1_8E82_3B559F049976 */
