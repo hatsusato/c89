@@ -73,6 +73,11 @@ void value_print(Value *value) {
     break;
   }
 }
+void value_print_block_label(Value *block) {
+  assert(VALUE_BLOCK == value_kind(block));
+  register_print(&block->reg, false);
+  printf(":\n");
+}
 void value_print_switch_block(Value *block) {
   ElemType *begin = vector_begin(block->vec);
   ElemType *end = vector_end(block->vec);
@@ -107,8 +112,7 @@ void value_pretty(Value *value) {
     value_pretty(*begin++);
     for (; begin < end; ++begin) {
       printf("\n");
-      register_print(&((Value *)*begin)->reg, false);
-      printf(":\n");
+      value_print_block_label(*begin);
       value_pretty(*begin);
     }
     printf("}");
