@@ -1,13 +1,13 @@
 #include "ir/statement.h"
 
+#include "ir/block.h"
 #include "ir/stack_impl.h"
 
 static Bool switch_new_case(Stack *stack) {
   Block *curr = stack_get_next(stack, STACK_NEXT_CURRENT);
   Block *dflt = stack_get_next(stack, STACK_NEXT_DEFAULT);
   Block *swch = stack_get_next(stack, STACK_NEXT_SWITCH);
-  return 0 == value_length(value_of(swch)) ||
-         0 < value_length(value_of(curr)) || dflt == curr;
+  return block_empty(swch) || !block_empty(curr) || dflt == curr;
 }
 
 Value *stack_statement(Stack *stack, Sexp *ast) {

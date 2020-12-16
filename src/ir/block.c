@@ -24,3 +24,6 @@ void block_delete(Block *block) {
   vector_delete(block->vec);
   UTILITY_FREE(block);
 }
+Bool block_empty(Block *block) {
+  return vector_empty(block->vec);
+}
