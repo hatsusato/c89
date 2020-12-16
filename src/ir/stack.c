@@ -53,6 +53,7 @@ Function *stack_build(Stack *stack) {
   Value *alloc = stack_new_block(stack);
   Value *entry = stack_new_block(stack);
   Value *ret = 1 < count_return(stack->ast) ? stack_new_block(stack) : NULL;
+  function_init(stack->func, stack->ast);
   function_insert(stack->func, alloc);
   stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);

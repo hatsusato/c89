@@ -3,9 +3,11 @@
 
 #include "ir/function_type.h"
 #include "ir/value_type.h"
+#include "sexp_type.h"
 
 Function *function_new(void);
 void function_delete(Function *);
+void function_init(Function *, Sexp *);
 void function_insert(Function *, Value *);
 void function_set_register(Function *);
 
