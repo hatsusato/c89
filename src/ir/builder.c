@@ -1,6 +1,7 @@
 #include "builder.h"
 
 #include "ast/ast_tag.h"
+#include "ir/module.h"
 #include "ir/pool.h"
 #include "ir/stack.h"
 #include "ir/value.h"
@@ -10,7 +11,7 @@
 
 struct struct_Builder {
   Pool *pool;
-  Value *module;
+  Module *module;
 };
 
 static void builder_function_definition(Builder *builder, Sexp *ast) {
@@ -37,10 +38,11 @@ static void builder_translation_unit(Builder *builder, Sexp *ast) {
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->pool = pool_new();
-  builder->module = pool_alloc(builder->pool, VALUE_MODULE);
+  builder->module = module_new();
   return builder;
 }
 void builder_delete(Builder *builder) {
+  module_delete(builder->module);
   pool_delete(builder->pool);
   UTILITY_FREE(builder);
 }
