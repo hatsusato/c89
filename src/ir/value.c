@@ -132,26 +132,6 @@ const char *value_kind_show(Value *value) {
     return NULL;
   }
 }
-Bool value_is_instruction(Value *value) {
-  switch (value_kind(value)) {
-#define VALUE_KIND_HANDLER(k) \
-  case k:                     \
-    return true
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SUB);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ICMP_NE);
-#undef VALUE_KIND_HANDLER
-  default:
-    return false;
-  }
-}
 Bool value_is_terminator(Value *value) {
   switch (value_kind(value)) {
 #define VALUE_KIND_HANDLER(k) \
