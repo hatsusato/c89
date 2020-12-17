@@ -106,6 +106,20 @@ Value *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
   return value_of(instr);
 }
 
+Bool instruction_is_terminator(Instruction *instr) {
+  switch (instr->kind) {
+#define VALUE_KIND_HANDLER(k) \
+  case k:                     \
+    return true
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
+#undef VALUE_KIND_HANDLER
+  default:
+    return false;
+  }
+}
 static void instruction_pretty_ret(Vector *vec) {
   if (vector_empty(vec)) {
     printf("ret void");

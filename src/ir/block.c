@@ -46,8 +46,13 @@ Bool block_empty(Block *block) {
   return vector_empty(block->vec);
 }
 Bool block_is_terminated(Block *block) {
-  Value *last = vector_back(block->vec);
-  return last && value_is_terminator(last);
+  if (block_empty(block)) {
+    return false;
+  } else {
+    Instruction *last = vector_back(block->vec);
+    assert(last);
+    return instruction_is_terminator(last);
+  }
 }
 void block_pretty(Block *block) {
   ElemType *begin = vector_begin(block->vec);

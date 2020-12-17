@@ -5,6 +5,7 @@
 #include "ir/instruction_type.h"
 #include "ir/stack_type.h"
 #include "ir/value_type.h"
+#include "types.h"
 
 /* ret %1 */
 void stack_instruction_ret(Stack *, Value *);
@@ -28,6 +29,7 @@ Value *stack_instruction_store(Stack *, Value *, Value *);
 /* icmp ne %1, %2 */
 Value *stack_instruction_icmp_ne(Stack *, Value *, Value *);
 
+Bool instruction_is_terminator(Instruction *);
 void instruction_pretty(Instruction *);
 
 #endif /* INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E */
