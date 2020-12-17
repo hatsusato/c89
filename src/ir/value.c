@@ -6,7 +6,6 @@
 #include "ir/block.h"
 #include "ir/function.h"
 #include "ir/register.h"
-#include "ir/register_type.h"
 #include "ir/value_kind.h"
 #include "sexp.h"
 #include "utility.h"
@@ -74,36 +73,6 @@ void value_print(Value *value) {
     break;
   default:
     register_print(&value->reg, true);
-    break;
-  }
-}
-void value_set_reg(RegisterGenerator *gen, Value *value) {
-  ElemType *begin = vector_begin(value->vec);
-  ElemType *end = vector_end(value->vec);
-  switch (value_kind(value)) {
-  case VALUE_FUNCTION:
-    while (begin < end) {
-      value_set_reg(gen, *begin++);
-    }
-    break;
-  case VALUE_BLOCK:
-    register_set(gen, &value->reg);
-    while (begin < end) {
-      value_set_reg(gen, *begin++);
-    }
-    break;
-#define VALUE_KIND_HANDLER(k) \
-  case k:                     \
-    break
-    VALUE_KIND_HANDLER(VALUE_INTEGER_CONSTANT);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
-#undef VALUE_KIND_HANDLER
-  default:
-    register_set(gen, &value->reg);
     break;
   }
 }
