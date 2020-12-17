@@ -134,7 +134,7 @@ static void instruction_pretty_switch(Vector *vec) {
   printf(", label ");
   value_print(vector_at(vec, 1));
   printf(" [\n");
-  value_print_switch_block(vector_at(vec, 2));
+  block_pretty_switch(vector_at(vec, 2));
   printf("  ]");
 }
 static void instruction_pretty_add(Vector *vec) {

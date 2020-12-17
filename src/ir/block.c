@@ -56,3 +56,14 @@ void block_pretty_label(Block *block) {
   register_print(&block->reg, false);
   printf(":\n");
 }
+void block_pretty_switch(Block *block) {
+  ElemType *begin = vector_begin(block->vec);
+  ElemType *end = vector_end(block->vec);
+  while (begin < end) {
+    printf("    i32 ");
+    value_print(*begin++);
+    printf(", label ");
+    value_print(*begin++);
+    printf("\n");
+  }
+}
