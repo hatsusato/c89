@@ -26,7 +26,7 @@ static Instruction *stack_instruction_new(Stack *stack, ValueKind kind) {
   Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
   Instruction *instr = instruction_new(kind);
   stack_pool_register(stack, value_of(instr));
-  block_insert(current, value_of(instr));
+  block_insert(current, instr);
   return instr;
 }
 static void instruction_insert(Instruction *instr, Value *value) {
@@ -75,8 +75,8 @@ void stack_instruction_switch_finish(Stack *stack, Value *value) {
 void stack_instruction_switch_case(Stack *stack, Value *constant,
                                    Block *label) {
   Block *cases = stack_get_next(stack, STACK_NEXT_SWITCH);
-  block_insert(cases, constant);
-  block_insert(cases, value_of(label));
+  block_insert(cases, (Instruction *)constant);
+  block_insert(cases, (Instruction *)label);
 }
 Value *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = stack_instruction_new(stack, VALUE_INSTRUCTION_ADD);

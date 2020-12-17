@@ -97,10 +97,11 @@ Bool stack_last_terminator(Stack *stack) {
 }
 Value *stack_alloca(Stack *stack, const char *symbol) {
   Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
-  Value *value = pool_alloc(stack->pool, VALUE_INSTRUCTION_ALLOCA);
-  table_insert(stack->table, symbol, value);
+  Instruction *value =
+      (Instruction *)pool_alloc(stack->pool, VALUE_INSTRUCTION_ALLOCA);
+  table_insert(stack->table, symbol, value_of(value));
   block_insert(alloc, value);
-  return value;
+  return value_of(value);
 }
 Value *stack_find_alloca(Stack *stack, const char *symbol) {
   Value *value = table_find(stack->table, symbol);
