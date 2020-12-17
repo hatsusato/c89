@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "ast/ast_tag.h"
+#include "ir/block.h"
 #include "ir/register.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
@@ -85,11 +86,11 @@ void function_pretty(Function *func) {
   ElemType *end = vector_end(func->vec);
   printf("define i32 @%s() {\n", (const char *)func->value);
   assert(begin != end);
-  value_pretty(*begin++);
+  block_pretty(*begin++);
   for (; begin < end; ++begin) {
     printf("\n");
-    value_print_block_label(*begin);
-    value_pretty(*begin);
+    block_pretty_label(*begin);
+    block_pretty(*begin);
   }
   printf("}\n");
 }
