@@ -30,6 +30,9 @@ static Instruction *stack_instruction_new(Stack *stack, ValueKind kind) {
 static void instruction_insert(Instruction *instr, Value *value) {
   vector_push(instr->vec, value);
 }
+static void instruction_insert_block(Instruction *instr, Block *block) {
+  vector_push(instr->vec, block);
+}
 
 void stack_instruction_ret(Stack *stack, Value *expr) {
   Instruction *instr = stack_instruction_new(stack, VALUE_INSTRUCTION_RET);
@@ -54,14 +57,15 @@ Value *stack_instruction_switch(Stack *stack, Value *expr) {
   instruction_insert(instr, expr);
   return value_of(instr);
 }
-void stack_instruction_switch_finish(Stack *stack, Value *instr) {
+void stack_instruction_switch_finish(Stack *stack, Value *value) {
   Block *default_label = stack_get_next(stack, STACK_NEXT_DEFAULT);
   Block *break_label = stack_get_next(stack, STACK_NEXT_BREAK);
   Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
   Block *next = break_label ? break_label : stack_new_block(stack);
+  Instruction *instr = (Instruction *)value;
   stack_instruction_br(stack, next);
-  value_insert_block(instr, default_label ? default_label : next);
-  value_insert_block(instr, switch_block);
+  instruction_insert_block(instr, default_label ? default_label : next);
+  instruction_insert_block(instr, switch_block);
   if (break_label || !default_label) {
     stack_jump_block(stack, next);
   }
