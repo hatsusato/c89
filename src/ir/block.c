@@ -31,6 +31,10 @@ void block_delete(Block *block) {
 void block_insert(Block *block, Instruction *instr) {
   vector_push(block->vec, instr);
 }
+void block_insert_switch(Block *block, Value *value, Block *label) {
+  vector_push(block->vec, value);
+  vector_push(block->vec, label);
+}
 void block_append(Block *dst, Block *src) {
   ElemType *begin = vector_begin(src->vec);
   ElemType *end = vector_end(src->vec);

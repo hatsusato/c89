@@ -72,11 +72,9 @@ void stack_instruction_switch_finish(Stack *stack, Value *value) {
     stack_jump_block(stack, next);
   }
 }
-void stack_instruction_switch_case(Stack *stack, Value *constant,
-                                   Block *label) {
-  Block *cases = stack_get_next(stack, STACK_NEXT_SWITCH);
-  block_insert(cases, (Instruction *)constant);
-  block_insert(cases, (Instruction *)label);
+void stack_instruction_switch_case(Stack *stack, Value *value, Block *label) {
+  Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
+  block_insert_switch(switch_block, value, label);
 }
 Value *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = stack_instruction_new(stack, VALUE_INSTRUCTION_ADD);

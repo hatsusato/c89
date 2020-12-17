@@ -3,11 +3,13 @@
 
 #include "ir/block_type.h"
 #include "ir/instruction_type.h"
+#include "ir/value_type.h"
 #include "types.h"
 
 Block *block_new(void);
 void block_delete(Block *);
 void block_insert(Block *, Instruction *);
+void block_insert_switch(Block *, Value *, Block *);
 void block_append(Block *, Block *);
 Bool block_empty(Block *);
 Bool block_is_terminated(Block *);
