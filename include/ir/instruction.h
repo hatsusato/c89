@@ -28,4 +28,6 @@ Value *stack_instruction_store(Stack *, Value *, Value *);
 /* icmp ne %1, %2 */
 Value *stack_instruction_icmp_ne(Stack *, Value *, Value *);
 
+void instruction_pretty(Instruction *);
+
 #endif /* INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E */

@@ -1,5 +1,7 @@
 #include "ir/instruction.h"
 
+#include <stdio.h>
+
 #include "ir/block.h"
 #include "ir/register.h"
 #include "ir/stack_impl.h"
@@ -104,4 +106,113 @@ Value *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
   instruction_insert(instr, lhs);
   instruction_insert(instr, rhs);
   return value_of(instr);
+}
+
+static void instruction_pretty_ret(Vector *vec) {
+  if (vector_empty(vec)) {
+    printf("ret void");
+  } else {
+    printf("ret i32 ");
+    value_print(vector_at(vec, 0));
+  }
+}
+static void instruction_pretty_br(Vector *vec) {
+  printf("br label ");
+  value_print(vector_at(vec, 0));
+}
+static void instruction_pretty_br_cond(Vector *vec) {
+  printf("br i1 ");
+  value_print(vector_at(vec, 0));
+  printf(", label ");
+  value_print(vector_at(vec, 1));
+  printf(", label ");
+  value_print(vector_at(vec, 2));
+}
+static void instruction_pretty_switch(Vector *vec) {
+  printf("switch i32 ");
+  value_print(vector_at(vec, 0));
+  printf(", label ");
+  value_print(vector_at(vec, 1));
+  printf(" [\n");
+  value_print_switch_block(vector_at(vec, 2));
+  printf("  ]");
+}
+static void instruction_pretty_add(Vector *vec) {
+  printf(" = add nsw i32 ");
+  value_print(vector_at(vec, 0));
+  printf(", ");
+  value_print(vector_at(vec, 1));
+}
+static void instruction_pretty_sub(Vector *vec) {
+  printf(" = sub nsw i32 ");
+  value_print(vector_at(vec, 0));
+  printf(", ");
+  value_print(vector_at(vec, 1));
+}
+static void instruction_pretty_alloca(Vector *vec) {
+  printf(" = alloca i32, align 4");
+  UTILITY_UNUSED(vec);
+}
+static void instruction_pretty_load(Vector *vec) {
+  printf(" = load i32, i32* ");
+  value_print(vector_at(vec, 0));
+  printf(", align 4");
+}
+static void instruction_pretty_store(Vector *vec) {
+  printf("store i32 ");
+  value_print(vector_at(vec, 0));
+  printf(", i32* ");
+  value_print(vector_at(vec, 1));
+  printf(", align 4");
+}
+static void instruction_pretty_icmp_ne(Vector *vec) {
+  printf(" = icmp ne i32 ");
+  value_print(vector_at(vec, 0));
+  printf(", ");
+  value_print(vector_at(vec, 1));
+}
+void instruction_pretty(Instruction *instr) {
+  Vector *vec = instr->vec;
+  printf("  ");
+  switch (instr->kind) {
+  case VALUE_INSTRUCTION_RET:
+    instruction_pretty_ret(vec);
+    break;
+  case VALUE_INSTRUCTION_BR:
+    instruction_pretty_br(vec);
+    break;
+  case VALUE_INSTRUCTION_BR_COND:
+    instruction_pretty_br_cond(vec);
+    break;
+  case VALUE_INSTRUCTION_SWITCH:
+    instruction_pretty_switch(vec);
+    break;
+  case VALUE_INSTRUCTION_ADD:
+    value_print(value_of(instr));
+    instruction_pretty_add(vec);
+    break;
+  case VALUE_INSTRUCTION_SUB:
+    value_print(value_of(instr));
+    instruction_pretty_sub(vec);
+    break;
+  case VALUE_INSTRUCTION_ALLOCA:
+    value_print(value_of(instr));
+    instruction_pretty_alloca(vec);
+    break;
+  case VALUE_INSTRUCTION_LOAD:
+    value_print(value_of(instr));
+    instruction_pretty_load(vec);
+    break;
+  case VALUE_INSTRUCTION_STORE:
+    instruction_pretty_store(vec);
+    break;
+  case VALUE_INSTRUCTION_ICMP_NE:
+    value_print(value_of(instr));
+    instruction_pretty_icmp_ne(vec);
+    break;
+  default:
+    assert(0);
+    break;
+  }
+  printf("\n");
 }

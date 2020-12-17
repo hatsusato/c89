@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+#include "ir/instruction.h"
 #include "ir/register.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
@@ -48,7 +49,7 @@ void block_pretty(Block *block) {
   ElemType *begin = vector_begin(block->vec);
   ElemType *end = vector_end(block->vec);
   while (begin < end) {
-    value_pretty(*begin++);
+    instruction_pretty(*begin++);
   }
 }
 void block_pretty_label(Block *block) {
