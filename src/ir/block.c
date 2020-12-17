@@ -54,6 +54,14 @@ Bool block_is_terminated(Block *block) {
     return instruction_is_terminator(last);
   }
 }
+void block_set_register(Block *block, RegisterGenerator *gen) {
+  ElemType *begin = vector_begin(block->vec);
+  ElemType *end = vector_end(block->vec);
+  register_set(gen, &block->reg);
+  while (begin < end) {
+    value_set_reg(gen, *begin++);
+  }
+}
 void block_pretty(Block *block) {
   ElemType *begin = vector_begin(block->vec);
   ElemType *end = vector_end(block->vec);
