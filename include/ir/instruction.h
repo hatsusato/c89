@@ -3,6 +3,7 @@
 
 #include "ir/block_type.h"
 #include "ir/instruction_type.h"
+#include "ir/register_type.h"
 #include "ir/stack_type.h"
 #include "ir/value_type.h"
 #include "types.h"
@@ -30,6 +31,7 @@ Value *stack_instruction_store(Stack *, Value *, Value *);
 Value *stack_instruction_icmp_ne(Stack *, Value *, Value *);
 
 Bool instruction_is_terminator(Instruction *);
+void instruction_set_register(Instruction *, RegisterGenerator *);
 void instruction_pretty(Instruction *);
 
 #endif /* INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E */

@@ -59,7 +59,7 @@ void block_set_register(Block *block, RegisterGenerator *gen) {
   ElemType *end = vector_end(block->vec);
   register_set(gen, &block->reg);
   while (begin < end) {
-    value_set_reg(gen, *begin++);
+    instruction_set_register(*begin++, gen);
   }
 }
 void block_pretty(Block *block) {

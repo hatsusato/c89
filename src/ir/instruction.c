@@ -120,6 +120,21 @@ Bool instruction_is_terminator(Instruction *instr) {
     return false;
   }
 }
+void instruction_set_register(Instruction *instr, RegisterGenerator *gen) {
+  switch (instr->kind) {
+#define VALUE_KIND_HANDLER(k) \
+  case k:                     \
+    break
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
+    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
+  default:
+    register_set(gen, &instr->reg);
+    break;
+  }
+}
 static void instruction_pretty_ret(Vector *vec) {
   if (vector_empty(vec)) {
     printf("ret void");
