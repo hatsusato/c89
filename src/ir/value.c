@@ -52,15 +52,6 @@ void value_delete(Value *value) {
 Value *value_of(void *value) {
   return (Value *)value;
 }
-void value_insert(Value *value, Value *elem) {
-  vector_push(value->vec, elem);
-}
-void value_insert_block(Value *value, Block *block) {
-  vector_push(value->vec, block);
-}
-void value_pop(Value *value) {
-  vector_pop(value->vec);
-}
 void value_set_value(Value *value, const void *val) {
   value->value = val;
 }
@@ -69,9 +60,6 @@ Value *value_at(Value *value, Index i) {
 }
 Size value_length(Value *value) {
   return vector_length(value->vec);
-}
-Value *value_last(Value *value) {
-  return vector_back(value->vec);
 }
 ValueKind value_kind(Value *value) {
   return value->kind;

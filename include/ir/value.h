@@ -11,13 +11,9 @@
 Value *value_new(ValueKind);
 void value_delete(Value *);
 Value *value_of(void *);
-void value_insert(Value *, Value *);
-void value_insert_block(Value *, Block *);
-void value_pop(Value *);
 void value_set_value(Value *, const void *);
 Value *value_at(Value *, Index);
 Size value_length(Value *);
-Value *value_last(Value *);
 ValueKind value_kind(Value *);
 void value_print(Value *);
 void value_print_block_label(Value *);
