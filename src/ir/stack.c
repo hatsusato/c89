@@ -75,9 +75,6 @@ Function *stack_build(Stack *stack) {
   return stack->func;
 }
 
-Value *stack_new_value(Stack *stack, ValueKind kind) {
-  return pool_alloc(stack->pool, kind);
-}
 Block *stack_new_block(Stack *stack) {
   Block *block = block_new();
   pool_insert(stack->pool, value_of(block));
@@ -90,12 +87,9 @@ Instruction *stack_new_instruction(Stack *stack, ValueKind kind) {
   block_insert(current, instr);
   return instr;
 }
-void stack_pool_register(Stack *stack, Value *value) {
-  pool_insert(stack->pool, value);
-}
 Value *stack_new_integer(Stack *stack, const char *integer) {
   Constant *value = constant_integer(integer);
-  stack_pool_register(stack, value_of(value));
+  pool_insert(stack->pool, value_of(value));
   return value_of(value);
 }
 Block *stack_label(Stack *stack, const char *label) {
