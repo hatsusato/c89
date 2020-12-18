@@ -83,6 +83,13 @@ Block *stack_new_block(Stack *stack) {
   pool_insert(stack->pool, value_of(block));
   return block;
 }
+Instruction *stack_new_instruction(Stack *stack, ValueKind kind) {
+  Instruction *instr = instruction_new(kind);
+  Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
+  pool_insert(stack->pool, value_of(instr));
+  block_insert(current, instr);
+  return instr;
+}
 void stack_pool_register(Stack *stack, Value *value) {
   pool_insert(stack->pool, value);
 }

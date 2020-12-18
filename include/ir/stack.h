@@ -29,6 +29,7 @@ Function *stack_build(Stack *);
 
 Value *stack_new_value(Stack *, ValueKind);
 Block *stack_new_block(Stack *);
+Instruction *stack_new_instruction(Stack *, ValueKind);
 void stack_pool_register(Stack *, Value *);
 Value *stack_new_integer(Stack *, const char *);
 Block *stack_label(Stack *, const char *);
