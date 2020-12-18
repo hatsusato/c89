@@ -31,15 +31,15 @@ void stack_instruction_br(Stack *stack, Block *label) {
   assert(label);
   if (!stack_last_terminator(stack)) {
     Instruction *instr = stack_new_instruction(stack, VALUE_INSTRUCTION_BR);
-    instruction_insert(instr, value_of(label));
+    instruction_insert_block(instr, label);
   }
 }
 void stack_instruction_br_cond(Stack *stack, Value *expr, Block *then_label,
                                Block *else_label) {
   Instruction *instr = stack_new_instruction(stack, VALUE_INSTRUCTION_BR_COND);
   instruction_insert(instr, expr);
-  instruction_insert(instr, value_of(then_label));
-  instruction_insert(instr, value_of(else_label));
+  instruction_insert_block(instr, then_label);
+  instruction_insert_block(instr, else_label);
 }
 Instruction *stack_instruction_switch(Stack *stack, Value *expr) {
   Instruction *instr = stack_new_instruction(stack, VALUE_INSTRUCTION_SWITCH);
