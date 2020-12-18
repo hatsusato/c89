@@ -63,6 +63,9 @@ void value_print(Value *value) {
   case VALUE_FUNCTION:
     printf("i32 @%s()", (const char *)value->value);
     break;
+  case VALUE_BLOCK:
+    block_print((Block *)value);
+    break;
   case VALUE_INTEGER_CONSTANT:
     printf("%s", (const char *)value->value);
     break;

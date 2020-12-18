@@ -62,6 +62,9 @@ void block_set_register(Block *block, RegisterGenerator *gen) {
     instruction_set_register(*begin++, gen);
   }
 }
+void block_print(Block *block) {
+  register_print(&block->reg, true);
+}
 void block_pretty(Block *block) {
   ElemType *begin = vector_begin(block->vec);
   ElemType *end = vector_end(block->vec);
