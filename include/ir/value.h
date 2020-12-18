@@ -7,7 +7,6 @@
 #include "sexp_type.h"
 #include "types.h"
 
-Value *value_new(ValueKind);
 void value_delete(Value *);
 Value *value_of(void *);
 ValueKind value_kind(Value *);

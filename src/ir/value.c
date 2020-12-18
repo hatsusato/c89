@@ -20,22 +20,6 @@ struct struct_Value {
   const void *value;
 };
 
-Value *value_new(ValueKind kind) {
-  Value *value;
-  switch (kind) {
-  case VALUE_FUNCTION:
-    return value_of(function_new());
-  case VALUE_BLOCK:
-    return value_of(block_new());
-  default:
-    value = UTILITY_MALLOC(Value);
-    value->kind = kind;
-    register_init(&value->reg);
-    value->value = NULL;
-    value->vec = vector_new(NULL);
-    return value;
-  }
-}
 void value_delete(Value *value) {
   switch (value_kind(value)) {
   case VALUE_FUNCTION:
