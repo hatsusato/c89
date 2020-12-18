@@ -7,7 +7,7 @@ Value *stack_function_definition(Stack *stack, Sexp *ast) {
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   if (ret) {
-    stack_alloca(stack, "$retval");
+    stack_instruction_alloca(stack, "$retval");
   }
   stack_ast(stack, sexp_at(ast, 4));
   if (ret) {

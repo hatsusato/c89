@@ -39,7 +39,8 @@ Value *stack_direct_declarator(Stack *stack, Sexp *ast) {
   switch (sexp_length(ast)) {
   case 2: {
     const char *symbol = stack_identifier_symbol(sexp_at(ast, 1));
-    return stack_alloca(stack, symbol);
+    Instruction *instr = stack_instruction_alloca(stack, symbol);
+    return value_of(instr);
   }
   case 4:
     return stack_declarator(stack, sexp_at(ast, 2));

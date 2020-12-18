@@ -89,6 +89,14 @@ Instruction *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
   instruction_insert(instr, rhs);
   return instr;
 }
+Instruction *stack_instruction_alloca(Stack *stack, const char *symbol) {
+  Instruction *instr = instruction_new(VALUE_INSTRUCTION_ALLOCA);
+  Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
+  stack_pool_register(stack, value_of(instr));
+  block_insert(alloc, instr);
+  stack_insert_alloca(stack, symbol, instr);
+  return instr;
+}
 Instruction *stack_instruction_load(Stack *stack, Value *src) {
   Instruction *instr = stack_instruction_new(stack, VALUE_INSTRUCTION_LOAD);
   instruction_insert(instr, src);

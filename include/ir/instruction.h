@@ -16,6 +16,7 @@ void stack_instruction_switch_finish(Stack *, Instruction *);
 void stack_instruction_switch_case(Stack *, Value *, Block *);
 Instruction *stack_instruction_add(Stack *, Value *, Value *);
 Instruction *stack_instruction_sub(Stack *, Value *, Value *);
+Instruction *stack_instruction_alloca(Stack *, const char *);
 Instruction *stack_instruction_load(Stack *, Value *);
 Instruction *stack_instruction_store(Stack *, Value *, Value *);
 Instruction *stack_instruction_icmp_ne(Stack *, Value *, Value *);
