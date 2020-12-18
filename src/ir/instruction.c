@@ -16,14 +16,6 @@ struct struct_Instruction {
   const void *value;
 };
 
-static Instruction *instruction_new(ValueKind kind) {
-  Instruction *instr = UTILITY_MALLOC(Instruction);
-  instr->kind = kind;
-  register_init(&instr->reg);
-  instr->vec = vector_new(NULL);
-  instr->value = NULL;
-  return instr;
-}
 static Instruction *stack_instruction_new(Stack *stack, ValueKind kind) {
   Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
   Instruction *instr = instruction_new(kind);
@@ -112,6 +104,14 @@ Instruction *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
   return instr;
 }
 
+Instruction *instruction_new(ValueKind kind) {
+  Instruction *instr = UTILITY_MALLOC(Instruction);
+  instr->kind = kind;
+  register_init(&instr->reg);
+  instr->vec = vector_new(NULL);
+  instr->value = NULL;
+  return instr;
+}
 void instruction_delete(Instruction *instr) {
   vector_delete(instr->vec);
   UTILITY_FREE(instr);

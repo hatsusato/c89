@@ -5,6 +5,7 @@
 #include "ir/instruction_type.h"
 #include "ir/register_type.h"
 #include "ir/stack_type.h"
+#include "ir/value_kind.h"
 #include "ir/value_type.h"
 #include "types.h"
 
@@ -21,6 +22,7 @@ Instruction *stack_instruction_load(Stack *, Value *);
 Instruction *stack_instruction_store(Stack *, Value *, Value *);
 Instruction *stack_instruction_icmp_ne(Stack *, Value *, Value *);
 
+Instruction *instruction_new(ValueKind);
 void instruction_delete(Instruction *);
 Bool instruction_is_terminator(Instruction *);
 void instruction_set_register(Instruction *, RegisterGenerator *);
