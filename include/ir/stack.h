@@ -3,6 +3,7 @@
 
 #include "ir/block_type.h"
 #include "ir/function_type.h"
+#include "ir/instruction_type.h"
 #include "ir/pool_type.h"
 #include "ir/stack_type.h"
 #include "ir/value_kind.h"
@@ -33,6 +34,7 @@ Value *stack_new_integer(Stack *, const char *);
 Block *stack_label(Stack *, const char *);
 Bool stack_last_terminator(Stack *);
 Value *stack_alloca(Stack *, const char *);
+void stack_insert_alloca(Stack *, const char *, Instruction *);
 Value *stack_find_alloca(Stack *, const char *);
 void stack_jump_block(Stack *, Block *);
 Block *stack_get_next(Stack *, StackNextTag);

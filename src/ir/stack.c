@@ -110,9 +110,12 @@ Value *stack_alloca(Stack *stack, const char *symbol) {
   Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
   Instruction *value =
       (Instruction *)pool_alloc(stack->pool, VALUE_INSTRUCTION_ALLOCA);
-  table_insert(stack->table, symbol, value_of(value));
+  stack_insert_alloca(stack, symbol, value);
   block_insert(alloc, value);
   return value_of(value);
+}
+void stack_insert_alloca(Stack *stack, const char *symbol, Instruction *value) {
+  table_insert(stack->table, symbol, value_of(value));
 }
 Value *stack_find_alloca(Stack *stack, const char *symbol) {
   Value *value = table_find(stack->table, symbol);
