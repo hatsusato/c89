@@ -5,6 +5,7 @@
 #include "ir/block.h"
 #include "ir/register.h"
 #include "ir/stack_impl.h"
+#include "utility.h"
 #include "vector.h"
 
 struct struct_Instruction {
@@ -106,6 +107,10 @@ Value *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
   return value_of(instr);
 }
 
+void instruction_delete(Instruction *instr) {
+  vector_delete(instr->vec);
+  UTILITY_FREE(instr);
+}
 Bool instruction_is_terminator(Instruction *instr) {
   switch (instr->kind) {
 #define VALUE_KIND_HANDLER(k) \

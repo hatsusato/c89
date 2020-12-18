@@ -4,7 +4,9 @@
 
 #include "ast/ast_tag.h"
 #include "ir/block.h"
+#include "ir/constant.h"
 #include "ir/function.h"
+#include "ir/instruction.h"
 #include "ir/register.h"
 #include "ir/value_kind.h"
 #include "sexp.h"
@@ -42,9 +44,11 @@ void value_delete(Value *value) {
   case VALUE_BLOCK:
     block_delete((Block *)value);
     break;
+  case VALUE_INTEGER_CONSTANT:
+    constant_delete((Constant *)value);
+    break;
   default:
-    vector_delete(value->vec);
-    UTILITY_FREE(value);
+    instruction_delete((Instruction *)value);
     break;
   }
 }

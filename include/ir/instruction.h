@@ -30,6 +30,7 @@ Value *stack_instruction_store(Stack *, Value *, Value *);
 /* icmp ne %1, %2 */
 Value *stack_instruction_icmp_ne(Stack *, Value *, Value *);
 
+void instruction_delete(Instruction *);
 Bool instruction_is_terminator(Instruction *);
 void instruction_set_register(Instruction *, RegisterGenerator *);
 void instruction_pretty(Instruction *);
