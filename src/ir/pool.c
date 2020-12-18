@@ -1,6 +1,7 @@
 #include "ir/pool.h"
 
 #include "ir/block.h"
+#include "ir/constant.h"
 #include "ir/function.h"
 #include "ir/instruction.h"
 #include "ir/value.h"
@@ -9,7 +10,7 @@
 #include "vector.h"
 
 struct struct_Pool {
-  Vector *pool, *function, *block, *instruction;
+  Vector *pool, *function, *block, *instruction, *constant;
 };
 
 static void pool_function_delete(ElemType func) {
@@ -21,6 +22,9 @@ static void pool_block_delete(ElemType block) {
 static void pool_instruction_delete(ElemType instr) {
   instruction_delete(instr);
 }
+static void pool_constant_delete(ElemType constant) {
+  constant_delete(constant);
+}
 
 Pool *pool_new(void) {
   Pool *pool = UTILITY_MALLOC(Pool);
@@ -28,9 +32,11 @@ Pool *pool_new(void) {
   pool->function = vector_new(pool_function_delete);
   pool->block = vector_new(pool_block_delete);
   pool->instruction = vector_new(pool_instruction_delete);
+  pool->constant = vector_new(pool_constant_delete);
   return pool;
 }
 void pool_delete(Pool *pool) {
+  vector_delete(pool->constant);
   vector_delete(pool->instruction);
   vector_delete(pool->block);
   vector_delete(pool->function);
@@ -48,4 +54,7 @@ void pool_insert_block(Pool *pool, Block *block) {
 }
 void pool_insert_instruction(Pool *pool, Instruction *instr) {
   vector_push(pool->block, instr);
+}
+void pool_insert_constant(Pool *pool, Constant *constant) {
+  vector_push(pool->block, constant);
 }

@@ -89,7 +89,7 @@ Instruction *stack_new_instruction(Stack *stack, ValueKind kind) {
 }
 Value *stack_new_integer(Stack *stack, const char *integer) {
   Constant *value = constant_integer(integer);
-  pool_insert(stack->pool, value_of(value));
+  pool_insert_constant(stack->pool, value);
   return value_of(value);
 }
 Block *stack_label(Stack *stack, const char *label) {
