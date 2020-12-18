@@ -77,7 +77,7 @@ Function *stack_build(Stack *stack) {
 
 Block *stack_new_block(Stack *stack) {
   Block *block = block_new();
-  pool_insert(stack->pool, value_of(block));
+  pool_insert_block(stack->pool, block);
   return block;
 }
 Instruction *stack_new_instruction(Stack *stack, ValueKind kind) {
