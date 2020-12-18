@@ -14,7 +14,8 @@ Value *stack_init_declarator(Stack *stack, Sexp *ast) {
   case 4: {
     Value *src = stack_ast(stack, sexp_at(ast, 3));
     Value *dst = stack_declarator(stack, sexp_at(ast, 1));
-    return stack_instruction_store(stack, src, dst);
+    Instruction *instr = stack_instruction_store(stack, src, dst);
+    return value_of(instr);
   }
   default:
     assert(0);

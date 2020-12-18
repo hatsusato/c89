@@ -11,7 +11,8 @@ const char *stack_identifier_symbol(Sexp *ast) {
 Value *stack_identifier(Stack *stack, Sexp *ast) {
   const char *symbol = stack_identifier_symbol(ast);
   Value *expr = stack_find_alloca(stack, symbol);
-  return stack_instruction_load(stack, expr);
+  Instruction *instr = stack_instruction_load(stack, expr);
+  return value_of(instr);
 }
 Value *stack_integer_constant(Stack *stack, Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));

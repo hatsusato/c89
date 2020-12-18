@@ -11,14 +11,14 @@
 void stack_instruction_ret(Stack *, Value *);
 void stack_instruction_br(Stack *, Block *);
 void stack_instruction_br_cond(Stack *, Value *, Block *, Block *);
-Value *stack_instruction_switch(Stack *, Value *);
-void stack_instruction_switch_finish(Stack *, Value *);
+Instruction *stack_instruction_switch(Stack *, Value *);
+void stack_instruction_switch_finish(Stack *, Instruction *);
 void stack_instruction_switch_case(Stack *, Value *, Block *);
-Value *stack_instruction_add(Stack *, Value *, Value *);
-Value *stack_instruction_sub(Stack *, Value *, Value *);
-Value *stack_instruction_load(Stack *, Value *);
-Value *stack_instruction_store(Stack *, Value *, Value *);
-Value *stack_instruction_icmp_ne(Stack *, Value *, Value *);
+Instruction *stack_instruction_add(Stack *, Value *, Value *);
+Instruction *stack_instruction_sub(Stack *, Value *, Value *);
+Instruction *stack_instruction_load(Stack *, Value *);
+Instruction *stack_instruction_store(Stack *, Value *, Value *);
+Instruction *stack_instruction_icmp_ne(Stack *, Value *, Value *);
 
 void instruction_delete(Instruction *);
 Bool instruction_is_terminator(Instruction *);

@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "ir/block.h"
+#include "ir/instruction_type.h"
 #include "ir/register.h"
 #include "ir/stack_impl.h"
 #include "utility.h"
@@ -55,17 +56,16 @@ void stack_instruction_br_cond(Stack *stack, Value *expr, Block *then_label,
   instruction_insert(instr, value_of(then_label));
   instruction_insert(instr, value_of(else_label));
 }
-Value *stack_instruction_switch(Stack *stack, Value *expr) {
+Instruction *stack_instruction_switch(Stack *stack, Value *expr) {
   Instruction *instr = stack_instruction_new(stack, VALUE_INSTRUCTION_SWITCH);
   instruction_insert(instr, expr);
-  return value_of(instr);
+  return instr;
 }
-void stack_instruction_switch_finish(Stack *stack, Value *value) {
+void stack_instruction_switch_finish(Stack *stack, Instruction *instr) {
   Block *default_label = stack_get_next(stack, STACK_NEXT_DEFAULT);
   Block *break_label = stack_get_next(stack, STACK_NEXT_BREAK);
   Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
   Block *next = break_label ? break_label : stack_new_block(stack);
-  Instruction *instr = (Instruction *)value;
   stack_instruction_br(stack, next);
   instruction_insert_block(instr, default_label ? default_label : next);
   instruction_insert_block(instr, switch_block);
@@ -77,34 +77,34 @@ void stack_instruction_switch_case(Stack *stack, Value *value, Block *label) {
   Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
   block_insert_switch(switch_block, value, label);
 }
-Value *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
+Instruction *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = stack_instruction_new(stack, VALUE_INSTRUCTION_ADD);
   instruction_insert(instr, lhs);
   instruction_insert(instr, rhs);
-  return value_of(instr);
+  return instr;
 }
-Value *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
+Instruction *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = stack_instruction_new(stack, VALUE_INSTRUCTION_SUB);
   instruction_insert(instr, lhs);
   instruction_insert(instr, rhs);
-  return value_of(instr);
+  return instr;
 }
-Value *stack_instruction_load(Stack *stack, Value *src) {
+Instruction *stack_instruction_load(Stack *stack, Value *src) {
   Instruction *instr = stack_instruction_new(stack, VALUE_INSTRUCTION_LOAD);
   instruction_insert(instr, src);
-  return value_of(instr);
+  return instr;
 }
-Value *stack_instruction_store(Stack *stack, Value *src, Value *dst) {
+Instruction *stack_instruction_store(Stack *stack, Value *src, Value *dst) {
   Instruction *instr = stack_instruction_new(stack, VALUE_INSTRUCTION_STORE);
   instruction_insert(instr, src);
   instruction_insert(instr, dst);
-  return value_of(instr);
+  return instr;
 }
-Value *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
+Instruction *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = stack_instruction_new(stack, VALUE_INSTRUCTION_ICMP_NE);
   instruction_insert(instr, lhs);
   instruction_insert(instr, rhs);
-  return value_of(instr);
+  return instr;
 }
 
 void instruction_delete(Instruction *instr) {

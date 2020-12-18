@@ -12,11 +12,12 @@ Value *stack_function_definition(Stack *stack, Sexp *ast) {
   stack_ast(stack, sexp_at(ast, 4));
   if (ret) {
     Value *expr;
+    Instruction *instr;
     stack_instruction_br(stack, ret);
     stack_jump_block(stack, ret);
     expr = stack_find_alloca(stack, "$retval");
-    expr = stack_instruction_load(stack, expr);
-    stack_instruction_ret(stack, expr);
+    instr = stack_instruction_load(stack, expr);
+    stack_instruction_ret(stack, value_of(instr));
   }
   return NULL;
 }
