@@ -83,7 +83,7 @@ Block *stack_new_block(Stack *stack) {
 Instruction *stack_new_instruction(Stack *stack, ValueKind kind) {
   Instruction *instr = instruction_new(kind);
   Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  pool_insert(stack->pool, value_of(instr));
+  pool_insert_instruction(stack->pool, instr);
   block_insert(current, instr);
   return instr;
 }
@@ -109,7 +109,7 @@ Bool stack_last_terminator(Stack *stack) {
 }
 void stack_alloca(Stack *stack, const char *symbol, Instruction *instr) {
   Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
-  pool_insert(stack->pool, value_of(instr));
+  pool_insert_instruction(stack->pool, instr);
   table_insert(stack->table, symbol, value_of(instr));
   block_insert(alloc, instr);
 }
