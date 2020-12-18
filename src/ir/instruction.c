@@ -201,6 +201,9 @@ static void instruction_pretty_icmp_ne(Vector *vec) {
   printf(", ");
   value_print(vector_at(vec, 1));
 }
+void instruction_print(Instruction *instr) {
+  register_print(&instr->reg, true);
+}
 void instruction_pretty(Instruction *instr) {
   Vector *vec = instr->vec;
   printf("  ");
@@ -218,26 +221,26 @@ void instruction_pretty(Instruction *instr) {
     instruction_pretty_switch(vec);
     break;
   case VALUE_INSTRUCTION_ADD:
-    value_print(value_of(instr));
+    instruction_print(instr);
     instruction_pretty_add(vec);
     break;
   case VALUE_INSTRUCTION_SUB:
-    value_print(value_of(instr));
+    instruction_print(instr);
     instruction_pretty_sub(vec);
     break;
   case VALUE_INSTRUCTION_ALLOCA:
-    value_print(value_of(instr));
+    instruction_print(instr);
     instruction_pretty_alloca(vec);
     break;
   case VALUE_INSTRUCTION_LOAD:
-    value_print(value_of(instr));
+    instruction_print(instr);
     instruction_pretty_load(vec);
     break;
   case VALUE_INSTRUCTION_STORE:
     instruction_pretty_store(vec);
     break;
   case VALUE_INSTRUCTION_ICMP_NE:
-    value_print(value_of(instr));
+    instruction_print(instr);
     instruction_pretty_icmp_ne(vec);
     break;
   default:

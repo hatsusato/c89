@@ -70,7 +70,7 @@ void value_print(Value *value) {
     printf("%s", (const char *)value->value);
     break;
   default:
-    register_print(&value->reg, true);
+    instruction_print((Instruction *)value);
     break;
   }
 }

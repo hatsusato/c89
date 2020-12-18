@@ -26,6 +26,7 @@ Instruction *instruction_new(ValueKind);
 void instruction_delete(Instruction *);
 Bool instruction_is_terminator(Instruction *);
 void instruction_set_register(Instruction *, RegisterGenerator *);
+void instruction_print(Instruction *);
 void instruction_pretty(Instruction *);
 
 #endif /* INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E */
