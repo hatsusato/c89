@@ -106,16 +106,11 @@ Bool stack_last_terminator(Stack *stack) {
   assert(current);
   return block_is_terminated(current);
 }
-Value *stack_alloca(Stack *stack, const char *symbol) {
+void stack_alloca(Stack *stack, const char *symbol, Instruction *instr) {
   Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
-  Instruction *value =
-      (Instruction *)pool_alloc(stack->pool, VALUE_INSTRUCTION_ALLOCA);
-  stack_insert_alloca(stack, symbol, value);
-  block_insert(alloc, value);
-  return value_of(value);
-}
-void stack_insert_alloca(Stack *stack, const char *symbol, Instruction *value) {
-  table_insert(stack->table, symbol, value_of(value));
+  pool_insert(stack->pool, value_of(instr));
+  table_insert(stack->table, symbol, value_of(instr));
+  block_insert(alloc, instr);
 }
 Value *stack_find_alloca(Stack *stack, const char *symbol) {
   Value *value = table_find(stack->table, symbol);
