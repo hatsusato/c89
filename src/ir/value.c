@@ -51,15 +51,6 @@ void value_delete(Value *value) {
 Value *value_of(void *value) {
   return (Value *)value;
 }
-void value_set_value(Value *value, const void *val) {
-  value->value = val;
-}
-Value *value_at(Value *value, Index i) {
-  return vector_at(value->vec, i);
-}
-Size value_length(Value *value) {
-  return vector_length(value->vec);
-}
 ValueKind value_kind(Value *value) {
   return value->kind;
 }
@@ -74,30 +65,5 @@ void value_print(Value *value) {
   default:
     register_print(&value->reg, true);
     break;
-  }
-}
-const char *value_kind_show(Value *value) {
-  switch (value_kind(value)) {
-#define VALUE_KIND_HANDLER(k) \
-  case k:                     \
-    return #k
-    VALUE_KIND_HANDLER(VALUE_MODULE);
-    VALUE_KIND_HANDLER(VALUE_FUNCTION);
-    VALUE_KIND_HANDLER(VALUE_BLOCK);
-    VALUE_KIND_HANDLER(VALUE_INTEGER_CONSTANT);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ADD);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SUB);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ALLOCA);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_LOAD);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_ICMP_NE);
-#undef VALUE_KIND_HANDLER
-  default:
-    assert(VALUE_KIND_END == value_kind(value));
-    return NULL;
   }
 }
