@@ -67,7 +67,7 @@ void value_print(Value *value) {
     block_print((Block *)value);
     break;
   case VALUE_INTEGER_CONSTANT:
-    printf("%s", (const char *)value->value);
+    constant_print((Constant *)value);
     break;
   default:
     instruction_print((Instruction *)value);

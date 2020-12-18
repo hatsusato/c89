@@ -1,5 +1,7 @@
 #include "ir/constant.h"
 
+#include <stdio.h>
+
 #include "ir/register.h"
 #include "ir/value_kind.h"
 #include "utility.h"
@@ -29,4 +31,7 @@ Constant *constant_integer(const char *integer) {
 void constant_delete(Constant *constant) {
   vector_delete(constant->vec);
   UTILITY_FREE(constant);
+}
+void constant_print(Constant *constant) {
+  printf("%s", (const char *)constant->value);
 }
