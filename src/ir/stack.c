@@ -24,6 +24,16 @@ static int labels_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
   UTILITY_UNUSED(extra);
   return utility_strcmp(lhs, rhs);
 }
+static Map *stack_new_labels(void) {
+  Compare *compare = compare_new(labels_compare);
+  Map *labels = map_new(compare);
+  return labels;
+}
+static Function *stack_new_function(Stack *stack) {
+  Function *func = function_new();
+  pool_insert(stack->pool, value_of(func));
+  return func;
+}
 static int count_return(Sexp *ast) {
   if (sexp_is_pair(ast)) {
     return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
@@ -37,9 +47,9 @@ Stack *stack_new(Pool *pool, Sexp *ast) {
   Stack *stack = UTILITY_MALLOC(Stack);
   stack->pool = pool;
   stack->table = table_new();
-  stack->labels = map_new(compare_new(labels_compare));
+  stack->labels = stack_new_labels();
   stack->ast = ast;
-  stack->func = (Function *)pool_alloc(pool, VALUE_FUNCTION);
+  stack->func = stack_new_function(stack);
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
   }
@@ -70,7 +80,7 @@ Value *stack_new_value(Stack *stack, ValueKind kind) {
 }
 Block *stack_new_block(Stack *stack) {
   Block *block = block_new();
-  stack_pool_register(stack, value_of(block));
+  pool_insert(stack->pool, value_of(block));
   return block;
 }
 void stack_pool_register(Stack *stack, Value *value) {
