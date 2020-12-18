@@ -2,6 +2,7 @@
 
 #include "compare.h"
 #include "ir/block.h"
+#include "ir/constant.h"
 #include "ir/function.h"
 #include "ir/pool.h"
 #include "ir/register.h"
@@ -76,9 +77,9 @@ void stack_pool_register(Stack *stack, Value *value) {
   pool_insert(stack->pool, value);
 }
 Value *stack_new_integer(Stack *stack, const char *integer) {
-  Value *value = stack_new_value(stack, VALUE_INTEGER_CONSTANT);
-  value_set_value(value, integer);
-  return value;
+  Constant *value = constant_integer(integer);
+  stack_pool_register(stack, value_of(value));
+  return value_of(value);
 }
 Block *stack_label(Stack *stack, const char *label) {
   ElemType key = (ElemType)label;
