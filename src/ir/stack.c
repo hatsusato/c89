@@ -31,7 +31,7 @@ static Map *stack_new_labels(void) {
 }
 static Function *stack_new_function(Stack *stack) {
   Function *func = function_new();
-  pool_insert(stack->pool, value_of(func));
+  pool_insert_function(stack->pool, func);
   return func;
 }
 static int count_return(Sexp *ast) {
