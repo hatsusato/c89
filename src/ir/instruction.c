@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 #include "ir/block.h"
-#include "ir/instruction_kind.h"
 #include "ir/instruction_type.h"
 #include "ir/register.h"
 #include "ir/stack_impl.h"
@@ -77,7 +76,7 @@ Instruction *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
   return instr;
 }
 Instruction *stack_instruction_alloca(Stack *stack, const char *symbol) {
-  Instruction *instr = instruction_new(VALUE_INSTRUCTION_ALLOCA);
+  Instruction *instr = instruction_new(INSTRUCTION_ALLOCA);
   stack_alloca(stack, symbol, instr);
   return instr;
 }
@@ -99,16 +98,12 @@ Instruction *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
   return instr;
 }
 
-Instruction *instruction_new(ValueKind kind) {
+Instruction *instruction_new(InstructionKind kind) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
-  instr->kind = kind;
-  register_init(&instr->reg);
-  instr->vec = vector_new(NULL);
-  instr->value = NULL;
   switch (kind) {
 #define HANDLE_INSTRUCTION_KIND(k) \
-  case VALUE_##k:                  \
-    instr->ikind = k;              \
+  case k:                          \
+    instr->kind = VALUE_##k;       \
     break
     HANDLE_INSTRUCTION_KIND(INSTRUCTION_RET);
     HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR);
@@ -125,6 +120,10 @@ Instruction *instruction_new(ValueKind kind) {
     assert(0);
     break;
   }
+  register_init(&instr->reg);
+  instr->vec = vector_new(NULL);
+  instr->value = NULL;
+  instr->ikind = kind;
   return instr;
 }
 void instruction_delete(Instruction *instr) {

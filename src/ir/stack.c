@@ -4,6 +4,7 @@
 #include "ir/block.h"
 #include "ir/constant.h"
 #include "ir/function.h"
+#include "ir/instruction.h"
 #include "ir/pool.h"
 #include "ir/register.h"
 #include "ir/stack_impl.h"
@@ -81,8 +82,28 @@ Block *stack_new_block(Stack *stack) {
   return block;
 }
 Instruction *stack_new_instruction(Stack *stack, ValueKind kind) {
-  Instruction *instr = instruction_new(kind);
+  Instruction *instr;
   Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
+  switch (kind) {
+#define HANDLE_INSTRUCTION_KIND(k) \
+  case VALUE_##k:                  \
+    instr = instruction_new(k);    \
+    break
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_RET);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR_COND);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SWITCH);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_ADD);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SUB);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_ALLOCA);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_LOAD);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_STORE);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_ICMP_NE);
+#undef HANDLE_INSTRUCTION_KIND
+  default:
+    assert(0);
+    break;
+  }
   pool_insert_instruction(stack->pool, instr);
   block_insert(current, instr);
   return instr;
