@@ -37,8 +37,11 @@ void value_print(Value *value) {
   case VALUE_INTEGER_CONSTANT:
     constant_print((Constant *)value);
     break;
-  default:
+  case VALUE_INSTRUCTION:
     instruction_print((Instruction *)value);
+    break;
+  default:
+    assert(0);
     break;
   }
 }

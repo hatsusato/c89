@@ -115,9 +115,7 @@ void stack_alloca(Stack *stack, const char *symbol, Instruction *instr) {
   block_insert(alloc, instr);
 }
 Value *stack_find_alloca(Stack *stack, const char *symbol) {
-  Value *value = table_find(stack->table, symbol);
-  assert(VALUE_INSTRUCTION_ALLOCA == value_kind(value));
-  return value;
+  return table_find(stack->table, symbol);
 }
 void stack_jump_block(Stack *stack, Block *dest) {
   assert(dest);

@@ -100,26 +100,7 @@ Instruction *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
 
 Instruction *instruction_new(InstructionKind kind) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
-  switch (kind) {
-#define HANDLE_INSTRUCTION_KIND(k) \
-  case k:                          \
-    instr->kind = VALUE_##k;       \
-    break
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_RET);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR_COND);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SWITCH);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_ADD);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SUB);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_ALLOCA);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_LOAD);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_STORE);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_ICMP_NE);
-#undef HANDLE_INSTRUCTION_KIND
-  default:
-    assert(0);
-    break;
-  }
+  instr->kind = VALUE_INSTRUCTION;
   register_init(&instr->reg);
   instr->vec = vector_new(NULL);
   instr->value = NULL;
