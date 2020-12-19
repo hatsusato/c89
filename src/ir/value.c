@@ -23,11 +23,8 @@ struct struct_Value {
 Value *value_of(void *value) {
   return (Value *)value;
 }
-ValueKind value_kind(Value *value) {
-  return value->kind;
-}
 void value_print(Value *value) {
-  switch (value_kind(value)) {
+  switch (value->kind) {
   case VALUE_FUNCTION:
     printf("i32 @%s()", (const char *)value->value);
     break;

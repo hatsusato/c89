@@ -6,6 +6,7 @@
 #include "ir/instruction_type.h"
 #include "ir/register.h"
 #include "ir/stack_impl.h"
+#include "ir/value_kind.h"
 #include "utility.h"
 #include "vector.h"
 
