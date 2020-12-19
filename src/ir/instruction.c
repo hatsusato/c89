@@ -131,29 +131,30 @@ void instruction_delete(Instruction *instr) {
   UTILITY_FREE(instr);
 }
 Bool instruction_is_terminator(Instruction *instr) {
-  switch (instr->kind) {
-#define VALUE_KIND_HANDLER(k) \
-  case k:                     \
+  switch (instr->ikind) {
+#define HANDLE_INSTRUCTION_KIND(k) \
+  case k:                          \
     return true
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
-#undef VALUE_KIND_HANDLER
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_RET);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR_COND);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SWITCH);
+#undef HANDLE_INSTRUCTION_KIND
   default:
     return false;
   }
 }
 void instruction_set_register(Instruction *instr, RegisterGenerator *gen) {
-  switch (instr->kind) {
-#define VALUE_KIND_HANDLER(k) \
-  case k:                     \
+  switch (instr->ikind) {
+#define HANDLE_INSTRUCTION_KIND(k) \
+  case k:                          \
     break
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_RET);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_BR_COND);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_SWITCH);
-    VALUE_KIND_HANDLER(VALUE_INSTRUCTION_STORE);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_RET);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR_COND);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SWITCH);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_STORE);
+#undef HANDLE_INSTRUCTION_KIND
   default:
     register_set(gen, &instr->reg);
     break;
@@ -228,39 +229,39 @@ void instruction_print(Instruction *instr) {
 void instruction_pretty(Instruction *instr) {
   Vector *vec = instr->vec;
   printf("  ");
-  switch (instr->kind) {
-  case VALUE_INSTRUCTION_RET:
+  switch (instr->ikind) {
+  case INSTRUCTION_RET:
     instruction_pretty_ret(vec);
     break;
-  case VALUE_INSTRUCTION_BR:
+  case INSTRUCTION_BR:
     instruction_pretty_br(vec);
     break;
-  case VALUE_INSTRUCTION_BR_COND:
+  case INSTRUCTION_BR_COND:
     instruction_pretty_br_cond(vec);
     break;
-  case VALUE_INSTRUCTION_SWITCH:
+  case INSTRUCTION_SWITCH:
     instruction_pretty_switch(vec);
     break;
-  case VALUE_INSTRUCTION_ADD:
+  case INSTRUCTION_ADD:
     instruction_print(instr);
     instruction_pretty_add(vec);
     break;
-  case VALUE_INSTRUCTION_SUB:
+  case INSTRUCTION_SUB:
     instruction_print(instr);
     instruction_pretty_sub(vec);
     break;
-  case VALUE_INSTRUCTION_ALLOCA:
+  case INSTRUCTION_ALLOCA:
     instruction_print(instr);
     instruction_pretty_alloca(vec);
     break;
-  case VALUE_INSTRUCTION_LOAD:
+  case INSTRUCTION_LOAD:
     instruction_print(instr);
     instruction_pretty_load(vec);
     break;
-  case VALUE_INSTRUCTION_STORE:
+  case INSTRUCTION_STORE:
     instruction_pretty_store(vec);
     break;
-  case VALUE_INSTRUCTION_ICMP_NE:
+  case INSTRUCTION_ICMP_NE:
     instruction_print(instr);
     instruction_pretty_icmp_ne(vec);
     break;
