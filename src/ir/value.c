@@ -20,22 +20,6 @@ struct struct_Value {
   const void *value;
 };
 
-void value_delete(Value *value) {
-  switch (value_kind(value)) {
-  case VALUE_FUNCTION:
-    function_delete((Function *)value);
-    break;
-  case VALUE_BLOCK:
-    block_delete((Block *)value);
-    break;
-  case VALUE_INTEGER_CONSTANT:
-    constant_delete((Constant *)value);
-    break;
-  default:
-    instruction_delete((Instruction *)value);
-    break;
-  }
-}
 Value *value_of(void *value) {
   return (Value *)value;
 }
