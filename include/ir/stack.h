@@ -3,10 +3,10 @@
 
 #include "ir/block_type.h"
 #include "ir/function_type.h"
+#include "ir/instruction_kind.h"
 #include "ir/instruction_type.h"
 #include "ir/pool_type.h"
 #include "ir/stack_type.h"
-#include "ir/value_kind.h"
 #include "ir/value_type.h"
 #include "sexp_type.h"
 #include "types.h"
@@ -28,7 +28,7 @@ void stack_delete(Stack *);
 Function *stack_build(Stack *);
 
 Block *stack_new_block(Stack *);
-Instruction *stack_new_instruction(Stack *, ValueKind);
+Instruction *stack_new_instruction(Stack *, InstructionKind);
 Value *stack_new_integer(Stack *, const char *);
 Block *stack_label(Stack *, const char *);
 Bool stack_last_terminator(Stack *);
