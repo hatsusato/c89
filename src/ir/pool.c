@@ -43,9 +43,6 @@ void pool_delete(Pool *pool) {
   vector_delete(pool->pool);
   UTILITY_FREE(pool);
 }
-void pool_insert(Pool *pool, Value *value) {
-  vector_push(pool->pool, value);
-}
 void pool_insert_function(Pool *pool, Function *func) {
   vector_push(pool->function, func);
 }

@@ -11,7 +11,6 @@
 
 Pool *pool_new(void);
 void pool_delete(Pool *);
-void pool_insert(Pool *, Value *);
 void pool_insert_function(Pool *, Function *);
 void pool_insert_block(Pool *, Block *);
 void pool_insert_instruction(Pool *, Instruction *);
