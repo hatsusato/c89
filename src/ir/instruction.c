@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "ir/block.h"
+#include "ir/instruction_kind.h"
 #include "ir/instruction_type.h"
 #include "ir/register.h"
 #include "ir/stack_impl.h"
@@ -14,6 +15,7 @@ struct struct_Instruction {
   Register reg;
   Vector *vec;
   const void *value;
+  InstructionKind ikind;
 };
 
 static void instruction_insert(Instruction *instr, Value *value) {
@@ -103,6 +105,26 @@ Instruction *instruction_new(ValueKind kind) {
   register_init(&instr->reg);
   instr->vec = vector_new(NULL);
   instr->value = NULL;
+  switch (kind) {
+#define HANDLE_INSTRUCTION_KIND(k) \
+  case VALUE_##k:                  \
+    instr->ikind = k;              \
+    break
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_RET);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR_COND);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SWITCH);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_ADD);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SUB);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_ALLOCA);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_LOAD);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_STORE);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_ICMP_NE);
+#undef HANDLE_INSTRUCTION_KIND
+  default:
+    assert(0);
+    break;
+  }
   return instr;
 }
 void instruction_delete(Instruction *instr) {
