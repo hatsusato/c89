@@ -16,7 +16,7 @@ struct struct_Constant {
 
 static Constant *constant_new(void) {
   Constant *constant = UTILITY_MALLOC(Constant);
-  constant->kind = VALUE_INTEGER_CONSTANT;
+  constant->kind = VALUE_CONSTANT;
   register_init(&constant->reg);
   constant->value = NULL;
   constant->vec = vector_new(NULL);

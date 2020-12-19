@@ -18,7 +18,7 @@ void value_print(Value *value) {
   case VALUE_BLOCK:
     block_print((Block *)value);
     break;
-  case VALUE_INTEGER_CONSTANT:
+  case VALUE_CONSTANT:
     constant_print((Constant *)value);
     break;
   case VALUE_INSTRUCTION:
