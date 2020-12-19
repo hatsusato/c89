@@ -10,7 +10,7 @@
 #include "vector.h"
 
 struct struct_Pool {
-  Vector *pool, *function, *block, *instruction, *constant;
+  Vector *function, *block, *instruction, *constant;
 };
 
 static void pool_function_delete(ElemType func) {
@@ -28,7 +28,6 @@ static void pool_constant_delete(ElemType constant) {
 
 Pool *pool_new(void) {
   Pool *pool = UTILITY_MALLOC(Pool);
-  pool->pool = vector_new((Destructor)value_delete);
   pool->function = vector_new(pool_function_delete);
   pool->block = vector_new(pool_block_delete);
   pool->instruction = vector_new(pool_instruction_delete);
@@ -40,7 +39,6 @@ void pool_delete(Pool *pool) {
   vector_delete(pool->instruction);
   vector_delete(pool->block);
   vector_delete(pool->function);
-  vector_delete(pool->pool);
   UTILITY_FREE(pool);
 }
 void pool_insert_function(Pool *pool, Function *func) {
