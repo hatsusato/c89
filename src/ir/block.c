@@ -73,7 +73,7 @@ int block_set_id(Block *block, int id) {
   return id;
 }
 void block_print(Block *block) {
-  register_print(&block->reg, true);
+  printf("%%%d", block->id);
 }
 void block_pretty(Block *block) {
   ElemType *begin = vector_begin(block->vec);
@@ -83,8 +83,7 @@ void block_pretty(Block *block) {
   }
 }
 void block_pretty_label(Block *block) {
-  register_print(&block->reg, false);
-  printf(":\n");
+  printf("%d:\n", block->id);
 }
 void block_pretty_switch(Block *block) {
   ElemType *begin = vector_begin(block->vec);
