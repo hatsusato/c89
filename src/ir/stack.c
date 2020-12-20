@@ -60,16 +60,16 @@ void stack_delete(Stack *stack) {
   table_delete(stack->table);
   UTILITY_FREE(stack);
 }
-Function *stack_build(Stack *stack) {
+Function *stack_build(Stack *stack, Sexp *ast) {
   Block *alloc = stack_new_block(stack);
   Block *entry = stack_new_block(stack);
-  Block *ret = 1 < count_return(stack->ast) ? stack_new_block(stack) : NULL;
-  function_init(stack->func, stack->ast);
+  Block *ret = 1 < count_return(ast) ? stack_new_block(stack) : NULL;
+  function_init(stack->func, ast);
   function_insert(stack->func, alloc);
   stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
-  stack_ast(stack, stack->ast);
+  stack_ast(stack, ast);
   block_append(alloc, entry);
   function_finish(stack->func);
   return stack->func;

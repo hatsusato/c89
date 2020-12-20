@@ -25,7 +25,7 @@ typedef enum {
 
 Stack *stack_new(Pool *, Sexp *);
 void stack_delete(Stack *);
-Function *stack_build(Stack *);
+Function *stack_build(Stack *, Sexp *);
 
 Block *stack_new_block(Stack *);
 Instruction *stack_new_instruction(Stack *, InstructionKind);
