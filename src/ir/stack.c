@@ -43,10 +43,10 @@ static int count_return(Sexp *ast) {
   }
 }
 
-Stack *stack_new(Pool *pool, Module *module) {
+Stack *stack_new(Module *module) {
   Stack *stack = UTILITY_MALLOC(Stack);
   int i;
-  stack->pool = pool;
+  stack->pool = module_get(module);
   stack->module = module;
   stack->table = table_new();
   stack->labels = stack_new_labels();
