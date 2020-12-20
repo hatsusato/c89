@@ -18,86 +18,6 @@ struct struct_Instruction {
   Value *operands[3];
 };
 
-Instruction *stack_new_instruction(Stack *stack, InstructionKind kind) {
-  Instruction *instr = module_new_instruction(stack_get_module(stack), kind);
-  Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
-  block_insert(INSTRUCTION_ALLOCA == kind ? alloc : current, instr);
-  return instr;
-}
-void stack_instruction_ret(Stack *stack, Value *expr) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_RET);
-  instr->operands[0] = expr;
-}
-void stack_instruction_br(Stack *stack, Block *label) {
-  if (!stack_last_terminator(stack)) {
-    Instruction *instr = stack_new_instruction(stack, INSTRUCTION_BR);
-    instr->operands[0] = block_as_value(label);
-  }
-}
-void stack_instruction_br_cond(Stack *stack, Value *expr, Block *then_label,
-                               Block *else_label) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_BR_COND);
-  instr->operands[0] = expr;
-  instr->operands[1] = block_as_value(then_label);
-  instr->operands[2] = block_as_value(else_label);
-}
-Instruction *stack_instruction_switch(Stack *stack, Value *expr) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_SWITCH);
-  instr->operands[0] = expr;
-  return instr;
-}
-void stack_instruction_switch_finish(Stack *stack, Instruction *instr) {
-  Block *default_label = stack_get_next(stack, STACK_NEXT_DEFAULT);
-  Block *break_label = stack_get_next(stack, STACK_NEXT_BREAK);
-  Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
-  Block *next = break_label ? break_label : stack_new_block(stack);
-  stack_instruction_br(stack, next);
-  instr->operands[1] = block_as_value(default_label ? default_label : next);
-  instr->operands[2] = block_as_value(switch_block);
-  if (break_label || !default_label) {
-    stack_jump_block(stack, next);
-  }
-}
-void stack_instruction_switch_case(Stack *stack, Value *value, Block *label) {
-  Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
-  block_insert_switch(switch_block, value, label);
-}
-Instruction *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ADD);
-  instr->operands[0] = lhs;
-  instr->operands[1] = rhs;
-  return instr;
-}
-Instruction *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_SUB);
-  instr->operands[0] = lhs;
-  instr->operands[1] = rhs;
-  return instr;
-}
-Instruction *stack_instruction_alloca(Stack *stack, const char *symbol) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ALLOCA);
-  stack_alloca(stack, symbol, instr);
-  return instr;
-}
-Instruction *stack_instruction_load(Stack *stack, Value *src) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_LOAD);
-  instr->operands[0] = src;
-  return instr;
-}
-Instruction *stack_instruction_store(Stack *stack, Value *src, Value *dst) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_STORE);
-  instr->operands[0] = src;
-  instr->operands[1] = dst;
-  return instr;
-}
-Instruction *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ICMP_NE);
-  instr->operands[0] = lhs;
-  instr->operands[1] = rhs;
-  return instr;
-}
-
 Instruction *instruction_new(InstructionKind kind) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
   instr->kind = VALUE_INSTRUCTION;
@@ -212,4 +132,84 @@ void instruction_pretty(Instruction *instr) {
   printf("  ");
   pretty[instr->ikind](instr);
   printf("\n");
+}
+
+Instruction *stack_new_instruction(Stack *stack, InstructionKind kind) {
+  Instruction *instr = module_new_instruction(stack_get_module(stack), kind);
+  Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
+  Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
+  block_insert(INSTRUCTION_ALLOCA == kind ? alloc : current, instr);
+  return instr;
+}
+void stack_instruction_ret(Stack *stack, Value *expr) {
+  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_RET);
+  instr->operands[0] = expr;
+}
+void stack_instruction_br(Stack *stack, Block *label) {
+  if (!stack_last_terminator(stack)) {
+    Instruction *instr = stack_new_instruction(stack, INSTRUCTION_BR);
+    instr->operands[0] = block_as_value(label);
+  }
+}
+void stack_instruction_br_cond(Stack *stack, Value *expr, Block *then_label,
+                               Block *else_label) {
+  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_BR_COND);
+  instr->operands[0] = expr;
+  instr->operands[1] = block_as_value(then_label);
+  instr->operands[2] = block_as_value(else_label);
+}
+Instruction *stack_instruction_switch(Stack *stack, Value *expr) {
+  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_SWITCH);
+  instr->operands[0] = expr;
+  return instr;
+}
+void stack_instruction_switch_finish(Stack *stack, Instruction *instr) {
+  Block *default_label = stack_get_next(stack, STACK_NEXT_DEFAULT);
+  Block *break_label = stack_get_next(stack, STACK_NEXT_BREAK);
+  Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
+  Block *next = break_label ? break_label : stack_new_block(stack);
+  stack_instruction_br(stack, next);
+  instr->operands[1] = block_as_value(default_label ? default_label : next);
+  instr->operands[2] = block_as_value(switch_block);
+  if (break_label || !default_label) {
+    stack_jump_block(stack, next);
+  }
+}
+void stack_instruction_switch_case(Stack *stack, Value *value, Block *label) {
+  Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
+  block_insert_switch(switch_block, value, label);
+}
+Instruction *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
+  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ADD);
+  instr->operands[0] = lhs;
+  instr->operands[1] = rhs;
+  return instr;
+}
+Instruction *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
+  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_SUB);
+  instr->operands[0] = lhs;
+  instr->operands[1] = rhs;
+  return instr;
+}
+Instruction *stack_instruction_alloca(Stack *stack, const char *symbol) {
+  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ALLOCA);
+  stack_alloca(stack, symbol, instr);
+  return instr;
+}
+Instruction *stack_instruction_load(Stack *stack, Value *src) {
+  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_LOAD);
+  instr->operands[0] = src;
+  return instr;
+}
+Instruction *stack_instruction_store(Stack *stack, Value *src, Value *dst) {
+  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_STORE);
+  instr->operands[0] = src;
+  instr->operands[1] = dst;
+  return instr;
+}
+Instruction *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
+  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ICMP_NE);
+  instr->operands[0] = lhs;
+  instr->operands[1] = rhs;
+  return instr;
 }
