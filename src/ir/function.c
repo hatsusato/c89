@@ -60,6 +60,14 @@ static void function_set_register(Function *func, RegisterGenerator *gen) {
     block_set_register(*begin++, gen);
   }
 }
+static void function_set_id(Function *func) {
+  ElemType *begin = vector_begin(func->vec);
+  ElemType *end = vector_end(func->vec);
+  int id = 0;
+  while (begin < end) {
+    id = block_set_id(*begin++, id);
+  }
+}
 
 Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
@@ -83,6 +91,7 @@ void function_finish(Function *func) {
   RegisterGenerator *gen = register_generator_new();
   function_set_register(func, gen);
   register_generator_delete(gen);
+  function_set_id(func);
 }
 void function_pretty(Function *func) {
   ElemType *begin = vector_begin(func->vec);
