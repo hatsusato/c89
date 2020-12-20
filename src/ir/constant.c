@@ -2,6 +2,9 @@
 
 #include <stdio.h>
 
+#include "ir/module.h"
+#include "ir/stack.h"
+#include "ir/value.h"
 #include "ir/value_kind.h"
 #include "utility.h"
 
@@ -27,4 +30,9 @@ void constant_delete(Constant *constant) {
 }
 void constant_print(Constant *constant) {
   printf("%s", constant->symbol);
+}
+
+Value *stack_new_integer(Stack *stack, const char *integer) {
+  Constant *value = module_new_integer(stack_get_module(stack), integer);
+  return constant_as_value(value);
 }

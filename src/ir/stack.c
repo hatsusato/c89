@@ -75,11 +75,6 @@ void stack_build(Stack *stack, Sexp *ast) {
   function_finish(func);
 }
 
-Value *stack_new_integer(Stack *stack, const char *integer) {
-  Constant *value = constant_integer(integer);
-  pool_insert_constant(stack->pool, value);
-  return constant_as_value(value);
-}
 Block *stack_label(Stack *stack, const char *label) {
   ElemType key = (ElemType)label;
   if (map_contains(stack->labels, key)) {

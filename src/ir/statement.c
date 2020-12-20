@@ -1,6 +1,7 @@
 #include "ir/statement.h"
 
 #include "ir/block.h"
+#include "ir/constant.h"
 #include "ir/instruction_type.h"
 #include "ir/stack_impl.h"
 

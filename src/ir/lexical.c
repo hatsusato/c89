@@ -1,5 +1,6 @@
 #include "ir/lexical.h"
 
+#include "ir/constant.h"
 #include "ir/stack_impl.h"
 
 const char *stack_identifier_symbol(Sexp *ast) {
