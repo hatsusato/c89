@@ -4,7 +4,6 @@
 
 #include "ast/ast_tag.h"
 #include "ir/block.h"
-#include "ir/register.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
 #include "sexp.h"
@@ -13,7 +12,6 @@
 
 struct struct_Function {
   ValueKind kind;
-  Register reg;
   Vector *vec;
   const void *value;
 };
@@ -65,7 +63,6 @@ static void function_set_id(Function *func) {
 Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
   func->kind = VALUE_FUNCTION;
-  register_init(&func->reg);
   func->vec = vector_new(NULL);
   func->value = NULL;
   return func;
