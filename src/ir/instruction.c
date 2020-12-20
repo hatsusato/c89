@@ -18,10 +18,10 @@ struct struct_Instruction {
   Value *operands[3];
 };
 
-Instruction *instruction_new(InstructionKind kind) {
+Instruction *instruction_new(void) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
   instr->kind = VALUE_INSTRUCTION;
-  instr->ikind = kind;
+  instr->ikind = INSTRUCTION_KIND_END;
   instr->id = -1;
   instr->operands[0] = instr->operands[1] = instr->operands[2] = NULL;
   return instr;
@@ -138,6 +138,7 @@ Instruction *stack_new_instruction(Stack *stack, InstructionKind kind) {
   Instruction *instr = module_new_instruction(stack_get_module(stack), kind);
   Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
   Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
+  instr->ikind = kind;
   block_insert(INSTRUCTION_ALLOCA == kind ? alloc : current, instr);
   return instr;
 }

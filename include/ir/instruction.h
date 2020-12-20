@@ -8,7 +8,7 @@
 #include "ir/value_type.h"
 #include "types.h"
 
-Instruction *instruction_new(InstructionKind);
+Instruction *instruction_new(void);
 void instruction_delete(Instruction *);
 Bool instruction_is_terminator(Instruction *);
 int instruction_set_id(Instruction *, int);

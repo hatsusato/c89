@@ -38,7 +38,7 @@ Block *module_new_block(Module *module) {
   return block;
 }
 Instruction *module_new_instruction(Module *module, InstructionKind kind) {
-  Instruction *instr = instruction_new(kind);
+  Instruction *instr = instruction_new();
   pool_insert_instruction(module->pool, instr);
   return instr;
 }
