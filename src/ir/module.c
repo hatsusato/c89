@@ -3,18 +3,15 @@
 #include <stdio.h>
 
 #include "ir/function.h"
-#include "ir/value_kind.h"
 #include "utility.h"
 #include "vector.h"
 
 struct struct_Module {
-  ValueKind kind;
   Vector *vec;
 };
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
-  module->kind = VALUE_MODULE;
   module->vec = vector_new(NULL);
   return module;
 }
