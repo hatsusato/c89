@@ -55,14 +55,6 @@ Bool block_is_terminated(Block *block) {
     return instruction_is_terminator(last);
   }
 }
-void block_set_register(Block *block, RegisterGenerator *gen) {
-  ElemType *begin = vector_begin(block->vec);
-  ElemType *end = vector_end(block->vec);
-  register_set(gen, &block->reg);
-  while (begin < end) {
-    instruction_set_register(*begin++, gen);
-  }
-}
 int block_set_id(Block *block, int id) {
   ElemType *begin = vector_begin(block->vec);
   ElemType *end = vector_end(block->vec);
