@@ -18,11 +18,6 @@ Constant *constant_new(void) {
   constant->symbol = NULL;
   return constant;
 }
-Constant *constant_integer(const char *integer) {
-  Constant *constant = constant_new();
-  constant->symbol = integer;
-  return constant;
-}
 void constant_delete(Constant *constant) {
   UTILITY_FREE(constant);
 }
