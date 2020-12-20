@@ -50,8 +50,7 @@ Stack *stack_new(Pool *pool, Module *module) {
   stack->module = module;
   stack->table = table_new();
   stack->labels = stack_new_labels();
-  stack->func = stack_new_function(stack);
-  module_insert(stack->module, stack->func);
+  stack->func = NULL;
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
   }
@@ -62,19 +61,21 @@ void stack_delete(Stack *stack) {
   table_delete(stack->table);
   UTILITY_FREE(stack);
 }
-Function *stack_build(Stack *stack, Sexp *ast) {
+void stack_build(Stack *stack, Sexp *ast) {
+  Function *func = stack_new_function(stack);
   Block *alloc = stack_new_block(stack);
   Block *entry = stack_new_block(stack);
   Block *ret = 1 < count_return(ast) ? stack_new_block(stack) : NULL;
-  function_init(stack->func, ast);
-  function_insert(stack->func, alloc);
+  stack->func = func;
+  module_insert(stack->module, func);
+  function_init(func, ast);
+  function_insert(func, alloc);
   stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
   stack_ast(stack, ast);
   block_append(alloc, entry);
-  function_finish(stack->func);
-  return stack->func;
+  function_finish(func);
 }
 
 Block *stack_new_block(Stack *stack) {
