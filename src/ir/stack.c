@@ -35,12 +35,6 @@ Stack *stack_new(Module *module) {
 void stack_delete(Stack *stack) {
   UTILITY_FREE(stack);
 }
-Module *stack_get_module(Stack *stack) {
-  return stack->module;
-}
-Function *stack_get_function(Stack *stack) {
-  return stack->func;
-}
 void stack_function_init(Stack *stack, Function *func) {
   stack->table = table_new();
   stack->func = func;
@@ -54,7 +48,9 @@ void stack_function_finish(Stack *stack) {
     stack->next[i] = NULL;
   }
 }
-
+Module *stack_get_module(Stack *stack) {
+  return stack->module;
+}
 Block *stack_label(Stack *stack, const char *label) {
   if (table_label_contains(stack->table, label)) {
     return table_label_find(stack->table, label);

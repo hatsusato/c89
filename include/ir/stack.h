@@ -26,12 +26,9 @@ typedef enum {
 
 Stack *stack_new(Module *);
 void stack_delete(Stack *);
-Module *stack_get_module(Stack *);
-Function *stack_get_function(Stack *);
-void stack_build(Stack *, Sexp *);
 void stack_function_init(Stack *, Function *);
 void stack_function_finish(Stack *);
-
+Module *stack_get_module(Stack *);
 Block *stack_label(Stack *, const char *);
 Bool stack_last_terminator(Stack *);
 void stack_alloca(Stack *, const char *, Instruction *);
