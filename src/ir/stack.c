@@ -56,6 +56,9 @@ void stack_delete(Stack *stack) {
   table_delete(stack->table);
   UTILITY_FREE(stack);
 }
+Module *stack_get_module(Stack *stack) {
+  return stack->module;
+}
 void stack_build(Stack *stack, Sexp *ast) {
   Function *func = module_new_function(stack->module);
   Block *alloc = stack_new_block(stack);
@@ -73,9 +76,7 @@ void stack_build(Stack *stack, Sexp *ast) {
 }
 
 Block *stack_new_block(Stack *stack) {
-  Block *block = block_new();
-  pool_insert_block(stack->pool, block);
-  return block;
+  return module_new_block(stack->module);
 }
 Instruction *stack_new_instruction(Stack *stack, InstructionKind kind) {
   Instruction *instr = instruction_new(kind);
