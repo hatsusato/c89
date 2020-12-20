@@ -60,19 +60,24 @@ Module *stack_get_module(Stack *stack) {
   return stack->module;
 }
 void stack_build(Stack *stack, Sexp *ast) {
+  stack_build_init(stack, ast);
+  stack_ast(stack, ast);
+  stack_build_finish(stack);
+}
+void stack_build_init(Stack *stack, Sexp *ast) {
   Function *func = module_new_function(stack->module);
   Block *alloc = stack_new_block(stack);
   Block *entry = stack_new_block(stack);
-  Block *ret = 1 < count_return(ast) ? stack_new_block(stack) : NULL;
   stack->func = func;
   function_init(func, ast);
   function_insert(func, alloc);
   stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_ENTRY, entry);
-  stack_set_next(stack, STACK_NEXT_RETURN, ret);
-  stack_ast(stack, ast);
-  stack_build_finish(stack);
+  if (1 < count_return(ast)) {
+    Block *ret = stack_new_block(stack);
+    stack_set_next(stack, STACK_NEXT_RETURN, ret);
+  }
 }
 void stack_build_finish(Stack *stack) {
   Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
