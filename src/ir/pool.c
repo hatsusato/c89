@@ -48,8 +48,8 @@ void pool_insert_block(Pool *pool, Block *block) {
   vector_push(pool->block, block);
 }
 void pool_insert_instruction(Pool *pool, Instruction *instr) {
-  vector_push(pool->block, instr);
+  vector_push(pool->instruction, instr);
 }
 void pool_insert_constant(Pool *pool, Constant *constant) {
-  vector_push(pool->block, constant);
+  vector_push(pool->constant, constant);
 }
