@@ -3,20 +3,24 @@
 #include <stdio.h>
 
 #include "ir/function.h"
+#include "ir/pool.h"
 #include "utility.h"
 #include "vector.h"
 
 struct struct_Module {
+  Pool *pool;
   Vector *vec;
 };
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
+  module->pool = pool_new();
   module->vec = vector_new(NULL);
   return module;
 }
 void module_delete(Module *module) {
   vector_delete(module->vec);
+  pool_delete(module->pool);
   UTILITY_FREE(module);
 }
 void module_insert(Module *module, Function *func) {
