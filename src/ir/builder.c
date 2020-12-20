@@ -37,13 +37,12 @@ static void builder_translation_unit(Builder *builder, Sexp *ast) {
 
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
-  builder->pool = pool_new();
   builder->module = module_new();
+  builder->pool = module_get(builder->module);
   return builder;
 }
 void builder_delete(Builder *builder) {
   module_delete(builder->module);
-  pool_delete(builder->pool);
   UTILITY_FREE(builder);
 }
 void builder_build(Builder *builder, Sexp *ast) {

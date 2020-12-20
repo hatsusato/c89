@@ -8,5 +8,6 @@ Module *module_new(void);
 void module_delete(Module *);
 void module_insert(Module *, Function *);
 void module_pretty(Module *);
+void *module_get(Module *);
 
 #endif /* INCLUDE_GUARD_2066624D_9BD2_42A1_8E82_3B559F049976 */
