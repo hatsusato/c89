@@ -46,6 +46,9 @@ void stack_delete(Stack *stack) {
 Module *stack_get_module(Stack *stack) {
   return stack->module;
 }
+Function *stack_get_function(Stack *stack) {
+  return stack->func;
+}
 void stack_build_init(Stack *stack, Sexp *ast) {
   Function *func = module_new_function(stack->module);
   Block *alloc = stack_new_block(stack);
