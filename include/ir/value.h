@@ -8,9 +8,13 @@
 #include "ir/value_type.h"
 
 Function *value_as_function(Value *);
+Value *function_as_value(Function *);
 Block *value_as_block(Value *);
+Value *block_as_value(Block *);
 Instruction *value_as_instruction(Value *);
+Value *instruction_as_value(Instruction *);
 Constant *value_as_constant(Value *);
+Value *constant_as_value(Constant *);
 void value_print(Value *);
 
 #endif /* INCLUDE_GUARD_FE2AA6D9_B675_4B2E_839A_2B085264192A */

@@ -3,12 +3,10 @@
 
 #include "ir/block_type.h"
 #include "ir/function_type.h"
-#include "ir/value_type.h"
 #include "sexp_type.h"
 
 Function *function_new(void);
 void function_delete(Function *);
-Value *function_as_value(Function *);
 void function_init(Function *, Sexp *);
 void function_finish(Function *);
 void function_insert(Function *, Block *);

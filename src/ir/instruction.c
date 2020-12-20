@@ -110,9 +110,6 @@ void instruction_delete(Instruction *instr) {
   vector_delete(instr->vec);
   UTILITY_FREE(instr);
 }
-Value *instruction_as_value(Instruction *instr) {
-  return (Value *)instr;
-}
 Bool instruction_is_terminator(Instruction *instr) {
   switch (instr->ikind) {
 #define HANDLE_INSTRUCTION_KIND(k) \

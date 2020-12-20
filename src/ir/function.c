@@ -70,9 +70,6 @@ void function_delete(Function *func) {
   vector_delete(func->vec);
   UTILITY_FREE(func);
 }
-Value *function_as_value(Function *func) {
-  return (Value *)func;
-}
 void function_init(Function *func, Sexp *ast) {
   func->name = function_name(ast);
 }

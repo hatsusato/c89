@@ -25,9 +25,6 @@ Constant *constant_integer(const char *integer) {
 void constant_delete(Constant *constant) {
   UTILITY_FREE(constant);
 }
-Value *constant_as_value(Constant *constant) {
-  return (Value *)constant;
-}
 void constant_print(Constant *constant) {
   printf("%s", constant->symbol);
 }

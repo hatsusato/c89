@@ -23,7 +23,6 @@ Instruction *stack_instruction_icmp_ne(Stack *, Value *, Value *);
 
 Instruction *instruction_new(InstructionKind);
 void instruction_delete(Instruction *);
-Value *instruction_as_value(Instruction *);
 Bool instruction_is_terminator(Instruction *);
 int instruction_set_id(Instruction *, int);
 void instruction_print(Instruction *);
