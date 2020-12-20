@@ -213,41 +213,15 @@ void instruction_print(Instruction *instr) {
   printf("%%%d", instr->id);
 }
 void instruction_pretty(Instruction *instr) {
+  void (*pretty[])(Instruction *) = {
+      instruction_pretty_ret,     instruction_pretty_br,
+      instruction_pretty_br_cond, instruction_pretty_switch,
+      instruction_pretty_add,     instruction_pretty_sub,
+      instruction_pretty_alloca,  instruction_pretty_load,
+      instruction_pretty_store,   instruction_pretty_icmp_ne,
+  };
+  assert(0 <= instr->ikind && instr->ikind < INSTRUCTION_KIND_END);
   printf("  ");
-  switch (instr->ikind) {
-  case INSTRUCTION_RET:
-    instruction_pretty_ret(instr);
-    break;
-  case INSTRUCTION_BR:
-    instruction_pretty_br(instr);
-    break;
-  case INSTRUCTION_BR_COND:
-    instruction_pretty_br_cond(instr);
-    break;
-  case INSTRUCTION_SWITCH:
-    instruction_pretty_switch(instr);
-    break;
-  case INSTRUCTION_ADD:
-    instruction_pretty_add(instr);
-    break;
-  case INSTRUCTION_SUB:
-    instruction_pretty_sub(instr);
-    break;
-  case INSTRUCTION_ALLOCA:
-    instruction_pretty_alloca(instr);
-    break;
-  case INSTRUCTION_LOAD:
-    instruction_pretty_load(instr);
-    break;
-  case INSTRUCTION_STORE:
-    instruction_pretty_store(instr);
-    break;
-  case INSTRUCTION_ICMP_NE:
-    instruction_pretty_icmp_ne(instr);
-    break;
-  default:
-    assert(0);
-    break;
-  }
+  pretty[instr->ikind](instr);
   printf("\n");
 }
