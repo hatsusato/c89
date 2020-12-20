@@ -4,7 +4,6 @@
 
 #include "ast/ast_tag.h"
 #include "ir/block.h"
-#include "ir/value.h"
 #include "ir/value_kind.h"
 #include "sexp.h"
 #include "utility.h"
@@ -12,8 +11,8 @@
 
 struct struct_Function {
   ValueKind kind;
+  const char *name;
   Vector *vec;
-  const void *value;
 };
 static const char *function_name(Sexp *ast) {
   switch (sexp_get_tag(ast)) {
@@ -63,8 +62,8 @@ static void function_set_id(Function *func) {
 Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
   func->kind = VALUE_FUNCTION;
+  func->name = NULL;
   func->vec = vector_new(NULL);
-  func->value = NULL;
   return func;
 }
 void function_delete(Function *func) {
@@ -72,7 +71,7 @@ void function_delete(Function *func) {
   UTILITY_FREE(func);
 }
 void function_init(Function *func, Sexp *ast) {
-  func->value = function_name(ast);
+  func->name = function_name(ast);
 }
 void function_insert(Function *func, Block *block) {
   vector_push(func->vec, block);
@@ -83,7 +82,7 @@ void function_finish(Function *func) {
 void function_pretty(Function *func) {
   ElemType *begin = vector_begin(func->vec);
   ElemType *end = vector_end(func->vec);
-  printf("define i32 @%s() {\n", (const char *)func->value);
+  printf("define i32 @%s() {\n", func->name);
   assert(begin != end);
   block_pretty(*begin++);
   for (; begin < end; ++begin) {
