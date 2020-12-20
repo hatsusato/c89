@@ -69,6 +69,7 @@ void stack_build(Stack *stack, Sexp *ast) {
   function_insert(func, alloc);
   stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
+  stack_set_next(stack, STACK_NEXT_ENTRY, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
   stack_ast(stack, ast);
   block_append(alloc, entry);
