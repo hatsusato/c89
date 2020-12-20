@@ -20,14 +20,6 @@ struct struct_Stack {
   Block *next[STACK_NEXT_COUNT];
 };
 
-static int count_return(Sexp *ast) {
-  if (sexp_is_pair(ast)) {
-    return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
-  } else {
-    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
-  }
-}
-
 Stack *stack_new(Module *module) {
   Stack *stack = UTILITY_MALLOC(Stack);
   int i;
@@ -49,21 +41,9 @@ Module *stack_get_module(Stack *stack) {
 Function *stack_get_function(Stack *stack) {
   return stack->func;
 }
-void stack_build_init(Stack *stack, Sexp *ast) {
-  Function *func = module_new_function(stack->module);
-  Block *alloc = stack_new_block(stack);
-  Block *entry = stack_new_block(stack);
+void stack_build_init(Stack *stack, Function *func) {
   stack->table = table_new();
   stack->func = func;
-  function_init(func, ast);
-  function_insert(func, alloc);
-  stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
-  stack_set_next(stack, STACK_NEXT_CURRENT, entry);
-  stack_set_next(stack, STACK_NEXT_ENTRY, entry);
-  if (1 < count_return(ast)) {
-    Block *ret = stack_new_block(stack);
-    stack_set_next(stack, STACK_NEXT_RETURN, ret);
-  }
 }
 void stack_build_finish(Stack *stack) {
   int i;

@@ -29,7 +29,7 @@ void stack_delete(Stack *);
 Module *stack_get_module(Stack *);
 Function *stack_get_function(Stack *);
 void stack_build(Stack *, Sexp *);
-void stack_build_init(Stack *, Sexp *);
+void stack_build_init(Stack *, Function *);
 void stack_build_finish(Stack *);
 
 Block *stack_label(Stack *, const char *);
