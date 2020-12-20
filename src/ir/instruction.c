@@ -79,7 +79,7 @@ Instruction *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
   return instr;
 }
 Instruction *stack_instruction_alloca(Stack *stack, const char *symbol) {
-  Instruction *instr = instruction_new(INSTRUCTION_ALLOCA);
+  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ALLOCA);
   stack_alloca(stack, symbol, instr);
   return instr;
 }
