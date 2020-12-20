@@ -171,22 +171,26 @@ static void instruction_pretty_switch(Instruction *instr) {
   printf("  ]");
 }
 static void instruction_pretty_add(Instruction *instr) {
+  instruction_print(instr);
   printf(" = add nsw i32 ");
   value_print(vector_at(instr->vec, 0));
   printf(", ");
   value_print(vector_at(instr->vec, 1));
 }
 static void instruction_pretty_sub(Instruction *instr) {
+  instruction_print(instr);
   printf(" = sub nsw i32 ");
   value_print(vector_at(instr->vec, 0));
   printf(", ");
   value_print(vector_at(instr->vec, 1));
 }
 static void instruction_pretty_alloca(Instruction *instr) {
+  instruction_print(instr);
   printf(" = alloca i32, align 4");
   UTILITY_UNUSED(instr);
 }
 static void instruction_pretty_load(Instruction *instr) {
+  instruction_print(instr);
   printf(" = load i32, i32* ");
   value_print(vector_at(instr->vec, 0));
   printf(", align 4");
@@ -199,6 +203,7 @@ static void instruction_pretty_store(Instruction *instr) {
   printf(", align 4");
 }
 static void instruction_pretty_icmp_ne(Instruction *instr) {
+  instruction_print(instr);
   printf(" = icmp ne i32 ");
   value_print(vector_at(instr->vec, 0));
   printf(", ");
@@ -223,26 +228,21 @@ void instruction_pretty(Instruction *instr) {
     instruction_pretty_switch(instr);
     break;
   case INSTRUCTION_ADD:
-    instruction_print(instr);
     instruction_pretty_add(instr);
     break;
   case INSTRUCTION_SUB:
-    instruction_print(instr);
     instruction_pretty_sub(instr);
     break;
   case INSTRUCTION_ALLOCA:
-    instruction_print(instr);
     instruction_pretty_alloca(instr);
     break;
   case INSTRUCTION_LOAD:
-    instruction_print(instr);
     instruction_pretty_load(instr);
     break;
   case INSTRUCTION_STORE:
     instruction_pretty_store(instr);
     break;
   case INSTRUCTION_ICMP_NE:
-    instruction_print(instr);
     instruction_pretty_icmp_ne(instr);
     break;
   default:
