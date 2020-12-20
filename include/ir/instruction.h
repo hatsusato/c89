@@ -8,6 +8,7 @@
 #include "ir/value_type.h"
 #include "types.h"
 
+Instruction *stack_new_instruction(Stack *, InstructionKind);
 void stack_instruction_ret(Stack *, Value *);
 void stack_instruction_br(Stack *, Block *);
 void stack_instruction_br_cond(Stack *, Value *, Block *, Block *);

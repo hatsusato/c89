@@ -29,7 +29,6 @@ Module *stack_get_module(Stack *);
 void stack_build(Stack *, Sexp *);
 
 Block *stack_new_block(Stack *);
-Instruction *stack_new_instruction(Stack *, InstructionKind);
 Value *stack_new_integer(Stack *, const char *);
 Block *stack_label(Stack *, const char *);
 Bool stack_last_terminator(Stack *);

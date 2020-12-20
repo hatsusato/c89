@@ -4,6 +4,7 @@
 
 #include "ir/block.h"
 #include "ir/instruction_type.h"
+#include "ir/module.h"
 #include "ir/stack.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
@@ -22,6 +23,9 @@ static void stack_insert_instruction(Stack *stack, Instruction *instr) {
   block_insert(current, instr);
 }
 
+Instruction *stack_new_instruction(Stack *stack, InstructionKind kind) {
+  return module_new_instruction(stack_get_module(stack), kind);
+}
 void stack_instruction_ret(Stack *stack, Value *expr) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_RET);
   stack_insert_instruction(stack, instr);

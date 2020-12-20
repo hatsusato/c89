@@ -78,11 +78,6 @@ void stack_build(Stack *stack, Sexp *ast) {
 Block *stack_new_block(Stack *stack) {
   return module_new_block(stack->module);
 }
-Instruction *stack_new_instruction(Stack *stack, InstructionKind kind) {
-  Instruction *instr = instruction_new(kind);
-  pool_insert_instruction(stack->pool, instr);
-  return instr;
-}
 Value *stack_new_integer(Stack *stack, const char *integer) {
   Constant *value = constant_integer(integer);
   pool_insert_constant(stack->pool, value);
