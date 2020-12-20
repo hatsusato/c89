@@ -87,7 +87,7 @@ void function_pretty(Function *func) {
   block_pretty(*begin++);
   for (; begin < end; ++begin) {
     printf("\n");
-    block_pretty_label(*begin);
+    block_print_label(*begin);
     block_pretty(*begin);
   }
   printf("}\n");

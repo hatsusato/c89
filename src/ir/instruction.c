@@ -147,7 +147,7 @@ static void instruction_pretty_switch(Instruction *instr) {
   printf(", label ");
   value_print(instr->operands[1]);
   printf(" [\n");
-  block_pretty_switch(instr->operands[2]);
+  block_pretty_switch(value_as_block(instr->operands[2]));
   printf("  ]");
 }
 static void instruction_pretty_add(Instruction *instr) {
