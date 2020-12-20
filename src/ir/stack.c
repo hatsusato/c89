@@ -91,12 +91,11 @@ void stack_build_finish(Stack *stack) {
 }
 
 Block *stack_label(Stack *stack, const char *label) {
-  ElemType key = (ElemType)label;
-  if (map_contains(stack->labels, key)) {
-    return *map_find(stack->labels, key);
+  if (table_label_contains(stack->table, label)) {
+    return table_label_find(stack->table, label);
   } else {
     Block *block = stack_new_block(stack);
-    map_insert(stack->labels, key, block);
+    table_label_insert(stack->table, label, block);
     return block;
   }
 }
