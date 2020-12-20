@@ -53,13 +53,6 @@ static const char *function_name(Sexp *ast) {
     return NULL;
   }
 }
-static void function_set_register(Function *func, RegisterGenerator *gen) {
-  ElemType *begin = vector_begin(func->vec);
-  ElemType *end = vector_end(func->vec);
-  while (begin < end) {
-    block_set_register(*begin++, gen);
-  }
-}
 static void function_set_id(Function *func) {
   ElemType *begin = vector_begin(func->vec);
   ElemType *end = vector_end(func->vec);
@@ -88,9 +81,6 @@ void function_insert(Function *func, Block *block) {
   vector_push(func->vec, block);
 }
 void function_finish(Function *func) {
-  RegisterGenerator *gen = register_generator_new();
-  function_set_register(func, gen);
-  register_generator_delete(gen);
   function_set_id(func);
 }
 void function_pretty(Function *func) {
