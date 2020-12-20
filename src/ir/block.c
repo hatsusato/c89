@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 #include "ir/instruction.h"
-#include "ir/register.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
 #include "utility.h"
@@ -12,17 +11,13 @@
 struct struct_Block {
   ValueKind kind;
   int id;
-  Register reg;
   Vector *vec;
-  const void *value;
 };
 
 Block *block_new(void) {
   Block *block = UTILITY_MALLOC(Block);
   block->kind = VALUE_BLOCK;
-  register_init(&block->reg);
   block->vec = vector_new(NULL);
-  block->value = NULL;
   return block;
 }
 void block_delete(Block *block) {
