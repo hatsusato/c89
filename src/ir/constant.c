@@ -12,13 +12,12 @@ struct struct_Constant {
   const char *symbol;
 };
 
-static Constant *constant_new(void) {
+Constant *constant_new(void) {
   Constant *constant = UTILITY_MALLOC(Constant);
   constant->kind = VALUE_CONSTANT;
   constant->symbol = NULL;
   return constant;
 }
-
 Constant *constant_integer(const char *integer) {
   Constant *constant = constant_new();
   constant->symbol = integer;

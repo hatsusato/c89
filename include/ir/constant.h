@@ -4,6 +4,7 @@
 #include "ir/constant_type.h"
 #include "ir/stack_type.h"
 
+Constant *constant_new(void);
 Constant *constant_integer(const char *);
 void constant_delete(Constant *);
 void constant_print(Constant *);
