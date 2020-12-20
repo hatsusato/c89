@@ -66,11 +66,7 @@ void stack_build_init(Stack *stack, Sexp *ast) {
   }
 }
 void stack_build_finish(Stack *stack) {
-  Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
-  Block *entry = stack_get_next(stack, STACK_NEXT_ENTRY);
   int i;
-  block_append(alloc, entry);
-  function_set_id(stack->func);
   table_delete(stack->table);
   stack->table = NULL;
   stack->func = NULL;
