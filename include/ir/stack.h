@@ -23,7 +23,7 @@ typedef enum {
   STACK_NEXT_COUNT
 } StackNextTag;
 
-Stack *stack_new(Pool *, Sexp *);
+Stack *stack_new(Pool *);
 void stack_delete(Stack *);
 Function *stack_build(Stack *, Sexp *);
 

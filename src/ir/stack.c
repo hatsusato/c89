@@ -15,7 +15,6 @@ struct struct_Stack {
   Pool *pool;
   Table *table;
   Map *labels;
-  Sexp *ast;
   Function *func;
   Block *next[STACK_NEXT_COUNT];
 };
@@ -42,13 +41,12 @@ static int count_return(Sexp *ast) {
   }
 }
 
-Stack *stack_new(Pool *pool, Sexp *ast) {
-  int i;
+Stack *stack_new(Pool *pool) {
   Stack *stack = UTILITY_MALLOC(Stack);
+  int i;
   stack->pool = pool;
   stack->table = table_new();
   stack->labels = stack_new_labels();
-  stack->ast = ast;
   stack->func = stack_new_function(stack);
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;

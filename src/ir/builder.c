@@ -15,7 +15,7 @@ struct struct_Builder {
 };
 
 static void builder_function_definition(Builder *builder, Sexp *ast) {
-  Stack *stack = stack_new(builder->pool, ast);
+  Stack *stack = stack_new(builder->pool);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   module_insert(builder->module, stack_build(stack, ast));
   stack_delete(stack);
