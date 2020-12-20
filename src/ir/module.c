@@ -47,9 +47,6 @@ Constant *module_new_constant(Module *module) {
   pool_insert_constant(module->pool, constant);
   return constant;
 }
-void module_insert(Module *module, Function *func) {
-  vector_push(module->vec, func);
-}
 void module_pretty(Module *module) {
   ElemType *begin = vector_begin(module->vec);
   ElemType *end = vector_end(module->vec);
