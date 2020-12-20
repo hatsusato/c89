@@ -14,7 +14,6 @@ struct struct_Instruction {
   ValueKind kind;
   InstructionKind ikind;
   int id;
-  Vector *vec;
   Value *operands[3];
 };
 
@@ -96,12 +95,10 @@ Instruction *instruction_new(InstructionKind kind) {
   instr->kind = VALUE_INSTRUCTION;
   instr->ikind = kind;
   instr->id = -1;
-  instr->vec = vector_new(NULL);
   instr->operands[0] = instr->operands[1] = instr->operands[2] = NULL;
   return instr;
 }
 void instruction_delete(Instruction *instr) {
-  vector_delete(instr->vec);
   UTILITY_FREE(instr);
 }
 Bool instruction_is_terminator(Instruction *instr) {
@@ -125,11 +122,11 @@ int instruction_set_id(Instruction *instr, int id) {
   return id;
 }
 static void instruction_pretty_ret(Instruction *instr) {
-  if (vector_empty(instr->vec)) {
-    printf("ret void");
-  } else {
+  if (instr->operands[0]) {
     printf("ret i32 ");
     value_print(instr->operands[0]);
+  } else {
+    printf("ret void");
   }
 }
 static void instruction_pretty_br(Instruction *instr) {
