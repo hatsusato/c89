@@ -20,29 +20,23 @@ struct struct_Instruction {
 
 void stack_instruction_ret(Stack *stack, Value *expr) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_RET);
-  vector_push(instr->vec, expr);
   instr->operands[0] = expr;
 }
 void stack_instruction_br(Stack *stack, Block *label) {
   if (!stack_last_terminator(stack)) {
     Instruction *instr = stack_new_instruction(stack, INSTRUCTION_BR);
-    vector_push(instr->vec, label);
     instr->operands[0] = block_as_value(label);
   }
 }
 void stack_instruction_br_cond(Stack *stack, Value *expr, Block *then_label,
                                Block *else_label) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_BR_COND);
-  vector_push(instr->vec, expr);
-  vector_push(instr->vec, then_label);
-  vector_push(instr->vec, else_label);
   instr->operands[0] = expr;
   instr->operands[1] = block_as_value(then_label);
   instr->operands[2] = block_as_value(else_label);
 }
 Instruction *stack_instruction_switch(Stack *stack, Value *expr) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_SWITCH);
-  vector_push(instr->vec, expr);
   instr->operands[0] = expr;
   return instr;
 }
@@ -52,8 +46,6 @@ void stack_instruction_switch_finish(Stack *stack, Instruction *instr) {
   Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
   Block *next = break_label ? break_label : stack_new_block(stack);
   stack_instruction_br(stack, next);
-  vector_push(instr->vec, default_label ? default_label : next);
-  vector_push(instr->vec, switch_block);
   instr->operands[1] = block_as_value(default_label ? default_label : next);
   instr->operands[2] = block_as_value(switch_block);
   if (break_label || !default_label) {
@@ -66,16 +58,12 @@ void stack_instruction_switch_case(Stack *stack, Value *value, Block *label) {
 }
 Instruction *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ADD);
-  vector_push(instr->vec, lhs);
-  vector_push(instr->vec, rhs);
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
   return instr;
 }
 Instruction *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_SUB);
-  vector_push(instr->vec, lhs);
-  vector_push(instr->vec, rhs);
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
   return instr;
@@ -87,22 +75,17 @@ Instruction *stack_instruction_alloca(Stack *stack, const char *symbol) {
 }
 Instruction *stack_instruction_load(Stack *stack, Value *src) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_LOAD);
-  vector_push(instr->vec, src);
   instr->operands[0] = src;
   return instr;
 }
 Instruction *stack_instruction_store(Stack *stack, Value *src, Value *dst) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_STORE);
-  vector_push(instr->vec, src);
-  vector_push(instr->vec, dst);
   instr->operands[0] = src;
   instr->operands[1] = dst;
   return instr;
 }
 Instruction *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ICMP_NE);
-  vector_push(instr->vec, lhs);
-  vector_push(instr->vec, rhs);
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
   return instr;
