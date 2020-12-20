@@ -43,8 +43,8 @@ Stack *stack_new(Module *module) {
   int i;
   stack->pool = module_get(module);
   stack->module = module;
-  stack->table = table_new();
-  stack->labels = stack_new_labels();
+  stack->table = NULL;
+  stack->labels = NULL;
   stack->func = NULL;
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
@@ -52,8 +52,6 @@ Stack *stack_new(Module *module) {
   return stack;
 }
 void stack_delete(Stack *stack) {
-  map_delete(stack->labels);
-  table_delete(stack->table);
   UTILITY_FREE(stack);
 }
 Module *stack_get_module(Stack *stack) {
@@ -68,6 +66,8 @@ void stack_build_init(Stack *stack, Sexp *ast) {
   Function *func = module_new_function(stack->module);
   Block *alloc = stack_new_block(stack);
   Block *entry = stack_new_block(stack);
+  stack->table = table_new();
+  stack->labels = stack_new_labels();
   stack->func = func;
   function_init(func, ast);
   function_insert(func, alloc);
@@ -82,8 +82,17 @@ void stack_build_init(Stack *stack, Sexp *ast) {
 void stack_build_finish(Stack *stack) {
   Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
   Block *entry = stack_get_next(stack, STACK_NEXT_ENTRY);
+  int i;
   block_append(alloc, entry);
   function_set_id(stack->func);
+  map_delete(stack->labels);
+  table_delete(stack->table);
+  stack->table = NULL;
+  stack->labels = NULL;
+  stack->func = NULL;
+  for (i = 0; i < STACK_NEXT_COUNT; ++i) {
+    stack->next[i] = NULL;
+  }
 }
 
 Block *stack_label(Stack *stack, const char *label) {
