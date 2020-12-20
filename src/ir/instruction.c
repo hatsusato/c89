@@ -15,6 +15,7 @@ struct struct_Instruction {
   InstructionKind ikind;
   int id;
   Vector *vec;
+  Value *operands[3];
 };
 
 void stack_instruction_ret(Stack *stack, Value *expr) {
@@ -97,6 +98,7 @@ Instruction *instruction_new(InstructionKind kind) {
   instr->ikind = kind;
   instr->id = -1;
   instr->vec = vector_new(NULL);
+  instr->operands[0] = instr->operands[1] = instr->operands[2] = NULL;
   return instr;
 }
 void instruction_delete(Instruction *instr) {
