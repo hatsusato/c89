@@ -47,11 +47,6 @@ Constant *module_new_constant(Module *module) {
   pool_insert_constant(module->pool, constant);
   return constant;
 }
-Constant *module_new_integer(Module *module, const char *integer) {
-  Constant *constant = constant_integer(integer);
-  pool_insert_constant(module->pool, constant);
-  return constant;
-}
 void module_insert(Module *module, Function *func) {
   vector_push(module->vec, func);
 }

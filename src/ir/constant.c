@@ -31,6 +31,7 @@ void constant_print(Constant *constant) {
 }
 
 Constant *stack_new_integer(Stack *stack, const char *integer) {
-  Constant *constant = module_new_integer(stack_get_module(stack), integer);
+  Constant *constant = module_new_constant(stack_get_module(stack));
+  constant->symbol = integer;
   return constant;
 }

@@ -14,7 +14,6 @@ Function *module_new_function(Module *);
 Block *module_new_block(Module *);
 Instruction *module_new_instruction(Module *, InstructionKind);
 Constant *module_new_constant(Module *);
-Constant *module_new_integer(Module *, const char *);
 void module_insert(Module *, Function *);
 void module_pretty(Module *);
 void *module_get(Module *);
