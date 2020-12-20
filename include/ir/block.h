@@ -3,6 +3,7 @@
 
 #include "ir/block_type.h"
 #include "ir/instruction_type.h"
+#include "ir/stack_type.h"
 #include "ir/value_type.h"
 #include "types.h"
 
@@ -18,5 +19,7 @@ void block_print(Block *);
 void block_print_label(Block *);
 void block_pretty(Block *);
 void block_pretty_switch(Block *);
+
+Block *stack_new_block(Stack *);
 
 #endif /* INCLUDE_GUARD_158B0FE3_07C7_4187_B41D_C9D59FB58195 */

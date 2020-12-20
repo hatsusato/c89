@@ -3,6 +3,8 @@
 #include <stdio.h>
 
 #include "ir/instruction.h"
+#include "ir/module.h"
+#include "ir/stack.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
 #include "utility.h"
@@ -85,4 +87,8 @@ void block_pretty_switch(Block *block) {
     value_print(*begin++);
     printf("\n");
   }
+}
+
+Block *stack_new_block(Stack *stack) {
+  return module_new_block(stack_get_module(stack));
 }

@@ -75,9 +75,6 @@ void stack_build(Stack *stack, Sexp *ast) {
   function_finish(func);
 }
 
-Block *stack_new_block(Stack *stack) {
-  return module_new_block(stack->module);
-}
 Value *stack_new_integer(Stack *stack, const char *integer) {
   Constant *value = constant_integer(integer);
   pool_insert_constant(stack->pool, value);
