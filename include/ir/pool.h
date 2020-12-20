@@ -6,8 +6,6 @@
 #include "ir/function_type.h"
 #include "ir/instruction_type.h"
 #include "ir/pool_type.h"
-#include "ir/value_kind.h"
-#include "ir/value_type.h"
 
 Pool *pool_new(void);
 void pool_delete(Pool *);

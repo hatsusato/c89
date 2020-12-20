@@ -4,7 +4,6 @@
 #include "ir/constant.h"
 #include "ir/function.h"
 #include "ir/instruction.h"
-#include "ir/value.h"
 #include "types.h"
 #include "utility.h"
 #include "vector.h"
