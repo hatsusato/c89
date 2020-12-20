@@ -42,6 +42,11 @@ Instruction *module_new_instruction(Module *module, InstructionKind kind) {
   pool_insert_instruction(module->pool, instr);
   return instr;
 }
+Constant *module_new_constant(Module *module) {
+  Constant *constant = constant_new();
+  pool_insert_constant(module->pool, constant);
+  return constant;
+}
 Constant *module_new_integer(Module *module, const char *integer) {
   Constant *constant = constant_integer(integer);
   pool_insert_constant(module->pool, constant);
