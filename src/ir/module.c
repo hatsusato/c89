@@ -29,6 +29,7 @@ void module_delete(Module *module) {
 Function *module_new_function(Module *module) {
   Function *func = function_new();
   pool_insert_function(module->pool, func);
+  vector_push(module->vec, func);
   return func;
 }
 Block *module_new_block(Module *module) {

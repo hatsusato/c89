@@ -30,11 +30,6 @@ static Map *stack_new_labels(void) {
   Map *labels = map_new(compare);
   return labels;
 }
-static Function *stack_new_function(Stack *stack) {
-  Function *func = function_new();
-  pool_insert_function(stack->pool, func);
-  return func;
-}
 static int count_return(Sexp *ast) {
   if (sexp_is_pair(ast)) {
     return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
@@ -62,12 +57,11 @@ void stack_delete(Stack *stack) {
   UTILITY_FREE(stack);
 }
 void stack_build(Stack *stack, Sexp *ast) {
-  Function *func = stack_new_function(stack);
+  Function *func = module_new_function(stack->module);
   Block *alloc = stack_new_block(stack);
   Block *entry = stack_new_block(stack);
   Block *ret = 1 < count_return(ast) ? stack_new_block(stack) : NULL;
   stack->func = func;
-  module_insert(stack->module, func);
   function_init(func, ast);
   function_insert(func, alloc);
   stack_set_next(stack, STACK_NEXT_ALLOC, alloc);
