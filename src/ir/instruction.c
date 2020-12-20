@@ -21,9 +21,8 @@ struct struct_Instruction {
 Instruction *stack_new_instruction(Stack *stack, InstructionKind kind) {
   Instruction *instr = module_new_instruction(stack_get_module(stack), kind);
   Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  if (INSTRUCTION_ALLOCA != kind) {
-    block_insert(current, instr);
-  }
+  Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
+  block_insert(INSTRUCTION_ALLOCA == kind ? alloc : current, instr);
   return instr;
 }
 void stack_instruction_ret(Stack *stack, Value *expr) {

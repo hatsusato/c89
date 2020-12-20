@@ -99,9 +99,7 @@ Bool stack_last_terminator(Stack *stack) {
   return block_is_terminated(current);
 }
 void stack_alloca(Stack *stack, const char *symbol, Instruction *instr) {
-  Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
   table_insert(stack->table, symbol, instruction_as_value(instr));
-  block_insert(alloc, instr);
 }
 Value *stack_find_alloca(Stack *stack, const char *symbol) {
   return table_find(stack->table, symbol);
