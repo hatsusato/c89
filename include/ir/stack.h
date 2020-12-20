@@ -5,6 +5,7 @@
 #include "ir/function_type.h"
 #include "ir/instruction_kind.h"
 #include "ir/instruction_type.h"
+#include "ir/module_type.h"
 #include "ir/pool_type.h"
 #include "ir/stack_type.h"
 #include "ir/value_type.h"
@@ -23,7 +24,7 @@ typedef enum {
   STACK_NEXT_COUNT
 } StackNextTag;
 
-Stack *stack_new(Pool *);
+Stack *stack_new(Pool *, Module *);
 void stack_delete(Stack *);
 Function *stack_build(Stack *, Sexp *);
 

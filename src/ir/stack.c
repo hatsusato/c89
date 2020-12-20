@@ -5,6 +5,7 @@
 #include "ir/constant.h"
 #include "ir/function.h"
 #include "ir/instruction.h"
+#include "ir/module.h"
 #include "ir/pool.h"
 #include "ir/stack_impl.h"
 #include "ir/table.h"
@@ -13,6 +14,7 @@
 
 struct struct_Stack {
   Pool *pool;
+  Module *module;
   Table *table;
   Map *labels;
   Function *func;
@@ -41,13 +43,15 @@ static int count_return(Sexp *ast) {
   }
 }
 
-Stack *stack_new(Pool *pool) {
+Stack *stack_new(Pool *pool, Module *module) {
   Stack *stack = UTILITY_MALLOC(Stack);
   int i;
   stack->pool = pool;
+  stack->module = module;
   stack->table = table_new();
   stack->labels = stack_new_labels();
   stack->func = stack_new_function(stack);
+  module_insert(stack->module, stack->func);
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
   }
