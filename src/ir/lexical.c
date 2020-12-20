@@ -19,5 +19,5 @@ Value *stack_integer_constant(Stack *stack, Sexp *ast) {
   assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   assert(sexp_is_symbol(ast));
-  return stack_new_integer(stack, sexp_get_symbol(ast));
+  return constant_as_value(stack_new_integer(stack, sexp_get_symbol(ast)));
 }
