@@ -17,6 +17,7 @@ struct struct_Block {
 Block *block_new(void) {
   Block *block = UTILITY_MALLOC(Block);
   block->kind = VALUE_BLOCK;
+  block->id = -1;
   block->vec = vector_new(NULL);
   return block;
 }
@@ -60,6 +61,7 @@ int block_set_id(Block *block, int id) {
   return id;
 }
 void block_print(Block *block) {
+  assert(0 <= block->id);
   printf("%%%d", block->id);
 }
 void block_pretty(Block *block) {
@@ -70,6 +72,7 @@ void block_pretty(Block *block) {
   }
 }
 void block_pretty_label(Block *block) {
+  assert(0 <= block->id);
   printf("%d:\n", block->id);
 }
 void block_pretty_switch(Block *block) {
