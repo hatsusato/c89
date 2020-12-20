@@ -25,6 +25,9 @@ void block_delete(Block *block) {
   vector_delete(block->vec);
   UTILITY_FREE(block);
 }
+Value *block_as_value(Block *block) {
+  return (Value *)block;
+}
 void block_insert(Block *block, Instruction *instr) {
   vector_push(block->vec, instr);
 }

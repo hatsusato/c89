@@ -8,6 +8,7 @@
 
 Block *block_new(void);
 void block_delete(Block *);
+Value *block_as_value(Block *);
 void block_insert(Block *, Instruction *);
 void block_insert_switch(Block *, Value *, Block *);
 void block_append(Block *, Block *);
