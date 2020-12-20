@@ -14,25 +14,21 @@ struct struct_Builder {
   Module *module;
 };
 
-static void builder_function_definition(Builder *builder, Sexp *ast) {
-  Stack *stack = stack_new(builder->module);
-  assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
-  stack_build(stack, ast);
-  stack_delete(stack);
-}
 static void builder_translation_unit(Builder *builder, Sexp *ast) {
+  Stack *stack = stack_new(builder->module);
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     switch (sexp_get_tag(sexp_car(ast))) {
     case AST_EXTERNAL_DECLARATION:
       break;
     case AST_FUNCTION_DEFINITION:
-      builder_function_definition(builder, sexp_car(ast));
+      stack_build(stack, sexp_car(ast));
       break;
     default:
       assert(0);
       break;
     }
   }
+  stack_delete(stack);
 }
 
 Builder *builder_new(void) {
