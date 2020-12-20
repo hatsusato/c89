@@ -16,20 +16,10 @@ struct struct_Stack {
   Pool *pool;
   Module *module;
   Table *table;
-  Map *labels;
   Function *func;
   Block *next[STACK_NEXT_COUNT];
 };
 
-static int labels_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
-  UTILITY_UNUSED(extra);
-  return utility_strcmp(lhs, rhs);
-}
-static Map *stack_new_labels(void) {
-  Compare *compare = compare_new(labels_compare);
-  Map *labels = map_new(compare);
-  return labels;
-}
 static int count_return(Sexp *ast) {
   if (sexp_is_pair(ast)) {
     return count_return(sexp_car(ast)) + count_return(sexp_cdr(ast));
@@ -44,7 +34,6 @@ Stack *stack_new(Module *module) {
   stack->pool = module_get(module);
   stack->module = module;
   stack->table = NULL;
-  stack->labels = NULL;
   stack->func = NULL;
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
@@ -62,7 +51,6 @@ void stack_build_init(Stack *stack, Sexp *ast) {
   Block *alloc = stack_new_block(stack);
   Block *entry = stack_new_block(stack);
   stack->table = table_new();
-  stack->labels = stack_new_labels();
   stack->func = func;
   function_init(func, ast);
   function_insert(func, alloc);
@@ -80,10 +68,8 @@ void stack_build_finish(Stack *stack) {
   int i;
   block_append(alloc, entry);
   function_set_id(stack->func);
-  map_delete(stack->labels);
   table_delete(stack->table);
   stack->table = NULL;
-  stack->labels = NULL;
   stack->func = NULL;
   for (i = 0; i < STACK_NEXT_COUNT; ++i) {
     stack->next[i] = NULL;
