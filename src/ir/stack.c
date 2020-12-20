@@ -85,9 +85,7 @@ Block *stack_new_block(Stack *stack) {
 }
 Instruction *stack_new_instruction(Stack *stack, InstructionKind kind) {
   Instruction *instr = instruction_new(kind);
-  Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
   pool_insert_instruction(stack->pool, instr);
-  block_insert(current, instr);
   return instr;
 }
 Value *stack_new_integer(Stack *stack, const char *integer) {
