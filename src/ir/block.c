@@ -11,6 +11,7 @@
 
 struct struct_Block {
   ValueKind kind;
+  int id;
   Register reg;
   Vector *vec;
   const void *value;
@@ -61,6 +62,15 @@ void block_set_register(Block *block, RegisterGenerator *gen) {
   while (begin < end) {
     instruction_set_register(*begin++, gen);
   }
+}
+int block_set_id(Block *block, int id) {
+  ElemType *begin = vector_begin(block->vec);
+  ElemType *end = vector_end(block->vec);
+  block->id = id++;
+  while (begin < end) {
+    id = instruction_set_id(*begin++, id);
+  }
+  return id;
 }
 void block_print(Block *block) {
   register_print(&block->reg, true);

@@ -15,6 +15,7 @@ void block_append(Block *, Block *);
 Bool block_empty(Block *);
 Bool block_is_terminated(Block *);
 void block_set_register(Block *, RegisterGenerator *);
+int block_set_id(Block *, int);
 void block_print(Block *);
 void block_pretty(Block *);
 void block_pretty_label(Block *);
