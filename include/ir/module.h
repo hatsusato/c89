@@ -12,7 +12,7 @@ Module *module_new(void);
 void module_delete(Module *);
 Function *module_new_function(Module *);
 Block *module_new_block(Module *);
-Instruction *module_new_instruction(Module *, InstructionKind);
+Instruction *module_new_instruction(Module *);
 Constant *module_new_constant(Module *);
 void module_insert(Module *, Function *);
 void module_pretty(Module *);

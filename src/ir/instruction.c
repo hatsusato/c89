@@ -135,7 +135,7 @@ void instruction_pretty(Instruction *instr) {
 }
 
 Instruction *stack_new_instruction(Stack *stack, InstructionKind kind) {
-  Instruction *instr = module_new_instruction(stack_get_module(stack), kind);
+  Instruction *instr = module_new_instruction(stack_get_module(stack));
   Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
   Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
   instr->ikind = kind;
