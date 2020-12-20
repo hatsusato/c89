@@ -17,34 +17,27 @@ struct struct_Instruction {
   Vector *vec;
 };
 
-static void instruction_insert(Instruction *instr, Value *value) {
-  vector_push(instr->vec, value);
-}
-static void instruction_insert_block(Instruction *instr, Block *block) {
-  vector_push(instr->vec, block);
-}
-
 void stack_instruction_ret(Stack *stack, Value *expr) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_RET);
-  instruction_insert(instr, expr);
+  vector_push(instr->vec, expr);
 }
 void stack_instruction_br(Stack *stack, Block *label) {
   assert(label);
   if (!stack_last_terminator(stack)) {
     Instruction *instr = stack_new_instruction(stack, INSTRUCTION_BR);
-    instruction_insert_block(instr, label);
+    vector_push(instr->vec, label);
   }
 }
 void stack_instruction_br_cond(Stack *stack, Value *expr, Block *then_label,
                                Block *else_label) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_BR_COND);
-  instruction_insert(instr, expr);
-  instruction_insert_block(instr, then_label);
-  instruction_insert_block(instr, else_label);
+  vector_push(instr->vec, expr);
+  vector_push(instr->vec, then_label);
+  vector_push(instr->vec, else_label);
 }
 Instruction *stack_instruction_switch(Stack *stack, Value *expr) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_SWITCH);
-  instruction_insert(instr, expr);
+  vector_push(instr->vec, expr);
   return instr;
 }
 void stack_instruction_switch_finish(Stack *stack, Instruction *instr) {
@@ -53,8 +46,8 @@ void stack_instruction_switch_finish(Stack *stack, Instruction *instr) {
   Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
   Block *next = break_label ? break_label : stack_new_block(stack);
   stack_instruction_br(stack, next);
-  instruction_insert_block(instr, default_label ? default_label : next);
-  instruction_insert_block(instr, switch_block);
+  vector_push(instr->vec, default_label ? default_label : next);
+  vector_push(instr->vec, switch_block);
   if (break_label || !default_label) {
     stack_jump_block(stack, next);
   }
@@ -65,14 +58,14 @@ void stack_instruction_switch_case(Stack *stack, Value *value, Block *label) {
 }
 Instruction *stack_instruction_add(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ADD);
-  instruction_insert(instr, lhs);
-  instruction_insert(instr, rhs);
+  vector_push(instr->vec, lhs);
+  vector_push(instr->vec, rhs);
   return instr;
 }
 Instruction *stack_instruction_sub(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_SUB);
-  instruction_insert(instr, lhs);
-  instruction_insert(instr, rhs);
+  vector_push(instr->vec, lhs);
+  vector_push(instr->vec, rhs);
   return instr;
 }
 Instruction *stack_instruction_alloca(Stack *stack, const char *symbol) {
@@ -82,19 +75,19 @@ Instruction *stack_instruction_alloca(Stack *stack, const char *symbol) {
 }
 Instruction *stack_instruction_load(Stack *stack, Value *src) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_LOAD);
-  instruction_insert(instr, src);
+  vector_push(instr->vec, src);
   return instr;
 }
 Instruction *stack_instruction_store(Stack *stack, Value *src, Value *dst) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_STORE);
-  instruction_insert(instr, src);
-  instruction_insert(instr, dst);
+  vector_push(instr->vec, src);
+  vector_push(instr->vec, dst);
   return instr;
 }
 Instruction *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
   Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ICMP_NE);
-  instruction_insert(instr, lhs);
-  instruction_insert(instr, rhs);
+  vector_push(instr->vec, lhs);
+  vector_push(instr->vec, rhs);
   return instr;
 }
 
