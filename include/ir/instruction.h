@@ -4,7 +4,6 @@
 #include "ir/block_type.h"
 #include "ir/instruction_kind.h"
 #include "ir/instruction_type.h"
-#include "ir/register_type.h"
 #include "ir/stack_type.h"
 #include "ir/value_type.h"
 #include "types.h"
@@ -25,7 +24,6 @@ Instruction *stack_instruction_icmp_ne(Stack *, Value *, Value *);
 Instruction *instruction_new(InstructionKind);
 void instruction_delete(Instruction *);
 Bool instruction_is_terminator(Instruction *);
-void instruction_set_register(Instruction *, RegisterGenerator *);
 int instruction_set_id(Instruction *, int);
 void instruction_print(Instruction *);
 void instruction_pretty(Instruction *);

@@ -128,22 +128,6 @@ Bool instruction_is_terminator(Instruction *instr) {
     return false;
   }
 }
-void instruction_set_register(Instruction *instr, RegisterGenerator *gen) {
-  switch (instr->ikind) {
-#define HANDLE_INSTRUCTION_KIND(k) \
-  case k:                          \
-    break
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_RET);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR_COND);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SWITCH);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_STORE);
-#undef HANDLE_INSTRUCTION_KIND
-  default:
-    register_set(gen, &instr->reg);
-    break;
-  }
-}
 int instruction_set_id(Instruction *instr, int id) {
   if (!instruction_is_terminator(instr) && INSTRUCTION_STORE != instr->ikind) {
     instr->id = id++;
