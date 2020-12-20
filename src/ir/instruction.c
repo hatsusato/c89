@@ -214,7 +214,7 @@ static void instruction_pretty_icmp_ne(Vector *vec) {
   value_print(vector_at(vec, 1));
 }
 void instruction_print(Instruction *instr) {
-  register_print(&instr->reg, true);
+  printf("%%%d", instr->id);
 }
 void instruction_pretty(Instruction *instr) {
   Vector *vec = instr->vec;
