@@ -145,7 +145,9 @@ void instruction_set_register(Instruction *instr, RegisterGenerator *gen) {
   }
 }
 int instruction_set_id(Instruction *instr, int id) {
-  instr->id = id++;
+  if (!instruction_is_terminator(instr) && INSTRUCTION_STORE != instr->ikind) {
+    instr->id = id++;
+  }
   return id;
 }
 static void instruction_pretty_ret(Vector *vec) {
