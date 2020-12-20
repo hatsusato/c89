@@ -6,7 +6,6 @@
 #include "ir/function.h"
 #include "ir/instruction.h"
 #include "ir/pool.h"
-#include "ir/register.h"
 #include "ir/stack_impl.h"
 #include "ir/table.h"
 #include "map.h"
