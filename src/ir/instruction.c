@@ -4,19 +4,17 @@
 
 #include "ir/block.h"
 #include "ir/instruction_type.h"
-#include "ir/register.h"
-#include "ir/stack_impl.h"
+#include "ir/stack.h"
+#include "ir/value.h"
 #include "ir/value_kind.h"
 #include "utility.h"
 #include "vector.h"
 
 struct struct_Instruction {
   ValueKind kind;
-  int id;
-  Register reg;
-  Vector *vec;
-  const void *value;
   InstructionKind ikind;
+  int id;
+  Vector *vec;
 };
 
 static void instruction_insert(Instruction *instr, Value *value) {
@@ -103,11 +101,9 @@ Instruction *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
 Instruction *instruction_new(InstructionKind kind) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
   instr->kind = VALUE_INSTRUCTION;
-  instr->id = -1;
-  register_init(&instr->reg);
-  instr->vec = vector_new(NULL);
-  instr->value = NULL;
   instr->ikind = kind;
+  instr->id = -1;
+  instr->vec = vector_new(NULL);
   return instr;
 }
 void instruction_delete(Instruction *instr) {
