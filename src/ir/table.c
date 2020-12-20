@@ -10,7 +10,7 @@
 #include "utility.h"
 
 struct struct_Table {
-  Map *table;
+  Map *table, *labels;
 };
 
 static int table_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
@@ -26,9 +26,11 @@ static Map *table_new_map(void) {
 Table *table_new(void) {
   Table *table = UTILITY_MALLOC(Table);
   table->table = table_new_map();
+  table->labels = table_new_map();
   return table;
 }
 void table_delete(Table *table) {
+  map_delete(table->labels);
   map_delete(table->table);
   UTILITY_FREE(table);
 }
