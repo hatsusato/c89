@@ -10,9 +10,6 @@ struct struct_Value {
   ValueKind kind;
 };
 
-Value *value_of(void *value) {
-  return (Value *)value;
-}
 void value_print(Value *value) {
   switch (value->kind) {
   case VALUE_BLOCK:

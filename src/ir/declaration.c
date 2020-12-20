@@ -15,7 +15,7 @@ Value *stack_init_declarator(Stack *stack, Sexp *ast) {
     Value *src = stack_ast(stack, sexp_at(ast, 3));
     Value *dst = stack_declarator(stack, sexp_at(ast, 1));
     Instruction *instr = stack_instruction_store(stack, src, dst);
-    return value_of(instr);
+    return instruction_as_value(instr);
   }
   default:
     assert(0);
@@ -40,7 +40,7 @@ Value *stack_direct_declarator(Stack *stack, Sexp *ast) {
   case 2: {
     const char *symbol = stack_identifier_symbol(sexp_at(ast, 1));
     Instruction *instr = stack_instruction_alloca(stack, symbol);
-    return value_of(instr);
+    return instruction_as_value(instr);
   }
   case 4:
     return stack_declarator(stack, sexp_at(ast, 2));

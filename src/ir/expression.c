@@ -19,7 +19,7 @@ Value *stack_additive_expression(Stack *stack, Sexp *ast) {
     assert(0);
     break;
   }
-  return value_of(instr);
+  return instruction_as_value(instr);
 }
 Value *stack_assignment_expression(Stack *stack, Sexp *ast) {
   const char *symbol;
@@ -31,7 +31,7 @@ Value *stack_assignment_expression(Stack *stack, Sexp *ast) {
   lhs = stack_find_alloca(stack, symbol);
   rhs = stack_ast(stack, sexp_at(ast, 3));
   instr = stack_instruction_store(stack, rhs, lhs);
-  return value_of(instr);
+  return instruction_as_value(instr);
 }
 Value *stack_constant_expression(Stack *stack, Sexp *ast) {
   assert(AST_CONSTANT_EXPRESSION == sexp_get_tag(ast));

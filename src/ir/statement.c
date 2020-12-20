@@ -82,7 +82,8 @@ static void stack_if_statement(Stack *stack, Sexp *ast) {
     Value *lhs = stack_ast(stack, sexp_at(ast, 3));
     Value *rhs = stack_new_integer(stack, "0");
     Instruction *icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
-    stack_instruction_br_cond(stack, value_of(icmp), then_block, next);
+    stack_instruction_br_cond(stack, instruction_as_value(icmp), then_block,
+                              next);
   }
   {
     stack_jump_block(stack, then_block);
@@ -100,7 +101,8 @@ static void stack_if_else_statement(Stack *stack, Sexp *ast) {
     Value *lhs = stack_ast(stack, sexp_at(ast, 3));
     Value *rhs = stack_new_integer(stack, "0");
     Instruction *icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
-    stack_instruction_br_cond(stack, value_of(icmp), then_block, else_block);
+    stack_instruction_br_cond(stack, instruction_as_value(icmp), then_block,
+                              else_block);
   }
   stack_set_next(stack, STACK_NEXT_BLOCK, next);
   {
@@ -173,7 +175,7 @@ static void stack_while_statement(Stack *stack, Sexp *ast) {
     Value *lhs = stack_ast(stack, sexp_at(ast, 3));
     Value *rhs = stack_new_integer(stack, "0");
     Instruction *icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
-    stack_instruction_br_cond(stack, value_of(icmp), body, next);
+    stack_instruction_br_cond(stack, instruction_as_value(icmp), body, next);
   }
   {
     Block *next_break = stack_set_next(stack, STACK_NEXT_BREAK, next);
@@ -205,7 +207,7 @@ static void stack_do_while_statement(Stack *stack, Sexp *ast) {
     Value *lhs = stack_ast(stack, sexp_at(ast, 5));
     Value *rhs = stack_new_integer(stack, "0");
     Instruction *icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
-    stack_instruction_br_cond(stack, value_of(icmp), body, next);
+    stack_instruction_br_cond(stack, instruction_as_value(icmp), body, next);
   }
   stack_jump_block(stack, next);
 }
@@ -225,7 +227,7 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
       Value *lhs = stack_ast(stack, sexp_at(ast, 5));
       Value *rhs = stack_new_integer(stack, "0");
       Instruction *icmp = stack_instruction_icmp_ne(stack, lhs, rhs);
-      stack_instruction_br_cond(stack, value_of(icmp), body, next);
+      stack_instruction_br_cond(stack, instruction_as_value(icmp), body, next);
     }
   }
   step = sexp_is_nil(sexp_at(ast, 7)) ? guard : stack_new_block(stack);

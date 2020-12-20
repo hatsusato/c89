@@ -90,7 +90,7 @@ Instruction *stack_new_instruction(Stack *stack, InstructionKind kind) {
 Value *stack_new_integer(Stack *stack, const char *integer) {
   Constant *value = constant_integer(integer);
   pool_insert_constant(stack->pool, value);
-  return value_of(value);
+  return constant_as_value(value);
 }
 Block *stack_label(Stack *stack, const char *label) {
   ElemType key = (ElemType)label;
@@ -110,7 +110,7 @@ Bool stack_last_terminator(Stack *stack) {
 void stack_alloca(Stack *stack, const char *symbol, Instruction *instr) {
   Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
   pool_insert_instruction(stack->pool, instr);
-  table_insert(stack->table, symbol, value_of(instr));
+  table_insert(stack->table, symbol, instruction_as_value(instr));
   block_insert(alloc, instr);
 }
 Value *stack_find_alloca(Stack *stack, const char *symbol) {

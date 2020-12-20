@@ -17,7 +17,7 @@ Value *stack_function_definition(Stack *stack, Sexp *ast) {
     stack_jump_block(stack, ret);
     expr = stack_find_alloca(stack, "$retval");
     instr = stack_instruction_load(stack, expr);
-    stack_instruction_ret(stack, value_of(instr));
+    stack_instruction_ret(stack, instruction_as_value(instr));
   }
   return NULL;
 }
