@@ -41,11 +41,11 @@ Module *stack_get_module(Stack *stack) {
 Function *stack_get_function(Stack *stack) {
   return stack->func;
 }
-void stack_build_init(Stack *stack, Function *func) {
+void stack_function_init(Stack *stack, Function *func) {
   stack->table = table_new();
   stack->func = func;
 }
-void stack_build_finish(Stack *stack) {
+void stack_function_finish(Stack *stack) {
   int i;
   table_delete(stack->table);
   stack->table = NULL;

@@ -41,12 +41,12 @@ Value *stack_function_definition(Stack *stack, Sexp *ast) {
   stack_set_next(stack, STACK_NEXT_CURRENT, entry);
   stack_set_next(stack, STACK_NEXT_ENTRY, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
-  stack_build_init(stack, func);
+  stack_function_init(stack, func);
   function_init(func, ast);
   function_insert(func, alloc);
   stack_function_build(stack, ast);
   block_append(alloc, entry);
   function_set_id(func);
-  stack_build_finish(stack);
+  stack_function_finish(stack);
   return NULL;
 }
