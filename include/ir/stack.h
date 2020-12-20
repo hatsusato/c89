@@ -28,6 +28,7 @@ Stack *stack_new(Module *);
 void stack_delete(Stack *);
 Module *stack_get_module(Stack *);
 void stack_build(Stack *, Sexp *);
+void stack_build_finish(Stack *);
 
 Block *stack_label(Stack *, const char *);
 Bool stack_last_terminator(Stack *);

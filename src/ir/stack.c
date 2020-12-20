@@ -72,8 +72,13 @@ void stack_build(Stack *stack, Sexp *ast) {
   stack_set_next(stack, STACK_NEXT_ENTRY, entry);
   stack_set_next(stack, STACK_NEXT_RETURN, ret);
   stack_ast(stack, ast);
+  stack_build_finish(stack);
+}
+void stack_build_finish(Stack *stack) {
+  Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
+  Block *entry = stack_get_next(stack, STACK_NEXT_ENTRY);
   block_append(alloc, entry);
-  function_finish(func);
+  function_set_id(stack->func);
 }
 
 Block *stack_label(Stack *stack, const char *label) {
