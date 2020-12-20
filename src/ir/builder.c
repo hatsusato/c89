@@ -14,23 +14,6 @@ struct struct_Builder {
   Module *module;
 };
 
-static void builder_translation_unit(Builder *builder, Sexp *ast) {
-  Stack *stack = stack_new(builder->module);
-  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    switch (sexp_get_tag(sexp_car(ast))) {
-    case AST_EXTERNAL_DECLARATION:
-      break;
-    case AST_FUNCTION_DEFINITION:
-      stack_function_definition(stack, sexp_car(ast));
-      break;
-    default:
-      assert(0);
-      break;
-    }
-  }
-  stack_delete(stack);
-}
-
 Builder *builder_new(void) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->module = module_new();
@@ -42,6 +25,8 @@ void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
 void builder_build(Builder *builder, Sexp *ast) {
-  builder_translation_unit(builder, ast);
+  Stack *stack = stack_new(builder->module);
+  stack_ast(stack, ast);
+  stack_delete(stack);
   module_pretty(builder->module);
 }
