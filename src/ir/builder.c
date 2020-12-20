@@ -21,7 +21,7 @@ static void builder_translation_unit(Builder *builder, Sexp *ast) {
     case AST_EXTERNAL_DECLARATION:
       break;
     case AST_FUNCTION_DEFINITION:
-      stack_build(stack, sexp_car(ast));
+      stack_function_definition(stack, sexp_car(ast));
       break;
     default:
       assert(0);
