@@ -12,6 +12,7 @@
 
 struct struct_Instruction {
   ValueKind kind;
+  int id;
   Register reg;
   Vector *vec;
   const void *value;
@@ -102,6 +103,7 @@ Instruction *stack_instruction_icmp_ne(Stack *stack, Value *lhs, Value *rhs) {
 Instruction *instruction_new(InstructionKind kind) {
   Instruction *instr = UTILITY_MALLOC(Instruction);
   instr->kind = VALUE_INSTRUCTION;
+  instr->id = -1;
   register_init(&instr->reg);
   instr->vec = vector_new(NULL);
   instr->value = NULL;
@@ -141,6 +143,10 @@ void instruction_set_register(Instruction *instr, RegisterGenerator *gen) {
     register_set(gen, &instr->reg);
     break;
   }
+}
+int instruction_set_id(Instruction *instr, int id) {
+  instr->id = id++;
+  return id;
 }
 static void instruction_pretty_ret(Vector *vec) {
   if (vector_empty(vec)) {

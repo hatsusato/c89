@@ -26,6 +26,7 @@ Instruction *instruction_new(InstructionKind);
 void instruction_delete(Instruction *);
 Bool instruction_is_terminator(Instruction *);
 void instruction_set_register(Instruction *, RegisterGenerator *);
+int instruction_set_id(Instruction *, int);
 void instruction_print(Instruction *);
 void instruction_pretty(Instruction *);
 
