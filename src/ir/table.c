@@ -42,3 +42,14 @@ Value *table_find(Table *table, const char *key) {
   assert(found && *found);
   return *found;
 }
+Bool table_label_contains(Table *table, const char *label) {
+  return map_contains(table->labels, (ElemType)label);
+}
+void table_label_insert(Table *table, const char *label, Block *block) {
+  map_insert(table->labels, (ElemType)label, block);
+}
+Block *table_label_find(Table *table, const char *label) {
+  ElemType *found = map_find(table->labels, (ElemType)label);
+  assert(found && *found);
+  return *found;
+}
