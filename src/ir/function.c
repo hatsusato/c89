@@ -50,14 +50,6 @@ static const char *function_name(Sexp *ast) {
     return NULL;
   }
 }
-static void function_set_id(Function *func) {
-  ElemType *begin = vector_begin(func->vec);
-  ElemType *end = vector_end(func->vec);
-  int id = 0;
-  while (begin < end) {
-    id = block_set_id(*begin++, id);
-  }
-}
 
 Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
@@ -78,6 +70,14 @@ void function_insert(Function *func, Block *block) {
 }
 void function_finish(Function *func) {
   function_set_id(func);
+}
+void function_set_id(Function *func) {
+  ElemType *begin = vector_begin(func->vec);
+  ElemType *end = vector_end(func->vec);
+  int id = 0;
+  while (begin < end) {
+    id = block_set_id(*begin++, id);
+  }
 }
 void function_pretty(Function *func) {
   ElemType *begin = vector_begin(func->vec);
