@@ -41,21 +41,21 @@ static void builder_label_statement(Builder *builder, Sexp *ast) {
 }
 static void builder_case_statement(Builder *builder, Sexp *ast) {
   Block *next = builder_get_next(builder, BUILDER_NEXT_CURRENT);
+  Value *value;
   if (switch_new_case(builder)) {
     next = builder_new_block(builder);
     builder_instruction_br(builder, next);
     builder_jump_block(builder, next);
   }
-  {
-    Value *constant = builder_ast(builder, sexp_at(ast, 2));
-    builder_instruction_switch_case(builder, constant, next);
-    builder_ast(builder, sexp_at(ast, 4));
-  }
+  value = builder_ast(builder, sexp_at(ast, 2));
+  builder_instruction_switch_case(builder, value, next);
+  builder_ast(builder, sexp_at(ast, 4));
 }
 static void builder_default_statement(Builder *builder, Sexp *ast) {
   Block *next = builder_new_block(builder);
-  assert(!builder_get_next(builder, BUILDER_NEXT_DEFAULT));
-  builder_set_next(builder, BUILDER_NEXT_DEFAULT, next);
+  Block *prev_default = builder_set_next(builder, BUILDER_NEXT_DEFAULT, next);
+  assert(!prev_default);
+  UTILITY_UNUSED(prev_default);
   builder_instruction_br(builder, next);
   builder_jump_block(builder, next);
   builder_ast(builder, sexp_at(ast, 3));
@@ -178,16 +178,15 @@ static void builder_break_statement(Builder *builder) {
 }
 static void builder_return_statement(Builder *builder, Sexp *ast) {
   Block *ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
+  Value *src;
   assert(!sexp_is_nil(sexp_at(ast, 2)));
-  {
-    Value *src = builder_ast(builder, sexp_at(ast, 2));
-    if (ret) {
-      Value *dst = builder_find_alloca(builder, "$retval");
-      builder_instruction_store(builder, src, dst);
-      builder_instruction_br(builder, ret);
-    } else {
-      builder_instruction_ret(builder, src);
-    }
+  src = builder_ast(builder, sexp_at(ast, 2));
+  if (ret) {
+    Value *dst = builder_find_alloca(builder, "$retval");
+    builder_instruction_store(builder, src, dst);
+    builder_instruction_br(builder, ret);
+  } else {
+    builder_instruction_ret(builder, src);
   }
 }
 
