@@ -65,14 +65,8 @@ void function_delete(Function *func) {
   vector_delete(func->vec);
   UTILITY_FREE(func);
 }
-void function_init(Function *func, Sexp *ast) {
-  func->name = function_name(ast);
-}
 void function_insert(Function *func, Block *block) {
   vector_push(func->vec, block);
-}
-void function_finish(Function *func) {
-  function_set_id(func);
 }
 void function_set_id(Function *func) {
   ElemType *begin = vector_begin(func->vec);

@@ -8,8 +8,6 @@
 
 Function *function_new(void);
 void function_delete(Function *);
-void function_init(Function *, Sexp *);
-void function_finish(Function *);
 void function_insert(Function *, Block *);
 void function_set_id(Function *);
 void function_pretty(Function *);
