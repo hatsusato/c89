@@ -40,15 +40,3 @@ void pool_delete(Pool *pool) {
   vector_delete(pool->function);
   UTILITY_FREE(pool);
 }
-void pool_insert_function(Pool *pool, Function *func) {
-  vector_push(pool->function, func);
-}
-void pool_insert_block(Pool *pool, Block *block) {
-  vector_push(pool->block, block);
-}
-void pool_insert_instruction(Pool *pool, Instruction *instr) {
-  vector_push(pool->instruction, instr);
-}
-void pool_insert_constant(Pool *pool, Constant *constant) {
-  vector_push(pool->constant, constant);
-}

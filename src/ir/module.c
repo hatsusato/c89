@@ -51,23 +51,23 @@ void module_delete(Module *module) {
 }
 Function *module_new_function(Module *module) {
   Function *func = function_new();
-  pool_insert_function(module->pool, func);
+  vector_push(module->p, func);
   vector_push(module->vec, func);
   return func;
 }
 Block *module_new_block(Module *module) {
   Block *block = block_new();
-  pool_insert_block(module->pool, block);
+  vector_push(module->p, block);
   return block;
 }
 Instruction *module_new_instruction(Module *module) {
   Instruction *instr = instruction_new();
-  pool_insert_instruction(module->pool, instr);
+  vector_push(module->p, instr);
   return instr;
 }
 Constant *module_new_constant(Module *module) {
   Constant *constant = constant_new();
-  pool_insert_constant(module->pool, constant);
+  vector_push(module->p, constant);
   return constant;
 }
 void module_pretty(Module *module) {
