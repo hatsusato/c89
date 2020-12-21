@@ -4,6 +4,8 @@
 
 #include "ast/ast_tag.h"
 #include "ir/block.h"
+#include "ir/builder.h"
+#include "ir/module.h"
 #include "ir/value_kind.h"
 #include "sexp.h"
 #include "utility.h"
@@ -14,6 +16,14 @@ struct struct_Function {
   const char *name;
   Vector *vec;
 };
+static int function_count_return(Sexp *ast) {
+  if (sexp_is_pair(ast)) {
+    return function_count_return(sexp_car(ast)) +
+           function_count_return(sexp_cdr(ast));
+  } else {
+    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
+  }
+}
 static const char *function_name(Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
@@ -91,4 +101,21 @@ void function_pretty(Function *func) {
     block_pretty(*begin);
   }
   printf("}\n");
+}
+
+Function *builder_new_function(Builder *builder, Sexp *ast) {
+  Module *module = builder_get_module(builder);
+  Function *func = module_new_function(module);
+  Block *alloc = builder_new_block(builder);
+  Block *entry = builder_new_block(builder);
+  func->name = function_name(ast);
+  function_insert(func, alloc);
+  builder_set_next(builder, BUILDER_NEXT_ALLOC, alloc);
+  builder_set_next(builder, BUILDER_NEXT_CURRENT, entry);
+  builder_set_next(builder, BUILDER_NEXT_ENTRY, entry);
+  if (1 < function_count_return(ast)) {
+    Block *ret = builder_new_block(builder);
+    builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
+  }
+  return func;
 }
