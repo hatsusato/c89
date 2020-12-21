@@ -8,22 +8,30 @@
 #include "sexp.h"
 #include "utility.h"
 
+static Value *builder_declarator_initializer(Builder *builder, Sexp *ast) {
+  Value *src = builder_ast(builder, sexp_at(ast, 3));
+  Value *dst = builder_declarator(builder, sexp_at(ast, 1));
+  Instruction *instr = builder_instruction_store(builder, src, dst);
+  return instruction_as_value(instr);
+}
+static Value *builder_direct_declarator_identifier(Builder *builder,
+                                                   Sexp *ast) {
+  const char *symbol = builder_identifier_symbol(sexp_at(ast, 1));
+  Instruction *instr = builder_instruction_alloca(builder, symbol);
+  return instruction_as_value(instr);
+}
+
 Value *builder_declaration(Builder *builder, Sexp *ast) {
   assert(AST_DECLARATION == sexp_get_tag(ast));
   return builder_ast(builder, sexp_at(ast, 2));
 }
 Value *builder_init_declarator(Builder *builder, Sexp *ast) {
-  Value *src, *dst;
-  Instruction *instr;
   assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
     return builder_declarator(builder, sexp_at(ast, 1));
   case 4:
-    src = builder_ast(builder, sexp_at(ast, 3));
-    dst = builder_declarator(builder, sexp_at(ast, 1));
-    instr = builder_instruction_store(builder, src, dst);
-    return instruction_as_value(instr);
+    return builder_declarator_initializer(builder, ast);
   default:
     assert(0);
     return NULL;
@@ -42,14 +50,10 @@ Value *builder_declarator(Builder *builder, Sexp *ast) {
   }
 }
 Value *builder_direct_declarator(Builder *builder, Sexp *ast) {
-  const char *symbol;
-  Instruction *instr;
   assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
-    symbol = builder_identifier_symbol(sexp_at(ast, 1));
-    instr = builder_instruction_alloca(builder, symbol);
-    return instruction_as_value(instr);
+    return builder_direct_declarator_identifier(builder, ast);
   case 4:
     return builder_declarator(builder, sexp_at(ast, 2));
   case 5:
