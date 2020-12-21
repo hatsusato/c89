@@ -18,31 +18,34 @@ struct struct_Instruction {
   Value *operands[3];
 };
 
+static void instruction_print_operand(Instruction *instr, Index index) {
+  value_print(instr->operands[index]);
+}
 static void instruction_pretty_ret(Instruction *instr) {
   if (instr->operands[0]) {
     printf("ret i32 ");
-    value_print(instr->operands[0]);
+    instruction_print_operand(instr, 0);
   } else {
     printf("ret void");
   }
 }
 static void instruction_pretty_br(Instruction *instr) {
   printf("br label ");
-  value_print(instr->operands[0]);
+  instruction_print_operand(instr, 0);
 }
 static void instruction_pretty_br_cond(Instruction *instr) {
   printf("br i1 ");
-  value_print(instr->operands[0]);
+  instruction_print_operand(instr, 0);
   printf(", label ");
-  value_print(instr->operands[1]);
+  instruction_print_operand(instr, 1);
   printf(", label ");
-  value_print(instr->operands[2]);
+  instruction_print_operand(instr, 2);
 }
 static void instruction_pretty_switch(Instruction *instr) {
   printf("switch i32 ");
-  value_print(instr->operands[0]);
+  instruction_print_operand(instr, 0);
   printf(", label ");
-  value_print(instr->operands[1]);
+  instruction_print_operand(instr, 1);
   printf(" [\n");
   block_pretty_switch(value_as_block(instr->operands[2]));
   printf("  ]");
@@ -50,16 +53,16 @@ static void instruction_pretty_switch(Instruction *instr) {
 static void instruction_pretty_add(Instruction *instr) {
   instruction_print(instr);
   printf(" = add nsw i32 ");
-  value_print(instr->operands[0]);
+  instruction_print_operand(instr, 0);
   printf(", ");
-  value_print(instr->operands[1]);
+  instruction_print_operand(instr, 1);
 }
 static void instruction_pretty_sub(Instruction *instr) {
   instruction_print(instr);
   printf(" = sub nsw i32 ");
-  value_print(instr->operands[0]);
+  instruction_print_operand(instr, 0);
   printf(", ");
-  value_print(instr->operands[1]);
+  instruction_print_operand(instr, 1);
 }
 static void instruction_pretty_alloca(Instruction *instr) {
   instruction_print(instr);
@@ -69,22 +72,22 @@ static void instruction_pretty_alloca(Instruction *instr) {
 static void instruction_pretty_load(Instruction *instr) {
   instruction_print(instr);
   printf(" = load i32, i32* ");
-  value_print(instr->operands[0]);
+  instruction_print_operand(instr, 0);
   printf(", align 4");
 }
 static void instruction_pretty_store(Instruction *instr) {
   printf("store i32 ");
-  value_print(instr->operands[0]);
+  instruction_print_operand(instr, 0);
   printf(", i32* ");
-  value_print(instr->operands[1]);
+  instruction_print_operand(instr, 1);
   printf(", align 4");
 }
 static void instruction_pretty_icmp_ne(Instruction *instr) {
   instruction_print(instr);
   printf(" = icmp ne i32 ");
-  value_print(instr->operands[0]);
+  instruction_print_operand(instr, 0);
   printf(", ");
-  value_print(instr->operands[1]);
+  instruction_print_operand(instr, 1);
 }
 
 Instruction *instruction_new(void) {
