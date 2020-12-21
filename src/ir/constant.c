@@ -26,7 +26,8 @@ void constant_print(Constant *constant) {
 }
 
 Constant *builder_new_integer(Builder *builder, const char *integer) {
-  Constant *constant = module_new_constant(builder_get_module(builder));
+  Module *module = builder_get_module(builder);
+  Constant *constant = module_new_constant(module);
   constant->symbol = integer;
   return constant;
 }

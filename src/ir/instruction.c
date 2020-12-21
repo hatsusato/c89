@@ -135,7 +135,8 @@ void instruction_pretty(Instruction *instr) {
 }
 
 Instruction *builder_new_instruction(Builder *builder, InstructionKind kind) {
-  Instruction *instr = module_new_instruction(builder_get_module(builder));
+  Module *module = builder_get_module(builder);
+  Instruction *instr = module_new_instruction(module);
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   instr->ikind = kind;

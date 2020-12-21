@@ -90,5 +90,6 @@ void block_pretty_switch(Block *block) {
 }
 
 Block *builder_new_block(Builder *builder) {
-  return module_new_block(builder_get_module(builder));
+  Module *module = builder_get_module(builder);
+  return module_new_block(module);
 }
