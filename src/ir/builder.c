@@ -26,6 +26,20 @@ struct struct_Builder {
   Block *next[BUILDER_NEXT_COUNT];
 };
 
+static void builder_init_next(Builder *builder, Sexp *ast) {
+  Block *alloc = builder_new_block(builder);
+  Block *entry = builder_new_block(builder);
+  builder_set_next(builder, BUILDER_NEXT_ALLOC, alloc);
+  builder_set_next(builder, BUILDER_NEXT_CURRENT, entry);
+  builder_set_next(builder, BUILDER_NEXT_ENTRY, entry);
+  function_insert(builder->func, alloc);
+  if (1 < function_count_return(ast)) {
+    Block *ret = builder_new_block(builder);
+    builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
+    builder_instruction_alloca(builder, "$retval");
+  }
+}
+
 Builder *builder_new(Module *module) {
   Builder *builder = UTILITY_MALLOC(Builder);
   int i;
@@ -42,10 +56,9 @@ void builder_delete(Builder *builder) {
 }
 void builder_function_init(Builder *builder, Sexp *ast) {
   Function *func = builder_new_function(builder, ast);
-  Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   builder->table = table_new();
   builder->func = func;
-  function_insert(func, alloc);
+  builder_init_next(builder, ast);
 }
 void builder_function_finish(Builder *builder) {
   int i;
