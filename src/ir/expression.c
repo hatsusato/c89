@@ -9,11 +9,10 @@
 #include "utility.h"
 
 Value *builder_additive_expression(Builder *builder, Sexp *ast) {
-  Value *lhs, *rhs;
+  Value *lhs = builder_ast(builder, sexp_at(ast, 1));
+  Value *rhs = builder_ast(builder, sexp_at(ast, 3));
   Instruction *instr = NULL;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
-  lhs = builder_ast(builder, sexp_at(ast, 1));
-  rhs = builder_ast(builder, sexp_at(ast, 3));
   switch (sexp_get_tag(sexp_at(ast, 2))) {
   case AST_PLUS:
     instr = builder_instruction_add(builder, lhs, rhs);
@@ -28,15 +27,12 @@ Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   return instruction_as_value(instr);
 }
 Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
-  const char *symbol;
-  Value *lhs, *rhs;
-  Instruction *instr;
+  const char *symbol = builder_identifier_symbol(sexp_at(ast, 1));
+  Value *lhs = builder_find_alloca(builder, symbol);
+  Value *rhs = builder_ast(builder, sexp_at(ast, 3));
+  Instruction *instr = builder_instruction_store(builder, rhs, lhs);
   assert(AST_ASSIGNMENT_EXPRESSION == sexp_get_tag(ast));
   assert(AST_ASSIGN == sexp_get_tag(sexp_at(ast, 2)));
-  symbol = builder_identifier_symbol(sexp_at(ast, 1));
-  lhs = builder_find_alloca(builder, symbol);
-  rhs = builder_ast(builder, sexp_at(ast, 3));
-  instr = builder_instruction_store(builder, rhs, lhs);
   return instruction_as_value(instr);
 }
 Value *builder_constant_expression(Builder *builder, Sexp *ast) {
