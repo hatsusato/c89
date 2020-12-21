@@ -2,7 +2,7 @@
 
 #include "ir/stack_impl.h"
 
-Value *stack_additive_expression(Stack *stack, Sexp *ast) {
+Value *stack_additive_expression(Builder *stack, Sexp *ast) {
   Value *lhs, *rhs;
   Instruction *instr = NULL;
   assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
@@ -21,7 +21,7 @@ Value *stack_additive_expression(Stack *stack, Sexp *ast) {
   }
   return instruction_as_value(instr);
 }
-Value *stack_assignment_expression(Stack *stack, Sexp *ast) {
+Value *stack_assignment_expression(Builder *stack, Sexp *ast) {
   const char *symbol;
   Value *lhs, *rhs;
   Instruction *instr;
@@ -33,7 +33,7 @@ Value *stack_assignment_expression(Stack *stack, Sexp *ast) {
   instr = stack_instruction_store(stack, rhs, lhs);
   return instruction_as_value(instr);
 }
-Value *stack_constant_expression(Stack *stack, Sexp *ast) {
+Value *stack_constant_expression(Builder *stack, Sexp *ast) {
   assert(AST_CONSTANT_EXPRESSION == sexp_get_tag(ast));
   return stack_ast(stack, sexp_at(ast, 1));
 }

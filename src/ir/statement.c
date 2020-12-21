@@ -5,25 +5,25 @@
 #include "ir/instruction_type.h"
 #include "ir/stack_impl.h"
 
-static Bool switch_new_case(Stack *stack) {
+static Bool switch_new_case(Builder *stack) {
   Block *curr = stack_get_next(stack, STACK_NEXT_CURRENT);
   Block *dflt = stack_get_next(stack, STACK_NEXT_DEFAULT);
   Block *swch = stack_get_next(stack, STACK_NEXT_SWITCH);
   return block_empty(swch) || !block_empty(curr) || dflt == curr;
 }
 
-Value *stack_statement(Stack *stack, Sexp *ast) {
+Value *stack_statement(Builder *stack, Sexp *ast) {
   assert(AST_STATEMENT == sexp_get_tag(ast));
   return stack_ast(stack, sexp_at(ast, 1));
 }
-static void stack_label_statement(Stack *stack, Sexp *ast) {
+static void stack_label_statement(Builder *stack, Sexp *ast) {
   const char *label = stack_identifier_symbol(sexp_at(ast, 1));
   Block *next = stack_label(stack, label);
   stack_instruction_br(stack, next);
   stack_jump_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
 }
-static void stack_case_statement(Stack *stack, Sexp *ast) {
+static void stack_case_statement(Builder *stack, Sexp *ast) {
   Block *next = stack_get_next(stack, STACK_NEXT_CURRENT);
   if (switch_new_case(stack)) {
     next = stack_new_block(stack);
@@ -36,7 +36,7 @@ static void stack_case_statement(Stack *stack, Sexp *ast) {
     stack_ast(stack, sexp_at(ast, 4));
   }
 }
-static void stack_default_statement(Stack *stack, Sexp *ast) {
+static void stack_default_statement(Builder *stack, Sexp *ast) {
   Block *next = stack_new_block(stack);
   assert(!stack_get_next(stack, STACK_NEXT_DEFAULT));
   stack_set_next(stack, STACK_NEXT_DEFAULT, next);
@@ -44,7 +44,7 @@ static void stack_default_statement(Stack *stack, Sexp *ast) {
   stack_jump_block(stack, next);
   stack_ast(stack, sexp_at(ast, 3));
 }
-Value *stack_labeled_statement(Stack *stack, Sexp *ast) {
+Value *stack_labeled_statement(Builder *stack, Sexp *ast) {
   assert(AST_LABELED_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_IDENTIFIER:
@@ -62,13 +62,13 @@ Value *stack_labeled_statement(Stack *stack, Sexp *ast) {
   }
   return NULL;
 }
-Value *stack_compound_statement(Stack *stack, Sexp *ast) {
+Value *stack_compound_statement(Builder *stack, Sexp *ast) {
   assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
   stack_ast(stack, sexp_at(ast, 2));
   stack_ast(stack, sexp_at(ast, 3));
   return NULL;
 }
-Value *stack_expression_statement(Stack *stack, Sexp *ast) {
+Value *stack_expression_statement(Builder *stack, Sexp *ast) {
   assert(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   if (!sexp_is_nil(ast)) {
@@ -76,7 +76,7 @@ Value *stack_expression_statement(Stack *stack, Sexp *ast) {
   }
   return NULL;
 }
-static void stack_if_statement(Stack *stack, Sexp *ast) {
+static void stack_if_statement(Builder *stack, Sexp *ast) {
   Block *next = stack_new_block(stack);
   Block *then_block = stack_new_block(stack);
   {
@@ -94,7 +94,7 @@ static void stack_if_statement(Stack *stack, Sexp *ast) {
   }
   stack_jump_block(stack, next);
 }
-static void stack_if_else_statement(Stack *stack, Sexp *ast) {
+static void stack_if_else_statement(Builder *stack, Sexp *ast) {
   Block *next = stack_new_block(stack);
   Block *then_block = stack_new_block(stack);
   Block *else_block = stack_new_block(stack);
@@ -128,7 +128,7 @@ static void stack_if_else_statement(Stack *stack, Sexp *ast) {
     stack_set_next(stack, STACK_NEXT_BLOCK, next);
   }
 }
-static void stack_switch_statement(Stack *stack, Sexp *ast) {
+static void stack_switch_statement(Builder *stack, Sexp *ast) {
   Block *block = stack_new_block(stack);
   Value *expr = stack_ast(stack, sexp_at(ast, 3));
   Instruction *instr = stack_instruction_switch(stack, expr);
@@ -143,7 +143,7 @@ static void stack_switch_statement(Stack *stack, Sexp *ast) {
     stack_set_next(stack, STACK_NEXT_SWITCH, next_switch);
   }
 }
-Value *stack_selection_statement(Stack *stack, Sexp *ast) {
+Value *stack_selection_statement(Builder *stack, Sexp *ast) {
   assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_IF:
@@ -168,7 +168,7 @@ Value *stack_selection_statement(Stack *stack, Sexp *ast) {
   }
   return NULL;
 }
-static void stack_while_statement(Stack *stack, Sexp *ast) {
+static void stack_while_statement(Builder *stack, Sexp *ast) {
   Block *guard = stack_new_block(stack);
   Block *body = stack_new_block(stack);
   Block *next = stack_new_block(stack);
@@ -192,7 +192,7 @@ static void stack_while_statement(Stack *stack, Sexp *ast) {
   }
   stack_jump_block(stack, next);
 }
-static void stack_do_while_statement(Stack *stack, Sexp *ast) {
+static void stack_do_while_statement(Builder *stack, Sexp *ast) {
   Block *body = stack_new_block(stack);
   Block *guard = stack_new_block(stack);
   Block *next = stack_new_block(stack);
@@ -216,7 +216,7 @@ static void stack_do_while_statement(Stack *stack, Sexp *ast) {
   }
   stack_jump_block(stack, next);
 }
-static void stack_for_statement(Stack *stack, Sexp *ast) {
+static void stack_for_statement(Builder *stack, Sexp *ast) {
   Block *guard, *step;
   Block *body = stack_new_block(stack);
   Block *next = stack_new_block(stack);
@@ -253,7 +253,7 @@ static void stack_for_statement(Stack *stack, Sexp *ast) {
   }
   stack_jump_block(stack, next);
 }
-Value *stack_iteration_statement(Stack *stack, Sexp *ast) {
+Value *stack_iteration_statement(Builder *stack, Sexp *ast) {
   Block *next_switch = stack_set_next(stack, STACK_NEXT_SWITCH, NULL);
   assert(AST_ITERATION_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
@@ -273,16 +273,16 @@ Value *stack_iteration_statement(Stack *stack, Sexp *ast) {
   stack_set_next(stack, STACK_NEXT_SWITCH, next_switch);
   return NULL;
 }
-static void stack_goto_statement(Stack *stack, Sexp *ast) {
+static void stack_goto_statement(Builder *stack, Sexp *ast) {
   const char *label = stack_identifier_symbol(sexp_at(ast, 2));
   Block *next = stack_label(stack, label);
   stack_instruction_br(stack, next);
 }
-static void stack_continue_statement(Stack *stack) {
+static void stack_continue_statement(Builder *stack) {
   Block *next = stack_get_next(stack, STACK_NEXT_CONTINUE);
   stack_instruction_br(stack, next);
 }
-static void stack_break_statement(Stack *stack) {
+static void stack_break_statement(Builder *stack) {
   Block *next = stack_get_next(stack, STACK_NEXT_BREAK);
   if (!next) {
     next = stack_new_block(stack);
@@ -290,7 +290,7 @@ static void stack_break_statement(Stack *stack) {
   }
   stack_instruction_br(stack, next);
 }
-static void stack_return_statement(Stack *stack, Sexp *ast) {
+static void stack_return_statement(Builder *stack, Sexp *ast) {
   Block *ret = stack_get_next(stack, STACK_NEXT_RETURN);
   assert(!sexp_is_nil(sexp_at(ast, 2)));
   {
@@ -304,7 +304,7 @@ static void stack_return_statement(Stack *stack, Sexp *ast) {
     }
   }
 }
-Value *stack_jump_statement(Stack *stack, Sexp *ast) {
+Value *stack_jump_statement(Builder *stack, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_GOTO:

@@ -12,7 +12,7 @@
 #include "map.h"
 #include "vector.h"
 
-struct struct_Stack {
+struct struct_Builder {
   Pool *pool;
   Module *module;
   Table *table;
@@ -20,8 +20,8 @@ struct struct_Stack {
   Block *next[STACK_NEXT_COUNT];
 };
 
-Stack *stack_new(Module *module) {
-  Stack *stack = UTILITY_MALLOC(Stack);
+Builder *stack_new(Module *module) {
+  Builder *stack = UTILITY_MALLOC(Builder);
   int i;
   stack->pool = module_get(module);
   stack->module = module;
@@ -32,14 +32,14 @@ Stack *stack_new(Module *module) {
   }
   return stack;
 }
-void stack_delete(Stack *stack) {
+void stack_delete(Builder *stack) {
   UTILITY_FREE(stack);
 }
-void stack_function_init(Stack *stack, Function *func) {
+void stack_function_init(Builder *stack, Function *func) {
   stack->table = table_new();
   stack->func = func;
 }
-void stack_function_finish(Stack *stack) {
+void stack_function_finish(Builder *stack) {
   int i;
   table_delete(stack->table);
   stack->table = NULL;
@@ -48,10 +48,10 @@ void stack_function_finish(Stack *stack) {
     stack->next[i] = NULL;
   }
 }
-Module *stack_get_module(Stack *stack) {
+Module *stack_get_module(Builder *stack) {
   return stack->module;
 }
-Block *stack_label(Stack *stack, const char *label) {
+Block *stack_label(Builder *stack, const char *label) {
   if (table_label_contains(stack->table, label)) {
     return table_label_find(stack->table, label);
   } else {
@@ -60,38 +60,38 @@ Block *stack_label(Stack *stack, const char *label) {
     return block;
   }
 }
-Bool stack_last_terminator(Stack *stack) {
+Bool stack_last_terminator(Builder *stack) {
   Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
   assert(current);
   return block_is_terminated(current);
 }
-void stack_alloca(Stack *stack, const char *symbol, Instruction *instr) {
+void stack_alloca(Builder *stack, const char *symbol, Instruction *instr) {
   table_insert(stack->table, symbol, instruction_as_value(instr));
 }
-Value *stack_find_alloca(Stack *stack, const char *symbol) {
+Value *stack_find_alloca(Builder *stack, const char *symbol) {
   return table_find(stack->table, symbol);
 }
-void stack_jump_block(Stack *stack, Block *dest) {
+void stack_jump_block(Builder *stack, Block *dest) {
   assert(dest);
   stack_set_next(stack, STACK_NEXT_CURRENT, dest);
   function_insert(stack->func, dest);
 }
-Block *stack_get_next(Stack *stack, StackNextTag tag) {
+Block *stack_get_next(Builder *stack, StackNextTag tag) {
   return stack->next[tag];
 }
-Block *stack_set_next(Stack *stack, StackNextTag tag, Block *next) {
+Block *stack_set_next(Builder *stack, StackNextTag tag, Block *next) {
   assert(0 <= tag && tag < STACK_NEXT_COUNT);
   UTILITY_SWAP(Block *, stack->next[tag], next);
   return next;
 }
 
-static Value *stack_ast_map(Stack *stack, Sexp *ast) {
+static Value *stack_ast_map(Builder *stack, Sexp *ast) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     stack_ast(stack, sexp_car(ast));
   }
   return NULL;
 }
-Value *stack_ast(Stack *stack, Sexp *ast) {
+Value *stack_ast(Builder *stack, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
     return stack_identifier(stack, ast);

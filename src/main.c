@@ -6,7 +6,7 @@
 
 static void build(Sexp *ast) {
   Module *module = module_new();
-  Stack *stack = stack_new(module);
+  Builder *stack = stack_new(module);
   stack_ast(stack, ast);
   module_pretty(module);
   stack_delete(stack);

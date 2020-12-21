@@ -2,11 +2,11 @@
 
 #include "ir/stack_impl.h"
 
-Value *stack_declaration(Stack *stack, Sexp *ast) {
+Value *stack_declaration(Builder *stack, Sexp *ast) {
   assert(AST_DECLARATION == sexp_get_tag(ast));
   return stack_ast(stack, sexp_at(ast, 2));
 }
-Value *stack_init_declarator(Stack *stack, Sexp *ast) {
+Value *stack_init_declarator(Builder *stack, Sexp *ast) {
   assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
@@ -22,7 +22,7 @@ Value *stack_init_declarator(Stack *stack, Sexp *ast) {
     return NULL;
   }
 }
-Value *stack_declarator(Stack *stack, Sexp *ast) {
+Value *stack_declarator(Builder *stack, Sexp *ast) {
   assert(AST_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
@@ -34,7 +34,7 @@ Value *stack_declarator(Stack *stack, Sexp *ast) {
     return NULL;
   }
 }
-Value *stack_direct_declarator(Stack *stack, Sexp *ast) {
+Value *stack_direct_declarator(Builder *stack, Sexp *ast) {
   assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2: {
