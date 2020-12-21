@@ -71,19 +71,15 @@ static void builder_if_else_statement(Builder *builder, Sexp *ast) {
   Block *next = builder_new_block(builder);
   Block *then_block = builder_new_block(builder);
   Block *else_block = builder_new_block(builder);
-  Block *then_next, *else_next;
+  Block *prev, *then_next, *else_next;
   builder_guard(builder, sexp_at(ast, 3), then_block, else_block);
-  builder_set_next(builder, BUILDER_NEXT_BLOCK, next);
+  prev = builder_set_next(builder, BUILDER_NEXT_BLOCK, next);
   builder_branch(builder, sexp_at(ast, 5), then_block, next);
-  then_next = builder_get_next(builder, BUILDER_NEXT_BLOCK);
-  assert(!then_next || then_next == next);
-  builder_set_next(builder, BUILDER_NEXT_BLOCK, next);
+  then_next = builder_set_next(builder, BUILDER_NEXT_BLOCK, next);
   builder_branch(builder, sexp_at(ast, 7), else_block, next);
-  else_next = builder_get_next(builder, BUILDER_NEXT_BLOCK);
-  assert(!else_next || else_next == next);
+  else_next = builder_set_next(builder, BUILDER_NEXT_BLOCK, prev);
   if (then_next || else_next) {
     builder_jump_block(builder, next);
-    builder_set_next(builder, BUILDER_NEXT_BLOCK, next);
   }
 }
 static void builder_switch_statement(Builder *builder, Sexp *ast) {
