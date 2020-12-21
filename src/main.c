@@ -6,10 +6,8 @@
 
 static void build(Sexp *ast) {
   Module *module = module_new();
-  Builder *builder = builder_new(module);
-  builder_ast(builder, ast);
+  module_build(module, ast);
   module_pretty(module);
-  builder_delete(builder);
   module_delete(module);
 }
 

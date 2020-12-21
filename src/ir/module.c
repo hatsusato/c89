@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "ir/block.h"
+#include "ir/builder.h"
 #include "ir/constant.h"
 #include "ir/function.h"
 #include "ir/instruction.h"
@@ -65,6 +66,11 @@ Constant *module_new_constant(Module *module) {
   Constant *constant = constant_new();
   vector_push(module->pool, constant);
   return constant;
+}
+void module_build(Module *module, Sexp *ast) {
+  Builder *builder = builder_new(module);
+  builder_ast(builder, ast);
+  builder_delete(builder);
 }
 void module_pretty(Module *module) {
   ElemType *begin = vector_begin(module->vec);
