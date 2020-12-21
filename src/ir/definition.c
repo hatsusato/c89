@@ -17,7 +17,8 @@ static int count_return(Sexp *ast) {
     return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
   }
 }
-static void builder_function_build(Builder *builder, Sexp *ast) {
+
+void builder_function_build(Builder *builder, Sexp *ast) {
   Block *ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
@@ -35,7 +36,6 @@ static void builder_function_build(Builder *builder, Sexp *ast) {
     builder_ast(builder, sexp_at(ast, 4));
   }
 }
-
 Value *builder_function_definition(Builder *builder, Sexp *ast) {
   Function *func = module_new_function(builder_get_module(builder));
   Block *alloc = builder_new_block(builder);
