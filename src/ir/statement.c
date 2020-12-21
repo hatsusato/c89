@@ -17,11 +17,6 @@ static Bool switch_new_case(Builder *builder) {
   Block *swch = builder_get_next(builder, BUILDER_NEXT_SWITCH);
   return block_empty(swch) || !block_empty(curr) || dflt == curr;
 }
-
-Value *builder_statement(Builder *builder, Sexp *ast) {
-  assert(AST_STATEMENT == sexp_get_tag(ast));
-  return builder_ast(builder, sexp_at(ast, 1));
-}
 static void builder_label_statement(Builder *builder, Sexp *ast) {
   const char *label = builder_identifier_symbol(sexp_at(ast, 1));
   Block *next = builder_label(builder, label);
@@ -49,38 +44,6 @@ static void builder_default_statement(Builder *builder, Sexp *ast) {
   builder_instruction_br(builder, next);
   builder_jump_block(builder, next);
   builder_ast(builder, sexp_at(ast, 3));
-}
-Value *builder_labeled_statement(Builder *builder, Sexp *ast) {
-  assert(AST_LABELED_STATEMENT == sexp_get_tag(ast));
-  switch (sexp_get_tag(sexp_at(ast, 1))) {
-  case AST_IDENTIFIER:
-    builder_label_statement(builder, ast);
-    break;
-  case AST_CASE:
-    builder_case_statement(builder, ast);
-    break;
-  case AST_DEFAULT:
-    builder_default_statement(builder, ast);
-    break;
-  default:
-    assert(0);
-    break;
-  }
-  return NULL;
-}
-Value *builder_compound_statement(Builder *builder, Sexp *ast) {
-  assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
-  builder_ast(builder, sexp_at(ast, 2));
-  builder_ast(builder, sexp_at(ast, 3));
-  return NULL;
-}
-Value *builder_expression_statement(Builder *builder, Sexp *ast) {
-  assert(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  if (!sexp_is_nil(ast)) {
-    builder_ast(builder, ast);
-  }
-  return NULL;
 }
 static void builder_if_statement(Builder *builder, Sexp *ast) {
   Block *next = builder_new_block(builder);
@@ -148,31 +111,6 @@ static void builder_switch_statement(Builder *builder, Sexp *ast) {
     builder_set_next(builder, BUILDER_NEXT_DEFAULT, next_default);
     builder_set_next(builder, BUILDER_NEXT_SWITCH, next_switch);
   }
-}
-Value *builder_selection_statement(Builder *builder, Sexp *ast) {
-  assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
-  switch (sexp_get_tag(sexp_at(ast, 1))) {
-  case AST_IF:
-    switch (sexp_length(ast)) {
-    case 6:
-      builder_if_statement(builder, ast);
-      break;
-    case 8:
-      builder_if_else_statement(builder, ast);
-      break;
-    default:
-      assert(0);
-      break;
-    }
-    break;
-  case AST_SWITCH:
-    builder_switch_statement(builder, ast);
-    break;
-  default:
-    assert(0);
-    break;
-  }
-  return NULL;
 }
 static void builder_while_statement(Builder *builder, Sexp *ast) {
   Block *guard = builder_new_block(builder);
@@ -265,26 +203,6 @@ static void builder_for_statement(Builder *builder, Sexp *ast) {
   }
   builder_jump_block(builder, next);
 }
-Value *builder_iteration_statement(Builder *builder, Sexp *ast) {
-  Block *next_switch = builder_set_next(builder, BUILDER_NEXT_SWITCH, NULL);
-  assert(AST_ITERATION_STATEMENT == sexp_get_tag(ast));
-  switch (sexp_get_tag(sexp_at(ast, 1))) {
-  case AST_WHILE:
-    builder_while_statement(builder, ast);
-    break;
-  case AST_DO:
-    builder_do_while_statement(builder, ast);
-    break;
-  case AST_FOR:
-    builder_for_statement(builder, ast);
-    break;
-  default:
-    assert(0);
-    break;
-  }
-  builder_set_next(builder, BUILDER_NEXT_SWITCH, next_switch);
-  return NULL;
-}
 static void builder_goto_statement(Builder *builder, Sexp *ast) {
   const char *label = builder_identifier_symbol(sexp_at(ast, 2));
   Block *next = builder_label(builder, label);
@@ -315,6 +233,88 @@ static void builder_return_statement(Builder *builder, Sexp *ast) {
       builder_instruction_ret(builder, src);
     }
   }
+}
+
+Value *builder_statement(Builder *builder, Sexp *ast) {
+  assert(AST_STATEMENT == sexp_get_tag(ast));
+  return builder_ast(builder, sexp_at(ast, 1));
+}
+Value *builder_labeled_statement(Builder *builder, Sexp *ast) {
+  assert(AST_LABELED_STATEMENT == sexp_get_tag(ast));
+  switch (sexp_get_tag(sexp_at(ast, 1))) {
+  case AST_IDENTIFIER:
+    builder_label_statement(builder, ast);
+    break;
+  case AST_CASE:
+    builder_case_statement(builder, ast);
+    break;
+  case AST_DEFAULT:
+    builder_default_statement(builder, ast);
+    break;
+  default:
+    assert(0);
+    break;
+  }
+  return NULL;
+}
+Value *builder_compound_statement(Builder *builder, Sexp *ast) {
+  assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
+  builder_ast(builder, sexp_at(ast, 2));
+  builder_ast(builder, sexp_at(ast, 3));
+  return NULL;
+}
+Value *builder_expression_statement(Builder *builder, Sexp *ast) {
+  assert(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  if (!sexp_is_nil(ast)) {
+    builder_ast(builder, ast);
+  }
+  return NULL;
+}
+Value *builder_selection_statement(Builder *builder, Sexp *ast) {
+  assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
+  switch (sexp_get_tag(sexp_at(ast, 1))) {
+  case AST_IF:
+    switch (sexp_length(ast)) {
+    case 6:
+      builder_if_statement(builder, ast);
+      break;
+    case 8:
+      builder_if_else_statement(builder, ast);
+      break;
+    default:
+      assert(0);
+      break;
+    }
+    break;
+  case AST_SWITCH:
+    builder_switch_statement(builder, ast);
+    break;
+  default:
+    assert(0);
+    break;
+  }
+  return NULL;
+}
+Value *builder_iteration_statement(Builder *builder, Sexp *ast) {
+  Block *next_switch = builder_set_next(builder, BUILDER_NEXT_SWITCH, NULL);
+  assert(AST_ITERATION_STATEMENT == sexp_get_tag(ast));
+  switch (sexp_get_tag(sexp_at(ast, 1))) {
+  case AST_WHILE:
+    builder_while_statement(builder, ast);
+    break;
+  case AST_DO:
+    builder_do_while_statement(builder, ast);
+    break;
+  case AST_FOR:
+    builder_for_statement(builder, ast);
+    break;
+  default:
+    assert(0);
+    break;
+  }
+  builder_set_next(builder, BUILDER_NEXT_SWITCH, next_switch);
+  return NULL;
 }
 Value *builder_jump_statement(Builder *builder, Sexp *ast) {
   assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));

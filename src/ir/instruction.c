@@ -18,37 +18,6 @@ struct struct_Instruction {
   Value *operands[3];
 };
 
-Instruction *instruction_new(void) {
-  Instruction *instr = UTILITY_MALLOC(Instruction);
-  instr->kind = VALUE_INSTRUCTION;
-  instr->ikind = INSTRUCTION_KIND_END;
-  instr->id = -1;
-  instr->operands[0] = instr->operands[1] = instr->operands[2] = NULL;
-  return instr;
-}
-void instruction_delete(Instruction *instr) {
-  UTILITY_FREE(instr);
-}
-Bool instruction_is_terminator(Instruction *instr) {
-  switch (instr->ikind) {
-#define HANDLE_INSTRUCTION_KIND(k) \
-  case k:                          \
-    return true
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_RET);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR_COND);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SWITCH);
-#undef HANDLE_INSTRUCTION_KIND
-  default:
-    return false;
-  }
-}
-int instruction_set_id(Instruction *instr, int id) {
-  if (!instruction_is_terminator(instr) && INSTRUCTION_STORE != instr->ikind) {
-    instr->id = id++;
-  }
-  return id;
-}
 static void instruction_pretty_ret(Instruction *instr) {
   if (instr->operands[0]) {
     printf("ret i32 ");
@@ -116,6 +85,38 @@ static void instruction_pretty_icmp_ne(Instruction *instr) {
   value_print(instr->operands[0]);
   printf(", ");
   value_print(instr->operands[1]);
+}
+
+Instruction *instruction_new(void) {
+  Instruction *instr = UTILITY_MALLOC(Instruction);
+  instr->kind = VALUE_INSTRUCTION;
+  instr->ikind = INSTRUCTION_KIND_END;
+  instr->id = -1;
+  instr->operands[0] = instr->operands[1] = instr->operands[2] = NULL;
+  return instr;
+}
+void instruction_delete(Instruction *instr) {
+  UTILITY_FREE(instr);
+}
+Bool instruction_is_terminator(Instruction *instr) {
+  switch (instr->ikind) {
+#define HANDLE_INSTRUCTION_KIND(k) \
+  case k:                          \
+    return true
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_RET);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR_COND);
+    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SWITCH);
+#undef HANDLE_INSTRUCTION_KIND
+  default:
+    return false;
+  }
+}
+int instruction_set_id(Instruction *instr, int id) {
+  if (!instruction_is_terminator(instr) && INSTRUCTION_STORE != instr->ikind) {
+    instr->id = id++;
+  }
+  return id;
 }
 void instruction_print(Instruction *instr) {
   printf("%%%d", instr->id);
