@@ -8,14 +8,14 @@
 #include "ir/value_kind.h"
 #include "ir/value_type.h"
 
-Function *value_as_function(Value *);
 Value *function_as_value(Function *);
-Block *value_as_block(Value *);
 Value *block_as_value(Block *);
-Instruction *value_as_instruction(Value *);
 Value *instruction_as_value(Instruction *);
-Constant *value_as_constant(Value *);
 Value *constant_as_value(Constant *);
+Function *value_as_function(Value *);
+Block *value_as_block(Value *);
+Instruction *value_as_instruction(Value *);
+Constant *value_as_constant(Value *);
 ValueKind value_kind(Value *);
 void value_print(Value *);
 

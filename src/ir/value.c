@@ -10,33 +10,33 @@ struct struct_Value {
   ValueKind kind;
 };
 
+Value *function_as_value(Function *func) {
+  return (Value *)func;
+}
+Value *block_as_value(Block *block) {
+  return (Value *)block;
+}
+Value *instruction_as_value(Instruction *instr) {
+  return (Value *)instr;
+}
+Value *constant_as_value(Constant *constant) {
+  return (Value *)constant;
+}
 Function *value_as_function(Value *value) {
   assert(VALUE_FUNCTION == value->kind);
   return (Function *)value;
-}
-Value *function_as_value(Function *func) {
-  return (Value *)func;
 }
 Block *value_as_block(Value *value) {
   assert(VALUE_BLOCK == value->kind);
   return (Block *)value;
 }
-Value *block_as_value(Block *block) {
-  return (Value *)block;
-}
 Instruction *value_as_instruction(Value *value) {
   assert(VALUE_INSTRUCTION == value->kind);
   return (Instruction *)value;
 }
-Value *instruction_as_value(Instruction *instr) {
-  return (Value *)instr;
-}
 Constant *value_as_constant(Value *value) {
   assert(VALUE_CONSTANT == value->kind);
   return (Constant *)value;
-}
-Value *constant_as_value(Constant *constant) {
-  return (Value *)constant;
 }
 ValueKind value_kind(Value *value) {
   return value->kind;
