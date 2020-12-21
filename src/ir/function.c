@@ -16,14 +16,7 @@ struct struct_Function {
   const char *name;
   Vector *vec;
 };
-static int function_count_return(Sexp *ast) {
-  if (sexp_is_pair(ast)) {
-    return function_count_return(sexp_car(ast)) +
-           function_count_return(sexp_cdr(ast));
-  } else {
-    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
-  }
-}
+
 static const char *function_name(Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
@@ -101,6 +94,14 @@ void function_pretty(Function *func) {
     block_pretty(*begin);
   }
   printf("}\n");
+}
+int function_count_return(Sexp *ast) {
+  if (sexp_is_pair(ast)) {
+    return function_count_return(sexp_car(ast)) +
+           function_count_return(sexp_cdr(ast));
+  } else {
+    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
+  }
 }
 
 Function *builder_new_function(Builder *builder, Sexp *ast) {

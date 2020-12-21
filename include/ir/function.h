@@ -13,6 +13,7 @@ void function_finish(Function *);
 void function_insert(Function *, Block *);
 void function_set_id(Function *);
 void function_pretty(Function *);
+int function_count_return(Sexp *);
 
 Function *builder_new_function(Builder *, Sexp *);
 
