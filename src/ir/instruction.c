@@ -11,14 +11,16 @@
 #include "utility.h"
 #include "vector.h"
 
+enum { INSTRUCTION_OPERAND_COUNT = 3 };
 struct struct_Instruction {
   ValueKind kind;
   InstructionKind ikind;
   int id;
-  Value *operands[3];
+  Value *operands[INSTRUCTION_OPERAND_COUNT];
 };
 
 static void instruction_print_operand(Instruction *instr, Index index) {
+  assert(0 <= index && index < INSTRUCTION_OPERAND_COUNT);
   value_print(instr->operands[index]);
 }
 static void instruction_pretty_ret(Instruction *instr) {
@@ -91,11 +93,14 @@ static void instruction_pretty_icmp_ne(Instruction *instr) {
 }
 
 Instruction *instruction_new(void) {
+  Index i = 0;
   Instruction *instr = UTILITY_MALLOC(Instruction);
   instr->kind = VALUE_INSTRUCTION;
-  instr->ikind = INSTRUCTION_KIND_END;
+  instr->ikind = INSTRUCTION_KIND_COUNT;
   instr->id = -1;
-  instr->operands[0] = instr->operands[1] = instr->operands[2] = NULL;
+  while (i < INSTRUCTION_OPERAND_COUNT) {
+    instr->operands[i++] = NULL;
+  }
   return instr;
 }
 void instruction_delete(Instruction *instr) {
@@ -132,7 +137,7 @@ void instruction_pretty(Instruction *instr) {
       instruction_pretty_alloca,  instruction_pretty_load,
       instruction_pretty_store,   instruction_pretty_icmp_ne,
   };
-  assert(0 <= instr->ikind && instr->ikind < INSTRUCTION_KIND_END);
+  assert(0 <= instr->ikind && instr->ikind < INSTRUCTION_KIND_COUNT);
   printf("  ");
   pretty[instr->ikind](instr);
   printf("\n");
