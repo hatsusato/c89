@@ -10,8 +10,10 @@
 #include "sexp.h"
 #include "utility.h"
 
-void builder_function_build(Builder *builder, Sexp *ast) {
-  Block *ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
+Value *builder_function_definition(Builder *builder, Sexp *ast) {
+  Block *ret;
+  builder_function_init(builder, ast);
+  ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
   if (ret) {
@@ -27,10 +29,6 @@ void builder_function_build(Builder *builder, Sexp *ast) {
   } else {
     builder_ast(builder, sexp_at(ast, 4));
   }
-}
-Value *builder_function_definition(Builder *builder, Sexp *ast) {
-  builder_function_init(builder, ast);
-  builder_function_build(builder, ast);
   builder_function_finish(builder);
   return NULL;
 }
