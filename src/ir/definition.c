@@ -11,12 +11,10 @@
 #include "utility.h"
 
 Value *builder_function_definition(Builder *builder, Sexp *ast) {
-  Block *ret;
+  Block *ret = builder_function_init(builder, ast);
   assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   assert(5 == sexp_length(ast));
-  builder_function_init(builder, ast);
   builder_ast(builder, sexp_at(ast, 4));
-  ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
   if (ret) {
     Value *expr;
     Instruction *instr;

@@ -25,7 +25,7 @@ typedef enum {
 
 Builder *builder_new(Module *);
 void builder_delete(Builder *);
-void builder_function_init(Builder *, Sexp *);
+Block *builder_function_init(Builder *, Sexp *);
 void builder_function_finish(Builder *);
 Module *builder_get_module(Builder *);
 Block *builder_label(Builder *, const char *);
