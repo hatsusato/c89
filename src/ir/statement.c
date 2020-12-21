@@ -17,6 +17,15 @@ static Bool switch_new_case(Builder *builder) {
   Block *swch = builder_get_next(builder, BUILDER_NEXT_SWITCH);
   return block_empty(swch) || !block_empty(curr) || dflt == curr;
 }
+static void builder_guard(Builder *builder, Sexp *expr, Block *then_block,
+                          Block *else_block) {
+  Value *lhs = builder_ast(builder, expr);
+  Constant *rhs = builder_new_integer(builder, "0");
+  Instruction *icmp =
+      builder_instruction_icmp_ne(builder, lhs, constant_as_value(rhs));
+  builder_instruction_br_cond(builder, instruction_as_value(icmp), then_block,
+                              else_block);
+}
 static void builder_label_statement(Builder *builder, Sexp *ast) {
   const char *label = builder_identifier_symbol(sexp_at(ast, 1));
   Block *next = builder_label(builder, label);
@@ -48,14 +57,7 @@ static void builder_default_statement(Builder *builder, Sexp *ast) {
 static void builder_if_statement(Builder *builder, Sexp *ast) {
   Block *next = builder_new_block(builder);
   Block *then_block = builder_new_block(builder);
-  {
-    Value *lhs = builder_ast(builder, sexp_at(ast, 3));
-    Constant *rhs = builder_new_integer(builder, "0");
-    Instruction *icmp =
-        builder_instruction_icmp_ne(builder, lhs, constant_as_value(rhs));
-    builder_instruction_br_cond(builder, instruction_as_value(icmp), then_block,
-                                next);
-  }
+  builder_guard(builder, sexp_at(ast, 3), then_block, next);
   {
     builder_jump_block(builder, then_block);
     builder_ast(builder, sexp_at(ast, 5));
@@ -68,14 +70,7 @@ static void builder_if_else_statement(Builder *builder, Sexp *ast) {
   Block *then_block = builder_new_block(builder);
   Block *else_block = builder_new_block(builder);
   Block *then_next, *else_next;
-  {
-    Value *lhs = builder_ast(builder, sexp_at(ast, 3));
-    Constant *rhs = builder_new_integer(builder, "0");
-    Instruction *icmp =
-        builder_instruction_icmp_ne(builder, lhs, constant_as_value(rhs));
-    builder_instruction_br_cond(builder, instruction_as_value(icmp), then_block,
-                                else_block);
-  }
+  builder_guard(builder, sexp_at(ast, 3), then_block, else_block);
   builder_set_next(builder, BUILDER_NEXT_BLOCK, next);
   {
     builder_jump_block(builder, then_block);
@@ -118,14 +113,7 @@ static void builder_while_statement(Builder *builder, Sexp *ast) {
   Block *next = builder_new_block(builder);
   builder_instruction_br(builder, guard);
   builder_jump_block(builder, guard);
-  {
-    Value *lhs = builder_ast(builder, sexp_at(ast, 3));
-    Constant *rhs = builder_new_integer(builder, "0");
-    Instruction *icmp =
-        builder_instruction_icmp_ne(builder, lhs, constant_as_value(rhs));
-    builder_instruction_br_cond(builder, instruction_as_value(icmp), body,
-                                next);
-  }
+  builder_guard(builder, sexp_at(ast, 3), body, next);
   {
     Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, next);
     Block *next_continue =
@@ -154,14 +142,7 @@ static void builder_do_while_statement(Builder *builder, Sexp *ast) {
     builder_set_next(builder, BUILDER_NEXT_CONTINUE, next_continue);
   }
   builder_jump_block(builder, guard);
-  {
-    Value *lhs = builder_ast(builder, sexp_at(ast, 5));
-    Constant *rhs = builder_new_integer(builder, "0");
-    Instruction *icmp =
-        builder_instruction_icmp_ne(builder, lhs, constant_as_value(rhs));
-    builder_instruction_br_cond(builder, instruction_as_value(icmp), body,
-                                next);
-  }
+  builder_guard(builder, sexp_at(ast, 5), body, next);
   builder_jump_block(builder, next);
 }
 static void builder_for_statement(Builder *builder, Sexp *ast) {
@@ -176,14 +157,7 @@ static void builder_for_statement(Builder *builder, Sexp *ast) {
   if (!sexp_is_nil(sexp_at(ast, 5))) {
     builder_jump_block(builder, guard);
     assert(sexp_at(ast, 5));
-    {
-      Value *lhs = builder_ast(builder, sexp_at(ast, 5));
-      Constant *rhs = builder_new_integer(builder, "0");
-      Instruction *icmp =
-          builder_instruction_icmp_ne(builder, lhs, constant_as_value(rhs));
-      builder_instruction_br_cond(builder, instruction_as_value(icmp), body,
-                                  next);
-    }
+    builder_guard(builder, sexp_at(ast, 5), body, next);
   }
   step = sexp_is_nil(sexp_at(ast, 7)) ? guard : builder_new_block(builder);
   {
