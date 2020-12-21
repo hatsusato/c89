@@ -11,7 +11,6 @@
 #include "ir/instruction.h"
 #include "ir/lexical.h"
 #include "ir/module.h"
-#include "ir/pool.h"
 #include "ir/statement.h"
 #include "ir/table.h"
 #include "ir/value.h"
@@ -21,7 +20,6 @@
 #include "vector.h"
 
 struct struct_Builder {
-  Pool *pool;
   Module *module;
   Table *table;
   Function *func;
@@ -31,7 +29,6 @@ struct struct_Builder {
 Builder *builder_new(Module *module) {
   Builder *builder = UTILITY_MALLOC(Builder);
   int i;
-  builder->pool = module_get(module);
   builder->module = module;
   builder->table = NULL;
   builder->func = NULL;
