@@ -38,6 +38,9 @@ Constant *value_as_constant(Value *value) {
 Value *constant_as_value(Constant *constant) {
   return (Value *)constant;
 }
+ValueKind value_kind(Value *value) {
+  return value->kind;
+}
 void value_print(Value *value) {
   switch (value->kind) {
   case VALUE_BLOCK:
