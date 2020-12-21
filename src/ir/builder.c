@@ -39,16 +39,19 @@ static void builder_init_next(Builder *builder, Sexp *ast) {
     builder_instruction_alloca(builder, "$retval");
   }
 }
+static void builder_finish_next(Builder *builder) {
+  BuilderNextTag tag = 0;
+  builder->table = NULL;
+  builder->func = NULL;
+  while (tag < BUILDER_NEXT_COUNT) {
+    builder_set_next(builder, tag++, NULL);
+  }
+}
 
 Builder *builder_new(Module *module) {
   Builder *builder = UTILITY_MALLOC(Builder);
-  int i;
   builder->module = module;
-  builder->table = NULL;
-  builder->func = NULL;
-  for (i = 0; i < BUILDER_NEXT_COUNT; ++i) {
-    builder->next[i] = NULL;
-  }
+  builder_finish_next(builder);
   return builder;
 }
 void builder_delete(Builder *builder) {
@@ -61,17 +64,12 @@ void builder_function_init(Builder *builder, Sexp *ast) {
   builder_init_next(builder, ast);
 }
 void builder_function_finish(Builder *builder) {
-  int i;
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   Block *entry = builder_get_next(builder, BUILDER_NEXT_ENTRY);
   block_append(alloc, entry);
   function_set_id(builder->func);
   table_delete(builder->table);
-  builder->table = NULL;
-  builder->func = NULL;
-  for (i = 0; i < BUILDER_NEXT_COUNT; ++i) {
-    builder->next[i] = NULL;
-  }
+  builder_finish_next(builder);
 }
 Module *builder_get_module(Builder *builder) {
   return builder->module;
