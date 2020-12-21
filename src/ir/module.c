@@ -56,6 +56,3 @@ void module_pretty(Module *module) {
     function_pretty(*begin++);
   }
 }
-void *module_get(Module *module) {
-  return module->pool;
-}
