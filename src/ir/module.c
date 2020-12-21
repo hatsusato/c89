@@ -6,14 +6,12 @@
 #include "ir/constant.h"
 #include "ir/function.h"
 #include "ir/instruction.h"
-#include "ir/pool.h"
 #include "ir/value.h"
 #include "utility.h"
 #include "vector.h"
 
 struct struct_Module {
-  Pool *pool;
-  Vector *p, *vec;
+  Vector *pool, *vec;
 };
 
 static void module_value_delete(ElemType value) {
@@ -38,36 +36,34 @@ static void module_value_delete(ElemType value) {
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
-  module->pool = pool_new();
-  module->p = vector_new(module_value_delete);
+  module->pool = vector_new(module_value_delete);
   module->vec = vector_new(NULL);
   return module;
 }
 void module_delete(Module *module) {
   vector_delete(module->vec);
-  vector_delete(module->p);
-  pool_delete(module->pool);
+  vector_delete(module->pool);
   UTILITY_FREE(module);
 }
 Function *module_new_function(Module *module) {
   Function *func = function_new();
-  vector_push(module->p, func);
+  vector_push(module->pool, func);
   vector_push(module->vec, func);
   return func;
 }
 Block *module_new_block(Module *module) {
   Block *block = block_new();
-  vector_push(module->p, block);
+  vector_push(module->pool, block);
   return block;
 }
 Instruction *module_new_instruction(Module *module) {
   Instruction *instr = instruction_new();
-  vector_push(module->p, instr);
+  vector_push(module->pool, instr);
   return instr;
 }
 Constant *module_new_constant(Module *module) {
   Constant *constant = constant_new();
-  vector_push(module->p, constant);
+  vector_push(module->pool, constant);
   return constant;
 }
 void module_pretty(Module *module) {
