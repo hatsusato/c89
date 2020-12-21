@@ -13,7 +13,7 @@
 
 struct struct_Module {
   Pool *pool;
-  Vector *vec;
+  Vector *p, *vec;
 };
 
 static void module_value_delete(ElemType value) {
@@ -39,11 +39,13 @@ static void module_value_delete(ElemType value) {
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->pool = pool_new();
+  module->p = vector_new(module_value_delete);
   module->vec = vector_new(NULL);
   return module;
 }
 void module_delete(Module *module) {
   vector_delete(module->vec);
+  vector_delete(module->p);
   pool_delete(module->pool);
   UTILITY_FREE(module);
 }
