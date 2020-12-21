@@ -40,12 +40,16 @@ Builder *builder_new(Module *module) {
 void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
-void builder_function_init(Builder *builder, Function *func) {
+void builder_function_init(Builder *builder, Sexp *ast) {
   builder->table = table_new();
-  builder->func = func;
+  builder->func = builder_new_function(builder, ast);
 }
 void builder_function_finish(Builder *builder) {
   int i;
+  Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
+  Block *entry = builder_get_next(builder, BUILDER_NEXT_ENTRY);
+  block_append(alloc, entry);
+  function_set_id(builder->func);
   table_delete(builder->table);
   builder->table = NULL;
   builder->func = NULL;

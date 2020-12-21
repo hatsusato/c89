@@ -3,7 +3,6 @@
 
 #include "builder_type.h"
 #include "ir/block_type.h"
-#include "ir/function_type.h"
 #include "ir/instruction_kind.h"
 #include "ir/instruction_type.h"
 #include "ir/module_type.h"
@@ -26,7 +25,7 @@ typedef enum {
 
 Builder *builder_new(Module *);
 void builder_delete(Builder *);
-void builder_function_init(Builder *, Function *);
+void builder_function_init(Builder *, Sexp *);
 void builder_function_finish(Builder *);
 Module *builder_get_module(Builder *);
 Block *builder_label(Builder *, const char *);

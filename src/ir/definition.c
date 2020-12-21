@@ -29,13 +29,8 @@ void builder_function_build(Builder *builder, Sexp *ast) {
   }
 }
 Value *builder_function_definition(Builder *builder, Sexp *ast) {
-  Function *func = builder_new_function(builder, ast);
-  Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
-  Block *entry = builder_get_next(builder, BUILDER_NEXT_ENTRY);
-  builder_function_init(builder, func);
+  builder_function_init(builder, ast);
   builder_function_build(builder, ast);
-  block_append(alloc, entry);
-  function_set_id(func);
   builder_function_finish(builder);
   return NULL;
 }
