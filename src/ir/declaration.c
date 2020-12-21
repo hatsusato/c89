@@ -1,6 +1,12 @@
 #include "ir/declaration.h"
 
-#include "ir/stack_impl.h"
+#include "ast/ast_tag.h"
+#include "ir/builder.h"
+#include "ir/instruction.h"
+#include "ir/lexical.h"
+#include "ir/value.h"
+#include "sexp.h"
+#include "utility.h"
 
 Value *builder_declaration(Builder *builder, Sexp *ast) {
   assert(AST_DECLARATION == sexp_get_tag(ast));

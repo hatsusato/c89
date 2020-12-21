@@ -1,9 +1,15 @@
 #include "ir/statement.h"
 
+#include "ast/ast_tag.h"
 #include "ir/block.h"
+#include "ir/builder.h"
 #include "ir/constant.h"
+#include "ir/instruction.h"
 #include "ir/instruction_type.h"
-#include "ir/stack_impl.h"
+#include "ir/lexical.h"
+#include "ir/value.h"
+#include "sexp.h"
+#include "utility.h"
 
 static Bool switch_new_case(Builder *builder) {
   Block *curr = builder_get_next(builder, BUILDER_NEXT_CURRENT);

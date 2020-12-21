@@ -1,7 +1,12 @@
 #include "ir/lexical.h"
 
+#include "ast/ast_tag.h"
+#include "ir/builder.h"
 #include "ir/constant.h"
-#include "ir/stack_impl.h"
+#include "ir/instruction.h"
+#include "ir/value.h"
+#include "sexp.h"
+#include "utility.h"
 
 const char *builder_identifier_symbol(Sexp *ast) {
   assert(AST_IDENTIFIER == sexp_get_tag(ast));

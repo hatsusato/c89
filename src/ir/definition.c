@@ -1,10 +1,14 @@
 #include "ir/definition.h"
 
+#include "ast/ast_tag.h"
 #include "ir/block.h"
 #include "ir/builder.h"
 #include "ir/function.h"
+#include "ir/instruction.h"
 #include "ir/module.h"
-#include "ir/stack_impl.h"
+#include "ir/value.h"
+#include "sexp.h"
+#include "utility.h"
 
 static int count_return(Sexp *ast) {
   if (sexp_is_pair(ast)) {

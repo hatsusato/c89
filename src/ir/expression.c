@@ -1,6 +1,12 @@
 #include "ir/expression.h"
 
-#include "ir/stack_impl.h"
+#include "ast/ast_tag.h"
+#include "ir/builder.h"
+#include "ir/instruction.h"
+#include "ir/lexical.h"
+#include "ir/value.h"
+#include "sexp.h"
+#include "utility.h"
 
 Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   Value *lhs, *rhs;
