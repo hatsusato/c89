@@ -109,7 +109,6 @@ Function *builder_new_function(Builder *builder, Sexp *ast) {
   Block *alloc = builder_new_block(builder);
   Block *entry = builder_new_block(builder);
   func->name = function_name(ast);
-  function_insert(func, alloc);
   builder_set_next(builder, BUILDER_NEXT_ALLOC, alloc);
   builder_set_next(builder, BUILDER_NEXT_CURRENT, entry);
   builder_set_next(builder, BUILDER_NEXT_ENTRY, entry);

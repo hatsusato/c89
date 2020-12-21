@@ -41,8 +41,11 @@ void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
 void builder_function_init(Builder *builder, Sexp *ast) {
+  Function *func = builder_new_function(builder, ast);
+  Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   builder->table = table_new();
-  builder->func = builder_new_function(builder, ast);
+  builder->func = func;
+  function_insert(func, alloc);
 }
 void builder_function_finish(Builder *builder) {
   int i;
