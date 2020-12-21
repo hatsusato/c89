@@ -147,7 +147,8 @@ void builder_instruction_ret(Builder *builder, Value *expr) {
   instr->operands[0] = expr;
 }
 void builder_instruction_br(Builder *builder, Block *label) {
-  if (!builder_last_terminator(builder)) {
+  Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
+  if (!block_is_terminated(current)) {
     Instruction *instr = builder_new_instruction(builder, INSTRUCTION_BR);
     instr->operands[0] = block_as_value(label);
   }

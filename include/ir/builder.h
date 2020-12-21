@@ -29,7 +29,6 @@ Block *builder_function_init(Builder *, Sexp *);
 void builder_function_finish(Builder *);
 Module *builder_get_module(Builder *);
 Block *builder_label(Builder *, const char *);
-Bool builder_last_terminator(Builder *);
 void builder_alloca(Builder *, const char *, Instruction *);
 Value *builder_find_alloca(Builder *, const char *);
 void builder_jump_block(Builder *, Block *);

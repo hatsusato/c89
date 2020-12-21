@@ -85,11 +85,6 @@ Block *builder_label(Builder *builder, const char *label) {
     return block;
   }
 }
-Bool builder_last_terminator(Builder *builder) {
-  Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
-  assert(current);
-  return block_is_terminated(current);
-}
 void builder_alloca(Builder *builder, const char *symbol, Instruction *instr) {
   table_insert(builder->table, symbol, instruction_as_value(instr));
 }
