@@ -7,6 +7,7 @@
 #include "ir/function.h"
 #include "ir/instruction.h"
 #include "ir/pool.h"
+#include "ir/value.h"
 #include "utility.h"
 #include "vector.h"
 
@@ -14,6 +15,26 @@ struct struct_Module {
   Pool *pool;
   Vector *vec;
 };
+
+static void module_value_delete(ElemType value) {
+  switch (value_kind(value)) {
+  case VALUE_FUNCTION:
+    function_delete(value);
+    break;
+  case VALUE_BLOCK:
+    block_delete(value);
+    break;
+  case VALUE_INSTRUCTION:
+    instruction_delete(value);
+    break;
+  case VALUE_CONSTANT:
+    constant_delete(value);
+    break;
+  default:
+    assert(0);
+    break;
+  }
+}
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
