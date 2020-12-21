@@ -26,6 +26,12 @@ static void builder_guard(Builder *builder, Sexp *expr, Block *then_block,
   builder_instruction_br_cond(builder, instruction_as_value(icmp), then_block,
                               else_block);
 }
+static void builder_branch(Builder *builder, Sexp *ast, Block *current,
+                           Block *next) {
+  builder_jump_block(builder, current);
+  builder_ast(builder, ast);
+  builder_instruction_br(builder, next);
+}
 static void builder_label_statement(Builder *builder, Sexp *ast) {
   const char *label = builder_identifier_symbol(sexp_at(ast, 1));
   Block *next = builder_label(builder, label);
@@ -58,11 +64,7 @@ static void builder_if_statement(Builder *builder, Sexp *ast) {
   Block *next = builder_new_block(builder);
   Block *then_block = builder_new_block(builder);
   builder_guard(builder, sexp_at(ast, 3), then_block, next);
-  {
-    builder_jump_block(builder, then_block);
-    builder_ast(builder, sexp_at(ast, 5));
-    builder_instruction_br(builder, next);
-  }
+  builder_branch(builder, sexp_at(ast, 5), then_block, next);
   builder_jump_block(builder, next);
 }
 static void builder_if_else_statement(Builder *builder, Sexp *ast) {
@@ -72,19 +74,11 @@ static void builder_if_else_statement(Builder *builder, Sexp *ast) {
   Block *then_next, *else_next;
   builder_guard(builder, sexp_at(ast, 3), then_block, else_block);
   builder_set_next(builder, BUILDER_NEXT_BLOCK, next);
-  {
-    builder_jump_block(builder, then_block);
-    builder_ast(builder, sexp_at(ast, 5));
-    builder_instruction_br(builder, next);
-  }
+  builder_branch(builder, sexp_at(ast, 5), then_block, next);
   then_next = builder_get_next(builder, BUILDER_NEXT_BLOCK);
   assert(!then_next || then_next == next);
   builder_set_next(builder, BUILDER_NEXT_BLOCK, next);
-  {
-    builder_jump_block(builder, else_block);
-    builder_ast(builder, sexp_at(ast, 7));
-    builder_instruction_br(builder, next);
-  }
+  builder_branch(builder, sexp_at(ast, 7), else_block, next);
   else_next = builder_get_next(builder, BUILDER_NEXT_BLOCK);
   assert(!else_next || else_next == next);
   if (then_next || else_next) {
@@ -118,9 +112,7 @@ static void builder_while_statement(Builder *builder, Sexp *ast) {
     Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, next);
     Block *next_continue =
         builder_set_next(builder, BUILDER_NEXT_CONTINUE, guard);
-    builder_jump_block(builder, body);
-    builder_ast(builder, sexp_at(ast, 5));
-    builder_instruction_br(builder, guard);
+    builder_branch(builder, sexp_at(ast, 5), body, guard);
     builder_set_next(builder, BUILDER_NEXT_BREAK, next_break);
     builder_set_next(builder, BUILDER_NEXT_CONTINUE, next_continue);
   }
@@ -135,9 +127,7 @@ static void builder_do_while_statement(Builder *builder, Sexp *ast) {
     Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, next);
     Block *next_continue =
         builder_set_next(builder, BUILDER_NEXT_CONTINUE, guard);
-    builder_jump_block(builder, body);
-    builder_ast(builder, sexp_at(ast, 2));
-    builder_instruction_br(builder, guard);
+    builder_branch(builder, sexp_at(ast, 2), body, guard);
     builder_set_next(builder, BUILDER_NEXT_BREAK, next_break);
     builder_set_next(builder, BUILDER_NEXT_CONTINUE, next_continue);
   }
@@ -164,16 +154,12 @@ static void builder_for_statement(Builder *builder, Sexp *ast) {
     Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, next);
     Block *next_continue =
         builder_set_next(builder, BUILDER_NEXT_CONTINUE, step);
-    builder_jump_block(builder, body);
-    builder_ast(builder, sexp_at(ast, 9));
-    builder_instruction_br(builder, step);
+    builder_branch(builder, sexp_at(ast, 9), body, step);
     builder_set_next(builder, BUILDER_NEXT_BREAK, next_break);
     builder_set_next(builder, BUILDER_NEXT_CONTINUE, next_continue);
   }
   if (!sexp_is_nil(sexp_at(ast, 7))) {
-    builder_jump_block(builder, step);
-    builder_ast(builder, sexp_at(ast, 7));
-    builder_instruction_br(builder, guard);
+    builder_branch(builder, sexp_at(ast, 7), step, guard);
   }
   builder_jump_block(builder, next);
 }
