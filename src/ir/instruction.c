@@ -134,82 +134,85 @@ void instruction_pretty(Instruction *instr) {
   printf("\n");
 }
 
-Instruction *stack_new_instruction(Builder *stack, InstructionKind kind) {
-  Instruction *instr = module_new_instruction(stack_get_module(stack));
-  Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
-  Block *alloc = stack_get_next(stack, STACK_NEXT_ALLOC);
+Instruction *builder_new_instruction(Builder *builder, InstructionKind kind) {
+  Instruction *instr = module_new_instruction(builder_get_module(builder));
+  Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
+  Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   instr->ikind = kind;
   block_insert(INSTRUCTION_ALLOCA == kind ? alloc : current, instr);
   return instr;
 }
-void stack_instruction_ret(Builder *stack, Value *expr) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_RET);
+void builder_instruction_ret(Builder *builder, Value *expr) {
+  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_RET);
   instr->operands[0] = expr;
 }
-void stack_instruction_br(Builder *stack, Block *label) {
-  if (!stack_last_terminator(stack)) {
-    Instruction *instr = stack_new_instruction(stack, INSTRUCTION_BR);
+void builder_instruction_br(Builder *builder, Block *label) {
+  if (!builder_last_terminator(builder)) {
+    Instruction *instr = builder_new_instruction(builder, INSTRUCTION_BR);
     instr->operands[0] = block_as_value(label);
   }
 }
-void stack_instruction_br_cond(Builder *stack, Value *expr, Block *then_label,
-                               Block *else_label) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_BR_COND);
+void builder_instruction_br_cond(Builder *builder, Value *expr,
+                                 Block *then_label, Block *else_label) {
+  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_BR_COND);
   instr->operands[0] = expr;
   instr->operands[1] = block_as_value(then_label);
   instr->operands[2] = block_as_value(else_label);
 }
-Instruction *stack_instruction_switch(Builder *stack, Value *expr) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_SWITCH);
+Instruction *builder_instruction_switch(Builder *builder, Value *expr) {
+  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_SWITCH);
   instr->operands[0] = expr;
   return instr;
 }
-void stack_instruction_switch_finish(Builder *stack, Instruction *instr) {
-  Block *default_label = stack_get_next(stack, STACK_NEXT_DEFAULT);
-  Block *break_label = stack_get_next(stack, STACK_NEXT_BREAK);
-  Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
-  Block *next = break_label ? break_label : stack_new_block(stack);
-  stack_instruction_br(stack, next);
+void builder_instruction_switch_finish(Builder *builder, Instruction *instr) {
+  Block *default_label = builder_get_next(builder, BUILDER_NEXT_DEFAULT);
+  Block *break_label = builder_get_next(builder, BUILDER_NEXT_BREAK);
+  Block *switch_block = builder_get_next(builder, BUILDER_NEXT_SWITCH);
+  Block *next = break_label ? break_label : builder_new_block(builder);
+  builder_instruction_br(builder, next);
   instr->operands[1] = block_as_value(default_label ? default_label : next);
   instr->operands[2] = block_as_value(switch_block);
   if (break_label || !default_label) {
-    stack_jump_block(stack, next);
+    builder_jump_block(builder, next);
   }
 }
-void stack_instruction_switch_case(Builder *stack, Value *value, Block *label) {
-  Block *switch_block = stack_get_next(stack, STACK_NEXT_SWITCH);
+void builder_instruction_switch_case(Builder *builder, Value *value,
+                                     Block *label) {
+  Block *switch_block = builder_get_next(builder, BUILDER_NEXT_SWITCH);
   block_insert_switch(switch_block, value, label);
 }
-Instruction *stack_instruction_add(Builder *stack, Value *lhs, Value *rhs) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ADD);
+Instruction *builder_instruction_add(Builder *builder, Value *lhs, Value *rhs) {
+  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ADD);
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
   return instr;
 }
-Instruction *stack_instruction_sub(Builder *stack, Value *lhs, Value *rhs) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_SUB);
+Instruction *builder_instruction_sub(Builder *builder, Value *lhs, Value *rhs) {
+  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_SUB);
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
   return instr;
 }
-Instruction *stack_instruction_alloca(Builder *stack, const char *symbol) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ALLOCA);
-  stack_alloca(stack, symbol, instr);
+Instruction *builder_instruction_alloca(Builder *builder, const char *symbol) {
+  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ALLOCA);
+  builder_alloca(builder, symbol, instr);
   return instr;
 }
-Instruction *stack_instruction_load(Builder *stack, Value *src) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_LOAD);
+Instruction *builder_instruction_load(Builder *builder, Value *src) {
+  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_LOAD);
   instr->operands[0] = src;
   return instr;
 }
-Instruction *stack_instruction_store(Builder *stack, Value *src, Value *dst) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_STORE);
+Instruction *builder_instruction_store(Builder *builder, Value *src,
+                                       Value *dst) {
+  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_STORE);
   instr->operands[0] = src;
   instr->operands[1] = dst;
   return instr;
 }
-Instruction *stack_instruction_icmp_ne(Builder *stack, Value *lhs, Value *rhs) {
-  Instruction *instr = stack_new_instruction(stack, INSTRUCTION_ICMP_NE);
+Instruction *builder_instruction_icmp_ne(Builder *builder, Value *lhs,
+                                         Value *rhs) {
+  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ICMP_NE);
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
   return instr;

@@ -12,30 +12,30 @@
 #include "types.h"
 
 typedef enum {
-  STACK_NEXT_ALLOC,
-  STACK_NEXT_BLOCK,
-  STACK_NEXT_BREAK,
-  STACK_NEXT_CONTINUE,
-  STACK_NEXT_CURRENT,
-  STACK_NEXT_DEFAULT,
-  STACK_NEXT_ENTRY,
-  STACK_NEXT_RETURN,
-  STACK_NEXT_SWITCH,
-  STACK_NEXT_COUNT
-} StackNextTag;
+  BUILDER_NEXT_ALLOC,
+  BUILDER_NEXT_BLOCK,
+  BUILDER_NEXT_BREAK,
+  BUILDER_NEXT_CONTINUE,
+  BUILDER_NEXT_CURRENT,
+  BUILDER_NEXT_DEFAULT,
+  BUILDER_NEXT_ENTRY,
+  BUILDER_NEXT_RETURN,
+  BUILDER_NEXT_SWITCH,
+  BUILDER_NEXT_COUNT
+} BuilderNextTag;
 
-Builder *stack_new(Module *);
-void stack_delete(Builder *);
-void stack_function_init(Builder *, Function *);
-void stack_function_finish(Builder *);
-Module *stack_get_module(Builder *);
-Block *stack_label(Builder *, const char *);
-Bool stack_last_terminator(Builder *);
-void stack_alloca(Builder *, const char *, Instruction *);
-Value *stack_find_alloca(Builder *, const char *);
-void stack_jump_block(Builder *, Block *);
-Block *stack_get_next(Builder *, StackNextTag);
-Block *stack_set_next(Builder *, StackNextTag, Block *);
-Value *stack_ast(Builder *, Sexp *);
+Builder *builder_new(Module *);
+void builder_delete(Builder *);
+void builder_function_init(Builder *, Function *);
+void builder_function_finish(Builder *);
+Module *builder_get_module(Builder *);
+Block *builder_label(Builder *, const char *);
+Bool builder_last_terminator(Builder *);
+void builder_alloca(Builder *, const char *, Instruction *);
+Value *builder_find_alloca(Builder *, const char *);
+void builder_jump_block(Builder *, Block *);
+Block *builder_get_next(Builder *, BuilderNextTag);
+Block *builder_set_next(Builder *, BuilderNextTag, Block *);
+Value *builder_ast(Builder *, Sexp *);
 
 #endif /* INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E */

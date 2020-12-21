@@ -20,6 +20,6 @@ void block_print_label(Block *);
 void block_pretty(Block *);
 void block_pretty_switch(Block *);
 
-Block *stack_new_block(Builder *);
+Block *builder_new_block(Builder *);
 
 #endif /* INCLUDE_GUARD_158B0FE3_07C7_4187_B41D_C9D59FB58195 */

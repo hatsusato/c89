@@ -2,19 +2,19 @@
 
 #include "ir/stack_impl.h"
 
-Value *stack_declaration(Builder *stack, Sexp *ast) {
+Value *builder_declaration(Builder *builder, Sexp *ast) {
   assert(AST_DECLARATION == sexp_get_tag(ast));
-  return stack_ast(stack, sexp_at(ast, 2));
+  return builder_ast(builder, sexp_at(ast, 2));
 }
-Value *stack_init_declarator(Builder *stack, Sexp *ast) {
+Value *builder_init_declarator(Builder *builder, Sexp *ast) {
   assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
-    return stack_declarator(stack, sexp_at(ast, 1));
+    return builder_declarator(builder, sexp_at(ast, 1));
   case 4: {
-    Value *src = stack_ast(stack, sexp_at(ast, 3));
-    Value *dst = stack_declarator(stack, sexp_at(ast, 1));
-    Instruction *instr = stack_instruction_store(stack, src, dst);
+    Value *src = builder_ast(builder, sexp_at(ast, 3));
+    Value *dst = builder_declarator(builder, sexp_at(ast, 1));
+    Instruction *instr = builder_instruction_store(builder, src, dst);
     return instruction_as_value(instr);
   }
   default:
@@ -22,28 +22,28 @@ Value *stack_init_declarator(Builder *stack, Sexp *ast) {
     return NULL;
   }
 }
-Value *stack_declarator(Builder *stack, Sexp *ast) {
+Value *builder_declarator(Builder *builder, Sexp *ast) {
   assert(AST_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
-    return stack_direct_declarator(stack, sexp_at(ast, 1));
+    return builder_direct_declarator(builder, sexp_at(ast, 1));
   case 3:
-    return stack_direct_declarator(stack, sexp_at(ast, 2));
+    return builder_direct_declarator(builder, sexp_at(ast, 2));
   default:
     assert(0);
     return NULL;
   }
 }
-Value *stack_direct_declarator(Builder *stack, Sexp *ast) {
+Value *builder_direct_declarator(Builder *builder, Sexp *ast) {
   assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2: {
-    const char *symbol = stack_identifier_symbol(sexp_at(ast, 1));
-    Instruction *instr = stack_instruction_alloca(stack, symbol);
+    const char *symbol = builder_identifier_symbol(sexp_at(ast, 1));
+    Instruction *instr = builder_instruction_alloca(builder, symbol);
     return instruction_as_value(instr);
   }
   case 4:
-    return stack_declarator(stack, sexp_at(ast, 2));
+    return builder_declarator(builder, sexp_at(ast, 2));
   case 5:
     /* FALLTHROUGH */
   default:

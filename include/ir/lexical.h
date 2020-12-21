@@ -5,8 +5,8 @@
 #include "ir/value_type.h"
 #include "sexp_type.h"
 
-const char *stack_identifier_symbol(Sexp *);
-Value *stack_identifier(Builder *, Sexp *);
-Value *stack_integer_constant(Builder *, Sexp *);
+const char *builder_identifier_symbol(Sexp *);
+Value *builder_identifier(Builder *, Sexp *);
+Value *builder_integer_constant(Builder *, Sexp *);
 
 #endif /* INCLUDE_GUARD_E38EAC74_338A_4A0A_A889_55ABA2B7FBE8 */

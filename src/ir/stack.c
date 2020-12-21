@@ -17,122 +17,122 @@ struct struct_Builder {
   Module *module;
   Table *table;
   Function *func;
-  Block *next[STACK_NEXT_COUNT];
+  Block *next[BUILDER_NEXT_COUNT];
 };
 
-Builder *stack_new(Module *module) {
-  Builder *stack = UTILITY_MALLOC(Builder);
+Builder *builder_new(Module *module) {
+  Builder *builder = UTILITY_MALLOC(Builder);
   int i;
-  stack->pool = module_get(module);
-  stack->module = module;
-  stack->table = NULL;
-  stack->func = NULL;
-  for (i = 0; i < STACK_NEXT_COUNT; ++i) {
-    stack->next[i] = NULL;
+  builder->pool = module_get(module);
+  builder->module = module;
+  builder->table = NULL;
+  builder->func = NULL;
+  for (i = 0; i < BUILDER_NEXT_COUNT; ++i) {
+    builder->next[i] = NULL;
   }
-  return stack;
+  return builder;
 }
-void stack_delete(Builder *stack) {
-  UTILITY_FREE(stack);
+void builder_delete(Builder *builder) {
+  UTILITY_FREE(builder);
 }
-void stack_function_init(Builder *stack, Function *func) {
-  stack->table = table_new();
-  stack->func = func;
+void builder_function_init(Builder *builder, Function *func) {
+  builder->table = table_new();
+  builder->func = func;
 }
-void stack_function_finish(Builder *stack) {
+void builder_function_finish(Builder *builder) {
   int i;
-  table_delete(stack->table);
-  stack->table = NULL;
-  stack->func = NULL;
-  for (i = 0; i < STACK_NEXT_COUNT; ++i) {
-    stack->next[i] = NULL;
+  table_delete(builder->table);
+  builder->table = NULL;
+  builder->func = NULL;
+  for (i = 0; i < BUILDER_NEXT_COUNT; ++i) {
+    builder->next[i] = NULL;
   }
 }
-Module *stack_get_module(Builder *stack) {
-  return stack->module;
+Module *builder_get_module(Builder *builder) {
+  return builder->module;
 }
-Block *stack_label(Builder *stack, const char *label) {
-  if (table_label_contains(stack->table, label)) {
-    return table_label_find(stack->table, label);
+Block *builder_label(Builder *builder, const char *label) {
+  if (table_label_contains(builder->table, label)) {
+    return table_label_find(builder->table, label);
   } else {
-    Block *block = stack_new_block(stack);
-    table_label_insert(stack->table, label, block);
+    Block *block = builder_new_block(builder);
+    table_label_insert(builder->table, label, block);
     return block;
   }
 }
-Bool stack_last_terminator(Builder *stack) {
-  Block *current = stack_get_next(stack, STACK_NEXT_CURRENT);
+Bool builder_last_terminator(Builder *builder) {
+  Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
   assert(current);
   return block_is_terminated(current);
 }
-void stack_alloca(Builder *stack, const char *symbol, Instruction *instr) {
-  table_insert(stack->table, symbol, instruction_as_value(instr));
+void builder_alloca(Builder *builder, const char *symbol, Instruction *instr) {
+  table_insert(builder->table, symbol, instruction_as_value(instr));
 }
-Value *stack_find_alloca(Builder *stack, const char *symbol) {
-  return table_find(stack->table, symbol);
+Value *builder_find_alloca(Builder *builder, const char *symbol) {
+  return table_find(builder->table, symbol);
 }
-void stack_jump_block(Builder *stack, Block *dest) {
+void builder_jump_block(Builder *builder, Block *dest) {
   assert(dest);
-  stack_set_next(stack, STACK_NEXT_CURRENT, dest);
-  function_insert(stack->func, dest);
+  builder_set_next(builder, BUILDER_NEXT_CURRENT, dest);
+  function_insert(builder->func, dest);
 }
-Block *stack_get_next(Builder *stack, StackNextTag tag) {
-  return stack->next[tag];
+Block *builder_get_next(Builder *builder, BuilderNextTag tag) {
+  return builder->next[tag];
 }
-Block *stack_set_next(Builder *stack, StackNextTag tag, Block *next) {
-  assert(0 <= tag && tag < STACK_NEXT_COUNT);
-  UTILITY_SWAP(Block *, stack->next[tag], next);
+Block *builder_set_next(Builder *builder, BuilderNextTag tag, Block *next) {
+  assert(0 <= tag && tag < BUILDER_NEXT_COUNT);
+  UTILITY_SWAP(Block *, builder->next[tag], next);
   return next;
 }
 
-static Value *stack_ast_map(Builder *stack, Sexp *ast) {
+static Value *builder_ast_map(Builder *builder, Sexp *ast) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    stack_ast(stack, sexp_car(ast));
+    builder_ast(builder, sexp_car(ast));
   }
   return NULL;
 }
-Value *stack_ast(Builder *stack, Sexp *ast) {
+Value *builder_ast(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
-    return stack_identifier(stack, ast);
+    return builder_identifier(builder, ast);
   case AST_INTEGER_CONSTANT:
-    return stack_integer_constant(stack, ast);
+    return builder_integer_constant(builder, ast);
   case AST_ADDITIVE_EXPRESSION:
-    return stack_additive_expression(stack, ast);
+    return builder_additive_expression(builder, ast);
   case AST_ASSIGNMENT_EXPRESSION:
-    return stack_assignment_expression(stack, ast);
+    return builder_assignment_expression(builder, ast);
   case AST_CONSTANT_EXPRESSION:
-    return stack_constant_expression(stack, ast);
+    return builder_constant_expression(builder, ast);
   case AST_DECLARATION:
-    return stack_declaration(stack, ast);
+    return builder_declaration(builder, ast);
   case AST_INIT_DECLARATOR_LIST:
-    return stack_ast_map(stack, ast);
+    return builder_ast_map(builder, ast);
   case AST_INIT_DECLARATOR:
-    return stack_init_declarator(stack, ast);
+    return builder_init_declarator(builder, ast);
   case AST_STATEMENT:
-    return stack_statement(stack, ast);
+    return builder_statement(builder, ast);
   case AST_LABELED_STATEMENT:
-    return stack_labeled_statement(stack, ast);
+    return builder_labeled_statement(builder, ast);
   case AST_COMPOUND_STATEMENT:
-    return stack_compound_statement(stack, ast);
+    return builder_compound_statement(builder, ast);
   case AST_DECLARATION_LIST:
-    return stack_ast_map(stack, ast);
+    return builder_ast_map(builder, ast);
   case AST_STATEMENT_LIST:
-    return stack_ast_map(stack, ast);
+    return builder_ast_map(builder, ast);
   case AST_EXPRESSION_STATEMENT:
-    return stack_expression_statement(stack, ast);
+    return builder_expression_statement(builder, ast);
   case AST_SELECTION_STATEMENT:
-    return stack_selection_statement(stack, ast);
+    return builder_selection_statement(builder, ast);
   case AST_ITERATION_STATEMENT:
-    return stack_iteration_statement(stack, ast);
+    return builder_iteration_statement(builder, ast);
   case AST_JUMP_STATEMENT:
-    return stack_jump_statement(stack, ast);
+    return builder_jump_statement(builder, ast);
   case AST_TRANSLATION_UNIT:
-    return stack_ast_map(stack, ast);
+    return builder_ast_map(builder, ast);
   case AST_EXTERNAL_DECLARATION:
     return NULL;
   case AST_FUNCTION_DEFINITION:
-    return stack_function_definition(stack, ast);
+    return builder_function_definition(builder, ast);
   default:
     assert(0);
     return NULL;
