@@ -21,7 +21,7 @@ static const char *function_name(Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
     ast = sexp_at(ast, 1);
-    assert(sexp_is_symbol(ast));
+    UTILITY_ASSERT(sexp_is_symbol(ast));
     return sexp_get_symbol(ast);
   case AST_DECLARATOR:
     switch (sexp_length(ast)) {
@@ -30,7 +30,7 @@ static const char *function_name(Sexp *ast) {
     case 3:
       return function_name(sexp_at(ast, 2));
     default:
-      assert(0);
+      UTILITY_ASSERT(0);
       return NULL;
     }
   case AST_DIRECT_DECLARATOR:
@@ -42,14 +42,14 @@ static const char *function_name(Sexp *ast) {
     case 5:
       return function_name(sexp_at(ast, 1));
     default:
-      assert(0);
+      UTILITY_ASSERT(0);
       return NULL;
     }
   case AST_FUNCTION_DEFINITION:
-    assert(5 == sexp_length(ast));
+    UTILITY_ASSERT(5 == sexp_length(ast));
     return function_name(sexp_at(ast, 2));
   default:
-    assert(0);
+    UTILITY_ASSERT(0);
     return NULL;
   }
 }
@@ -80,7 +80,7 @@ void function_pretty(Function *func) {
   ElemType *begin = vector_begin(func->vec);
   ElemType *end = vector_end(func->vec);
   printf("define i32 @%s() {\n", func->name);
-  assert(begin != end);
+  UTILITY_ASSERT(begin != end);
   block_pretty(*begin++);
   for (; begin < end; ++begin) {
     printf("\n");

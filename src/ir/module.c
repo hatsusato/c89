@@ -29,7 +29,7 @@ static void module_value_delete(ElemType value) {
     constant_delete(value);
     break;
   default:
-    assert(0);
+    UTILITY_ASSERT(0);
     break;
   }
 }

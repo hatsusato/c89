@@ -9,9 +9,9 @@
 #include "utility.h"
 
 const char *builder_identifier_symbol(Sexp *ast) {
-  assert(AST_IDENTIFIER == sexp_get_tag(ast));
+  UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
-  assert(sexp_is_symbol(ast));
+  UTILITY_ASSERT(sexp_is_symbol(ast));
   return sexp_get_symbol(ast);
 }
 Value *builder_identifier(Builder *builder, Sexp *ast) {
@@ -21,8 +21,8 @@ Value *builder_identifier(Builder *builder, Sexp *ast) {
   return instruction_as_value(instr);
 }
 Value *builder_integer_constant(Builder *builder, Sexp *ast) {
-  assert(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
+  UTILITY_ASSERT(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
-  assert(sexp_is_symbol(ast));
+  UTILITY_ASSERT(sexp_is_symbol(ast));
   return constant_as_value(builder_new_integer(builder, sexp_get_symbol(ast)));
 }

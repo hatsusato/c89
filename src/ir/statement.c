@@ -54,8 +54,7 @@ static void builder_case_statement(Builder *builder, Sexp *ast) {
 static void builder_default_statement(Builder *builder, Sexp *ast) {
   Block *next = builder_new_block(builder);
   Block *prev_default = builder_set_next(builder, BUILDER_NEXT_DEFAULT, next);
-  assert(!prev_default);
-  UTILITY_UNUSED(prev_default);
+  UTILITY_ASSERT(!prev_default);
   builder_instruction_br(builder, next);
   builder_jump_block(builder, next);
   builder_ast(builder, sexp_at(ast, 3));
@@ -142,7 +141,7 @@ static void builder_for_statement(Builder *builder, Sexp *ast) {
   builder_instruction_br(builder, guard);
   if (!sexp_is_nil(sexp_at(ast, 5))) {
     builder_jump_block(builder, guard);
-    assert(sexp_at(ast, 5));
+    UTILITY_ASSERT(sexp_at(ast, 5));
     builder_guard(builder, sexp_at(ast, 5), body, next);
   }
   step = sexp_is_nil(sexp_at(ast, 7)) ? guard : builder_new_block(builder);
@@ -179,7 +178,7 @@ static void builder_break_statement(Builder *builder) {
 static void builder_return_statement(Builder *builder, Sexp *ast) {
   Block *ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
   Value *src;
-  assert(!sexp_is_nil(sexp_at(ast, 2)));
+  UTILITY_ASSERT(!sexp_is_nil(sexp_at(ast, 2)));
   src = builder_ast(builder, sexp_at(ast, 2));
   if (ret) {
     Value *dst = builder_find_alloca(builder, "$retval");
@@ -191,11 +190,11 @@ static void builder_return_statement(Builder *builder, Sexp *ast) {
 }
 
 Value *builder_statement(Builder *builder, Sexp *ast) {
-  assert(AST_STATEMENT == sexp_get_tag(ast));
+  UTILITY_ASSERT(AST_STATEMENT == sexp_get_tag(ast));
   return builder_ast(builder, sexp_at(ast, 1));
 }
 Value *builder_labeled_statement(Builder *builder, Sexp *ast) {
-  assert(AST_LABELED_STATEMENT == sexp_get_tag(ast));
+  UTILITY_ASSERT(AST_LABELED_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_IDENTIFIER:
     builder_label_statement(builder, ast);
@@ -207,19 +206,19 @@ Value *builder_labeled_statement(Builder *builder, Sexp *ast) {
     builder_default_statement(builder, ast);
     break;
   default:
-    assert(0);
+    UTILITY_ASSERT(0);
     break;
   }
   return NULL;
 }
 Value *builder_compound_statement(Builder *builder, Sexp *ast) {
-  assert(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
+  UTILITY_ASSERT(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
   builder_ast(builder, sexp_at(ast, 2));
   builder_ast(builder, sexp_at(ast, 3));
   return NULL;
 }
 Value *builder_expression_statement(Builder *builder, Sexp *ast) {
-  assert(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
+  UTILITY_ASSERT(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   if (!sexp_is_nil(ast)) {
     builder_ast(builder, ast);
@@ -227,7 +226,7 @@ Value *builder_expression_statement(Builder *builder, Sexp *ast) {
   return NULL;
 }
 Value *builder_selection_statement(Builder *builder, Sexp *ast) {
-  assert(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
+  UTILITY_ASSERT(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_IF:
     switch (sexp_length(ast)) {
@@ -238,7 +237,7 @@ Value *builder_selection_statement(Builder *builder, Sexp *ast) {
       builder_if_else_statement(builder, ast);
       break;
     default:
-      assert(0);
+      UTILITY_ASSERT(0);
       break;
     }
     break;
@@ -246,14 +245,14 @@ Value *builder_selection_statement(Builder *builder, Sexp *ast) {
     builder_switch_statement(builder, ast);
     break;
   default:
-    assert(0);
+    UTILITY_ASSERT(0);
     break;
   }
   return NULL;
 }
 Value *builder_iteration_statement(Builder *builder, Sexp *ast) {
   Block *next_switch = builder_set_next(builder, BUILDER_NEXT_SWITCH, NULL);
-  assert(AST_ITERATION_STATEMENT == sexp_get_tag(ast));
+  UTILITY_ASSERT(AST_ITERATION_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_WHILE:
     builder_while_statement(builder, ast);
@@ -265,14 +264,14 @@ Value *builder_iteration_statement(Builder *builder, Sexp *ast) {
     builder_for_statement(builder, ast);
     break;
   default:
-    assert(0);
+    UTILITY_ASSERT(0);
     break;
   }
   builder_set_next(builder, BUILDER_NEXT_SWITCH, next_switch);
   return NULL;
 }
 Value *builder_jump_statement(Builder *builder, Sexp *ast) {
-  assert(AST_JUMP_STATEMENT == sexp_get_tag(ast));
+  UTILITY_ASSERT(AST_JUMP_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_GOTO:
     builder_goto_statement(builder, ast);
@@ -287,7 +286,7 @@ Value *builder_jump_statement(Builder *builder, Sexp *ast) {
     builder_return_statement(builder, ast);
     break;
   default:
-    assert(0);
+    UTILITY_ASSERT(0);
     break;
   }
   builder_set_next(builder, BUILDER_NEXT_BLOCK, NULL);

@@ -39,7 +39,7 @@ void table_insert(Table *table, const char *key, Value *val) {
 }
 Value *table_find(Table *table, const char *key) {
   ElemType *found = map_find(table->table, (ElemType)key);
-  assert(found && *found);
+  UTILITY_ASSERT(found && *found);
   return *found;
 }
 Bool table_label_contains(Table *table, const char *label) {
@@ -50,6 +50,6 @@ void table_label_insert(Table *table, const char *label, Block *block) {
 }
 Block *table_label_find(Table *table, const char *label) {
   ElemType *found = map_find(table->labels, (ElemType)label);
-  assert(found && *found);
+  UTILITY_ASSERT(found && *found);
   return *found;
 }

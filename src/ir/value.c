@@ -23,19 +23,19 @@ Value *constant_as_value(Constant *constant) {
   return (Value *)constant;
 }
 Function *value_as_function(Value *value) {
-  assert(VALUE_FUNCTION == value->kind);
+  UTILITY_ASSERT(VALUE_FUNCTION == value->kind);
   return (Function *)value;
 }
 Block *value_as_block(Value *value) {
-  assert(VALUE_BLOCK == value->kind);
+  UTILITY_ASSERT(VALUE_BLOCK == value->kind);
   return (Block *)value;
 }
 Instruction *value_as_instruction(Value *value) {
-  assert(VALUE_INSTRUCTION == value->kind);
+  UTILITY_ASSERT(VALUE_INSTRUCTION == value->kind);
   return (Instruction *)value;
 }
 Constant *value_as_constant(Value *value) {
-  assert(VALUE_CONSTANT == value->kind);
+  UTILITY_ASSERT(VALUE_CONSTANT == value->kind);
   return (Constant *)value;
 }
 ValueKind value_kind(Value *value) {
@@ -53,7 +53,7 @@ void value_print(Value *value) {
     constant_print(value_as_constant(value));
     break;
   default:
-    assert(0);
+    UTILITY_ASSERT(0);
     break;
   }
 }

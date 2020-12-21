@@ -49,7 +49,7 @@ Bool block_is_terminated(Block *block) {
     return false;
   } else {
     Instruction *last = vector_back(block->vec);
-    assert(last);
+    UTILITY_ASSERT(last);
     return instruction_is_terminator(last);
   }
 }
@@ -63,11 +63,11 @@ int block_set_id(Block *block, int id) {
   return id;
 }
 void block_print(Block *block) {
-  assert(0 <= block->id);
+  UTILITY_ASSERT(0 <= block->id);
   printf("%%%d", block->id);
 }
 void block_print_label(Block *block) {
-  assert(0 <= block->id);
+  UTILITY_ASSERT(0 <= block->id);
   printf("%d:\n", block->id);
 }
 void block_pretty(Block *block) {

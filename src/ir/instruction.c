@@ -20,7 +20,7 @@ struct struct_Instruction {
 };
 
 static void instruction_print_operand(Instruction *instr, Index index) {
-  assert(0 <= index && index < INSTRUCTION_OPERAND_COUNT);
+  UTILITY_ASSERT(0 <= index && index < INSTRUCTION_OPERAND_COUNT);
   value_print(instr->operands[index]);
 }
 static void instruction_pretty_ret(Instruction *instr) {
@@ -69,7 +69,6 @@ static void instruction_pretty_sub(Instruction *instr) {
 static void instruction_pretty_alloca(Instruction *instr) {
   instruction_print(instr);
   printf(" = alloca i32, align 4");
-  UTILITY_UNUSED(instr);
 }
 static void instruction_pretty_load(Instruction *instr) {
   instruction_print(instr);
@@ -137,7 +136,7 @@ void instruction_pretty(Instruction *instr) {
       instruction_pretty_alloca,  instruction_pretty_load,
       instruction_pretty_store,   instruction_pretty_icmp_ne,
   };
-  assert(0 <= instr->ikind && instr->ikind < INSTRUCTION_KIND_COUNT);
+  UTILITY_ASSERT(0 <= instr->ikind && instr->ikind < INSTRUCTION_KIND_COUNT);
   printf("  ");
   pretty[instr->ikind](instr);
   printf("\n");

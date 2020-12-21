@@ -92,7 +92,7 @@ Value *builder_find_alloca(Builder *builder, const char *symbol) {
   return table_find(builder->table, symbol);
 }
 void builder_jump_block(Builder *builder, Block *dest) {
-  assert(dest);
+  UTILITY_ASSERT(dest);
   builder_set_next(builder, BUILDER_NEXT_CURRENT, dest);
   function_insert(builder->func, dest);
 }
@@ -100,7 +100,7 @@ Block *builder_get_next(Builder *builder, BuilderNextTag tag) {
   return builder->next[tag];
 }
 Block *builder_set_next(Builder *builder, BuilderNextTag tag, Block *next) {
-  assert(0 <= tag && tag < BUILDER_NEXT_COUNT);
+  UTILITY_ASSERT(0 <= tag && tag < BUILDER_NEXT_COUNT);
   UTILITY_SWAP(Block *, builder->next[tag], next);
   return next;
 }
@@ -154,7 +154,7 @@ Value *builder_ast(Builder *builder, Sexp *ast) {
   case AST_FUNCTION_DEFINITION:
     return builder_function_definition(builder, ast);
   default:
-    assert(0);
+    UTILITY_ASSERT(0);
     return NULL;
   }
 }
