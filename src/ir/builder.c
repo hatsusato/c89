@@ -1,4 +1,4 @@
-#include "ir/stack.h"
+#include "ir/builder.h"
 
 #include "compare.h"
 #include "ir/block.h"

@@ -3,9 +3,9 @@
 #include <stdio.h>
 
 #include "ir/block.h"
+#include "ir/builder.h"
 #include "ir/instruction_type.h"
 #include "ir/module.h"
-#include "ir/stack.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
 #include "utility.h"

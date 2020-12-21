@@ -2,9 +2,9 @@
 
 #include <stdio.h>
 
+#include "ir/builder.h"
 #include "ir/instruction.h"
 #include "ir/module.h"
-#include "ir/stack.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"
 #include "utility.h"

@@ -1,9 +1,9 @@
 #include "ir/definition.h"
 
 #include "ir/block.h"
+#include "ir/builder.h"
 #include "ir/function.h"
 #include "ir/module.h"
-#include "ir/stack.h"
 #include "ir/stack_impl.h"
 
 static int count_return(Sexp *ast) {
