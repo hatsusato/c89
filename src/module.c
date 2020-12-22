@@ -75,9 +75,9 @@ void module_build(Module *module, Sexp *ast) {
 void module_pretty(Module *module) {
   ElemType *begin = vector_begin(module->vec);
   ElemType *end = vector_end(module->vec);
-  puts("target triple = \"x86_64-unknown-linux-gnu\"");
+  printf("target triple = \"x86_64-unknown-linux-gnu\"\n");
   while (begin < end) {
-    puts("");
+    printf("\n");
     function_pretty(*begin++);
   }
 }
