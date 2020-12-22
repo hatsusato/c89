@@ -41,6 +41,9 @@ void table_pop(Table *table) {
   vector_pop(table->stack);
 }
 void table_insert(Table *table, const char *key, Value *val) {
+  Map *map = vector_back(table->stack);
+  UTILITY_ASSERT(map);
+  map_insert(map, (ElemType)key, val);
   map_insert(table->table, (ElemType)key, val);
 }
 Value *table_find(Table *table, const char *key) {
