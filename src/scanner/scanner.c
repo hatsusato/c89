@@ -3,7 +3,7 @@
 #include "ast.h"
 #include "compare.h"
 #include "parser.tab.h"
-#include "scanner/scanner_impl.h"
+#include "scanner/impl.h"
 #include "set.h"
 #include "utility.h"
 
