@@ -3,8 +3,10 @@
 #include "compare.h"
 #include "map.h"
 #include "utility.h"
+#include "vector.h"
 
 struct struct_Table {
+  Vector *stack;
   Map *table, *labels;
 };
 
@@ -13,9 +15,13 @@ static Map *table_new_map(void) {
   Map *map = map_new(cmp);
   return map;
 }
+static void table_delete_map(ElemType map) {
+  map_delete(map);
+}
 
 Table *table_new(void) {
   Table *table = UTILITY_MALLOC(Table);
+  table->stack = vector_new(table_delete_map);
   table->table = table_new_map();
   table->labels = table_new_map();
   return table;
@@ -23,6 +29,7 @@ Table *table_new(void) {
 void table_delete(Table *table) {
   map_delete(table->labels);
   map_delete(table->table);
+  vector_delete(table->stack);
   UTILITY_FREE(table);
 }
 void table_insert(Table *table, const char *key, Value *val) {
