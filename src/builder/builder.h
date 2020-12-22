@@ -1,12 +1,9 @@
 #ifndef INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 #define INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 
-#include "builder/block/type.h"
-#include "builder/instruction/type.h"
 #include "builder/type.h"
 #include "module.h"
 #include "sexp_type.h"
-#include "value/type.h"
 
 typedef enum {
   BUILDER_NEXT_ALLOC,

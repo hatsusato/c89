@@ -3,7 +3,6 @@
 
 #include "builder/type.h"
 #include "sexp_type.h"
-#include "value/type.h"
 
 const char *builder_identifier_symbol(Sexp *);
 Value *builder_identifier(Builder *, Sexp *);

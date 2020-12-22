@@ -3,7 +3,6 @@
 
 #include "builder/type.h"
 #include "sexp_type.h"
-#include "value/type.h"
 
 Value *builder_declaration(Builder *, Sexp *);
 Value *builder_init_declarator(Builder *, Sexp *);

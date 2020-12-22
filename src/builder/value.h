@@ -1,11 +1,7 @@
 #ifndef INCLUDE_GUARD_FE2AA6D9_B675_4B2E_839A_2B085264192A
 #define INCLUDE_GUARD_FE2AA6D9_B675_4B2E_839A_2B085264192A
 
-#include "builder/block/type.h"
-#include "builder/constant/type.h"
-#include "builder/function/type.h"
-#include "builder/instruction/type.h"
-#include "value/type.h"
+#include "builder/type.h"
 
 typedef enum {
   VALUE_FUNCTION,

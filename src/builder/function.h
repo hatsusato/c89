@@ -1,8 +1,6 @@
 #ifndef INCLUDE_GUARD_9CEF8276_25CA_4457_A042_1492E261359B
 #define INCLUDE_GUARD_9CEF8276_25CA_4457_A042_1492E261359B
 
-#include "builder/block/type.h"
-#include "builder/function/type.h"
 #include "builder/type.h"
 #include "sexp_type.h"
 

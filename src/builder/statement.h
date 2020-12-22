@@ -3,7 +3,6 @@
 
 #include "builder/type.h"
 #include "sexp_type.h"
-#include "value/type.h"
 
 Value *builder_statement(Builder *, Sexp *);
 Value *builder_labeled_statement(Builder *, Sexp *);
