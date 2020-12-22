@@ -5,16 +5,9 @@
 #include "types.h"
 
 typedef enum {
-  INSTRUCTION_RET,
-  INSTRUCTION_BR,
-  INSTRUCTION_BR_COND,
-  INSTRUCTION_SWITCH,
-  INSTRUCTION_ADD,
-  INSTRUCTION_SUB,
-  INSTRUCTION_ALLOCA,
-  INSTRUCTION_LOAD,
-  INSTRUCTION_STORE,
-  INSTRUCTION_ICMP_NE,
+#define DO_HANDLE(name, str) name,
+#include "instruction.def"
+#undef DO_HANDLE
   INSTRUCTION_KIND_COUNT
 } InstructionKind;
 

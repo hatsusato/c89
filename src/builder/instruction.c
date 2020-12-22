@@ -104,14 +104,11 @@ void instruction_delete(Instruction *instr) {
 }
 Bool instruction_is_terminator(Instruction *instr) {
   switch (instr->ikind) {
-#define HANDLE_INSTRUCTION_KIND(k) \
-  case k:                          \
-    return true
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_RET);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_BR_COND);
-    HANDLE_INSTRUCTION_KIND(INSTRUCTION_SWITCH);
-#undef HANDLE_INSTRUCTION_KIND
+#define DO_HANDLE(name, str) \
+  case name:                 \
+    return true;
+#include "terminator.def"
+#undef DO_HANDLE
   default:
     return false;
   }
