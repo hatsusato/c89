@@ -2,10 +2,12 @@
 #define INCLUDE_GUARD_CA82BAF1_F8AF_418B_A275_3129D9D3F1FB
 
 #include "builder/block/type.h"
-#include "builder/table_type.h"
 #include "builder/value/type.h"
 #include "sexp_type.h"
 #include "types.h"
+
+struct struct_Table;
+typedef struct struct_Table Table;
 
 Table *table_new(void);
 void table_delete(Table *);
