@@ -8,12 +8,8 @@ struct struct_Table {
   Map *table, *labels;
 };
 
-static int table_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
-  UTILITY_UNUSED(extra);
-  return utility_strcmp(lhs, rhs);
-}
 static Map *table_new_map(void) {
-  Compare *cmp = compare_new(table_compare);
+  Compare *cmp = compare_new(compare_strcmp);
   Map *map = map_new(cmp);
   return map;
 }
