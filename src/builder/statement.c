@@ -5,7 +5,6 @@
 #include "builder/builder.h"
 #include "builder/constant.h"
 #include "builder/instruction.h"
-#include "builder/instruction/type.h"
 #include "builder/lexical.h"
 #include "builder/value.h"
 #include "sexp.h"

@@ -4,12 +4,10 @@
 
 #include "builder/block.h"
 #include "builder/builder.h"
-#include "builder/instruction/type.h"
 #include "builder/value.h"
 #include "builder/value/kind.h"
 #include "module.h"
 #include "utility.h"
-#include "vector.h"
 
 enum { INSTRUCTION_OPERAND_COUNT = 3 };
 struct struct_Instruction {

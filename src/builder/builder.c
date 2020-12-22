@@ -2,7 +2,6 @@
 
 #include "ast/ast_tag.h"
 #include "builder/block.h"
-#include "builder/constant.h"
 #include "builder/declaration.h"
 #include "builder/definition.h"
 #include "builder/expression.h"
@@ -12,12 +11,9 @@
 #include "builder/statement.h"
 #include "builder/table.h"
 #include "builder/value.h"
-#include "compare.h"
-#include "map.h"
 #include "module.h"
 #include "sexp.h"
 #include "utility.h"
-#include "vector.h"
 
 struct struct_Builder {
   Module *module;
