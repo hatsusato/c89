@@ -1,6 +1,7 @@
 #include "table.h"
 
 #include "compare.h"
+#include "instruction.h"
 #include "map.h"
 #include "utility.h"
 #include "vector.h"
@@ -42,6 +43,7 @@ void table_pop(Table *table) {
 void table_insert(Table *table, const char *key, Instruction *val) {
   Map *map = vector_back(table->stack);
   UTILITY_ASSERT(map);
+  UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(val));
   map_insert(map, (ElemType)key, val);
 }
 Instruction *table_find(Table *table, const char *key) {
@@ -51,6 +53,7 @@ Instruction *table_find(Table *table, const char *key) {
     ElemType *found = map_find(*end, (ElemType)key);
     if (found) {
       UTILITY_ASSERT(*found);
+      UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(*found));
       return *found;
     }
   }
@@ -58,11 +61,13 @@ Instruction *table_find(Table *table, const char *key) {
   return NULL;
 }
 void table_builtin_insert(Table *table, const char *key, Instruction *val) {
+  UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(val));
   map_insert(table->table, (ElemType)key, val);
 }
 Instruction *table_builtin_find(Table *table, const char *key) {
   ElemType *found = map_find(table->table, (ElemType)key);
   UTILITY_ASSERT(found && *found);
+  UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(*found));
   return *found;
 }
 Bool table_label_contains(Table *table, const char *label) {
