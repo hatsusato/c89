@@ -10,6 +10,11 @@ struct struct_Compare {
 };
 typedef struct struct_Compare MutableCompare;
 
+static int compare_strcmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
+  UTILITY_UNUSED(extra);
+  return utility_strcmp(lhs, rhs);
+}
+
 Compare *compare_new(Cmp cmp) {
   MutableCompare *compare = UTILITY_MALLOC(MutableCompare);
   compare->cmp = cmp;
@@ -22,6 +27,9 @@ void compare_delete(Compare *compare) {
     compare->dtor((ElemType)compare->extra);
   }
   UTILITY_FREE(compare);
+}
+Compare *compare_new_strcmp(void) {
+  return compare_new(compare_strcmp);
 }
 CompareExtra compare_get_extra(Compare *compare) {
   return compare->extra;
@@ -37,8 +45,4 @@ int compare_cmp(Compare *compare, ElemType lhs, ElemType rhs) {
   } else {
     return utility_ptrcmp(lhs, rhs);
   }
-}
-int compare_strcmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
-  UTILITY_UNUSED(extra);
-  return utility_strcmp(lhs, rhs);
 }

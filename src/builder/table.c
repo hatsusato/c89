@@ -9,7 +9,7 @@ struct struct_Table {
 };
 
 static Map *table_new_map(void) {
-  Compare *cmp = compare_new(compare_strcmp);
+  Compare *cmp = compare_new_strcmp();
   Map *map = map_new(cmp);
   return map;
 }
