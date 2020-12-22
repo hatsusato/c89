@@ -1,39 +1,13 @@
 #include "map.h"
 
 #include "compare.h"
+#include "map/pair.h"
 #include "set.h"
-#include "types.h"
 #include "utility.h"
 
 struct struct_Map {
   Set *set;
 };
-typedef struct {
-  ElemType key, val;
-} Pair;
-
-static int pair_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
-  const Pair *l = lhs, *r = rhs;
-  return compare_cmp(extra, l->key, r->key);
-}
-static Pair *pair_new(ElemType key, ElemType val) {
-  Pair *pair = UTILITY_MALLOC(Pair);
-  pair->key = key;
-  pair->val = val;
-  return pair;
-}
-static void pair_delete(ElemType pair) {
-  UTILITY_FREE(pair);
-}
-static Pair pair_dummy(ElemType key) {
-  Pair pair;
-  pair.key = key;
-  pair.val = NULL;
-  return pair;
-}
-static ElemType *pair_val(Pair *pair) {
-  return &pair->val;
-}
 
 Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
