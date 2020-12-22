@@ -58,6 +58,14 @@ Value *table_find(Table *table, const char *key) {
   UTILITY_ASSERT(0);
   return NULL;
 }
+void table_builtin_insert(Table *table, const char *key, Value *val) {
+  map_insert(table->table, (ElemType)key, val);
+}
+Value *table_builtin_find(Table *table, const char *key) {
+  ElemType *found = map_find(table->table, (ElemType)key);
+  UTILITY_ASSERT(found && *found);
+  return *found;
+}
 Bool table_label_contains(Table *table, const char *label) {
   return map_contains(table->labels, (ElemType)label);
 }
