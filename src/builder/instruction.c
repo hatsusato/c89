@@ -21,19 +21,22 @@ static void instruction_print_operand(Instruction *instr, Index index) {
   value_print(instr->operands[index]);
 }
 static void instruction_pretty_ret(Instruction *instr) {
+  instruction_print_name(instr);
   if (instr->operands[0]) {
-    printf("ret i32 ");
+    printf("i32 ");
     instruction_print_operand(instr, 0);
   } else {
-    printf("ret void");
+    printf("void");
   }
 }
 static void instruction_pretty_br(Instruction *instr) {
-  printf("br label ");
+  instruction_print_name(instr);
+  printf("label ");
   instruction_print_operand(instr, 0);
 }
 static void instruction_pretty_br_cond(Instruction *instr) {
-  printf("br i1 ");
+  instruction_print_name(instr);
+  printf("i1 ");
   instruction_print_operand(instr, 0);
   printf(", label ");
   instruction_print_operand(instr, 1);
@@ -41,7 +44,8 @@ static void instruction_pretty_br_cond(Instruction *instr) {
   instruction_print_operand(instr, 2);
 }
 static void instruction_pretty_switch(Instruction *instr) {
-  printf("switch i32 ");
+  instruction_print_name(instr);
+  printf("i32 ");
   instruction_print_operand(instr, 0);
   printf(", label ");
   instruction_print_operand(instr, 1);
@@ -51,30 +55,39 @@ static void instruction_pretty_switch(Instruction *instr) {
 }
 static void instruction_pretty_add(Instruction *instr) {
   instruction_print(instr);
-  printf(" = add nsw i32 ");
+  printf(" = ");
+  instruction_print_name(instr);
+  printf("i32 ");
   instruction_print_operand(instr, 0);
   printf(", ");
   instruction_print_operand(instr, 1);
 }
 static void instruction_pretty_sub(Instruction *instr) {
   instruction_print(instr);
-  printf(" = sub nsw i32 ");
+  printf(" = ");
+  instruction_print_name(instr);
+  printf("i32 ");
   instruction_print_operand(instr, 0);
   printf(", ");
   instruction_print_operand(instr, 1);
 }
 static void instruction_pretty_alloca(Instruction *instr) {
   instruction_print(instr);
-  printf(" = alloca i32, align 4");
+  printf(" = ");
+  instruction_print_name(instr);
+  printf("i32, align 4");
 }
 static void instruction_pretty_load(Instruction *instr) {
   instruction_print(instr);
-  printf(" = load i32, i32* ");
+  printf(" = ");
+  instruction_print_name(instr);
+  printf("i32, i32* ");
   instruction_print_operand(instr, 0);
   printf(", align 4");
 }
 static void instruction_pretty_store(Instruction *instr) {
-  printf("store i32 ");
+  instruction_print_name(instr);
+  printf("i32 ");
   instruction_print_operand(instr, 0);
   printf(", i32* ");
   instruction_print_operand(instr, 1);
@@ -82,7 +95,9 @@ static void instruction_pretty_store(Instruction *instr) {
 }
 static void instruction_pretty_icmp_ne(Instruction *instr) {
   instruction_print(instr);
-  printf(" = icmp ne i32 ");
+  printf(" = ");
+  instruction_print_name(instr);
+  printf("i32 ");
   instruction_print_operand(instr, 0);
   printf(", ");
   instruction_print_operand(instr, 1);
@@ -121,6 +136,14 @@ int instruction_set_id(Instruction *instr, int id) {
 }
 void instruction_print(Instruction *instr) {
   printf("%%%d", instr->id);
+}
+void instruction_print_name(Instruction *instr) {
+  const char *names[] = {
+#define DO_HANDLE(name, str) str,
+#include "instruction.def"
+#undef DO_HANDLE
+      "kind-count"};
+  printf("%s ", names[instr->ikind]);
 }
 void instruction_pretty(Instruction *instr) {
   void (*pretty[])(Instruction *) = {
