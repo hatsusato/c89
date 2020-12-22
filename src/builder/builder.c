@@ -87,6 +87,7 @@ Block *builder_label(Builder *builder, const char *label) {
   return block;
 }
 void builder_alloca(Builder *builder, const char *symbol, Instruction *instr) {
+  UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
   if (symbol && '$' == *symbol) {
     table_builtin_insert(builder->table, symbol, instr);
   } else {
@@ -94,11 +95,14 @@ void builder_alloca(Builder *builder, const char *symbol, Instruction *instr) {
   }
 }
 Instruction *builder_find_alloca(Builder *builder, const char *symbol) {
+  Instruction *instr;
   if (symbol && '$' == *symbol) {
-    return table_builtin_find(builder->table, symbol);
+    instr = table_builtin_find(builder->table, symbol);
   } else {
-    return table_find(builder->table, symbol);
+    instr = table_find(builder->table, symbol);
   }
+  UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
+  return instr;
 }
 void builder_jump_block(Builder *builder, Block *dest) {
   UTILITY_ASSERT(dest);

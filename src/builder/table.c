@@ -41,10 +41,8 @@ void table_pop(Table *table) {
   vector_pop(table->stack);
 }
 void table_insert(Table *table, const char *key, Instruction *val) {
-  Map *map = vector_back(table->stack);
-  UTILITY_ASSERT(map);
-  UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(val));
-  map_insert(map, (ElemType)key, val);
+  UTILITY_ASSERT(!vector_empty(table->stack));
+  map_insert(vector_back(table->stack), (ElemType)key, val);
 }
 Instruction *table_find(Table *table, const char *key) {
   ElemType *begin = vector_begin(table->stack);
@@ -52,23 +50,17 @@ Instruction *table_find(Table *table, const char *key) {
   while (begin < end--) {
     ElemType *found = map_find(*end, (ElemType)key);
     if (found) {
-      UTILITY_ASSERT(*found);
-      UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(*found));
       return *found;
     }
   }
-  UTILITY_ASSERT(0);
   return NULL;
 }
 void table_builtin_insert(Table *table, const char *key, Instruction *val) {
-  UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(val));
   map_insert(table->table, (ElemType)key, val);
 }
 Instruction *table_builtin_find(Table *table, const char *key) {
   ElemType *found = map_find(table->table, (ElemType)key);
-  UTILITY_ASSERT(found && *found);
-  UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(*found));
-  return *found;
+  return found ? *found : found;
 }
 void table_label_insert(Table *table, const char *label, Block *block) {
   map_insert(table->labels, (ElemType)label, block);
