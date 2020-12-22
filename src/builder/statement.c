@@ -213,8 +213,10 @@ Value *builder_labeled_statement(Builder *builder, Sexp *ast) {
 }
 Value *builder_compound_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
+  builder_push_table(builder);
   builder_ast(builder, sexp_at(ast, 2));
   builder_ast(builder, sexp_at(ast, 3));
+  builder_pop_table(builder);
   return NULL;
 }
 Value *builder_expression_statement(Builder *builder, Sexp *ast) {
