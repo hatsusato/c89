@@ -4,19 +4,7 @@
 typedef enum {
   AST_NULL,
 #define HANDLE(name, str) name,
-#include "ast/keyword.def"
-#
-#include "ast/token.def"
-#
-#include "ast/symbol.def"
-#
-#include "ast/expression.def"
-#
-#include "ast/declaration.def"
-#
-#include "ast/statement.def"
-#
-#include "ast/definition.def"
+#include "ast/tag.def"
 #undef HANDLE
   AST_TAG_COUNT
 } AstTag;
