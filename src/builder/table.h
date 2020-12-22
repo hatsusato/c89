@@ -10,6 +10,8 @@ typedef struct struct_Table Table;
 
 Table *table_new(void);
 void table_delete(Table *);
+void table_push(Table *);
+void table_pop(Table *);
 void table_insert(Table *, const char *, Value *);
 Value *table_find(Table *, const char *);
 Bool table_label_contains(Table *, const char *);

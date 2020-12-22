@@ -24,6 +24,7 @@ Table *table_new(void) {
   table->stack = vector_new(table_delete_map);
   table->table = table_new_map();
   table->labels = table_new_map();
+  table_push(table);
   return table;
 }
 void table_delete(Table *table) {
@@ -31,6 +32,13 @@ void table_delete(Table *table) {
   map_delete(table->table);
   vector_delete(table->stack);
   UTILITY_FREE(table);
+}
+void table_push(Table *table) {
+  Map *map = table_new_map();
+  vector_push(table->stack, map);
+}
+void table_pop(Table *table) {
+  vector_pop(table->stack);
 }
 void table_insert(Table *table, const char *key, Value *val) {
   map_insert(table->table, (ElemType)key, val);
