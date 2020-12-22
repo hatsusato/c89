@@ -3,7 +3,7 @@
 
 #include "ast/ast_tag.h"
 #include "scanner/yyscan.h"
-#include "sexp_type.h"
+#include "sexp/type.h"
 
 #define PARSER_LIST0() parser_nil()
 #define PARSER_LIST1(ast0) parser_cons(ast0, PARSER_LIST0())

@@ -2,7 +2,7 @@
 #define INCLUDE_GUARD_CA82BAF1_F8AF_418B_A275_3129D9D3F1FB
 
 #include "builder/type.h"
-#include "sexp_type.h"
+#include "sexp/type.h"
 #include "types.h"
 
 struct struct_Table;

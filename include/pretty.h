@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "sexp_type.h"
+#include "sexp/type.h"
 
 void pretty_print(FILE *, Sexp *);
 

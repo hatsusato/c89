@@ -2,7 +2,7 @@
 #define INCLUDE_GUARD_2066624D_9BD2_42A1_8E82_3B559F049976
 
 #include "builder/type.h"
-#include "sexp_type.h"
+#include "sexp/type.h"
 
 struct struct_Module;
 typedef struct struct_Module Module;
