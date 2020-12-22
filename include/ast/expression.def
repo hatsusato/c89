@@ -1,6 +1,5 @@
 /* 6.3 Expressions */
 /* 6.4 Constant expressions */
-#include "handle.def"
 
 DO_HANDLE(AST_PRIMARY_EXPRESSION, primary-expression)
 DO_HANDLE(AST_POSTFIX_EXPRESSION, postfix-expression)
@@ -21,5 +20,3 @@ DO_HANDLE(AST_CONDITIONAL_EXPRESSION, conditional-expression)
 DO_HANDLE(AST_ASSIGNMENT_EXPRESSION, assignment-expression)
 DO_HANDLE(AST_EXPRESSION, expression)
 DO_HANDLE(AST_CONSTANT_EXPRESSION, constant-expression)
-
-#include "handle-end.def"

@@ -1,5 +1,4 @@
 /* 6.6 Statements */
-#include "handle.def"
 
 DO_HANDLE(AST_STATEMENT, statement)
 DO_HANDLE(AST_LABELED_STATEMENT, labeled-statement)
@@ -10,5 +9,3 @@ DO_HANDLE(AST_EXPRESSION_STATEMENT, expression-statement)
 DO_HANDLE(AST_SELECTION_STATEMENT, selection-statement)
 DO_HANDLE(AST_ITERATION_STATEMENT, iteration-statement)
 DO_HANDLE(AST_JUMP_STATEMENT, jump-statement)
-
-#include "handle-end.def"

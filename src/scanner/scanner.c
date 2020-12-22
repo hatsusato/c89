@@ -3,7 +3,7 @@
 #include "ast.h"
 #include "compare.h"
 #include "parser.tab.h"
-#include "scanner/scanner_impl.h"
+#include "scanner/impl.h"
 #include "set.h"
 #include "utility.h"
 
@@ -14,7 +14,7 @@ typedef struct {
 
 static void scanner_init(yyscan_t yyscan) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
-  Compare *cmp = compare_new(compare_strcmp);
+  Compare *cmp = compare_new_strcmp();
   yyset_extra(scanner, yyscan);
   scanner->ast = ast_new();
   scanner->typedefs = set_new(NULL, cmp);

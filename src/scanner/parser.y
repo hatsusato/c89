@@ -1,5 +1,5 @@
 %code requires {
-#include "sexp_type.h"
+#include "sexp/type.h"
 #include "scanner/yyscan.h"
 }
 
@@ -11,7 +11,7 @@
 #include "lexer.h"
 #include "scanner/parser.h"
 #include "scanner/register.h"
-#include "scanner/scanner_impl.h"
+#include "scanner/impl.h"
 }
 
 /* 6.1 Lexical elements */

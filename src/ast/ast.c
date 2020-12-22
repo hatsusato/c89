@@ -22,7 +22,7 @@ static void symbol_free(ElemType symbol) {
 
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
-  Compare *cmp = compare_new(compare_strcmp);
+  Compare *cmp = compare_new_strcmp();
   ast->symbols = set_new(symbol_free, cmp);
   ast->sexp = sexp_nil();
   return ast;

@@ -1,7 +1,4 @@
 /* 6.1 Lexical elements */
-#include "handle.def"
-#undef STRINGIFY
-#define STRINGIFY(x) x
 
 /* 6.1.5 Operators */
 DO_HANDLE(AST_PERIOD, ".")
@@ -55,5 +52,3 @@ DO_HANDLE(AST_SPACE, " ")
 DO_HANDLE(AST_INDENT, "  ")
 DO_HANDLE(AST_SEPARATOR, ", ")
 DO_HANDLE(AST_NEWLINE, "\n")
-
-#include "handle-end.def"

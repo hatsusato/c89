@@ -1,5 +1,4 @@
 /* 6.5 Declarations */
-#include "handle.def"
 
 DO_HANDLE(AST_DECLARATION, declaration)
 DO_HANDLE(AST_DECLARATION_SPECIFIERS, declaration-specifiers)
@@ -32,5 +31,3 @@ DO_HANDLE(AST_DIRECT_ABSTRACT_DECLARATOR, direct-abstract-declarator)
 DO_HANDLE(AST_TYPEDEF_NAME, typedef-name)
 DO_HANDLE(AST_INITIALIZER, initializer)
 DO_HANDLE(AST_INITIALIZER_LIST, initializer-list)
-
-#include "handle-end.def"

@@ -1,6 +1,0 @@
-#define STRINGIFY(x) #x
-#ifdef HANDLE
-#define DO_HANDLE(name, str) HANDLE(name, STRINGIFY(str))
-#else
-#define DO_HANDLE(name, str)
-#endif
