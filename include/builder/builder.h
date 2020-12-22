@@ -6,7 +6,7 @@
 #include "builder/instruction_kind.h"
 #include "builder/type.h"
 #include "builder/value/type.h"
-#include "module/type.h"
+#include "module.h"
 #include "sexp_type.h"
 #include "types.h"
 

@@ -6,8 +6,10 @@
 #include "builder/function/type.h"
 #include "builder/instruction/type.h"
 #include "builder/instruction_kind.h"
-#include "module/type.h"
 #include "sexp_type.h"
+
+struct struct_Module;
+typedef struct struct_Module Module;
 
 Module *module_new(void);
 void module_delete(Module *);
