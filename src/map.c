@@ -1,6 +1,5 @@
 #include "map.h"
 
-#include "compare.h"
 #include "map/pair.h"
 #include "set.h"
 #include "utility.h"
@@ -11,8 +10,7 @@ struct struct_Map {
 
 Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
-  Compare *compare = compare_new(pair_compare);
-  compare_set_extra(compare, keycmp, (Destructor)compare_delete);
+  Compare *compare = pair_new_compare(keycmp);
   map->set = set_new(pair_delete, compare);
   return map;
 }
