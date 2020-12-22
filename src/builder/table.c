@@ -24,7 +24,6 @@ Table *table_new(void) {
   table->stack = vector_new(table_delete_map);
   table->table = table_new_map();
   table->labels = table_new_map();
-  table_push(table);
   return table;
 }
 void table_delete(Table *table) {
