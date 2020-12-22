@@ -2,8 +2,8 @@
 #define INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 
 #include "builder/block/type.h"
+#include "builder/instruction/kind.h"
 #include "builder/instruction/type.h"
-#include "builder/instruction_kind.h"
 #include "builder/type.h"
 #include "builder/value/type.h"
 #include "module.h"

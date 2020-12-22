@@ -4,8 +4,8 @@
 #include "builder/block/type.h"
 #include "builder/constant/type.h"
 #include "builder/function/type.h"
+#include "builder/instruction/kind.h"
 #include "builder/instruction/type.h"
-#include "builder/instruction_kind.h"
 #include "sexp_type.h"
 
 struct struct_Module;
