@@ -39,12 +39,12 @@ void table_push(Table *table) {
 void table_pop(Table *table) {
   vector_pop(table->stack);
 }
-void table_insert(Table *table, const char *key, Value *val) {
+void table_insert(Table *table, const char *key, Instruction *val) {
   Map *map = vector_back(table->stack);
   UTILITY_ASSERT(map);
   map_insert(map, (ElemType)key, val);
 }
-Value *table_find(Table *table, const char *key) {
+Instruction *table_find(Table *table, const char *key) {
   ElemType *begin = vector_begin(table->stack);
   ElemType *end = vector_end(table->stack);
   while (begin < end--) {
@@ -57,10 +57,10 @@ Value *table_find(Table *table, const char *key) {
   UTILITY_ASSERT(0);
   return NULL;
 }
-void table_builtin_insert(Table *table, const char *key, Value *val) {
+void table_builtin_insert(Table *table, const char *key, Instruction *val) {
   map_insert(table->table, (ElemType)key, val);
 }
-Value *table_builtin_find(Table *table, const char *key) {
+Instruction *table_builtin_find(Table *table, const char *key) {
   ElemType *found = map_find(table->table, (ElemType)key);
   UTILITY_ASSERT(found && *found);
   return *found;

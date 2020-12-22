@@ -8,8 +8,9 @@
 #include "value.h"
 
 static void builder_function_return(Builder *builder) {
-  Value *expr = builder_find_alloca(builder, "$retval");
-  Instruction *instr = builder_instruction_load(builder, expr);
+  Instruction *expr = builder_find_alloca(builder, "$retval");
+  Instruction *instr =
+      builder_instruction_load(builder, instruction_as_value(expr));
   builder_instruction_ret(builder, instruction_as_value(instr));
 }
 

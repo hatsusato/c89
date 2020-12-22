@@ -88,14 +88,13 @@ Block *builder_label(Builder *builder, const char *label) {
   }
 }
 void builder_alloca(Builder *builder, const char *symbol, Instruction *instr) {
-  Value *value = instruction_as_value(instr);
   if (symbol && '$' == *symbol) {
-    table_builtin_insert(builder->table, symbol, value);
+    table_builtin_insert(builder->table, symbol, instr);
   } else {
-    table_insert(builder->table, symbol, value);
+    table_insert(builder->table, symbol, instr);
   }
 }
-Value *builder_find_alloca(Builder *builder, const char *symbol) {
+Instruction *builder_find_alloca(Builder *builder, const char *symbol) {
   if (symbol && '$' == *symbol) {
     return table_builtin_find(builder->table, symbol);
   } else {
