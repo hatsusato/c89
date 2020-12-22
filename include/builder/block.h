@@ -3,8 +3,8 @@
 
 #include "builder/block/type.h"
 #include "builder/instruction/type.h"
+#include "builder/type.h"
 #include "builder/value/type.h"
-#include "builder_type.h"
 #include "types.h"
 
 Block *block_new(void);

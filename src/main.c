@@ -1,6 +1,5 @@
 #include "ast.h"
-#include "builder/builder.h"
-#include "builder/module.h"
+#include "module.h"
 #include "print.h"
 #include "scanner.h"
 

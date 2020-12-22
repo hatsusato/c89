@@ -4,8 +4,8 @@
 #include "builder/block/type.h"
 #include "builder/instruction/type.h"
 #include "builder/instruction_kind.h"
+#include "builder/type.h"
 #include "builder/value/type.h"
-#include "builder_type.h"
 #include "types.h"
 
 Instruction *instruction_new(void);

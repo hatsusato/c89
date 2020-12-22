@@ -5,8 +5,8 @@
 #include "builder/builder.h"
 #include "builder/function.h"
 #include "builder/instruction.h"
-#include "builder/module.h"
 #include "builder/value.h"
+#include "module.h"
 #include "sexp.h"
 #include "utility.h"
 

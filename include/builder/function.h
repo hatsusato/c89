@@ -3,7 +3,7 @@
 
 #include "builder/block/type.h"
 #include "builder/function/type.h"
-#include "builder_type.h"
+#include "builder/type.h"
 #include "sexp_type.h"
 
 Function *function_new(void);

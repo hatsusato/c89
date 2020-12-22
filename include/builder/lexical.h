@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_E38EAC74_338A_4A0A_A889_55ABA2B7FBE8
 #define INCLUDE_GUARD_E38EAC74_338A_4A0A_A889_55ABA2B7FBE8
 
+#include "builder/type.h"
 #include "builder/value/type.h"
-#include "builder_type.h"
 #include "sexp_type.h"
 
 const char *builder_identifier_symbol(Sexp *);

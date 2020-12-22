@@ -3,8 +3,8 @@
 #include <stdio.h>
 
 #include "builder/builder.h"
-#include "builder/module.h"
 #include "builder/value_kind.h"
+#include "module.h"
 #include "utility.h"
 
 struct struct_Constant {

@@ -6,7 +6,7 @@
 #include "builder/function/type.h"
 #include "builder/instruction/type.h"
 #include "builder/instruction_kind.h"
-#include "builder/module/type.h"
+#include "module/type.h"
 #include "sexp_type.h"
 
 Module *module_new(void);
