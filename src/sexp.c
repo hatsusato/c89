@@ -137,11 +137,6 @@ int sexp_length(Sexp *list) {
   }
   return i;
 }
-void sexp_list_map(Sexp *sexp, void *extra, SexpMap map) {
-  for (; sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
-    map(sexp_car(sexp), extra);
-  }
-}
 int sexp_get_tag(Sexp *sexp) {
   if (sexp_is_pair(sexp)) {
     return sexp_get_tag(sexp_car(sexp));
