@@ -31,23 +31,22 @@ static void instruction_pretty_ret(Instruction *instr) {
 }
 static void instruction_pretty_br(Instruction *instr) {
   instruction_print_name(instr);
-  printf("label ");
   instruction_print_operand(instr, 0);
 }
 static void instruction_pretty_br_cond(Instruction *instr) {
   instruction_print_name(instr);
   printf("i1 ");
   instruction_print_operand(instr, 0);
-  printf(", label ");
+  printf(", ");
   instruction_print_operand(instr, 1);
-  printf(", label ");
+  printf(", ");
   instruction_print_operand(instr, 2);
 }
 static void instruction_pretty_switch(Instruction *instr) {
   instruction_print_name(instr);
   printf("i32 ");
   instruction_print_operand(instr, 0);
-  printf(", label ");
+  printf(", ");
   instruction_print_operand(instr, 1);
   printf(" [\n");
   block_pretty_switch(value_as_block(instr->operands[2]));

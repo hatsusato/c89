@@ -63,7 +63,7 @@ int block_set_id(Block *block, int id) {
 }
 void block_print(Block *block) {
   UTILITY_ASSERT(0 <= block->id);
-  printf("%%%d", block->id);
+  printf("label %%%d", block->id);
 }
 void block_print_label(Block *block) {
   UTILITY_ASSERT(0 <= block->id);
@@ -82,7 +82,7 @@ void block_pretty_switch(Block *block) {
   while (begin < end) {
     printf("    i32 ");
     value_print(*begin++);
-    printf(", label ");
+    printf(", ");
     value_print(*begin++);
     printf("\n");
   }
