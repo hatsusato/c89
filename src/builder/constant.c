@@ -1,10 +1,10 @@
-#include "ir/constant.h"
+#include "builder/constant.h"
 
 #include <stdio.h>
 
-#include "ir/builder.h"
-#include "ir/module.h"
-#include "ir/value_kind.h"
+#include "builder/builder.h"
+#include "builder/module.h"
+#include "builder/value_kind.h"
 #include "utility.h"
 
 struct struct_Constant {

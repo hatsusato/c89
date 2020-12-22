@@ -1,13 +1,13 @@
-#include "ir/instruction.h"
+#include "builder/instruction.h"
 
 #include <stdio.h>
 
-#include "ir/block.h"
-#include "ir/builder.h"
-#include "ir/instruction/type.h"
-#include "ir/module.h"
-#include "ir/value.h"
-#include "ir/value_kind.h"
+#include "builder/block.h"
+#include "builder/builder.h"
+#include "builder/instruction/type.h"
+#include "builder/module.h"
+#include "builder/value.h"
+#include "builder/value_kind.h"
 #include "utility.h"
 #include "vector.h"
 

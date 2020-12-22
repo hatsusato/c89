@@ -1,10 +1,10 @@
-#include "ir/lexical.h"
+#include "builder/lexical.h"
 
 #include "ast/ast_tag.h"
-#include "ir/builder.h"
-#include "ir/constant.h"
-#include "ir/instruction.h"
-#include "ir/value.h"
+#include "builder/builder.h"
+#include "builder/constant.h"
+#include "builder/instruction.h"
+#include "builder/value.h"
 #include "sexp.h"
 #include "utility.h"
 

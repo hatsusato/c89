@@ -1,10 +1,10 @@
-#include "ir/declaration.h"
+#include "builder/declaration.h"
 
 #include "ast/ast_tag.h"
-#include "ir/builder.h"
-#include "ir/instruction.h"
-#include "ir/lexical.h"
-#include "ir/value.h"
+#include "builder/builder.h"
+#include "builder/instruction.h"
+#include "builder/lexical.h"
+#include "builder/value.h"
 #include "sexp.h"
 #include "utility.h"
 

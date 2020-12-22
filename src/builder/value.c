@@ -1,9 +1,9 @@
-#include "ir/value.h"
+#include "builder/value.h"
 
-#include "ir/block.h"
-#include "ir/constant.h"
-#include "ir/instruction.h"
-#include "ir/value_kind.h"
+#include "builder/block.h"
+#include "builder/constant.h"
+#include "builder/instruction.h"
+#include "builder/value_kind.h"
 #include "utility.h"
 
 struct struct_Value {

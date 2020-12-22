@@ -1,8 +1,8 @@
-#include "ir/table.h"
+#include "builder/table.h"
 
 #include "ast/ast_tag.h"
+#include "builder/table_type.h"
 #include "compare.h"
-#include "ir/table_type.h"
 #include "map.h"
 #include "map/map_type.h"
 #include "sexp.h"

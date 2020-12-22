@@ -1,11 +1,11 @@
 #ifndef INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 #define INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 
+#include "builder/block/type.h"
+#include "builder/instruction/type.h"
+#include "builder/instruction_kind.h"
+#include "builder/value/type.h"
 #include "builder_type.h"
-#include "ir/block/type.h"
-#include "ir/instruction/type.h"
-#include "ir/instruction_kind.h"
-#include "ir/value/type.h"
 #include "types.h"
 
 Instruction *instruction_new(void);

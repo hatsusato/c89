@@ -1,12 +1,12 @@
-#include "ir/function.h"
+#include "builder/function.h"
 
 #include <stdio.h>
 
 #include "ast/ast_tag.h"
-#include "ir/block.h"
-#include "ir/builder.h"
-#include "ir/module.h"
-#include "ir/value_kind.h"
+#include "builder/block.h"
+#include "builder/builder.h"
+#include "builder/module.h"
+#include "builder/value_kind.h"
 #include "sexp.h"
 #include "utility.h"
 #include "vector.h"

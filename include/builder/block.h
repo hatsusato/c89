@@ -1,10 +1,10 @@
 #ifndef INCLUDE_GUARD_158B0FE3_07C7_4187_B41D_C9D59FB58195
 #define INCLUDE_GUARD_158B0FE3_07C7_4187_B41D_C9D59FB58195
 
+#include "builder/block/type.h"
+#include "builder/instruction/type.h"
+#include "builder/value/type.h"
 #include "builder_type.h"
-#include "ir/block/type.h"
-#include "ir/instruction/type.h"
-#include "ir/value/type.h"
 #include "types.h"
 
 Block *block_new(void);

@@ -1,6 +1,6 @@
 #include "ast.h"
-#include "ir/builder.h"
-#include "ir/module.h"
+#include "builder/builder.h"
+#include "builder/module.h"
 #include "print.h"
 #include "scanner.h"
 

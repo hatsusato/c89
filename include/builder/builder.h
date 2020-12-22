@@ -1,12 +1,12 @@
 #ifndef INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 #define INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 
+#include "builder/block/type.h"
+#include "builder/instruction/type.h"
+#include "builder/instruction_kind.h"
+#include "builder/module/type.h"
+#include "builder/value/type.h"
 #include "builder_type.h"
-#include "ir/block/type.h"
-#include "ir/instruction/type.h"
-#include "ir/instruction_kind.h"
-#include "ir/module/type.h"
-#include "ir/value/type.h"
 #include "sexp_type.h"
 #include "types.h"
 
