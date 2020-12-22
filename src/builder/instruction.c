@@ -6,7 +6,7 @@
 #include "builder/builder.h"
 #include "builder/instruction/type.h"
 #include "builder/value.h"
-#include "builder/value_kind.h"
+#include "builder/value/kind.h"
 #include "module.h"
 #include "utility.h"
 #include "vector.h"

@@ -3,7 +3,7 @@
 #include "builder/block.h"
 #include "builder/constant.h"
 #include "builder/instruction.h"
-#include "builder/value_kind.h"
+#include "builder/value/kind.h"
 #include "utility.h"
 
 struct struct_Value {

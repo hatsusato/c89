@@ -5,7 +5,7 @@
 #include "ast/ast_tag.h"
 #include "builder/block.h"
 #include "builder/builder.h"
-#include "builder/value_kind.h"
+#include "builder/value/kind.h"
 #include "module.h"
 #include "sexp.h"
 #include "utility.h"

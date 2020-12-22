@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #include "builder/builder.h"
-#include "builder/value_kind.h"
+#include "builder/value/kind.h"
 #include "module.h"
 #include "utility.h"
 

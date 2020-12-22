@@ -5,8 +5,8 @@
 #include "builder/constant/type.h"
 #include "builder/function/type.h"
 #include "builder/instruction/type.h"
+#include "builder/value/kind.h"
 #include "builder/value/type.h"
-#include "builder/value_kind.h"
 
 Value *function_as_value(Function *);
 Value *block_as_value(Block *);
