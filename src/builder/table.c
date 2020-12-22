@@ -70,14 +70,10 @@ Instruction *table_builtin_find(Table *table, const char *key) {
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(*found));
   return *found;
 }
-Bool table_label_contains(Table *table, const char *label) {
-  return map_contains(table->labels, (ElemType)label);
-}
 void table_label_insert(Table *table, const char *label, Block *block) {
   map_insert(table->labels, (ElemType)label, block);
 }
 Block *table_label_find(Table *table, const char *label) {
   ElemType *found = map_find(table->labels, (ElemType)label);
-  UTILITY_ASSERT(found && *found);
-  return *found;
+  return found ? *found : found;
 }

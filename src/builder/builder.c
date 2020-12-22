@@ -79,13 +79,12 @@ void builder_pop_table(Builder *builder) {
   table_pop(builder->table);
 }
 Block *builder_label(Builder *builder, const char *label) {
-  if (table_label_contains(builder->table, label)) {
-    return table_label_find(builder->table, label);
-  } else {
-    Block *block = builder_new_block(builder);
+  Block *block = table_label_find(builder->table, label);
+  if (!block) {
+    block = builder_new_block(builder);
     table_label_insert(builder->table, label, block);
-    return block;
   }
+  return block;
 }
 void builder_alloca(Builder *builder, const char *symbol, Instruction *instr) {
   if (symbol && '$' == *symbol) {
