@@ -72,20 +72,37 @@ void builder_function_finish(Builder *builder) {
 Module *builder_get_module(Builder *builder) {
   return builder->module;
 }
+void builder_push_table(Builder *builder) {
+  table_push(builder->table);
+}
+void builder_pop_table(Builder *builder) {
+  table_pop(builder->table);
+}
 Block *builder_label(Builder *builder, const char *label) {
-  if (table_label_contains(builder->table, label)) {
-    return table_label_find(builder->table, label);
-  } else {
-    Block *block = builder_new_block(builder);
+  Block *block = table_label_find(builder->table, label);
+  if (!block) {
+    block = builder_new_block(builder);
     table_label_insert(builder->table, label, block);
-    return block;
   }
+  return block;
 }
 void builder_alloca(Builder *builder, const char *symbol, Instruction *instr) {
-  table_insert(builder->table, symbol, instruction_as_value(instr));
+  UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
+  if (symbol && '$' == *symbol) {
+    table_builtin_insert(builder->table, symbol, instr);
+  } else {
+    table_insert(builder->table, symbol, instr);
+  }
 }
-Value *builder_find_alloca(Builder *builder, const char *symbol) {
-  return table_find(builder->table, symbol);
+Instruction *builder_find_alloca(Builder *builder, const char *symbol) {
+  Instruction *instr;
+  if (symbol && '$' == *symbol) {
+    instr = table_builtin_find(builder->table, symbol);
+  } else {
+    instr = table_find(builder->table, symbol);
+  }
+  UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
+  return instr;
 }
 void builder_jump_block(Builder *builder, Block *dest) {
   UTILITY_ASSERT(dest);

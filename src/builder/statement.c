@@ -181,8 +181,8 @@ static void builder_return_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(!sexp_is_nil(sexp_at(ast, 2)));
   src = builder_ast(builder, sexp_at(ast, 2));
   if (ret) {
-    Value *dst = builder_find_alloca(builder, "$retval");
-    builder_instruction_store(builder, src, dst);
+    Instruction *dst = builder_find_alloca(builder, "$retval");
+    builder_instruction_store(builder, src, instruction_as_value(dst));
     builder_instruction_br(builder, ret);
   } else {
     builder_instruction_ret(builder, src);
@@ -213,8 +213,10 @@ Value *builder_labeled_statement(Builder *builder, Sexp *ast) {
 }
 Value *builder_compound_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_COMPOUND_STATEMENT == sexp_get_tag(ast));
+  builder_push_table(builder);
   builder_ast(builder, sexp_at(ast, 2));
   builder_ast(builder, sexp_at(ast, 3));
+  builder_pop_table(builder);
   return NULL;
 }
 Value *builder_expression_statement(Builder *builder, Sexp *ast) {

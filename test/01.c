@@ -25,3 +25,13 @@ int f5(void) {
   int x = 1, y = 2, z = x + y;
   return x + y + z;
 }
+int f6(void) {
+  int x = 0;
+  {
+    int x = 1;
+    {
+      int x = 2;
+    }
+  }
+  return x;
+}

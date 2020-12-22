@@ -132,6 +132,9 @@ Instruction *instruction_new(void) {
 void instruction_delete(Instruction *instr) {
   UTILITY_FREE(instr);
 }
+InstructionKind instruction_kind(Instruction *instr) {
+  return instr->ikind;
+}
 Bool instruction_is_terminator(Instruction *instr) {
   switch (instr->ikind) {
 #define DO_HANDLE(name, str) \
