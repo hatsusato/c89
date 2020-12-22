@@ -1,6 +1,6 @@
 #include "builder.h"
 
-#include "ast/ast_tag.h"
+#include "ast/tag.h"
 #include "block.h"
 #include "declaration.h"
 #include "definition.h"

@@ -1,6 +1,6 @@
 #include "scanner/register.h"
 
-#include "ast/ast_tag.h"
+#include "ast/tag.h"
 #include "scanner/scanner_impl.h"
 #include "sexp.h"
 #include "utility.h"

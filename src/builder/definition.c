@@ -1,6 +1,6 @@
 #include "definition.h"
 
-#include "ast/ast_tag.h"
+#include "ast/tag.h"
 #include "builder.h"
 #include "instruction.h"
 #include "sexp.h"

@@ -1,6 +1,6 @@
 #include "lexical.h"
 
-#include "ast/ast_tag.h"
+#include "ast/tag.h"
 #include "builder.h"
 #include "constant.h"
 #include "instruction.h"

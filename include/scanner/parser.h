@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD
 #define INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD
 
-#include "ast/ast_tag.h"
+#include "ast/tag.h"
 #include "scanner/yyscan.h"
 #include "sexp/type.h"
 

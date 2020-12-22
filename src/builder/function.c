@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-#include "ast/ast_tag.h"
+#include "ast/tag.h"
 #include "block.h"
 #include "builder.h"
 #include "module.h"

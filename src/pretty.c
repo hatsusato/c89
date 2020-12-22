@@ -1,6 +1,6 @@
 #include "pretty.h"
 
-#include "ast/ast_tag.h"
+#include "ast/tag.h"
 #include "print.h"
 #include "sexp.h"
 #include "utility.h"
