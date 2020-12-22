@@ -1,5 +1,4 @@
 /* 6.1 Lexical elements */
-#include "handle.def"
 
 /* 6.1.1 Keywords */
 DO_HANDLE(AST_AUTO, auto)
@@ -34,5 +33,3 @@ DO_HANDLE(AST_UNSIGNED, unsigned)
 DO_HANDLE(AST_VOID, void)
 DO_HANDLE(AST_VOLATILE, volatile)
 DO_HANDLE(AST_WHILE, while)
-
-#include "handle-end.def"

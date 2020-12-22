@@ -1,7 +1,17 @@
+#define DO_HANDLE(name, str) HANDLE(name, STRINGIFY(str))
+
+#define STRINGIFY(x) #x
 #include "keyword.def"
 #include "token.def"
+#undef STRINGIFY
+#define STRINGIFY(x) x
 #include "symbol.def"
+#undef STRINGIFY
+#define STRINGIFY(x) #x
 #include "expression.def"
 #include "declaration.def"
 #include "statement.def"
 #include "definition.def"
+#undef STRINGIFY
+
+#undef DO_HANDLE

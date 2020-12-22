@@ -1,5 +1,4 @@
 /* 6.1 Lexical elements */
-#include "handle.def"
 
 /* 6.1.2 Identifiers */
 DO_HANDLE(AST_IDENTIFIER, identifier)
@@ -12,5 +11,3 @@ DO_HANDLE(AST_ENUMERATION_CONSTANT, enumeration-constant)
 DO_HANDLE(AST_CHARACTER_CONSTANT, character-constant)
 /* 6.1.4 String literals */
 DO_HANDLE(AST_STRING_LITERAL, string-literal)
-
-#include "handle-end.def"
