@@ -1,10 +1,10 @@
-#include "builder/value.h"
+#include "value.h"
 
-#include "builder/block.h"
-#include "builder/constant.h"
-#include "builder/instruction.h"
-#include "builder/value/kind.h"
+#include "block.h"
+#include "constant.h"
+#include "instruction.h"
 #include "utility.h"
+#include "value/kind.h"
 
 struct struct_Value {
   ValueKind kind;

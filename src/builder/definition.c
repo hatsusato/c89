@@ -1,11 +1,11 @@
-#include "builder/definition.h"
+#include "definition.h"
 
 #include "ast/ast_tag.h"
-#include "builder/builder.h"
-#include "builder/instruction.h"
-#include "builder/value.h"
+#include "builder.h"
+#include "instruction.h"
 #include "sexp.h"
 #include "utility.h"
+#include "value.h"
 
 static void builder_function_return(Builder *builder) {
   Value *expr = builder_find_alloca(builder, "$retval");

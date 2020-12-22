@@ -5,8 +5,8 @@
 #include "builder/instruction/kind.h"
 #include "builder/instruction/type.h"
 #include "builder/type.h"
-#include "builder/value/type.h"
 #include "types.h"
+#include "value/type.h"
 
 Instruction *instruction_new(void);
 void instruction_delete(Instruction *);

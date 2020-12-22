@@ -1,11 +1,11 @@
-#include "builder/constant.h"
+#include "constant.h"
 
 #include <stdio.h>
 
-#include "builder/builder.h"
-#include "builder/value/kind.h"
+#include "builder.h"
 #include "module.h"
 #include "utility.h"
+#include "value/kind.h"
 
 struct struct_Constant {
   ValueKind kind;

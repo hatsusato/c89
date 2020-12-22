@@ -4,9 +4,9 @@
 #include "builder/block/type.h"
 #include "builder/instruction/type.h"
 #include "builder/type.h"
-#include "builder/value/type.h"
 #include "module.h"
 #include "sexp_type.h"
+#include "value/type.h"
 
 typedef enum {
   BUILDER_NEXT_ALLOC,

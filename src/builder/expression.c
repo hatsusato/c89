@@ -1,12 +1,12 @@
-#include "builder/expression.h"
+#include "expression.h"
 
 #include "ast/ast_tag.h"
-#include "builder/builder.h"
-#include "builder/instruction.h"
-#include "builder/lexical.h"
-#include "builder/value.h"
+#include "builder.h"
+#include "instruction.h"
+#include "lexical.h"
 #include "sexp.h"
 #include "utility.h"
+#include "value.h"
 
 Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   Value *lhs = builder_ast(builder, sexp_at(ast, 1));

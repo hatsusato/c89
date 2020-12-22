@@ -2,8 +2,8 @@
 #define INCLUDE_GUARD_1A152785_989B_4CD5_84BE_B19C1B797FEB
 
 #include "builder/type.h"
-#include "builder/value/type.h"
 #include "sexp_type.h"
+#include "value/type.h"
 
 Value *builder_additive_expression(Builder *, Sexp *);
 Value *builder_assignment_expression(Builder *, Sexp *);

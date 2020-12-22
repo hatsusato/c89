@@ -1,12 +1,12 @@
-#include "builder/lexical.h"
+#include "lexical.h"
 
 #include "ast/ast_tag.h"
-#include "builder/builder.h"
-#include "builder/constant.h"
-#include "builder/instruction.h"
-#include "builder/value.h"
+#include "builder.h"
+#include "constant.h"
+#include "instruction.h"
 #include "sexp.h"
 #include "utility.h"
+#include "value.h"
 
 const char *builder_identifier_symbol(Sexp *ast) {
   UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ast));

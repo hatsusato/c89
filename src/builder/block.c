@@ -1,13 +1,13 @@
-#include "builder/block.h"
+#include "block.h"
 
 #include <stdio.h>
 
-#include "builder/builder.h"
-#include "builder/instruction.h"
-#include "builder/value.h"
-#include "builder/value/kind.h"
+#include "builder.h"
+#include "instruction.h"
 #include "module.h"
 #include "utility.h"
+#include "value.h"
+#include "value/kind.h"
 #include "vector.h"
 
 struct struct_Block {

@@ -1,14 +1,14 @@
-#include "builder/function.h"
+#include "function.h"
 
 #include <stdio.h>
 
 #include "ast/ast_tag.h"
-#include "builder/block.h"
-#include "builder/builder.h"
-#include "builder/value/kind.h"
+#include "block.h"
+#include "builder.h"
 #include "module.h"
 #include "sexp.h"
 #include "utility.h"
+#include "value/kind.h"
 #include "vector.h"
 
 struct struct_Function {

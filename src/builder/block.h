@@ -4,8 +4,8 @@
 #include "builder/block/type.h"
 #include "builder/instruction/type.h"
 #include "builder/type.h"
-#include "builder/value/type.h"
 #include "types.h"
+#include "value/type.h"
 
 Block *block_new(void);
 void block_delete(Block *);

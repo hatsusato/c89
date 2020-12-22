@@ -1,4 +1,4 @@
-#include "builder/table.h"
+#include "table.h"
 
 #include "compare.h"
 #include "map.h"

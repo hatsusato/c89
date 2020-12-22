@@ -1,12 +1,12 @@
-#include "builder/declaration.h"
+#include "declaration.h"
 
 #include "ast/ast_tag.h"
-#include "builder/builder.h"
-#include "builder/instruction.h"
-#include "builder/lexical.h"
-#include "builder/value.h"
+#include "builder.h"
+#include "instruction.h"
+#include "lexical.h"
 #include "sexp.h"
 #include "utility.h"
+#include "value.h"
 
 static Value *builder_declarator_initializer(Builder *builder, Sexp *ast) {
   Value *src = builder_ast(builder, sexp_at(ast, 3));
