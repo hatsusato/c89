@@ -60,3 +60,18 @@ int f6(void) {
     return x;
   }
 }
+int f7(void) {
+  int x = 1;
+  if (x) {
+    int y = x + 2;
+    int x = y + 2;
+    if (y) {
+      int z = y + 3;
+      int x = z + 3;
+      return x;
+    }
+    return x;
+  } else {
+    return x;
+  }
+}
