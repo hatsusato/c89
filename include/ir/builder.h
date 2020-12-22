@@ -2,11 +2,11 @@
 #define INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 
 #include "builder_type.h"
-#include "ir/block_type.h"
+#include "ir/block/type.h"
+#include "ir/instruction/type.h"
 #include "ir/instruction_kind.h"
-#include "ir/instruction_type.h"
-#include "ir/module_type.h"
-#include "ir/value_type.h"
+#include "ir/module/type.h"
+#include "ir/value/type.h"
 #include "sexp_type.h"
 #include "types.h"
 

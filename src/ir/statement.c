@@ -5,7 +5,7 @@
 #include "ir/builder.h"
 #include "ir/constant.h"
 #include "ir/instruction.h"
-#include "ir/instruction_type.h"
+#include "ir/instruction/type.h"
 #include "ir/lexical.h"
 #include "ir/value.h"
 #include "sexp.h"

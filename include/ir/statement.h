@@ -2,7 +2,7 @@
 #define INCLUDE_GUARD_C7C93740_6608_4112_98EA_4A89E91D8979
 
 #include "builder_type.h"
-#include "ir/value_type.h"
+#include "ir/value/type.h"
 #include "sexp_type.h"
 
 Value *builder_statement(Builder *, Sexp *);

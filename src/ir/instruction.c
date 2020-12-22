@@ -4,7 +4,7 @@
 
 #include "ir/block.h"
 #include "ir/builder.h"
-#include "ir/instruction_type.h"
+#include "ir/instruction/type.h"
 #include "ir/module.h"
 #include "ir/value.h"
 #include "ir/value_kind.h"

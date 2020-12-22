@@ -2,9 +2,9 @@
 #define INCLUDE_GUARD_158B0FE3_07C7_4187_B41D_C9D59FB58195
 
 #include "builder_type.h"
-#include "ir/block_type.h"
-#include "ir/instruction_type.h"
-#include "ir/value_type.h"
+#include "ir/block/type.h"
+#include "ir/instruction/type.h"
+#include "ir/value/type.h"
 #include "types.h"
 
 Block *block_new(void);
