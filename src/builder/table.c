@@ -44,12 +44,19 @@ void table_insert(Table *table, const char *key, Value *val) {
   Map *map = vector_back(table->stack);
   UTILITY_ASSERT(map);
   map_insert(map, (ElemType)key, val);
-  map_insert(table->table, (ElemType)key, val);
 }
 Value *table_find(Table *table, const char *key) {
-  ElemType *found = map_find(table->table, (ElemType)key);
-  UTILITY_ASSERT(found && *found);
-  return *found;
+  ElemType *begin = vector_begin(table->stack);
+  ElemType *end = vector_end(table->stack);
+  while (begin < end--) {
+    ElemType *found = map_find(*end, (ElemType)key);
+    if (found) {
+      UTILITY_ASSERT(*found);
+      return *found;
+    }
+  }
+  UTILITY_ASSERT(0);
+  return NULL;
 }
 Bool table_label_contains(Table *table, const char *label) {
   return map_contains(table->labels, (ElemType)label);
