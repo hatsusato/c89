@@ -1,34 +1,41 @@
 #include "ir/expression.h"
 
-#include "ir/stack_impl.h"
+#include "ast/ast_tag.h"
+#include "ir/builder.h"
+#include "ir/instruction.h"
+#include "ir/lexical.h"
+#include "ir/value.h"
+#include "sexp.h"
+#include "utility.h"
 
-Value *stack_additive_expression(Stack *stack, Sexp *ast) {
-  assert(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
-  {
-    Value *lhs = stack_ast(stack, sexp_at(ast, 1));
-    Value *rhs = stack_ast(stack, sexp_at(ast, 3));
-    switch (sexp_get_tag(sexp_at(ast, 2))) {
-    case AST_PLUS:
-      return stack_instruction_add(stack, lhs, rhs);
-    case AST_MINUS:
-      return stack_instruction_sub(stack, lhs, rhs);
-    default:
-      assert(0);
-      return NULL;
-    }
+Value *builder_additive_expression(Builder *builder, Sexp *ast) {
+  Value *lhs = builder_ast(builder, sexp_at(ast, 1));
+  Value *rhs = builder_ast(builder, sexp_at(ast, 3));
+  Instruction *instr = NULL;
+  UTILITY_ASSERT(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
+  switch (sexp_get_tag(sexp_at(ast, 2))) {
+  case AST_PLUS:
+    instr = builder_instruction_add(builder, lhs, rhs);
+    break;
+  case AST_MINUS:
+    instr = builder_instruction_sub(builder, lhs, rhs);
+    break;
+  default:
+    UTILITY_ASSERT(0);
+    break;
   }
+  return instruction_as_value(instr);
 }
-Value *stack_assignment_expression(Stack *stack, Sexp *ast) {
-  assert(AST_ASSIGNMENT_EXPRESSION == sexp_get_tag(ast));
-  assert(AST_ASSIGN == sexp_get_tag(sexp_at(ast, 2)));
-  {
-    const char *symbol = stack_identifier_symbol(sexp_at(ast, 1));
-    Value *lhs = stack_find_alloca(stack, symbol);
-    Value *rhs = stack_ast(stack, sexp_at(ast, 3));
-    return stack_instruction_store(stack, rhs, lhs);
-  }
+Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
+  const char *symbol = builder_identifier_symbol(sexp_at(ast, 1));
+  Value *lhs = builder_find_alloca(builder, symbol);
+  Value *rhs = builder_ast(builder, sexp_at(ast, 3));
+  Instruction *instr = builder_instruction_store(builder, rhs, lhs);
+  UTILITY_ASSERT(AST_ASSIGNMENT_EXPRESSION == sexp_get_tag(ast));
+  UTILITY_ASSERT(AST_ASSIGN == sexp_get_tag(sexp_at(ast, 2)));
+  return instruction_as_value(instr);
 }
-Value *stack_constant_expression(Stack *stack, Sexp *ast) {
-  assert(AST_CONSTANT_EXPRESSION == sexp_get_tag(ast));
-  return stack_ast(stack, sexp_at(ast, 1));
+Value *builder_constant_expression(Builder *builder, Sexp *ast) {
+  UTILITY_ASSERT(AST_CONSTANT_EXPRESSION == sexp_get_tag(ast));
+  return builder_ast(builder, sexp_at(ast, 1));
 }

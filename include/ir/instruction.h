@@ -1,29 +1,32 @@
 #ifndef INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 #define INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 
-#include "ir/stack_type.h"
+#include "builder_type.h"
+#include "ir/block_type.h"
+#include "ir/instruction_kind.h"
+#include "ir/instruction_type.h"
 #include "ir/value_type.h"
+#include "types.h"
 
-/* ret %1 */
-void stack_instruction_ret(Stack *, Value *);
-/* br label %1 */
-void stack_instruction_br(Stack *, Value *);
-/* br %1, label %2, label %3 */
-void stack_instruction_br_cond(Stack *, Value *, Value *, Value *);
-/* switch %1, label % */
-Value *stack_instruction_switch(Stack *, Value *);
-void stack_instruction_switch_finish(Stack *, Value *);
-/* [ %1, label %2 ... ] */
-void stack_instruction_switch_case(Stack *, Value *, Value *);
-/* add %1, %2 */
-Value *stack_instruction_add(Stack *, Value *, Value *);
-/* sub %1, %2 */
-Value *stack_instruction_sub(Stack *, Value *, Value *);
-/* load %1 */
-Value *stack_instruction_load(Stack *, Value *);
-/* store %1, %2 */
-Value *stack_instruction_store(Stack *, Value *, Value *);
-/* icmp ne %1, %2 */
-Value *stack_instruction_icmp_ne(Stack *, Value *, Value *);
+Instruction *instruction_new(void);
+void instruction_delete(Instruction *);
+Bool instruction_is_terminator(Instruction *);
+int instruction_set_id(Instruction *, int);
+void instruction_print(Instruction *);
+void instruction_pretty(Instruction *);
+
+Instruction *builder_new_instruction(Builder *, InstructionKind);
+void builder_instruction_ret(Builder *, Value *);
+void builder_instruction_br(Builder *, Block *);
+void builder_instruction_br_cond(Builder *, Value *, Block *, Block *);
+Instruction *builder_instruction_switch(Builder *, Value *);
+void builder_instruction_switch_finish(Builder *, Instruction *);
+void builder_instruction_switch_case(Builder *, Value *, Block *);
+Instruction *builder_instruction_add(Builder *, Value *, Value *);
+Instruction *builder_instruction_sub(Builder *, Value *, Value *);
+Instruction *builder_instruction_alloca(Builder *, const char *);
+Instruction *builder_instruction_load(Builder *, Value *);
+Instruction *builder_instruction_store(Builder *, Value *, Value *);
+Instruction *builder_instruction_icmp_ne(Builder *, Value *, Value *);
 
 #endif /* INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E */

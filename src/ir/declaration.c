@@ -1,51 +1,65 @@
 #include "ir/declaration.h"
 
-#include "ir/stack_impl.h"
+#include "ast/ast_tag.h"
+#include "ir/builder.h"
+#include "ir/instruction.h"
+#include "ir/lexical.h"
+#include "ir/value.h"
+#include "sexp.h"
+#include "utility.h"
 
-Value *stack_declaration(Stack *stack, Sexp *ast) {
-  assert(AST_DECLARATION == sexp_get_tag(ast));
-  return stack_ast(stack, sexp_at(ast, 2));
+static Value *builder_declarator_initializer(Builder *builder, Sexp *ast) {
+  Value *src = builder_ast(builder, sexp_at(ast, 3));
+  Value *dst = builder_declarator(builder, sexp_at(ast, 1));
+  Instruction *instr = builder_instruction_store(builder, src, dst);
+  return instruction_as_value(instr);
 }
-Value *stack_init_declarator(Stack *stack, Sexp *ast) {
-  assert(AST_INIT_DECLARATOR == sexp_get_tag(ast));
+static Value *builder_direct_declarator_identifier(Builder *builder,
+                                                   Sexp *ast) {
+  const char *symbol = builder_identifier_symbol(sexp_at(ast, 1));
+  Instruction *instr = builder_instruction_alloca(builder, symbol);
+  return instruction_as_value(instr);
+}
+
+Value *builder_declaration(Builder *builder, Sexp *ast) {
+  UTILITY_ASSERT(AST_DECLARATION == sexp_get_tag(ast));
+  return builder_ast(builder, sexp_at(ast, 2));
+}
+Value *builder_init_declarator(Builder *builder, Sexp *ast) {
+  UTILITY_ASSERT(AST_INIT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
-    return stack_declarator(stack, sexp_at(ast, 1));
-  case 4: {
-    Value *src = stack_ast(stack, sexp_at(ast, 3));
-    Value *dst = stack_declarator(stack, sexp_at(ast, 1));
-    return stack_instruction_store(stack, src, dst);
-  }
-  default:
-    assert(0);
-    return NULL;
-  }
-}
-Value *stack_declarator(Stack *stack, Sexp *ast) {
-  assert(AST_DECLARATOR == sexp_get_tag(ast));
-  switch (sexp_length(ast)) {
-  case 2:
-    return stack_direct_declarator(stack, sexp_at(ast, 1));
-  case 3:
-    return stack_direct_declarator(stack, sexp_at(ast, 2));
-  default:
-    assert(0);
-    return NULL;
-  }
-}
-Value *stack_direct_declarator(Stack *stack, Sexp *ast) {
-  assert(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
-  switch (sexp_length(ast)) {
-  case 2: {
-    const char *symbol = stack_identifier_symbol(sexp_at(ast, 1));
-    return stack_alloca(stack, symbol);
-  }
+    return builder_declarator(builder, sexp_at(ast, 1));
   case 4:
-    return stack_declarator(stack, sexp_at(ast, 2));
+    return builder_declarator_initializer(builder, ast);
+  default:
+    UTILITY_ASSERT(0);
+    return NULL;
+  }
+}
+Value *builder_declarator(Builder *builder, Sexp *ast) {
+  UTILITY_ASSERT(AST_DECLARATOR == sexp_get_tag(ast));
+  switch (sexp_length(ast)) {
+  case 2:
+    return builder_direct_declarator(builder, sexp_at(ast, 1));
+  case 3:
+    return builder_direct_declarator(builder, sexp_at(ast, 2));
+  default:
+    UTILITY_ASSERT(0);
+    return NULL;
+  }
+}
+Value *builder_direct_declarator(Builder *builder, Sexp *ast) {
+  UTILITY_ASSERT(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
+  switch (sexp_length(ast)) {
+  case 2:
+    return builder_direct_declarator_identifier(builder, ast);
+  case 4:
+    return builder_declarator(builder, sexp_at(ast, 2));
   case 5:
     /* FALLTHROUGH */
   default:
-    assert(0);
+    UTILITY_ASSERT(0);
     return NULL;
   }
 }

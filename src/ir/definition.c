@@ -1,54 +1,31 @@
 #include "ir/definition.h"
 
-#include "ir/stack_impl.h"
+#include "ast/ast_tag.h"
+#include "ir/block.h"
+#include "ir/builder.h"
+#include "ir/function.h"
+#include "ir/instruction.h"
+#include "ir/module.h"
+#include "ir/value.h"
+#include "sexp.h"
+#include "utility.h"
 
-static const char *stack_function_name(Sexp *ast) {
-  switch (sexp_get_tag(ast)) {
-  case AST_IDENTIFIER:
-    return stack_identifier_symbol(ast);
-  case AST_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      return stack_function_name(sexp_at(ast, 1));
-    case 3:
-      return stack_function_name(sexp_at(ast, 2));
-    default:
-      assert(0);
-      return NULL;
-    }
-  case AST_DIRECT_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      return stack_function_name(sexp_at(ast, 1));
-    case 4:
-      return stack_function_name(sexp_at(ast, 2));
-    case 5:
-      return stack_function_name(sexp_at(ast, 1));
-    default:
-      assert(0);
-      return NULL;
-    }
-  default:
-    assert(0);
-    return NULL;
-  }
+static void builder_function_return(Builder *builder) {
+  Value *expr = builder_find_alloca(builder, "$retval");
+  Instruction *instr = builder_instruction_load(builder, expr);
+  builder_instruction_ret(builder, instruction_as_value(instr));
 }
-Value *stack_function_definition(Stack *stack, Sexp *ast) {
-  Value *ret = stack_get_next(stack, STACK_NEXT_RETURN);
-  assert(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
-  assert(5 == sexp_length(ast));
+
+Value *builder_function_definition(Builder *builder, Sexp *ast) {
+  Block *ret = builder_function_init(builder, ast);
+  UTILITY_ASSERT(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
+  UTILITY_ASSERT(5 == sexp_length(ast));
+  builder_ast(builder, sexp_at(ast, 4));
   if (ret) {
-    stack_alloca(stack, "$retval");
+    builder_instruction_br(builder, ret);
+    builder_jump_block(builder, ret);
+    builder_function_return(builder);
   }
-  stack_ast(stack, sexp_at(ast, 4));
-  if (ret) {
-    Value *expr;
-    stack_instruction_br(stack, ret);
-    stack_jump_block(stack, ret);
-    expr = stack_find_alloca(stack, "$retval");
-    expr = stack_instruction_load(stack, expr);
-    stack_instruction_ret(stack, expr);
-  }
-  stack_set_function_name(stack, stack_function_name(sexp_at(ast, 2)));
+  builder_function_finish(builder);
   return NULL;
 }
