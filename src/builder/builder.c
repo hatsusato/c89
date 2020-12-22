@@ -72,6 +72,12 @@ void builder_function_finish(Builder *builder) {
 Module *builder_get_module(Builder *builder) {
   return builder->module;
 }
+void builder_push_table(Builder *builder) {
+  table_push(builder->table);
+}
+void builder_pop_table(Builder *builder) {
+  table_pop(builder->table);
+}
 Block *builder_label(Builder *builder, const char *label) {
   if (table_label_contains(builder->table, label)) {
     return table_label_find(builder->table, label);
