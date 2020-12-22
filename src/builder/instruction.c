@@ -7,7 +7,6 @@
 #include "module.h"
 #include "utility.h"
 #include "value.h"
-#include "value/kind.h"
 
 enum { INSTRUCTION_OPERAND_COUNT = 3 };
 struct struct_Instruction {

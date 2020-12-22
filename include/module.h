@@ -4,7 +4,6 @@
 #include "builder/block/type.h"
 #include "builder/constant/type.h"
 #include "builder/function/type.h"
-#include "builder/instruction/kind.h"
 #include "builder/instruction/type.h"
 #include "sexp_type.h"
 

@@ -2,11 +2,24 @@
 #define INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 
 #include "builder/block/type.h"
-#include "builder/instruction/kind.h"
 #include "builder/instruction/type.h"
 #include "builder/type.h"
 #include "types.h"
 #include "value/type.h"
+
+typedef enum {
+  INSTRUCTION_RET,
+  INSTRUCTION_BR,
+  INSTRUCTION_BR_COND,
+  INSTRUCTION_SWITCH,
+  INSTRUCTION_ADD,
+  INSTRUCTION_SUB,
+  INSTRUCTION_ALLOCA,
+  INSTRUCTION_LOAD,
+  INSTRUCTION_STORE,
+  INSTRUCTION_ICMP_NE,
+  INSTRUCTION_KIND_COUNT
+} InstructionKind;
 
 Instruction *instruction_new(void);
 void instruction_delete(Instruction *);

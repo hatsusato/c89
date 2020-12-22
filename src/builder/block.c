@@ -7,7 +7,6 @@
 #include "module.h"
 #include "utility.h"
 #include "value.h"
-#include "value/kind.h"
 #include "vector.h"
 
 struct struct_Block {

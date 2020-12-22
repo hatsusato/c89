@@ -8,7 +8,7 @@
 #include "module.h"
 #include "sexp.h"
 #include "utility.h"
-#include "value/kind.h"
+#include "value.h"
 #include "vector.h"
 
 struct struct_Function {

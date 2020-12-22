@@ -4,7 +4,7 @@
 #include "constant.h"
 #include "instruction.h"
 #include "utility.h"
-#include "value/kind.h"
+#include "value.h"
 
 struct struct_Value {
   ValueKind kind;

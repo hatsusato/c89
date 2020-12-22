@@ -5,7 +5,7 @@
 #include "builder.h"
 #include "module.h"
 #include "utility.h"
-#include "value/kind.h"
+#include "value.h"
 
 struct struct_Constant {
   ValueKind kind;

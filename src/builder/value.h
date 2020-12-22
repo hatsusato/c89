@@ -5,8 +5,15 @@
 #include "builder/constant/type.h"
 #include "builder/function/type.h"
 #include "builder/instruction/type.h"
-#include "value/kind.h"
 #include "value/type.h"
+
+typedef enum {
+  VALUE_FUNCTION,
+  VALUE_BLOCK,
+  VALUE_INSTRUCTION,
+  VALUE_CONSTANT,
+  VALUE_KIND_END
+} ValueKind;
 
 Value *function_as_value(Function *);
 Value *block_as_value(Block *);
