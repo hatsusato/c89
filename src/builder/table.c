@@ -8,7 +8,7 @@
 
 struct struct_Table {
   Vector *stack;
-  Map *table, *labels;
+  Map *builtin, *labels;
 };
 
 static Map *table_new_map(void) {
@@ -23,13 +23,13 @@ static void table_delete_map(ElemType map) {
 Table *table_new(void) {
   Table *table = UTILITY_MALLOC(Table);
   table->stack = vector_new(table_delete_map);
-  table->table = table_new_map();
+  table->builtin = table_new_map();
   table->labels = table_new_map();
   return table;
 }
 void table_delete(Table *table) {
   map_delete(table->labels);
-  map_delete(table->table);
+  map_delete(table->builtin);
   vector_delete(table->stack);
   UTILITY_FREE(table);
 }
@@ -56,10 +56,10 @@ Instruction *table_find(Table *table, const char *key) {
   return NULL;
 }
 void table_builtin_insert(Table *table, const char *key, Instruction *val) {
-  map_insert(table->table, (ElemType)key, val);
+  map_insert(table->builtin, (ElemType)key, val);
 }
 Instruction *table_builtin_find(Table *table, const char *key) {
-  ElemType *found = map_find(table->table, (ElemType)key);
+  ElemType *found = map_find(table->builtin, (ElemType)key);
   return found ? *found : found;
 }
 void table_label_insert(Table *table, const char *label, Block *block) {
