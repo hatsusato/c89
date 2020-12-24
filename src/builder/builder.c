@@ -19,6 +19,7 @@ struct struct_Builder {
   Module *module;
   Table *table;
   Function *func;
+  Instruction *retval;
   Block *next[BUILDER_NEXT_COUNT];
 };
 
@@ -40,6 +41,7 @@ static Block *builder_init_next(Builder *builder, Sexp *ast) {
 static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
   builder->func = NULL;
+  builder->retval = NULL;
   while (tag < BUILDER_NEXT_COUNT) {
     builder_set_next(builder, tag++, NULL);
   }
