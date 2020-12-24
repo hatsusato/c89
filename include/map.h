@@ -7,6 +7,7 @@
 
 Map *map_new(Compare *);
 void map_delete(Map *);
+void map_clear(Map *);
 void map_insert(Map *, ElemType, ElemType);
 ElemType *map_find(Map *, ElemType);
 Bool map_contains(const Map *, ElemType);

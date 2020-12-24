@@ -34,6 +34,9 @@ void set_delete(Set *set) {
   vector_delete(set->vec);
   UTILITY_FREE(set);
 }
+void set_clear(Set *set) {
+  vector_clear(set->vec);
+}
 void set_insert(Set *set, ElemType elem) {
   assert(set);
   vector_push(set->vec, elem);
