@@ -3,9 +3,9 @@
 filter() {
   local opts=(-e 's/^; <label>://')
   opts+=(-e '/^[ ]*;/d' -e 's/[ ]*;.*$//')
-  opts+=(-e '/^attributes #[0-9]* = /d' -e 's/#[0-9]* //')
+  opts+=(-e '/^attributes /d' -e 's/ #[0-9]*//')
   opts+=(-e '/^!/d')
-  opts+=(-e 's/^define dso_local /define /')
+  opts+=(-e 's/ dso_local//')
   sed "${opts[@]}"
 }
 number() {
