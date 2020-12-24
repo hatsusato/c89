@@ -39,7 +39,6 @@ static Block *builder_init_next(Builder *builder, Sexp *ast) {
 }
 static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
-  builder->table = NULL;
   builder->func = NULL;
   while (tag < BUILDER_NEXT_COUNT) {
     builder_set_next(builder, tag++, NULL);
@@ -49,15 +48,16 @@ static void builder_finish_next(Builder *builder) {
 Builder *builder_new(Module *module) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->module = module;
+  builder->table = table_new();
   builder_finish_next(builder);
   return builder;
 }
 void builder_delete(Builder *builder) {
+  table_delete(builder->table);
   UTILITY_FREE(builder);
 }
 Block *builder_function_init(Builder *builder, Sexp *ast) {
   Function *func = builder_new_function(builder, ast);
-  builder->table = table_new();
   builder->func = func;
   return builder_init_next(builder, ast);
 }
@@ -66,7 +66,7 @@ void builder_function_finish(Builder *builder) {
   Block *entry = builder_get_next(builder, BUILDER_NEXT_ENTRY);
   block_append(alloc, entry);
   function_set_id(builder->func);
-  table_delete(builder->table);
+  table_clear(builder->table);
   builder_finish_next(builder);
 }
 Module *builder_get_module(Builder *builder) {
