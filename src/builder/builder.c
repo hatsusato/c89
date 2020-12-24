@@ -34,7 +34,7 @@ static Block *builder_init_next(Builder *builder, Sexp *ast) {
   if (1 < function_count_return(ast)) {
     ret = builder_new_block(builder);
     builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
-    builder_instruction_alloca(builder, "$retval");
+    builder->retval = builder_new_instruction(builder, INSTRUCTION_ALLOCA);
   }
   return ret;
 }

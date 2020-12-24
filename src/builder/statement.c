@@ -181,7 +181,7 @@ static void builder_return_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(!sexp_is_nil(sexp_at(ast, 2)));
   src = builder_ast(builder, sexp_at(ast, 2));
   if (ret) {
-    Instruction *dst = builder_find_alloca(builder, "$retval");
+    Instruction *dst = builder_get_retval(builder);
     builder_instruction_store(builder, src, instruction_as_value(dst));
     builder_instruction_br(builder, ret);
   } else {
