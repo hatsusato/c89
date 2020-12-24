@@ -33,6 +33,11 @@ void table_delete(Table *table) {
   vector_delete(table->stack);
   UTILITY_FREE(table);
 }
+void table_clear(Table *table) {
+  UTILITY_ASSERT(vector_empty(table->stack));
+  map_clear(table->builtin);
+  map_clear(table->labels);
+}
 void table_push(Table *table) {
   Map *map = table_new_map();
   vector_push(table->stack, map);
