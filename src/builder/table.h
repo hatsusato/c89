@@ -15,8 +15,6 @@ void table_push(Table *);
 void table_pop(Table *);
 void table_insert(Table *, const char *, Instruction *);
 Instruction *table_find(Table *, const char *);
-void table_builtin_insert(Table *, const char *, Instruction *);
-Instruction *table_builtin_find(Table *, const char *);
 void table_label_insert(Table *, const char *, Block *);
 Block *table_label_find(Table *, const char *);
 
