@@ -74,6 +74,9 @@ void builder_function_finish(Builder *builder) {
 Module *builder_get_module(Builder *builder) {
   return builder->module;
 }
+Instruction *builder_get_retval(Builder *builder) {
+  return builder->retval;
+}
 void builder_push_table(Builder *builder) {
   table_push(builder->table);
 }
