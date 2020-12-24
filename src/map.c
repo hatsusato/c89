@@ -18,6 +18,9 @@ void map_delete(Map *map) {
   set_delete(map->set);
   UTILITY_FREE(map);
 }
+void map_clear(Map *map) {
+  set_clear(map->set);
+}
 void map_insert(Map *map, ElemType key, ElemType val) {
   set_insert(map->set, pair_new(key, val));
 }

@@ -19,6 +19,7 @@ struct struct_Builder {
   Module *module;
   Table *table;
   Function *func;
+  Instruction *retval;
   Block *next[BUILDER_NEXT_COUNT];
 };
 
@@ -33,14 +34,14 @@ static Block *builder_init_next(Builder *builder, Sexp *ast) {
   if (1 < function_count_return(ast)) {
     ret = builder_new_block(builder);
     builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
-    builder_instruction_alloca(builder, "$retval");
+    builder->retval = builder_new_instruction(builder, INSTRUCTION_ALLOCA);
   }
   return ret;
 }
 static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
-  builder->table = NULL;
   builder->func = NULL;
+  builder->retval = NULL;
   while (tag < BUILDER_NEXT_COUNT) {
     builder_set_next(builder, tag++, NULL);
   }
@@ -49,15 +50,16 @@ static void builder_finish_next(Builder *builder) {
 Builder *builder_new(Module *module) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->module = module;
+  builder->table = table_new();
   builder_finish_next(builder);
   return builder;
 }
 void builder_delete(Builder *builder) {
+  table_delete(builder->table);
   UTILITY_FREE(builder);
 }
 Block *builder_function_init(Builder *builder, Sexp *ast) {
   Function *func = builder_new_function(builder, ast);
-  builder->table = table_new();
   builder->func = func;
   return builder_init_next(builder, ast);
 }
@@ -66,11 +68,14 @@ void builder_function_finish(Builder *builder) {
   Block *entry = builder_get_next(builder, BUILDER_NEXT_ENTRY);
   block_append(alloc, entry);
   function_set_id(builder->func);
-  table_delete(builder->table);
+  table_clear(builder->table);
   builder_finish_next(builder);
 }
 Module *builder_get_module(Builder *builder) {
   return builder->module;
+}
+Instruction *builder_get_retval(Builder *builder) {
+  return builder->retval;
 }
 void builder_push_table(Builder *builder) {
   table_push(builder->table);
@@ -88,19 +93,10 @@ Block *builder_label(Builder *builder, const char *label) {
 }
 void builder_alloca(Builder *builder, const char *symbol, Instruction *instr) {
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
-  if (symbol && '$' == *symbol) {
-    table_builtin_insert(builder->table, symbol, instr);
-  } else {
-    table_insert(builder->table, symbol, instr);
-  }
+  table_insert(builder->table, symbol, instr);
 }
 Instruction *builder_find_alloca(Builder *builder, const char *symbol) {
-  Instruction *instr;
-  if (symbol && '$' == *symbol) {
-    instr = table_builtin_find(builder->table, symbol);
-  } else {
-    instr = table_find(builder->table, symbol);
-  }
+  Instruction *instr = table_find(builder->table, symbol);
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
   return instr;
 }

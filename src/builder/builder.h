@@ -23,6 +23,7 @@ void builder_delete(Builder *);
 Block *builder_function_init(Builder *, Sexp *);
 void builder_function_finish(Builder *);
 Module *builder_get_module(Builder *);
+Instruction *builder_get_retval(Builder *);
 void builder_push_table(Builder *);
 void builder_pop_table(Builder *);
 Block *builder_label(Builder *, const char *);
