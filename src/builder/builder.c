@@ -89,7 +89,8 @@ void builder_push_table(Builder *builder) {
 void builder_pop_table(Builder *builder) {
   table_pop(builder->table);
 }
-Block *builder_label(Builder *builder, const char *label) {
+Block *builder_label(Builder *builder, Sexp *ident) {
+  const char *label = identifier_symbol(ident);
   Block *block = table_label_find(builder->table, label);
   if (!block) {
     block = builder_new_block(builder);
