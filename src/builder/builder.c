@@ -64,7 +64,7 @@ const char *integer_symbol(Sexp *ast) {
 Builder *builder_new(Module *module) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->module = module;
-  builder->table = table_new();
+  builder->table = table_new(module);
   builder_finish_next(builder);
   return builder;
 }

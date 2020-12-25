@@ -7,6 +7,7 @@
 #include "vector.h"
 
 struct struct_Table {
+  Module *module;
   Map *global;
   Vector *stack;
   Map *labels;
@@ -21,8 +22,9 @@ static void table_delete_map(ElemType map) {
   map_delete(map);
 }
 
-Table *table_new(void) {
+Table *table_new(Module *module) {
   Table *table = UTILITY_MALLOC(Table);
+  table->module = module;
   table->global = table_new_map();
   table->stack = vector_new(table_delete_map);
   table->labels = table_new_map();

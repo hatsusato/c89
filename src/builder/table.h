@@ -2,13 +2,14 @@
 #define INCLUDE_GUARD_CA82BAF1_F8AF_418B_A275_3129D9D3F1FB
 
 #include "builder/type.h"
+#include "module.h"
 #include "sexp/type.h"
 #include "types.h"
 
 struct struct_Table;
 typedef struct struct_Table Table;
 
-Table *table_new(void);
+Table *table_new(Module *);
 void table_delete(Table *);
 void table_clear(Table *);
 void table_push(Table *);
