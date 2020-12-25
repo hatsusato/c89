@@ -41,6 +41,16 @@ static void module_delete_global(ElemType global) {
 static void module_delete_function(ElemType function) {
   function_delete(function);
 }
+static void module_pretty_global(Module *module) {
+  ElemType *begin = vector_begin(module->global);
+  ElemType *end = vector_end(module->global);
+  if (begin != end) {
+    printf("\n");
+  }
+  while (begin < end) {
+    global_pretty(*begin++);
+  }
+}
 static void module_pretty_function(Module *module) {
   ElemType *begin = vector_begin(module->func);
   ElemType *end = vector_end(module->func);
@@ -95,5 +105,6 @@ void module_build(Module *module, Sexp *ast) {
 }
 void module_pretty(Module *module) {
   printf("target triple = \"x86_64-unknown-linux-gnu\"\n");
+  module_pretty_global(module);
   module_pretty_function(module);
 }
