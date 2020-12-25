@@ -14,6 +14,16 @@ static void builder_function_return(Builder *builder) {
   builder_instruction_ret(builder, instruction_as_value(instr));
 }
 
+Value *builder_external_declaration(Builder *builder, Sexp *ast) {
+  UTILITY_ASSERT(AST_EXTERNAL_DECLARATION == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  UTILITY_ASSERT(AST_DECLARATION == sexp_get_tag(ast));
+  ast = sexp_at(ast, 2);
+  UTILITY_ASSERT(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));
+  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+  }
+  return NULL;
+}
 Value *builder_function_definition(Builder *builder, Sexp *ast) {
   Block *ret = builder_function_init(builder, ast);
   UTILITY_ASSERT(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));

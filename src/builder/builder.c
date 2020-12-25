@@ -159,7 +159,7 @@ Value *builder_ast(Builder *builder, Sexp *ast) {
   case AST_TRANSLATION_UNIT:
     return builder_ast_map(builder, ast);
   case AST_EXTERNAL_DECLARATION:
-    return NULL;
+    return builder_external_declaration(builder, ast);
   case AST_FUNCTION_DEFINITION:
     return builder_function_definition(builder, ast);
   default:
