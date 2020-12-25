@@ -15,8 +15,7 @@ Value *builder_identifier(Builder *builder, Sexp *ast) {
   return instruction_as_value(instr);
 }
 Value *builder_integer_constant(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  UTILITY_ASSERT(sexp_is_symbol(ast));
-  return constant_as_value(builder_new_integer(builder, sexp_get_symbol(ast)));
+  const char *symbol = integer_symbol(ast);
+  Constant *integer = builder_new_integer(builder, symbol);
+  return constant_as_value(integer);
 }

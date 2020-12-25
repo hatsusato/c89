@@ -47,11 +47,17 @@ static void builder_finish_next(Builder *builder) {
   }
 }
 
-const char *identifier_symbol(Sexp *ident) {
-  UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ident));
-  ident = sexp_at(ident, 1);
-  UTILITY_ASSERT(sexp_is_symbol(ident));
-  return sexp_get_symbol(ident);
+const char *identifier_symbol(Sexp *ast) {
+  UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  UTILITY_ASSERT(sexp_is_symbol(ast));
+  return sexp_get_symbol(ast);
+}
+const char *integer_symbol(Sexp *ast) {
+  UTILITY_ASSERT(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  UTILITY_ASSERT(sexp_is_symbol(ast));
+  return sexp_get_symbol(ast);
 }
 
 Builder *builder_new(Module *module) {
