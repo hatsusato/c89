@@ -59,13 +59,17 @@ Value *table_find(Table *table, const char *key) {
   ElemType *begin = vector_begin(table->stack);
   ElemType *end = vector_end(table->stack);
   while (begin < end--) {
-    ElemType *found = map_find(*end, (ElemType)key);
+    found = map_find(*end, (ElemType)key);
     if (found) {
       return *found;
     }
   }
   found = map_find(table->global, (ElemType)key);
-  return found ? *found : found;
+  if (found) {
+    module_insert_prior(table->module, *found);
+    return *found;
+  }
+  return NULL;
 }
 void table_label_insert(Table *table, const char *label, Block *block) {
   map_insert(table->labels, (ElemType)label, block);
