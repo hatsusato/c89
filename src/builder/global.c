@@ -32,6 +32,12 @@ Constant *global_get_init(Global *global) {
 void global_set_init(Global *global, Constant *init) {
   global->init = init;
 }
+Bool global_get_prior(Global *global) {
+  return global->prior;
+}
+void global_set_prior(Global *global) {
+  global->prior = true;
+}
 void global_print(Global *global) {
   UTILITY_ASSERT(global->name);
   printf("@%s", global->name);

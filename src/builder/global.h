@@ -3,11 +3,14 @@
 
 #include "builder/type.h"
 #include "sexp/type.h"
+#include "types.h"
 
 Global *global_new(void);
 void global_delete(Global *);
 Constant *global_get_init(Global *);
 void global_set_init(Global *, Constant *);
+Bool global_get_prior(Global *);
+void global_set_prior(Global *);
 void global_print(Global *);
 void global_pretty(Global *);
 
