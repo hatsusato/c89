@@ -38,9 +38,6 @@ static void module_delete_value(ElemType value) {
 static void module_delete_global(ElemType global) {
   global_delete(global);
 }
-static void module_delete_function(ElemType function) {
-  function_delete(function);
-}
 static void module_pretty_prior(Module *module) {
   ElemType *begin = vector_begin(module->prior);
   ElemType *end = vector_end(module->prior);
@@ -73,7 +70,7 @@ Module *module_new(void) {
   module->pool = vector_new(module_delete_value);
   module->prior = vector_new(NULL);
   module->global = vector_new(module_delete_global);
-  module->func = vector_new(module_delete_function);
+  module->func = vector_new(NULL);
   return module;
 }
 void module_delete(Module *module) {
@@ -85,6 +82,7 @@ void module_delete(Module *module) {
 }
 Function *module_new_function(Module *module) {
   Function *func = function_new();
+  vector_push(module->pool, func);
   vector_push(module->func, func);
   return func;
 }
