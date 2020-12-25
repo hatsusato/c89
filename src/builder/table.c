@@ -7,6 +7,8 @@
 #include "vector.h"
 
 struct struct_Table {
+  Module *module;
+  Map *global;
   Vector *stack;
   Map *labels;
 };
@@ -20,8 +22,10 @@ static void table_delete_map(ElemType map) {
   map_delete(map);
 }
 
-Table *table_new(void) {
+Table *table_new(Module *module) {
   Table *table = UTILITY_MALLOC(Table);
+  table->module = module;
+  table->global = table_new_map();
   table->stack = vector_new(table_delete_map);
   table->labels = table_new_map();
   return table;
@@ -29,6 +33,7 @@ Table *table_new(void) {
 void table_delete(Table *table) {
   map_delete(table->labels);
   vector_delete(table->stack);
+  map_delete(table->global);
   UTILITY_FREE(table);
 }
 void table_clear(Table *table) {
@@ -42,18 +47,27 @@ void table_push(Table *table) {
 void table_pop(Table *table) {
   vector_pop(table->stack);
 }
-void table_insert(Table *table, const char *key, Instruction *val) {
+void table_insert_global(Table *table, const char *key, Global *val) {
+  map_insert(table->global, (ElemType)key, val);
+}
+void table_insert_local(Table *table, const char *key, Instruction *val) {
   UTILITY_ASSERT(!vector_empty(table->stack));
   map_insert(vector_back(table->stack), (ElemType)key, val);
 }
-Instruction *table_find(Table *table, const char *key) {
+Value *table_find(Table *table, const char *key) {
+  ElemType *found;
   ElemType *begin = vector_begin(table->stack);
   ElemType *end = vector_end(table->stack);
   while (begin < end--) {
-    ElemType *found = map_find(*end, (ElemType)key);
+    found = map_find(*end, (ElemType)key);
     if (found) {
       return *found;
     }
+  }
+  found = map_find(table->global, (ElemType)key);
+  if (found) {
+    module_insert_prior(table->module, *found);
+    return *found;
   }
   return NULL;
 }

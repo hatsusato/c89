@@ -4,7 +4,6 @@
 #include "builder/type.h"
 #include "sexp/type.h"
 
-const char *builder_identifier_symbol(Sexp *);
 Value *builder_identifier(Builder *, Sexp *);
 Value *builder_integer_constant(Builder *, Sexp *);
 

@@ -2,6 +2,7 @@
 
 #include "block.h"
 #include "constant.h"
+#include "global.h"
 #include "instruction.h"
 #include "utility.h"
 #include "value.h"
@@ -22,6 +23,9 @@ Value *instruction_as_value(Instruction *instr) {
 Value *constant_as_value(Constant *constant) {
   return (Value *)constant;
 }
+Value *global_as_value(Global *global) {
+  return (Value *)global;
+}
 Function *value_as_function(Value *value) {
   UTILITY_ASSERT(VALUE_FUNCTION == value->kind);
   return (Function *)value;
@@ -38,6 +42,10 @@ Constant *value_as_constant(Value *value) {
   UTILITY_ASSERT(VALUE_CONSTANT == value->kind);
   return (Constant *)value;
 }
+Global *value_as_global(Value *value) {
+  UTILITY_ASSERT(VALUE_GLOBAL == value->kind);
+  return (Global *)value;
+}
 ValueKind value_kind(Value *value) {
   return value->kind;
 }
@@ -51,6 +59,9 @@ void value_print(Value *value) {
     break;
   case VALUE_CONSTANT:
     constant_print(value_as_constant(value));
+    break;
+  case VALUE_GLOBAL:
+    global_print(value_as_global(value));
     break;
   default:
     UTILITY_ASSERT(0);

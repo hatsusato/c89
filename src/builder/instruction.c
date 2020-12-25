@@ -238,9 +238,9 @@ Instruction *builder_instruction_sub(Builder *builder, Value *lhs, Value *rhs) {
   instr->operands[1] = rhs;
   return instr;
 }
-Instruction *builder_instruction_alloca(Builder *builder, const char *symbol) {
+Instruction *builder_instruction_alloca(Builder *builder, Sexp *ident) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ALLOCA);
-  builder_alloca(builder, symbol, instr);
+  builder_insert_local(builder, ident, instr);
   return instr;
 }
 Instruction *builder_instruction_load(Builder *builder, Value *src) {

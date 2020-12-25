@@ -6,6 +6,7 @@
 #include "definition.h"
 #include "expression.h"
 #include "function.h"
+#include "global.h"
 #include "instruction.h"
 #include "lexical.h"
 #include "module.h"
@@ -47,10 +48,23 @@ static void builder_finish_next(Builder *builder) {
   }
 }
 
+const char *identifier_symbol(Sexp *ast) {
+  UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  UTILITY_ASSERT(sexp_is_symbol(ast));
+  return sexp_get_symbol(ast);
+}
+const char *integer_symbol(Sexp *ast) {
+  UTILITY_ASSERT(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
+  ast = sexp_at(ast, 1);
+  UTILITY_ASSERT(sexp_is_symbol(ast));
+  return sexp_get_symbol(ast);
+}
+
 Builder *builder_new(Module *module) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->module = module;
-  builder->table = table_new();
+  builder->table = table_new(module);
   builder_finish_next(builder);
   return builder;
 }
@@ -83,7 +97,13 @@ void builder_push_table(Builder *builder) {
 void builder_pop_table(Builder *builder) {
   table_pop(builder->table);
 }
-Block *builder_label(Builder *builder, const char *label) {
+void builder_init_global(Builder *builder, Global *global, Sexp *init) {
+  Value *constant = builder_integer_constant(builder, init);
+  global_set_init(global, value_as_constant(constant));
+  module_insert_prior(builder->module, global);
+}
+Block *builder_label(Builder *builder, Sexp *ident) {
+  const char *label = identifier_symbol(ident);
   Block *block = table_label_find(builder->table, label);
   if (!block) {
     block = builder_new_block(builder);
@@ -91,14 +111,18 @@ Block *builder_label(Builder *builder, const char *label) {
   }
   return block;
 }
-void builder_alloca(Builder *builder, const char *symbol, Instruction *instr) {
-  UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
-  table_insert(builder->table, symbol, instr);
+void builder_insert_global(Builder *builder, Sexp *ident, Global *global) {
+  const char *symbol = identifier_symbol(ident);
+  table_insert_global(builder->table, symbol, global);
 }
-Instruction *builder_find_alloca(Builder *builder, const char *symbol) {
-  Instruction *instr = table_find(builder->table, symbol);
+void builder_insert_local(Builder *builder, Sexp *ident, Instruction *instr) {
+  const char *symbol = identifier_symbol(ident);
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
-  return instr;
+  table_insert_local(builder->table, symbol, instr);
+}
+Value *builder_find_identifier(Builder *builder, Sexp *ident) {
+  const char *symbol = identifier_symbol(ident);
+  return table_find(builder->table, symbol);
 }
 void builder_jump_block(Builder *builder, Block *dest) {
   UTILITY_ASSERT(dest);
@@ -159,7 +183,7 @@ Value *builder_ast(Builder *builder, Sexp *ast) {
   case AST_TRANSLATION_UNIT:
     return builder_ast_map(builder, ast);
   case AST_EXTERNAL_DECLARATION:
-    return NULL;
+    return builder_external_declaration(builder, ast);
   case AST_FUNCTION_DEFINITION:
     return builder_function_definition(builder, ast);
   default:
