@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 
+#include "builder.h"
+#include "module.h"
 #include "utility.h"
 #include "value.h"
 
@@ -26,4 +28,11 @@ void global_print(Global *global) {
 void global_pretty(Global *global) {
   global_print(global);
   printf(" = global i32 0, align 4\n");
+}
+
+Global *builder_new_global(Builder *builder, const char *name) {
+  Module *module = builder_get_module(builder);
+  Global *global = module_new_global(module);
+  global->name = name;
+  return global;
 }
