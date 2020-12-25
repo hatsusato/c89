@@ -42,13 +42,11 @@ static void module_delete_function(ElemType function) {
   function_delete(function);
 }
 static void module_pretty_prior(Module *module) {
-  ElemType *begin = vector_begin(module->global);
-  ElemType *end = vector_end(module->global);
+  ElemType *begin = vector_begin(module->prior);
+  ElemType *end = vector_end(module->prior);
   while (begin < end) {
     Global *global = *begin++;
-    if (global_get_prior(global)) {
-      global_pretty(global);
-    }
+    global_pretty(global);
   }
 }
 static void module_pretty_global(Module *module) {
