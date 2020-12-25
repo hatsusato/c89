@@ -6,6 +6,7 @@
 #include "builder/builder.h"
 #include "builder/constant.h"
 #include "builder/function.h"
+#include "builder/global.h"
 #include "builder/instruction.h"
 #include "builder/value.h"
 #include "utility.h"
@@ -28,6 +29,9 @@ static void module_value_delete(ElemType value) {
     break;
   case VALUE_CONSTANT:
     constant_delete(value);
+    break;
+  case VALUE_GLOBAL:
+    global_delete(value);
     break;
   default:
     UTILITY_ASSERT(0);
@@ -66,6 +70,11 @@ Constant *module_new_constant(Module *module) {
   Constant *constant = constant_new();
   vector_push(module->pool, constant);
   return constant;
+}
+Global *module_new_global(Module *module) {
+  Global *global = global_new();
+  vector_push(module->pool, global);
+  return global;
 }
 void module_build(Module *module, Sexp *ast) {
   Builder *builder = builder_new(module);

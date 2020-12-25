@@ -13,6 +13,7 @@ Function *module_new_function(Module *);
 Block *module_new_block(Module *);
 Instruction *module_new_instruction(Module *);
 Constant *module_new_constant(Module *);
+Global *module_new_global(Module *);
 void module_build(Module *, Sexp *);
 void module_pretty(Module *);
 
