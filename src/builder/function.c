@@ -20,9 +20,7 @@ struct struct_Function {
 static const char *function_name(Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
-    ast = sexp_at(ast, 1);
-    UTILITY_ASSERT(sexp_is_symbol(ast));
-    return sexp_get_symbol(ast);
+    return identifier_symbol(ast);
   case AST_DECLARATOR:
     switch (sexp_length(ast)) {
     case 2:

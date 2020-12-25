@@ -18,6 +18,8 @@ typedef enum {
   BUILDER_NEXT_COUNT
 } BuilderNextTag;
 
+const char *identifier_symbol(Sexp *);
+
 Builder *builder_new(Module *);
 void builder_delete(Builder *);
 Block *builder_function_init(Builder *, Sexp *);

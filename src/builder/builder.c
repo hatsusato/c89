@@ -23,12 +23,6 @@ struct struct_Builder {
   Block *next[BUILDER_NEXT_COUNT];
 };
 
-static const char *identifier_symbol(Sexp *ident) {
-  UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ident));
-  ident = sexp_at(ident, 1);
-  UTILITY_ASSERT(sexp_is_symbol(ident));
-  return sexp_get_symbol(ident);
-}
 static Block *builder_init_next(Builder *builder, Sexp *ast) {
   Block *alloc = builder_new_block(builder);
   Block *entry = builder_new_block(builder);
@@ -51,6 +45,13 @@ static void builder_finish_next(Builder *builder) {
   while (tag < BUILDER_NEXT_COUNT) {
     builder_set_next(builder, tag++, NULL);
   }
+}
+
+const char *identifier_symbol(Sexp *ident) {
+  UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ident));
+  ident = sexp_at(ident, 1);
+  UTILITY_ASSERT(sexp_is_symbol(ident));
+  return sexp_get_symbol(ident);
 }
 
 Builder *builder_new(Module *module) {
