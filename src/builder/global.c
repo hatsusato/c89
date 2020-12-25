@@ -45,9 +45,9 @@ void global_pretty(Global *global) {
   printf(", align 4\n");
 }
 
-Global *builder_new_global(Builder *builder, const char *name) {
+Global *builder_new_global(Builder *builder, Sexp *ident) {
   Module *module = builder_get_module(builder);
   Global *global = module_new_global(module);
-  global->name = name;
+  global->name = identifier_symbol(ident);
   return global;
 }
