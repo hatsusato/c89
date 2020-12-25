@@ -108,6 +108,12 @@ Global *module_new_global(Module *module) {
   vector_push(module->global, global);
   return global;
 }
+void module_insert_prior(Module *module, Global *global) {
+  if (!global_get_prior(global)) {
+    vector_push(module->prior, global);
+    global_set_prior(global);
+  }
+}
 void module_build(Module *module, Sexp *ast) {
   Builder *builder = builder_new(module);
   builder_ast(builder, ast);
