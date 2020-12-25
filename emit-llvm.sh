@@ -5,7 +5,7 @@ filter() {
   opts+=(-e '/^[ ]*;/d' -e 's/[ ]*;.*$//')
   opts+=(-e '/^attributes /d' -e 's/ #[0-9]*//')
   opts+=(-e '/^!/d')
-  opts+=(-e 's/ dso_local//')
+  opts+=(-e 's/ dso_local//' -e 's/ common//')
   sed "${opts[@]}"
 }
 number() {
