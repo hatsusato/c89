@@ -4,6 +4,7 @@
 #include "builder.h"
 #include "global.h"
 #include "instruction.h"
+#include "lexical.h"
 #include "sexp.h"
 #include "utility.h"
 #include "value.h"
@@ -21,9 +22,14 @@ static Global *builder_external_declarator(Builder *builder, Sexp *ast) {
   return builder_exteral_direct_declarator(builder, sexp_at(ast, 1));
 }
 static void builder_external_init_declarator(Builder *builder, Sexp *ast) {
+  Global *global;
   UTILITY_ASSERT(AST_INIT_DECLARATOR == sexp_get_tag(ast));
-  UTILITY_ASSERT(2 == sexp_length(ast));
-  builder_external_declarator(builder, sexp_at(ast, 1));
+  UTILITY_ASSERT(2 == sexp_length(ast) || 4 == sexp_length(ast));
+  global = builder_external_declarator(builder, sexp_at(ast, 1));
+  if (4 == sexp_length(ast)) {
+    Value *init = builder_integer_constant(builder, sexp_at(ast, 3));
+    global_set_init(global, value_as_constant(init));
+  }
 }
 static void builder_function_return(Builder *builder) {
   Instruction *retval = builder_get_retval(builder);
