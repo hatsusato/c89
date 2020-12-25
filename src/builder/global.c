@@ -1,5 +1,7 @@
 #include "global.h"
 
+#include <stdio.h>
+
 #include "utility.h"
 #include "value.h"
 
@@ -16,4 +18,8 @@ Global *global_new(void) {
 }
 void global_delete(Global *global) {
   UTILITY_FREE(global);
+}
+void global_print(Global *global) {
+  UTILITY_ASSERT(global->name);
+  printf("@%s", global->name);
 }

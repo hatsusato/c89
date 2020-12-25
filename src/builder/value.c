@@ -2,6 +2,7 @@
 
 #include "block.h"
 #include "constant.h"
+#include "global.h"
 #include "instruction.h"
 #include "utility.h"
 #include "value.h"
@@ -58,6 +59,9 @@ void value_print(Value *value) {
     break;
   case VALUE_CONSTANT:
     constant_print(value_as_constant(value));
+    break;
+  case VALUE_GLOBAL:
+    global_print(value_as_global(value));
     break;
   default:
     UTILITY_ASSERT(0);
