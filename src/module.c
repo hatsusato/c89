@@ -45,10 +45,22 @@ static void module_pretty_global(Module *module) {
   ElemType *begin = vector_begin(module->global);
   ElemType *end = vector_end(module->global);
   if (begin != end) {
+    Vector *decl = vector_new(NULL);
     printf("\n");
-  }
-  while (begin < end) {
-    global_pretty(*begin++);
+    while (begin < end) {
+      Global *global = *begin++;
+      if (global_get_init(global)) {
+        global_pretty(global);
+      } else {
+        vector_push(decl, global);
+      }
+    }
+    begin = vector_begin(decl);
+    end = vector_end(decl);
+    while (begin < end) {
+      global_pretty(*begin++);
+    }
+    vector_delete(decl);
   }
 }
 static void module_pretty_function(Module *module) {
