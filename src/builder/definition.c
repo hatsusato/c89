@@ -8,13 +8,12 @@
 #include "utility.h"
 #include "value.h"
 
-static Global *builder_external_identifier(Builder *builder, Sexp *ast) {
-  return builder_new_global(builder, identifier_symbol(ast));
-}
 static Global *builder_exteral_direct_declarator(Builder *builder, Sexp *ast) {
+  const char *symbol;
   UTILITY_ASSERT(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   UTILITY_ASSERT(2 == sexp_length(ast));
-  return builder_external_identifier(builder, sexp_at(ast, 1));
+  symbol = identifier_symbol(sexp_at(ast, 1));
+  return builder_new_global(builder, symbol);
 }
 static Global *builder_external_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DECLARATOR == sexp_get_tag(ast));
