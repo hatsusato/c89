@@ -13,7 +13,7 @@
 #include "vector.h"
 
 struct struct_Module {
-  Vector *pool, *global, *vec;
+  Vector *pool, *global, *func;
 };
 
 static void module_delete_value(ElemType value) {
@@ -46,18 +46,18 @@ Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->pool = vector_new(module_delete_value);
   module->global = vector_new(module_delete_global);
-  module->vec = vector_new(module_delete_function);
+  module->func = vector_new(module_delete_function);
   return module;
 }
 void module_delete(Module *module) {
-  vector_delete(module->vec);
+  vector_delete(module->func);
   vector_delete(module->global);
   vector_delete(module->pool);
   UTILITY_FREE(module);
 }
 Function *module_new_function(Module *module) {
   Function *func = function_new();
-  vector_push(module->vec, func);
+  vector_push(module->func, func);
   return func;
 }
 Block *module_new_block(Module *module) {
@@ -86,8 +86,8 @@ void module_build(Module *module, Sexp *ast) {
   builder_delete(builder);
 }
 void module_pretty(Module *module) {
-  ElemType *begin = vector_begin(module->vec);
-  ElemType *end = vector_end(module->vec);
+  ElemType *begin = vector_begin(module->func);
+  ElemType *end = vector_end(module->func);
   printf("target triple = \"x86_64-unknown-linux-gnu\"\n");
   while (begin < end) {
     printf("\n");
