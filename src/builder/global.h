@@ -8,7 +8,7 @@
 Global *global_new(void);
 void global_delete(Global *);
 void global_set_init(Global *, Constant *);
-Bool global_get_prior(Global *);
+Bool global_is_prior(Global *);
 void global_set_prior(Global *);
 void global_print(Global *);
 void global_pretty(Global *);

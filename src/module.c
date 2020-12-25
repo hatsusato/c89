@@ -54,7 +54,7 @@ static void module_pretty_global(Module *module) {
   ElemType *end = vector_end(module->global);
   while (begin < end) {
     Global *global = *begin++;
-    if (!global_get_prior(global)) {
+    if (!global_is_prior(global)) {
       global_pretty(global);
     }
   }
@@ -109,7 +109,7 @@ Global *module_new_global(Module *module) {
   return global;
 }
 void module_insert_prior(Module *module, Global *global) {
-  if (!global_get_prior(global)) {
+  if (!global_is_prior(global)) {
     vector_push(module->prior, global);
     global_set_prior(global);
   }

@@ -29,7 +29,7 @@ void global_delete(Global *global) {
 void global_set_init(Global *global, Constant *init) {
   global->init = init;
 }
-Bool global_get_prior(Global *global) {
+Bool global_is_prior(Global *global) {
   return global->prior;
 }
 void global_set_prior(Global *global) {
