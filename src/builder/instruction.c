@@ -4,7 +4,6 @@
 
 #include "block.h"
 #include "builder.h"
-#include "lexical.h"
 #include "module.h"
 #include "utility.h"
 #include "value.h"
@@ -241,8 +240,7 @@ Instruction *builder_instruction_sub(Builder *builder, Value *lhs, Value *rhs) {
 }
 Instruction *builder_instruction_alloca(Builder *builder, Sexp *ident) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ALLOCA);
-  const char *symbol = builder_identifier_symbol(ident);
-  builder_alloca(builder, symbol, instr);
+  builder_alloca(builder, ident, instr);
   return instr;
 }
 Instruction *builder_instruction_load(Builder *builder, Value *src) {

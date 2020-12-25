@@ -27,7 +27,7 @@ Instruction *builder_get_retval(Builder *);
 void builder_push_table(Builder *);
 void builder_pop_table(Builder *);
 Block *builder_label(Builder *, const char *);
-void builder_alloca(Builder *, const char *, Instruction *);
+void builder_alloca(Builder *, Sexp *, Instruction *);
 Instruction *builder_find_alloca(Builder *, Sexp *);
 void builder_jump_block(Builder *, Block *);
 Block *builder_get_next(Builder *, BuilderNextTag);

@@ -97,7 +97,8 @@ Block *builder_label(Builder *builder, const char *label) {
   }
   return block;
 }
-void builder_alloca(Builder *builder, const char *symbol, Instruction *instr) {
+void builder_alloca(Builder *builder, Sexp *ident, Instruction *instr) {
+  const char *symbol = identifier_symbol(ident);
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
   table_insert(builder->table, symbol, instr);
 }
