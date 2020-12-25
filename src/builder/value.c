@@ -22,6 +22,9 @@ Value *instruction_as_value(Instruction *instr) {
 Value *constant_as_value(Constant *constant) {
   return (Value *)constant;
 }
+Value *global_as_value(Global *global) {
+  return (Value *)global;
+}
 Function *value_as_function(Value *value) {
   UTILITY_ASSERT(VALUE_FUNCTION == value->kind);
   return (Function *)value;
@@ -37,6 +40,10 @@ Instruction *value_as_instruction(Value *value) {
 Constant *value_as_constant(Value *value) {
   UTILITY_ASSERT(VALUE_CONSTANT == value->kind);
   return (Constant *)value;
+}
+Global *value_as_global(Value *value) {
+  UTILITY_ASSERT(VALUE_GLOBAL == value->kind);
+  return (Global *)value;
 }
 ValueKind value_kind(Value *value) {
   return value->kind;
