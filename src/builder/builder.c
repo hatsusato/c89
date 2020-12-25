@@ -110,11 +110,11 @@ void builder_insert_local(Builder *builder, Sexp *ident, Instruction *instr) {
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
   table_insert(builder->table, symbol, instr);
 }
-Instruction *builder_find_alloca(Builder *builder, Sexp *ident) {
+Value *builder_find_identifier(Builder *builder, Sexp *ident) {
   const char *symbol = identifier_symbol(ident);
   Instruction *instr = table_find(builder->table, symbol);
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
-  return instr;
+  return instruction_as_value(instr);
 }
 void builder_jump_block(Builder *builder, Block *dest) {
   UTILITY_ASSERT(dest);

@@ -9,9 +9,8 @@
 #include "value.h"
 
 Value *builder_identifier(Builder *builder, Sexp *ast) {
-  Instruction *expr = builder_find_alloca(builder, ast);
-  Instruction *instr =
-      builder_instruction_load(builder, instruction_as_value(expr));
+  Value *expr = builder_find_identifier(builder, ast);
+  Instruction *instr = builder_instruction_load(builder, expr);
   return instruction_as_value(instr);
 }
 Value *builder_integer_constant(Builder *builder, Sexp *ast) {

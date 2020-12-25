@@ -26,10 +26,9 @@ Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   return instruction_as_value(instr);
 }
 Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
-  Instruction *lhs = builder_find_alloca(builder, sexp_at(ast, 1));
+  Value *lhs = builder_find_identifier(builder, sexp_at(ast, 1));
   Value *rhs = builder_ast(builder, sexp_at(ast, 3));
-  Instruction *instr =
-      builder_instruction_store(builder, rhs, instruction_as_value(lhs));
+  Instruction *instr = builder_instruction_store(builder, rhs, lhs);
   UTILITY_ASSERT(AST_ASSIGNMENT_EXPRESSION == sexp_get_tag(ast));
   UTILITY_ASSERT(AST_ASSIGN == sexp_get_tag(sexp_at(ast, 2)));
   return instruction_as_value(instr);
