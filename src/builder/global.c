@@ -5,11 +5,13 @@
 
 struct struct_Global {
   ValueKind kind;
+  const char *name;
 };
 
 Global *global_new(void) {
   Global *global = UTILITY_MALLOC(Global);
   global->kind = VALUE_GLOBAL;
+  global->name = NULL;
   return global;
 }
 void global_delete(Global *global) {
