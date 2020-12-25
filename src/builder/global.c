@@ -12,6 +12,7 @@ struct struct_Global {
   ValueKind kind;
   const char *name;
   Constant *init;
+  Bool prior;
 };
 
 Global *global_new(void) {
@@ -19,6 +20,7 @@ Global *global_new(void) {
   global->kind = VALUE_GLOBAL;
   global->name = NULL;
   global->init = NULL;
+  global->prior = false;
   return global;
 }
 void global_delete(Global *global) {
