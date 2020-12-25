@@ -23,3 +23,7 @@ void global_print(Global *global) {
   UTILITY_ASSERT(global->name);
   printf("@%s", global->name);
 }
+void global_pretty(Global *global) {
+  global_print(global);
+  printf(" = global i32 0, align 4\n");
+}
