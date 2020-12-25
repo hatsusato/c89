@@ -8,6 +8,7 @@ typedef enum {
   VALUE_BLOCK,
   VALUE_INSTRUCTION,
   VALUE_CONSTANT,
+  VALUE_GLOBAL,
   VALUE_KIND_END
 } ValueKind;
 
