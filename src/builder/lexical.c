@@ -15,8 +15,7 @@ const char *builder_identifier_symbol(Sexp *ast) {
   return sexp_get_symbol(ast);
 }
 Value *builder_identifier(Builder *builder, Sexp *ast) {
-  const char *symbol = builder_identifier_symbol(ast);
-  Instruction *expr = builder_find_alloca(builder, symbol);
+  Instruction *expr = builder_find_alloca(builder, ast);
   Instruction *instr =
       builder_instruction_load(builder, instruction_as_value(expr));
   return instruction_as_value(instr);

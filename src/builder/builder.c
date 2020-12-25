@@ -23,6 +23,12 @@ struct struct_Builder {
   Block *next[BUILDER_NEXT_COUNT];
 };
 
+static const char *identifier_symbol(Sexp *ident) {
+  UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ident));
+  ident = sexp_at(ident, 1);
+  UTILITY_ASSERT(sexp_is_symbol(ident));
+  return sexp_get_symbol(ident);
+}
 static Block *builder_init_next(Builder *builder, Sexp *ast) {
   Block *alloc = builder_new_block(builder);
   Block *entry = builder_new_block(builder);
@@ -95,7 +101,8 @@ void builder_alloca(Builder *builder, const char *symbol, Instruction *instr) {
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
   table_insert(builder->table, symbol, instr);
 }
-Instruction *builder_find_alloca(Builder *builder, const char *symbol) {
+Instruction *builder_find_alloca(Builder *builder, Sexp *ident) {
+  const char *symbol = identifier_symbol(ident);
   Instruction *instr = table_find(builder->table, symbol);
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
   return instr;
