@@ -5,6 +5,7 @@
 
 Global *global_new(void);
 void global_delete(Global *);
+Constant *global_get_init(Global *);
 void global_set_init(Global *, Constant *);
 void global_print(Global *);
 void global_pretty(Global *);

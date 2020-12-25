@@ -24,6 +24,9 @@ Global *global_new(void) {
 void global_delete(Global *global) {
   UTILITY_FREE(global);
 }
+Constant *global_get_init(Global *global) {
+  return global->init;
+}
 void global_set_init(Global *global, Constant *init) {
   global->init = init;
 }
