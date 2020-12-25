@@ -16,6 +16,9 @@ typedef struct struct_Instruction Instruction;
 struct struct_Constant;
 typedef struct struct_Constant Constant;
 
+struct struct_Global;
+typedef struct struct_Global Global;
+
 struct struct_Value;
 typedef struct struct_Value Value;
 
