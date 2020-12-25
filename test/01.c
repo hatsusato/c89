@@ -35,8 +35,18 @@ int f6(void) {
   }
   return x;
 }
+int g5, g6 = 6, g7;
+int g8 = 8, g9;
+int f7(void) {
+  int x = g7;
+  {
+    int x = g8;
+    {
+      int x = g9;
+    }
+  }
+  return x;
+}
 int g1;
 int g2, g3;
 int g4 = 4;
-int g5, g6 = 6, g7;
-int g8 = 8, g9;
