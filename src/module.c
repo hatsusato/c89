@@ -16,7 +16,7 @@ struct struct_Module {
   Vector *pool, *global, *vec;
 };
 
-static void module_value_delete(ElemType value) {
+static void module_delete_value(ElemType value) {
   switch (value_kind(value)) {
   case VALUE_FUNCTION:
     function_delete(value);
@@ -41,7 +41,7 @@ static void module_value_delete(ElemType value) {
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
-  module->pool = vector_new(module_value_delete);
+  module->pool = vector_new(module_delete_value);
   module->global = vector_new(NULL);
   module->vec = vector_new(NULL);
   return module;
