@@ -30,6 +30,7 @@ Instruction *builder_get_retval(Builder *);
 void builder_push_table(Builder *);
 void builder_pop_table(Builder *);
 Block *builder_label(Builder *, Sexp *);
+void builder_insert_global(Builder *, Sexp *, Global *);
 void builder_insert_local(Builder *, Sexp *, Instruction *);
 Value *builder_find_identifier(Builder *, Sexp *);
 void builder_jump_block(Builder *, Block *);

@@ -105,6 +105,10 @@ Block *builder_label(Builder *builder, Sexp *ident) {
   }
   return block;
 }
+void builder_insert_global(Builder *builder, Sexp *ident, Global *global) {
+  const char *symbol = identifier_symbol(ident);
+  table_insert_global(builder->table, symbol, global);
+}
 void builder_insert_local(Builder *builder, Sexp *ident, Instruction *instr) {
   const char *symbol = identifier_symbol(ident);
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
