@@ -45,6 +45,9 @@ void table_push(Table *table) {
 void table_pop(Table *table) {
   vector_pop(table->stack);
 }
+void table_insert_global(Table *table, const char *key, Global *val) {
+  map_insert(table->global, (ElemType)key, val);
+}
 void table_insert_local(Table *table, const char *key, Instruction *val) {
   UTILITY_ASSERT(!vector_empty(table->stack));
   map_insert(vector_back(table->stack), (ElemType)key, val);

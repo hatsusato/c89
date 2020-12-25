@@ -13,6 +13,7 @@ void table_delete(Table *);
 void table_clear(Table *);
 void table_push(Table *);
 void table_pop(Table *);
+void table_insert_global(Table *, const char *, Global *);
 void table_insert_local(Table *, const char *, Instruction *);
 Value *table_find(Table *, const char *);
 void table_label_insert(Table *, const char *, Block *);
