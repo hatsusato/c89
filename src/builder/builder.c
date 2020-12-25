@@ -108,7 +108,7 @@ Block *builder_label(Builder *builder, Sexp *ident) {
 void builder_insert_local(Builder *builder, Sexp *ident, Instruction *instr) {
   const char *symbol = identifier_symbol(ident);
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
-  table_insert(builder->table, symbol, instr);
+  table_insert_local(builder->table, symbol, instr);
 }
 Value *builder_find_identifier(Builder *builder, Sexp *ident) {
   const char *symbol = identifier_symbol(ident);
