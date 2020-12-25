@@ -30,13 +30,13 @@ static void module_delete_value(ElemType value) {
   case VALUE_CONSTANT:
     constant_delete(value);
     break;
+  case VALUE_GLOBAL:
+    global_delete(value);
+    break;
   default:
     UTILITY_ASSERT(0);
     break;
   }
-}
-static void module_delete_global(ElemType global) {
-  global_delete(global);
 }
 static void module_pretty_prior(Module *module) {
   ElemType *begin = vector_begin(module->prior);
@@ -69,7 +69,7 @@ Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->pool = vector_new(module_delete_value);
   module->prior = vector_new(NULL);
-  module->global = vector_new(module_delete_global);
+  module->global = vector_new(NULL);
   module->func = vector_new(NULL);
   return module;
 }
@@ -103,6 +103,7 @@ Constant *module_new_constant(Module *module) {
 }
 Global *module_new_global(Module *module) {
   Global *global = global_new();
+  vector_push(module->pool, global);
   vector_push(module->global, global);
   return global;
 }
