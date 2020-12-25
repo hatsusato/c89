@@ -49,7 +49,7 @@ void table_insert(Table *table, const char *key, Instruction *val) {
   UTILITY_ASSERT(!vector_empty(table->stack));
   map_insert(vector_back(table->stack), (ElemType)key, val);
 }
-Instruction *table_find(Table *table, const char *key) {
+Value *table_find(Table *table, const char *key) {
   ElemType *found;
   ElemType *begin = vector_begin(table->stack);
   ElemType *end = vector_end(table->stack);
