@@ -38,12 +38,15 @@ static void module_delete_value(ElemType value) {
 static void module_delete_global(ElemType global) {
   global_delete(global);
 }
+static void module_delete_function(ElemType function) {
+  function_delete(function);
+}
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->pool = vector_new(module_delete_value);
   module->global = vector_new(module_delete_global);
-  module->vec = vector_new(NULL);
+  module->vec = vector_new(module_delete_function);
   return module;
 }
 void module_delete(Module *module) {
@@ -54,7 +57,6 @@ void module_delete(Module *module) {
 }
 Function *module_new_function(Module *module) {
   Function *func = function_new();
-  vector_push(module->pool, func);
   vector_push(module->vec, func);
   return func;
 }
