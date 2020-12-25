@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 
 #include "builder/type.h"
+#include "sexp/type.h"
 #include "types.h"
 
 typedef enum {
@@ -29,7 +30,7 @@ void builder_instruction_switch_finish(Builder *, Instruction *);
 void builder_instruction_switch_case(Builder *, Value *, Block *);
 Instruction *builder_instruction_add(Builder *, Value *, Value *);
 Instruction *builder_instruction_sub(Builder *, Value *, Value *);
-Instruction *builder_instruction_alloca(Builder *, const char *);
+Instruction *builder_instruction_alloca(Builder *, Sexp *);
 Instruction *builder_instruction_load(Builder *, Value *);
 Instruction *builder_instruction_store(Builder *, Value *, Value *);
 Instruction *builder_instruction_icmp_ne(Builder *, Value *, Value *);

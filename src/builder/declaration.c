@@ -3,7 +3,6 @@
 #include "ast/tag.h"
 #include "builder.h"
 #include "instruction.h"
-#include "lexical.h"
 #include "sexp.h"
 #include "utility.h"
 #include "value.h"
@@ -16,8 +15,7 @@ static Value *builder_declarator_initializer(Builder *builder, Sexp *ast) {
 }
 static Value *builder_direct_declarator_identifier(Builder *builder,
                                                    Sexp *ast) {
-  const char *symbol = builder_identifier_symbol(sexp_at(ast, 1));
-  Instruction *instr = builder_instruction_alloca(builder, symbol);
+  Instruction *instr = builder_instruction_alloca(builder, sexp_at(ast, 1));
   return instruction_as_value(instr);
 }
 
