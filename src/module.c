@@ -13,7 +13,7 @@
 #include "vector.h"
 
 struct struct_Module {
-  Vector *pool, *vec;
+  Vector *pool, *global, *vec;
 };
 
 static void module_value_delete(ElemType value) {
@@ -42,11 +42,13 @@ static void module_value_delete(ElemType value) {
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->pool = vector_new(module_value_delete);
+  module->global = vector_new(NULL);
   module->vec = vector_new(NULL);
   return module;
 }
 void module_delete(Module *module) {
   vector_delete(module->vec);
+  vector_delete(module->global);
   vector_delete(module->pool);
   UTILITY_FREE(module);
 }
@@ -74,6 +76,7 @@ Constant *module_new_constant(Module *module) {
 Global *module_new_global(Module *module) {
   Global *global = global_new();
   vector_push(module->pool, global);
+  vector_push(module->global, global);
   return global;
 }
 void module_build(Module *module, Sexp *ast) {
