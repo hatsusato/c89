@@ -6,6 +6,7 @@
 #include "definition.h"
 #include "expression.h"
 #include "function.h"
+#include "global.h"
 #include "instruction.h"
 #include "lexical.h"
 #include "module.h"
@@ -95,6 +96,11 @@ void builder_push_table(Builder *builder) {
 }
 void builder_pop_table(Builder *builder) {
   table_pop(builder->table);
+}
+void builder_init_global(Builder *builder, Global *global, Sexp *init) {
+  Value *constant = builder_integer_constant(builder, init);
+  global_set_init(global, value_as_constant(constant));
+  module_insert_prior(builder->module, global);
 }
 Block *builder_label(Builder *builder, Sexp *ident) {
   const char *label = identifier_symbol(ident);

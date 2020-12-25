@@ -25,8 +25,7 @@ static void builder_external_init_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(2 == sexp_length(ast) || 4 == sexp_length(ast));
   global = builder_external_declarator(builder, sexp_at(ast, 1));
   if (4 == sexp_length(ast)) {
-    Value *init = builder_integer_constant(builder, sexp_at(ast, 3));
-    global_set_init(global, value_as_constant(init));
+    builder_init_global(builder, global, sexp_at(ast, 3));
   }
 }
 static void builder_function_return(Builder *builder) {
