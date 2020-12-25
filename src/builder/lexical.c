@@ -8,12 +8,6 @@
 #include "utility.h"
 #include "value.h"
 
-const char *builder_identifier_symbol(Sexp *ast) {
-  UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  UTILITY_ASSERT(sexp_is_symbol(ast));
-  return sexp_get_symbol(ast);
-}
 Value *builder_identifier(Builder *builder, Sexp *ast) {
   Instruction *expr = builder_find_alloca(builder, ast);
   Instruction *instr =
