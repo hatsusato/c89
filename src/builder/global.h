@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_BFACDD17_F309_4216_B735_6340D39BC17A
 #define INCLUDE_GUARD_BFACDD17_F309_4216_B735_6340D39BC17A
 
-#include "builder/type.h"
-#include "sexp/type.h"
+#include "builder/types.h"
+#include "sexp/types.h"
 #include "utility/types.h"
 
 Global *global_new(void);

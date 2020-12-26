@@ -1,9 +1,9 @@
 #ifndef INCLUDE_GUARD_CA82BAF1_F8AF_418B_A275_3129D9D3F1FB
 #define INCLUDE_GUARD_CA82BAF1_F8AF_418B_A275_3129D9D3F1FB
 
-#include "builder/type.h"
+#include "builder/types.h"
 #include "module.h"
-#include "sexp/type.h"
+#include "sexp/types.h"
 #include "utility/types.h"
 
 struct struct_Table;

@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_D1BC44FE_A7CB_4AB4_BBC6_18413DF0CB4A
 #define INCLUDE_GUARD_D1BC44FE_A7CB_4AB4_BBC6_18413DF0CB4A
 
-#include "compare/type.h"
+#include "compare/types.h"
 #include "utility/types.h"
 
 typedef struct {

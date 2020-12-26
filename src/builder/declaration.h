@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_864F4242_61F0_4E5F_92C4_5C7E06797758
 #define INCLUDE_GUARD_864F4242_61F0_4E5F_92C4_5C7E06797758
 
-#include "builder/type.h"
-#include "sexp/type.h"
+#include "builder/types.h"
+#include "sexp/types.h"
 
 Value *builder_declaration(Builder *, Sexp *);
 Value *builder_init_declarator(Builder *, Sexp *);

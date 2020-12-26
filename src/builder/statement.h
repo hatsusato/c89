@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_C7C93740_6608_4112_98EA_4A89E91D8979
 #define INCLUDE_GUARD_C7C93740_6608_4112_98EA_4A89E91D8979
 
-#include "builder/type.h"
-#include "sexp/type.h"
+#include "builder/types.h"
+#include "sexp/types.h"
 
 Value *builder_statement(Builder *, Sexp *);
 Value *builder_labeled_statement(Builder *, Sexp *);
