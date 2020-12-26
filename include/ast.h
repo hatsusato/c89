@@ -3,7 +3,7 @@
 
 #include "ast/type.h"
 #include "sexp/type.h"
-#include "types.h"
+#include "utility/types.h"
 
 Ast *ast_new(void);
 void ast_delete(Ast *);

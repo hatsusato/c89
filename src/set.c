@@ -2,7 +2,6 @@
 
 #include "compare.h"
 #include "set/sort.h"
-#include "types.h"
 #include "utility.h"
 #include "vector.h"
 

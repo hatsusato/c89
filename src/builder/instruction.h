@@ -3,7 +3,7 @@
 
 #include "builder/type.h"
 #include "sexp/type.h"
-#include "types.h"
+#include "utility/types.h"
 
 typedef enum {
 #define DO_HANDLE(name, str) name,

@@ -3,7 +3,7 @@
 
 #include "builder/type.h"
 #include "sexp/type.h"
-#include "types.h"
+#include "utility/types.h"
 
 Global *global_new(void);
 void global_delete(Global *);

@@ -3,7 +3,7 @@
 
 #include "compare/type.h"
 #include "set/type.h"
-#include "types.h"
+#include "utility/types.h"
 
 Set *set_new(Destructor, Compare *);
 void set_delete(Set *);

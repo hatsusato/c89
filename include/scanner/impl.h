@@ -3,7 +3,7 @@
 
 #include "scanner/yyscan.h"
 #include "sexp/type.h"
-#include "types.h"
+#include "utility/types.h"
 
 void scanner_finish(yyscan_t, Sexp *);
 const char *scanner_token(yyscan_t);

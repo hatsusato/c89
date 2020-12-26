@@ -3,7 +3,7 @@
 
 #include "compare/type.h"
 #include "map/type.h"
-#include "types.h"
+#include "utility/types.h"
 
 Map *map_new(Compare *);
 void map_delete(Map *);

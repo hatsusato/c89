@@ -2,7 +2,7 @@
 #define INCLUDE_GUARD_3397EB56_FB26_40B7_AD9E_F7B3DA519335
 
 #include "sexp/type.h"
-#include "types.h"
+#include "utility/types.h"
 
 void sexp_delete(Sexp *);
 Sexp *sexp_clone(Sexp *);
