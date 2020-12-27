@@ -4,17 +4,10 @@
 
 #include "block.h"
 #include "builder.h"
+#include "instruction/struct.h"
 #include "module.h"
 #include "utility.h"
 #include "value.h"
-
-enum { INSTRUCTION_OPERAND_COUNT = 3 };
-struct struct_Instruction {
-  ValueKind kind;
-  InstructionKind ikind;
-  int id;
-  Value *operands[INSTRUCTION_OPERAND_COUNT];
-};
 
 static void print_comma(void) {
   printf(", ");
