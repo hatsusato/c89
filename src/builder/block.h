@@ -10,7 +10,6 @@ void block_insert_switch(Block *, Value *, Block *);
 void block_append(Block *, Block *);
 Bool block_empty(Block *);
 Instruction *block_last(Block *);
-Bool block_is_terminated(Block *);
 int block_set_id(Block *, int);
 void block_print(Block *);
 void block_print_label(Block *);

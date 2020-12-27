@@ -2,6 +2,7 @@
 
 #include "../block.h"
 #include "../builder.h"
+#include "../instruction.h"
 #include "struct.h"
 
 static Instruction *builder_new_instruction(Builder *builder,
@@ -22,7 +23,8 @@ void builder_instruction_ret(Builder *builder, Value *expr) {
 }
 void builder_instruction_br(Builder *builder, Block *label) {
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
-  if (!block_is_terminated(current)) {
+  Instruction *last = block_last(current);
+  if (!last || !instruction_is_terminator(last)) {
     Instruction *instr = builder_new_instruction(builder, INSTRUCTION_BR);
     instr->operands[0] = block_as_value(label);
   }
