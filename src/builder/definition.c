@@ -17,13 +17,8 @@ static void builder_function_return(Builder *builder) {
 
 void builder_external_declaration(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_EXTERNAL_DECLARATION == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  UTILITY_ASSERT(AST_DECLARATION == sexp_get_tag(ast));
-  ast = sexp_at(ast, 2);
-  UTILITY_ASSERT(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));
-  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    builder_init_declarator(builder, sexp_car(ast));
-  }
+  UTILITY_ASSERT(!builder_is_local(builder));
+  builder_ast(builder, sexp_at(ast, 1));
 }
 void builder_function_definition(Builder *builder, Sexp *ast) {
   Block *ret;
