@@ -8,8 +8,11 @@
 #include "value.h"
 
 Value *builder_additive_expression(Builder *builder, Sexp *ast) {
-  Value *lhs = builder_ast(builder, sexp_at(ast, 1));
-  Value *rhs = builder_ast(builder, sexp_at(ast, 3));
+  Value *lhs, *rhs;
+  builder_ast(builder, sexp_at(ast, 1));
+  lhs = builder_get_value(builder);
+  builder_ast(builder, sexp_at(ast, 3));
+  rhs = builder_get_value(builder);
   UTILITY_ASSERT(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 2))) {
   case AST_PLUS:
@@ -25,14 +28,17 @@ Value *builder_additive_expression(Builder *builder, Sexp *ast) {
   return builder_get_value(builder);
 }
 Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
-  Value *lhs = builder_find_identifier(builder, sexp_at(ast, 1));
-  Value *rhs = builder_ast(builder, sexp_at(ast, 3));
+  Value *lhs, *rhs;
   UTILITY_ASSERT(AST_ASSIGNMENT_EXPRESSION == sexp_get_tag(ast));
   UTILITY_ASSERT(AST_ASSIGN == sexp_get_tag(sexp_at(ast, 2)));
+  lhs = builder_find_identifier(builder, sexp_at(ast, 1));
+  builder_ast(builder, sexp_at(ast, 3));
+  rhs = builder_get_value(builder);
   builder_instruction_store(builder, rhs, lhs);
   return builder_get_value(builder);
 }
 Value *builder_constant_expression(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_CONSTANT_EXPRESSION == sexp_get_tag(ast));
-  return builder_ast(builder, sexp_at(ast, 1));
+  builder_ast(builder, sexp_at(ast, 1));
+  return builder_get_value(builder);
 }

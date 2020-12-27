@@ -19,7 +19,8 @@ static Bool switch_new_case(Builder *builder) {
 static void builder_guard(Builder *builder, Sexp *expr, Block *then_block,
                           Block *else_block) {
   Value *lhs, *rhs, *icmp;
-  lhs = builder_ast(builder, expr);
+  builder_ast(builder, expr);
+  lhs = builder_get_value(builder);
   builder_new_integer(builder, "0");
   rhs = builder_get_value(builder);
   builder_instruction_icmp_ne(builder, lhs, rhs);
@@ -46,7 +47,8 @@ static void builder_case_statement(Builder *builder, Sexp *ast) {
     builder_instruction_br(builder, next);
     builder_jump_block(builder, next);
   }
-  value = builder_ast(builder, sexp_at(ast, 2));
+  builder_ast(builder, sexp_at(ast, 2));
+  value = builder_get_value(builder);
   builder_instruction_switch_case(builder, value, next);
   builder_ast(builder, sexp_at(ast, 4));
 }
@@ -82,7 +84,9 @@ static void builder_if_else_statement(Builder *builder, Sexp *ast) {
 }
 static void builder_switch_statement(Builder *builder, Sexp *ast) {
   Block *block = builder_new_block(builder);
-  Value *expr = builder_ast(builder, sexp_at(ast, 3));
+  Value *expr;
+  builder_ast(builder, sexp_at(ast, 3));
+  expr = builder_get_value(builder);
   builder_instruction_switch(builder, expr);
   {
     Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, NULL);
@@ -178,7 +182,8 @@ static void builder_return_statement(Builder *builder, Sexp *ast) {
   Block *ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
   Value *src;
   UTILITY_ASSERT(!sexp_is_nil(sexp_at(ast, 2)));
-  src = builder_ast(builder, sexp_at(ast, 2));
+  builder_ast(builder, sexp_at(ast, 2));
+  src = builder_get_value(builder);
   if (ret) {
     Instruction *dst = builder_get_retval(builder);
     builder_instruction_store(builder, src, instruction_as_value(dst));
@@ -190,7 +195,8 @@ static void builder_return_statement(Builder *builder, Sexp *ast) {
 
 Value *builder_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_STATEMENT == sexp_get_tag(ast));
-  return builder_ast(builder, sexp_at(ast, 1));
+  builder_ast(builder, sexp_at(ast, 1));
+  return builder_get_value(builder);
 }
 Value *builder_labeled_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_LABELED_STATEMENT == sexp_get_tag(ast));

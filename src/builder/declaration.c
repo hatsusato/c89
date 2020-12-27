@@ -8,15 +8,19 @@
 #include "value.h"
 
 static Value *builder_declarator_initializer(Builder *builder, Sexp *ast) {
-  Value *src = builder_ast(builder, sexp_at(ast, 3));
-  Value *dst = builder_declarator(builder, sexp_at(ast, 1));
+  Value *src, *dst;
+  builder_ast(builder, sexp_at(ast, 3));
+  src = builder_get_value(builder);
+  builder_declarator(builder, sexp_at(ast, 1));
+  dst = builder_get_value(builder);
   builder_instruction_store(builder, src, dst);
   return builder_get_value(builder);
 }
 
 Value *builder_declaration(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DECLARATION == sexp_get_tag(ast));
-  return builder_ast(builder, sexp_at(ast, 2));
+  builder_ast(builder, sexp_at(ast, 2));
+  return builder_get_value(builder);
 }
 Value *builder_init_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_INIT_DECLARATOR == sexp_get_tag(ast));

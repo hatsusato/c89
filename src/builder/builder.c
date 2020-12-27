@@ -94,7 +94,9 @@ void builder_pop_table(Builder *builder) {
   table_pop(builder->table);
 }
 void builder_init_global(Builder *builder, Global *global, Sexp *init) {
-  Value *constant = builder_integer_constant(builder, init);
+  Value *constant;
+  builder_integer_constant(builder, init);
+  constant = builder_get_value(builder);
   global_set_init(global, value_as_constant(constant));
   module_insert_prior(builder->module, global);
 }
