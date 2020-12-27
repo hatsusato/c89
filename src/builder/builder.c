@@ -98,12 +98,12 @@ Block *builder_label(Builder *builder, const char *label) {
   }
   return block;
 }
-void builder_insert_global(Builder *builder, Sexp *ident, Global *global) {
-  const char *symbol = identifier_symbol(ident);
+void builder_insert_global(Builder *builder, const char *symbol,
+                           Global *global) {
   table_insert_global(builder->table, symbol, global);
 }
-void builder_insert_local(Builder *builder, Sexp *ident, Instruction *instr) {
-  const char *symbol = identifier_symbol(ident);
+void builder_insert_local(Builder *builder, const char *symbol,
+                          Instruction *instr) {
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
   table_insert_local(builder->table, symbol, instr);
 }

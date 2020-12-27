@@ -54,6 +54,6 @@ void builder_new_global(Builder *builder, Sexp *ident) {
   Module *module = builder_get_module(builder);
   Global *global = module_new_global(module);
   global->name = identifier_symbol(ident);
-  builder_insert_global(builder, ident, global);
+  builder_insert_global(builder, global->name, global);
   builder_set_value(builder, global_as_value(global));
 }
