@@ -31,7 +31,7 @@ void builder_init_global(Builder *, Value *, Value *);
 Block *builder_label(Builder *, Sexp *);
 void builder_insert_global(Builder *, Sexp *, Global *);
 void builder_insert_local(Builder *, Sexp *, Instruction *);
-Value *builder_find_identifier(Builder *, Sexp *);
+void builder_find_identifier(Builder *, Sexp *);
 void builder_jump_block(Builder *, Block *);
 Module *builder_get_module(Builder *);
 Value *builder_get_retval(Builder *);

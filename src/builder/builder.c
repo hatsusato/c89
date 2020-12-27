@@ -114,9 +114,10 @@ void builder_insert_local(Builder *builder, Sexp *ident, Instruction *instr) {
   UTILITY_ASSERT(INSTRUCTION_ALLOCA == instruction_kind(instr));
   table_insert_local(builder->table, symbol, instr);
 }
-Value *builder_find_identifier(Builder *builder, Sexp *ident) {
+void builder_find_identifier(Builder *builder, Sexp *ident) {
   const char *symbol = identifier_symbol(ident);
-  return table_find(builder->table, symbol);
+  Value *value = table_find(builder->table, symbol);
+  builder_set_value(builder, value);
 }
 void builder_jump_block(Builder *builder, Block *dest) {
   UTILITY_ASSERT(dest);

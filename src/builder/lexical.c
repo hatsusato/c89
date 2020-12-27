@@ -9,7 +9,9 @@
 #include "value.h"
 
 void builder_identifier(Builder *builder, Sexp *ast) {
-  Value *expr = builder_find_identifier(builder, ast);
+  Value *expr;
+  builder_find_identifier(builder, ast);
+  expr = builder_get_value(builder);
   builder_instruction_load(builder, expr);
 }
 void builder_integer_constant(Builder *builder, Sexp *ast) {

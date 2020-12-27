@@ -30,7 +30,8 @@ void builder_assignment_expression(Builder *builder, Sexp *ast) {
   Value *lhs, *rhs;
   UTILITY_ASSERT(AST_ASSIGNMENT_EXPRESSION == sexp_get_tag(ast));
   UTILITY_ASSERT(AST_ASSIGN == sexp_get_tag(sexp_at(ast, 2)));
-  lhs = builder_find_identifier(builder, sexp_at(ast, 1));
+  builder_find_identifier(builder, sexp_at(ast, 1));
+  lhs = builder_get_value(builder);
   builder_ast(builder, sexp_at(ast, 3));
   rhs = builder_get_value(builder);
   builder_instruction_store(builder, rhs, lhs);
