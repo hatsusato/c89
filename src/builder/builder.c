@@ -24,21 +24,19 @@ struct struct_Builder {
   Block *next[BUILDER_NEXT_COUNT];
 };
 
-static Block *builder_init_next(Builder *builder, Sexp *ast) {
+static void builder_init_next(Builder *builder, Sexp *ast) {
   Block *alloc = builder_new_block(builder);
   Block *entry = builder_new_block(builder);
-  Block *ret = NULL;
   builder_set_next(builder, BUILDER_NEXT_ALLOC, alloc);
   builder_set_next(builder, BUILDER_NEXT_CURRENT, entry);
   builder_set_next(builder, BUILDER_NEXT_ENTRY, entry);
   function_insert(builder->func, alloc);
   if (1 < function_count_return(ast)) {
+    Block *ret = builder_new_block(builder);
     Instruction *retval = builder_new_instruction(builder, INSTRUCTION_ALLOCA);
     builder->retval = instruction_as_value(retval);
-    ret = builder_new_block(builder);
     builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
   }
-  return ret;
 }
 static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
@@ -73,10 +71,10 @@ void builder_delete(Builder *builder) {
   table_delete(builder->table);
   UTILITY_FREE(builder);
 }
-Block *builder_function_init(Builder *builder, Sexp *ast) {
+void builder_function_init(Builder *builder, Sexp *ast) {
   Function *func = builder_new_function(builder, ast);
   builder->func = func;
-  return builder_init_next(builder, ast);
+  builder_init_next(builder, ast);
 }
 void builder_function_finish(Builder *builder) {
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
