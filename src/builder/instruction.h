@@ -25,6 +25,7 @@ void builder_instruction_alloca(Builder *, const char *);
 void builder_instruction_load(Builder *, Value *);
 void builder_instruction_store(Builder *, Value *, Value *);
 void builder_instruction_icmp_ne(Builder *, Value *, Value *);
+Instruction *builder_new_local(Builder *);
 
 #include "instruction/print.h"
 
