@@ -29,8 +29,17 @@ Bool instruction_is_terminator(Instruction *instr) {
   }
 }
 int instruction_set_id(Instruction *instr, int id) {
-  if (!instruction_is_terminator(instr) && INSTRUCTION_STORE != instr->ikind) {
+  switch (instr->ikind) {
+#define DO_HANDLE(name, str) \
+  case name:                 \
+    break;
+#include "instruction/terminator.def"
+#undef DO_HANDLE
+  case INSTRUCTION_STORE:
+    break;
+  default:
     instr->id = id++;
+    break;
   }
   return id;
 }
