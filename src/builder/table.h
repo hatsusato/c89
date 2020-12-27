@@ -4,7 +4,6 @@
 #include "builder/types.h"
 #include "module.h"
 #include "sexp/types.h"
-#include "utility/types.h"
 
 struct struct_Table;
 typedef struct struct_Table Table;

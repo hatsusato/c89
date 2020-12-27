@@ -124,6 +124,9 @@ void builder_jump_block(Builder *builder, Block *dest) {
   builder_set_next(builder, BUILDER_NEXT_CURRENT, dest);
   function_insert(builder->func, dest);
 }
+Bool builder_is_local(Builder *builder) {
+  return builder->func != NULL;
+}
 Module *builder_get_module(Builder *builder) {
   return builder->module;
 }
