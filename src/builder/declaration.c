@@ -10,8 +10,8 @@
 static Value *builder_declarator_initializer(Builder *builder, Sexp *ast) {
   Value *src = builder_ast(builder, sexp_at(ast, 3));
   Value *dst = builder_declarator(builder, sexp_at(ast, 1));
-  Instruction *instr = builder_instruction_store(builder, src, dst);
-  return instruction_as_value(instr);
+  builder_instruction_store(builder, src, dst);
+  return builder_get_value(builder);
 }
 
 Value *builder_declaration(Builder *builder, Sexp *ast) {
@@ -43,12 +43,11 @@ Value *builder_declarator(Builder *builder, Sexp *ast) {
   }
 }
 Value *builder_direct_declarator(Builder *builder, Sexp *ast) {
-  Instruction *instr;
   UTILITY_ASSERT(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
-    instr = builder_instruction_alloca(builder, sexp_at(ast, 1));
-    return instruction_as_value(instr);
+    builder_instruction_alloca(builder, sexp_at(ast, 1));
+    return builder_get_value(builder);
   case 4:
     return builder_declarator(builder, sexp_at(ast, 2));
   case 5:

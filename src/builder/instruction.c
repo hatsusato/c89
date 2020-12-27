@@ -184,6 +184,7 @@ Instruction *builder_new_instruction(Builder *builder, InstructionKind kind) {
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   instr->ikind = kind;
   block_insert(INSTRUCTION_ALLOCA == kind ? alloc : current, instr);
+  builder_set_value(builder, instruction_as_value(instr));
   return instr;
 }
 void builder_instruction_ret(Builder *builder, Value *expr) {
@@ -204,10 +205,9 @@ void builder_instruction_br_cond(Builder *builder, Value *expr,
   instr->operands[1] = block_as_value(then_label);
   instr->operands[2] = block_as_value(else_label);
 }
-Instruction *builder_instruction_switch(Builder *builder, Value *expr) {
+void builder_instruction_switch(Builder *builder, Value *expr) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_SWITCH);
   instr->operands[0] = expr;
-  return instr;
 }
 void builder_instruction_switch_finish(Builder *builder, Instruction *instr) {
   Block *default_label = builder_get_next(builder, BUILDER_NEXT_DEFAULT);
@@ -226,39 +226,31 @@ void builder_instruction_switch_case(Builder *builder, Value *value,
   Block *switch_block = builder_get_next(builder, BUILDER_NEXT_SWITCH);
   block_insert_switch(switch_block, value, label);
 }
-Instruction *builder_instruction_add(Builder *builder, Value *lhs, Value *rhs) {
+void builder_instruction_add(Builder *builder, Value *lhs, Value *rhs) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ADD);
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
-  return instr;
 }
-Instruction *builder_instruction_sub(Builder *builder, Value *lhs, Value *rhs) {
+void builder_instruction_sub(Builder *builder, Value *lhs, Value *rhs) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_SUB);
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
-  return instr;
 }
-Instruction *builder_instruction_alloca(Builder *builder, Sexp *ident) {
+void builder_instruction_alloca(Builder *builder, Sexp *ident) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ALLOCA);
   builder_insert_local(builder, ident, instr);
-  return instr;
 }
-Instruction *builder_instruction_load(Builder *builder, Value *src) {
+void builder_instruction_load(Builder *builder, Value *src) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_LOAD);
   instr->operands[0] = src;
-  return instr;
 }
-Instruction *builder_instruction_store(Builder *builder, Value *src,
-                                       Value *dst) {
+void builder_instruction_store(Builder *builder, Value *src, Value *dst) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_STORE);
   instr->operands[0] = src;
   instr->operands[1] = dst;
-  return instr;
 }
-Instruction *builder_instruction_icmp_ne(Builder *builder, Value *lhs,
-                                         Value *rhs) {
+void builder_instruction_icmp_ne(Builder *builder, Value *lhs, Value *rhs) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ICMP_NE);
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
-  return instr;
 }

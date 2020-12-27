@@ -20,10 +20,10 @@ static void builder_guard(Builder *builder, Sexp *expr, Block *then_block,
                           Block *else_block) {
   Value *lhs = builder_ast(builder, expr);
   Constant *rhs = builder_new_integer(builder, "0");
-  Instruction *icmp =
-      builder_instruction_icmp_ne(builder, lhs, constant_as_value(rhs));
-  builder_instruction_br_cond(builder, instruction_as_value(icmp), then_block,
-                              else_block);
+  Value *icmp;
+  builder_instruction_icmp_ne(builder, lhs, constant_as_value(rhs));
+  icmp = builder_get_value(builder);
+  builder_instruction_br_cond(builder, icmp, then_block, else_block);
 }
 static void builder_branch(Builder *builder, Sexp *ast, Block *current,
                            Block *next) {
@@ -82,13 +82,14 @@ static void builder_if_else_statement(Builder *builder, Sexp *ast) {
 static void builder_switch_statement(Builder *builder, Sexp *ast) {
   Block *block = builder_new_block(builder);
   Value *expr = builder_ast(builder, sexp_at(ast, 3));
-  Instruction *instr = builder_instruction_switch(builder, expr);
+  builder_instruction_switch(builder, expr);
   {
     Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, NULL);
     Block *next_default = builder_set_next(builder, BUILDER_NEXT_DEFAULT, NULL);
     Block *next_switch = builder_set_next(builder, BUILDER_NEXT_SWITCH, block);
+    Value *instr = builder_get_value(builder);
     builder_ast(builder, sexp_at(ast, 5));
-    builder_instruction_switch_finish(builder, instr);
+    builder_instruction_switch_finish(builder, value_as_instruction(instr));
     builder_set_next(builder, BUILDER_NEXT_BREAK, next_break);
     builder_set_next(builder, BUILDER_NEXT_DEFAULT, next_default);
     builder_set_next(builder, BUILDER_NEXT_SWITCH, next_switch);

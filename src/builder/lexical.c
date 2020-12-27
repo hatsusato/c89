@@ -10,8 +10,8 @@
 
 Value *builder_identifier(Builder *builder, Sexp *ast) {
   Value *expr = builder_find_identifier(builder, ast);
-  Instruction *instr = builder_instruction_load(builder, expr);
-  return instruction_as_value(instr);
+  builder_instruction_load(builder, expr);
+  return builder_get_value(builder);
 }
 Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   const char *symbol = integer_symbol(ast);
