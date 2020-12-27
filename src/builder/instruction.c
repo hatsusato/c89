@@ -31,7 +31,7 @@ Bool instruction_is_terminator(Instruction *instr) {
 #define DO_HANDLE(name, str) \
   case name:                 \
     return true;
-#include "terminator.def"
+#include "instruction/terminator.def"
 #undef DO_HANDLE
   default:
     return false;

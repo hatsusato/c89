@@ -115,7 +115,7 @@ void instruction_print(Instruction *instr) {
 void instruction_print_name(Instruction *instr) {
   const char *names[] = {
 #define DO_HANDLE(name, str) str,
-#include "../instruction.def"
+#include "instruction.def"
 #undef DO_HANDLE
       "kind-count"};
   printf("%s ", names[instr->ikind]);

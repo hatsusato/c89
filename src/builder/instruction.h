@@ -5,7 +5,7 @@
 
 typedef enum {
 #define DO_HANDLE(name, str) name,
-#include "instruction.def"
+#include "instruction/instruction.def"
 #undef DO_HANDLE
   INSTRUCTION_KIND_COUNT
 } InstructionKind;
