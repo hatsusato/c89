@@ -16,6 +16,17 @@ static Instruction *builder_new_instruction(Builder *builder,
   builder_set_value(builder, instruction_as_value(instr));
   return instr;
 }
+static Bool instruction_is_terminator(Instruction *instr) {
+  switch (instr->ikind) {
+#define DO_HANDLE(name, str) \
+  case name:                 \
+    return true;
+#include "terminator.def"
+#undef DO_HANDLE
+  default:
+    return false;
+  }
+}
 
 void builder_instruction_ret(Builder *builder, Value *expr) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_RET);

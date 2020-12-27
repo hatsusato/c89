@@ -17,17 +17,6 @@ Instruction *instruction_new(void) {
 void instruction_delete(Instruction *instr) {
   UTILITY_FREE(instr);
 }
-Bool instruction_is_terminator(Instruction *instr) {
-  switch (instr->ikind) {
-#define DO_HANDLE(name, str) \
-  case name:                 \
-    return true;
-#include "instruction/terminator.def"
-#undef DO_HANDLE
-  default:
-    return false;
-  }
-}
 int instruction_set_id(Instruction *instr, int id) {
   switch (instr->ikind) {
 #define DO_HANDLE(name, str) \

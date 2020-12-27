@@ -5,7 +5,6 @@
 
 Instruction *instruction_new(void);
 void instruction_delete(Instruction *);
-Bool instruction_is_terminator(Instruction *);
 int instruction_set_id(Instruction *, int);
 
 #include "instruction/new.h"
