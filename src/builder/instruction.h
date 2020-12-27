@@ -33,4 +33,6 @@ void builder_instruction_load(Builder *, Value *);
 void builder_instruction_store(Builder *, Value *, Value *);
 void builder_instruction_icmp_ne(Builder *, Value *, Value *);
 
+#include "instruction/print.h"
+
 #endif /* INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E */
