@@ -37,16 +37,12 @@ void builder_init_declarator(Builder *builder, Sexp *ast) {
 }
 void builder_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DECLARATOR == sexp_get_tag(ast));
-  switch (sexp_length(ast)) {
-  case 2:
+  if (2 == sexp_length(ast)) {
     builder_direct_declarator(builder, sexp_at(ast, 1));
-    break;
-  case 3:
+  } else {
+    UTILITY_ASSERT(3 == sexp_length(ast));
+    UTILITY_ASSERT(builder_is_local(builder));
     builder_direct_declarator(builder, sexp_at(ast, 2));
-    break;
-  default:
-    UTILITY_ASSERT(0);
-    break;
   }
 }
 void builder_direct_declarator(Builder *builder, Sexp *ast) {

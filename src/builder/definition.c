@@ -7,15 +7,10 @@
 #include "sexp.h"
 #include "utility.h"
 
-static void builder_external_declarator(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_DECLARATOR == sexp_get_tag(ast));
-  UTILITY_ASSERT(2 == sexp_length(ast));
-  builder_direct_declarator(builder, sexp_at(ast, 1));
-}
 static void builder_external_init_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_INIT_DECLARATOR == sexp_get_tag(ast));
   UTILITY_ASSERT(2 == sexp_length(ast) || 4 == sexp_length(ast));
-  builder_external_declarator(builder, sexp_at(ast, 1));
+  builder_declarator(builder, sexp_at(ast, 1));
   if (4 == sexp_length(ast)) {
     Value *global = builder_get_value(builder), *init;
     builder_ast(builder, sexp_at(ast, 3));
