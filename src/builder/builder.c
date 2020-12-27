@@ -20,8 +20,7 @@ struct struct_Builder {
   Module *module;
   Table *table;
   Function *func;
-  Instruction *retval;
-  Value *value;
+  Value *retval, *value;
   Block *next[BUILDER_NEXT_COUNT];
 };
 
@@ -34,17 +33,17 @@ static Block *builder_init_next(Builder *builder, Sexp *ast) {
   builder_set_next(builder, BUILDER_NEXT_ENTRY, entry);
   function_insert(builder->func, alloc);
   if (1 < function_count_return(ast)) {
+    Instruction *retval = builder_new_instruction(builder, INSTRUCTION_ALLOCA);
+    builder->retval = instruction_as_value(retval);
     ret = builder_new_block(builder);
     builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
-    builder->retval = builder_new_instruction(builder, INSTRUCTION_ALLOCA);
   }
   return ret;
 }
 static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
   builder->func = NULL;
-  builder->retval = NULL;
-  builder->value = NULL;
+  builder->retval = builder->value = NULL;
   while (tag < BUILDER_NEXT_COUNT) {
     builder_set_next(builder, tag++, NULL);
   }
@@ -130,7 +129,7 @@ void builder_jump_block(Builder *builder, Block *dest) {
 Module *builder_get_module(Builder *builder) {
   return builder->module;
 }
-Instruction *builder_get_retval(Builder *builder) {
+Value *builder_get_retval(Builder *builder) {
   return builder->retval;
 }
 Value *builder_get_value(Builder *builder) {

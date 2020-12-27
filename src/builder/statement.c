@@ -185,8 +185,8 @@ static void builder_return_statement(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 2));
   src = builder_get_value(builder);
   if (ret) {
-    Instruction *dst = builder_get_retval(builder);
-    builder_instruction_store(builder, src, instruction_as_value(dst));
+    Value *dst = builder_get_retval(builder);
+    builder_instruction_store(builder, src, dst);
     builder_instruction_br(builder, ret);
   } else {
     builder_instruction_ret(builder, src);

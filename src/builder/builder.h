@@ -34,7 +34,7 @@ void builder_insert_local(Builder *, Sexp *, Instruction *);
 Value *builder_find_identifier(Builder *, Sexp *);
 void builder_jump_block(Builder *, Block *);
 Module *builder_get_module(Builder *);
-Instruction *builder_get_retval(Builder *);
+Value *builder_get_retval(Builder *);
 Value *builder_get_value(Builder *);
 Value *builder_set_value(Builder *, Value *);
 Block *builder_get_next(Builder *, BuilderNextTag);

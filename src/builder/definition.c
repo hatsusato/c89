@@ -30,11 +30,11 @@ static void builder_external_init_declarator(Builder *builder, Sexp *ast) {
   }
 }
 static void builder_function_return(Builder *builder) {
-  Instruction *retval = builder_get_retval(builder);
-  Value *instr;
-  builder_instruction_load(builder, instruction_as_value(retval));
-  instr = builder_get_value(builder);
-  builder_instruction_ret(builder, instr);
+  Value *retval;
+  retval = builder_get_retval(builder);
+  builder_instruction_load(builder, retval);
+  retval = builder_get_value(builder);
+  builder_instruction_ret(builder, retval);
 }
 
 void builder_external_declaration(Builder *builder, Sexp *ast) {
