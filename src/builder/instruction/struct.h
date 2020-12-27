@@ -3,7 +3,13 @@
 
 #include "../value.h"
 #include "builder/types.h"
-#include "kind.h"
+
+typedef enum {
+#define DO_HANDLE(name, str) name,
+#include "instruction.def"
+#undef DO_HANDLE
+  INSTRUCTION_KIND_COUNT
+} InstructionKind;
 
 enum { INSTRUCTION_OPERAND_COUNT = 3 };
 struct struct_Instruction {
