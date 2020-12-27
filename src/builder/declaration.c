@@ -39,10 +39,11 @@ void builder_declarator(Builder *builder, Sexp *ast) {
 void builder_direct_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   if (2 == sexp_length(ast)) {
+    const char *symbol = identifier_symbol(sexp_at(ast, 1));
     if (builder_is_local(builder)) {
-      builder_instruction_alloca(builder, sexp_at(ast, 1));
+      builder_instruction_alloca(builder, symbol);
     } else {
-      builder_new_global(builder, sexp_at(ast, 1));
+      builder_new_global(builder, symbol);
     }
   } else {
     UTILITY_ASSERT(4 == sexp_length(ast));

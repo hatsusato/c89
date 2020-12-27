@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 
 #include "builder/types.h"
-#include "sexp/types.h"
 
 typedef enum {
 #define DO_HANDLE(name, str) name,
@@ -29,7 +28,7 @@ void builder_instruction_switch_finish(Builder *, Instruction *);
 void builder_instruction_switch_case(Builder *, Value *, Block *);
 void builder_instruction_add(Builder *, Value *, Value *);
 void builder_instruction_sub(Builder *, Value *, Value *);
-void builder_instruction_alloca(Builder *, Sexp *);
+void builder_instruction_alloca(Builder *, const char *);
 void builder_instruction_load(Builder *, Value *);
 void builder_instruction_store(Builder *, Value *, Value *);
 void builder_instruction_icmp_ne(Builder *, Value *, Value *);

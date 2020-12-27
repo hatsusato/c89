@@ -236,9 +236,8 @@ void builder_instruction_sub(Builder *builder, Value *lhs, Value *rhs) {
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
 }
-void builder_instruction_alloca(Builder *builder, Sexp *ident) {
+void builder_instruction_alloca(Builder *builder, const char *symbol) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ALLOCA);
-  const char *symbol = identifier_symbol(ident);
   builder_insert_local(builder, symbol, instr);
 }
 void builder_instruction_load(Builder *builder, Value *src) {
