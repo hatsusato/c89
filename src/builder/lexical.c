@@ -9,10 +9,13 @@
 #include "value.h"
 
 void builder_identifier(Builder *builder, Sexp *ast) {
-  Value *expr;
-  builder_find_identifier(builder, ast);
-  expr = builder_get_value(builder);
-  builder_instruction_load(builder, expr);
+  const char *symbol;
+  Value *value;
+  UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ast));
+  symbol = identifier_symbol(ast);
+  builder_find_identifier(builder, symbol);
+  value = builder_get_value(builder);
+  builder_instruction_load(builder, value);
 }
 void builder_integer_constant(Builder *builder, Sexp *ast) {
   const char *symbol;
