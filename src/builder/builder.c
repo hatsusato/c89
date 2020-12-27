@@ -90,11 +90,10 @@ void builder_push_table(Builder *builder) {
 void builder_pop_table(Builder *builder) {
   table_pop(builder->table);
 }
-void builder_init_global(Builder *builder, Global *global, Sexp *init) {
-  Value *constant;
-  builder_integer_constant(builder, init);
-  constant = builder_get_value(builder);
-  global_set_init(global, value_as_constant(constant));
+void builder_init_global(Builder *builder, Value *dst, Value *src) {
+  Global *global = value_as_global(dst);
+  Constant *init = value_as_constant(src);
+  global_set_init(global, init);
   module_insert_prior(builder->module, global);
 }
 Block *builder_label(Builder *builder, Sexp *ident) {
