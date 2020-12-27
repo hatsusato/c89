@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 
 #include "builder/types.h"
-#include "instruction/kind.h"
 
 Instruction *instruction_new(void);
 void instruction_delete(Instruction *);
@@ -12,7 +11,6 @@ void instruction_print(Instruction *);
 void instruction_print_name(Instruction *);
 void instruction_pretty(Instruction *);
 
-Instruction *builder_new_instruction(Builder *, InstructionKind);
 void builder_instruction_ret(Builder *, Value *);
 void builder_instruction_br(Builder *, Block *);
 void builder_instruction_br_cond(Builder *, Value *, Block *, Block *);

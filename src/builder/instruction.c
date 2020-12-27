@@ -41,7 +41,8 @@ int instruction_set_id(Instruction *instr, int id) {
   return id;
 }
 
-Instruction *builder_new_instruction(Builder *builder, InstructionKind kind) {
+static Instruction *builder_new_instruction(Builder *builder,
+                                            InstructionKind kind) {
   Module *module = builder_get_module(builder);
   Instruction *instr = module_new_instruction(module);
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
