@@ -1,0 +1,11 @@
+#ifndef INCLUDE_GUARD_6C3EB868_20F8_489B_90EB_78E8FA0182FE
+#define INCLUDE_GUARD_6C3EB868_20F8_489B_90EB_78E8FA0182FE
+
+typedef enum {
+#define DO_HANDLE(name, str) name,
+#include "instruction.def"
+#undef DO_HANDLE
+  INSTRUCTION_KIND_COUNT
+} InstructionKind;
+
+#endif /* INCLUDE_GUARD_6C3EB868_20F8_489B_90EB_78E8FA0182FE */

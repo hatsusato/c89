@@ -2,13 +2,7 @@
 #define INCLUDE_GUARD_87D09D26_5D7E_41DD_89F2_DCC79207182E
 
 #include "builder/types.h"
-
-typedef enum {
-#define DO_HANDLE(name, str) name,
-#include "instruction/instruction.def"
-#undef DO_HANDLE
-  INSTRUCTION_KIND_COUNT
-} InstructionKind;
+#include "instruction/kind.h"
 
 Instruction *instruction_new(void);
 void instruction_delete(Instruction *);
