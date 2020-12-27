@@ -6,14 +6,29 @@
 #include "struct.h"
 #include "utility.h"
 
+static void print_newline(void) {
+  printf("\n");
+}
+static void print_space(void) {
+  printf(" ");
+}
+static void print_indent(void) {
+  print_space();
+  print_space();
+}
 static void print_comma(void) {
-  printf(", ");
+  printf(",");
+  print_space();
 }
 static void print_assign(void) {
-  printf(" = ");
+  print_space();
+  printf("=");
+  print_space();
 }
 static void print_align(void) {
-  printf("align 4");
+  printf("align");
+  print_space();
+  printf("4");
 }
 static void instruction_print_operand(Instruction *instr, Index index) {
   UTILITY_ASSERT(0 <= index && index < INSTRUCTION_OPERAND_COUNT);
@@ -25,13 +40,15 @@ static void instruction_print_name(Instruction *instr) {
 #include "instruction.def"
 #undef DO_HANDLE
       "kind-count"};
-  printf("%s ", names[instr->ikind]);
+  printf("%s", names[instr->ikind]);
+  print_space();
 }
 
 static void instruction_pretty_ret(Instruction *instr) {
   instruction_print_name(instr);
   if (instr->operands[0]) {
-    printf("i32 ");
+    printf("i32");
+    print_space();
     instruction_print_operand(instr, 0);
   } else {
     printf("void");
@@ -43,7 +60,8 @@ static void instruction_pretty_br(Instruction *instr) {
 }
 static void instruction_pretty_br_cond(Instruction *instr) {
   instruction_print_name(instr);
-  printf("i1 ");
+  printf("i1");
+  print_space();
   instruction_print_operand(instr, 0);
   print_comma();
   instruction_print_operand(instr, 1);
@@ -52,19 +70,24 @@ static void instruction_pretty_br_cond(Instruction *instr) {
 }
 static void instruction_pretty_switch(Instruction *instr) {
   instruction_print_name(instr);
-  printf("i32 ");
+  printf("i32");
+  print_space();
   instruction_print_operand(instr, 0);
   print_comma();
   instruction_print_operand(instr, 1);
-  printf(" [\n");
+  print_space();
+  printf("[");
+  print_newline();
   block_pretty_switch(value_as_block(instr->operands[2]));
-  printf("  ]");
+  print_indent();
+  printf("]");
 }
 static void instruction_pretty_add(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  printf("i32 ");
+  printf("i32");
+  print_space();
   instruction_print_operand(instr, 0);
   print_comma();
   instruction_print_operand(instr, 1);
@@ -73,7 +96,8 @@ static void instruction_pretty_sub(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  printf("i32 ");
+  printf("i32");
+  print_space();
   instruction_print_operand(instr, 0);
   print_comma();
   instruction_print_operand(instr, 1);
@@ -92,17 +116,20 @@ static void instruction_pretty_load(Instruction *instr) {
   instruction_print_name(instr);
   printf("i32");
   print_comma();
-  printf("i32* ");
+  printf("i32*");
+  print_space();
   instruction_print_operand(instr, 0);
   print_comma();
   print_align();
 }
 static void instruction_pretty_store(Instruction *instr) {
   instruction_print_name(instr);
-  printf("i32 ");
+  printf("i32");
+  print_space();
   instruction_print_operand(instr, 0);
   print_comma();
-  printf("i32* ");
+  printf("i32*");
+  print_space();
   instruction_print_operand(instr, 1);
   print_comma();
   print_align();
@@ -111,7 +138,8 @@ static void instruction_pretty_icmp_ne(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  printf("i32 ");
+  printf("i32");
+  print_space();
   instruction_print_operand(instr, 0);
   print_comma();
   instruction_print_operand(instr, 1);
@@ -129,7 +157,7 @@ void instruction_pretty(Instruction *instr) {
       instruction_pretty_store,   instruction_pretty_icmp_ne,
   };
   UTILITY_ASSERT(0 <= instr->ikind && instr->ikind < INSTRUCTION_KIND_COUNT);
-  printf("  ");
+  print_indent();
   pretty[instr->ikind](instr);
-  printf("\n");
+  print_newline();
 }
