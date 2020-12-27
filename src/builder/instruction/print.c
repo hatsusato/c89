@@ -19,6 +19,15 @@ static void instruction_print_operand(Instruction *instr, Index index) {
   UTILITY_ASSERT(0 <= index && index < INSTRUCTION_OPERAND_COUNT);
   value_print(instr->operands[index]);
 }
+static void instruction_print_name(Instruction *instr) {
+  const char *names[] = {
+#define DO_HANDLE(name, str) str,
+#include "instruction.def"
+#undef DO_HANDLE
+      "kind-count"};
+  printf("%s ", names[instr->ikind]);
+}
+
 static void instruction_pretty_ret(Instruction *instr) {
   instruction_print_name(instr);
   if (instr->operands[0]) {
@@ -110,14 +119,6 @@ static void instruction_pretty_icmp_ne(Instruction *instr) {
 
 void instruction_print(Instruction *instr) {
   printf("%%%d", instr->id);
-}
-void instruction_print_name(Instruction *instr) {
-  const char *names[] = {
-#define DO_HANDLE(name, str) str,
-#include "instruction.def"
-#undef DO_HANDLE
-      "kind-count"};
-  printf("%s ", names[instr->ikind]);
 }
 void instruction_pretty(Instruction *instr) {
   void (*pretty[])(Instruction *) = {
