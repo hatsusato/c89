@@ -19,7 +19,6 @@ typedef enum {
 } BuilderNextTag;
 
 const char *identifier_symbol(Sexp *);
-const char *integer_symbol(Sexp *);
 
 Builder *builder_new(Module *);
 void builder_delete(Builder *);

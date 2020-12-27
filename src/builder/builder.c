@@ -53,12 +53,6 @@ const char *identifier_symbol(Sexp *ast) {
   UTILITY_ASSERT(sexp_is_symbol(ast));
   return sexp_get_symbol(ast);
 }
-const char *integer_symbol(Sexp *ast) {
-  UTILITY_ASSERT(AST_INTEGER_CONSTANT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  UTILITY_ASSERT(sexp_is_symbol(ast));
-  return sexp_get_symbol(ast);
-}
 
 Builder *builder_new(Module *module) {
   Builder *builder = UTILITY_MALLOC(Builder);
