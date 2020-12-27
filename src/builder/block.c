@@ -43,6 +43,10 @@ void block_append(Block *dst, Block *src) {
 Bool block_empty(Block *block) {
   return vector_empty(block->vec);
 }
+Instruction *block_last(Block *block) {
+  Value *last = vector_back(block->vec);
+  return last ? value_as_instruction(last) : NULL;
+}
 Bool block_is_terminated(Block *block) {
   if (block_empty(block)) {
     return false;
