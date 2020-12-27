@@ -2,10 +2,10 @@
 
 #include "ast/tag.h"
 #include "builder.h"
+#include "global.h"
 #include "instruction.h"
 #include "sexp.h"
 #include "utility.h"
-#include "value.h"
 
 static Value *builder_declarator_initializer(Builder *builder, Sexp *ast) {
   Value *src, *dst;
@@ -51,17 +51,15 @@ void builder_declarator(Builder *builder, Sexp *ast) {
 }
 void builder_direct_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
-  switch (sexp_length(ast)) {
-  case 2:
-    builder_instruction_alloca(builder, sexp_at(ast, 1));
-    break;
-  case 4:
+  if (2 == sexp_length(ast)) {
+    if (builder_is_local(builder)) {
+      builder_instruction_alloca(builder, sexp_at(ast, 1));
+    } else {
+      builder_new_global(builder, sexp_at(ast, 1));
+    }
+  } else {
+    UTILITY_ASSERT(4 == sexp_length(ast));
+    UTILITY_ASSERT(builder_is_local(builder));
     builder_declarator(builder, sexp_at(ast, 2));
-    break;
-  case 5:
-    /* FALLTHROUGH */
-  default:
-    UTILITY_ASSERT(0);
-    break;
   }
 }

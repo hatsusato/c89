@@ -2,23 +2,15 @@
 
 #include "ast/tag.h"
 #include "builder.h"
-#include "global.h"
+#include "declaration.h"
 #include "instruction.h"
-#include "lexical.h"
 #include "sexp.h"
 #include "utility.h"
-#include "value.h"
 
-static Global *builder_exteral_direct_declarator(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
-  UTILITY_ASSERT(2 == sexp_length(ast));
-  builder_new_global(builder, sexp_at(ast, 1));
-  return value_as_global(builder_get_value(builder));
-}
-static Global *builder_external_declarator(Builder *builder, Sexp *ast) {
+static void builder_external_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DECLARATOR == sexp_get_tag(ast));
   UTILITY_ASSERT(2 == sexp_length(ast));
-  return builder_exteral_direct_declarator(builder, sexp_at(ast, 1));
+  builder_direct_declarator(builder, sexp_at(ast, 1));
 }
 static void builder_external_init_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_INIT_DECLARATOR == sexp_get_tag(ast));
