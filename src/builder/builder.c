@@ -21,6 +21,7 @@ struct struct_Builder {
   Table *table;
   Function *func;
   Instruction *retval;
+  Value *value;
   Block *next[BUILDER_NEXT_COUNT];
 };
 
@@ -43,6 +44,7 @@ static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
   builder->func = NULL;
   builder->retval = NULL;
+  builder->value = NULL;
   while (tag < BUILDER_NEXT_COUNT) {
     builder_set_next(builder, tag++, NULL);
   }
@@ -85,12 +87,6 @@ void builder_function_finish(Builder *builder) {
   table_clear(builder->table);
   builder_finish_next(builder);
 }
-Module *builder_get_module(Builder *builder) {
-  return builder->module;
-}
-Instruction *builder_get_retval(Builder *builder) {
-  return builder->retval;
-}
 void builder_push_table(Builder *builder) {
   table_push(builder->table);
 }
@@ -128,6 +124,19 @@ void builder_jump_block(Builder *builder, Block *dest) {
   UTILITY_ASSERT(dest);
   builder_set_next(builder, BUILDER_NEXT_CURRENT, dest);
   function_insert(builder->func, dest);
+}
+Module *builder_get_module(Builder *builder) {
+  return builder->module;
+}
+Instruction *builder_get_retval(Builder *builder) {
+  return builder->retval;
+}
+Value *builder_get_value(Builder *builder) {
+  return builder->value;
+}
+Value *builder_set_value(Builder *builder, Value *value) {
+  UTILITY_SWAP(Value *, builder->value, value);
+  return value;
 }
 Block *builder_get_next(Builder *builder, BuilderNextTag tag) {
   return builder->next[tag];
