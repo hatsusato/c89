@@ -63,7 +63,7 @@ const char *integer_symbol(Sexp *ast) {
 Builder *builder_new(Module *module) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->module = module;
-  builder->table = table_new(module);
+  builder->table = table_new();
   builder_finish_next(builder);
   return builder;
 }
@@ -116,7 +116,7 @@ void builder_insert_local(Builder *builder, Sexp *ident, Instruction *instr) {
 }
 void builder_find_identifier(Builder *builder, Sexp *ident) {
   const char *symbol = identifier_symbol(ident);
-  Value *value = table_find(builder->table, symbol);
+  Value *value = table_find(builder->table, symbol, builder->module);
   builder_set_value(builder, value);
 }
 void builder_jump_block(Builder *builder, Block *dest) {

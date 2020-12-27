@@ -7,7 +7,6 @@
 #include "vector.h"
 
 struct struct_Table {
-  Module *module;
   Map *global;
   Vector *stack;
   Map *labels;
@@ -22,9 +21,8 @@ static void table_delete_map(ElemType map) {
   map_delete(map);
 }
 
-Table *table_new(Module *module) {
+Table *table_new(void) {
   Table *table = UTILITY_MALLOC(Table);
-  table->module = module;
   table->global = table_new_map();
   table->stack = vector_new(table_delete_map);
   table->labels = table_new_map();
@@ -54,7 +52,7 @@ void table_insert_local(Table *table, const char *key, Instruction *val) {
   UTILITY_ASSERT(!vector_empty(table->stack));
   map_insert(vector_back(table->stack), (ElemType)key, val);
 }
-Value *table_find(Table *table, const char *key) {
+Value *table_find(Table *table, const char *key, Module *module) {
   ElemType *found;
   ElemType *begin = vector_begin(table->stack);
   ElemType *end = vector_end(table->stack);
@@ -66,7 +64,7 @@ Value *table_find(Table *table, const char *key) {
   }
   found = map_find(table->global, (ElemType)key);
   if (found) {
-    module_insert_prior(table->module, *found);
+    module_insert_prior(module, *found);
     return *found;
   }
   return NULL;
