@@ -18,10 +18,11 @@ static Bool switch_new_case(Builder *builder) {
 }
 static void builder_guard(Builder *builder, Sexp *expr, Block *then_block,
                           Block *else_block) {
-  Value *lhs = builder_ast(builder, expr);
-  Constant *rhs = builder_new_integer(builder, "0");
-  Value *icmp;
-  builder_instruction_icmp_ne(builder, lhs, constant_as_value(rhs));
+  Value *lhs, *rhs, *icmp;
+  lhs = builder_ast(builder, expr);
+  builder_new_integer(builder, "0");
+  rhs = builder_get_value(builder);
+  builder_instruction_icmp_ne(builder, lhs, rhs);
   icmp = builder_get_value(builder);
   builder_instruction_br_cond(builder, icmp, then_block, else_block);
 }

@@ -15,6 +15,6 @@ Value *builder_identifier(Builder *builder, Sexp *ast) {
 }
 Value *builder_integer_constant(Builder *builder, Sexp *ast) {
   const char *symbol = integer_symbol(ast);
-  Constant *integer = builder_new_integer(builder, symbol);
-  return constant_as_value(integer);
+  builder_new_integer(builder, symbol);
+  return builder_get_value(builder);
 }

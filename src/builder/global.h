@@ -13,6 +13,6 @@ void global_set_prior(Global *);
 void global_print(Global *);
 void global_pretty(Global *);
 
-Global *builder_new_global(Builder *, Sexp *);
+void builder_new_global(Builder *, Sexp *);
 
 #endif /* INCLUDE_GUARD_BFACDD17_F309_4216_B735_6340D39BC17A */

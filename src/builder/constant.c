@@ -25,9 +25,9 @@ void constant_print(Constant *constant) {
   printf("%s", constant->symbol);
 }
 
-Constant *builder_new_integer(Builder *builder, const char *integer) {
+void builder_new_integer(Builder *builder, const char *integer) {
   Module *module = builder_get_module(builder);
   Constant *constant = module_new_constant(module);
   constant->symbol = integer;
-  return constant;
+  builder_set_value(builder, constant_as_value(constant));
 }
