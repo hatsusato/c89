@@ -2,7 +2,6 @@
 
 #include "../block.h"
 #include "../builder.h"
-#include "../instruction.h"
 #include "struct.h"
 
 static Instruction *builder_new_instruction(Builder *builder,

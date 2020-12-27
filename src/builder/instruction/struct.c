@@ -1,6 +1,5 @@
-#include "instruction.h"
+#include "struct.h"
 
-#include "instruction/struct.h"
 #include "utility.h"
 
 Instruction *instruction_new(void) {
@@ -22,7 +21,7 @@ int instruction_set_id(Instruction *instr, int id) {
 #define DO_HANDLE(name, str) \
   case name:                 \
     break;
-#include "instruction/terminator.def"
+#include "terminator.def"
 #undef DO_HANDLE
   case INSTRUCTION_STORE:
     break;
