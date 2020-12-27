@@ -149,56 +149,75 @@ Block *builder_set_next(Builder *builder, BuilderNextTag tag, Block *next) {
   return next;
 }
 
-static Value *builder_ast_map(Builder *builder, Sexp *ast) {
+static void builder_ast_map(Builder *builder, Sexp *ast) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     builder_ast(builder, sexp_car(ast));
   }
-  return NULL;
 }
-Value *builder_ast(Builder *builder, Sexp *ast) {
+void builder_ast(Builder *builder, Sexp *ast) {
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
-    return builder_identifier(builder, ast);
+    builder_identifier(builder, ast);
+    break;
   case AST_INTEGER_CONSTANT:
-    return builder_integer_constant(builder, ast);
+    builder_integer_constant(builder, ast);
+    break;
   case AST_ADDITIVE_EXPRESSION:
-    return builder_additive_expression(builder, ast);
+    builder_additive_expression(builder, ast);
+    break;
   case AST_ASSIGNMENT_EXPRESSION:
-    return builder_assignment_expression(builder, ast);
+    builder_assignment_expression(builder, ast);
+    break;
   case AST_CONSTANT_EXPRESSION:
-    return builder_constant_expression(builder, ast);
+    builder_constant_expression(builder, ast);
+    break;
   case AST_DECLARATION:
-    return builder_declaration(builder, ast);
+    builder_declaration(builder, ast);
+    break;
   case AST_INIT_DECLARATOR_LIST:
-    return builder_ast_map(builder, ast);
+    builder_ast_map(builder, ast);
+    break;
   case AST_INIT_DECLARATOR:
-    return builder_init_declarator(builder, ast);
+    builder_init_declarator(builder, ast);
+    break;
   case AST_STATEMENT:
-    return builder_statement(builder, ast);
+    builder_statement(builder, ast);
+    break;
   case AST_LABELED_STATEMENT:
-    return builder_labeled_statement(builder, ast);
+    builder_labeled_statement(builder, ast);
+    break;
   case AST_COMPOUND_STATEMENT:
-    return builder_compound_statement(builder, ast);
+    builder_compound_statement(builder, ast);
+    break;
   case AST_DECLARATION_LIST:
-    return builder_ast_map(builder, ast);
+    builder_ast_map(builder, ast);
+    break;
   case AST_STATEMENT_LIST:
-    return builder_ast_map(builder, ast);
+    builder_ast_map(builder, ast);
+    break;
   case AST_EXPRESSION_STATEMENT:
-    return builder_expression_statement(builder, ast);
+    builder_expression_statement(builder, ast);
+    break;
   case AST_SELECTION_STATEMENT:
-    return builder_selection_statement(builder, ast);
+    builder_selection_statement(builder, ast);
+    break;
   case AST_ITERATION_STATEMENT:
-    return builder_iteration_statement(builder, ast);
+    builder_iteration_statement(builder, ast);
+    break;
   case AST_JUMP_STATEMENT:
-    return builder_jump_statement(builder, ast);
+    builder_jump_statement(builder, ast);
+    break;
   case AST_TRANSLATION_UNIT:
-    return builder_ast_map(builder, ast);
+    builder_ast_map(builder, ast);
+    break;
   case AST_EXTERNAL_DECLARATION:
-    return builder_external_declaration(builder, ast);
+    builder_external_declaration(builder, ast);
+    break;
   case AST_FUNCTION_DEFINITION:
-    return builder_function_definition(builder, ast);
+    builder_function_definition(builder, ast);
+    break;
   default:
     UTILITY_ASSERT(0);
-    return NULL;
+    break;
   }
 }

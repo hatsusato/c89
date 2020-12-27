@@ -37,7 +37,7 @@ static void builder_function_return(Builder *builder) {
   builder_instruction_ret(builder, instr);
 }
 
-Value *builder_external_declaration(Builder *builder, Sexp *ast) {
+void builder_external_declaration(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_EXTERNAL_DECLARATION == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   UTILITY_ASSERT(AST_DECLARATION == sexp_get_tag(ast));
@@ -46,9 +46,8 @@ Value *builder_external_declaration(Builder *builder, Sexp *ast) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     builder_external_init_declarator(builder, sexp_car(ast));
   }
-  return NULL;
 }
-Value *builder_function_definition(Builder *builder, Sexp *ast) {
+void builder_function_definition(Builder *builder, Sexp *ast) {
   Block *ret = builder_function_init(builder, ast);
   UTILITY_ASSERT(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   UTILITY_ASSERT(5 == sexp_length(ast));
@@ -59,5 +58,4 @@ Value *builder_function_definition(Builder *builder, Sexp *ast) {
     builder_function_return(builder);
   }
   builder_function_finish(builder);
-  return NULL;
 }

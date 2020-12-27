@@ -17,47 +17,51 @@ static Value *builder_declarator_initializer(Builder *builder, Sexp *ast) {
   return builder_get_value(builder);
 }
 
-Value *builder_declaration(Builder *builder, Sexp *ast) {
+void builder_declaration(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DECLARATION == sexp_get_tag(ast));
   builder_ast(builder, sexp_at(ast, 2));
-  return builder_get_value(builder);
 }
-Value *builder_init_declarator(Builder *builder, Sexp *ast) {
+void builder_init_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_INIT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
-    return builder_declarator(builder, sexp_at(ast, 1));
+    builder_declarator(builder, sexp_at(ast, 1));
+    break;
   case 4:
-    return builder_declarator_initializer(builder, ast);
+    builder_declarator_initializer(builder, ast);
+    break;
   default:
     UTILITY_ASSERT(0);
-    return NULL;
+    break;
   }
 }
-Value *builder_declarator(Builder *builder, Sexp *ast) {
+void builder_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
-    return builder_direct_declarator(builder, sexp_at(ast, 1));
+    builder_direct_declarator(builder, sexp_at(ast, 1));
+    break;
   case 3:
-    return builder_direct_declarator(builder, sexp_at(ast, 2));
+    builder_direct_declarator(builder, sexp_at(ast, 2));
+    break;
   default:
     UTILITY_ASSERT(0);
-    return NULL;
+    break;
   }
 }
-Value *builder_direct_declarator(Builder *builder, Sexp *ast) {
+void builder_direct_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DIRECT_DECLARATOR == sexp_get_tag(ast));
   switch (sexp_length(ast)) {
   case 2:
     builder_instruction_alloca(builder, sexp_at(ast, 1));
-    return builder_get_value(builder);
+    break;
   case 4:
-    return builder_declarator(builder, sexp_at(ast, 2));
+    builder_declarator(builder, sexp_at(ast, 2));
+    break;
   case 5:
     /* FALLTHROUGH */
   default:
     UTILITY_ASSERT(0);
-    return NULL;
+    break;
   }
 }

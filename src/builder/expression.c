@@ -7,7 +7,7 @@
 #include "utility.h"
 #include "value.h"
 
-Value *builder_additive_expression(Builder *builder, Sexp *ast) {
+void builder_additive_expression(Builder *builder, Sexp *ast) {
   Value *lhs, *rhs;
   builder_ast(builder, sexp_at(ast, 1));
   lhs = builder_get_value(builder);
@@ -25,9 +25,8 @@ Value *builder_additive_expression(Builder *builder, Sexp *ast) {
     UTILITY_ASSERT(0);
     break;
   }
-  return builder_get_value(builder);
 }
-Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
+void builder_assignment_expression(Builder *builder, Sexp *ast) {
   Value *lhs, *rhs;
   UTILITY_ASSERT(AST_ASSIGNMENT_EXPRESSION == sexp_get_tag(ast));
   UTILITY_ASSERT(AST_ASSIGN == sexp_get_tag(sexp_at(ast, 2)));
@@ -35,10 +34,8 @@ Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 3));
   rhs = builder_get_value(builder);
   builder_instruction_store(builder, rhs, lhs);
-  return builder_get_value(builder);
 }
-Value *builder_constant_expression(Builder *builder, Sexp *ast) {
+void builder_constant_expression(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_CONSTANT_EXPRESSION == sexp_get_tag(ast));
   builder_ast(builder, sexp_at(ast, 1));
-  return builder_get_value(builder);
 }

@@ -39,6 +39,6 @@ Value *builder_get_value(Builder *);
 Value *builder_set_value(Builder *, Value *);
 Block *builder_get_next(Builder *, BuilderNextTag);
 Block *builder_set_next(Builder *, BuilderNextTag, Block *);
-Value *builder_ast(Builder *, Sexp *);
+void builder_ast(Builder *, Sexp *);
 
 #endif /* INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E */
