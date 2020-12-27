@@ -34,7 +34,8 @@ static void builder_branch(Builder *builder, Sexp *ast, Block *current,
   builder_instruction_br(builder, next);
 }
 static void builder_label_statement(Builder *builder, Sexp *ast) {
-  Block *next = builder_label(builder, sexp_at(ast, 1));
+  const char *label = identifier_symbol(sexp_at(ast, 1));
+  Block *next = builder_label(builder, label);
   builder_instruction_br(builder, next);
   builder_jump_block(builder, next);
   builder_ast(builder, sexp_at(ast, 3));
@@ -163,7 +164,8 @@ static void builder_for_statement(Builder *builder, Sexp *ast) {
   builder_jump_block(builder, next);
 }
 static void builder_goto_statement(Builder *builder, Sexp *ast) {
-  Block *next = builder_label(builder, sexp_at(ast, 2));
+  const char *label = identifier_symbol(sexp_at(ast, 2));
+  Block *next = builder_label(builder, label);
   builder_instruction_br(builder, next);
 }
 static void builder_continue_statement(Builder *builder) {

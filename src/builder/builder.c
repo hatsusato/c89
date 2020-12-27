@@ -90,8 +90,7 @@ void builder_init_global(Builder *builder, Value *dst, Value *src) {
   global_set_init(global, init);
   module_insert_prior(builder->module, global);
 }
-Block *builder_label(Builder *builder, Sexp *ident) {
-  const char *label = identifier_symbol(ident);
+Block *builder_label(Builder *builder, const char *label) {
   Block *block = table_label_find(builder->table, label);
   if (!block) {
     block = builder_new_block(builder);

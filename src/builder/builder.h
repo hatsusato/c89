@@ -27,7 +27,7 @@ void builder_function_finish(Builder *);
 void builder_push_table(Builder *);
 void builder_pop_table(Builder *);
 void builder_init_global(Builder *, Value *, Value *);
-Block *builder_label(Builder *, Sexp *);
+Block *builder_label(Builder *, const char *);
 void builder_insert_global(Builder *, Sexp *, Global *);
 void builder_insert_local(Builder *, Sexp *, Instruction *);
 void builder_find_identifier(Builder *, const char *);
