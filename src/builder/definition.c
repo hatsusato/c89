@@ -7,17 +7,6 @@
 #include "sexp.h"
 #include "utility.h"
 
-static void builder_external_init_declarator(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_INIT_DECLARATOR == sexp_get_tag(ast));
-  UTILITY_ASSERT(2 == sexp_length(ast) || 4 == sexp_length(ast));
-  builder_declarator(builder, sexp_at(ast, 1));
-  if (4 == sexp_length(ast)) {
-    Value *global = builder_get_value(builder), *init;
-    builder_ast(builder, sexp_at(ast, 3));
-    init = builder_get_value(builder);
-    builder_init_global(builder, global, init);
-  }
-}
 static void builder_function_return(Builder *builder) {
   Value *retval;
   retval = builder_get_retval(builder);
@@ -33,7 +22,7 @@ void builder_external_declaration(Builder *builder, Sexp *ast) {
   ast = sexp_at(ast, 2);
   UTILITY_ASSERT(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
-    builder_external_init_declarator(builder, sexp_car(ast));
+    builder_init_declarator(builder, sexp_car(ast));
   }
 }
 void builder_function_definition(Builder *builder, Sexp *ast) {

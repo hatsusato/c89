@@ -7,32 +7,23 @@
 #include "sexp.h"
 #include "utility.h"
 
-static Value *builder_declarator_initializer(Builder *builder, Sexp *ast) {
-  Value *src, *dst;
-  builder_ast(builder, sexp_at(ast, 3));
-  src = builder_get_value(builder);
-  builder_declarator(builder, sexp_at(ast, 1));
-  dst = builder_get_value(builder);
-  builder_instruction_store(builder, src, dst);
-  return builder_get_value(builder);
-}
-
 void builder_declaration(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DECLARATION == sexp_get_tag(ast));
   builder_ast(builder, sexp_at(ast, 2));
 }
 void builder_init_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_INIT_DECLARATOR == sexp_get_tag(ast));
-  switch (sexp_length(ast)) {
-  case 2:
-    builder_declarator(builder, sexp_at(ast, 1));
-    break;
-  case 4:
-    builder_declarator_initializer(builder, ast);
-    break;
-  default:
-    UTILITY_ASSERT(0);
-    break;
+  UTILITY_ASSERT(2 == sexp_length(ast) || 4 == sexp_length(ast));
+  builder_declarator(builder, sexp_at(ast, 1));
+  if (4 == sexp_length(ast)) {
+    Value *dst = builder_get_value(builder), *src;
+    builder_ast(builder, sexp_at(ast, 3));
+    src = builder_get_value(builder);
+    if (builder_is_local(builder)) {
+      builder_instruction_store(builder, src, dst);
+    } else {
+      builder_init_global(builder, dst, src);
+    }
   }
 }
 void builder_declarator(Builder *builder, Sexp *ast) {
