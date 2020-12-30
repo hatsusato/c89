@@ -33,18 +33,25 @@ static void builder_do_while_statement(Builder *builder, Sexp *ast) {
   builder_guard_statement(builder, sexp_at(ast, 5), body, next);
   builder_jump_block(builder, next);
 }
+static Block *builder_for_guard_statement(Builder *builder, Sexp *ast,
+                                          Block *body, Block *next) {
+  if (sexp_is_nil(ast)) {
+    builder_instruction_br(builder, body);
+    return body;
+  } else {
+    Block *guard = builder_new_block(builder);
+    builder_instruction_br(builder, guard);
+    builder_jump_block(builder, guard);
+    builder_guard_statement(builder, ast, body, next);
+    return guard;
+  }
+}
 static void builder_for_statement(Builder *builder, Sexp *ast) {
   Block *guard, *step;
   Block *body = builder_new_block(builder);
   Block *next = builder_new_block(builder);
   builder_ast(builder, sexp_at(ast, 3));
-  guard = sexp_is_nil(sexp_at(ast, 5)) ? body : builder_new_block(builder);
-  builder_instruction_br(builder, guard);
-  if (!sexp_is_nil(sexp_at(ast, 5))) {
-    builder_jump_block(builder, guard);
-    UTILITY_ASSERT(sexp_at(ast, 5));
-    builder_guard_statement(builder, sexp_at(ast, 5), body, next);
-  }
+  guard = builder_for_guard_statement(builder, sexp_at(ast, 5), body, next);
   step = sexp_is_nil(sexp_at(ast, 7)) ? guard : builder_new_block(builder);
   builder_jump_block(builder, body);
   builder_body_statement(builder, sexp_at(ast, 9), next, step);
