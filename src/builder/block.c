@@ -43,14 +43,9 @@ void block_append(Block *dst, Block *src) {
 Bool block_empty(Block *block) {
   return vector_empty(block->vec);
 }
-Bool block_is_terminated(Block *block) {
-  if (block_empty(block)) {
-    return false;
-  } else {
-    Instruction *last = vector_back(block->vec);
-    UTILITY_ASSERT(last);
-    return instruction_is_terminator(last);
-  }
+Instruction *block_last(Block *block) {
+  Value *last = vector_back(block->vec);
+  return last ? value_as_instruction(last) : NULL;
 }
 int block_set_id(Block *block, int id) {
   ElemType *begin = vector_begin(block->vec);

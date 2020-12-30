@@ -50,10 +50,10 @@ void global_pretty(Global *global) {
   printf(", align 4\n");
 }
 
-Global *builder_new_global(Builder *builder, Sexp *ident) {
+void builder_new_global(Builder *builder, const char *symbol) {
   Module *module = builder_get_module(builder);
   Global *global = module_new_global(module);
-  global->name = identifier_symbol(ident);
-  builder_insert_global(builder, ident, global);
-  return global;
+  global->name = symbol;
+  builder_insert_global(builder, symbol, global);
+  builder_set_value(builder, global_as_value(global));
 }

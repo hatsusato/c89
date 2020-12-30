@@ -2,8 +2,8 @@
 #define INCLUDE_GUARD_9DB08462_C244_4BCE_B291_9362A493469F
 
 #include "scanner/yyscan.h"
-#include "sexp/type.h"
-#include "types.h"
+#include "sexp/types.h"
+#include "utility/types.h"
 
 void scanner_finish(yyscan_t, Sexp *);
 const char *scanner_token(yyscan_t);

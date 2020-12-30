@@ -1,6 +1,5 @@
 #include "compare.h"
 
-#include "types.h"
 #include "utility.h"
 
 struct struct_Compare {

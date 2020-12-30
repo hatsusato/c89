@@ -5,35 +5,39 @@
 #include "instruction.h"
 #include "sexp.h"
 #include "utility.h"
-#include "value.h"
 
-Value *builder_additive_expression(Builder *builder, Sexp *ast) {
-  Value *lhs = builder_ast(builder, sexp_at(ast, 1));
-  Value *rhs = builder_ast(builder, sexp_at(ast, 3));
-  Instruction *instr = NULL;
+void builder_additive_expression(Builder *builder, Sexp *ast) {
+  Value *lhs, *rhs;
   UTILITY_ASSERT(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
+  builder_ast(builder, sexp_at(ast, 1));
+  lhs = builder_get_value(builder);
+  builder_ast(builder, sexp_at(ast, 3));
+  rhs = builder_get_value(builder);
   switch (sexp_get_tag(sexp_at(ast, 2))) {
   case AST_PLUS:
-    instr = builder_instruction_add(builder, lhs, rhs);
+    builder_instruction_add(builder, lhs, rhs);
     break;
   case AST_MINUS:
-    instr = builder_instruction_sub(builder, lhs, rhs);
+    builder_instruction_sub(builder, lhs, rhs);
     break;
   default:
     UTILITY_ASSERT(0);
     break;
   }
-  return instruction_as_value(instr);
 }
-Value *builder_assignment_expression(Builder *builder, Sexp *ast) {
-  Value *lhs = builder_find_identifier(builder, sexp_at(ast, 1));
-  Value *rhs = builder_ast(builder, sexp_at(ast, 3));
-  Instruction *instr = builder_instruction_store(builder, rhs, lhs);
+void builder_assignment_expression(Builder *builder, Sexp *ast) {
+  const char *symbol;
+  Value *lhs, *rhs;
   UTILITY_ASSERT(AST_ASSIGNMENT_EXPRESSION == sexp_get_tag(ast));
   UTILITY_ASSERT(AST_ASSIGN == sexp_get_tag(sexp_at(ast, 2)));
-  return instruction_as_value(instr);
+  symbol = identifier_symbol(sexp_at(ast, 1));
+  builder_find_identifier(builder, symbol);
+  lhs = builder_get_value(builder);
+  builder_ast(builder, sexp_at(ast, 3));
+  rhs = builder_get_value(builder);
+  builder_instruction_store(builder, rhs, lhs);
 }
-Value *builder_constant_expression(Builder *builder, Sexp *ast) {
+void builder_constant_expression(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_CONSTANT_EXPRESSION == sexp_get_tag(ast));
-  return builder_ast(builder, sexp_at(ast, 1));
+  builder_ast(builder, sexp_at(ast, 1));
 }
