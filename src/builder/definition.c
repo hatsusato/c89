@@ -2,18 +2,9 @@
 
 #include "ast/tag.h"
 #include "builder.h"
-#include "declaration.h"
 #include "instruction.h"
 #include "sexp.h"
 #include "utility.h"
-
-static void builder_function_return(Builder *builder) {
-  Value *retval;
-  retval = builder_get_retval(builder);
-  builder_instruction_load(builder, retval);
-  retval = builder_get_value(builder);
-  builder_instruction_ret(builder, retval);
-}
 
 void builder_external_declaration(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_EXTERNAL_DECLARATION == sexp_get_tag(ast));
@@ -28,9 +19,13 @@ void builder_function_definition(Builder *builder, Sexp *ast) {
   ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
   builder_ast(builder, sexp_at(ast, 4));
   if (ret) {
+    Value *retval;
     builder_instruction_br(builder, ret);
     builder_jump_block(builder, ret);
-    builder_function_return(builder);
+    retval = builder_get_retval(builder);
+    builder_instruction_load(builder, retval);
+    retval = builder_get_value(builder);
+    builder_instruction_ret(builder, retval);
   }
   builder_function_finish(builder);
 }
