@@ -15,6 +15,11 @@ static Instruction *builder_new_instruction(Builder *builder,
   builder_set_value(builder, instruction_as_value(instr));
   return instr;
 }
+static void builder_instruction_unary(Builder *builder, InstructionKind kind,
+                                      Value *value) {
+  Instruction *instr = builder_new_instruction(builder, kind);
+  instr->operands[0] = value;
+}
 static Bool instruction_is_terminator(Instruction *instr) {
   switch (instr->ikind) {
 #define DO_HANDLE(name, str) \
@@ -28,15 +33,13 @@ static Bool instruction_is_terminator(Instruction *instr) {
 }
 
 void builder_instruction_ret(Builder *builder, Value *expr) {
-  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_RET);
-  instr->operands[0] = expr;
+  builder_instruction_unary(builder, INSTRUCTION_RET, expr);
 }
 void builder_instruction_br(Builder *builder, Block *label) {
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
   Instruction *last = block_last(current);
   if (!last || !instruction_is_terminator(last)) {
-    Instruction *instr = builder_new_instruction(builder, INSTRUCTION_BR);
-    instr->operands[0] = block_as_value(label);
+    builder_instruction_unary(builder, INSTRUCTION_BR, block_as_value(label));
   }
 }
 void builder_instruction_br_cond(Builder *builder, Value *expr,
@@ -47,8 +50,7 @@ void builder_instruction_br_cond(Builder *builder, Value *expr,
   instr->operands[2] = block_as_value(else_label);
 }
 void builder_instruction_switch(Builder *builder, Value *expr) {
-  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_SWITCH);
-  instr->operands[0] = expr;
+  builder_instruction_unary(builder, INSTRUCTION_SWITCH, expr);
 }
 void builder_instruction_switch_finish(Builder *builder, Instruction *instr) {
   Block *default_label = builder_get_next(builder, BUILDER_NEXT_DEFAULT);
@@ -82,8 +84,7 @@ void builder_instruction_alloca(Builder *builder, const char *symbol) {
   builder_insert_local(builder, symbol, instr);
 }
 void builder_instruction_load(Builder *builder, Value *src) {
-  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_LOAD);
-  instr->operands[0] = src;
+  builder_instruction_unary(builder, INSTRUCTION_LOAD, src);
 }
 void builder_instruction_store(Builder *builder, Value *src, Value *dst) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_STORE);
