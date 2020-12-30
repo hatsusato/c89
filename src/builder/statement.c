@@ -111,7 +111,9 @@ static void builder_while_statement(Builder *builder, Sexp *ast) {
     Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, next);
     Block *next_continue =
         builder_set_next(builder, BUILDER_NEXT_CONTINUE, guard);
-    builder_branch(builder, sexp_at(ast, 5), body, guard);
+    builder_jump_block(builder, body);
+    builder_ast(builder, sexp_at(ast, 5));
+    builder_instruction_br(builder, guard);
     builder_set_next(builder, BUILDER_NEXT_BREAK, next_break);
     builder_set_next(builder, BUILDER_NEXT_CONTINUE, next_continue);
   }
@@ -126,7 +128,9 @@ static void builder_do_while_statement(Builder *builder, Sexp *ast) {
     Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, next);
     Block *next_continue =
         builder_set_next(builder, BUILDER_NEXT_CONTINUE, guard);
-    builder_branch(builder, sexp_at(ast, 2), body, guard);
+    builder_jump_block(builder, body);
+    builder_ast(builder, sexp_at(ast, 2));
+    builder_instruction_br(builder, guard);
     builder_set_next(builder, BUILDER_NEXT_BREAK, next_break);
     builder_set_next(builder, BUILDER_NEXT_CONTINUE, next_continue);
   }
@@ -151,12 +155,16 @@ static void builder_for_statement(Builder *builder, Sexp *ast) {
     Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, next);
     Block *next_continue =
         builder_set_next(builder, BUILDER_NEXT_CONTINUE, step);
-    builder_branch(builder, sexp_at(ast, 9), body, step);
+    builder_jump_block(builder, body);
+    builder_ast(builder, sexp_at(ast, 9));
+    builder_instruction_br(builder, step);
     builder_set_next(builder, BUILDER_NEXT_BREAK, next_break);
     builder_set_next(builder, BUILDER_NEXT_CONTINUE, next_continue);
   }
   if (!sexp_is_nil(sexp_at(ast, 7))) {
-    builder_branch(builder, sexp_at(ast, 7), step, guard);
+    builder_jump_block(builder, step);
+    builder_ast(builder, sexp_at(ast, 7));
+    builder_instruction_br(builder, guard);
   }
   builder_jump_block(builder, next);
 }
