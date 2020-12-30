@@ -227,16 +227,11 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
   case AST_IF:
-    switch (sexp_length(ast)) {
-    case 6:
+    if (6 == sexp_length(ast)) {
       builder_if_statement(builder, ast);
-      break;
-    case 8:
+    } else {
+      UTILITY_ASSERT(8 == sexp_length(ast));
       builder_if_else_statement(builder, ast);
-      break;
-    default:
-      UTILITY_ASSERT(0);
-      break;
     }
     break;
   case AST_SWITCH:
