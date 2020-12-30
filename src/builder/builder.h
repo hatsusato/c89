@@ -36,7 +36,7 @@ Bool builder_is_local(Builder *);
 Module *builder_get_module(Builder *);
 Value *builder_get_retval(Builder *);
 Value *builder_get_value(Builder *);
-Value *builder_set_value(Builder *, Value *);
+void builder_set_value(Builder *, Value *);
 Block *builder_get_next(Builder *, BuilderNextTag);
 Block *builder_set_next(Builder *, BuilderNextTag, Block *);
 void builder_ast(Builder *, Sexp *);

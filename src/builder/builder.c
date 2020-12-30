@@ -126,9 +126,8 @@ Value *builder_get_retval(Builder *builder) {
 Value *builder_get_value(Builder *builder) {
   return builder->value;
 }
-Value *builder_set_value(Builder *builder, Value *value) {
-  UTILITY_SWAP(Value *, builder->value, value);
-  return value;
+void builder_set_value(Builder *builder, Value *value) {
+  builder->value = value;
 }
 Block *builder_get_next(Builder *builder, BuilderNextTag tag) {
   return builder->next[tag];
