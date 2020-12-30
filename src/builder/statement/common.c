@@ -1,8 +1,6 @@
 #include "common.h"
 
-#include "../builder.h"
 #include "../constant.h"
-#include "../instruction.h"
 
 void builder_guard_statement(Builder *builder, Sexp *expr, Block *then_block,
                              Block *else_block) {

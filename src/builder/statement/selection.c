@@ -1,5 +1,3 @@
-#include "selection.h"
-
 #include "common.h"
 
 static void builder_branch(Builder *builder, Sexp *ast, Block *current,
