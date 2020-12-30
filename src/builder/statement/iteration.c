@@ -46,20 +46,27 @@ static Block *builder_for_guard_statement(Builder *builder, Sexp *ast,
     return guard;
   }
 }
+static void builder_for_step_statement(Builder *builder, Sexp *ast, Sexp *body,
+                                       Block *guard, Block *next) {
+  if (sexp_is_nil(ast)) {
+    builder_body_statement(builder, body, next, guard);
+  } else {
+    Block *step = builder_new_block(builder);
+    builder_body_statement(builder, body, next, step);
+    builder_jump_block(builder, step);
+    builder_ast(builder, ast);
+    builder_instruction_br(builder, guard);
+  }
+}
 static void builder_for_statement(Builder *builder, Sexp *ast) {
-  Block *guard, *step;
+  Block *guard;
   Block *body = builder_new_block(builder);
   Block *next = builder_new_block(builder);
   builder_ast(builder, sexp_at(ast, 3));
   guard = builder_for_guard_statement(builder, sexp_at(ast, 5), body, next);
-  step = sexp_is_nil(sexp_at(ast, 7)) ? guard : builder_new_block(builder);
   builder_jump_block(builder, body);
-  builder_body_statement(builder, sexp_at(ast, 9), next, step);
-  if (!sexp_is_nil(sexp_at(ast, 7))) {
-    builder_jump_block(builder, step);
-    builder_ast(builder, sexp_at(ast, 7));
-    builder_instruction_br(builder, guard);
-  }
+  builder_for_step_statement(builder, sexp_at(ast, 7), sexp_at(ast, 9), guard,
+                             next);
   builder_jump_block(builder, next);
 }
 
