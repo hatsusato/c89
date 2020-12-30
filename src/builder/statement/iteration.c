@@ -2,23 +2,11 @@
 
 #include "../block.h"
 #include "../builder.h"
-#include "../constant.h"
 #include "../instruction.h"
 #include "ast/tag.h"
+#include "common.h"
 #include "sexp.h"
 #include "utility.h"
-
-static void builder_guard(Builder *builder, Sexp *expr, Block *then_block,
-                          Block *else_block) {
-  Value *lhs, *rhs, *icmp;
-  builder_ast(builder, expr);
-  lhs = builder_get_value(builder);
-  builder_new_integer(builder, "0");
-  rhs = builder_get_value(builder);
-  builder_instruction_icmp_ne(builder, lhs, rhs);
-  icmp = builder_get_value(builder);
-  builder_instruction_br_cond(builder, icmp, then_block, else_block);
-}
 
 static void builder_while_statement(Builder *builder, Sexp *ast) {
   Block *guard = builder_new_block(builder);
@@ -26,7 +14,7 @@ static void builder_while_statement(Builder *builder, Sexp *ast) {
   Block *next = builder_new_block(builder);
   builder_instruction_br(builder, guard);
   builder_jump_block(builder, guard);
-  builder_guard(builder, sexp_at(ast, 3), body, next);
+  builder_guard_statement(builder, sexp_at(ast, 3), body, next);
   {
     Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, next);
     Block *next_continue =
@@ -55,7 +43,7 @@ static void builder_do_while_statement(Builder *builder, Sexp *ast) {
     builder_set_next(builder, BUILDER_NEXT_CONTINUE, next_continue);
   }
   builder_jump_block(builder, guard);
-  builder_guard(builder, sexp_at(ast, 5), body, next);
+  builder_guard_statement(builder, sexp_at(ast, 5), body, next);
   builder_jump_block(builder, next);
 }
 static void builder_for_statement(Builder *builder, Sexp *ast) {
@@ -68,7 +56,7 @@ static void builder_for_statement(Builder *builder, Sexp *ast) {
   if (!sexp_is_nil(sexp_at(ast, 5))) {
     builder_jump_block(builder, guard);
     UTILITY_ASSERT(sexp_at(ast, 5));
-    builder_guard(builder, sexp_at(ast, 5), body, next);
+    builder_guard_statement(builder, sexp_at(ast, 5), body, next);
   }
   step = sexp_is_nil(sexp_at(ast, 7)) ? guard : builder_new_block(builder);
   {
