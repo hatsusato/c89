@@ -146,6 +146,9 @@ static void builder_ast_map(Builder *builder, Sexp *ast) {
   }
 }
 void builder_ast(Builder *builder, Sexp *ast) {
+  if (sexp_is_nil(ast)) {
+    return;
+  }
   switch (sexp_get_tag(ast)) {
   case AST_IDENTIFIER:
     builder_identifier(builder, ast);

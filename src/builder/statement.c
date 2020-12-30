@@ -137,9 +137,7 @@ static void builder_for_statement(Builder *builder, Sexp *ast) {
   Block *guard, *step;
   Block *body = builder_new_block(builder);
   Block *next = builder_new_block(builder);
-  if (!sexp_is_nil(sexp_at(ast, 3))) {
-    builder_ast(builder, sexp_at(ast, 3));
-  }
+  builder_ast(builder, sexp_at(ast, 3));
   guard = sexp_is_nil(sexp_at(ast, 5)) ? body : builder_new_block(builder);
   builder_instruction_br(builder, guard);
   if (!sexp_is_nil(sexp_at(ast, 5))) {
@@ -223,10 +221,7 @@ void builder_compound_statement(Builder *builder, Sexp *ast) {
 }
 void builder_expression_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  if (!sexp_is_nil(ast)) {
-    builder_ast(builder, ast);
-  }
+  builder_ast(builder, sexp_at(ast, 1));
 }
 void builder_selection_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
