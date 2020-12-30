@@ -58,7 +58,8 @@ void builder_instruction_br_cond(Builder *builder, Value *expr,
 void builder_instruction_switch(Builder *builder, Value *expr) {
   builder_instruction_unary(builder, INSTRUCTION_SWITCH, expr);
 }
-void builder_instruction_switch_finish(Builder *builder, Instruction *instr) {
+void builder_instruction_switch_finish(Builder *builder, Value *value) {
+  Instruction *instr = value_as_instruction(value);
   Block *default_label = builder_get_next(builder, BUILDER_NEXT_DEFAULT);
   Block *break_label = builder_get_next(builder, BUILDER_NEXT_BREAK);
   Block *switch_block = builder_get_next(builder, BUILDER_NEXT_SWITCH);

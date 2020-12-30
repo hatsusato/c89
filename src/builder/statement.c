@@ -95,7 +95,7 @@ static void builder_switch_statement(Builder *builder, Sexp *ast) {
     Block *next_switch = builder_set_next(builder, BUILDER_NEXT_SWITCH, block);
     Value *instr = builder_get_value(builder);
     builder_ast(builder, sexp_at(ast, 5));
-    builder_instruction_switch_finish(builder, value_as_instruction(instr));
+    builder_instruction_switch_finish(builder, instr);
     builder_set_next(builder, BUILDER_NEXT_BREAK, next_break);
     builder_set_next(builder, BUILDER_NEXT_DEFAULT, next_default);
     builder_set_next(builder, BUILDER_NEXT_SWITCH, next_switch);
