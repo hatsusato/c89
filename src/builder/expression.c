@@ -5,7 +5,6 @@
 #include "instruction.h"
 #include "sexp.h"
 #include "utility.h"
-#include "value.h"
 
 void builder_additive_expression(Builder *builder, Sexp *ast) {
   Value *lhs, *rhs;

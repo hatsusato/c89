@@ -6,9 +6,7 @@
 #include "constant.h"
 #include "instruction.h"
 #include "sexp.h"
-#include "statement.h"
 #include "utility.h"
-#include "value.h"
 
 static Bool switch_new_case(Builder *builder) {
   Block *curr = builder_get_next(builder, BUILDER_NEXT_CURRENT);
