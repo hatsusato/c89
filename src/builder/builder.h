@@ -3,7 +3,6 @@
 
 #include "builder/types.h"
 #include "module.h"
-#include "sexp/types.h"
 
 typedef enum {
   BUILDER_NEXT_ALLOC,

@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_844AF8B7_3F06_45EB_B116_64C58036FD66
 #define INCLUDE_GUARD_844AF8B7_3F06_45EB_B116_64C58036FD66
 
+#include "sexp/types.h"
 #include "utility/types.h"
 
 struct struct_Builder;
