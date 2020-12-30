@@ -81,23 +81,24 @@ static void builder_if_else_statement(Builder *builder, Sexp *ast) {
     builder_jump_block(builder, next);
   }
 }
-static void builder_switch_statement(Builder *builder, Sexp *ast) {
+static void builder_switch_body(Builder *builder, Sexp *ast, Value *instr) {
   Block *block = builder_new_block(builder);
-  Value *expr;
+  Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, NULL);
+  Block *next_default = builder_set_next(builder, BUILDER_NEXT_DEFAULT, NULL);
+  Block *next_switch = builder_set_next(builder, BUILDER_NEXT_SWITCH, block);
+  builder_ast(builder, ast);
+  builder_instruction_switch_finish(builder, instr);
+  builder_set_next(builder, BUILDER_NEXT_BREAK, next_break);
+  builder_set_next(builder, BUILDER_NEXT_DEFAULT, next_default);
+  builder_set_next(builder, BUILDER_NEXT_SWITCH, next_switch);
+}
+static void builder_switch_statement(Builder *builder, Sexp *ast) {
+  Value *value;
   builder_ast(builder, sexp_at(ast, 3));
-  expr = builder_get_value(builder);
-  builder_instruction_switch(builder, expr);
-  {
-    Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, NULL);
-    Block *next_default = builder_set_next(builder, BUILDER_NEXT_DEFAULT, NULL);
-    Block *next_switch = builder_set_next(builder, BUILDER_NEXT_SWITCH, block);
-    Value *instr = builder_get_value(builder);
-    builder_ast(builder, sexp_at(ast, 5));
-    builder_instruction_switch_finish(builder, instr);
-    builder_set_next(builder, BUILDER_NEXT_BREAK, next_break);
-    builder_set_next(builder, BUILDER_NEXT_DEFAULT, next_default);
-    builder_set_next(builder, BUILDER_NEXT_SWITCH, next_switch);
-  }
+  value = builder_get_value(builder);
+  builder_instruction_switch(builder, value);
+  value = builder_get_value(builder);
+  builder_switch_body(builder, sexp_at(ast, 5), value);
 }
 static void builder_while_statement(Builder *builder, Sexp *ast) {
   Block *guard = builder_new_block(builder);
