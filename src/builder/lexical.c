@@ -6,7 +6,6 @@
 #include "instruction.h"
 #include "sexp.h"
 #include "utility.h"
-#include "value.h"
 
 void builder_identifier(Builder *builder, Sexp *ast) {
   const char *symbol;

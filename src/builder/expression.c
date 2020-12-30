@@ -9,11 +9,11 @@
 
 void builder_additive_expression(Builder *builder, Sexp *ast) {
   Value *lhs, *rhs;
+  UTILITY_ASSERT(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   builder_ast(builder, sexp_at(ast, 1));
   lhs = builder_get_value(builder);
   builder_ast(builder, sexp_at(ast, 3));
   rhs = builder_get_value(builder);
-  UTILITY_ASSERT(AST_ADDITIVE_EXPRESSION == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 2))) {
   case AST_PLUS:
     builder_instruction_add(builder, lhs, rhs);
