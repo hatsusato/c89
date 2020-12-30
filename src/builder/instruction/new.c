@@ -20,6 +20,12 @@ static void builder_instruction_unary(Builder *builder, InstructionKind kind,
   Instruction *instr = builder_new_instruction(builder, kind);
   instr->operands[0] = value;
 }
+static void builder_instruction_binary(Builder *builder, InstructionKind kind,
+                                       Value *lhs, Value *rhs) {
+  Instruction *instr = builder_new_instruction(builder, kind);
+  instr->operands[0] = lhs;
+  instr->operands[1] = rhs;
+}
 static Bool instruction_is_terminator(Instruction *instr) {
   switch (instr->ikind) {
 #define DO_HANDLE(name, str) \
@@ -70,14 +76,10 @@ void builder_instruction_switch_case(Builder *builder, Value *value,
   block_insert_switch(switch_block, value, label);
 }
 void builder_instruction_add(Builder *builder, Value *lhs, Value *rhs) {
-  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ADD);
-  instr->operands[0] = lhs;
-  instr->operands[1] = rhs;
+  builder_instruction_binary(builder, INSTRUCTION_ADD, lhs, rhs);
 }
 void builder_instruction_sub(Builder *builder, Value *lhs, Value *rhs) {
-  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_SUB);
-  instr->operands[0] = lhs;
-  instr->operands[1] = rhs;
+  builder_instruction_binary(builder, INSTRUCTION_SUB, lhs, rhs);
 }
 void builder_instruction_alloca(Builder *builder, const char *symbol) {
   Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ALLOCA);
@@ -87,14 +89,10 @@ void builder_instruction_load(Builder *builder, Value *src) {
   builder_instruction_unary(builder, INSTRUCTION_LOAD, src);
 }
 void builder_instruction_store(Builder *builder, Value *src, Value *dst) {
-  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_STORE);
-  instr->operands[0] = src;
-  instr->operands[1] = dst;
+  builder_instruction_binary(builder, INSTRUCTION_STORE, src, dst);
 }
 void builder_instruction_icmp_ne(Builder *builder, Value *lhs, Value *rhs) {
-  Instruction *instr = builder_new_instruction(builder, INSTRUCTION_ICMP_NE);
-  instr->operands[0] = lhs;
-  instr->operands[1] = rhs;
+  builder_instruction_binary(builder, INSTRUCTION_ICMP_NE, lhs, rhs);
 }
 void builder_new_local(Builder *builder) {
   builder_new_instruction(builder, INSTRUCTION_ALLOCA);
