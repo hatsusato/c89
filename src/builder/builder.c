@@ -110,7 +110,6 @@ void builder_find_identifier(Builder *builder, const char *symbol) {
   builder_set_value(builder, value);
 }
 void builder_jump_block(Builder *builder, Block *dest) {
-  UTILITY_ASSERT(dest);
   builder_set_next(builder, BUILDER_NEXT_CURRENT, dest);
   function_insert(builder->func, dest);
 }
@@ -130,6 +129,7 @@ void builder_set_value(Builder *builder, Value *value) {
   builder->value = value;
 }
 Block *builder_get_next(Builder *builder, BuilderNextTag tag) {
+  UTILITY_ASSERT(0 <= tag && tag < BUILDER_NEXT_COUNT);
   return builder->next[tag];
 }
 Block *builder_set_next(Builder *builder, BuilderNextTag tag, Block *next) {
