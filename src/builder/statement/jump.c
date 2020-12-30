@@ -1,11 +1,6 @@
 #include "jump.h"
 
-#include "../block.h"
-#include "../builder.h"
-#include "../instruction.h"
-#include "ast/tag.h"
-#include "sexp.h"
-#include "utility.h"
+#include "common.h"
 
 static void builder_goto_statement(Builder *builder, Sexp *ast) {
   const char *label = identifier_symbol(sexp_at(ast, 2));

@@ -1,12 +1,6 @@
 #include "iteration.h"
 
-#include "../block.h"
-#include "../builder.h"
-#include "../instruction.h"
-#include "ast/tag.h"
 #include "common.h"
-#include "sexp.h"
-#include "utility.h"
 
 static void builder_while_statement(Builder *builder, Sexp *ast) {
   Block *guard = builder_new_block(builder);

@@ -1,12 +1,6 @@
 #include "selection.h"
 
-#include "../block.h"
-#include "../builder.h"
-#include "../instruction.h"
-#include "ast/tag.h"
 #include "common.h"
-#include "sexp.h"
-#include "utility.h"
 
 static void builder_branch(Builder *builder, Sexp *ast, Block *current,
                            Block *next) {

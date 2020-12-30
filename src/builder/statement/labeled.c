@@ -1,11 +1,6 @@
 #include "labeled.h"
 
-#include "../block.h"
-#include "../builder.h"
-#include "../instruction.h"
-#include "ast/tag.h"
-#include "sexp.h"
-#include "utility.h"
+#include "common.h"
 
 static Bool switch_new_case(Builder *builder) {
   Block *curr = builder_get_next(builder, BUILDER_NEXT_CURRENT);
