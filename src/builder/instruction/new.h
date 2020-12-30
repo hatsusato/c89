@@ -15,6 +15,6 @@ void builder_instruction_alloca(Builder *, const char *);
 void builder_instruction_load(Builder *, Value *);
 void builder_instruction_store(Builder *, Value *, Value *);
 void builder_instruction_icmp_ne(Builder *, Value *, Value *);
-Instruction *builder_new_local(Builder *);
+void builder_new_local(Builder *);
 
 #endif /* INCLUDE_GUARD_81FFBAC4_2A19_466F_8734_2CF3E3E2913F */

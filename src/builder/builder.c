@@ -33,9 +33,9 @@ static void builder_init_next(Builder *builder, Sexp *ast) {
   function_insert(builder->func, alloc);
   if (1 < function_count_return(ast)) {
     Block *ret = builder_new_block(builder);
-    Instruction *retval = builder_new_local(builder);
-    builder->retval = instruction_as_value(retval);
     builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
+    builder_new_local(builder);
+    builder->retval = builder_get_value(builder);
   }
 }
 static void builder_finish_next(Builder *builder) {

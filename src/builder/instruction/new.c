@@ -95,6 +95,6 @@ void builder_instruction_icmp_ne(Builder *builder, Value *lhs, Value *rhs) {
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
 }
-Instruction *builder_new_local(Builder *builder) {
-  return builder_new_instruction(builder, INSTRUCTION_ALLOCA);
+void builder_new_local(Builder *builder) {
+  builder_new_instruction(builder, INSTRUCTION_ALLOCA);
 }
