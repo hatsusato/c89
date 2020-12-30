@@ -8,9 +8,9 @@ void builder_statement(Builder *, Sexp *);
 void builder_labeled_statement(Builder *, Sexp *);
 void builder_compound_statement(Builder *, Sexp *);
 void builder_expression_statement(Builder *, Sexp *);
-void builder_selection_statement(Builder *, Sexp *);
 
 #include "statement/iteration.h"
 #include "statement/jump.h"
+#include "statement/selection.h"
 
 #endif /* INCLUDE_GUARD_C7C93740_6608_4112_98EA_4A89E91D8979 */
