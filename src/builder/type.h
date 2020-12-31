@@ -7,7 +7,6 @@ void type_print(Type *);
 
 TypePool *type_pool_new(void);
 void type_pool_delete(TypePool *);
-Type *type_pool_void(TypePool *);
 Type *type_pool_integer(TypePool *, int);
 
 Type *builder_type_void(Builder *);
