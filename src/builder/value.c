@@ -74,6 +74,18 @@ Global *value_as_global(Value *value) {
   UTILITY_ASSERT(VALUE_GLOBAL == value->kind);
   return (Global *)value;
 }
+Type *value_type(Value *value) {
+  switch (value->kind) {
+  case VALUE_INSTRUCTION:
+    return instruction_type(value_as_instruction(value));
+  case VALUE_CONSTANT:
+    return constant_type(value_as_constant(value));
+  case VALUE_GLOBAL:
+    return global_type(value_as_global(value));
+  default:
+    return NULL;
+  }
+}
 ValueKind value_kind(Value *value) {
   return value->kind;
 }
