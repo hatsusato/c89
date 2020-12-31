@@ -6,9 +6,14 @@
 #include "instruction.h"
 #include "utility.h"
 #include "value.h"
+#include "vector.h"
 
 struct struct_Value {
   ValueKind kind;
+};
+
+struct struct_ValuePool {
+  Vector *vec;
 };
 
 Value *function_as_value(Function *func) {
