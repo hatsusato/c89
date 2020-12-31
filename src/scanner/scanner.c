@@ -17,7 +17,7 @@ static void scanner_init(yyscan_t yyscan) {
   Compare *cmp = compare_new_strcmp();
   yyset_extra(scanner, yyscan);
   scanner->ast = ast_new();
-  scanner->typedefs = set_new(NULL, cmp);
+  scanner->typedefs = set_new(cmp);
 }
 static Ast *scanner_ast(yyscan_t yyscan) {
   Scanner *scanner = yyget_extra(yyscan);

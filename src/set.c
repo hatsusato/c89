@@ -21,9 +21,9 @@ static const ElemType *set_search(const Set *set, ElemType key) {
   return binary_search(key, begin, end, set->cmp);
 }
 
-Set *set_new(Destructor dtor, Compare *cmp) {
+Set *set_new(Compare *cmp) {
   Set *set = UTILITY_MALLOC(Set);
-  set->vec = vector_new(dtor);
+  set->vec = vector_new(NULL);
   set->cmp = cmp;
   return set;
 }

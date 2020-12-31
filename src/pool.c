@@ -12,7 +12,7 @@ struct struct_Pool {
 Pool *pool_new(Destructor dtor, Compare *compare) {
   Pool *pool = UTILITY_MALLOC(Pool);
   pool->vec = vector_new(dtor);
-  pool->set = set_new(NULL, compare);
+  pool->set = set_new(compare);
   return pool;
 }
 void pool_delete(Pool *pool) {
