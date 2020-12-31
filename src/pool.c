@@ -20,3 +20,10 @@ void pool_delete(Pool *pool) {
   vector_delete(pool->vec);
   UTILITY_FREE(pool);
 }
+void pool_insert(Pool *pool, ElemType elem) {
+  vector_push(pool->vec, elem);
+  set_insert(pool->set, elem);
+}
+const ElemType *pool_find(Pool *pool, ElemType elem) {
+  return set_find(pool->set, elem);
+}
