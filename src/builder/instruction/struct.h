@@ -14,6 +14,7 @@ typedef enum {
 enum { INSTRUCTION_OPERAND_COUNT = 3 };
 struct struct_Instruction {
   ValueKind kind;
+  Type *type;
   InstructionKind ikind;
   int id;
   Value *operands[INSTRUCTION_OPERAND_COUNT];

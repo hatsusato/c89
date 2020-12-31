@@ -10,6 +10,7 @@ static Instruction *builder_new_instruction(Builder *builder,
   Instruction *instr = module_new_instruction(module);
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
+  instr->type = module_new_type_integer(module, 32);
   instr->ikind = kind;
   block_insert(INSTRUCTION_ALLOCA == kind ? alloc : current, instr);
   builder_set_value(builder, instruction_as_value(instr));
