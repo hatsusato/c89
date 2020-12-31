@@ -5,12 +5,14 @@
 #include "builder/builder.h"
 #include "builder/function.h"
 #include "builder/global.h"
+#include "builder/type.h"
 #include "builder/value.h"
 #include "utility.h"
 #include "vector.h"
 
 struct struct_Module {
   ValuePool *pool;
+  TypePool *type;
   Vector *prior, *global, *func;
 };
 
@@ -44,6 +46,7 @@ static void module_pretty_function(Module *module) {
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->pool = value_pool_new();
+  module->type = type_pool_new();
   module->prior = vector_new(NULL);
   module->global = vector_new(NULL);
   module->func = vector_new(NULL);
@@ -53,6 +56,7 @@ void module_delete(Module *module) {
   vector_delete(module->func);
   vector_delete(module->global);
   vector_delete(module->prior);
+  type_pool_delete(module->type);
   value_pool_delete(module->pool);
   UTILITY_FREE(module);
 }
