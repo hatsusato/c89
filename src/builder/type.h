@@ -3,6 +3,8 @@
 
 #include "builder/types.h"
 
+void type_print(Type *);
+
 TypePool *type_pool_new(void);
 void type_pool_delete(TypePool *);
 Type *type_pool_integer(TypePool *, int);

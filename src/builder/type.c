@@ -1,5 +1,7 @@
 #include "type.h"
 
+#include <stdio.h>
+
 #include "compare.h"
 #include "pool.h"
 #include "utility.h"
@@ -24,6 +26,13 @@ static Type *type_new(void) {
 }
 static void type_delete(ElemType type) {
   UTILITY_FREE(type);
+}
+
+void type_print(Type *type) {
+  printf("i");
+  if (type) {
+    printf("%d", type->size);
+  }
 }
 
 TypePool *type_pool_new(void) {
