@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+#include "builder.h"
 #include "compare.h"
 #include "pool.h"
 #include "utility.h"
@@ -87,4 +88,14 @@ Type *type_pool_integer(TypePool *pool, int size) {
   type_init_integer(&key, size);
   found = pool_find(pool->pool, &key);
   return found ? *found : type_pool_new_integer(pool, size);
+}
+
+Type *builder_type_void(Builder *builder) {
+  Module *module = builder_get_module(builder);
+  TypePool *pool = module_get_type(module);
+  const ElemType *found;
+  Type type;
+  type_init_void(&type);
+  found = pool_find(pool->pool, &type);
+  return found ? *found : type_pool_new_void(pool);
 }
