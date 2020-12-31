@@ -85,7 +85,8 @@ Constant *module_new_constant(Module *module) {
   return constant;
 }
 Global *module_new_global(Module *module) {
-  Global *global = value_pool_new_global(module->value);
+  Global *global = global_new();
+  value_pool_insert(module->value, global_as_value(global));
   vector_push(module->global, global);
   return global;
 }
