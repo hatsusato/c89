@@ -10,6 +10,7 @@
 
 struct struct_Global {
   ValueKind kind;
+  Type *type;
   const char *name;
   Constant *init;
   Bool prior;
@@ -18,6 +19,7 @@ struct struct_Global {
 Global *global_new(void) {
   Global *global = UTILITY_MALLOC(Global);
   global->kind = VALUE_GLOBAL;
+  global->type = NULL;
   global->name = NULL;
   global->init = NULL;
   global->prior = false;
@@ -53,6 +55,7 @@ void global_pretty(Global *global) {
 void builder_new_global(Builder *builder, const char *symbol) {
   Module *module = builder_get_module(builder);
   Global *global = module_new_global(module);
+  global->type = module_new_type_integer(module, 32);
   global->name = symbol;
   builder_insert_global(builder, symbol, global);
   builder_set_value(builder, global_as_value(global));
