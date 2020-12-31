@@ -44,6 +44,19 @@ static void type_init_integer(Type *type, int size) {
   type->size = size;
 }
 
+static Type *type_pool_new_void(TypePool *pool) {
+  Type *type = type_new();
+  type_init_void(type);
+  pool_insert(pool->pool, type);
+  return type;
+}
+static Type *type_pool_new_integer(TypePool *pool, int size) {
+  Type *type = type_new();
+  type_init_integer(type, size);
+  pool_insert(pool->pool, type);
+  return type;
+}
+
 void type_print(Type *type) {
   printf("i");
   if (type) {
@@ -66,26 +79,12 @@ Type *type_pool_void(TypePool *pool) {
   const ElemType *found;
   type_init_void(&key);
   found = pool_find(pool->pool, &key);
-  if (found) {
-    return *found;
-  } else {
-    Type *type = type_new();
-    type_init_void(type);
-    pool_insert(pool->pool, type);
-    return type;
-  }
+  return found ? *found : type_pool_new_void(pool);
 }
 Type *type_pool_integer(TypePool *pool, int size) {
   Type key;
   const ElemType *found;
   type_init_integer(&key, size);
   found = pool_find(pool->pool, &key);
-  if (found) {
-    return *found;
-  } else {
-    Type *type = type_new();
-    type_init_integer(type, size);
-    pool_insert(pool->pool, type);
-    return type;
-  }
+  return found ? *found : type_pool_new_integer(pool, size);
 }
