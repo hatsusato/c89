@@ -4,6 +4,7 @@
 
 #include "builder/block.h"
 #include "builder/builder.h"
+#include "builder/constant.h"
 #include "builder/function.h"
 #include "builder/global.h"
 #include "builder/instruction.h"
@@ -79,7 +80,9 @@ Instruction *module_new_instruction(Module *module) {
   return instr;
 }
 Constant *module_new_constant(Module *module) {
-  return value_pool_new_constant(module->value);
+  Constant *constant = constant_new();
+  value_pool_insert(module->value, constant_as_value(constant));
+  return constant;
 }
 Global *module_new_global(Module *module) {
   Global *global = value_pool_new_global(module->value);

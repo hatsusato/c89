@@ -29,7 +29,6 @@ void value_print(Value *);
 ValuePool *value_pool_new(void);
 void value_pool_delete(ValuePool *);
 void value_pool_insert(ValuePool *, Value *);
-Constant *value_pool_new_constant(ValuePool *);
 Global *value_pool_new_global(ValuePool *);
 
 #endif /* INCLUDE_GUARD_FE2AA6D9_B675_4B2E_839A_2B085264192A */

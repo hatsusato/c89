@@ -121,11 +121,6 @@ void value_pool_delete(ValuePool *pool) {
 void value_pool_insert(ValuePool *pool, Value *value) {
   vector_push(pool->vec, value);
 }
-Constant *value_pool_new_constant(ValuePool *pool) {
-  Constant *constant = constant_new();
-  vector_push(pool->vec, constant);
-  return constant;
-}
 Global *value_pool_new_global(ValuePool *pool) {
   Global *global = global_new();
   vector_push(pool->vec, global);
