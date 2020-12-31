@@ -6,7 +6,10 @@
 #include "pool.h"
 #include "utility.h"
 
+typedef enum { TYPE_VOID, TYPE_INTEGER, TYPE_KIND_COUND } TypeKind;
+
 struct struct_Type {
+  TypeKind kind;
   int size;
 };
 
@@ -21,6 +24,7 @@ static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
 }
 static Type *type_new(void) {
   Type *type = UTILITY_MALLOC(Type);
+  type->kind = TYPE_KIND_COUND;
   type->size = 0;
   return type;
 }
@@ -48,12 +52,14 @@ void type_pool_delete(TypePool *pool) {
 Type *type_pool_integer(TypePool *pool, int size) {
   Type key;
   const ElemType *found;
+  key.kind = TYPE_INTEGER;
   key.size = size;
   found = pool_find(pool->pool, &key);
   if (found) {
     return *found;
   } else {
     Type *type = type_new();
+    type->kind = TYPE_INTEGER;
     type->size = size;
     pool_insert(pool->pool, type);
     return type;
