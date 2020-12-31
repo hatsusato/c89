@@ -41,10 +41,6 @@ void set_insert(Set *set, ElemType elem) {
   vector_push(set->vec, elem);
   set_sort(set);
 }
-Bool set_contains(const Set *set, ElemType elem) {
-  assert(set);
-  return set_find(set, elem) != NULL;
-}
 const ElemType *set_find(const Set *set, ElemType key) {
   assert(set);
   return set_search(set, key);
