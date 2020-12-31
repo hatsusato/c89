@@ -75,13 +75,6 @@ void type_pool_delete(TypePool *pool) {
   pool_delete(pool->pool);
   UTILITY_FREE(pool);
 }
-Type *type_pool_integer(TypePool *pool, int size) {
-  Type key;
-  const ElemType *found;
-  type_init_integer(&key, size);
-  found = pool_find(pool->pool, &key);
-  return found ? *found : type_pool_new_integer(pool, size);
-}
 
 Type *builder_type_void(Builder *builder) {
   Module *module = builder_get_module(builder);
