@@ -35,6 +35,14 @@ static Type *type_new(void) {
 static void type_delete(ElemType type) {
   UTILITY_FREE(type);
 }
+static void type_init_void(Type *type) {
+  type->kind = TYPE_VOID;
+  type->size = 0;
+}
+static void type_init_integer(Type *type, int size) {
+  type->kind = TYPE_INTEGER;
+  type->size = size;
+}
 
 void type_print(Type *type) {
   printf("i");
@@ -56,14 +64,13 @@ void type_pool_delete(TypePool *pool) {
 Type *type_pool_void(TypePool *pool) {
   Type key;
   const ElemType *found;
-  key.kind = TYPE_VOID;
-  key.size = 0;
+  type_init_void(&key);
   found = pool_find(pool->pool, &key);
   if (found) {
     return *found;
   } else {
     Type *type = type_new();
-    type->kind = TYPE_VOID;
+    type_init_void(type);
     pool_insert(pool->pool, type);
     return type;
   }
@@ -71,15 +78,13 @@ Type *type_pool_void(TypePool *pool) {
 Type *type_pool_integer(TypePool *pool, int size) {
   Type key;
   const ElemType *found;
-  key.kind = TYPE_INTEGER;
-  key.size = size;
+  type_init_integer(&key, size);
   found = pool_find(pool->pool, &key);
   if (found) {
     return *found;
   } else {
     Type *type = type_new();
-    type->kind = TYPE_INTEGER;
-    type->size = size;
+    type_init_integer(type, size);
     pool_insert(pool->pool, type);
     return type;
   }
