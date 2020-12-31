@@ -5,6 +5,7 @@
 
 Global *global_new(void);
 void global_delete(Global *);
+Type *global_type(Global *);
 void global_set_init(Global *, Constant *);
 Bool global_is_prior(Global *);
 void global_set_prior(Global *);

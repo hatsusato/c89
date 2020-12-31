@@ -23,6 +23,9 @@ Constant *constant_new(void) {
 void constant_delete(Constant *constant) {
   UTILITY_FREE(constant);
 }
+Type *constant_type(Constant *constant) {
+  return constant->type;
+}
 void constant_print(Constant *constant) {
   printf("%s", constant->symbol);
 }
