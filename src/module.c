@@ -63,6 +63,9 @@ void module_delete(Module *module) {
   value_pool_delete(module->value);
   UTILITY_FREE(module);
 }
+TypePool *module_get_type(Module *module) {
+  return module->type;
+}
 Function *module_new_function(Module *module) {
   Function *func = function_new();
   value_pool_insert(module->value, function_as_value(func));
