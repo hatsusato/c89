@@ -3,4 +3,7 @@
 
 #include "builder/types.h"
 
+Type *type_new(void);
+void type_delete(Type *);
+
 #endif /* INCLUDE_GUARD_288C5A5F_4870_4133_85EB_DBA30CC323B1 */
