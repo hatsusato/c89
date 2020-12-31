@@ -7,6 +7,7 @@
 
 Pool *pool_new(Destructor, Compare *);
 void pool_delete(Pool *);
+void pool_clear(Pool *);
 void pool_insert(Pool *, ElemType);
 const ElemType *pool_find(Pool *, ElemType);
 
