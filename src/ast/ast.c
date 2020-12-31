@@ -2,13 +2,11 @@
 
 #include "compare.h"
 #include "pool.h"
-#include "set.h"
 #include "sexp.h"
 #include "utility.h"
 
 struct struct_Ast {
   Pool *pool;
-  Set *symbols;
   Sexp *sexp;
 };
 
@@ -26,13 +24,11 @@ Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
   Compare *cmp = compare_new_strcmp();
   ast->pool = pool_new(symbol_free, cmp);
-  ast->symbols = set_new(symbol_free, compare_new_strcmp());
   ast->sexp = sexp_nil();
   return ast;
 }
 void ast_delete(Ast *ast) {
   sexp_delete(ast->sexp);
-  set_delete(ast->symbols);
   pool_delete(ast->pool);
   UTILITY_FREE(ast);
 }
@@ -46,12 +42,12 @@ void ast_set(Ast *ast, Sexp *sexp) {
 const char *ast_symbol(Ast *ast, const char *text, Size leng) {
   const ElemType *found;
   assert('\0' == text[leng]);
-  found = set_find(ast->symbols, (ElemType)text);
+  found = pool_find(ast->pool, (ElemType)text);
   if (found) {
     return *found;
   } else {
     ElemType elem = (ElemType)symbol_new(text, leng);
-    set_insert(ast->symbols, elem);
+    pool_insert(ast->pool, elem);
     return elem;
   }
 }
