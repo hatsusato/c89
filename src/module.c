@@ -61,7 +61,8 @@ void module_delete(Module *module) {
   UTILITY_FREE(module);
 }
 Function *module_new_function(Module *module) {
-  Function *func = value_pool_new_function(module->value);
+  Function *func = function_new();
+  value_pool_insert(module->value, function_as_value(func));
   vector_push(module->func, func);
   return func;
 }

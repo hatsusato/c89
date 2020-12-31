@@ -121,11 +121,6 @@ void value_pool_delete(ValuePool *pool) {
 void value_pool_insert(ValuePool *pool, Value *value) {
   vector_push(pool->vec, value);
 }
-Function *value_pool_new_function(ValuePool *pool) {
-  Function *function = function_new();
-  vector_push(pool->vec, function);
-  return function;
-}
 Block *value_pool_new_block(ValuePool *pool) {
   Block *block = block_new();
   vector_push(pool->vec, block);
