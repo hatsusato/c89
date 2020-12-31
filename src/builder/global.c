@@ -5,6 +5,7 @@
 #include "builder.h"
 #include "constant.h"
 #include "module.h"
+#include "type.h"
 #include "utility.h"
 #include "value.h"
 
@@ -43,7 +44,9 @@ void global_print(Global *global) {
 }
 void global_pretty(Global *global) {
   global_print(global);
-  printf(" = global i32 ");
+  printf(" = global ");
+  type_print(global->type);
+  printf(" ");
   if (global->init) {
     constant_print(global->init);
   } else {
