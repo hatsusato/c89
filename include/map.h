@@ -10,6 +10,5 @@ void map_delete(Map *);
 void map_clear(Map *);
 void map_insert(Map *, ElemType, ElemType);
 ElemType *map_find(Map *, ElemType);
-Bool map_contains(const Map *, ElemType);
 
 #endif /* INCLUDE_GUARD_0A0BAD8D_B420_4D3D_B9E5_6504EE1C3925 */

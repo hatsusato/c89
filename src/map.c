@@ -1,35 +1,31 @@
 #include "map.h"
 
 #include "map/pair.h"
-#include "set.h"
+#include "pool.h"
 #include "utility.h"
 
 struct struct_Map {
-  Set *set;
+  Pool *pool;
 };
 
 Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
   Compare *compare = pair_new_compare(keycmp);
-  map->set = set_new(pair_delete, compare);
+  map->pool = pool_new(pair_delete, compare);
   return map;
 }
 void map_delete(Map *map) {
-  set_delete(map->set);
+  pool_delete(map->pool);
   UTILITY_FREE(map);
 }
 void map_clear(Map *map) {
-  set_clear(map->set);
+  pool_clear(map->pool);
 }
 void map_insert(Map *map, ElemType key, ElemType val) {
-  set_insert(map->set, pair_new(key, val));
+  pool_insert(map->pool, pair_new(key, val));
 }
 ElemType *map_find(Map *map, ElemType key) {
   Pair pair = pair_dummy(key);
-  const ElemType *found = set_find(map->set, &pair);
+  const ElemType *found = pool_find(map->pool, &pair);
   return found ? pair_val(*found) : NULL;
-}
-Bool map_contains(const Map *map, ElemType key) {
-  Pair pair = pair_dummy(key);
-  return set_contains(map->set, &pair);
 }

@@ -21,9 +21,9 @@ static const ElemType *set_search(const Set *set, ElemType key) {
   return binary_search(key, begin, end, set->cmp);
 }
 
-Set *set_new(Destructor dtor, Compare *cmp) {
+Set *set_new(Compare *cmp) {
   Set *set = UTILITY_MALLOC(Set);
-  set->vec = vector_new(dtor);
+  set->vec = vector_new(NULL);
   set->cmp = cmp;
   return set;
 }
@@ -40,10 +40,6 @@ void set_insert(Set *set, ElemType elem) {
   assert(set);
   vector_push(set->vec, elem);
   set_sort(set);
-}
-Bool set_contains(const Set *set, ElemType elem) {
-  assert(set);
-  return set_find(set, elem) != NULL;
 }
 const ElemType *set_find(const Set *set, ElemType key) {
   assert(set);

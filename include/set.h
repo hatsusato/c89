@@ -5,11 +5,10 @@
 #include "set/types.h"
 #include "utility/types.h"
 
-Set *set_new(Destructor, Compare *);
+Set *set_new(Compare *);
 void set_delete(Set *);
 void set_clear(Set *);
 void set_insert(Set *, ElemType);
-Bool set_contains(const Set *, ElemType);
 const ElemType *set_find(const Set *, ElemType);
 const ElemType *set_begin(const Set *);
 const ElemType *set_end(const Set *);
