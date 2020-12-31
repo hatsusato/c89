@@ -2,10 +2,10 @@
 
 #include "block.h"
 #include "constant.h"
+#include "function.h"
 #include "global.h"
 #include "instruction.h"
 #include "utility.h"
-#include "value.h"
 #include "vector.h"
 
 struct struct_Value {
@@ -15,6 +15,29 @@ struct struct_Value {
 struct struct_ValuePool {
   Vector *vec;
 };
+
+static void value_pool_delete_value(ElemType value) {
+  switch (value_kind(value)) {
+  case VALUE_FUNCTION:
+    function_delete(value);
+    break;
+  case VALUE_BLOCK:
+    block_delete(value);
+    break;
+  case VALUE_INSTRUCTION:
+    instruction_delete(value);
+    break;
+  case VALUE_CONSTANT:
+    constant_delete(value);
+    break;
+  case VALUE_GLOBAL:
+    global_delete(value);
+    break;
+  default:
+    UTILITY_ASSERT(0);
+    break;
+  }
+}
 
 Value *function_as_value(Function *func) {
   return (Value *)func;
@@ -72,4 +95,14 @@ void value_print(Value *value) {
     UTILITY_ASSERT(0);
     break;
   }
+}
+
+ValuePool *value_pool_new(void) {
+  ValuePool *pool = UTILITY_MALLOC(ValuePool);
+  pool->vec = vector_new(value_pool_delete_value);
+  return pool;
+}
+void value_pool_delete(ValuePool *pool) {
+  vector_delete(pool->vec);
+  UTILITY_FREE(pool);
 }
