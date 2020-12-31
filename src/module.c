@@ -11,7 +11,7 @@
 #include "vector.h"
 
 struct struct_Module {
-  ValuePool *pool;
+  ValuePool *value;
   TypePool *type;
   Vector *prior, *global, *func;
 };
@@ -45,7 +45,7 @@ static void module_pretty_function(Module *module) {
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
-  module->pool = value_pool_new();
+  module->value = value_pool_new();
   module->type = type_pool_new();
   module->prior = vector_new(NULL);
   module->global = vector_new(NULL);
@@ -57,25 +57,25 @@ void module_delete(Module *module) {
   vector_delete(module->global);
   vector_delete(module->prior);
   type_pool_delete(module->type);
-  value_pool_delete(module->pool);
+  value_pool_delete(module->value);
   UTILITY_FREE(module);
 }
 Function *module_new_function(Module *module) {
-  Function *func = value_pool_new_function(module->pool);
+  Function *func = value_pool_new_function(module->value);
   vector_push(module->func, func);
   return func;
 }
 Block *module_new_block(Module *module) {
-  return value_pool_new_block(module->pool);
+  return value_pool_new_block(module->value);
 }
 Instruction *module_new_instruction(Module *module) {
-  return value_pool_new_instruction(module->pool);
+  return value_pool_new_instruction(module->value);
 }
 Constant *module_new_constant(Module *module) {
-  return value_pool_new_constant(module->pool);
+  return value_pool_new_constant(module->value);
 }
 Global *module_new_global(Module *module) {
-  Global *global = value_pool_new_global(module->pool);
+  Global *global = value_pool_new_global(module->value);
   vector_push(module->global, global);
   return global;
 }
