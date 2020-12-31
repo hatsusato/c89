@@ -31,4 +31,7 @@ typedef struct struct_ValuePool ValuePool;
 struct struct_Type;
 typedef struct struct_Type Type;
 
+struct struct_TypePool;
+typedef struct struct_TypePool TypePool;
+
 #endif /* INCLUDE_GUARD_844AF8B7_3F06_45EB_B116_64C58036FD66 */
