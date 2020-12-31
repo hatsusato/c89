@@ -6,6 +6,7 @@
 #include "builder/builder.h"
 #include "builder/function.h"
 #include "builder/global.h"
+#include "builder/instruction.h"
 #include "builder/type.h"
 #include "builder/value.h"
 #include "utility.h"
@@ -73,7 +74,9 @@ Block *module_new_block(Module *module) {
   return block;
 }
 Instruction *module_new_instruction(Module *module) {
-  return value_pool_new_instruction(module->value);
+  Instruction *instr = instruction_new();
+  value_pool_insert(module->value, instruction_as_value(instr));
+  return instr;
 }
 Constant *module_new_constant(Module *module) {
   return value_pool_new_constant(module->value);
