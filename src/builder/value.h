@@ -27,5 +27,10 @@ void value_print(Value *);
 
 ValuePool *value_pool_new(void);
 void value_pool_delete(ValuePool *);
+Function *value_pool_new_function(ValuePool *);
+Block *value_pool_new_block(ValuePool *);
+Instruction *value_pool_new_instruction(ValuePool *);
+Constant *value_pool_new_constant(ValuePool *);
+Global *value_pool_new_global(ValuePool *);
 
 #endif /* INCLUDE_GUARD_FE2AA6D9_B675_4B2E_839A_2B085264192A */

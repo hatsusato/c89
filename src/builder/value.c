@@ -106,3 +106,28 @@ void value_pool_delete(ValuePool *pool) {
   vector_delete(pool->vec);
   UTILITY_FREE(pool);
 }
+Function *value_pool_new_function(ValuePool *pool) {
+  Function *function = function_new();
+  vector_push(pool->vec, function);
+  return function;
+}
+Block *value_pool_new_block(ValuePool *pool) {
+  Block *block = block_new();
+  vector_push(pool->vec, block);
+  return block;
+}
+Instruction *value_pool_new_instruction(ValuePool *pool) {
+  Instruction *instr = instruction_new();
+  vector_push(pool->vec, instr);
+  return instr;
+}
+Constant *value_pool_new_constant(ValuePool *pool) {
+  Constant *constant = constant_new();
+  vector_push(pool->vec, constant);
+  return constant;
+}
+Global *value_pool_new_global(ValuePool *pool) {
+  Global *global = global_new();
+  vector_push(pool->vec, global);
+  return global;
+}
