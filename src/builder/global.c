@@ -61,7 +61,7 @@ void global_pretty(Global *global) {
 void builder_new_global(Builder *builder, const char *symbol) {
   Module *module = builder_get_module(builder);
   Global *global = module_new_global(module);
-  global->type = module_new_type_integer(module, 32);
+  global->type = builder_type_integer(builder, 32);
   global->name = symbol;
   builder_insert_global(builder, symbol, global);
   builder_set_value(builder, global_as_value(global));

@@ -15,7 +15,6 @@ Block *module_new_block(Module *);
 Instruction *module_new_instruction(Module *);
 Constant *module_new_constant(Module *);
 Global *module_new_global(Module *);
-Type *module_new_type_integer(Module *, int);
 void module_insert_prior(Module *, Global *);
 void module_build(Module *, Sexp *);
 void module_pretty(Module *);

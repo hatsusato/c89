@@ -4,6 +4,7 @@
 
 #include "builder.h"
 #include "module.h"
+#include "type.h"
 #include "utility.h"
 #include "value.h"
 
@@ -33,7 +34,7 @@ void constant_print(Constant *constant) {
 void builder_new_integer(Builder *builder, const char *integer) {
   Module *module = builder_get_module(builder);
   Constant *constant = module_new_constant(module);
-  constant->type = module_new_type_integer(module, 32);
+  constant->type = builder_type_integer(builder, 32);
   constant->symbol = integer;
   builder_set_value(builder, constant_as_value(constant));
 }
