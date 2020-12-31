@@ -99,3 +99,12 @@ Type *builder_type_void(Builder *builder) {
   found = pool_find(pool->pool, &type);
   return found ? *found : type_pool_new_void(pool);
 }
+Type *builder_type_integer(Builder *builder, int size) {
+  Module *module = builder_get_module(builder);
+  TypePool *pool = module_get_type(module);
+  const ElemType *found;
+  Type type;
+  type_init_integer(&type, size);
+  found = pool_find(pool->pool, &type);
+  return found ? *found : type_pool_new_integer(pool, size);
+}
