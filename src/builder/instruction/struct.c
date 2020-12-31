@@ -17,6 +17,9 @@ Instruction *instruction_new(void) {
 void instruction_delete(Instruction *instr) {
   UTILITY_FREE(instr);
 }
+Type *instruction_type(Instruction *instr) {
+  return instr->type;
+}
 int instruction_set_id(Instruction *instr, int id) {
   switch (instr->ikind) {
 #define DO_HANDLE(name, str) \
