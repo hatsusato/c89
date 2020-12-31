@@ -40,3 +40,17 @@ void type_pool_delete(TypePool *pool) {
   pool_delete(pool->pool);
   UTILITY_FREE(pool);
 }
+Type *type_pool_integer(TypePool *pool, int size) {
+  Type key;
+  const ElemType *found;
+  key.size = size;
+  found = pool_find(pool->pool, &key);
+  if (found) {
+    return *found;
+  } else {
+    Type *type = type_new();
+    type->size = size;
+    pool_insert(pool->pool, type);
+    return type;
+  }
+}
