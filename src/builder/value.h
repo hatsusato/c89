@@ -29,7 +29,6 @@ void value_print(Value *);
 ValuePool *value_pool_new(void);
 void value_pool_delete(ValuePool *);
 void value_pool_insert(ValuePool *, Value *);
-Block *value_pool_new_block(ValuePool *);
 Instruction *value_pool_new_instruction(ValuePool *);
 Constant *value_pool_new_constant(ValuePool *);
 Global *value_pool_new_global(ValuePool *);

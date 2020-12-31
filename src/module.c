@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+#include "builder/block.h"
 #include "builder/builder.h"
 #include "builder/function.h"
 #include "builder/global.h"
@@ -67,7 +68,9 @@ Function *module_new_function(Module *module) {
   return func;
 }
 Block *module_new_block(Module *module) {
-  return value_pool_new_block(module->value);
+  Block *block = block_new();
+  value_pool_insert(module->value, block_as_value(block));
+  return block;
 }
 Instruction *module_new_instruction(Module *module) {
   return value_pool_new_instruction(module->value);
