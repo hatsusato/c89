@@ -20,7 +20,11 @@ struct struct_TypePool {
 static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
   Type *l = lhs, *r = rhs;
   UTILITY_UNUSED(extra);
-  return (l->size < r->size) ? -1 : (l->size > r->size);
+  if (l->kind == r->kind) {
+    return (l->size < r->size) ? -1 : (l->size > r->size);
+  } else {
+    return (l->kind < r->kind) ? -1 : 1;
+  }
 }
 static Type *type_new(void) {
   Type *type = UTILITY_MALLOC(Type);
