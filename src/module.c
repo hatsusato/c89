@@ -79,6 +79,9 @@ Global *module_new_global(Module *module) {
   vector_push(module->global, global);
   return global;
 }
+Type *module_new_type_integer(Module *module, int size) {
+  return type_pool_integer(module->type, size);
+}
 void module_insert_prior(Module *module, Global *global) {
   if (!global_is_prior(global)) {
     vector_push(module->prior, global);
