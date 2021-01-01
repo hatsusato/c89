@@ -145,8 +145,7 @@ Block *builder_set_next(Builder *builder, BuilderNextTag tag, Block *next) {
   UTILITY_SWAP(Block *, builder->next[tag], next);
   return next;
 }
-
-static void builder_ast_map(Builder *builder, Sexp *ast) {
+void builder_ast_map(Builder *builder, Sexp *ast) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     builder_ast(builder, sexp_car(ast));
   }
