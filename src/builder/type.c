@@ -11,7 +11,9 @@ typedef enum { TYPE_VOID, TYPE_INTEGER, TYPE_KIND_COUND } TypeKind;
 
 struct struct_Type {
   TypeKind kind;
-  int size;
+  union {
+    int size;
+  } data;
 };
 
 struct struct_TypePool {
@@ -22,7 +24,7 @@ static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
   Type *l = lhs, *r = rhs;
   UTILITY_UNUSED(extra);
   if (l->kind == r->kind) {
-    return (l->size < r->size) ? -1 : (l->size > r->size);
+    return (l->data.size < r->data.size) ? -1 : (l->data.size > r->data.size);
   } else {
     return (l->kind < r->kind) ? -1 : 1;
   }
@@ -30,7 +32,7 @@ static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
 static Type *type_new(void) {
   Type *type = UTILITY_MALLOC(Type);
   type->kind = TYPE_KIND_COUND;
-  type->size = 0;
+  type->data.size = 0;
   return type;
 }
 static void type_delete(ElemType type) {
@@ -38,11 +40,11 @@ static void type_delete(ElemType type) {
 }
 static void type_init_void(Type *type) {
   type->kind = TYPE_VOID;
-  type->size = 0;
+  type->data.size = 0;
 }
 static void type_init_integer(Type *type, int size) {
   type->kind = TYPE_INTEGER;
-  type->size = size;
+  type->data.size = size;
 }
 
 static Type *type_pool_new_void(TypePool *pool) {
@@ -61,7 +63,7 @@ static Type *type_pool_new_integer(TypePool *pool, int size) {
 void type_print(Type *type) {
   printf("i");
   if (type) {
-    printf("%d", type->size);
+    printf("%d", type->data.size);
   }
 }
 
