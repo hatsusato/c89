@@ -142,9 +142,7 @@ static void instruction_pretty_icmp_ne(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  instruction_print_type(instr);
-  print_space();
-  instruction_print_operand(instr, 0);
+  value_print(instr->operands[0], true);
   print_comma();
   instruction_print_operand(instr, 1);
 }
