@@ -23,7 +23,7 @@ void builder_init_declarator_list(Builder *builder, Sexp *ast) {
 void builder_init_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_INIT_DECLARATOR == sexp_get_tag(ast));
   UTILITY_ASSERT(2 == sexp_length(ast) || 4 == sexp_length(ast));
-  builder_declarator(builder, sexp_at(ast, 1));
+  builder_ast(builder, sexp_at(ast, 1));
   if (4 == sexp_length(ast)) {
     Value *dst = builder_get_value(builder), *src;
     builder_ast(builder, sexp_at(ast, 3));
@@ -98,11 +98,11 @@ void builder_type_qualifier(Builder *builder, Sexp *ast) {
 void builder_declarator(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DECLARATOR == sexp_get_tag(ast));
   if (2 == sexp_length(ast)) {
-    builder_direct_declarator(builder, sexp_at(ast, 1));
+    builder_ast(builder, sexp_at(ast, 1));
   } else {
     UTILITY_ASSERT(3 == sexp_length(ast));
     UTILITY_ASSERT(builder_is_local(builder));
-    builder_direct_declarator(builder, sexp_at(ast, 2));
+    builder_ast(builder, sexp_at(ast, 2));
   }
 }
 void builder_direct_declarator(Builder *builder, Sexp *ast) {
@@ -117,7 +117,7 @@ void builder_direct_declarator(Builder *builder, Sexp *ast) {
   } else {
     UTILITY_ASSERT(4 == sexp_length(ast));
     UTILITY_ASSERT(builder_is_local(builder));
-    builder_declarator(builder, sexp_at(ast, 2));
+    builder_ast(builder, sexp_at(ast, 2));
   }
 }
 void builder_pointer(Builder *builder, Sexp *ast) {
