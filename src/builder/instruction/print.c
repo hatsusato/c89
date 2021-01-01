@@ -44,10 +44,13 @@ static void instruction_print_name(Instruction *instr) {
   printf("%s", names[instr->ikind]);
   print_space();
 }
+static void instruction_print_type(Instruction *instr) {
+  type_print(instr->type);
+}
 
 static void instruction_pretty_ret(Instruction *instr) {
   instruction_print_name(instr);
-  type_print(instr->type);
+  instruction_print_type(instr);
   if (instr->operands[0]) {
     print_space();
     instruction_print_operand(instr, 0);
@@ -69,7 +72,7 @@ static void instruction_pretty_br_cond(Instruction *instr) {
 }
 static void instruction_pretty_switch(Instruction *instr) {
   instruction_print_name(instr);
-  type_print(instr->type);
+  instruction_print_type(instr);
   print_space();
   instruction_print_operand(instr, 0);
   print_comma();
@@ -85,7 +88,7 @@ static void instruction_pretty_add(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  type_print(instr->type);
+  instruction_print_type(instr);
   print_space();
   instruction_print_operand(instr, 0);
   print_comma();
@@ -95,7 +98,7 @@ static void instruction_pretty_sub(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  type_print(instr->type);
+  instruction_print_type(instr);
   print_space();
   instruction_print_operand(instr, 0);
   print_comma();
@@ -105,7 +108,7 @@ static void instruction_pretty_alloca(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  type_print(instr->type);
+  instruction_print_type(instr);
   print_comma();
   print_align();
 }
@@ -113,9 +116,9 @@ static void instruction_pretty_load(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  type_print(instr->type);
+  instruction_print_type(instr);
   print_comma();
-  type_print(instr->type);
+  instruction_print_type(instr);
   printf("*");
   print_space();
   instruction_print_operand(instr, 0);
@@ -124,11 +127,11 @@ static void instruction_pretty_load(Instruction *instr) {
 }
 static void instruction_pretty_store(Instruction *instr) {
   instruction_print_name(instr);
-  type_print(instr->type);
+  instruction_print_type(instr);
   print_space();
   instruction_print_operand(instr, 0);
   print_comma();
-  type_print(instr->type);
+  instruction_print_type(instr);
   printf("*");
   print_space();
   instruction_print_operand(instr, 1);
@@ -139,7 +142,7 @@ static void instruction_pretty_icmp_ne(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  type_print(instr->type);
+  instruction_print_type(instr);
   print_space();
   instruction_print_operand(instr, 0);
   print_comma();
