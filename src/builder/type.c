@@ -11,7 +11,7 @@ typedef enum {
   TYPE_VOID,
   TYPE_INTEGER,
   TYPE_POINTER,
-  TYPE_KIND_COUND
+  TYPE_KIND_COUNT
 } TypeKind;
 
 struct struct_Type {
@@ -45,7 +45,7 @@ static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
 }
 static Type *type_new(void) {
   Type *type = UTILITY_MALLOC(Type);
-  type->kind = TYPE_KIND_COUND;
+  type->kind = TYPE_KIND_COUNT;
   type->data.size = 0;
   return type;
 }
