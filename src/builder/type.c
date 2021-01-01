@@ -85,9 +85,20 @@ static Type *type_pool_new_pointer(TypePool *pool, Type *ptr) {
 }
 
 void type_print(Type *type) {
-  printf("i");
-  if (type) {
-    printf("%d", type->data.size);
+  switch (type ? type->kind : TYPE_KIND_COUNT) {
+  case TYPE_VOID:
+    printf("void");
+    break;
+  case TYPE_INTEGER:
+    printf("i%d", type->data.size);
+    break;
+  case TYPE_POINTER:
+    type_print(type->data.type);
+    printf("*");
+    break;
+  default:
+    printf("null");
+    break;
   }
 }
 Type *type_get_elem(Type *type) {
