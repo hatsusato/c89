@@ -236,11 +236,89 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case AST_DECLARATION:
     builder_declaration(builder, ast);
     break;
+  case AST_DECLARATION_SPECIFIERS:
+    builder_declaration_specifiers(builder, ast);
+    break;
   case AST_INIT_DECLARATOR_LIST:
-    builder_ast_map(builder, ast);
+    builder_init_declarator_list(builder, ast);
     break;
   case AST_INIT_DECLARATOR:
     builder_init_declarator(builder, ast);
+    break;
+  case AST_STORAGE_CLASS_SPECIFIER:
+    builder_storage_class_specifier(builder, ast);
+    break;
+  case AST_TYPE_SPECIFIER:
+    builder_type_specifier(builder, ast);
+    break;
+  case AST_STRUCT_OR_UNION_SPECIFIER:
+    builder_struct_or_union_specifier(builder, ast);
+    break;
+  case AST_STRUCT_DECLARATION_LIST:
+    builder_struct_declaration_list(builder, ast);
+    break;
+  case AST_STRUCT_DECLARATION:
+    builder_struct_declaration(builder, ast);
+    break;
+  case AST_SPECIFIER_QUALIFIER_LIST:
+    builder_specifier_qualifier_list(builder, ast);
+    break;
+  case AST_STRUCT_DECLARATOR_LIST:
+    builder_struct_declarator_list(builder, ast);
+    break;
+  case AST_STRUCT_DECLARATOR:
+    builder_struct_declarator(builder, ast);
+    break;
+  case AST_ENUM_SPECIFIER:
+    builder_enum_specifier(builder, ast);
+    break;
+  case AST_ENUMERATOR_LIST:
+    builder_enumerator_list(builder, ast);
+    break;
+  case AST_ENUMERATOR:
+    builder_enumerator(builder, ast);
+    break;
+  case AST_TYPE_QUALIFIER:
+    builder_type_qualifier(builder, ast);
+    break;
+  case AST_DECLARATOR:
+    builder_declarator(builder, ast);
+    break;
+  case AST_DIRECT_DECLARATOR:
+    builder_direct_declarator(builder, ast);
+    break;
+  case AST_POINTER:
+    builder_pointer(builder, ast);
+    break;
+  case AST_TYPE_QUALIFIER_LIST:
+    builder_type_qualifier_list(builder, ast);
+    break;
+  case AST_PARAMETER_LIST:
+    builder_parameter_list(builder, ast);
+    break;
+  case AST_PARAMETER_DECLARATION:
+    builder_parameter_declaration(builder, ast);
+    break;
+  case AST_IDENTIFIER_LIST:
+    builder_identifier_list(builder, ast);
+    break;
+  case AST_TYPE_NAME:
+    builder_type_name(builder, ast);
+    break;
+  case AST_ABSTRACT_DECLARATOR:
+    builder_abstract_declarator(builder, ast);
+    break;
+  case AST_DIRECT_ABSTRACT_DECLARATOR:
+    builder_direct_abstract_declarator(builder, ast);
+    break;
+  case AST_TYPEDEF_NAME:
+    builder_typedef_name(builder, ast);
+    break;
+  case AST_INITIALIZER:
+    builder_initializer(builder, ast);
+    break;
+  case AST_INITIALIZER_LIST:
+    builder_initializer_list(builder, ast);
     break;
   case AST_STATEMENT:
     builder_statement(builder, ast);
