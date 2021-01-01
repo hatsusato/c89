@@ -90,6 +90,9 @@ void type_print(Type *type) {
     printf("%d", type->data.size);
   }
 }
+Type *type_get_elem(Type *type) {
+  return TYPE_POINTER == type->kind ? type->data.type : NULL;
+}
 
 TypePool *type_pool_new(void) {
   TypePool *pool = UTILITY_MALLOC(TypePool);

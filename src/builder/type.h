@@ -4,6 +4,7 @@
 #include "builder/types.h"
 
 void type_print(Type *);
+Type *type_get_elem(Type *);
 
 TypePool *type_pool_new(void);
 void type_pool_delete(TypePool *);
