@@ -270,7 +270,7 @@ void builder_ast(Builder *builder, Sexp *ast) {
     builder_jump_statement(builder, ast);
     break;
   case AST_TRANSLATION_UNIT:
-    builder_ast_map(builder, ast);
+    builder_translation_unit(builder, ast);
     break;
   case AST_EXTERNAL_DECLARATION:
     builder_external_declaration(builder, ast);
