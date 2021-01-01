@@ -23,10 +23,17 @@ struct struct_TypePool {
 static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
   Type *l = lhs, *r = rhs;
   UTILITY_UNUSED(extra);
-  if (l->kind == r->kind) {
-    return (l->data.size < r->data.size) ? -1 : (l->data.size > r->data.size);
-  } else {
+  if (l->kind != r->kind) {
     return (l->kind < r->kind) ? -1 : 1;
+  }
+  switch (l->kind) {
+  case TYPE_VOID:
+    return 0;
+  case TYPE_INTEGER:
+    return utility_intcmp(l->data.size, r->data.size);
+  default:
+    UTILITY_ASSERT(0);
+    return 0;
   }
 }
 static Type *type_new(void) {
