@@ -5,16 +5,19 @@
 #include "global.h"
 #include "instruction.h"
 #include "sexp.h"
+#include "type.h"
 #include "utility.h"
 
 void builder_declaration(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DECLARATION == sexp_get_tag(ast));
+  builder_ast(builder, sexp_at(ast, 1));
   builder_ast(builder, sexp_at(ast, 2));
 }
 void builder_declaration_specifiers(Builder *builder, Sexp *ast) {
+  Type *type;
   UTILITY_ASSERT(AST_DECLARATION_SPECIFIERS == sexp_get_tag(ast));
-  UTILITY_UNUSED(builder);
-  UTILITY_ASSERT(0);
+  type = builder_type_integer(builder, 32);
+  builder_set_type(builder, type);
 }
 void builder_init_declarator_list(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));
