@@ -176,11 +176,59 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case AST_STRING_LITERAL:
     builder_string_literal(builder, ast);
     break;
+  case AST_PRIMARY_EXPRESSION:
+    builder_primary_expression(builder, ast);
+    break;
+  case AST_POSTFIX_EXPRESSION:
+    builder_postfix_expression(builder, ast);
+    break;
+  case AST_ARGUMENT_EXPRESSION_LIST:
+    builder_argument_expression_list(builder, ast);
+    break;
+  case AST_UNARY_EXPRESSION:
+    builder_unary_expression(builder, ast);
+    break;
+  case AST_CAST_EXPRESSION:
+    builder_cast_expression(builder, ast);
+    break;
+  case AST_MULTIPLICATIVE_EXPRESSION:
+    builder_multiplicative_expression(builder, ast);
+    break;
   case AST_ADDITIVE_EXPRESSION:
     builder_additive_expression(builder, ast);
     break;
+  case AST_SHIFT_EXPRESSION:
+    builder_shift_expression(builder, ast);
+    break;
+  case AST_RELATIONAL_EXPRESSION:
+    builder_relational_expression(builder, ast);
+    break;
+  case AST_EQUALITY_EXPRESSION:
+    builder_equality_expression(builder, ast);
+    break;
+  case AST_AND_EXPRESSION:
+    builder_and_expression(builder, ast);
+    break;
+  case AST_EXCLUSIVE_OR_EXPRESSION:
+    builder_exclusive_or_expression(builder, ast);
+    break;
+  case AST_INCLUSIVE_OR_EXPRESSION:
+    builder_inclusive_or_expression(builder, ast);
+    break;
+  case AST_LOGICAL_AND_EXPRESSION:
+    builder_logical_and_expression(builder, ast);
+    break;
+  case AST_LOGICAL_OR_EXPRESSION:
+    builder_logical_or_expression(builder, ast);
+    break;
+  case AST_CONDITIONAL_EXPRESSION:
+    builder_conditional_expression(builder, ast);
+    break;
   case AST_ASSIGNMENT_EXPRESSION:
     builder_assignment_expression(builder, ast);
+    break;
+  case AST_EXPRESSION:
+    builder_expression(builder, ast);
     break;
   case AST_CONSTANT_EXPRESSION:
     builder_constant_expression(builder, ast);
