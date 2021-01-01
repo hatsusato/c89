@@ -32,14 +32,11 @@ static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
     return (l->kind < r->kind) ? -1 : 1;
   }
   switch (l->kind) {
-  case TYPE_VOID:
-    return 0;
   case TYPE_INTEGER:
     return utility_intcmp(l->data.size, r->data.size);
   case TYPE_POINTER:
     return type_cmp(l->data.type, r->data.type, extra);
   default:
-    UTILITY_ASSERT(0);
     return 0;
   }
 }
