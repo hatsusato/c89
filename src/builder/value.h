@@ -24,7 +24,7 @@ Constant *value_as_constant(Value *);
 Global *value_as_global(Value *);
 Type *value_type(Value *);
 ValueKind value_kind(Value *);
-void value_print(Value *);
+void value_print(Value *, Bool);
 
 ValuePool *value_pool_new(void);
 void value_pool_delete(ValuePool *);

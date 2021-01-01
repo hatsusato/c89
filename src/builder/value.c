@@ -1,10 +1,13 @@
 #include "value.h"
 
+#include <stdio.h>
+
 #include "block.h"
 #include "constant.h"
 #include "function.h"
 #include "global.h"
 #include "instruction.h"
+#include "type.h"
 #include "utility.h"
 #include "vector.h"
 
@@ -89,18 +92,33 @@ Type *value_type(Value *value) {
 ValueKind value_kind(Value *value) {
   return value->kind;
 }
-void value_print(Value *value) {
+void value_print(Value *value, Bool with_type) {
   switch (value->kind) {
   case VALUE_BLOCK:
+    if (with_type) {
+      printf("label ");
+    }
     block_print(value_as_block(value));
     break;
   case VALUE_INSTRUCTION:
+    if (with_type) {
+      type_print(instruction_type(value_as_instruction(value)));
+      printf(" ");
+    }
     instruction_print(value_as_instruction(value));
     break;
   case VALUE_CONSTANT:
+    if (with_type) {
+      type_print(constant_type(value_as_constant(value)));
+      printf(" ");
+    }
     constant_print(value_as_constant(value));
     break;
   case VALUE_GLOBAL:
+    if (with_type) {
+      type_print(global_type(value_as_global(value)));
+      printf(" ");
+    }
     global_print(value_as_global(value));
     break;
   default:

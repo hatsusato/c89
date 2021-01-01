@@ -33,7 +33,7 @@ static void print_align(void) {
 }
 static void instruction_print_operand(Instruction *instr, Index index) {
   UTILITY_ASSERT(0 <= index && index < INSTRUCTION_OPERAND_COUNT);
-  value_print(instr->operands[index]);
+  value_print(instr->operands[index], false);
 }
 static void instruction_print_name(Instruction *instr) {
   const char *names[] = {
@@ -58,17 +58,17 @@ static void instruction_pretty_ret(Instruction *instr) {
 }
 static void instruction_pretty_br(Instruction *instr) {
   instruction_print_name(instr);
-  instruction_print_operand(instr, 0);
+  value_print(instr->operands[0], true);
 }
 static void instruction_pretty_br_cond(Instruction *instr) {
   instruction_print_name(instr);
   printf("i1");
   print_space();
-  instruction_print_operand(instr, 0);
+  value_print(instr->operands[0], false);
   print_comma();
-  instruction_print_operand(instr, 1);
+  value_print(instr->operands[1], true);
   print_comma();
-  instruction_print_operand(instr, 2);
+  value_print(instr->operands[2], true);
 }
 static void instruction_pretty_switch(Instruction *instr) {
   instruction_print_name(instr);
@@ -76,7 +76,7 @@ static void instruction_pretty_switch(Instruction *instr) {
   print_space();
   instruction_print_operand(instr, 0);
   print_comma();
-  instruction_print_operand(instr, 1);
+  value_print(instr->operands[1], true);
   print_space();
   printf("[");
   print_newline();
