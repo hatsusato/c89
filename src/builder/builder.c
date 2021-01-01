@@ -21,6 +21,7 @@ struct struct_Builder {
   Table *table;
   Function *func;
   Value *retval, *value;
+  Type *type;
   Block *next[BUILDER_NEXT_COUNT];
 };
 
@@ -36,6 +37,7 @@ static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
   builder->func = NULL;
   builder->retval = builder->value = NULL;
+  builder->type = NULL;
   while (tag < BUILDER_NEXT_COUNT) {
     builder_set_next(builder, tag++, NULL);
   }
