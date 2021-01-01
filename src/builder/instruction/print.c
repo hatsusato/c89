@@ -31,10 +31,6 @@ static void print_align(void) {
   print_space();
   printf("4");
 }
-static void instruction_print_operand(Instruction *instr, Index index) {
-  UTILITY_ASSERT(0 <= index && index < INSTRUCTION_OPERAND_COUNT);
-  value_print(instr->operands[index], false);
-}
 static void instruction_print_name(Instruction *instr) {
   const char *names[] = {
 #define DO_HANDLE(name, str) str,
@@ -53,7 +49,7 @@ static void instruction_pretty_ret(Instruction *instr) {
   instruction_print_type(instr);
   if (instr->operands[0]) {
     print_space();
-    instruction_print_operand(instr, 0);
+    value_print(instr->operands[0], false);
   }
 }
 static void instruction_pretty_br(Instruction *instr) {
@@ -74,7 +70,7 @@ static void instruction_pretty_switch(Instruction *instr) {
   instruction_print_name(instr);
   instruction_print_type(instr);
   print_space();
-  instruction_print_operand(instr, 0);
+  value_print(instr->operands[0], false);
   print_comma();
   value_print(instr->operands[1], true);
   print_space();
@@ -90,9 +86,9 @@ static void instruction_pretty_add(Instruction *instr) {
   instruction_print_name(instr);
   instruction_print_type(instr);
   print_space();
-  instruction_print_operand(instr, 0);
+  value_print(instr->operands[0], false);
   print_comma();
-  instruction_print_operand(instr, 1);
+  value_print(instr->operands[1], false);
 }
 static void instruction_pretty_sub(Instruction *instr) {
   instruction_print(instr);
@@ -100,9 +96,9 @@ static void instruction_pretty_sub(Instruction *instr) {
   instruction_print_name(instr);
   instruction_print_type(instr);
   print_space();
-  instruction_print_operand(instr, 0);
+  value_print(instr->operands[0], false);
   print_comma();
-  instruction_print_operand(instr, 1);
+  value_print(instr->operands[1], false);
 }
 static void instruction_pretty_alloca(Instruction *instr) {
   instruction_print(instr);
@@ -121,7 +117,7 @@ static void instruction_pretty_load(Instruction *instr) {
   instruction_print_type(instr);
   printf("*");
   print_space();
-  instruction_print_operand(instr, 0);
+  value_print(instr->operands[0], false);
   print_comma();
   print_align();
 }
@@ -129,12 +125,12 @@ static void instruction_pretty_store(Instruction *instr) {
   instruction_print_name(instr);
   instruction_print_type(instr);
   print_space();
-  instruction_print_operand(instr, 0);
+  value_print(instr->operands[0], false);
   print_comma();
   instruction_print_type(instr);
   printf("*");
   print_space();
-  instruction_print_operand(instr, 1);
+  value_print(instr->operands[1], false);
   print_comma();
   print_align();
 }
@@ -144,7 +140,7 @@ static void instruction_pretty_icmp_ne(Instruction *instr) {
   instruction_print_name(instr);
   value_print(instr->operands[0], true);
   print_comma();
-  instruction_print_operand(instr, 1);
+  value_print(instr->operands[1], false);
 }
 
 void instruction_print(Instruction *instr) {
