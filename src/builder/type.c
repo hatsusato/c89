@@ -7,12 +7,18 @@
 #include "pool.h"
 #include "utility.h"
 
-typedef enum { TYPE_VOID, TYPE_INTEGER, TYPE_KIND_COUND } TypeKind;
+typedef enum {
+  TYPE_VOID,
+  TYPE_INTEGER,
+  TYPE_POINTER,
+  TYPE_KIND_COUND
+} TypeKind;
 
 struct struct_Type {
   TypeKind kind;
   union {
     int size;
+    Type *type;
   } data;
 };
 
@@ -22,7 +28,6 @@ struct struct_TypePool {
 
 static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
   Type *l = lhs, *r = rhs;
-  UTILITY_UNUSED(extra);
   if (l->kind != r->kind) {
     return (l->kind < r->kind) ? -1 : 1;
   }
@@ -31,6 +36,8 @@ static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
     return 0;
   case TYPE_INTEGER:
     return utility_intcmp(l->data.size, r->data.size);
+  case TYPE_POINTER:
+    return type_cmp(l->data.type, r->data.type, extra);
   default:
     UTILITY_ASSERT(0);
     return 0;
