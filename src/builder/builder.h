@@ -36,6 +36,8 @@ Module *builder_get_module(Builder *);
 Value *builder_get_retval(Builder *);
 Value *builder_get_value(Builder *);
 void builder_set_value(Builder *, Value *);
+Type *builder_get_type(Builder *);
+void builder_set_type(Builder *, Type *);
 Block *builder_get_next(Builder *, BuilderNextTag);
 Block *builder_set_next(Builder *, BuilderNextTag, Block *);
 void builder_ast(Builder *, Sexp *);

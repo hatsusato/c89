@@ -130,6 +130,12 @@ Value *builder_get_value(Builder *builder) {
 void builder_set_value(Builder *builder, Value *value) {
   builder->value = value;
 }
+Type *builder_get_type(Builder *builder) {
+  return builder->type;
+}
+void builder_set_type(Builder *builder, Type *type) {
+  builder->type = type;
+}
 Block *builder_get_next(Builder *builder, BuilderNextTag tag) {
   UTILITY_ASSERT(0 <= tag && tag < BUILDER_NEXT_COUNT);
   return builder->next[tag];
