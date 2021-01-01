@@ -16,6 +16,14 @@ void builder_compound_statement(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 3));
   builder_pop_table(builder);
 }
+void builder_declaration_list(Builder *builder, Sexp *ast) {
+  UTILITY_ASSERT(AST_DECLARATION_LIST == sexp_get_tag(ast));
+  builder_ast_map(builder, ast);
+}
+void builder_statement_list(Builder *builder, Sexp *ast) {
+  UTILITY_ASSERT(AST_STATEMENT_LIST == sexp_get_tag(ast));
+  builder_ast_map(builder, ast);
+}
 void builder_expression_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_EXPRESSION_STATEMENT == sexp_get_tag(ast));
   builder_ast(builder, sexp_at(ast, 1));

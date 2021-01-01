@@ -252,10 +252,10 @@ void builder_ast(Builder *builder, Sexp *ast) {
     builder_compound_statement(builder, ast);
     break;
   case AST_DECLARATION_LIST:
-    builder_ast_map(builder, ast);
+    builder_declaration_list(builder, ast);
     break;
   case AST_STATEMENT_LIST:
-    builder_ast_map(builder, ast);
+    builder_statement_list(builder, ast);
     break;
   case AST_EXPRESSION_STATEMENT:
     builder_expression_statement(builder, ast);
