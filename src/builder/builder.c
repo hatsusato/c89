@@ -158,8 +158,23 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case AST_IDENTIFIER:
     builder_identifier(builder, ast);
     break;
+  case AST_TYPEDEF_IDENTIFIER:
+    builder_typedef_identifier(builder, ast);
+    break;
+  case AST_FLOATING_CONSTANT:
+    builder_floating_constant(builder, ast);
+    break;
   case AST_INTEGER_CONSTANT:
     builder_integer_constant(builder, ast);
+    break;
+  case AST_ENUMERATION_CONSTANT:
+    builder_enumeration_constant(builder, ast);
+    break;
+  case AST_CHARACTER_CONSTANT:
+    builder_character_constant(builder, ast);
+    break;
+  case AST_STRING_LITERAL:
+    builder_string_literal(builder, ast);
     break;
   case AST_ADDITIVE_EXPRESSION:
     builder_additive_expression(builder, ast);
