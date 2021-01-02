@@ -10,17 +10,11 @@
 static void print_newline(void) {
   printf("\n");
 }
-static void print_space(void) {
-  printf(" ");
-}
 static void print_indent(void) {
-  print_space();
-  print_space();
+  printf("  ");
 }
 static void print_align(void) {
-  printf(", align");
-  print_space();
-  printf("4");
+  printf(", align 4");
 }
 static void instruction_print_name(Instruction *instr) {
   switch (instr->ikind) {
@@ -67,8 +61,7 @@ static void instruction_pretty_switch(Instruction *instr) {
   instruction_print_name(instr);
   value_print_with_type(instr->operands[0], false);
   value_print_with_type(instr->operands[1], true);
-  print_space();
-  printf("[");
+  printf(" [");
   print_newline();
   block_pretty_switch(value_as_block(instr->operands[2]));
   print_indent();
