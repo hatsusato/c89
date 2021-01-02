@@ -106,6 +106,11 @@ void value_print(Value *value) {
 void value_print_type(Value *value) {
   type_print(value->type);
 }
+void value_print_with_type(Value *value) {
+  value_print_type(value);
+  printf(" ");
+  value_print(value);
+}
 
 ValuePool *value_pool_new(void) {
   ValuePool *pool = UTILITY_MALLOC(ValuePool);

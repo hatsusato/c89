@@ -26,6 +26,7 @@ ValueKind value_kind(Value *);
 Type *value_type(Value *);
 void value_print(Value *);
 void value_print_type(Value *);
+void value_print_with_type(Value *);
 
 ValuePool *value_pool_new(void);
 void value_pool_delete(ValuePool *);
