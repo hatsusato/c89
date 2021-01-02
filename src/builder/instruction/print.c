@@ -16,6 +16,18 @@ static void print_indent(void) {
 static void print_align(void) {
   printf(", align 4");
 }
+static const char *instruction_name(Instruction *instr) {
+  switch (instr->ikind) {
+#define DO_HANDLE(name, str) \
+  case name:                 \
+    return str;
+#include "instruction.def"
+#undef DO_HANDLE
+  default:
+    UTILITY_ASSERT(0);
+    break;
+  }
+}
 static void instruction_print_name(Instruction *instr) {
   switch (instr->ikind) {
 #define DO_HANDLE(name, str) \
@@ -30,17 +42,7 @@ static void instruction_print_name(Instruction *instr) {
     printf(" = ");
     break;
   }
-  switch (instr->ikind) {
-#define DO_HANDLE(name, str) \
-  case name:                 \
-    printf("%s ", str);      \
-    break;
-#include "instruction.def"
-#undef DO_HANDLE
-  default:
-    UTILITY_ASSERT(0);
-    break;
-  }
+  printf("%s ", instruction_name(instr));
 }
 
 static void instruction_pretty_ret(Instruction *instr) {
