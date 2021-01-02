@@ -4,6 +4,7 @@
 #include "builder/types.h"
 
 Type *type_void(void);
+Type *type_label(void);
 void type_print(Type *);
 Type *type_get_elem(Type *);
 
