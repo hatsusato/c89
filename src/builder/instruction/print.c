@@ -17,17 +17,13 @@ static void print_indent(void) {
   print_space();
   print_space();
 }
-static void print_comma(void) {
-  printf(",");
-  print_space();
-}
 static void print_assign(void) {
   print_space();
   printf("=");
   print_space();
 }
 static void print_align(void) {
-  printf("align");
+  printf(", align");
   print_space();
   printf("4");
 }
@@ -43,25 +39,22 @@ static void instruction_print_name(Instruction *instr) {
 
 static void instruction_pretty_ret(Instruction *instr) {
   instruction_print_name(instr);
-  value_print_with_type(instr->operands[0]);
+  value_print_with_type(instr->operands[0], false);
 }
 static void instruction_pretty_br(Instruction *instr) {
   instruction_print_name(instr);
-  value_print_with_type(instr->operands[0]);
+  value_print_with_type(instr->operands[0], false);
 }
 static void instruction_pretty_br_cond(Instruction *instr) {
   instruction_print_name(instr);
-  value_print_with_type(instr->operands[0]);
-  print_comma();
-  value_print_with_type(instr->operands[1]);
-  print_comma();
-  value_print_with_type(instr->operands[2]);
+  value_print_with_type(instr->operands[0], false);
+  value_print_with_type(instr->operands[1], true);
+  value_print_with_type(instr->operands[2], true);
 }
 static void instruction_pretty_switch(Instruction *instr) {
   instruction_print_name(instr);
-  value_print_with_type(instr->operands[0]);
-  print_comma();
-  value_print_with_type(instr->operands[1]);
+  value_print_with_type(instr->operands[0], false);
+  value_print_with_type(instr->operands[1], true);
   print_space();
   printf("[");
   print_newline();
@@ -73,17 +66,15 @@ static void instruction_pretty_add(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  value_print_with_type(instr->operands[0]);
-  print_comma();
-  value_print(instr->operands[1]);
+  value_print_with_type(instr->operands[0], false);
+  value_print(instr->operands[1], true);
 }
 static void instruction_pretty_sub(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  value_print_with_type(instr->operands[0]);
-  print_comma();
-  value_print(instr->operands[1]);
+  value_print_with_type(instr->operands[0], false);
+  value_print(instr->operands[1], true);
 }
 static void instruction_pretty_alloca(Instruction *instr) {
   Type *type = value_type(instruction_as_value(instr));
@@ -91,7 +82,6 @@ static void instruction_pretty_alloca(Instruction *instr) {
   print_assign();
   instruction_print_name(instr);
   type_print(type_get_elem(type));
-  print_comma();
   print_align();
 }
 static void instruction_pretty_load(Instruction *instr) {
@@ -100,26 +90,21 @@ static void instruction_pretty_load(Instruction *instr) {
   print_assign();
   instruction_print_name(instr);
   type_print(type);
-  print_comma();
-  value_print_with_type(instr->operands[0]);
-  print_comma();
+  value_print_with_type(instr->operands[0], true);
   print_align();
 }
 static void instruction_pretty_store(Instruction *instr) {
   instruction_print_name(instr);
-  value_print_with_type(instr->operands[0]);
-  print_comma();
-  value_print_with_type(instr->operands[1]);
-  print_comma();
+  value_print_with_type(instr->operands[0], false);
+  value_print_with_type(instr->operands[1], true);
   print_align();
 }
 static void instruction_pretty_icmp_ne(Instruction *instr) {
   instruction_print(instr);
   print_assign();
   instruction_print_name(instr);
-  value_print_with_type(instr->operands[0]);
-  print_comma();
-  value_print(instr->operands[1]);
+  value_print_with_type(instr->operands[0], false);
+  value_print(instr->operands[1], true);
 }
 
 void instruction_print(Instruction *instr) {

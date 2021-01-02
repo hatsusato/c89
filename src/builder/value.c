@@ -84,7 +84,8 @@ ValueKind value_kind(Value *value) {
 Type *value_type(Value *value) {
   return value->type;
 }
-void value_print(Value *value) {
+void value_print(Value *value, Bool comma) {
+  printf(comma ? ", " : "");
   switch (value->kind) {
   case VALUE_BLOCK:
     block_print(value_as_block(value));
@@ -106,11 +107,12 @@ void value_print(Value *value) {
 void value_print_type(Value *value) {
   type_print(value ? value->type : type_void());
 }
-void value_print_with_type(Value *value) {
+void value_print_with_type(Value *value, Bool comma) {
+  printf(comma ? ", " : "");
   value_print_type(value);
   if (value) {
     printf(" ");
-    value_print(value);
+    value_print(value, false);
   }
 }
 

@@ -79,9 +79,8 @@ void block_pretty_switch(Block *block) {
   ElemType *end = vector_end(block->vec);
   while (begin < end) {
     printf("    ");
-    value_print_with_type(*begin++);
-    printf(", ");
-    value_print_with_type(*begin++);
+    value_print_with_type(*begin++, false);
+    value_print_with_type(*begin++, true);
     printf("\n");
   }
 }
