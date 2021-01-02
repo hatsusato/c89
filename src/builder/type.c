@@ -11,6 +11,7 @@ typedef enum {
   TYPE_VOID,
   TYPE_INTEGER,
   TYPE_POINTER,
+  TYPE_LABEL,
   TYPE_KIND_COUNT
 } TypeKind;
 
@@ -92,6 +93,9 @@ void type_print(Type *type) {
   case TYPE_POINTER:
     type_print(type->data.type);
     printf("*");
+    break;
+  case TYPE_LABEL:
+    printf("label");
     break;
   default:
     printf("null");
