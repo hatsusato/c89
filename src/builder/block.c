@@ -5,12 +5,14 @@
 #include "builder.h"
 #include "instruction.h"
 #include "module.h"
+#include "type.h"
 #include "utility.h"
 #include "value.h"
 #include "vector.h"
 
 struct struct_Block {
   ValueKind kind;
+  Type *type;
   int id;
   Vector *vec;
 };
@@ -18,6 +20,7 @@ struct struct_Block {
 Block *block_new(void) {
   Block *block = UTILITY_MALLOC(Block);
   block->kind = VALUE_BLOCK;
+  block->type = NULL;
   block->id = -1;
   block->vec = vector_new(NULL);
   return block;
@@ -85,5 +88,7 @@ void block_pretty_switch(Block *block) {
 
 Block *builder_new_block(Builder *builder) {
   Module *module = builder_get_module(builder);
-  return module_new_block(module);
+  Block *block = module_new_block(module);
+  block->type = builder_type_label(builder);
+  return block;
 }
