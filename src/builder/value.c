@@ -104,12 +104,14 @@ void value_print(Value *value) {
   }
 }
 void value_print_type(Value *value) {
-  type_print(value->type);
+  type_print(value ? value->type : type_void());
 }
 void value_print_with_type(Value *value) {
   value_print_type(value);
-  printf(" ");
-  value_print(value);
+  if (value) {
+    printf(" ");
+    value_print(value);
+  }
 }
 
 ValuePool *value_pool_new(void) {

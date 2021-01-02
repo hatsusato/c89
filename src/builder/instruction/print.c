@@ -43,11 +43,7 @@ static void instruction_print_name(Instruction *instr) {
 
 static void instruction_pretty_ret(Instruction *instr) {
   instruction_print_name(instr);
-  if (instr->operands[0]) {
-    value_print_with_type(instr->operands[0]);
-  } else {
-    printf("void");
-  }
+  value_print_with_type(instr->operands[0]);
 }
 static void instruction_pretty_br(Instruction *instr) {
   instruction_print_name(instr);
