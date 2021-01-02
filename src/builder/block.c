@@ -89,6 +89,6 @@ void block_pretty_switch(Block *block) {
 Block *builder_new_block(Builder *builder) {
   Module *module = builder_get_module(builder);
   Block *block = module_new_block(module);
-  block->type = builder_type_label(builder);
+  block->type = type_label();
   return block;
 }

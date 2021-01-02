@@ -119,10 +119,6 @@ void type_pool_delete(TypePool *pool) {
   UTILITY_FREE(pool);
 }
 
-Type *builder_type_void(Builder *builder) {
-  UTILITY_UNUSED(builder);
-  return type_void();
-}
 Type *builder_type_integer(Builder *builder, int size) {
   Module *module = builder_get_module(builder);
   TypePool *pool = module_get_type(module);
@@ -140,8 +136,4 @@ Type *builder_type_pointer(Builder *builder, Type *base) {
   type_init_pointer(&type, base);
   found = pool_find(pool->pool, &type);
   return found ? *found : type_pool_new_pointer(pool, base);
-}
-Type *builder_type_label(Builder *builder) {
-  UTILITY_UNUSED(builder);
-  return type_label();
 }
