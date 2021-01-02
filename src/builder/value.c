@@ -84,11 +84,7 @@ ValueKind value_kind(Value *value) {
 Type *value_type(Value *value) {
   return value->type;
 }
-void value_print(Value *value, Bool with_type) {
-  if (with_type) {
-    value_print_type(value);
-    printf(" ");
-  }
+void value_print(Value *value) {
   switch (value->kind) {
   case VALUE_BLOCK:
     block_print(value_as_block(value));
