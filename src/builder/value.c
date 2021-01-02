@@ -13,6 +13,7 @@
 
 struct struct_Value {
   ValueKind kind;
+  Type *type;
 };
 
 struct struct_ValuePool {
@@ -77,20 +78,11 @@ Global *value_as_global(Value *value) {
   UTILITY_ASSERT(VALUE_GLOBAL == value->kind);
   return (Global *)value;
 }
-Type *value_type(Value *value) {
-  switch (value->kind) {
-  case VALUE_INSTRUCTION:
-    return instruction_type(value_as_instruction(value));
-  case VALUE_CONSTANT:
-    return constant_type(value_as_constant(value));
-  case VALUE_GLOBAL:
-    return global_type(value_as_global(value));
-  default:
-    return NULL;
-  }
-}
 ValueKind value_kind(Value *value) {
   return value->kind;
+}
+Type *value_type(Value *value) {
+  return value->type;
 }
 void value_print(Value *value, Bool with_type) {
   switch (value->kind) {

@@ -22,8 +22,8 @@ Block *value_as_block(Value *);
 Instruction *value_as_instruction(Value *);
 Constant *value_as_constant(Value *);
 Global *value_as_global(Value *);
-Type *value_type(Value *);
 ValueKind value_kind(Value *);
+Type *value_type(Value *);
 void value_print(Value *, Bool);
 
 ValuePool *value_pool_new(void);
