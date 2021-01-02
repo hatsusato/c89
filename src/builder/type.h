@@ -3,6 +3,7 @@
 
 #include "builder/types.h"
 
+Type *type_void(void);
 void type_print(Type *);
 Type *type_get_elem(Type *);
 

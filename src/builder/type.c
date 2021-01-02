@@ -50,10 +50,6 @@ static Type *type_new(void) {
 static void type_delete(ElemType type) {
   UTILITY_FREE(type);
 }
-static void type_init_void(Type *type) {
-  type->kind = TYPE_VOID;
-  type->data.size = 0;
-}
 static void type_init_integer(Type *type, int size) {
   type->kind = TYPE_INTEGER;
   type->data.size = size;
@@ -67,12 +63,6 @@ static void type_init_label(Type *type) {
   type->data.size = 0;
 }
 
-static Type *type_pool_new_void(TypePool *pool) {
-  Type *type = type_new();
-  type_init_void(type);
-  pool_insert(pool->pool, type);
-  return type;
-}
 static Type *type_pool_new_integer(TypePool *pool, int size) {
   Type *type = type_new();
   type_init_integer(type, size);
@@ -92,6 +82,12 @@ static Type *type_pool_new_label(TypePool *pool) {
   return type;
 }
 
+Type *type_void(void) {
+  static Type type;
+  type.kind = TYPE_VOID;
+  type.data.size = 0;
+  return &type;
+}
 void type_print(Type *type) {
   switch (type ? type->kind : TYPE_KIND_COUNT) {
   case TYPE_VOID:
@@ -128,13 +124,8 @@ void type_pool_delete(TypePool *pool) {
 }
 
 Type *builder_type_void(Builder *builder) {
-  Module *module = builder_get_module(builder);
-  TypePool *pool = module_get_type(module);
-  const ElemType *found;
-  Type type;
-  type_init_void(&type);
-  found = pool_find(pool->pool, &type);
-  return found ? *found : type_pool_new_void(pool);
+  UTILITY_UNUSED(builder);
+  return type_void();
 }
 Type *builder_type_integer(Builder *builder, int size) {
   Module *module = builder_get_module(builder);
