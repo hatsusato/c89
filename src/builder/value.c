@@ -85,38 +85,30 @@ Type *value_type(Value *value) {
   return value->type;
 }
 void value_print(Value *value, Bool with_type) {
+  if (with_type) {
+    value_print_type(value);
+    printf(" ");
+  }
   switch (value->kind) {
   case VALUE_BLOCK:
-    if (with_type) {
-      printf("label ");
-    }
     block_print(value_as_block(value));
     break;
   case VALUE_INSTRUCTION:
-    if (with_type) {
-      type_print(instruction_type(value_as_instruction(value)));
-      printf(" ");
-    }
     instruction_print(value_as_instruction(value));
     break;
   case VALUE_CONSTANT:
-    if (with_type) {
-      type_print(constant_type(value_as_constant(value)));
-      printf(" ");
-    }
     constant_print(value_as_constant(value));
     break;
   case VALUE_GLOBAL:
-    if (with_type) {
-      type_print(global_type(value_as_global(value)));
-      printf(" ");
-    }
     global_print(value_as_global(value));
     break;
   default:
     UTILITY_ASSERT(0);
     break;
   }
+}
+void value_print_type(Value *value) {
+  type_print(value->type);
 }
 
 ValuePool *value_pool_new(void) {
