@@ -38,7 +38,7 @@ static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
   builder->func = NULL;
   builder->retval = builder->value = NULL;
-  builder->type = NULL;
+  builder->type = builder_type_integer(builder, 32);
   while (tag < BUILDER_NEXT_COUNT) {
     builder_set_next(builder, tag++, NULL);
   }
@@ -63,13 +63,6 @@ void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
 void builder_function_init(Builder *builder, Sexp *ast) {
-  if (4 == sexp_length(ast)) {
-    Type *type = builder_type_integer(builder, 32);
-    builder_set_type(builder, type);
-  } else {
-    UTILITY_ASSERT(5 == sexp_length(ast));
-    builder_ast(builder, sexp_at(ast, 1));
-  }
   builder->func = builder_new_function(builder, ast);
   builder_init_next(builder);
   if (1 < function_count_return(ast)) {

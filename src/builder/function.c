@@ -105,6 +105,9 @@ Function *builder_new_function(Builder *builder, Sexp *ast) {
   Module *module = builder_get_module(builder);
   Function *func = module_new_function(module);
   func->name = function_name(ast);
+  if (5 == sexp_length(ast)) {
+    builder_ast(builder, sexp_at(ast, 1));
+  }
   func->type = builder_get_type(builder);
   return func;
 }
