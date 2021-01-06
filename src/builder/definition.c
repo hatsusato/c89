@@ -4,7 +4,6 @@
 #include "builder.h"
 #include "instruction.h"
 #include "sexp.h"
-#include "type.h"
 #include "utility.h"
 
 void builder_translation_unit(Builder *builder, Sexp *ast) {
@@ -18,18 +17,10 @@ void builder_external_declaration(Builder *builder, Sexp *ast) {
 }
 void builder_function_definition(Builder *builder, Sexp *ast) {
   Block *ret;
-  int length = sexp_length(ast);
   UTILITY_ASSERT(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
-  if (4 == length) {
-    Type *type = builder_type_integer(builder, 32);
-    builder_set_type(builder, type);
-  } else {
-    UTILITY_ASSERT(5 == length);
-    builder_ast(builder, sexp_at(ast, 1));
-  }
   builder_function_init(builder, ast);
   ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
-  builder_ast(builder, sexp_at(ast, length - 1));
+  builder_ast(builder, sexp_at(ast, sexp_length(ast) - 1));
   if (ret) {
     Value *retval;
     builder_instruction_br(builder, ret);

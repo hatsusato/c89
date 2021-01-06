@@ -13,6 +13,7 @@
 #include "sexp.h"
 #include "statement.h"
 #include "table.h"
+#include "type.h"
 #include "utility.h"
 #include "value.h"
 
@@ -62,6 +63,13 @@ void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
 void builder_function_init(Builder *builder, Sexp *ast) {
+  if (4 == sexp_length(ast)) {
+    Type *type = builder_type_integer(builder, 32);
+    builder_set_type(builder, type);
+  } else {
+    UTILITY_ASSERT(5 == sexp_length(ast));
+    builder_ast(builder, sexp_at(ast, 1));
+  }
   builder->func = builder_new_function(builder, ast);
   builder_init_next(builder);
   if (1 < function_count_return(ast)) {
