@@ -59,7 +59,9 @@ static Bool builder_block_terminated(Builder *builder) {
 }
 
 void builder_instruction_ret(Builder *builder, Value *expr) {
-  builder_instruction_unary(builder, INSTRUCTION_RET, expr);
+  if (!builder_block_terminated(builder)) {
+    builder_instruction_unary(builder, INSTRUCTION_RET, expr);
+  }
 }
 void builder_instruction_br(Builder *builder, Block *label) {
   if (!builder_block_terminated(builder)) {
