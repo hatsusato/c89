@@ -105,15 +105,13 @@ void value_print(Value *value, Bool comma) {
   }
 }
 void value_print_type(Value *value) {
-  type_print(value ? value->type : type_void());
+  type_print(value->type);
 }
 void value_print_with_type(Value *value, Bool comma) {
   printf(comma ? ", " : "");
   value_print_type(value);
-  if (value) {
-    printf(" ");
-    value_print(value, false);
-  }
+  printf(" ");
+  value_print(value, false);
 }
 
 ValuePool *value_pool_new(void) {
