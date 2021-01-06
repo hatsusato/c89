@@ -3,6 +3,7 @@
 
 #include "builder/types.h"
 
+Bool type_is_void(Type *);
 void type_print(Type *);
 void type_print_elem(Type *);
 

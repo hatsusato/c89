@@ -85,6 +85,9 @@ static Type *type_label(void) {
   return &type;
 }
 
+Bool type_is_void(Type *type) {
+  return TYPE_VOID == type->kind;
+}
 void type_print(Type *type) {
   switch (type ? type->kind : TYPE_KIND_COUNT) {
   case TYPE_VOID:
