@@ -7,6 +7,7 @@
 #include "builder.h"
 #include "module.h"
 #include "sexp.h"
+#include "type.h"
 #include "utility.h"
 #include "value.h"
 #include "vector.h"
@@ -79,7 +80,9 @@ void function_set_id(Function *func) {
 void function_pretty(Function *func) {
   ElemType *begin = vector_begin(func->vec);
   ElemType *end = vector_end(func->vec);
-  printf("define i32 @%s() {\n", func->name);
+  printf("define ");
+  type_print(func->type);
+  printf(" @%s() {\n", func->name);
   UTILITY_ASSERT(begin != end);
   block_pretty(*begin++);
   for (; begin < end; ++begin) {
@@ -102,5 +105,6 @@ Function *builder_new_function(Builder *builder, Sexp *ast) {
   Module *module = builder_get_module(builder);
   Function *func = module_new_function(module);
   func->name = function_name(ast);
+  func->type = builder_get_type(builder);
   return func;
 }
