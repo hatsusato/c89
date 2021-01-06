@@ -72,18 +72,19 @@ static Type *type_pool_new_pointer(TypePool *pool, Type *ptr) {
   return type;
 }
 
-Type *type_void(void) {
+static Type *type_void(void) {
   static Type type;
   type.kind = TYPE_VOID;
   type.data.size = 0;
   return &type;
 }
-Type *type_label(void) {
+static Type *type_label(void) {
   static Type type;
   type.kind = TYPE_LABEL;
   type.data.size = 0;
   return &type;
 }
+
 void type_print(Type *type) {
   switch (type ? type->kind : TYPE_KIND_COUNT) {
   case TYPE_VOID:
