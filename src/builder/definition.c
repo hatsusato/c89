@@ -65,7 +65,6 @@ void builder_function_definition(Builder *builder, Sexp *ast) {
   const char *name;
   Type *type;
   Function *func;
-  Block *ret;
   UTILITY_ASSERT(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   name = function_name(ast);
   type = builder_function_type(builder, ast);
@@ -73,19 +72,10 @@ void builder_function_definition(Builder *builder, Sexp *ast) {
   builder_init_next(builder, func);
   if (1 < function_count_return(ast)) {
     builder_init_return(builder);
-  }
-  ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
-  builder_ast(builder, sexp_at(ast, sexp_length(ast) - 1));
-  if (ret) {
-    Value *retval = NULL;
-    builder_instruction_br(builder, ret);
-    builder_jump_block(builder, ret);
-    retval = builder_get_retval(builder);
-    if (!type_is_void(type)) {
-      builder_instruction_load(builder, retval);
-      retval = builder_get_value(builder);
-    }
-    builder_instruction_ret(builder, retval);
+    builder_ast(builder, sexp_at(ast, sexp_length(ast) - 1));
+    builder_finish_return(builder);
+  } else {
+    builder_ast(builder, sexp_at(ast, sexp_length(ast) - 1));
   }
   builder_function_finish(builder);
 }

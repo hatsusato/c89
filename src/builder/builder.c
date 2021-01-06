@@ -72,6 +72,18 @@ void builder_init_return(Builder *builder) {
     builder->retval = builder_get_value(builder);
   }
 }
+void builder_finish_return(Builder *builder) {
+  Type *type = function_return_type(builder->func);
+  Block *ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
+  Value *retval = builder_get_retval(builder);
+  builder_instruction_br(builder, ret);
+  builder_jump_block(builder, ret);
+  if (!type_is_void(type)) {
+    builder_instruction_load(builder, retval);
+    retval = builder_get_value(builder);
+  }
+  builder_instruction_ret(builder, retval);
+}
 void builder_function_finish(Builder *builder) {
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   Block *entry = builder_get_next(builder, BUILDER_NEXT_ENTRY);
