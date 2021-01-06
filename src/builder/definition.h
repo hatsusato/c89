@@ -3,6 +3,7 @@
 
 #include "builder/types.h"
 
+void builder_translation_unit(Builder *, Sexp *);
 void builder_external_declaration(Builder *, Sexp *);
 void builder_function_definition(Builder *, Sexp *);
 

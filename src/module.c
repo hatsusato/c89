@@ -2,15 +2,20 @@
 
 #include <stdio.h>
 
+#include "builder/block.h"
 #include "builder/builder.h"
+#include "builder/constant.h"
 #include "builder/function.h"
 #include "builder/global.h"
+#include "builder/instruction.h"
+#include "builder/type.h"
 #include "builder/value.h"
 #include "utility.h"
 #include "vector.h"
 
 struct struct_Module {
-  ValuePool *pool;
+  ValuePool *value;
+  TypePool *type;
   Vector *prior, *global, *func;
 };
 
@@ -43,7 +48,8 @@ static void module_pretty_function(Module *module) {
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
-  module->pool = value_pool_new();
+  module->value = value_pool_new();
+  module->type = type_pool_new();
   module->prior = vector_new(NULL);
   module->global = vector_new(NULL);
   module->func = vector_new(NULL);
@@ -53,25 +59,37 @@ void module_delete(Module *module) {
   vector_delete(module->func);
   vector_delete(module->global);
   vector_delete(module->prior);
-  value_pool_delete(module->pool);
+  type_pool_delete(module->type);
+  value_pool_delete(module->value);
   UTILITY_FREE(module);
 }
+TypePool *module_get_type(Module *module) {
+  return module->type;
+}
 Function *module_new_function(Module *module) {
-  Function *func = value_pool_new_function(module->pool);
+  Function *func = function_new();
+  value_pool_insert(module->value, function_as_value(func));
   vector_push(module->func, func);
   return func;
 }
 Block *module_new_block(Module *module) {
-  return value_pool_new_block(module->pool);
+  Block *block = block_new();
+  value_pool_insert(module->value, block_as_value(block));
+  return block;
 }
 Instruction *module_new_instruction(Module *module) {
-  return value_pool_new_instruction(module->pool);
+  Instruction *instr = instruction_new();
+  value_pool_insert(module->value, instruction_as_value(instr));
+  return instr;
 }
 Constant *module_new_constant(Module *module) {
-  return value_pool_new_constant(module->pool);
+  Constant *constant = constant_new();
+  value_pool_insert(module->value, constant_as_value(constant));
+  return constant;
 }
 Global *module_new_global(Module *module) {
-  Global *global = value_pool_new_global(module->pool);
+  Global *global = global_new();
+  value_pool_insert(module->value, global_as_value(global));
   vector_push(module->global, global);
   return global;
 }

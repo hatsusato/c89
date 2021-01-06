@@ -21,6 +21,7 @@ struct struct_Builder {
   Table *table;
   Function *func;
   Value *retval, *value;
+  Type *type;
   Block *next[BUILDER_NEXT_COUNT];
 };
 
@@ -36,6 +37,7 @@ static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
   builder->func = NULL;
   builder->retval = builder->value = NULL;
+  builder->type = NULL;
   while (tag < BUILDER_NEXT_COUNT) {
     builder_set_next(builder, tag++, NULL);
   }
@@ -128,6 +130,12 @@ Value *builder_get_value(Builder *builder) {
 void builder_set_value(Builder *builder, Value *value) {
   builder->value = value;
 }
+Type *builder_get_type(Builder *builder) {
+  return builder->type;
+}
+void builder_set_type(Builder *builder, Type *type) {
+  builder->type = type;
+}
 Block *builder_get_next(Builder *builder, BuilderNextTag tag) {
   UTILITY_ASSERT(0 <= tag && tag < BUILDER_NEXT_COUNT);
   return builder->next[tag];
@@ -137,8 +145,7 @@ Block *builder_set_next(Builder *builder, BuilderNextTag tag, Block *next) {
   UTILITY_SWAP(Block *, builder->next[tag], next);
   return next;
 }
-
-static void builder_ast_map(Builder *builder, Sexp *ast) {
+void builder_ast_map(Builder *builder, Sexp *ast) {
   for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     builder_ast(builder, sexp_car(ast));
   }
@@ -151,14 +158,77 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case AST_IDENTIFIER:
     builder_identifier(builder, ast);
     break;
+  case AST_TYPEDEF_IDENTIFIER:
+    builder_typedef_identifier(builder, ast);
+    break;
+  case AST_FLOATING_CONSTANT:
+    builder_floating_constant(builder, ast);
+    break;
   case AST_INTEGER_CONSTANT:
     builder_integer_constant(builder, ast);
+    break;
+  case AST_ENUMERATION_CONSTANT:
+    builder_enumeration_constant(builder, ast);
+    break;
+  case AST_CHARACTER_CONSTANT:
+    builder_character_constant(builder, ast);
+    break;
+  case AST_STRING_LITERAL:
+    builder_string_literal(builder, ast);
+    break;
+  case AST_PRIMARY_EXPRESSION:
+    builder_primary_expression(builder, ast);
+    break;
+  case AST_POSTFIX_EXPRESSION:
+    builder_postfix_expression(builder, ast);
+    break;
+  case AST_ARGUMENT_EXPRESSION_LIST:
+    builder_argument_expression_list(builder, ast);
+    break;
+  case AST_UNARY_EXPRESSION:
+    builder_unary_expression(builder, ast);
+    break;
+  case AST_CAST_EXPRESSION:
+    builder_cast_expression(builder, ast);
+    break;
+  case AST_MULTIPLICATIVE_EXPRESSION:
+    builder_multiplicative_expression(builder, ast);
     break;
   case AST_ADDITIVE_EXPRESSION:
     builder_additive_expression(builder, ast);
     break;
+  case AST_SHIFT_EXPRESSION:
+    builder_shift_expression(builder, ast);
+    break;
+  case AST_RELATIONAL_EXPRESSION:
+    builder_relational_expression(builder, ast);
+    break;
+  case AST_EQUALITY_EXPRESSION:
+    builder_equality_expression(builder, ast);
+    break;
+  case AST_AND_EXPRESSION:
+    builder_and_expression(builder, ast);
+    break;
+  case AST_EXCLUSIVE_OR_EXPRESSION:
+    builder_exclusive_or_expression(builder, ast);
+    break;
+  case AST_INCLUSIVE_OR_EXPRESSION:
+    builder_inclusive_or_expression(builder, ast);
+    break;
+  case AST_LOGICAL_AND_EXPRESSION:
+    builder_logical_and_expression(builder, ast);
+    break;
+  case AST_LOGICAL_OR_EXPRESSION:
+    builder_logical_or_expression(builder, ast);
+    break;
+  case AST_CONDITIONAL_EXPRESSION:
+    builder_conditional_expression(builder, ast);
+    break;
   case AST_ASSIGNMENT_EXPRESSION:
     builder_assignment_expression(builder, ast);
+    break;
+  case AST_EXPRESSION:
+    builder_expression(builder, ast);
     break;
   case AST_CONSTANT_EXPRESSION:
     builder_constant_expression(builder, ast);
@@ -166,11 +236,89 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case AST_DECLARATION:
     builder_declaration(builder, ast);
     break;
+  case AST_DECLARATION_SPECIFIERS:
+    builder_declaration_specifiers(builder, ast);
+    break;
   case AST_INIT_DECLARATOR_LIST:
-    builder_ast_map(builder, ast);
+    builder_init_declarator_list(builder, ast);
     break;
   case AST_INIT_DECLARATOR:
     builder_init_declarator(builder, ast);
+    break;
+  case AST_STORAGE_CLASS_SPECIFIER:
+    builder_storage_class_specifier(builder, ast);
+    break;
+  case AST_TYPE_SPECIFIER:
+    builder_type_specifier(builder, ast);
+    break;
+  case AST_STRUCT_OR_UNION_SPECIFIER:
+    builder_struct_or_union_specifier(builder, ast);
+    break;
+  case AST_STRUCT_DECLARATION_LIST:
+    builder_struct_declaration_list(builder, ast);
+    break;
+  case AST_STRUCT_DECLARATION:
+    builder_struct_declaration(builder, ast);
+    break;
+  case AST_SPECIFIER_QUALIFIER_LIST:
+    builder_specifier_qualifier_list(builder, ast);
+    break;
+  case AST_STRUCT_DECLARATOR_LIST:
+    builder_struct_declarator_list(builder, ast);
+    break;
+  case AST_STRUCT_DECLARATOR:
+    builder_struct_declarator(builder, ast);
+    break;
+  case AST_ENUM_SPECIFIER:
+    builder_enum_specifier(builder, ast);
+    break;
+  case AST_ENUMERATOR_LIST:
+    builder_enumerator_list(builder, ast);
+    break;
+  case AST_ENUMERATOR:
+    builder_enumerator(builder, ast);
+    break;
+  case AST_TYPE_QUALIFIER:
+    builder_type_qualifier(builder, ast);
+    break;
+  case AST_DECLARATOR:
+    builder_declarator(builder, ast);
+    break;
+  case AST_DIRECT_DECLARATOR:
+    builder_direct_declarator(builder, ast);
+    break;
+  case AST_POINTER:
+    builder_pointer(builder, ast);
+    break;
+  case AST_TYPE_QUALIFIER_LIST:
+    builder_type_qualifier_list(builder, ast);
+    break;
+  case AST_PARAMETER_LIST:
+    builder_parameter_list(builder, ast);
+    break;
+  case AST_PARAMETER_DECLARATION:
+    builder_parameter_declaration(builder, ast);
+    break;
+  case AST_IDENTIFIER_LIST:
+    builder_identifier_list(builder, ast);
+    break;
+  case AST_TYPE_NAME:
+    builder_type_name(builder, ast);
+    break;
+  case AST_ABSTRACT_DECLARATOR:
+    builder_abstract_declarator(builder, ast);
+    break;
+  case AST_DIRECT_ABSTRACT_DECLARATOR:
+    builder_direct_abstract_declarator(builder, ast);
+    break;
+  case AST_TYPEDEF_NAME:
+    builder_typedef_name(builder, ast);
+    break;
+  case AST_INITIALIZER:
+    builder_initializer(builder, ast);
+    break;
+  case AST_INITIALIZER_LIST:
+    builder_initializer_list(builder, ast);
     break;
   case AST_STATEMENT:
     builder_statement(builder, ast);
@@ -182,10 +330,10 @@ void builder_ast(Builder *builder, Sexp *ast) {
     builder_compound_statement(builder, ast);
     break;
   case AST_DECLARATION_LIST:
-    builder_ast_map(builder, ast);
+    builder_declaration_list(builder, ast);
     break;
   case AST_STATEMENT_LIST:
-    builder_ast_map(builder, ast);
+    builder_statement_list(builder, ast);
     break;
   case AST_EXPRESSION_STATEMENT:
     builder_expression_statement(builder, ast);
@@ -200,7 +348,7 @@ void builder_ast(Builder *builder, Sexp *ast) {
     builder_jump_statement(builder, ast);
     break;
   case AST_TRANSLATION_UNIT:
-    builder_ast_map(builder, ast);
+    builder_translation_unit(builder, ast);
     break;
   case AST_EXTERNAL_DECLARATION:
     builder_external_declaration(builder, ast);

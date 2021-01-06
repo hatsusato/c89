@@ -1,15 +1,19 @@
 #include "value.h"
 
+#include <stdio.h>
+
 #include "block.h"
 #include "constant.h"
 #include "function.h"
 #include "global.h"
 #include "instruction.h"
+#include "type.h"
 #include "utility.h"
 #include "vector.h"
 
 struct struct_Value {
   ValueKind kind;
+  Type *type;
 };
 
 struct struct_ValuePool {
@@ -77,7 +81,11 @@ Global *value_as_global(Value *value) {
 ValueKind value_kind(Value *value) {
   return value->kind;
 }
-void value_print(Value *value) {
+Type *value_type(Value *value) {
+  return value->type;
+}
+void value_print(Value *value, Bool comma) {
+  printf(comma ? ", " : "");
   switch (value->kind) {
   case VALUE_BLOCK:
     block_print(value_as_block(value));
@@ -96,6 +104,17 @@ void value_print(Value *value) {
     break;
   }
 }
+void value_print_type(Value *value) {
+  type_print(value ? value->type : type_void());
+}
+void value_print_with_type(Value *value, Bool comma) {
+  printf(comma ? ", " : "");
+  value_print_type(value);
+  if (value) {
+    printf(" ");
+    value_print(value, false);
+  }
+}
 
 ValuePool *value_pool_new(void) {
   ValuePool *pool = UTILITY_MALLOC(ValuePool);
@@ -106,28 +125,6 @@ void value_pool_delete(ValuePool *pool) {
   vector_delete(pool->vec);
   UTILITY_FREE(pool);
 }
-Function *value_pool_new_function(ValuePool *pool) {
-  Function *function = function_new();
-  vector_push(pool->vec, function);
-  return function;
-}
-Block *value_pool_new_block(ValuePool *pool) {
-  Block *block = block_new();
-  vector_push(pool->vec, block);
-  return block;
-}
-Instruction *value_pool_new_instruction(ValuePool *pool) {
-  Instruction *instr = instruction_new();
-  vector_push(pool->vec, instr);
-  return instr;
-}
-Constant *value_pool_new_constant(ValuePool *pool) {
-  Constant *constant = constant_new();
-  vector_push(pool->vec, constant);
-  return constant;
-}
-Global *value_pool_new_global(ValuePool *pool) {
-  Global *global = global_new();
-  vector_push(pool->vec, global);
-  return global;
+void value_pool_insert(ValuePool *pool, Value *value) {
+  vector_push(pool->vec, value);
 }

@@ -6,6 +6,8 @@
 void builder_statement(Builder *, Sexp *);
 void builder_labeled_statement(Builder *, Sexp *);
 void builder_compound_statement(Builder *, Sexp *);
+void builder_declaration_list(Builder *, Sexp *);
+void builder_statement_list(Builder *, Sexp *);
 void builder_expression_statement(Builder *, Sexp *);
 void builder_selection_statement(Builder *, Sexp *);
 void builder_iteration_statement(Builder *, Sexp *);

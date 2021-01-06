@@ -5,11 +5,13 @@
 #include "builder.h"
 #include "constant.h"
 #include "module.h"
+#include "type.h"
 #include "utility.h"
 #include "value.h"
 
 struct struct_Global {
   ValueKind kind;
+  Type *type;
   const char *name;
   Constant *init;
   Bool prior;
@@ -18,6 +20,7 @@ struct struct_Global {
 Global *global_new(void) {
   Global *global = UTILITY_MALLOC(Global);
   global->kind = VALUE_GLOBAL;
+  global->type = NULL;
   global->name = NULL;
   global->init = NULL;
   global->prior = false;
@@ -25,6 +28,9 @@ Global *global_new(void) {
 }
 void global_delete(Global *global) {
   UTILITY_FREE(global);
+}
+Type *global_type(Global *global) {
+  return global->type;
 }
 void global_set_init(Global *global, Constant *init) {
   global->init = init;
@@ -41,7 +47,9 @@ void global_print(Global *global) {
 }
 void global_pretty(Global *global) {
   global_print(global);
-  printf(" = global i32 ");
+  printf(" = global ");
+  type_print_elem(global->type);
+  printf(" ");
   if (global->init) {
     constant_print(global->init);
   } else {
@@ -53,6 +61,8 @@ void global_pretty(Global *global) {
 void builder_new_global(Builder *builder, const char *symbol) {
   Module *module = builder_get_module(builder);
   Global *global = module_new_global(module);
+  Type *type = builder_get_type(builder);
+  global->type = builder_type_pointer(builder, type);
   global->name = symbol;
   builder_insert_global(builder, symbol, global);
   builder_set_value(builder, global_as_value(global));

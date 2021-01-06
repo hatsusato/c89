@@ -13,6 +13,7 @@
 
 struct struct_Function {
   ValueKind kind;
+  Type *type;
   const char *name;
   Vector *vec;
 };
@@ -55,6 +56,7 @@ static const char *function_name(Sexp *ast) {
 Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
   func->kind = VALUE_FUNCTION;
+  func->type = NULL;
   func->name = NULL;
   func->vec = vector_new(NULL);
   return func;

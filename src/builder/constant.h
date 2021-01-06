@@ -5,6 +5,7 @@
 
 Constant *constant_new(void);
 void constant_delete(Constant *);
+Type *constant_type(Constant *);
 void constant_print(Constant *);
 
 void builder_new_integer(Builder *, const char *);
