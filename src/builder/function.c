@@ -69,13 +69,10 @@ int function_count_return(Sexp *ast) {
   }
 }
 
-Function *builder_new_function(Builder *builder, const char *name, Sexp *ast) {
+Function *builder_new_function(Builder *builder, const char *name, Type *type) {
   Module *module = builder_get_module(builder);
   Function *func = module_new_function(module);
   func->name = name;
-  if (5 == sexp_length(ast)) {
-    builder_ast(builder, sexp_at(ast, 1));
-  }
-  func->type = builder_get_type(builder);
+  func->type = type;
   return func;
 }

@@ -69,7 +69,7 @@ void builder_function_definition(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   name = function_name(ast);
   type = builder_function_type(builder, ast);
-  func = builder_new_function(builder, name, ast);
+  func = builder_new_function(builder, name, type);
   builder_function_init(builder, func, ast);
   ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
   builder_ast(builder, sexp_at(ast, sexp_length(ast) - 1));
