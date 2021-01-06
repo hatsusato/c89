@@ -104,6 +104,11 @@ void type_print(Type *type) {
     break;
   }
 }
+void type_print_elem(Type *type) {
+  if (TYPE_POINTER == type->kind) {
+    type_print(type->data.type);
+  }
+}
 Type *type_get_elem(Type *type) {
   return TYPE_POINTER == type->kind ? type->data.type : NULL;
 }
