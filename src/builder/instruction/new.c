@@ -52,14 +52,28 @@ static Bool instruction_is_terminator(Instruction *instr) {
     return false;
   }
 }
+static Bool builder_block_terminated(Builder *builder) {
+  Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
+  Instruction *last = block_last(current);
+  if (!last) {
+    return false;
+  }
+  switch (last->ikind) {
+#define DO_HANDLE(name, str) \
+  case name:                 \
+    return true;
+#include "terminator.def"
+#undef DO_HANDLE
+  default:
+    return false;
+  }
+}
 
 void builder_instruction_ret(Builder *builder, Value *expr) {
   builder_instruction_unary(builder, INSTRUCTION_RET, expr);
 }
 void builder_instruction_br(Builder *builder, Block *label) {
-  Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
-  Instruction *last = block_last(current);
-  if (!last || !instruction_is_terminator(last)) {
+  if (!builder_block_terminated(builder)) {
     builder_instruction_unary(builder, INSTRUCTION_BR, block_as_value(label));
   }
 }
