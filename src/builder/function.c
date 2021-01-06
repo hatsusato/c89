@@ -19,41 +19,6 @@ struct struct_Function {
   Vector *vec;
 };
 
-static const char *function_name(Sexp *ast) {
-  switch (sexp_get_tag(ast)) {
-  case AST_IDENTIFIER:
-    return identifier_symbol(ast);
-  case AST_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      return function_name(sexp_at(ast, 1));
-    case 3:
-      return function_name(sexp_at(ast, 2));
-    default:
-      UTILITY_ASSERT(0);
-      return NULL;
-    }
-  case AST_DIRECT_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      return function_name(sexp_at(ast, 1));
-    case 4:
-      return function_name(sexp_at(ast, 2));
-    case 5:
-      return function_name(sexp_at(ast, 1));
-    default:
-      UTILITY_ASSERT(0);
-      return NULL;
-    }
-  case AST_FUNCTION_DEFINITION:
-    UTILITY_ASSERT(5 == sexp_length(ast));
-    return function_name(sexp_at(ast, 2));
-  default:
-    UTILITY_ASSERT(0);
-    return NULL;
-  }
-}
-
 Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
   func->kind = VALUE_FUNCTION;
@@ -104,10 +69,10 @@ int function_count_return(Sexp *ast) {
   }
 }
 
-Function *builder_new_function(Builder *builder, Sexp *ast) {
+Function *builder_new_function(Builder *builder, const char *name, Sexp *ast) {
   Module *module = builder_get_module(builder);
   Function *func = module_new_function(module);
-  func->name = function_name(ast);
+  func->name = name;
   if (5 == sexp_length(ast)) {
     builder_ast(builder, sexp_at(ast, 1));
   }
