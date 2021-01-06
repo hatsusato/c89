@@ -54,7 +54,7 @@ void builder_delete(Builder *builder) {
   table_delete(builder->table);
   UTILITY_FREE(builder);
 }
-void builder_function_init(Builder *builder, Function *func) {
+void builder_init_next(Builder *builder, Function *func) {
   Block *alloc = builder_new_block(builder);
   Block *entry = builder_new_block(builder);
   builder->func = func;

@@ -70,7 +70,7 @@ void builder_function_definition(Builder *builder, Sexp *ast) {
   name = function_name(ast);
   type = builder_function_type(builder, ast);
   func = builder_new_function(builder, name, type);
-  builder_function_init(builder, func);
+  builder_init_next(builder, func);
   if (1 < function_count_return(ast)) {
     builder_init_return(builder);
   }
