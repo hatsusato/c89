@@ -41,17 +41,6 @@ static void builder_instruction_binary(Builder *builder, InstructionKind kind,
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
 }
-static Bool instruction_is_terminator(Instruction *instr) {
-  switch (instr->ikind) {
-#define DO_HANDLE(name, str) \
-  case name:                 \
-    return true;
-#include "terminator.def"
-#undef DO_HANDLE
-  default:
-    return false;
-  }
-}
 static Bool builder_block_terminated(Builder *builder) {
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
   Instruction *last = block_last(current);
