@@ -69,6 +69,9 @@ void function_delete(Function *func) {
 void function_insert(Function *func, Block *block) {
   vector_push(func->vec, block);
 }
+Type *function_return_type(Function *func) {
+  return func->type;
+}
 void function_set_id(Function *func) {
   ElemType *begin = vector_begin(func->vec);
   ElemType *end = vector_end(func->vec);

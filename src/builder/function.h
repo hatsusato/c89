@@ -6,6 +6,7 @@
 Function *function_new(void);
 void function_delete(Function *);
 void function_insert(Function *, Block *);
+Type *function_return_type(Function *);
 void function_set_id(Function *);
 void function_pretty(Function *);
 int function_count_return(Sexp *);

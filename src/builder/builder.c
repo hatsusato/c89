@@ -63,11 +63,10 @@ void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
 void builder_function_init(Builder *builder, Function *func, Sexp *ast) {
-  Type *type;
   builder->func = func;
-  type = builder_get_type(builder);
   builder_init_next(builder);
   if (1 < function_count_return(ast)) {
+    Type *type = function_return_type(func);
     Block *ret = builder_new_block(builder);
     builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
     if (!type_is_void(type)) {
