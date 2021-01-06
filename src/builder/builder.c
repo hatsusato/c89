@@ -38,7 +38,7 @@ static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
   builder->func = NULL;
   builder->retval = builder->value = NULL;
-  builder->type = builder_type_integer(builder, 32);
+  builder->type = NULL;
   while (tag < BUILDER_NEXT_COUNT) {
     builder_set_next(builder, tag++, NULL);
   }

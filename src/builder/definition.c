@@ -42,6 +42,15 @@ static const char *function_name(Sexp *ast) {
     return NULL;
   }
 }
+static Type *builder_function_type(Builder *builder, Sexp *ast) {
+  if (4 == sexp_length(ast)) {
+    return builder_type_integer(builder, 32);
+  } else {
+    UTILITY_ASSERT(5 == sexp_length(ast));
+    builder_ast(builder, sexp_at(ast, 1));
+    return builder_get_type(builder);
+  }
+}
 
 void builder_translation_unit(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_TRANSLATION_UNIT == sexp_get_tag(ast));
@@ -54,15 +63,15 @@ void builder_external_declaration(Builder *builder, Sexp *ast) {
 }
 void builder_function_definition(Builder *builder, Sexp *ast) {
   const char *name;
+  Type *type;
   Function *func;
   Block *ret;
-  Type *type;
   UTILITY_ASSERT(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   name = function_name(ast);
+  type = builder_function_type(builder, ast);
   func = builder_new_function(builder, name, ast);
   builder_function_init(builder, func, ast);
   ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
-  type = builder_get_type(builder);
   builder_ast(builder, sexp_at(ast, sexp_length(ast) - 1));
   if (ret) {
     Value *retval = NULL;
