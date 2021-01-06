@@ -63,13 +63,17 @@ void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
 void builder_function_init(Builder *builder, Sexp *ast) {
+  Type *type;
   builder->func = builder_new_function(builder, ast);
+  type = builder_get_type(builder);
   builder_init_next(builder);
   if (1 < function_count_return(ast)) {
     Block *ret = builder_new_block(builder);
     builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
-    builder_new_local(builder);
-    builder->retval = builder_get_value(builder);
+    if (!type_is_void(type)) {
+      builder_new_local(builder);
+      builder->retval = builder_get_value(builder);
+    }
   }
 }
 void builder_function_finish(Builder *builder) {
