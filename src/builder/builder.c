@@ -35,6 +35,10 @@ static void builder_finish_next(Builder *builder) {
     builder_set_next(builder, tag++, NULL);
   }
 }
+static Bool builder_function_is_void(Builder *builder) {
+  Type *type = function_return_type(builder->func);
+  return type_is_void(type);
+}
 
 const char *identifier_symbol(Sexp *ast) {
   UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ast));
@@ -64,21 +68,19 @@ void builder_init_next(Builder *builder, Function *func) {
   function_insert(builder->func, alloc);
 }
 void builder_init_return(Builder *builder) {
-  Type *type = function_return_type(builder->func);
   Block *ret = builder_new_block(builder);
   builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
-  if (!type_is_void(type)) {
+  if (!builder_function_is_void(builder)) {
     builder_new_local(builder);
     builder->retval = builder_get_value(builder);
   }
 }
 void builder_finish_return(Builder *builder) {
-  Type *type = function_return_type(builder->func);
   Block *ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
   Value *retval = builder_get_retval(builder);
   builder_instruction_br(builder, ret);
   builder_jump_block(builder, ret);
-  if (!type_is_void(type)) {
+  if (!builder_function_is_void(builder)) {
     builder_instruction_load(builder, retval);
     retval = builder_get_value(builder);
   }
