@@ -62,9 +62,9 @@ void builder_delete(Builder *builder) {
   table_delete(builder->table);
   UTILITY_FREE(builder);
 }
-void builder_function_init(Builder *builder, Sexp *ast) {
+void builder_function_init(Builder *builder, Function *func, Sexp *ast) {
   Type *type;
-  builder->func = builder_new_function(builder, ast);
+  builder->func = func;
   type = builder_get_type(builder);
   builder_init_next(builder);
   if (1 < function_count_return(ast)) {

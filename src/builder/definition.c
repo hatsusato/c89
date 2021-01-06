@@ -2,6 +2,7 @@
 
 #include "ast/tag.h"
 #include "builder.h"
+#include "function.h"
 #include "instruction.h"
 #include "sexp.h"
 #include "type.h"
@@ -17,10 +18,12 @@ void builder_external_declaration(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 1));
 }
 void builder_function_definition(Builder *builder, Sexp *ast) {
+  Function *func;
   Block *ret;
   Type *type;
   UTILITY_ASSERT(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
-  builder_function_init(builder, ast);
+  func = builder_new_function(builder, ast);
+  builder_function_init(builder, func, ast);
   ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
   type = builder_get_type(builder);
   builder_ast(builder, sexp_at(ast, sexp_length(ast) - 1));
