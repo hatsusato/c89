@@ -22,6 +22,7 @@ const char *identifier_symbol(Sexp *);
 Builder *builder_new(Module *);
 void builder_delete(Builder *);
 void builder_function_init(Builder *, Function *, Sexp *);
+void builder_init_return(Builder *);
 void builder_function_finish(Builder *);
 void builder_push_table(Builder *);
 void builder_pop_table(Builder *);

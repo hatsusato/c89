@@ -63,13 +63,16 @@ void builder_function_init(Builder *builder, Function *func, Sexp *ast) {
   builder_set_next(builder, BUILDER_NEXT_ENTRY, entry);
   function_insert(builder->func, alloc);
   if (1 < function_count_return(ast)) {
-    Type *type = function_return_type(func);
-    Block *ret = builder_new_block(builder);
-    builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
-    if (!type_is_void(type)) {
-      builder_new_local(builder);
-      builder->retval = builder_get_value(builder);
-    }
+    builder_init_return(builder);
+  }
+}
+void builder_init_return(Builder *builder) {
+  Type *type = function_return_type(builder->func);
+  Block *ret = builder_new_block(builder);
+  builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
+  if (!type_is_void(type)) {
+    builder_new_local(builder);
+    builder->retval = builder_get_value(builder);
   }
 }
 void builder_function_finish(Builder *builder) {
