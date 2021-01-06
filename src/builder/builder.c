@@ -54,7 +54,7 @@ void builder_delete(Builder *builder) {
   table_delete(builder->table);
   UTILITY_FREE(builder);
 }
-void builder_function_init(Builder *builder, Function *func, Sexp *ast) {
+void builder_function_init(Builder *builder, Function *func) {
   Block *alloc = builder_new_block(builder);
   Block *entry = builder_new_block(builder);
   builder->func = func;
@@ -62,9 +62,6 @@ void builder_function_init(Builder *builder, Function *func, Sexp *ast) {
   builder_set_next(builder, BUILDER_NEXT_CURRENT, entry);
   builder_set_next(builder, BUILDER_NEXT_ENTRY, entry);
   function_insert(builder->func, alloc);
-  if (1 < function_count_return(ast)) {
-    builder_init_return(builder);
-  }
 }
 void builder_init_return(Builder *builder) {
   Type *type = function_return_type(builder->func);
