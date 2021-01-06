@@ -74,6 +74,7 @@ void builder_function_init(Builder *builder, Sexp *ast) {
 void builder_function_finish(Builder *builder) {
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   Block *entry = builder_get_next(builder, BUILDER_NEXT_ENTRY);
+  builder_instruction_ret(builder, NULL);
   block_append(alloc, entry);
   function_set_id(builder->func);
   table_clear(builder->table);
