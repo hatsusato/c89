@@ -26,14 +26,6 @@ struct struct_Builder {
   Block *next[BUILDER_NEXT_COUNT];
 };
 
-static void builder_init_next(Builder *builder) {
-  Block *alloc = builder_new_block(builder);
-  Block *entry = builder_new_block(builder);
-  builder_set_next(builder, BUILDER_NEXT_ALLOC, alloc);
-  builder_set_next(builder, BUILDER_NEXT_CURRENT, entry);
-  builder_set_next(builder, BUILDER_NEXT_ENTRY, entry);
-  function_insert(builder->func, alloc);
-}
 static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
   builder->func = NULL;
@@ -63,8 +55,13 @@ void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
 void builder_function_init(Builder *builder, Function *func, Sexp *ast) {
+  Block *alloc = builder_new_block(builder);
+  Block *entry = builder_new_block(builder);
   builder->func = func;
-  builder_init_next(builder);
+  builder_set_next(builder, BUILDER_NEXT_ALLOC, alloc);
+  builder_set_next(builder, BUILDER_NEXT_CURRENT, entry);
+  builder_set_next(builder, BUILDER_NEXT_ENTRY, entry);
+  function_insert(builder->func, alloc);
   if (1 < function_count_return(ast)) {
     Type *type = function_return_type(func);
     Block *ret = builder_new_block(builder);
