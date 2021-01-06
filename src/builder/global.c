@@ -48,7 +48,7 @@ void global_print(Global *global) {
 void global_pretty(Global *global) {
   global_print(global);
   printf(" = global ");
-  type_print(type_get_elem(global->type));
+  type_print_elem(global->type);
   printf(" ");
   if (global->init) {
     constant_print(global->init);

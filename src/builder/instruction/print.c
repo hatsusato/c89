@@ -80,9 +80,8 @@ static void instruction_pretty_sub(Instruction *instr) {
   value_print(instr->operands[1], true);
 }
 static void instruction_pretty_alloca(Instruction *instr) {
-  Type *type = value_type(instruction_as_value(instr));
   instruction_print_name(instr);
-  type_print(type_get_elem(type));
+  type_print_elem(instr->type);
   print_align();
 }
 static void instruction_pretty_load(Instruction *instr) {

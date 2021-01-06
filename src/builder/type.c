@@ -109,9 +109,6 @@ void type_print_elem(Type *type) {
     type_print(type->data.type);
   }
 }
-Type *type_get_elem(Type *type) {
-  return TYPE_POINTER == type->kind ? type->data.type : NULL;
-}
 
 TypePool *type_pool_new(void) {
   TypePool *pool = UTILITY_MALLOC(TypePool);

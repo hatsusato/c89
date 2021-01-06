@@ -7,7 +7,6 @@ Type *type_void(void);
 Type *type_label(void);
 void type_print(Type *);
 void type_print_elem(Type *);
-Type *type_get_elem(Type *);
 
 TypePool *type_pool_new(void);
 void type_pool_delete(TypePool *);
