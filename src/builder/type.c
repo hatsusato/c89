@@ -1,31 +1,10 @@
 #include "type.h"
 
-#include <stdio.h>
-
 #include "builder.h"
 #include "compare.h"
 #include "pool.h"
+#include "type/struct.h"
 #include "utility.h"
-
-typedef enum {
-  TYPE_VOID,
-  TYPE_INTEGER,
-  TYPE_POINTER,
-  TYPE_LABEL,
-  TYPE_KIND_COUNT
-} TypeKind;
-
-struct struct_Type {
-  TypeKind kind;
-  union {
-    int size;
-    Type *type;
-  } data;
-};
-
-struct struct_TypePool {
-  Pool *pool;
-};
 
 static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
   Type *l = lhs, *r = rhs;
@@ -43,111 +22,76 @@ static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
 }
 static Type *type_new(void) {
   Type *type = UTILITY_MALLOC(Type);
-  type->kind = TYPE_KIND_COUNT;
+  type->kind = TYPE_INTEGER;
   type->data.size = 0;
   return type;
 }
 static void type_delete(ElemType type) {
   UTILITY_FREE(type);
 }
-static void type_init_integer(Type *type, int size) {
-  type->kind = TYPE_INTEGER;
-  type->data.size = size;
-}
-static void type_init_pointer(Type *type, Type *ptr) {
-  type->kind = TYPE_POINTER;
-  type->data.type = ptr;
-}
-
-static Type *type_pool_new_integer(TypePool *pool, int size) {
-  Type *type = type_new();
-  type_init_integer(type, size);
-  pool_insert(pool->pool, type);
-  return type;
-}
-static Type *type_pool_new_pointer(TypePool *pool, Type *ptr) {
-  Type *type = type_new();
-  type_init_pointer(type, ptr);
-  pool_insert(pool->pool, type);
+static Type type_integer(int size) {
+  Type type;
+  type.kind = TYPE_INTEGER;
+  type.data.size = size;
   return type;
 }
 
-static Type *type_void(void) {
-  static Type type;
-  type.kind = TYPE_VOID;
-  type.data.size = 0;
-  return &type;
-}
-static Type *type_label(void) {
-  static Type type;
-  type.kind = TYPE_LABEL;
-  type.data.size = 0;
-  return &type;
-}
-
-Bool type_is_void(Type *type) {
-  return TYPE_VOID == type->kind;
-}
-void type_print(Type *type) {
-  switch (type ? type->kind : TYPE_KIND_COUNT) {
-  case TYPE_VOID:
-    printf("void");
-    break;
-  case TYPE_INTEGER:
-    printf("i%d", type->data.size);
-    break;
-  case TYPE_POINTER:
-    type_print(type->data.type);
-    printf("*");
-    break;
-  case TYPE_LABEL:
-    printf("label");
-    break;
-  default:
-    printf("null");
-    break;
-  }
-}
-void type_print_elem(Type *type) {
-  if (TYPE_POINTER == type->kind) {
-    type_print(type->data.type);
-  }
-}
-
-TypePool *type_pool_new(void) {
-  TypePool *pool = UTILITY_MALLOC(TypePool);
-  Compare *compare = compare_new(type_cmp);
-  pool->pool = pool_new(type_delete, compare);
+Pool *type_pool_new(void) {
+  Compare *type_compare = compare_new(type_cmp);
+  Pool *pool = pool_new(type_delete, type_compare);
   return pool;
 }
-void type_pool_delete(TypePool *pool) {
-  pool_delete(pool->pool);
-  UTILITY_FREE(pool);
+void type_pool_delete(Pool *pool) {
+  pool_delete(pool);
 }
 
-Type *builder_type_void(Builder *builder) {
-  UTILITY_UNUSED(builder);
-  return type_void();
+Bool type_equals(Type *lhs, Type *rhs) {
+  return 0 == type_cmp(lhs, rhs, NULL);
 }
-Type *builder_type_integer(Builder *builder, int size) {
+Bool type_is_void(Type *type) {
+  return TYPE_INTEGER == type->kind && 0 == type->data.size;
+}
+int type_sizeof(Type *type) {
+  return TYPE_INTEGER == type->kind ? type->data.size : 0;
+}
+
+static Type *builder_new_type(Builder *builder, Type *type) {
   Module *module = builder_get_module(builder);
-  TypePool *pool = module_get_type(module);
-  const ElemType *found;
+  Type *found = module_find_type(module, type);
+  if (!found) {
+    found = type_new();
+    *found = *type;
+    module_insert_type(module, found);
+  }
+  return found;
+}
+
+Type *builder_type(Builder *builder, TypeSpec *spec) {
   Type type;
-  type_init_integer(&type, size);
-  found = pool_find(pool->pool, &type);
-  return found ? *found : type_pool_new_integer(pool, size);
+  type_init_spec(&type, spec);
+  return builder_new_type(builder, &type);
+}
+Type *builder_type_void(Builder *builder) {
+  Type type = type_integer(0);
+  return builder_new_type(builder, &type);
+}
+Type *builder_type_bool(Builder *builder) {
+  Type type = type_integer(1);
+  return builder_new_type(builder, &type);
+}
+Type *builder_type_int(Builder *builder) {
+  Type type = type_integer(32);
+  return builder_new_type(builder, &type);
 }
 Type *builder_type_pointer(Builder *builder, Type *base) {
-  Module *module = builder_get_module(builder);
-  TypePool *pool = module_get_type(module);
-  const ElemType *found;
   Type type;
-  type_init_pointer(&type, base);
-  found = pool_find(pool->pool, &type);
-  return found ? *found : type_pool_new_pointer(pool, base);
+  type.kind = TYPE_POINTER;
+  type.data.type = base;
+  return builder_new_type(builder, &type);
 }
 Type *builder_type_label(Builder *builder) {
-  UTILITY_UNUSED(builder);
-  return type_label();
+  Type type;
+  type.kind = TYPE_LABEL;
+  type.data.size = 0;
+  return builder_new_type(builder, &type);
 }

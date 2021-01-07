@@ -1,3 +1,5 @@
+#include "iteration.h"
+
 #include "common.h"
 
 static void builder_body_statement(Builder *builder, Sexp *ast,

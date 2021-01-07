@@ -15,3 +15,21 @@ void f3(void) {
     return;
   }
 }
+long f4(void) {
+  char c = 1;
+  short s = 2;
+  int i = 3;
+  long l = 4;
+  switch (c) {
+  case 1:
+    return c;
+  case 2:
+    return s;
+  case 3:
+    return i;
+  case 4:
+    return l;
+  default:
+    return 0;
+  }
+}

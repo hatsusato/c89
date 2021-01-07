@@ -11,35 +11,26 @@ static Instruction *builder_new_instruction(Builder *builder,
   Instruction *instr = module_new_instruction(module);
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
-  Type *type = builder_get_type(builder);
   instr->ikind = kind;
-  switch (kind) {
-  case INSTRUCTION_ALLOCA:
-    instr->type = builder_type_pointer(builder, type);
-    block_insert(alloc, instr);
-    break;
-  case INSTRUCTION_ICMP_NE:
-    instr->type = builder_type_integer(builder, 1);
-    block_insert(current, instr);
-    break;
-  default:
-    instr->type = type;
-    block_insert(current, instr);
-    break;
-  }
+  instr->type = builder_get_type(builder);
+  block_insert(INSTRUCTION_ALLOCA == kind ? alloc : current, instr);
   builder_set_value(builder, instruction_as_value(instr));
   return instr;
 }
-static void builder_instruction_unary(Builder *builder, InstructionKind kind,
-                                      Value *value) {
+static Instruction *builder_instruction_unary(Builder *builder,
+                                              InstructionKind kind,
+                                              Value *value) {
   Instruction *instr = builder_new_instruction(builder, kind);
   instr->operands[0] = value;
+  return instr;
 }
-static void builder_instruction_binary(Builder *builder, InstructionKind kind,
-                                       Value *lhs, Value *rhs) {
+static Instruction *builder_instruction_binary(Builder *builder,
+                                               InstructionKind kind, Value *lhs,
+                                               Value *rhs) {
   Instruction *instr = builder_new_instruction(builder, kind);
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
+  return instr;
 }
 static Bool builder_block_terminated(Builder *builder) {
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
@@ -107,13 +98,23 @@ void builder_instruction_alloca(Builder *builder, const char *symbol) {
   builder_insert_local(builder, symbol, instr);
 }
 void builder_instruction_load(Builder *builder, Value *src) {
-  builder_instruction_unary(builder, INSTRUCTION_LOAD, src);
+  Instruction *instr =
+      builder_instruction_unary(builder, INSTRUCTION_LOAD, src);
+  instr->type = value_type(src);
 }
 void builder_instruction_store(Builder *builder, Value *src, Value *dst) {
   builder_instruction_binary(builder, INSTRUCTION_STORE, src, dst);
 }
+void builder_instruction_trunc(Builder *builder, Value *src) {
+  builder_instruction_unary(builder, INSTRUCTION_TRUNC, src);
+}
+void builder_instruction_sext(Builder *builder, Value *src) {
+  builder_instruction_unary(builder, INSTRUCTION_SEXT, src);
+}
 void builder_instruction_icmp_ne(Builder *builder, Value *lhs, Value *rhs) {
-  builder_instruction_binary(builder, INSTRUCTION_ICMP_NE, lhs, rhs);
+  Instruction *instr =
+      builder_instruction_binary(builder, INSTRUCTION_ICMP_NE, lhs, rhs);
+  instr->type = builder_type_bool(builder);
 }
 void builder_new_local(Builder *builder) {
   builder_new_instruction(builder, INSTRUCTION_ALLOCA);

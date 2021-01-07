@@ -14,21 +14,10 @@ void builder_declaration(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 2));
 }
 void builder_declaration_specifiers(Builder *builder, Sexp *ast) {
-  Type *type;
   UTILITY_ASSERT(AST_DECLARATION_SPECIFIERS == sexp_get_tag(ast));
-  UTILITY_ASSERT(2 == sexp_length(ast));
-  ast = sexp_at(ast, 1);
-  UTILITY_ASSERT(AST_TYPE_SPECIFIER == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  switch (sexp_get_tag(ast)) {
-  case AST_INT:
-    type = builder_type_integer(builder, 32);
-    break;
-  default:
-    type = builder_type_void(builder);
-    break;
-  }
-  builder_set_type(builder, type);
+  builder_reset_type_spec(builder);
+  builder_ast_map(builder, ast);
+  builder_set_type(builder);
 }
 void builder_init_declarator_list(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));
@@ -56,8 +45,25 @@ void builder_storage_class_specifier(Builder *builder, Sexp *ast) {
 }
 void builder_type_specifier(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_TYPE_SPECIFIER == sexp_get_tag(ast));
-  UTILITY_UNUSED(builder);
-  UTILITY_ASSERT(0);
+  switch (sexp_get_tag(sexp_at(ast, 1))) {
+#define DO_HANDLE(type)                               \
+  case AST_##type:                                    \
+    builder_set_type_spec(builder, TYPE_SPEC_##type); \
+    break
+    DO_HANDLE(VOID);
+    DO_HANDLE(CHAR);
+    DO_HANDLE(SHORT);
+    DO_HANDLE(INT);
+    DO_HANDLE(LONG);
+    DO_HANDLE(FLOAT);
+    DO_HANDLE(DOUBLE);
+    DO_HANDLE(SIGNED);
+    DO_HANDLE(UNSIGNED);
+#undef DO_HANDLE
+  default:
+    UTILITY_ASSERT(0);
+    break;
+  }
 }
 void builder_struct_or_union_specifier(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_STRUCT_OR_UNION_SPECIFIER == sexp_get_tag(ast));

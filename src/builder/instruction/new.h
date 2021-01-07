@@ -14,6 +14,8 @@ void builder_instruction_sub(Builder *, Value *, Value *);
 void builder_instruction_alloca(Builder *, const char *);
 void builder_instruction_load(Builder *, Value *);
 void builder_instruction_store(Builder *, Value *, Value *);
+void builder_instruction_trunc(Builder *, Value *);
+void builder_instruction_sext(Builder *, Value *);
 void builder_instruction_icmp_ne(Builder *, Value *, Value *);
 void builder_new_local(Builder *);
 

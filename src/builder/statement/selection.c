@@ -1,3 +1,5 @@
+#include "selection.h"
+
 #include "common.h"
 
 static void builder_branch(Builder *builder, Sexp *ast, Block *current,
@@ -42,6 +44,7 @@ static void builder_switch_body(Builder *builder, Sexp *ast, Value *instr) {
 }
 static void builder_switch_statement(Builder *builder, Sexp *ast) {
   Value *value;
+  builder_set_type_int(builder);
   builder_ast(builder, sexp_at(ast, 3));
   value = builder_get_value(builder);
   builder_instruction_switch(builder, value);

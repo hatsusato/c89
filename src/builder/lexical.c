@@ -5,7 +5,9 @@
 #include "constant.h"
 #include "instruction.h"
 #include "sexp.h"
+#include "type.h"
 #include "utility.h"
+#include "value.h"
 
 void builder_identifier(Builder *builder, Sexp *ast) {
   const char *symbol;
@@ -15,6 +17,8 @@ void builder_identifier(Builder *builder, Sexp *ast) {
   builder_find_identifier(builder, symbol);
   value = builder_get_value(builder);
   builder_instruction_load(builder, value);
+  value = builder_get_value(builder);
+  builder_cast(builder, value, builder_get_type(builder));
 }
 void builder_typedef_identifier(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_TYPEDEF_IDENTIFIER == sexp_get_tag(ast));

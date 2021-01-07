@@ -23,6 +23,7 @@ struct struct_Builder {
   Function *func;
   Value *retval, *value;
   Type *type;
+  TypeSpec *spec;
   Block *next[BUILDER_NEXT_COUNT];
 };
 
@@ -51,10 +52,12 @@ Builder *builder_new(Module *module) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->module = module;
   builder->table = table_new();
+  builder->spec = type_spec_new();
   builder_finish_next(builder);
   return builder;
 }
 void builder_delete(Builder *builder) {
+  type_spec_delete(builder->spec);
   table_delete(builder->table);
   UTILITY_FREE(builder);
 }
@@ -134,10 +137,23 @@ void builder_jump_block(Builder *builder, Block *dest) {
 Bool builder_is_local(Builder *builder) {
   return builder->func != NULL;
 }
+void builder_cast(Builder *builder, Value *val, Type *dst) {
+  Type *src = value_type(val);
+  if (!type_equals(src, dst)) {
+    int lhs = type_sizeof(src), rhs = type_sizeof(dst);
+    UTILITY_ASSERT(lhs != rhs);
+    if (lhs < rhs) {
+      builder_instruction_sext(builder, val);
+    } else if (rhs < lhs) {
+      builder_instruction_trunc(builder, val);
+    }
+  }
+}
 Module *builder_get_module(Builder *builder) {
   return builder->module;
 }
 Value *builder_get_retval(Builder *builder) {
+  builder->value = builder->retval;
   return builder->retval;
 }
 Value *builder_get_value(Builder *builder) {
@@ -149,8 +165,20 @@ void builder_set_value(Builder *builder, Value *value) {
 Type *builder_get_type(Builder *builder) {
   return builder->type;
 }
-void builder_set_type(Builder *builder, Type *type) {
-  builder->type = type;
+void builder_set_type(Builder *builder) {
+  builder->type = builder_type(builder, builder->spec);
+}
+void builder_set_type_int(Builder *builder) {
+  builder->type = builder_type_int(builder);
+}
+void builder_set_type_value(Builder *builder) {
+  builder->type = value_type(builder->value);
+}
+void builder_set_type_spec(Builder *builder, TypeSpecIndex i) {
+  type_spec_set(builder->spec, i);
+}
+void builder_reset_type_spec(Builder *builder) {
+  type_spec_reset(builder->spec);
 }
 Block *builder_get_next(Builder *builder, BuilderNextTag tag) {
   UTILITY_ASSERT(0 <= tag && tag < BUILDER_NEXT_COUNT);

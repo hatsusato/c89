@@ -45,10 +45,14 @@ void global_print(Global *global) {
   UTILITY_ASSERT(global->name);
   printf("@%s", global->name);
 }
+void global_print_type(Global *global) {
+  type_print(global->type);
+  printf("*");
+}
 void global_pretty(Global *global) {
   global_print(global);
   printf(" = global ");
-  type_print_elem(global->type);
+  type_print(global->type);
   printf(" ");
   if (global->init) {
     constant_print(global->init);
@@ -61,8 +65,7 @@ void global_pretty(Global *global) {
 void builder_new_global(Builder *builder, const char *symbol) {
   Module *module = builder_get_module(builder);
   Global *global = module_new_global(module);
-  Type *type = builder_get_type(builder);
-  global->type = builder_type_pointer(builder, type);
+  global->type = builder_get_type(builder);
   global->name = symbol;
   builder_insert_global(builder, symbol, global);
   builder_set_value(builder, global_as_value(global));

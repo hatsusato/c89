@@ -3,6 +3,7 @@
 
 #include "builder/types.h"
 #include "module.h"
+#include "type/spec.h"
 
 typedef enum {
   BUILDER_NEXT_ALLOC,
@@ -34,12 +35,17 @@ void builder_insert_local(Builder *, const char *, Instruction *);
 void builder_find_identifier(Builder *, const char *);
 void builder_jump_block(Builder *, Block *);
 Bool builder_is_local(Builder *);
+void builder_cast(Builder *, Value *, Type *);
 Module *builder_get_module(Builder *);
 Value *builder_get_retval(Builder *);
 Value *builder_get_value(Builder *);
 void builder_set_value(Builder *, Value *);
 Type *builder_get_type(Builder *);
-void builder_set_type(Builder *, Type *);
+void builder_set_type(Builder *);
+void builder_set_type_int(Builder *);
+void builder_set_type_value(Builder *);
+void builder_set_type_spec(Builder *, TypeSpecIndex);
+void builder_reset_type_spec(Builder *);
 Block *builder_get_next(Builder *, BuilderNextTag);
 Block *builder_set_next(Builder *, BuilderNextTag, Block *);
 void builder_ast_map(Builder *, Sexp *);

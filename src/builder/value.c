@@ -16,33 +16,6 @@ struct struct_Value {
   Type *type;
 };
 
-struct struct_ValuePool {
-  Vector *vec;
-};
-
-static void value_pool_delete_value(ElemType value) {
-  switch (value_kind(value)) {
-  case VALUE_FUNCTION:
-    function_delete(value);
-    break;
-  case VALUE_BLOCK:
-    block_delete(value);
-    break;
-  case VALUE_INSTRUCTION:
-    instruction_delete(value);
-    break;
-  case VALUE_CONSTANT:
-    constant_delete(value);
-    break;
-  case VALUE_GLOBAL:
-    global_delete(value);
-    break;
-  default:
-    UTILITY_ASSERT(0);
-    break;
-  }
-}
-
 Value *function_as_value(Function *func) {
   return (Value *)func;
 }
@@ -105,24 +78,21 @@ void value_print(Value *value, Bool comma) {
   }
 }
 void value_print_type(Value *value) {
-  type_print(value->type);
+  switch (value->kind) {
+  case VALUE_INSTRUCTION:
+    instruction_print_type(value_as_instruction(value));
+    break;
+  case VALUE_GLOBAL:
+    global_print_type(value_as_global(value));
+    break;
+  default:
+    type_print(value->type);
+    break;
+  }
 }
 void value_print_with_type(Value *value, Bool comma) {
   printf(comma ? ", " : "");
   value_print_type(value);
   printf(" ");
   value_print(value, false);
-}
-
-ValuePool *value_pool_new(void) {
-  ValuePool *pool = UTILITY_MALLOC(ValuePool);
-  pool->vec = vector_new(value_pool_delete_value);
-  return pool;
-}
-void value_pool_delete(ValuePool *pool) {
-  vector_delete(pool->vec);
-  UTILITY_FREE(pool);
-}
-void value_pool_insert(ValuePool *pool, Value *value) {
-  vector_push(pool->vec, value);
 }
