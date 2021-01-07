@@ -147,11 +147,11 @@ Type *builder_type_bool(Builder *builder) {
 Type *builder_type_int(Builder *builder) {
   Module *module = builder_get_module(builder);
   TypeSpec *spec = type_spec_new();
-  Type key, *type;
+  Type *tmp = type_tmp(), *type;
   type_spec_set(spec, TYPE_SPEC_INT);
-  type_init_spec(&key, spec);
+  type_init_spec(tmp, spec);
   type_spec_delete(spec);
-  type = module_find_type(module, &key);
+  type = module_find_type(module, tmp);
   if (!type) {
     type = type_new();
     type_init_spec(type, spec);
@@ -161,9 +161,9 @@ Type *builder_type_int(Builder *builder) {
 }
 Type *builder_type_pointer(Builder *builder, Type *base) {
   Module *module = builder_get_module(builder);
-  Type key, *type;
-  type_init_pointer(&key, base);
-  type = module_find_type(module, &key);
+  Type *tmp = type_tmp(), *type;
+  type_init_pointer(tmp, base);
+  type = module_find_type(module, tmp);
   if (!type) {
     type = type_new();
     type_init_pointer(type, base);
@@ -173,10 +173,10 @@ Type *builder_type_pointer(Builder *builder, Type *base) {
 }
 Type *builder_type_label(Builder *builder) {
   Module *module = builder_get_module(builder);
-  Type key, *type;
-  key.kind = TYPE_LABEL;
-  key.data.size = 0;
-  type = module_find_type(module, &key);
+  Type *tmp = type_tmp(), *type;
+  tmp->kind = TYPE_LABEL;
+  tmp->data.size = 0;
+  type = module_find_type(module, tmp);
   if (!type) {
     type = type_new();
     type->kind = TYPE_LABEL;
