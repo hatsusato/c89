@@ -51,6 +51,9 @@ Bool type_equals(Type *lhs, Type *rhs) {
 Bool type_is_void(Type *type) {
   return TYPE_INTEGER == type->kind && 0 == type->data.size;
 }
+int type_sizeof(Type *type) {
+  return TYPE_INTEGER == type->kind ? type->data.size : 0;
+}
 
 static Type *builder_new_type(Builder *builder, Type *type) {
   Module *module = builder_get_module(builder);

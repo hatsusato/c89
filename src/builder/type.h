@@ -11,6 +11,7 @@ void type_pool_delete(Pool *);
 
 Bool type_equals(Type *, Type *);
 Bool type_is_void(Type *);
+int type_sizeof(Type *);
 
 Type *builder_type(Builder *, TypeSpec *);
 Type *builder_type_void(Builder *);
