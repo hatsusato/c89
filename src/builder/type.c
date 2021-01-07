@@ -23,10 +23,6 @@ struct struct_Type {
   } data;
 };
 
-struct struct_TypeSpec {
-  Bool spec[TYPE_SPEC_COUNT];
-};
-
 struct struct_TypePool {
   Pool *pool;
 };
@@ -115,24 +111,6 @@ void type_print(Type *type) {
 void type_print_elem(Type *type) {
   if (TYPE_POINTER == type->kind) {
     type_print(type->data.type);
-  }
-}
-
-TypeSpec *type_spec_new(void) {
-  TypeSpec *spec = UTILITY_MALLOC(TypeSpec);
-  type_spec_reset(spec);
-  return spec;
-}
-void type_spec_delete(TypeSpec *spec) {
-  UTILITY_FREE(spec);
-}
-void type_spec_set(TypeSpec *spec, TypeSpecIndex i) {
-  spec->spec[i] = true;
-}
-void type_spec_reset(TypeSpec *spec) {
-  TypeSpecIndex i = 0;
-  for (; i < TYPE_SPEC_COUNT; ++i) {
-    spec->spec[i] = false;
   }
 }
 
