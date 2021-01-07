@@ -134,10 +134,9 @@ Type *builder_type_void(Builder *builder) {
 }
 Type *builder_type_bool(Builder *builder) {
   Module *module = builder_get_module(builder);
-  Type key, *type;
-  key.kind = TYPE_INTEGER;
-  key.data.size = 1;
-  type = module_find_type(module, &key);
+  Type *tmp = type_tmp(), *type;
+  type_init_integer(tmp, 1);
+  type = module_find_type(module, tmp);
   if (!type) {
     type = type_new();
     type_init_integer(type, 1);
