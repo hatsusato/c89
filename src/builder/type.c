@@ -120,10 +120,7 @@ void type_print_elem(Type *type) {
 
 TypeSpec *type_spec_new(void) {
   TypeSpec *spec = UTILITY_MALLOC(TypeSpec);
-  TypeSpecIndex i = 0;
-  for (; i < TYPE_SPEC_COUNT; ++i) {
-    spec->spec[i] = false;
-  }
+  type_spec_reset(spec);
   return spec;
 }
 void type_spec_delete(TypeSpec *spec) {
@@ -131,6 +128,12 @@ void type_spec_delete(TypeSpec *spec) {
 }
 void type_spec_set(TypeSpec *spec, TypeSpecIndex i) {
   spec->spec[i] = true;
+}
+void type_spec_reset(TypeSpec *spec) {
+  TypeSpecIndex i = 0;
+  for (; i < TYPE_SPEC_COUNT; ++i) {
+    spec->spec[i] = false;
+  }
 }
 
 TypePool *type_pool_new(void) {
