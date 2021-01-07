@@ -24,6 +24,7 @@ static void builder_case_statement(Builder *builder, Sexp *ast) {
     builder_instruction_br(builder, next);
     builder_jump_block(builder, next);
   }
+  builder_set_type_int(builder);
   builder_ast(builder, sexp_at(ast, 2));
   value = builder_get_value(builder);
   builder_instruction_switch_case(builder, value, next);
