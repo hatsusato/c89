@@ -97,6 +97,9 @@ static void instruction_pretty_store(Instruction *instr) {
   value_print_with_type(instr->operands[1], true);
   type_print_align(instr->type);
 }
+static void instruction_pretty_sext(Instruction *instr) {
+  instruction_print_name(instr);
+}
 static void instruction_pretty_icmp_ne(Instruction *instr) {
   instruction_print_name(instr);
   value_print_with_type(instr->operands[0], false);
@@ -118,7 +121,8 @@ void instruction_pretty(Instruction *instr) {
       instruction_pretty_br_cond, instruction_pretty_switch,
       instruction_pretty_add,     instruction_pretty_sub,
       instruction_pretty_alloca,  instruction_pretty_load,
-      instruction_pretty_store,   instruction_pretty_icmp_ne,
+      instruction_pretty_store,   instruction_pretty_sext,
+      instruction_pretty_icmp_ne,
   };
   UTILITY_ASSERT(0 <= instr->ikind && instr->ikind < INSTRUCTION_KIND_COUNT);
   print_indent();
