@@ -33,17 +33,6 @@ static Type *type_label(void) {
   return &type;
 }
 
-TypePool *type_pool_new(void) {
-  TypePool *pool = UTILITY_MALLOC(TypePool);
-  Compare *compare = compare_new(type_cmp);
-  pool->pool = pool_new(type_delete, compare);
-  return pool;
-}
-void type_pool_delete(TypePool *pool) {
-  pool_delete(pool->pool);
-  UTILITY_FREE(pool);
-}
-
 Type *builder_type(Builder *builder, TypeSpec *spec) {
   Module *module = builder_get_module(builder);
   Type key, *type;

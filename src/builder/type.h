@@ -4,9 +4,6 @@
 #include "builder/types.h"
 #include "type/type.h"
 
-TypePool *type_pool_new(void);
-void type_pool_delete(TypePool *);
-
 Type *builder_type(Builder *, TypeSpec *);
 Type *builder_type_void(Builder *);
 Type *builder_type_bool(Builder *);
