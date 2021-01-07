@@ -5,23 +5,8 @@
 #include "builder.h"
 #include "compare.h"
 #include "pool.h"
+#include "type/struct.h"
 #include "utility.h"
-
-typedef enum {
-  TYPE_VOID,
-  TYPE_INTEGER,
-  TYPE_POINTER,
-  TYPE_LABEL,
-  TYPE_KIND_COUNT
-} TypeKind;
-
-struct struct_Type {
-  TypeKind kind;
-  union {
-    int size;
-    Type *type;
-  } data;
-};
 
 struct struct_TypePool {
   Pool *pool;
