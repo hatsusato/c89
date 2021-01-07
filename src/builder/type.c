@@ -22,6 +22,12 @@ static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
     return 0;
   }
 }
+static Type *type_tmp(void) {
+  static Type tmp;
+  tmp.kind = TYPE_INTEGER;
+  tmp.data.size = 0;
+  return &tmp;
+}
 static Type *type_new(void) {
   Type *type = UTILITY_MALLOC(Type);
   type->kind = TYPE_INTEGER;
@@ -108,9 +114,9 @@ void type_print_elem(Type *type) {
 
 Type *builder_type(Builder *builder, TypeSpec *spec) {
   Module *module = builder_get_module(builder);
-  Type key, *type;
-  type_init_spec(&key, spec);
-  type = module_find_type(module, &key);
+  Type *tmp = type_tmp(), *type;
+  type_init_spec(tmp, spec);
+  type = module_find_type(module, tmp);
   if (!type) {
     type = type_new();
     type_init_spec(type, spec);
@@ -120,9 +126,9 @@ Type *builder_type(Builder *builder, TypeSpec *spec) {
 }
 Type *builder_type_void(Builder *builder) {
   Module *module = builder_get_module(builder);
-  Type key, *type;
-  type_init_integer(&key, 0);
-  type = module_find_type(module, &key);
+  Type *tmp = type_tmp(), *type;
+  type_init_integer(tmp, 0);
+  type = module_find_type(module, tmp);
   UTILITY_ASSERT(type);
   return type;
 }
