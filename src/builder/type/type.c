@@ -28,6 +28,10 @@ Type *type_new(void) {
 }
 Type *type_new_spec(TypeSpec *spec) {
   Type *type = type_new();
+  type_init_spec(type, spec);
+  return type;
+}
+void type_init_spec(Type *type, TypeSpec *spec) {
   if (type_spec_get(spec, TYPE_SPEC_VOID)) {
     type->kind = TYPE_VOID;
   } else if (type_spec_get(spec, TYPE_SPEC_FLOAT)) {
@@ -46,7 +50,6 @@ Type *type_new_spec(TypeSpec *spec) {
       type->data.size = 32;
     }
   }
-  return type;
 }
 void type_delete(ElemType type) {
   UTILITY_FREE(type);
