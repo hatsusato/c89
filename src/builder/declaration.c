@@ -56,8 +56,25 @@ void builder_storage_class_specifier(Builder *builder, Sexp *ast) {
 }
 void builder_type_specifier(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_TYPE_SPECIFIER == sexp_get_tag(ast));
-  UTILITY_UNUSED(builder);
-  UTILITY_ASSERT(0);
+  switch (sexp_get_tag(sexp_at(ast, 1))) {
+#define DO_HANDLE(type)                               \
+  case AST_##type:                                    \
+    builder_set_type_spec(builder, TYPE_SPEC_##type); \
+    break
+    DO_HANDLE(VOID);
+    DO_HANDLE(CHAR);
+    DO_HANDLE(SHORT);
+    DO_HANDLE(INT);
+    DO_HANDLE(LONG);
+    DO_HANDLE(FLOAT);
+    DO_HANDLE(DOUBLE);
+    DO_HANDLE(SIGNED);
+    DO_HANDLE(UNSIGNED);
+#undef DO_HANDLE
+  default:
+    UTILITY_ASSERT(0);
+    break;
+  }
 }
 void builder_struct_or_union_specifier(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_STRUCT_OR_UNION_SPECIFIER == sexp_get_tag(ast));
