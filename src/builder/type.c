@@ -31,26 +31,6 @@ static Type *type_new(void) {
 static void type_delete(ElemType type) {
   UTILITY_FREE(type);
 }
-static void type_init_spec(Type *type, TypeSpec *spec) {
-  if (type_spec_get(spec, TYPE_SPEC_FLOAT)) {
-    UTILITY_ASSERT(0);
-  } else if (type_spec_get(spec, TYPE_SPEC_DOUBLE)) {
-    UTILITY_ASSERT(0);
-  } else {
-    type->kind = TYPE_INTEGER;
-    if (type_spec_get(spec, TYPE_SPEC_VOID)) {
-      type->data.size = 0;
-    } else if (type_spec_get(spec, TYPE_SPEC_CHAR)) {
-      type->data.size = 8;
-    } else if (type_spec_get(spec, TYPE_SPEC_SHORT)) {
-      type->data.size = 16;
-    } else if (type_spec_get(spec, TYPE_SPEC_LONG)) {
-      type->data.size = 64;
-    } else {
-      type->data.size = 32;
-    }
-  }
-}
 static Type type_integer(int size) {
   Type type;
   type.kind = TYPE_INTEGER;

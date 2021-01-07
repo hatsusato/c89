@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_E88AF2CB_9E19_4C46_83B0_440BEC63AA1B
 #define INCLUDE_GUARD_E88AF2CB_9E19_4C46_83B0_440BEC63AA1B
 
-#include "utility/types.h"
+#include "builder/types.h"
 
 struct struct_TypeSpec;
 typedef struct struct_TypeSpec TypeSpec;
@@ -24,5 +24,6 @@ void type_spec_delete(TypeSpec *);
 Bool type_spec_get(TypeSpec *, TypeSpecIndex);
 void type_spec_set(TypeSpec *, TypeSpecIndex);
 void type_spec_reset(TypeSpec *);
+void type_init_spec(Type *, TypeSpec *);
 
 #endif /* INCLUDE_GUARD_E88AF2CB_9E19_4C46_83B0_440BEC63AA1B */
