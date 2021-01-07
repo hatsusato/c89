@@ -105,13 +105,16 @@ void builder_instruction_load(Builder *builder, Value *src) {
 void builder_instruction_store(Builder *builder, Value *src, Value *dst) {
   builder_instruction_binary(builder, INSTRUCTION_STORE, src, dst);
 }
+void builder_instruction_trunc(Builder *builder, Value *src) {
+  builder_instruction_unary(builder, INSTRUCTION_TRUNC, src);
+}
+void builder_instruction_sext(Builder *builder, Value *src) {
+  builder_instruction_unary(builder, INSTRUCTION_SEXT, src);
+}
 void builder_instruction_icmp_ne(Builder *builder, Value *lhs, Value *rhs) {
   Instruction *instr =
       builder_instruction_binary(builder, INSTRUCTION_ICMP_NE, lhs, rhs);
   instr->type = builder_type_bool(builder);
-}
-void builder_instruction_sext(Builder *builder, Value *src) {
-  builder_instruction_unary(builder, INSTRUCTION_SEXT, src);
 }
 void builder_new_local(Builder *builder) {
   builder_new_instruction(builder, INSTRUCTION_ALLOCA);
