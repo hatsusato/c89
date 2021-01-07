@@ -73,6 +73,19 @@ Type *builder_type_void(Builder *builder) {
   UTILITY_UNUSED(builder);
   return type_void();
 }
+Type *builder_type_bool(Builder *builder) {
+  Module *module = builder_get_module(builder);
+  Type key, *type;
+  key.kind = TYPE_INTEGER;
+  key.data.size = 1;
+  type = module_find_type(module, &key);
+  if (!type) {
+    type = type_new();
+    type_init_integer(type, 1);
+    module_insert_type(module, type);
+  }
+  return type;
+}
 Type *builder_type_int(Builder *builder) {
   Module *module = builder_get_module(builder);
   TypeSpec *spec = type_spec_new();
