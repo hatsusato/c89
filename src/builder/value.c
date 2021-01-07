@@ -78,7 +78,11 @@ void value_print(Value *value, Bool comma) {
   }
 }
 void value_print_type(Value *value) {
-  type_print(value->type);
+  if (VALUE_INSTRUCTION == value->kind) {
+    instruction_print_type(value_as_instruction(value));
+  } else {
+    type_print(value->type);
+  }
 }
 void value_print_with_type(Value *value, Bool comma) {
   printf(comma ? ", " : "");

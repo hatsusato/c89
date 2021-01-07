@@ -110,6 +110,12 @@ static void instruction_pretty_icmp_ne(Instruction *instr) {
 void instruction_print(Instruction *instr) {
   printf("%%%d", instr->id);
 }
+void instruction_print_type(Instruction *instr) {
+  type_print(instr->type);
+  if (INSTRUCTION_ALLOCA == instr->ikind) {
+    printf("*");
+  }
+}
 void instruction_pretty(Instruction *instr) {
   void (*pretty[])(Instruction *) = {
       instruction_pretty_ret,     instruction_pretty_br,
