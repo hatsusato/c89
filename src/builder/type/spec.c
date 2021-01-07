@@ -14,6 +14,9 @@ TypeSpec *type_spec_new(void) {
 void type_spec_delete(TypeSpec *spec) {
   UTILITY_FREE(spec);
 }
+Bool type_spec_get(TypeSpec *spec, TypeSpecIndex i) {
+  return spec->spec[i];
+}
 void type_spec_set(TypeSpec *spec, TypeSpecIndex i) {
   spec->spec[i] = true;
 }

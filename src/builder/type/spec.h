@@ -1,6 +1,8 @@
 #ifndef INCLUDE_GUARD_E88AF2CB_9E19_4C46_83B0_440BEC63AA1B
 #define INCLUDE_GUARD_E88AF2CB_9E19_4C46_83B0_440BEC63AA1B
 
+#include "utility/types.h"
+
 struct struct_TypeSpec;
 typedef struct struct_TypeSpec TypeSpec;
 
@@ -19,6 +21,7 @@ typedef enum {
 
 TypeSpec *type_spec_new(void);
 void type_spec_delete(TypeSpec *);
+Bool type_spec_get(TypeSpec *, TypeSpecIndex);
 void type_spec_set(TypeSpec *, TypeSpecIndex);
 void type_spec_reset(TypeSpec *);
 
