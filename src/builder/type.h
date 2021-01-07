@@ -3,6 +3,7 @@
 
 #include "builder/types.h"
 #include "compare/types.h"
+#include "pool/types.h"
 #include "type/spec.h"
 
 int type_cmp(ElemType, ElemType, CompareExtra);
@@ -10,6 +11,9 @@ Type *type_new(void);
 Type *type_new_spec(TypeSpec *);
 void type_init_spec(Type *, TypeSpec *);
 void type_delete(ElemType);
+
+Pool *type_pool_new(void);
+void type_pool_delete(Pool *);
 
 Bool type_is_void(Type *);
 void type_print(Type *);

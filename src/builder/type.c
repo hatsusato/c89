@@ -3,6 +3,8 @@
 #include <stdio.h>
 
 #include "builder.h"
+#include "compare.h"
+#include "pool.h"
 #include "type/struct.h"
 #include "utility.h"
 
@@ -63,6 +65,16 @@ void type_init_spec(Type *type, TypeSpec *spec) {
 void type_delete(ElemType type) {
   UTILITY_FREE(type);
 }
+
+Pool *type_pool_new(void) {
+  Compare *type_compare = compare_new(type_cmp);
+  Pool *pool = pool_new(type_delete, type_compare);
+  return pool;
+}
+void type_pool_delete(Pool *pool) {
+  pool_delete(pool);
+}
+
 Bool type_is_void(Type *type) {
   return TYPE_INTEGER == type->kind && 0 == type->data.size;
 }
