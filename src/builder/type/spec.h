@@ -21,7 +21,6 @@ typedef enum {
 
 TypeSpec *type_spec_new(void);
 void type_spec_delete(TypeSpec *);
-Bool type_spec_get(TypeSpec *, TypeSpecIndex);
 void type_spec_set(TypeSpec *, TypeSpecIndex);
 void type_spec_reset(TypeSpec *);
 void type_init_spec(Type *, TypeSpec *);

@@ -7,6 +7,10 @@ struct struct_TypeSpec {
   Bool spec[TYPE_SPEC_COUNT];
 };
 
+static Bool type_spec_get(TypeSpec *spec, TypeSpecIndex i) {
+  return spec->spec[i];
+}
+
 TypeSpec *type_spec_new(void) {
   TypeSpec *spec = UTILITY_MALLOC(TypeSpec);
   type_spec_reset(spec);
@@ -14,9 +18,6 @@ TypeSpec *type_spec_new(void) {
 }
 void type_spec_delete(TypeSpec *spec) {
   UTILITY_FREE(spec);
-}
-Bool type_spec_get(TypeSpec *spec, TypeSpecIndex i) {
-  return spec->spec[i];
 }
 void type_spec_set(TypeSpec *spec, TypeSpecIndex i) {
   spec->spec[i] = true;
