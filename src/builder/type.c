@@ -63,6 +63,9 @@ static void type_init_pointer(Type *type, Type *ptr) {
 Pool *type_pool_new(void) {
   Compare *type_compare = compare_new(type_cmp);
   Pool *pool = pool_new(type_delete, type_compare);
+  Type *type = type_new();
+  type_init_integer(type, 0);
+  pool_insert(pool, type);
   return pool;
 }
 void type_pool_delete(Pool *pool) {
@@ -114,14 +117,9 @@ Type *builder_type(Builder *builder, TypeSpec *spec) {
 Type *builder_type_void(Builder *builder) {
   Module *module = builder_get_module(builder);
   Type key, *type;
-  key.kind = TYPE_INTEGER;
-  key.data.size = 0;
+  type_init_integer(&key, 0);
   type = module_find_type(module, &key);
-  if (!type) {
-    type = type_new();
-    type_init_integer(type, 0);
-    module_insert_type(module, type);
-  }
+  UTILITY_ASSERT(type);
   return type;
 }
 Type *builder_type_bool(Builder *builder) {
