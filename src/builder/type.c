@@ -57,21 +57,10 @@ static Type type_tmp_integer(int size) {
   type.data.size = size;
   return type;
 }
-static void type_init_integer(Type *type, int size) {
-  type->kind = TYPE_INTEGER;
-  type->data.size = size;
-}
-static void type_pool_insert_integer(Pool *pool, int size) {
-  Type *type = type_new();
-  type_init_integer(type, size);
-  UTILITY_ASSERT(!pool_find(pool, type));
-  pool_insert(pool, type);
-}
 
 Pool *type_pool_new(void) {
   Compare *type_compare = compare_new(type_cmp);
   Pool *pool = pool_new(type_delete, type_compare);
-  type_pool_insert_integer(pool, 0);
   return pool;
 }
 void type_pool_delete(Pool *pool) {
