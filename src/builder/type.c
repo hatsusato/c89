@@ -65,6 +65,10 @@ static void type_init_pointer(Type *type, Type *ptr) {
   type->kind = TYPE_POINTER;
   type->data.type = ptr;
 }
+static void type_init_label(Type *type) {
+  type->kind = TYPE_LABEL;
+  type->data.size = 0;
+}
 static void type_pool_insert_integer(Pool *pool, int size) {
   Type *type = type_new();
   type_init_integer(type, size);
@@ -174,8 +178,7 @@ Type *builder_type_pointer(Builder *builder, Type *base) {
 Type *builder_type_label(Builder *builder) {
   Module *module = builder_get_module(builder);
   Type *tmp = type_tmp(), *type;
-  tmp->kind = TYPE_LABEL;
-  tmp->data.size = 0;
+  type_init_label(tmp);
   type = module_find_type(module, tmp);
   if (!type) {
     type = type_new();
