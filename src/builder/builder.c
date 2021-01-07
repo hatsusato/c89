@@ -141,6 +141,7 @@ Module *builder_get_module(Builder *builder) {
   return builder->module;
 }
 Value *builder_get_retval(Builder *builder) {
+  builder->value = builder->retval;
   return builder->retval;
 }
 Value *builder_get_value(Builder *builder) {
