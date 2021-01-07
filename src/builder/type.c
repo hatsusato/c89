@@ -1,15 +1,8 @@
 #include "type.h"
 
 #include "builder.h"
-#include "compare.h"
-#include "module.h"
-#include "pool.h"
 #include "type/struct.h"
 #include "utility.h"
-
-struct struct_TypePool {
-  Pool *pool;
-};
 
 static void type_init_integer(Type *type, int size) {
   type->kind = TYPE_INTEGER;
