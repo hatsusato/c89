@@ -22,6 +22,7 @@ void type_print_elem(Type *);
 
 TypeSpec *type_spec_new(void);
 void type_spec_delete(TypeSpec *);
+void type_spec_set(TypeSpec *, TypeSpecIndex);
 
 TypePool *type_pool_new(void);
 void type_pool_delete(TypePool *);

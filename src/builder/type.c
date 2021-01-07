@@ -129,6 +129,9 @@ TypeSpec *type_spec_new(void) {
 void type_spec_delete(TypeSpec *spec) {
   UTILITY_FREE(spec);
 }
+void type_spec_set(TypeSpec *spec, TypeSpecIndex i) {
+  spec->spec[i] = true;
+}
 
 TypePool *type_pool_new(void) {
   TypePool *pool = UTILITY_MALLOC(TypePool);
