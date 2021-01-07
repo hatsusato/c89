@@ -1,7 +1,5 @@
 #include "type.h"
 
-#include <stdio.h>
-
 #include "builder.h"
 #include "compare.h"
 #include "pool.h"
@@ -49,35 +47,6 @@ void type_pool_delete(Pool *pool) {
 
 Bool type_is_void(Type *type) {
   return TYPE_INTEGER == type->kind && 0 == type->data.size;
-}
-void type_print(Type *type) {
-  if (!type) {
-    return;
-  }
-  switch (type->kind) {
-  case TYPE_INTEGER:
-    if (0 == type->data.size) {
-      printf("void");
-    } else {
-      printf("i%d", type->data.size);
-    }
-    break;
-  case TYPE_POINTER:
-    type_print(type->data.type);
-    printf("*");
-    break;
-  case TYPE_LABEL:
-    printf("label");
-    break;
-  default:
-    printf("null");
-    break;
-  }
-}
-void type_print_elem(Type *type) {
-  if (TYPE_POINTER == type->kind) {
-    type_print(type->data.type);
-  }
 }
 
 static Type *builder_new_type(Builder *builder, Type *type) {
