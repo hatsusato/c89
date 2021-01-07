@@ -22,12 +22,6 @@ static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
     return 0;
   }
 }
-static Type *type_tmp(void) {
-  static Type tmp;
-  tmp.kind = TYPE_INTEGER;
-  tmp.data.size = 0;
-  return &tmp;
-}
 static Type *type_new(void) {
   Type *type = UTILITY_MALLOC(Type);
   type->kind = TYPE_INTEGER;
@@ -66,14 +60,6 @@ static Type type_tmp_integer(int size) {
 static void type_init_integer(Type *type, int size) {
   type->kind = TYPE_INTEGER;
   type->data.size = size;
-}
-static void type_init_pointer(Type *type, Type *ptr) {
-  type->kind = TYPE_POINTER;
-  type->data.type = ptr;
-}
-static void type_init_label(Type *type) {
-  type->kind = TYPE_LABEL;
-  type->data.size = 0;
 }
 static void type_pool_insert_integer(Pool *pool, int size) {
   Type *type = type_new();
@@ -151,12 +137,14 @@ Type *builder_type_int(Builder *builder) {
   return builder_new_type(builder, &tmp);
 }
 Type *builder_type_pointer(Builder *builder, Type *base) {
-  Type *tmp = type_tmp();
-  type_init_pointer(tmp, base);
-  return builder_new_type(builder, tmp);
+  Type tmp;
+  tmp.kind = TYPE_POINTER;
+  tmp.data.type = base;
+  return builder_new_type(builder, &tmp);
 }
 Type *builder_type_label(Builder *builder) {
-  Type *tmp = type_tmp();
-  type_init_label(tmp);
-  return builder_new_type(builder, tmp);
+  Type tmp;
+  tmp.kind = TYPE_LABEL;
+  tmp.data.size = 0;
+  return builder_new_type(builder, &tmp);
 }
