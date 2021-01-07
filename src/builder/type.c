@@ -118,6 +118,18 @@ void type_print_elem(Type *type) {
   }
 }
 
+TypeSpec *type_spec_new(void) {
+  TypeSpec *spec = UTILITY_MALLOC(TypeSpec);
+  TypeSpecIndex i = 0;
+  for (; i < TYPE_SPEC_COUNT; ++i) {
+    spec->spec[i] = false;
+  }
+  return spec;
+}
+void type_spec_delete(TypeSpec *spec) {
+  UTILITY_FREE(spec);
+}
+
 TypePool *type_pool_new(void) {
   TypePool *pool = UTILITY_MALLOC(TypePool);
   Compare *compare = compare_new(type_cmp);

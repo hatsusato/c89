@@ -20,6 +20,9 @@ Bool type_is_void(Type *);
 void type_print(Type *);
 void type_print_elem(Type *);
 
+TypeSpec *type_spec_new(void);
+void type_spec_delete(TypeSpec *);
+
 TypePool *type_pool_new(void);
 void type_pool_delete(TypePool *);
 
