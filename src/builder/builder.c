@@ -137,6 +137,18 @@ void builder_jump_block(Builder *builder, Block *dest) {
 Bool builder_is_local(Builder *builder) {
   return builder->func != NULL;
 }
+void builder_cast(Builder *builder, Value *val, Type *dst) {
+  Type *src = value_type(val);
+  if (!type_equals(src, dst)) {
+    int lhs = type_sizeof(src), rhs = type_sizeof(dst);
+    UTILITY_ASSERT(lhs != rhs);
+    if (lhs < rhs) {
+      builder_instruction_sext(builder, val);
+    } else if (rhs < lhs) {
+      builder_instruction_trunc(builder, val);
+    }
+  }
+}
 Module *builder_get_module(Builder *builder) {
   return builder->module;
 }

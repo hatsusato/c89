@@ -18,10 +18,7 @@ void builder_identifier(Builder *builder, Sexp *ast) {
   value = builder_get_value(builder);
   builder_instruction_load(builder, value);
   value = builder_get_value(builder);
-  if (!type_equals(builder_get_type(builder), value_type(value))) {
-    builder_instruction_sext(builder, value);
-    value = builder_get_value(builder);
-  }
+  builder_cast(builder, value, builder_get_type(builder));
 }
 void builder_typedef_identifier(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_TYPEDEF_IDENTIFIER == sexp_get_tag(ast));
