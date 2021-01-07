@@ -8,16 +8,7 @@
 #include "type/struct.h"
 #include "utility.h"
 
-static void type_init_integer(Type *type, int size) {
-  type->kind = TYPE_INTEGER;
-  type->data.size = size;
-}
-static void type_init_pointer(Type *type, Type *ptr) {
-  type->kind = TYPE_POINTER;
-  type->data.type = ptr;
-}
-
-int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
+static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
   Type *l = lhs, *r = rhs;
   if (l->kind != r->kind) {
     return (l->kind < r->kind) ? -1 : 1;
@@ -31,18 +22,16 @@ int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
     return 0;
   }
 }
-Type *type_new(void) {
+static Type *type_new(void) {
   Type *type = UTILITY_MALLOC(Type);
   type->kind = TYPE_KIND_COUNT;
   type->data.size = 0;
   return type;
 }
-Type *type_new_spec(TypeSpec *spec) {
-  Type *type = type_new();
-  type_init_spec(type, spec);
-  return type;
+static void type_delete(ElemType type) {
+  UTILITY_FREE(type);
 }
-void type_init_spec(Type *type, TypeSpec *spec) {
+static void type_init_spec(Type *type, TypeSpec *spec) {
   if (type_spec_get(spec, TYPE_SPEC_FLOAT)) {
     UTILITY_ASSERT(0);
   } else if (type_spec_get(spec, TYPE_SPEC_DOUBLE)) {
@@ -62,8 +51,13 @@ void type_init_spec(Type *type, TypeSpec *spec) {
     }
   }
 }
-void type_delete(ElemType type) {
-  UTILITY_FREE(type);
+static void type_init_integer(Type *type, int size) {
+  type->kind = TYPE_INTEGER;
+  type->data.size = size;
+}
+static void type_init_pointer(Type *type, Type *ptr) {
+  type->kind = TYPE_POINTER;
+  type->data.type = ptr;
 }
 
 Pool *type_pool_new(void) {
