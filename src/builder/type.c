@@ -57,6 +57,12 @@ static void type_init_spec(Type *type, TypeSpec *spec) {
     }
   }
 }
+static Type type_tmp_integer(int size) {
+  Type type;
+  type.kind = TYPE_INTEGER;
+  type.data.size = size;
+  return type;
+}
 static void type_init_integer(Type *type, int size) {
   type->kind = TYPE_INTEGER;
   type->data.size = size;
@@ -128,24 +134,21 @@ static Type *builder_new_type(Builder *builder, Type *type) {
 }
 
 Type *builder_type(Builder *builder, TypeSpec *spec) {
-  Type *tmp = type_tmp();
-  type_init_spec(tmp, spec);
-  return builder_new_type(builder, tmp);
+  Type type;
+  type_init_spec(&type, spec);
+  return builder_new_type(builder, &type);
 }
 Type *builder_type_void(Builder *builder) {
-  Type *tmp = type_tmp();
-  type_init_integer(tmp, 0);
-  return builder_new_type(builder, tmp);
+  Type tmp = type_tmp_integer(0);
+  return builder_new_type(builder, &tmp);
 }
 Type *builder_type_bool(Builder *builder) {
-  Type *tmp = type_tmp();
-  type_init_integer(tmp, 1);
-  return builder_new_type(builder, tmp);
+  Type tmp = type_tmp_integer(1);
+  return builder_new_type(builder, &tmp);
 }
 Type *builder_type_int(Builder *builder) {
-  Type *tmp = type_tmp();
-  type_init_integer(tmp, 32);
-  return builder_new_type(builder, tmp);
+  Type tmp = type_tmp_integer(32);
+  return builder_new_type(builder, &tmp);
 }
 Type *builder_type_pointer(Builder *builder, Type *base) {
   Type *tmp = type_tmp();
