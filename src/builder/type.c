@@ -23,6 +23,10 @@ struct struct_Type {
   } data;
 };
 
+struct struct_TypeSpec {
+  Bool spec[TYPE_SPEC_COUNT];
+};
+
 struct struct_TypePool {
   Pool *pool;
 };
