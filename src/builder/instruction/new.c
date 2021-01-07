@@ -13,33 +13,35 @@ static Instruction *builder_new_instruction(Builder *builder,
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   Type *type = builder_get_type(builder);
   instr->ikind = kind;
+  instr->type = type;
   switch (kind) {
   case INSTRUCTION_ALLOCA:
-    instr->type = type;
     block_insert(alloc, instr);
     break;
   case INSTRUCTION_ICMP_NE:
-    instr->type = builder_type_bool(builder);
     block_insert(current, instr);
     break;
   default:
-    instr->type = type;
     block_insert(current, instr);
     break;
   }
   builder_set_value(builder, instruction_as_value(instr));
   return instr;
 }
-static void builder_instruction_unary(Builder *builder, InstructionKind kind,
-                                      Value *value) {
+static Instruction *builder_instruction_unary(Builder *builder,
+                                              InstructionKind kind,
+                                              Value *value) {
   Instruction *instr = builder_new_instruction(builder, kind);
   instr->operands[0] = value;
+  return instr;
 }
-static void builder_instruction_binary(Builder *builder, InstructionKind kind,
-                                       Value *lhs, Value *rhs) {
+static Instruction *builder_instruction_binary(Builder *builder,
+                                               InstructionKind kind, Value *lhs,
+                                               Value *rhs) {
   Instruction *instr = builder_new_instruction(builder, kind);
   instr->operands[0] = lhs;
   instr->operands[1] = rhs;
+  return instr;
 }
 static Bool builder_block_terminated(Builder *builder) {
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
@@ -113,7 +115,9 @@ void builder_instruction_store(Builder *builder, Value *src, Value *dst) {
   builder_instruction_binary(builder, INSTRUCTION_STORE, src, dst);
 }
 void builder_instruction_icmp_ne(Builder *builder, Value *lhs, Value *rhs) {
-  builder_instruction_binary(builder, INSTRUCTION_ICMP_NE, lhs, rhs);
+  Instruction *instr =
+      builder_instruction_binary(builder, INSTRUCTION_ICMP_NE, lhs, rhs);
+  instr->type = builder_type_bool(builder);
 }
 void builder_instruction_sext(Builder *builder, Value *src) {
   builder_instruction_unary(builder, INSTRUCTION_SEXT, src);
