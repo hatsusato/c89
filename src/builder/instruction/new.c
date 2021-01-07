@@ -19,7 +19,7 @@ static Instruction *builder_new_instruction(Builder *builder,
     block_insert(alloc, instr);
     break;
   case INSTRUCTION_ICMP_NE:
-    instr->type = builder_type_integer(builder, 1);
+    instr->type = builder_type_bool(builder);
     block_insert(current, instr);
     break;
   default:

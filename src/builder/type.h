@@ -11,7 +11,6 @@ Type *builder_type(Builder *, TypeSpec *);
 Type *builder_type_void(Builder *);
 Type *builder_type_bool(Builder *);
 Type *builder_type_int(Builder *);
-Type *builder_type_integer(Builder *, int);
 Type *builder_type_pointer(Builder *, Type *);
 Type *builder_type_label(Builder *);
 

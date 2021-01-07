@@ -20,12 +20,6 @@ static void type_init_pointer(Type *type, Type *ptr) {
   type->data.type = ptr;
 }
 
-static Type *type_pool_new_integer(TypePool *pool, int size) {
-  Type *type = type_new();
-  type_init_integer(type, size);
-  pool_insert(pool->pool, type);
-  return type;
-}
 static Type *type_pool_new_pointer(TypePool *pool, Type *ptr) {
   Type *type = type_new();
   type_init_pointer(type, ptr);
@@ -100,15 +94,6 @@ Type *builder_type_int(Builder *builder) {
     module_insert_type(module, type);
   }
   return type;
-}
-Type *builder_type_integer(Builder *builder, int size) {
-  Module *module = builder_get_module(builder);
-  TypePool *pool = module_get_type(module);
-  Type *found;
-  Type type;
-  type_init_integer(&type, size);
-  found = module_find_type(module, &type);
-  return found ? found : type_pool_new_integer(pool, size);
 }
 Type *builder_type_pointer(Builder *builder, Type *base) {
   Module *module = builder_get_module(builder);
