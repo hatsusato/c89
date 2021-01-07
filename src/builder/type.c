@@ -13,13 +13,6 @@ static void type_init_pointer(Type *type, Type *ptr) {
   type->data.type = ptr;
 }
 
-static Type *type_label(void) {
-  static Type type;
-  type.kind = TYPE_LABEL;
-  type.data.size = 0;
-  return &type;
-}
-
 Type *builder_type(Builder *builder, TypeSpec *spec) {
   Module *module = builder_get_module(builder);
   Type key, *type;
@@ -86,6 +79,16 @@ Type *builder_type_pointer(Builder *builder, Type *base) {
   return type;
 }
 Type *builder_type_label(Builder *builder) {
-  UTILITY_UNUSED(builder);
-  return type_label();
+  Module *module = builder_get_module(builder);
+  Type key, *type;
+  key.kind = TYPE_LABEL;
+  key.data.size = 0;
+  type = module_find_type(module, &key);
+  if (!type) {
+    type = type_new();
+    type->kind = TYPE_LABEL;
+    type->data.size = 0;
+    module_insert_type(module, type);
+  }
+  return type;
 }
