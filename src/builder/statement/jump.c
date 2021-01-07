@@ -19,13 +19,16 @@ static void builder_break_statement(Builder *builder) {
 }
 static void builder_return_statement(Builder *builder, Sexp *ast) {
   Block *ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
-  Value *src;
-  UTILITY_ASSERT(!sexp_is_nil(sexp_at(ast, 2)));
-  builder_ast(builder, sexp_at(ast, 2));
-  src = builder_get_value(builder);
+  Value *src = NULL;
+  if (!sexp_is_nil(sexp_at(ast, 2))) {
+    builder_ast(builder, sexp_at(ast, 2));
+    src = builder_get_value(builder);
+    if (ret) {
+      Value *dst = builder_get_retval(builder);
+      builder_instruction_store(builder, src, dst);
+    }
+  }
   if (ret) {
-    Value *dst = builder_get_retval(builder);
-    builder_instruction_store(builder, src, dst);
     builder_instruction_br(builder, ret);
   } else {
     builder_instruction_ret(builder, src);

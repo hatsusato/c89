@@ -7,6 +7,7 @@
 #include "builder.h"
 #include "module.h"
 #include "sexp.h"
+#include "type.h"
 #include "utility.h"
 #include "value.h"
 #include "vector.h"
@@ -17,41 +18,6 @@ struct struct_Function {
   const char *name;
   Vector *vec;
 };
-
-static const char *function_name(Sexp *ast) {
-  switch (sexp_get_tag(ast)) {
-  case AST_IDENTIFIER:
-    return identifier_symbol(ast);
-  case AST_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      return function_name(sexp_at(ast, 1));
-    case 3:
-      return function_name(sexp_at(ast, 2));
-    default:
-      UTILITY_ASSERT(0);
-      return NULL;
-    }
-  case AST_DIRECT_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      return function_name(sexp_at(ast, 1));
-    case 4:
-      return function_name(sexp_at(ast, 2));
-    case 5:
-      return function_name(sexp_at(ast, 1));
-    default:
-      UTILITY_ASSERT(0);
-      return NULL;
-    }
-  case AST_FUNCTION_DEFINITION:
-    UTILITY_ASSERT(5 == sexp_length(ast));
-    return function_name(sexp_at(ast, 2));
-  default:
-    UTILITY_ASSERT(0);
-    return NULL;
-  }
-}
 
 Function *function_new(void) {
   Function *func = UTILITY_MALLOC(Function);
@@ -68,6 +34,9 @@ void function_delete(Function *func) {
 void function_insert(Function *func, Block *block) {
   vector_push(func->vec, block);
 }
+Type *function_return_type(Function *func) {
+  return func->type;
+}
 void function_set_id(Function *func) {
   ElemType *begin = vector_begin(func->vec);
   ElemType *end = vector_end(func->vec);
@@ -79,7 +48,9 @@ void function_set_id(Function *func) {
 void function_pretty(Function *func) {
   ElemType *begin = vector_begin(func->vec);
   ElemType *end = vector_end(func->vec);
-  printf("define i32 @%s() {\n", func->name);
+  printf("define ");
+  type_print(func->type);
+  printf(" @%s() {\n", func->name);
   UTILITY_ASSERT(begin != end);
   block_pretty(*begin++);
   for (; begin < end; ++begin) {
@@ -98,9 +69,10 @@ int function_count_return(Sexp *ast) {
   }
 }
 
-Function *builder_new_function(Builder *builder, Sexp *ast) {
+Function *builder_new_function(Builder *builder, const char *name, Type *type) {
   Module *module = builder_get_module(builder);
   Function *func = module_new_function(module);
-  func->name = function_name(ast);
+  func->name = name;
+  func->type = type;
   return func;
 }

@@ -13,6 +13,7 @@
 #include "sexp.h"
 #include "statement.h"
 #include "table.h"
+#include "type.h"
 #include "utility.h"
 #include "value.h"
 
@@ -25,14 +26,6 @@ struct struct_Builder {
   Block *next[BUILDER_NEXT_COUNT];
 };
 
-static void builder_init_next(Builder *builder) {
-  Block *alloc = builder_new_block(builder);
-  Block *entry = builder_new_block(builder);
-  builder_set_next(builder, BUILDER_NEXT_ALLOC, alloc);
-  builder_set_next(builder, BUILDER_NEXT_CURRENT, entry);
-  builder_set_next(builder, BUILDER_NEXT_ENTRY, entry);
-  function_insert(builder->func, alloc);
-}
 static void builder_finish_next(Builder *builder) {
   BuilderNextTag tag = 0;
   builder->func = NULL;
@@ -41,6 +34,10 @@ static void builder_finish_next(Builder *builder) {
   while (tag < BUILDER_NEXT_COUNT) {
     builder_set_next(builder, tag++, NULL);
   }
+}
+static Bool builder_function_is_void(Builder *builder) {
+  Type *type = function_return_type(builder->func);
+  return type_is_void(type);
 }
 
 const char *identifier_symbol(Sexp *ast) {
@@ -61,19 +58,38 @@ void builder_delete(Builder *builder) {
   table_delete(builder->table);
   UTILITY_FREE(builder);
 }
-void builder_function_init(Builder *builder, Sexp *ast) {
-  builder->func = builder_new_function(builder, ast);
-  builder_init_next(builder);
-  if (1 < function_count_return(ast)) {
-    Block *ret = builder_new_block(builder);
-    builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
+void builder_init_next(Builder *builder, Function *func) {
+  Block *alloc = builder_new_block(builder);
+  Block *entry = builder_new_block(builder);
+  builder->func = func;
+  builder_set_next(builder, BUILDER_NEXT_ALLOC, alloc);
+  builder_set_next(builder, BUILDER_NEXT_CURRENT, entry);
+  builder_set_next(builder, BUILDER_NEXT_ENTRY, entry);
+  function_insert(builder->func, alloc);
+}
+void builder_init_return(Builder *builder) {
+  Block *ret = builder_new_block(builder);
+  builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
+  if (!builder_function_is_void(builder)) {
     builder_new_local(builder);
     builder->retval = builder_get_value(builder);
   }
 }
+void builder_finish_return(Builder *builder) {
+  Block *ret = builder_get_next(builder, BUILDER_NEXT_RETURN);
+  Value *retval = builder_get_retval(builder);
+  builder_instruction_br(builder, ret);
+  builder_jump_block(builder, ret);
+  if (!builder_function_is_void(builder)) {
+    builder_instruction_load(builder, retval);
+    retval = builder_get_value(builder);
+  }
+  builder_instruction_ret(builder, retval);
+}
 void builder_function_finish(Builder *builder) {
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   Block *entry = builder_get_next(builder, BUILDER_NEXT_ENTRY);
+  builder_instruction_ret(builder, NULL);
   block_append(alloc, entry);
   function_set_id(builder->func);
   table_clear(builder->table);
