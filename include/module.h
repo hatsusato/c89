@@ -9,7 +9,6 @@ typedef struct struct_Module Module;
 
 Module *module_new(void);
 void module_delete(Module *);
-TypePool *module_get_type(Module *);
 Type *module_find_type(Module *, Type *);
 void module_insert_type(Module *, Type *);
 Function *module_new_function(Module *);
