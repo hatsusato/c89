@@ -15,7 +15,7 @@ static Instruction *builder_new_instruction(Builder *builder,
   instr->ikind = kind;
   switch (kind) {
   case INSTRUCTION_ALLOCA:
-    instr->type = builder_type_pointer(builder, type);
+    instr->type = type;
     block_insert(alloc, instr);
     break;
   case INSTRUCTION_ICMP_NE:

@@ -85,7 +85,7 @@ static void instruction_pretty_sub(Instruction *instr) {
 }
 static void instruction_pretty_alloca(Instruction *instr) {
   instruction_print_name(instr);
-  type_print_elem(instr->type);
+  type_print(instr->type);
   print_align();
 }
 static void instruction_pretty_load(Instruction *instr) {
