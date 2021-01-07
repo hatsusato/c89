@@ -59,13 +59,17 @@ static void type_init_pointer(Type *type, Type *ptr) {
   type->kind = TYPE_POINTER;
   type->data.type = ptr;
 }
+static void type_pool_insert_integer(Pool *pool, int size) {
+  Type *type = type_new();
+  type_init_integer(type, size);
+  UTILITY_ASSERT(!pool_find(pool, type));
+  pool_insert(pool, type);
+}
 
 Pool *type_pool_new(void) {
   Compare *type_compare = compare_new(type_cmp);
   Pool *pool = pool_new(type_delete, type_compare);
-  Type *type = type_new();
-  type_init_integer(type, 0);
-  pool_insert(pool, type);
+  type_pool_insert_integer(pool, 0);
   return pool;
 }
 void type_pool_delete(Pool *pool) {
