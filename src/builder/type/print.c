@@ -33,3 +33,8 @@ void type_print_elem(Type *type) {
     type_print(type->data.type);
   }
 }
+void type_print_align(Type *type) {
+  if (TYPE_INTEGER == type->kind) {
+    printf(", align %d", type->data.size / 8);
+  }
+}
