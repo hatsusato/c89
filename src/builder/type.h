@@ -2,10 +2,7 @@
 #define INCLUDE_GUARD_288C5A5F_4870_4133_85EB_DBA30CC323B1
 
 #include "builder/types.h"
-
-Bool type_is_void(Type *);
-void type_print(Type *);
-void type_print_elem(Type *);
+#include "type/type.h"
 
 TypePool *type_pool_new(void);
 void type_pool_delete(TypePool *);
