@@ -63,7 +63,11 @@ void type_print(Type *type) {
     printf("void");
     break;
   case TYPE_INTEGER:
-    printf("i%d", type->data.size);
+    if (0 == type->data.size) {
+      printf("void");
+    } else {
+      printf("i%d", type->data.size);
+    }
     break;
   case TYPE_POINTER:
     type_print(type->data.type);
