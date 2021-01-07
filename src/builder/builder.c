@@ -23,6 +23,7 @@ struct struct_Builder {
   Function *func;
   Value *retval, *value;
   Type *type;
+  TypeSpec *spec;
   Block *next[BUILDER_NEXT_COUNT];
 };
 
@@ -51,10 +52,12 @@ Builder *builder_new(Module *module) {
   Builder *builder = UTILITY_MALLOC(Builder);
   builder->module = module;
   builder->table = table_new();
+  builder->spec = type_spec_new();
   builder_finish_next(builder);
   return builder;
 }
 void builder_delete(Builder *builder) {
+  type_spec_delete(builder->spec);
   table_delete(builder->table);
   UTILITY_FREE(builder);
 }
