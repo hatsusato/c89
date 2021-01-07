@@ -116,75 +116,44 @@ void type_print_elem(Type *type) {
   }
 }
 
-Type *builder_type(Builder *builder, TypeSpec *spec) {
+static Type *builder_new_type(Builder *builder, Type *type) {
   Module *module = builder_get_module(builder);
-  Type *tmp = type_tmp(), *type;
-  type_init_spec(tmp, spec);
-  type = module_find_type(module, tmp);
-  if (!type) {
-    type = type_new();
-    type_init_spec(type, spec);
-    module_insert_type(module, type);
+  Type *found = module_find_type(module, type);
+  if (!found) {
+    found = type_new();
+    *found = *type;
+    module_insert_type(module, found);
   }
-  return type;
+  return found;
+}
+
+Type *builder_type(Builder *builder, TypeSpec *spec) {
+  Type *tmp = type_tmp();
+  type_init_spec(tmp, spec);
+  return builder_new_type(builder, tmp);
 }
 Type *builder_type_void(Builder *builder) {
-  Module *module = builder_get_module(builder);
-  Type *tmp = type_tmp(), *type;
+  Type *tmp = type_tmp();
   type_init_integer(tmp, 0);
-  type = module_find_type(module, tmp);
-  UTILITY_ASSERT(type);
-  return type;
+  return builder_new_type(builder, tmp);
 }
 Type *builder_type_bool(Builder *builder) {
-  Module *module = builder_get_module(builder);
-  Type *tmp = type_tmp(), *type;
+  Type *tmp = type_tmp();
   type_init_integer(tmp, 1);
-  type = module_find_type(module, tmp);
-  if (!type) {
-    type = type_new();
-    type_init_integer(type, 1);
-    module_insert_type(module, type);
-  }
-  return type;
+  return builder_new_type(builder, tmp);
 }
 Type *builder_type_int(Builder *builder) {
-  Module *module = builder_get_module(builder);
-  TypeSpec *spec = type_spec_new();
-  Type *tmp = type_tmp(), *type;
-  type_spec_set(spec, TYPE_SPEC_INT);
-  type_init_spec(tmp, spec);
-  type_spec_delete(spec);
-  type = module_find_type(module, tmp);
-  if (!type) {
-    type = type_new();
-    type_init_spec(type, spec);
-    module_insert_type(module, type);
-  }
-  return type;
+  Type *tmp = type_tmp();
+  type_init_integer(tmp, 32);
+  return builder_new_type(builder, tmp);
 }
 Type *builder_type_pointer(Builder *builder, Type *base) {
-  Module *module = builder_get_module(builder);
-  Type *tmp = type_tmp(), *type;
+  Type *tmp = type_tmp();
   type_init_pointer(tmp, base);
-  type = module_find_type(module, tmp);
-  if (!type) {
-    type = type_new();
-    type_init_pointer(type, base);
-    module_insert_type(module, type);
-  }
-  return type;
+  return builder_new_type(builder, tmp);
 }
 Type *builder_type_label(Builder *builder) {
-  Module *module = builder_get_module(builder);
-  Type *tmp = type_tmp(), *type;
+  Type *tmp = type_tmp();
   type_init_label(tmp);
-  type = module_find_type(module, tmp);
-  if (!type) {
-    type = type_new();
-    type->kind = TYPE_LABEL;
-    type->data.size = 0;
-    module_insert_type(module, type);
-  }
-  return type;
+  return builder_new_type(builder, tmp);
 }
