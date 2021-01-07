@@ -45,6 +45,10 @@ void global_print(Global *global) {
   UTILITY_ASSERT(global->name);
   printf("@%s", global->name);
 }
+void global_print_type(Global *global) {
+  type_print(global->type);
+  printf("*");
+}
 void global_pretty(Global *global) {
   global_print(global);
   printf(" = global ");
