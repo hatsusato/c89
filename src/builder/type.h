@@ -3,6 +3,19 @@
 
 #include "builder/types.h"
 
+typedef enum {
+  TYPE_SPEC_VOID,
+  TYPE_SPEC_CHAR,
+  TYPE_SPEC_SHORT,
+  TYPE_SPEC_INT,
+  TYPE_SPEC_LONG,
+  TYPE_SPEC_FLOAT,
+  TYPE_SPEC_DOUBLE,
+  TYPE_SPEC_SIGNED,
+  TYPE_SPEC_UNSIGNED,
+  TYPE_SPEC_COUNT
+} TypeSpecIndex;
+
 Bool type_is_void(Type *);
 void type_print(Type *);
 void type_print_elem(Type *);
