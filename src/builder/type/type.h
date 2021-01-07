@@ -2,6 +2,11 @@
 #define INCLUDE_GUARD_88506381_726D_4317_A13B_6980767D83BC
 
 #include "builder/types.h"
+#include "compare/types.h"
+
+int type_cmp(ElemType, ElemType, CompareExtra);
+Type *type_new(void);
+void type_delete(ElemType);
 
 Bool type_is_void(Type *);
 void type_print(Type *);
