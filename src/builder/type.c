@@ -2,6 +2,7 @@
 
 #include "builder.h"
 #include "compare.h"
+#include "module.h"
 #include "pool.h"
 #include "type/struct.h"
 #include "utility.h"
@@ -64,6 +65,7 @@ Type *builder_type(Builder *builder, TypeSpec *spec) {
   if (!type) {
     type = type_new();
     type_init_spec(type, spec);
+    module_insert_type(module, type);
   }
   return type;
 }

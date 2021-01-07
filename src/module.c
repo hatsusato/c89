@@ -98,6 +98,9 @@ Type *module_find_type(Module *module, Type *type) {
   const ElemType *found = pool_find(module->types, type);
   return found ? *found : NULL;
 }
+void module_insert_type(Module *module, Type *type) {
+  pool_insert(module->types, type);
+}
 Function *module_new_function(Module *module) {
   Function *func = function_new();
   vector_push(module->values, func);
