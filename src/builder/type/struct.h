@@ -4,7 +4,6 @@
 #include "builder/types.h"
 
 typedef enum {
-  TYPE_VOID,
   TYPE_INTEGER,
   TYPE_POINTER,
   TYPE_LABEL,

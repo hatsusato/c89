@@ -32,15 +32,15 @@ Type *type_new_spec(TypeSpec *spec) {
   return type;
 }
 void type_init_spec(Type *type, TypeSpec *spec) {
-  if (type_spec_get(spec, TYPE_SPEC_VOID)) {
-    type->kind = TYPE_VOID;
-  } else if (type_spec_get(spec, TYPE_SPEC_FLOAT)) {
+  if (type_spec_get(spec, TYPE_SPEC_FLOAT)) {
     UTILITY_ASSERT(0);
   } else if (type_spec_get(spec, TYPE_SPEC_DOUBLE)) {
     UTILITY_ASSERT(0);
   } else {
     type->kind = TYPE_INTEGER;
-    if (type_spec_get(spec, TYPE_SPEC_CHAR)) {
+    if (type_spec_get(spec, TYPE_SPEC_VOID)) {
+      type->data.size = 0;
+    } else if (type_spec_get(spec, TYPE_SPEC_CHAR)) {
       type->data.size = 8;
     } else if (type_spec_get(spec, TYPE_SPEC_SHORT)) {
       type->data.size = 16;
@@ -55,13 +55,10 @@ void type_delete(ElemType type) {
   UTILITY_FREE(type);
 }
 Bool type_is_void(Type *type) {
-  return TYPE_VOID == type->kind;
+  return TYPE_INTEGER == type->kind && 0 == type->data.size;
 }
 void type_print(Type *type) {
   switch (type ? type->kind : TYPE_KIND_COUNT) {
-  case TYPE_VOID:
-    printf("void");
-    break;
   case TYPE_INTEGER:
     if (0 == type->data.size) {
       printf("void");
