@@ -71,7 +71,10 @@ Bool type_is_void(Type *type) {
   return TYPE_INTEGER == type->kind && 0 == type->data.size;
 }
 void type_print(Type *type) {
-  switch (type ? type->kind : TYPE_KIND_COUNT) {
+  if (!type) {
+    return;
+  }
+  switch (type->kind) {
   case TYPE_INTEGER:
     if (0 == type->data.size) {
       printf("void");
