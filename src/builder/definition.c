@@ -43,12 +43,14 @@ static const char *function_name(Sexp *ast) {
 }
 static Type *builder_function_type(Builder *builder, Sexp *ast) {
   if (4 == sexp_length(ast)) {
-    return builder_type_integer(builder, 32);
+    builder_reset_type_spec(builder);
+    builder_set_type_spec(builder, TYPE_SPEC_INT);
+    builder_set_type(builder);
   } else {
     UTILITY_ASSERT(5 == sexp_length(ast));
     builder_ast(builder, sexp_at(ast, 1));
-    return builder_get_type(builder);
   }
+  return builder_get_type(builder);
 }
 static void builder_function_init(Builder *builder, Sexp *ast) {
   const char *name = function_name(ast);
