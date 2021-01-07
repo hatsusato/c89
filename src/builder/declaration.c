@@ -14,20 +14,9 @@ void builder_declaration(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 2));
 }
 void builder_declaration_specifiers(Builder *builder, Sexp *ast) {
-  Type *type;
+  Type *type = builder_type_integer(builder, 32);
   UTILITY_ASSERT(AST_DECLARATION_SPECIFIERS == sexp_get_tag(ast));
-  UTILITY_ASSERT(2 == sexp_length(ast));
-  ast = sexp_at(ast, 1);
-  UTILITY_ASSERT(AST_TYPE_SPECIFIER == sexp_get_tag(ast));
-  ast = sexp_at(ast, 1);
-  switch (sexp_get_tag(ast)) {
-  case AST_INT:
-    type = builder_type_integer(builder, 32);
-    break;
-  default:
-    type = builder_type_void(builder);
-    break;
-  }
+  builder_ast_map(builder, ast);
   builder_set_type(builder, type);
 }
 void builder_init_declarator_list(Builder *builder, Sexp *ast) {
