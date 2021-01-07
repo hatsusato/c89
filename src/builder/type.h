@@ -2,7 +2,18 @@
 #define INCLUDE_GUARD_288C5A5F_4870_4133_85EB_DBA30CC323B1
 
 #include "builder/types.h"
-#include "type/type.h"
+#include "compare/types.h"
+#include "type/spec.h"
+
+int type_cmp(ElemType, ElemType, CompareExtra);
+Type *type_new(void);
+Type *type_new_spec(TypeSpec *);
+void type_init_spec(Type *, TypeSpec *);
+void type_delete(ElemType);
+
+Bool type_is_void(Type *);
+void type_print(Type *);
+void type_print_elem(Type *);
 
 Type *builder_type(Builder *, TypeSpec *);
 Type *builder_type_void(Builder *);
