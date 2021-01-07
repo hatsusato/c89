@@ -2,19 +2,7 @@
 #define INCLUDE_GUARD_288C5A5F_4870_4133_85EB_DBA30CC323B1
 
 #include "builder/types.h"
-
-typedef enum {
-  TYPE_SPEC_VOID,
-  TYPE_SPEC_CHAR,
-  TYPE_SPEC_SHORT,
-  TYPE_SPEC_INT,
-  TYPE_SPEC_LONG,
-  TYPE_SPEC_FLOAT,
-  TYPE_SPEC_DOUBLE,
-  TYPE_SPEC_SIGNED,
-  TYPE_SPEC_UNSIGNED,
-  TYPE_SPEC_COUNT
-} TypeSpecIndex;
+#include "type/spec.h"
 
 Bool type_is_void(Type *);
 void type_print(Type *);

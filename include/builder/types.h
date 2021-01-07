@@ -31,9 +31,6 @@ typedef struct struct_ValuePool ValuePool;
 struct struct_Type;
 typedef struct struct_Type Type;
 
-struct struct_TypeSpec;
-typedef struct struct_TypeSpec TypeSpec;
-
 struct struct_TypePool;
 typedef struct struct_TypePool TypePool;
 
