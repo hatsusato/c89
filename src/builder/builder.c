@@ -155,6 +155,9 @@ Type *builder_get_type(Builder *builder) {
 void builder_set_type(Builder *builder) {
   builder->type = builder_type(builder, builder->spec);
 }
+void builder_set_type_int(Builder *builder) {
+  builder->type = builder_type_int(builder);
+}
 void builder_set_type_spec(Builder *builder, TypeSpecIndex i) {
   type_spec_set(builder->spec, i);
 }
