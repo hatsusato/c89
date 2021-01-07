@@ -99,6 +99,9 @@ static void instruction_pretty_store(Instruction *instr) {
 }
 static void instruction_pretty_sext(Instruction *instr) {
   instruction_print_name(instr);
+  value_print_with_type(instr->operands[0], false);
+  printf(" to ");
+  type_print(instr->type);
 }
 static void instruction_pretty_icmp_ne(Instruction *instr) {
   instruction_print_name(instr);
