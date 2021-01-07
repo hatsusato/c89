@@ -10,7 +10,7 @@ struct struct_TypePool {
   Pool *pool;
 };
 
-static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
+int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
   Type *l = lhs, *r = rhs;
   if (l->kind != r->kind) {
     return (l->kind < r->kind) ? -1 : 1;
@@ -30,7 +30,7 @@ static Type *type_new(void) {
   type->data.size = 0;
   return type;
 }
-static void type_delete(ElemType type) {
+void type_delete(ElemType type) {
   UTILITY_FREE(type);
 }
 static void type_init_integer(Type *type, int size) {

@@ -10,12 +10,15 @@
 #include "builder/instruction.h"
 #include "builder/type.h"
 #include "builder/value.h"
+#include "compare.h"
+#include "pool.h"
 #include "utility.h"
 #include "vector.h"
 
 struct struct_Module {
   Vector *values;
   TypePool *type;
+  Pool *types;
   Vector *prior, *global, *func;
 };
 
@@ -70,8 +73,10 @@ static void module_pretty_function(Module *module) {
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
+  Compare *type_compare = compare_new(type_cmp);
   module->values = vector_new(module_delete_value);
   module->type = type_pool_new();
+  module->types = pool_new(type_delete, type_compare);
   module->prior = vector_new(NULL);
   module->global = vector_new(NULL);
   module->func = vector_new(NULL);
@@ -81,6 +86,7 @@ void module_delete(Module *module) {
   vector_delete(module->func);
   vector_delete(module->global);
   vector_delete(module->prior);
+  pool_delete(module->types);
   type_pool_delete(module->type);
   vector_delete(module->values);
   UTILITY_FREE(module);
