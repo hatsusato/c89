@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+#include "spec.h"
 #include "struct.h"
 #include "utility.h"
 
@@ -23,6 +24,28 @@ Type *type_new(void) {
   Type *type = UTILITY_MALLOC(Type);
   type->kind = TYPE_KIND_COUNT;
   type->data.size = 0;
+  return type;
+}
+Type *type_new_spec(TypeSpec *spec) {
+  Type *type = type_new();
+  if (type_spec_get(spec, TYPE_SPEC_VOID)) {
+    type->kind = TYPE_VOID;
+  } else if (type_spec_get(spec, TYPE_SPEC_FLOAT)) {
+    UTILITY_ASSERT(0);
+  } else if (type_spec_get(spec, TYPE_SPEC_DOUBLE)) {
+    UTILITY_ASSERT(0);
+  } else {
+    type->kind = TYPE_INTEGER;
+    if (type_spec_get(spec, TYPE_SPEC_CHAR)) {
+      type->data.size = 8;
+    } else if (type_spec_get(spec, TYPE_SPEC_SHORT)) {
+      type->data.size = 16;
+    } else if (type_spec_get(spec, TYPE_SPEC_LONG)) {
+      type->data.size = 64;
+    } else {
+      type->data.size = 32;
+    }
+  }
   return type;
 }
 void type_delete(ElemType type) {

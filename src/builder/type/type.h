@@ -3,9 +3,11 @@
 
 #include "builder/types.h"
 #include "compare/types.h"
+#include "spec.h"
 
 int type_cmp(ElemType, ElemType, CompareExtra);
 Type *type_new(void);
+Type *type_new_spec(TypeSpec *);
 void type_delete(ElemType);
 
 Bool type_is_void(Type *);
