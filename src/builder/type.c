@@ -24,7 +24,7 @@ static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
 }
 static Type *type_new(void) {
   Type *type = UTILITY_MALLOC(Type);
-  type->kind = TYPE_KIND_COUNT;
+  type->kind = TYPE_INTEGER;
   type->data.size = 0;
   return type;
 }
