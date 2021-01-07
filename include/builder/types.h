@@ -25,9 +25,6 @@ typedef struct struct_Global Global;
 struct struct_Value;
 typedef struct struct_Value Value;
 
-struct struct_ValuePool;
-typedef struct struct_ValuePool ValuePool;
-
 struct struct_Type;
 typedef struct struct_Type Type;
 
