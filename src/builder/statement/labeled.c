@@ -1,3 +1,5 @@
+#include "labeled.h"
+
 #include "common.h"
 
 static Bool switch_new_case(Builder *builder) {

@@ -1,3 +1,5 @@
+#include "jump.h"
+
 #include "common.h"
 
 static void builder_goto_statement(Builder *builder, Sexp *ast) {
