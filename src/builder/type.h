@@ -9,6 +9,7 @@
 Pool *type_pool_new(void);
 void type_pool_delete(Pool *);
 
+Bool type_equals(Type *, Type *);
 Bool type_is_void(Type *);
 
 Type *builder_type(Builder *, TypeSpec *);

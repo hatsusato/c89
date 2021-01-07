@@ -115,6 +115,9 @@ void builder_instruction_store(Builder *builder, Value *src, Value *dst) {
 void builder_instruction_icmp_ne(Builder *builder, Value *lhs, Value *rhs) {
   builder_instruction_binary(builder, INSTRUCTION_ICMP_NE, lhs, rhs);
 }
+void builder_instruction_sext(Builder *builder, Value *src) {
+  builder_instruction_unary(builder, INSTRUCTION_SEXT, src);
+}
 void builder_new_local(Builder *builder) {
   builder_new_instruction(builder, INSTRUCTION_ALLOCA);
 }

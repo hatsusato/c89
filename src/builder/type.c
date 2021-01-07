@@ -45,6 +45,9 @@ void type_pool_delete(Pool *pool) {
   pool_delete(pool);
 }
 
+Bool type_equals(Type *lhs, Type *rhs) {
+  return 0 == type_cmp(lhs, rhs, NULL);
+}
 Bool type_is_void(Type *type) {
   return TYPE_INTEGER == type->kind && 0 == type->data.size;
 }
