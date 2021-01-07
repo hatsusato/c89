@@ -98,7 +98,9 @@ void builder_instruction_alloca(Builder *builder, const char *symbol) {
   builder_insert_local(builder, symbol, instr);
 }
 void builder_instruction_load(Builder *builder, Value *src) {
-  builder_instruction_unary(builder, INSTRUCTION_LOAD, src);
+  Instruction *instr =
+      builder_instruction_unary(builder, INSTRUCTION_LOAD, src);
+  instr->type = value_type(src);
 }
 void builder_instruction_store(Builder *builder, Value *src, Value *dst) {
   builder_instruction_binary(builder, INSTRUCTION_STORE, src, dst);
