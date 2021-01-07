@@ -155,6 +155,12 @@ Type *builder_get_type(Builder *builder) {
 void builder_set_type(Builder *builder, Type *type) {
   builder->type = type;
 }
+void builder_set_type_spec(Builder *builder, TypeSpecIndex i) {
+  type_spec_set(builder->spec, i);
+}
+void builder_reset_type_spec(Builder *builder) {
+  type_spec_reset(builder->spec);
+}
 Block *builder_get_next(Builder *builder, BuilderNextTag tag) {
   UTILITY_ASSERT(0 <= tag && tag < BUILDER_NEXT_COUNT);
   return builder->next[tag];
