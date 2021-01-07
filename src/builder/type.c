@@ -86,20 +86,20 @@ Type *builder_type_void(Builder *builder) {
 Type *builder_type_integer(Builder *builder, int size) {
   Module *module = builder_get_module(builder);
   TypePool *pool = module_get_type(module);
-  const ElemType *found;
+  Type *found;
   Type type;
   type_init_integer(&type, size);
-  found = pool_find(pool->pool, &type);
-  return found ? *found : type_pool_new_integer(pool, size);
+  found = module_find_type(module, &type);
+  return found ? found : type_pool_new_integer(pool, size);
 }
 Type *builder_type_pointer(Builder *builder, Type *base) {
   Module *module = builder_get_module(builder);
   TypePool *pool = module_get_type(module);
-  const ElemType *found;
+  Type *found;
   Type type;
   type_init_pointer(&type, base);
-  found = pool_find(pool->pool, &type);
-  return found ? *found : type_pool_new_pointer(pool, base);
+  found = module_find_type(module, &type);
+  return found ? found : type_pool_new_pointer(pool, base);
 }
 Type *builder_type_label(Builder *builder) {
   UTILITY_UNUSED(builder);

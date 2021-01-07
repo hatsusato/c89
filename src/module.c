@@ -94,6 +94,10 @@ void module_delete(Module *module) {
 TypePool *module_get_type(Module *module) {
   return module->type;
 }
+Type *module_find_type(Module *module, Type *type) {
+  const ElemType *found = pool_find(module->types, type);
+  return found ? *found : NULL;
+}
 Function *module_new_function(Module *module) {
   Function *func = function_new();
   vector_push(module->values, func);
