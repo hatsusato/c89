@@ -14,10 +14,10 @@ void builder_declaration(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 2));
 }
 void builder_declaration_specifiers(Builder *builder, Sexp *ast) {
-  Type *type = builder_type_integer(builder, 32);
   UTILITY_ASSERT(AST_DECLARATION_SPECIFIERS == sexp_get_tag(ast));
+  builder_reset_type_spec(builder);
   builder_ast_map(builder, ast);
-  builder_set_type(builder, type);
+  builder_set_type(builder);
 }
 void builder_init_declarator_list(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_INIT_DECLARATOR_LIST == sexp_get_tag(ast));

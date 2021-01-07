@@ -40,7 +40,7 @@ Value *builder_get_retval(Builder *);
 Value *builder_get_value(Builder *);
 void builder_set_value(Builder *, Value *);
 Type *builder_get_type(Builder *);
-void builder_set_type(Builder *, Type *);
+void builder_set_type(Builder *);
 void builder_set_type_spec(Builder *, TypeSpecIndex);
 void builder_reset_type_spec(Builder *);
 Block *builder_get_next(Builder *, BuilderNextTag);
