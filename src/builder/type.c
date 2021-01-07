@@ -56,6 +56,17 @@ void type_pool_delete(TypePool *pool) {
   UTILITY_FREE(pool);
 }
 
+Type *builder_type(Builder *builder, TypeSpec *spec) {
+  Module *module = builder_get_module(builder);
+  Type key, *type;
+  type_init_spec(&key, spec);
+  type = module_find_type(module, &key);
+  if (!type) {
+    type = type_new();
+    type_init_spec(type, spec);
+  }
+  return type;
+}
 Type *builder_type_void(Builder *builder) {
   UTILITY_UNUSED(builder);
   return type_void();
