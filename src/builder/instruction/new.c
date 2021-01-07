@@ -11,20 +11,9 @@ static Instruction *builder_new_instruction(Builder *builder,
   Instruction *instr = module_new_instruction(module);
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
-  Type *type = builder_get_type(builder);
   instr->ikind = kind;
-  instr->type = type;
-  switch (kind) {
-  case INSTRUCTION_ALLOCA:
-    block_insert(alloc, instr);
-    break;
-  case INSTRUCTION_ICMP_NE:
-    block_insert(current, instr);
-    break;
-  default:
-    block_insert(current, instr);
-    break;
-  }
+  instr->type = builder_get_type(builder);
+  block_insert(INSTRUCTION_ALLOCA == kind ? alloc : current, instr);
   builder_set_value(builder, instruction_as_value(instr));
   return instr;
 }
