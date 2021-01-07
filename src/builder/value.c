@@ -78,10 +78,16 @@ void value_print(Value *value, Bool comma) {
   }
 }
 void value_print_type(Value *value) {
-  if (VALUE_INSTRUCTION == value->kind) {
+  switch (value->kind) {
+  case VALUE_INSTRUCTION:
     instruction_print_type(value_as_instruction(value));
-  } else {
+    break;
+  case VALUE_GLOBAL:
+    global_print_type(value_as_global(value));
+    break;
+  default:
     type_print(value->type);
+    break;
   }
 }
 void value_print_with_type(Value *value, Bool comma) {
