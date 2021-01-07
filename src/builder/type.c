@@ -20,13 +20,6 @@ static void type_init_pointer(Type *type, Type *ptr) {
   type->data.type = ptr;
 }
 
-static Type *type_pool_new_pointer(TypePool *pool, Type *ptr) {
-  Type *type = type_new();
-  type_init_pointer(type, ptr);
-  pool_insert(pool->pool, type);
-  return type;
-}
-
 static Type *type_void(void) {
   static Type type;
   type.kind = TYPE_VOID;
@@ -97,12 +90,15 @@ Type *builder_type_int(Builder *builder) {
 }
 Type *builder_type_pointer(Builder *builder, Type *base) {
   Module *module = builder_get_module(builder);
-  TypePool *pool = module_get_type(module);
-  Type *found;
-  Type type;
-  type_init_pointer(&type, base);
-  found = module_find_type(module, &type);
-  return found ? found : type_pool_new_pointer(pool, base);
+  Type key, *type;
+  type_init_pointer(&key, base);
+  type = module_find_type(module, &key);
+  if (!type) {
+    type = type_new();
+    type_init_pointer(type, base);
+    module_insert_type(module, type);
+  }
+  return type;
 }
 Type *builder_type_label(Builder *builder) {
   UTILITY_UNUSED(builder);
