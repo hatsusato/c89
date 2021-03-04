@@ -22,7 +22,7 @@ static const char *instruction_name(Instruction *instr) {
 #undef DO_HANDLE
   default:
     UTILITY_ASSERT(0);
-    break;
+    return NULL;
   }
 }
 static void instruction_print_name(Instruction *instr) {
