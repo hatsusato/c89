@@ -7,5 +7,5 @@ target_sources(statement PRIVATE
   selection.c
   )
 target_link_libraries(statement PRIVATE
-  include
+  options
   )

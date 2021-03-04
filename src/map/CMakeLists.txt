@@ -3,5 +3,5 @@ target_sources(map PRIVATE
   pair.c
   )
 target_link_libraries(map PRIVATE
-  include
+  options
   )

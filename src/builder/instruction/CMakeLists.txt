@@ -5,5 +5,5 @@ target_sources(instruction PRIVATE
   struct.c
   )
 target_link_libraries(instruction PRIVATE
-  include
+  options
   )

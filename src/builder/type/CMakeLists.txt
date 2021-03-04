@@ -4,5 +4,5 @@ target_sources(type PRIVATE
   spec.c
   )
 target_link_libraries(type PRIVATE
-  include
+  options
   )

@@ -28,5 +28,5 @@ target_include_directories(scanner PRIVATE
   ${CMAKE_CURRENT_BINARY_DIR}
   )
 target_link_libraries(scanner PRIVATE
-  include
+  options
   )

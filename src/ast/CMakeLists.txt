@@ -4,5 +4,5 @@ target_sources(ast PRIVATE
   tag.c
   )
 target_link_libraries(ast PRIVATE
-  include
+  options
   )

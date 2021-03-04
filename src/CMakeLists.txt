@@ -14,7 +14,7 @@ target_sources(src PRIVATE
 target_link_libraries(src PRIVATE
   ast
   builder
-  include
+  options
   map
   scanner
   set

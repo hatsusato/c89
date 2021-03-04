@@ -15,7 +15,7 @@ target_sources(builder PRIVATE
   value.c
   )
 target_link_libraries(builder PRIVATE
-  include
+  options
   instruction
   statement
   type
