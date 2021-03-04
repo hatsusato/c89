@@ -2,8 +2,14 @@
 
 set -eu
 
-cd $(dirname "$BASH_SOURCE")
+top_dir=$(dirname "$BASH_SOURCE")
+cd -P "$top_dir"
+top_dir=$(pwd)
+mkdir -p build
+cd -P build
+cmake "$top_dir" &>/dev/null
 make &>/dev/null
+cd -P "$top_dir"
 
 error() {
   echo "ERROR: $*"
@@ -25,11 +31,10 @@ compare() {
   diff "$@" <(emit "$target") <(comp "$target")
 }
 check() {
-  local e=$'\e'
-  local bold=$e[1m
-  local green=$e[32m
-  local red=$e[31m
-  local normal=$e[0m
+  local bold=$'\e[1m'
+  local green=$'\e[32m'
+  local red=$'\e[31m'
+  local normal=$'\e[0m'
   local name=${1##*/}
   name=${name%.c}
   comp "$1" >/dev/null || exit
@@ -42,19 +47,13 @@ check() {
   fi
 }
 
-files=()
-if (($#)); then
-  for i in "$@"; do
-    files+=("test/$i.c")
-  done
-else
-  for f in $(find test/ -name '*.c' | sort); do
-    files+=("$f")
-  done
-fi
+excludes=()
+opts=(-name '*.c')
+for f in "${excludes[@]}"; do
+  opts+=('!' -name "$f")
+done
 count=0
-for f in "${files[@]}"; do
-  test -f "$f" || error "$f not found"
+for f in $(find test/ "${opts[@]}" | sort); do
   check "$f" || ((++count))
 done
 exit $count
