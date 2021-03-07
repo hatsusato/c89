@@ -2,7 +2,6 @@ add_library(src OBJECT)
 target_sources(src PRIVATE
   main.c
   print.c
-  set.c
   sexp.c
   utility.c
   vector.c
