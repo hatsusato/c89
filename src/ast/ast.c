@@ -1,7 +1,7 @@
 #include "ast.h"
 
 #include "compare/compare.h"
-#include "pool.h"
+#include "pool/pool.h"
 #include "sexp.h"
 #include "utility.h"
 

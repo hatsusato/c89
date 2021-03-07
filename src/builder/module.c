@@ -10,7 +10,7 @@
 #include "builder/instruction.h"
 #include "builder/type.h"
 #include "builder/value.h"
-#include "pool.h"
+#include "pool/pool.h"
 #include "utility.h"
 #include "vector.h"
 

@@ -2,7 +2,7 @@
 
 #include "builder.h"
 #include "compare/compare.h"
-#include "pool.h"
+#include "pool/pool.h"
 #include "type/struct.h"
 #include "utility.h"
 
