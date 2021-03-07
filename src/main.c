@@ -1,4 +1,4 @@
-#include "ast.h"
+#include "ast/ast.h"
 #include "module.h"
 #include "print.h"
 #include "scanner.h"

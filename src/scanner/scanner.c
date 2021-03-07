@@ -1,6 +1,6 @@
 #include "scanner.h"
 
-#include "ast.h"
+#include "ast/ast.h"
 #include "compare.h"
 #include "parser.tab.h"
 #include "scanner/impl.h"
