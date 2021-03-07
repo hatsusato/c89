@@ -1,6 +1,6 @@
 #include "vector.h"
 
-#include "utility.h"
+#include "utility/utility.h"
 
 struct struct_Vector {
   ElemType *begin, *end, *last;

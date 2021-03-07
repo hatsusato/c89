@@ -4,7 +4,7 @@
 
 #include "ast/tag.h"
 #include "sexp/sexp.h"
-#include "utility.h"
+#include "utility/utility.h"
 
 static void print_sexp(FILE *, Sexp *, int);
 static void print_sexp_list(FILE *fp, Sexp *sexp, int indent) {

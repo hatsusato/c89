@@ -3,7 +3,7 @@
 #include "scanner/impl.h"
 #include "scanner/register.h"
 #include "sexp/sexp.h"
-#include "utility.h"
+#include "utility/utility.h"
 
 Sexp *parser_symbol(AstTag tag) {
   return sexp_number(tag);

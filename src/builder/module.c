@@ -11,7 +11,7 @@
 #include "builder/type.h"
 #include "builder/value.h"
 #include "pool/pool.h"
-#include "utility.h"
+#include "utility/utility.h"
 #include "vector.h"
 
 struct struct_Module {

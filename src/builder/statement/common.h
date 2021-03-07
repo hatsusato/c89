@@ -6,7 +6,7 @@
 #include "../instruction.h"
 #include "ast/tag.h"
 #include "sexp/sexp.h"
-#include "utility.h"
+#include "utility/utility.h"
 
 void builder_guard_statement(Builder *, Sexp *, Block *, Block *);
 

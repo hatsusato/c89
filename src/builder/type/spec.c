@@ -1,7 +1,7 @@
 #include "spec.h"
 
 #include "struct.h"
-#include "utility.h"
+#include "utility/utility.h"
 
 struct struct_TypeSpec {
   Bool spec[TYPE_SPEC_COUNT];

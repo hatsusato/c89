@@ -8,7 +8,7 @@
 #include "global.h"
 #include "instruction.h"
 #include "type.h"
-#include "utility.h"
+#include "utility/utility.h"
 #include "vector.h"
 
 struct struct_Value {

@@ -1,6 +1,6 @@
 #include "sexp.h"
 
-#include "utility.h"
+#include "utility/utility.h"
 
 typedef enum { SEXP_NIL, SEXP_PAIR, SEXP_SYMBOL, SEXP_NUMBER } SexpKind;
 

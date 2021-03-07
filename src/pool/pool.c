@@ -1,7 +1,7 @@
 #include "pool.h"
 
-#include "set.h"
-#include "utility.h"
+#include "set/set.h"
+#include "utility/utility.h"
 #include "vector.h"
 
 struct struct_Pool {

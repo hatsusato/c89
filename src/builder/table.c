@@ -3,7 +3,7 @@
 #include "compare/compare.h"
 #include "instruction.h"
 #include "map/map.h"
-#include "utility.h"
+#include "utility/utility.h"
 #include "vector.h"
 
 struct struct_Table {

@@ -5,7 +5,7 @@
 #include "../block.h"
 #include "../type.h"
 #include "struct.h"
-#include "utility.h"
+#include "utility/utility.h"
 
 static void print_newline(void) {
   printf("\n");

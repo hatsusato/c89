@@ -1,6 +1,6 @@
 #include "compare.h"
 
-#include "utility.h"
+#include "utility/utility.h"
 
 struct struct_Compare {
   Cmp cmp;

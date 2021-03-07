@@ -4,7 +4,7 @@
 #include "compare/compare.h"
 #include "pool/pool.h"
 #include "type/struct.h"
-#include "utility.h"
+#include "utility/utility.h"
 
 static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
   Type *l = lhs, *r = rhs;

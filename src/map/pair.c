@@ -1,7 +1,7 @@
 #include "pair.h"
 
 #include "compare/compare.h"
-#include "utility.h"
+#include "utility/utility.h"
 
 static int pair_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
   return compare_cmp(extra, pair_key(lhs), pair_key(rhs));
