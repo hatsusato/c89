@@ -2,7 +2,6 @@ add_library(src OBJECT)
 target_sources(src PRIVATE
   main.c
   print.c
-  vector.c
   )
 target_link_libraries(src PRIVATE
   ast
@@ -25,3 +24,4 @@ add_subdirectory(scanner)
 add_subdirectory(set)
 add_subdirectory(sexp)
 add_subdirectory(utility)
+add_subdirectory(vector)

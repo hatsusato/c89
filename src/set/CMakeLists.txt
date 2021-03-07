@@ -6,4 +6,5 @@ target_sources(set PRIVATE
 target_link_libraries(set PRIVATE
   options
   compare
+  vector
   )

@@ -3,7 +3,7 @@
 #include "compare/compare.h"
 #include "set/sort.h"
 #include "utility/utility.h"
-#include "vector.h"
+#include "vector/vector.h"
 
 struct struct_Set {
   Vector *vec;

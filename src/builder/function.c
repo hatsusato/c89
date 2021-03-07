@@ -10,7 +10,7 @@
 #include "type.h"
 #include "utility/utility.h"
 #include "value.h"
-#include "vector.h"
+#include "vector/vector.h"
 
 struct struct_Function {
   ValueKind kind;

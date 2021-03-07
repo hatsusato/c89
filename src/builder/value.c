@@ -9,7 +9,7 @@
 #include "instruction.h"
 #include "type.h"
 #include "utility/utility.h"
-#include "vector.h"
+#include "vector/vector.h"
 
 struct struct_Value {
   ValueKind kind;

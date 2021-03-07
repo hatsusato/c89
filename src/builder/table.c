@@ -4,7 +4,7 @@
 #include "instruction.h"
 #include "map/map.h"
 #include "utility/utility.h"
-#include "vector.h"
+#include "vector/vector.h"
 
 struct struct_Table {
   Map *global;
