@@ -1,6 +1,6 @@
 #include "ast.h"
 
-#include "compare.h"
+#include "compare/compare.h"
 #include "pool.h"
 #include "sexp.h"
 #include "utility.h"

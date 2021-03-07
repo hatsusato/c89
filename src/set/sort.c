@@ -1,6 +1,6 @@
 #include "sort.h"
 
-#include "compare.h"
+#include "compare/compare.h"
 #include "utility.h"
 
 static Size sort_threshold(void) {

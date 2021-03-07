@@ -1,6 +1,6 @@
 #include "set.h"
 
-#include "compare.h"
+#include "compare/compare.h"
 #include "set/sort.h"
 #include "utility.h"
 #include "vector.h"

@@ -1,6 +1,6 @@
 #include "pair.h"
 
-#include "compare.h"
+#include "compare/compare.h"
 #include "utility.h"
 
 static int pair_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {

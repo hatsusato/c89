@@ -1,6 +1,5 @@
 add_library(src OBJECT)
 target_sources(src PRIVATE
-  compare.c
   main.c
   map.c
   module.c
@@ -22,6 +21,7 @@ target_link_libraries(src PRIVATE
 
 add_subdirectory(ast)
 add_subdirectory(builder)
+add_subdirectory(compare)
 add_subdirectory(map)
 add_subdirectory(scanner)
 add_subdirectory(set)

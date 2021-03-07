@@ -1,6 +1,6 @@
 #include "table.h"
 
-#include "compare.h"
+#include "compare/compare.h"
 #include "instruction.h"
 #include "map.h"
 #include "utility.h"
