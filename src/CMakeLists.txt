@@ -1,7 +1,6 @@
 add_library(src OBJECT)
 target_sources(src PRIVATE
   main.c
-  map.c
   module.c
   pool.c
   print.c

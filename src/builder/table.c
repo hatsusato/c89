@@ -2,7 +2,7 @@
 
 #include "compare/compare.h"
 #include "instruction.h"
-#include "map.h"
+#include "map/map.h"
 #include "utility.h"
 #include "vector.h"
 
