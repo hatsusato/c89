@@ -2,8 +2,8 @@
 
 #include "ast/tag.h"
 #include "scanner/impl.h"
-#include "sexp.h"
-#include "utility.h"
+#include "sexp/sexp.h"
+#include "utility/utility.h"
 
 static Bool check_tag(Sexp *ast, AstTag tag) {
   if (sexp_is_pair(ast)) {

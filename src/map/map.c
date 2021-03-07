@@ -1,8 +1,8 @@
 #include "map.h"
 
 #include "map/pair.h"
-#include "pool.h"
-#include "utility.h"
+#include "pool/pool.h"
+#include "utility/utility.h"
 
 struct struct_Map {
   Pool *pool;

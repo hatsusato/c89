@@ -1,6 +1,6 @@
 #include "struct.h"
 
-#include "utility.h"
+#include "utility/utility.h"
 
 Instruction *instruction_new(void) {
   Index i = 0;

@@ -1,10 +1,10 @@
 #include "table.h"
 
-#include "compare.h"
+#include "compare/compare.h"
 #include "instruction.h"
-#include "map.h"
-#include "utility.h"
-#include "vector.h"
+#include "map/map.h"
+#include "utility/utility.h"
+#include "vector/vector.h"
 
 struct struct_Table {
   Map *global;

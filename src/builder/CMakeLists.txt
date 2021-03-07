@@ -9,6 +9,7 @@ target_sources(builder PRIVATE
   function.c
   global.c
   lexical.c
+  module.c
   statement.c
   table.c
   type.c

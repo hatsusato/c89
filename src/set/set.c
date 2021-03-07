@@ -1,9 +1,9 @@
 #include "set.h"
 
-#include "compare.h"
+#include "compare/compare.h"
 #include "set/sort.h"
-#include "utility.h"
-#include "vector.h"
+#include "utility/utility.h"
+#include "vector/vector.h"
 
 struct struct_Set {
   Vector *vec;

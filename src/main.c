@@ -1,7 +1,7 @@
-#include "ast.h"
-#include "module.h"
+#include "ast/ast.h"
+#include "builder/module.h"
 #include "print.h"
-#include "scanner.h"
+#include "scanner/scanner.h"
 
 static void build(Sexp *ast) {
   Module *module = module_new();

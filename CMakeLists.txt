@@ -25,6 +25,7 @@ target_compile_options(options INTERFACE
   )
 target_include_directories(options INTERFACE
   include
+  src
   )
 
 add_executable(main "")

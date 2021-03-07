@@ -2,8 +2,8 @@
 
 #include "ast/tag.h"
 #include "builder.h"
-#include "sexp.h"
-#include "utility.h"
+#include "sexp/sexp.h"
+#include "utility/utility.h"
 
 void builder_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_STATEMENT == sexp_get_tag(ast));

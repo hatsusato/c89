@@ -8,8 +8,8 @@
 #include "global.h"
 #include "instruction.h"
 #include "type.h"
-#include "utility.h"
-#include "vector.h"
+#include "utility/utility.h"
+#include "vector/vector.h"
 
 struct struct_Value {
   ValueKind kind;

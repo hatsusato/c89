@@ -6,7 +6,7 @@
 #include "constant.h"
 #include "module.h"
 #include "type.h"
-#include "utility.h"
+#include "utility/utility.h"
 #include "value.h"
 
 struct struct_Global {

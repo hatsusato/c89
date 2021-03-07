@@ -1,11 +1,11 @@
 #include "scanner.h"
 
-#include "ast.h"
-#include "compare.h"
+#include "ast/ast.h"
+#include "compare/compare.h"
 #include "parser.tab.h"
 #include "scanner/impl.h"
-#include "set.h"
-#include "utility.h"
+#include "set/set.h"
+#include "utility/utility.h"
 
 typedef struct {
   Ast *ast;

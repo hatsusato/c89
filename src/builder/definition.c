@@ -3,9 +3,9 @@
 #include "ast/tag.h"
 #include "builder.h"
 #include "function.h"
-#include "sexp.h"
+#include "sexp/sexp.h"
 #include "type.h"
-#include "utility.h"
+#include "utility/utility.h"
 
 static const char *function_name(Sexp *ast) {
   switch (sexp_get_tag(ast)) {

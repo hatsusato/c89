@@ -4,9 +4,9 @@
 #include "builder.h"
 #include "global.h"
 #include "instruction.h"
-#include "sexp.h"
+#include "sexp/sexp.h"
 #include "type.h"
-#include "utility.h"
+#include "utility/utility.h"
 
 void builder_declaration(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(AST_DECLARATION == sexp_get_tag(ast));

@@ -1,9 +1,9 @@
 #include "ast.h"
 
-#include "compare.h"
-#include "pool.h"
-#include "sexp.h"
-#include "utility.h"
+#include "compare/compare.h"
+#include "pool/pool.h"
+#include "sexp/sexp.h"
+#include "utility/utility.h"
 
 struct struct_Ast {
   Pool *pool;
