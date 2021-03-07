@@ -3,7 +3,7 @@
 #include "ast/tag.h"
 #include "builder.h"
 #include "instruction.h"
-#include "sexp.h"
+#include "sexp/sexp.h"
 #include "utility.h"
 
 void builder_primary_expression(Builder *builder, Sexp *ast) {

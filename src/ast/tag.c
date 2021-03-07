@@ -1,6 +1,6 @@
 #include "ast/tag.h"
 
-#include "sexp.h"
+#include "sexp/sexp.h"
 
 const char *ast_show(AstTag tag) {
   const char *name[] = {"",

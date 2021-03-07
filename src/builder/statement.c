@@ -2,7 +2,7 @@
 
 #include "ast/tag.h"
 #include "builder.h"
-#include "sexp.h"
+#include "sexp/sexp.h"
 #include "utility.h"
 
 void builder_statement(Builder *builder, Sexp *ast) {

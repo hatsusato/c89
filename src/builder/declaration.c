@@ -4,7 +4,7 @@
 #include "builder.h"
 #include "global.h"
 #include "instruction.h"
-#include "sexp.h"
+#include "sexp/sexp.h"
 #include "type.h"
 #include "utility.h"
 

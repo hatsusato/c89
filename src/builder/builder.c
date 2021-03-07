@@ -10,7 +10,7 @@
 #include "instruction.h"
 #include "lexical.h"
 #include "module.h"
-#include "sexp.h"
+#include "sexp/sexp.h"
 #include "statement.h"
 #include "table.h"
 #include "type.h"

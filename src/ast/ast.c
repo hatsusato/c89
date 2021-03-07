@@ -2,7 +2,7 @@
 
 #include "compare/compare.h"
 #include "pool/pool.h"
-#include "sexp.h"
+#include "sexp/sexp.h"
 #include "utility.h"
 
 struct struct_Ast {

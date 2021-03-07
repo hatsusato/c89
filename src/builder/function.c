@@ -6,7 +6,7 @@
 #include "block.h"
 #include "builder.h"
 #include "module.h"
-#include "sexp.h"
+#include "sexp/sexp.h"
 #include "type.h"
 #include "utility.h"
 #include "value.h"

@@ -3,7 +3,7 @@
 #include <ctype.h>
 
 #include "ast/tag.h"
-#include "sexp.h"
+#include "sexp/sexp.h"
 #include "utility.h"
 
 static void print_sexp(FILE *, Sexp *, int);
