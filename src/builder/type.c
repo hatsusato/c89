@@ -2,7 +2,7 @@
 
 #include "builder.h"
 #include "compare/compare.h"
-#include "pool/pool.h"
+#include "set/set.h"
 #include "type/struct.h"
 #include "utility/utility.h"
 
@@ -36,13 +36,15 @@ static Type type_integer(int size) {
   return type;
 }
 
-Pool *type_pool_new(void) {
-  Compare *type_compare = compare_new(type_cmp);
-  Pool *pool = pool_new(type_delete, type_compare);
-  return pool;
+Compare *type_compare_new(void) {
+  return compare_new(type_cmp);
 }
-void type_pool_delete(Pool *pool) {
-  pool_delete(pool);
+Set *type_set_new(Compare *cmp) {
+  Set *set = set_new(type_delete, cmp);
+  return set;
+}
+void type_set_delete(Set *set) {
+  set_delete(set);
 }
 
 Bool type_equals(Type *lhs, Type *rhs) {

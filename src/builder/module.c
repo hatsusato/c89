@@ -10,13 +10,15 @@
 #include "builder/instruction.h"
 #include "builder/type.h"
 #include "builder/value.h"
-#include "pool/pool.h"
+#include "compare/compare.h"
+#include "set/set.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
 struct struct_Module {
   Vector *values;
-  Pool *types;
+  Compare *type_cmp;
+  Set *types;
   Vector *prior, *global, *func;
 };
 
@@ -72,7 +74,8 @@ static void module_pretty_function(Module *module) {
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->values = vector_new(module_delete_value);
-  module->types = type_pool_new();
+  module->type_cmp = type_compare_new();
+  module->types = type_set_new(module->type_cmp);
   module->prior = vector_new(NULL);
   module->global = vector_new(NULL);
   module->func = vector_new(NULL);
@@ -82,16 +85,17 @@ void module_delete(Module *module) {
   vector_delete(module->func);
   vector_delete(module->global);
   vector_delete(module->prior);
-  type_pool_delete(module->types);
+  type_set_delete(module->types);
+  compare_delete(module->type_cmp);
   vector_delete(module->values);
   UTILITY_FREE(module);
 }
 Type *module_find_type(Module *module, Type *type) {
-  const VectorElem *found = pool_find(module->types, type);
-  return found ? *found : NULL;
+  const CompareElem *found = set_find(module->types, type);
+  return found ? (Type *)*found : NULL;
 }
 void module_insert_type(Module *module, Type *type) {
-  pool_insert(module->types, type);
+  set_insert(module->types, type);
 }
 Function *module_new_function(Module *module) {
   Function *func = function_new();

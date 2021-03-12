@@ -6,9 +6,8 @@
 
 Compare *compare_new(CompareCmp);
 void compare_delete(Compare *);
-Compare *compare_new_strcmp(void);
 CompareExtra compare_get_extra(Compare *);
-void compare_set_extra(Compare *, CompareExtra, CompareDestructor);
+void compare_set_extra(Compare *, CompareExtra);
 int compare_cmp(Compare *, CompareElem, CompareElem);
 
 #endif /* INCLUDE_GUARD_34AB7F3A_885A_4F62_9026_BA9D1D12BD57 */

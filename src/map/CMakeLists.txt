@@ -5,5 +5,6 @@ target_sources(map PRIVATE
   )
 target_link_libraries(map PRIVATE
   options
-  pool
+  set
+  utility
   )
