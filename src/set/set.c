@@ -16,12 +16,6 @@ static CompareElem *set_begin(const Set *set) {
 static CompareElem *set_end(const Set *set) {
   return (CompareElem *)vector_end(set->vec);
 }
-static void set_sort(Set *set) {
-  quick_sort(set_begin(set), set_end(set), set->cmp);
-}
-static const CompareElem *set_search(const Set *set, CompareElem key) {
-  return binary_search(key, set_begin(set), set_end(set), set->cmp);
-}
 
 Set *set_new(Compare *cmp) {
   Set *set = UTILITY_MALLOC(Set);
@@ -39,8 +33,8 @@ void set_clear(Set *set) {
 }
 void set_insert(Set *set, CompareElem elem) {
   vector_push(set->vec, (VectorElem)elem);
-  set_sort(set);
+  quick_sort(set_begin(set), set_end(set), set->cmp);
 }
 const CompareElem *set_find(const Set *set, CompareElem key) {
-  return set_search(set, key);
+  return binary_search(key, set_begin(set), set_end(set), set->cmp);
 }
