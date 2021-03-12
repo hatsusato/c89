@@ -6,8 +6,8 @@
 static Size sort_threshold(void) {
   return 32;
 }
-
-void set_insert_sort(CompareElem *begin, CompareElem *end, Compare *cmp) {
+static void set_insert_sort(CompareElem *begin, CompareElem *end,
+                            Compare *cmp) {
   CompareElem *cur = begin;
   while (++cur < end) {
     CompareElem val = *cur, *dst = cur, *src = cur - 1;
@@ -17,6 +17,7 @@ void set_insert_sort(CompareElem *begin, CompareElem *end, Compare *cmp) {
     *dst = val;
   }
 }
+
 void set_quick_sort(CompareElem *begin, CompareElem *end, Compare *cmp) {
   CompareElem pivot;
   CompareElem *lo = begin, *hi = end - 1;

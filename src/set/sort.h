@@ -4,7 +4,6 @@
 #include "compare/typedef.h"
 #include "utility/types.h"
 
-void set_insert_sort(CompareElem *, CompareElem *, Compare *);
 void set_quick_sort(CompareElem *, CompareElem *, Compare *);
 const CompareElem *set_binary_search(CompareElem, const CompareElem *,
                                      const CompareElem *, Compare *);
