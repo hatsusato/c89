@@ -72,7 +72,7 @@ static void module_pretty_function(Module *module) {
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->values = vector_new(module_delete_value);
-  module->types = type_set_new();
+  module->types = type_set_new(type_compare_new());
   module->prior = vector_new(NULL);
   module->global = vector_new(NULL);
   module->func = vector_new(NULL);

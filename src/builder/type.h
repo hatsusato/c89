@@ -5,7 +5,8 @@
 #include "type/spec.h"
 #include "utility/types.h"
 
-Set *type_set_new(void);
+Compare *type_compare_new(void);
+Set *type_set_new(Compare *);
 void type_set_delete(Set *);
 
 Bool type_equals(Type *, Type *);

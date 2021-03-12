@@ -36,9 +36,11 @@ static Type type_integer(int size) {
   return type;
 }
 
-Set *type_set_new(void) {
-  Compare *type_compare = compare_new(type_cmp);
-  Set *set = set_new(type_delete, type_compare);
+Compare *type_compare_new(void) {
+  return compare_new(type_cmp);
+}
+Set *type_set_new(Compare *cmp) {
+  Set *set = set_new(type_delete, cmp);
   return set;
 }
 void type_set_delete(Set *set) {
