@@ -22,8 +22,7 @@ static void symbol_free(VectorElem symbol) {
 
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
-  Compare *cmp = compare_strcmp();
-  ast->pool = set_new(symbol_free, cmp);
+  ast->pool = set_new(symbol_free, NULL);
   ast->sexp = sexp_nil();
   return ast;
 }

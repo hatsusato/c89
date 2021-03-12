@@ -33,10 +33,10 @@ void compare_set_extra(Compare *compare, CompareExtra extra) {
   mutcmp->extra = extra;
 }
 int compare_cmp(Compare *compare, CompareElem lhs, CompareElem rhs) {
-  if (compare->cmp) {
+  if (compare && compare->cmp) {
     return compare->cmp(lhs, rhs, compare->extra);
   } else {
-    return utility_ptrcmp(lhs, rhs);
+    return utility_strcmp(lhs, rhs);
   }
 }
 Compare *compare_strcmp(void) {
