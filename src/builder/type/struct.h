@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_6A25DBB4_9C67_4CE8_A791_2C8EBEAEA471
 #define INCLUDE_GUARD_6A25DBB4_9C67_4CE8_A791_2C8EBEAEA471
 
-#include "builder/types.h"
+#include "utility/types.h"
 
 typedef enum {
   TYPE_INTEGER,

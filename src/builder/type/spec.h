@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_E88AF2CB_9E19_4C46_83B0_440BEC63AA1B
 #define INCLUDE_GUARD_E88AF2CB_9E19_4C46_83B0_440BEC63AA1B
 
-#include "builder/types.h"
+#include "utility/types.h"
 
 struct struct_TypeSpec;
 typedef struct struct_TypeSpec TypeSpec;

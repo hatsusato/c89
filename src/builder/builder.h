@@ -1,7 +1,6 @@
 #ifndef INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 #define INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 
-#include "builder/types.h"
 #include "module.h"
 #include "type/spec.h"
 

@@ -1,7 +1,10 @@
 #ifndef INCLUDE_GUARD_34AB7F3A_885A_4F62_9026_BA9D1D12BD57
 #define INCLUDE_GUARD_34AB7F3A_885A_4F62_9026_BA9D1D12BD57
 
-#include "compare/types.h"
+#include "utility/types.h"
+
+typedef const void *CompareExtra;
+typedef int (*Cmp)(ElemType, ElemType, CompareExtra);
 
 Compare *compare_new(Cmp);
 void compare_delete(Compare *);

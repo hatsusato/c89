@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_5AB8E8B0_FFC8_4467_A473_DBE7945B905D
 
 #include "../value.h"
-#include "builder/types.h"
 
 typedef enum {
 #define DO_HANDLE(name, str) name,

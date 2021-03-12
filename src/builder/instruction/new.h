@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_81FFBAC4_2A19_466F_8734_2CF3E3E2913F
 #define INCLUDE_GUARD_81FFBAC4_2A19_466F_8734_2CF3E3E2913F
 
-#include "builder/types.h"
+#include "utility/types.h"
 
 void builder_instruction_ret(Builder *, Value *);
 void builder_instruction_br(Builder *, Block *);

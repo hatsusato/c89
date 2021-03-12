@@ -1,7 +1,6 @@
 #ifndef INCLUDE_GUARD_CA82BAF1_F8AF_418B_A275_3129D9D3F1FB
 #define INCLUDE_GUARD_CA82BAF1_F8AF_418B_A275_3129D9D3F1FB
 
-#include "builder/types.h"
 #include "module.h"
 
 struct struct_Table;

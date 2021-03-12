@@ -1,8 +1,7 @@
 #ifndef INCLUDE_GUARD_2066624D_9BD2_42A1_8E82_3B559F049976
 #define INCLUDE_GUARD_2066624D_9BD2_42A1_8E82_3B559F049976
 
-#include "builder/types.h"
-#include "sexp/types.h"
+#include "utility/types.h"
 
 struct struct_Module;
 typedef struct struct_Module Module;

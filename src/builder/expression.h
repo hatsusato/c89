@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_1A152785_989B_4CD5_84BE_B19C1B797FEB
 #define INCLUDE_GUARD_1A152785_989B_4CD5_84BE_B19C1B797FEB
 
-#include "builder/types.h"
+#include "utility/types.h"
 
 void builder_primary_expression(Builder *, Sexp *);
 void builder_postfix_expression(Builder *, Sexp *);
