@@ -5,8 +5,8 @@
 #include "type/spec.h"
 #include "utility/types.h"
 
-Pool *type_pool_new(void);
-void type_pool_delete(Pool *);
+Set *type_set_new(void);
+void type_set_delete(Set *);
 
 Bool type_equals(Type *, Type *);
 Bool type_is_void(Type *);

@@ -1,11 +1,11 @@
 #include "map.h"
 
 #include "map/pair.h"
-#include "pool/pool.h"
+#include "set/set.h"
 #include "utility/utility.h"
 
 struct struct_Map {
-  Pool *pool;
+  Set *set;
 };
 
 static void map_delete_pair(VectorElem pair) {
@@ -15,21 +15,21 @@ static void map_delete_pair(VectorElem pair) {
 Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
   Compare *compare = pair_new_compare(keycmp);
-  map->pool = pool_new(map_delete_pair, compare);
+  map->set = set_new(map_delete_pair, compare);
   return map;
 }
 void map_delete(Map *map) {
-  pool_delete(map->pool);
+  set_delete(map->set);
   UTILITY_FREE(map);
 }
 void map_clear(Map *map) {
-  pool_clear(map->pool);
+  set_clear(map->set);
 }
 void map_insert(Map *map, CompareElem key, CompareElem val) {
-  pool_insert(map->pool, pair_new(key, val));
+  set_insert(map->set, pair_new(key, val));
 }
 CompareElem *map_find(Map *map, CompareElem key) {
   Pair pair = pair_dummy(key);
-  const VectorElem *found = pool_find(map->pool, &pair);
-  return found ? pair_val(*found) : NULL;
+  const CompareElem *found = set_find(map->set, &pair);
+  return found ? pair_val((Pair *)*found) : NULL;
 }
