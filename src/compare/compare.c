@@ -8,8 +8,8 @@ struct struct_Compare {
 };
 typedef struct struct_Compare MutableCompare;
 
-static int compare_strcmp(CompareElem lhs, CompareElem rhs,
-                          CompareExtra extra) {
+static int compare_strcmp_extra(CompareElem lhs, CompareElem rhs,
+                                CompareExtra extra) {
   UTILITY_UNUSED(extra);
   return utility_strcmp(lhs, rhs);
 }
@@ -21,10 +21,9 @@ Compare *compare_new(CompareCmp cmp) {
   return compare;
 }
 void compare_delete(Compare *compare) {
-  UTILITY_FREE(compare);
-}
-Compare *compare_new_strcmp(void) {
-  return compare_new(compare_strcmp);
+  if (compare_strcmp() != compare) {
+    UTILITY_FREE(compare);
+  }
 }
 CompareExtra compare_get_extra(Compare *compare) {
   return compare->extra;
@@ -39,4 +38,8 @@ int compare_cmp(Compare *compare, CompareElem lhs, CompareElem rhs) {
   } else {
     return utility_ptrcmp(lhs, rhs);
   }
+}
+Compare *compare_strcmp(void) {
+  static Compare cmp = {compare_strcmp_extra, NULL};
+  return &cmp;
 }

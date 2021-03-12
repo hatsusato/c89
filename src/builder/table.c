@@ -19,7 +19,7 @@ static void table_delete_map(VectorElem map) {
 
 Table *table_new(void) {
   Table *table = UTILITY_MALLOC(Table);
-  table->cmp = compare_new_strcmp();
+  table->cmp = compare_strcmp();
   table->global = map_new(table->cmp);
   table->stack = vector_new(table_delete_map);
   table->labels = map_new(table->cmp);
