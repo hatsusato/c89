@@ -1,6 +1,5 @@
 #include "set.h"
 
-#include "compare/compare.h"
 #include "set/sort.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
@@ -24,7 +23,6 @@ Set *set_new(VectorDestructor dtor, Compare *cmp) {
   return set;
 }
 void set_delete(Set *set) {
-  compare_delete(set->cmp);
   vector_delete(set->vec);
   UTILITY_FREE(set);
 }
