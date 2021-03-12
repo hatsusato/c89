@@ -8,7 +8,7 @@ struct struct_Map {
   Pool *pool;
 };
 
-static void map_delete_pair(ElemType pair) {
+static void map_delete_pair(VectorElem pair) {
   pair_delete(pair);
 }
 
@@ -30,6 +30,6 @@ void map_insert(Map *map, CompareElem key, CompareElem val) {
 }
 CompareElem *map_find(Map *map, CompareElem key) {
   Pair pair = pair_dummy(key);
-  const ElemType *found = pool_find(map->pool, &pair);
+  const VectorElem *found = pool_find(map->pool, &pair);
   return found ? pair_val(*found) : NULL;
 }

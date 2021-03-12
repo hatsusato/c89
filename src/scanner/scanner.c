@@ -60,8 +60,8 @@ const char *scanner_token(yyscan_t yyscan) {
 }
 void scanner_register(yyscan_t yyscan, const char *symbol) {
   assert("redefinition of typedef" && !scanner_query(yyscan, symbol));
-  set_insert(scanner_typedefs(yyscan), (ElemType)symbol);
+  set_insert(scanner_typedefs(yyscan), symbol);
 }
 Bool scanner_query(yyscan_t yyscan, const char *symbol) {
-  return set_find(scanner_typedefs(yyscan), (ElemType)symbol) != NULL;
+  return set_find(scanner_typedefs(yyscan), symbol) != NULL;
 }

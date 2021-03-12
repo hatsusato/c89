@@ -38,16 +38,16 @@ Type *function_return_type(Function *func) {
   return func->type;
 }
 void function_set_id(Function *func) {
-  ElemType *begin = vector_begin(func->vec);
-  ElemType *end = vector_end(func->vec);
+  VectorElem *begin = vector_begin(func->vec);
+  VectorElem *end = vector_end(func->vec);
   int id = 0;
   while (begin < end) {
     id = block_set_id(*begin++, id);
   }
 }
 void function_pretty(Function *func) {
-  ElemType *begin = vector_begin(func->vec);
-  ElemType *end = vector_end(func->vec);
+  VectorElem *begin = vector_begin(func->vec);
+  VectorElem *end = vector_end(func->vec);
   printf("define ");
   type_print(func->type);
   printf(" @%s() {\n", func->name);

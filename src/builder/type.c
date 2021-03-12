@@ -26,7 +26,7 @@ static Type *type_new(void) {
   type->data.size = 0;
   return type;
 }
-static void type_delete(ElemType type) {
+static void type_delete(VectorElem type) {
   UTILITY_FREE(type);
 }
 static Type type_integer(int size) {

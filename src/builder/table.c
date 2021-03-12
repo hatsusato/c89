@@ -17,7 +17,7 @@ static Map *table_new_map(void) {
   Map *map = map_new(cmp);
   return map;
 }
-static void table_delete_map(ElemType map) {
+static void table_delete_map(VectorElem map) {
   map_delete(map);
 }
 
@@ -54,8 +54,8 @@ void table_insert_local(Table *table, const char *key, Instruction *val) {
 }
 Value *table_find(Table *table, const char *key, Module *module) {
   CompareElem *found;
-  ElemType *begin = vector_begin(table->stack);
-  ElemType *end = vector_end(table->stack);
+  VectorElem *begin = vector_begin(table->stack);
+  VectorElem *end = vector_end(table->stack);
   while (begin < end--) {
     found = map_find(*end, key);
     if (found) {
