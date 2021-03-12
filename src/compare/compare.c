@@ -21,9 +21,7 @@ Compare *compare_new(CompareCmp cmp) {
   return compare;
 }
 void compare_delete(Compare *compare) {
-  if (compare_strcmp() != compare) {
-    UTILITY_FREE(compare);
-  }
+  UTILITY_FREE(compare);
 }
 CompareExtra compare_get_extra(Compare *compare) {
   return compare->extra;
