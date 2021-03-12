@@ -6,8 +6,8 @@
 #include "type/struct.h"
 #include "utility/utility.h"
 
-static int type_cmp(ElemType lhs, ElemType rhs, CompareExtra extra) {
-  Type *l = lhs, *r = rhs;
+static int type_cmp(CompareElem lhs, CompareElem rhs, CompareExtra extra) {
+  const Type *l = lhs, *r = rhs;
   if (l->kind != r->kind) {
     return (l->kind < r->kind) ? -1 : 1;
   }
