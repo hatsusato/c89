@@ -1,13 +1,11 @@
 #include "table.h"
 
-#include "compare/compare.h"
 #include "instruction.h"
 #include "map/map.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
 struct struct_Table {
-  Compare *cmp;
   Map *global;
   Vector *stack;
   Map *labels;
@@ -19,17 +17,15 @@ static void table_delete_map(VectorElem map) {
 
 Table *table_new(void) {
   Table *table = UTILITY_MALLOC(Table);
-  table->cmp = compare_strcmp();
-  table->global = map_new(table->cmp);
+  table->global = map_new(NULL);
   table->stack = vector_new(table_delete_map);
-  table->labels = map_new(table->cmp);
+  table->labels = map_new(NULL);
   return table;
 }
 void table_delete(Table *table) {
   map_delete(table->labels);
   vector_delete(table->stack);
   map_delete(table->global);
-  compare_delete(table->cmp);
   UTILITY_FREE(table);
 }
 void table_clear(Table *table) {
@@ -37,7 +33,7 @@ void table_clear(Table *table) {
   map_clear(table->labels);
 }
 void table_push(Table *table) {
-  Map *map = map_new(table->cmp);
+  Map *map = map_new(NULL);
   vector_push(table->stack, map);
 }
 void table_pop(Table *table) {
