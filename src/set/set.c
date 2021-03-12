@@ -11,11 +11,9 @@ struct struct_Set {
 };
 
 static CompareElem *set_begin(const Set *set) {
-  assert(set);
   return (CompareElem *)vector_begin(set->vec);
 }
 static CompareElem *set_end(const Set *set) {
-  assert(set);
   return (CompareElem *)vector_end(set->vec);
 }
 static void set_sort(Set *set) {
@@ -32,7 +30,6 @@ Set *set_new(Compare *cmp) {
   return set;
 }
 void set_delete(Set *set) {
-  assert(set);
   compare_delete(set->cmp);
   vector_delete(set->vec);
   UTILITY_FREE(set);
@@ -41,11 +38,9 @@ void set_clear(Set *set) {
   vector_clear(set->vec);
 }
 void set_insert(Set *set, CompareElem elem) {
-  assert(set);
   vector_push(set->vec, (VectorElem)elem);
   set_sort(set);
 }
 const CompareElem *set_find(const Set *set, CompareElem key) {
-  assert(set);
   return set_search(set, key);
 }
