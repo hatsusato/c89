@@ -3,20 +3,20 @@
 #include "compare/compare.h"
 #include "utility/utility.h"
 
-static int pair_compare(ElemType lhs, ElemType rhs, CompareExtra extra) {
+static int pair_compare(CompareElem lhs, CompareElem rhs, CompareExtra extra) {
   return compare_cmp(extra, pair_key(lhs), pair_key(rhs));
 }
-static void pair_delete_keycmp(ElemType keycmp) {
+static void pair_delete_keycmp(CompareExtra keycmp) {
   compare_delete(keycmp);
 }
 
-Pair *pair_new(ElemType key, ElemType val) {
+Pair *pair_new(CompareElem key, CompareElem val) {
   Pair *pair = UTILITY_MALLOC(Pair);
   pair->key = key;
   pair->val = val;
   return pair;
 }
-void pair_delete(ElemType pair) {
+void pair_delete(Pair *pair) {
   UTILITY_FREE(pair);
 }
 Compare *pair_new_compare(Compare *keycmp) {
@@ -24,15 +24,15 @@ Compare *pair_new_compare(Compare *keycmp) {
   compare_set_extra(compare, keycmp, pair_delete_keycmp);
   return compare;
 }
-Pair pair_dummy(ElemType key) {
+Pair pair_dummy(CompareElem key) {
   Pair pair;
   pair.key = key;
   pair.val = NULL;
   return pair;
 }
-ElemType pair_key(Pair *pair) {
+CompareElem pair_key(const Pair *pair) {
   return pair->key;
 }
-ElemType *pair_val(Pair *pair) {
+CompareElem *pair_val(Pair *pair) {
   return &pair->val;
 }

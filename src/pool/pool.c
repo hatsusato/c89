@@ -9,7 +9,7 @@ struct struct_Pool {
   Set *set;
 };
 
-Pool *pool_new(Destructor dtor, Compare *compare) {
+Pool *pool_new(VectorDestructor dtor, Compare *compare) {
   Pool *pool = UTILITY_MALLOC(Pool);
   pool->vec = vector_new(dtor);
   pool->set = set_new(compare);
@@ -24,10 +24,10 @@ void pool_clear(Pool *pool) {
   set_clear(pool->set);
   vector_clear(pool->vec);
 }
-void pool_insert(Pool *pool, ElemType elem) {
-  vector_push(pool->vec, elem);
+void pool_insert(Pool *pool, CompareElem elem) {
+  vector_push(pool->vec, (VectorElem)elem);
   set_insert(pool->set, elem);
 }
-const ElemType *pool_find(Pool *pool, ElemType elem) {
-  return set_find(pool->set, elem);
+const VectorElem *pool_find(Pool *pool, CompareElem elem) {
+  return (const VectorElem *)set_find(pool->set, elem);
 }

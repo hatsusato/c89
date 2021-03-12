@@ -1,9 +1,9 @@
-add_library(src OBJECT)
-target_sources(src PRIVATE
+add_executable(main)
+target_sources(main PRIVATE
   main.c
   print.c
   )
-target_link_libraries(src PRIVATE
+target_link_libraries(main PRIVATE
   ast
   builder
   compare
@@ -13,6 +13,10 @@ target_link_libraries(src PRIVATE
   set
   sexp
   utility
+  )
+set_target_properties(main PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+  SUFFIX .out
   )
 
 add_subdirectory(ast)

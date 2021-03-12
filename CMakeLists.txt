@@ -24,17 +24,6 @@ target_compile_options(options INTERFACE
   $<$<CONFIG:Debug>:-O0>
   )
 target_include_directories(options INTERFACE
-  include
-  src
-  )
-
-add_executable(main "")
-set_target_properties(main PROPERTIES
-  LINKER_LANGUAGE C
-  SUFFIX .out
-  )
-target_link_libraries(main PRIVATE
-  options
   src
   )
 

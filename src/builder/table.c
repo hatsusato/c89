@@ -17,7 +17,7 @@ static Map *table_new_map(void) {
   Map *map = map_new(cmp);
   return map;
 }
-static void table_delete_map(ElemType map) {
+static void table_delete_map(VectorElem map) {
   map_delete(map);
 }
 
@@ -46,33 +46,33 @@ void table_pop(Table *table) {
   vector_pop(table->stack);
 }
 void table_insert_global(Table *table, const char *key, Global *val) {
-  map_insert(table->global, (ElemType)key, val);
+  map_insert(table->global, key, val);
 }
 void table_insert_local(Table *table, const char *key, Instruction *val) {
   UTILITY_ASSERT(!vector_empty(table->stack));
-  map_insert(vector_back(table->stack), (ElemType)key, val);
+  map_insert(vector_back(table->stack), key, val);
 }
 Value *table_find(Table *table, const char *key, Module *module) {
-  ElemType *found;
-  ElemType *begin = vector_begin(table->stack);
-  ElemType *end = vector_end(table->stack);
+  CompareElem *found;
+  VectorElem *begin = vector_begin(table->stack);
+  VectorElem *end = vector_end(table->stack);
   while (begin < end--) {
-    found = map_find(*end, (ElemType)key);
+    found = map_find(*end, key);
     if (found) {
-      return *found;
+      return (Value *)*found;
     }
   }
-  found = map_find(table->global, (ElemType)key);
+  found = map_find(table->global, key);
   if (found) {
-    module_insert_prior(module, *found);
-    return *found;
+    module_insert_prior(module, (Global *)*found);
+    return (Value *)*found;
   }
   return NULL;
 }
 void table_label_insert(Table *table, const char *label, Block *block) {
-  map_insert(table->labels, (ElemType)label, block);
+  map_insert(table->labels, label, block);
 }
 Block *table_label_find(Table *table, const char *label) {
-  ElemType *found = map_find(table->labels, (ElemType)label);
-  return found ? *found : found;
+  CompareElem *found = map_find(table->labels, label);
+  return (Block *)(found ? *found : found);
 }

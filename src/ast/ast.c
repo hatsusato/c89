@@ -16,7 +16,7 @@ static const char *symbol_new(const void *text, Size size) {
   symbol[size] = '\0';
   return symbol;
 }
-static void symbol_free(ElemType symbol) {
+static void symbol_free(VectorElem symbol) {
   UTILITY_FREE(symbol);
 }
 
@@ -40,13 +40,13 @@ void ast_set(Ast *ast, Sexp *sexp) {
   ast->sexp = sexp;
 }
 const char *ast_symbol(Ast *ast, const char *text, Size leng) {
-  const ElemType *found;
+  const VectorElem *found;
   assert('\0' == text[leng]);
-  found = pool_find(ast->pool, (ElemType)text);
+  found = pool_find(ast->pool, text);
   if (found) {
     return *found;
   } else {
-    ElemType elem = (ElemType)symbol_new(text, leng);
+    const char *elem = symbol_new(text, leng);
     pool_insert(ast->pool, elem);
     return elem;
   }

@@ -1,0 +1,7 @@
+#ifndef INCLUDE_GUARD_229DE1A5_5EBE_4356_A71B_3B1EC418A69C
+#define INCLUDE_GUARD_229DE1A5_5EBE_4356_A71B_3B1EC418A69C
+
+struct struct_Instruction;
+typedef struct struct_Instruction Instruction;
+
+#endif /* INCLUDE_GUARD_229DE1A5_5EBE_4356_A71B_3B1EC418A69C */

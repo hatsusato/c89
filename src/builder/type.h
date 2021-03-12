@@ -1,10 +1,9 @@
 #ifndef INCLUDE_GUARD_288C5A5F_4870_4133_85EB_DBA30CC323B1
 #define INCLUDE_GUARD_288C5A5F_4870_4133_85EB_DBA30CC323B1
 
-#include "builder/types.h"
-#include "pool/types.h"
 #include "type/print.h"
 #include "type/spec.h"
+#include "utility/types.h"
 
 Pool *type_pool_new(void);
 void type_pool_delete(Pool *);

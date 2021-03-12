@@ -1,18 +1,18 @@
 #ifndef INCLUDE_GUARD_D1BC44FE_A7CB_4AB4_BBC6_18413DF0CB4A
 #define INCLUDE_GUARD_D1BC44FE_A7CB_4AB4_BBC6_18413DF0CB4A
 
-#include "compare/types.h"
+#include "compare/typedef.h"
 #include "utility/types.h"
 
 typedef struct {
-  ElemType key, val;
+  CompareElem key, val;
 } Pair;
 
-Pair *pair_new(ElemType, ElemType);
-void pair_delete(ElemType);
+Pair *pair_new(CompareElem, CompareElem);
+void pair_delete(Pair *);
 Compare *pair_new_compare(Compare *);
-Pair pair_dummy(ElemType);
-ElemType pair_key(Pair *);
-ElemType *pair_val(Pair *);
+Pair pair_dummy(CompareElem);
+CompareElem pair_key(const Pair *);
+CompareElem *pair_val(Pair *);
 
 #endif /* INCLUDE_GUARD_D1BC44FE_A7CB_4AB4_BBC6_18413DF0CB4A */

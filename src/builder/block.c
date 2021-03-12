@@ -37,8 +37,8 @@ void block_insert_switch(Block *block, Value *value, Block *label) {
   vector_push(block->vec, label);
 }
 void block_append(Block *dst, Block *src) {
-  ElemType *begin = vector_begin(src->vec);
-  ElemType *end = vector_end(src->vec);
+  VectorElem *begin = vector_begin(src->vec);
+  VectorElem *end = vector_end(src->vec);
   while (begin < end) {
     vector_push(dst->vec, *begin++);
   }
@@ -51,8 +51,8 @@ Instruction *block_last(Block *block) {
   return last ? value_as_instruction(last) : NULL;
 }
 int block_set_id(Block *block, int id) {
-  ElemType *begin = vector_begin(block->vec);
-  ElemType *end = vector_end(block->vec);
+  VectorElem *begin = vector_begin(block->vec);
+  VectorElem *end = vector_end(block->vec);
   block->id = id++;
   while (begin < end) {
     id = instruction_set_id(*begin++, id);
@@ -68,15 +68,15 @@ void block_print_label(Block *block) {
   printf("%d:\n", block->id);
 }
 void block_pretty(Block *block) {
-  ElemType *begin = vector_begin(block->vec);
-  ElemType *end = vector_end(block->vec);
+  VectorElem *begin = vector_begin(block->vec);
+  VectorElem *end = vector_end(block->vec);
   while (begin < end) {
     instruction_pretty(*begin++);
   }
 }
 void block_pretty_switch(Block *block) {
-  ElemType *begin = vector_begin(block->vec);
-  ElemType *end = vector_end(block->vec);
+  VectorElem *begin = vector_begin(block->vec);
+  VectorElem *end = vector_end(block->vec);
   while (begin < end) {
     printf("    ");
     value_print_with_type(*begin++, false);

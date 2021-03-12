@@ -20,7 +20,7 @@ struct struct_Module {
   Vector *prior, *global, *func;
 };
 
-static void module_delete_value(ElemType value) {
+static void module_delete_value(VectorElem value) {
   switch (value_kind(value)) {
   case VALUE_FUNCTION:
     function_delete(value);
@@ -43,16 +43,16 @@ static void module_delete_value(ElemType value) {
   }
 }
 static void module_pretty_prior(Module *module) {
-  ElemType *begin = vector_begin(module->prior);
-  ElemType *end = vector_end(module->prior);
+  VectorElem *begin = vector_begin(module->prior);
+  VectorElem *end = vector_end(module->prior);
   while (begin < end) {
     Global *global = *begin++;
     global_pretty(global);
   }
 }
 static void module_pretty_global(Module *module) {
-  ElemType *begin = vector_begin(module->global);
-  ElemType *end = vector_end(module->global);
+  VectorElem *begin = vector_begin(module->global);
+  VectorElem *end = vector_end(module->global);
   while (begin < end) {
     Global *global = *begin++;
     if (!global_is_prior(global)) {
@@ -61,8 +61,8 @@ static void module_pretty_global(Module *module) {
   }
 }
 static void module_pretty_function(Module *module) {
-  ElemType *begin = vector_begin(module->func);
-  ElemType *end = vector_end(module->func);
+  VectorElem *begin = vector_begin(module->func);
+  VectorElem *end = vector_end(module->func);
   while (begin < end) {
     printf("\n");
     function_pretty(*begin++);
@@ -87,7 +87,7 @@ void module_delete(Module *module) {
   UTILITY_FREE(module);
 }
 Type *module_find_type(Module *module, Type *type) {
-  const ElemType *found = pool_find(module->types, type);
+  const VectorElem *found = pool_find(module->types, type);
   return found ? *found : NULL;
 }
 void module_insert_type(Module *module, Type *type) {
