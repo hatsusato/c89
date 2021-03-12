@@ -3,28 +3,28 @@
 #include "utility/utility.h"
 
 struct struct_Vector {
-  ElemType *begin, *end, *last;
-  Destructor dtor;
+  VectorElem *begin, *end, *last;
+  VectorDestructor dtor;
 };
 
-static const ElemType *vector_sentinel(void) {
-  static const ElemType sentinel = NULL;
+static const VectorElem *vector_sentinel(void) {
+  static const VectorElem sentinel = NULL;
   return &sentinel;
 }
-static void vector_free(ElemType *buf) {
+static void vector_free(VectorElem *buf) {
   if (vector_sentinel() != buf) {
     UTILITY_FREE(buf);
   }
 }
 static void vector_alloc(Vector *v) {
-  ElemType *buf;
+  VectorElem *buf;
   Size leng = vector_length(v);
   Size size = vector_capacity(v);
   if (leng == size) {
     size += size == 0 ? 8 : size;
-    buf = UTILITY_MALLOC_ARRAY(ElemType, size);
-    UTILITY_MEMCPY(ElemType, buf, v->begin, leng);
-    UTILITY_SWAP(ElemType *, buf, v->begin);
+    buf = UTILITY_MALLOC_ARRAY(VectorElem, size);
+    UTILITY_MEMCPY(VectorElem, buf, v->begin, leng);
+    UTILITY_SWAP(VectorElem *, buf, v->begin);
     vector_free(buf);
     v->end = v->last = v->begin + leng;
     while (leng++ < size) {
@@ -33,9 +33,9 @@ static void vector_alloc(Vector *v) {
   }
 }
 
-Vector *vector_new(Destructor dtor) {
+Vector *vector_new(VectorDestructor dtor) {
   Vector *v = UTILITY_MALLOC(Vector);
-  v->begin = v->end = v->last = (ElemType *)vector_sentinel();
+  v->begin = v->end = v->last = (VectorElem *)vector_sentinel();
   v->dtor = dtor;
   return v;
 }
@@ -45,7 +45,7 @@ void vector_delete(Vector *v) {
   vector_free(v->begin);
   UTILITY_FREE(v);
 }
-void vector_destruct(const Vector *v, ElemType elem) {
+void vector_destruct(const Vector *v, VectorElem elem) {
   assert(v);
   if (v->dtor) {
     v->dtor(elem);
@@ -63,28 +63,28 @@ Size vector_capacity(const Vector *v) {
   assert(v);
   return v->last - v->begin;
 }
-ElemType *vector_begin(const Vector *v) {
+VectorElem *vector_begin(const Vector *v) {
   assert(v);
   return v->begin;
 }
-ElemType *vector_end(const Vector *v) {
+VectorElem *vector_end(const Vector *v) {
   assert(v);
   return v->end;
 }
-ElemType vector_front(const Vector *v) {
+VectorElem vector_front(const Vector *v) {
   assert(v);
   return vector_empty(v) ? NULL : v->begin[0];
 }
-ElemType vector_back(const Vector *v) {
+VectorElem vector_back(const Vector *v) {
   assert(v);
   return vector_empty(v) ? NULL : v->end[-1];
 }
-ElemType vector_at(const Vector *v, Index i) {
+VectorElem vector_at(const Vector *v, Index i) {
   assert(v);
   assert(0 <= i && i < vector_length(v));
   return v->begin[i];
 }
-void vector_push(Vector *v, ElemType elem) {
+void vector_push(Vector *v, VectorElem elem) {
   assert(v);
   vector_alloc(v);
   *v->end++ = elem;
