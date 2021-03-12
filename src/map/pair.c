@@ -6,9 +6,6 @@
 static int pair_compare(CompareElem lhs, CompareElem rhs, CompareExtra extra) {
   return compare_cmp(extra, pair_key(lhs), pair_key(rhs));
 }
-static void pair_delete_keycmp(CompareExtra keycmp) {
-  compare_delete(keycmp);
-}
 
 Pair *pair_new(CompareElem key, CompareElem val) {
   Pair *pair = UTILITY_MALLOC(Pair);
@@ -21,7 +18,7 @@ void pair_delete(Pair *pair) {
 }
 Compare *pair_new_compare(Compare *keycmp) {
   Compare *compare = compare_new(pair_compare);
-  compare_set_extra(compare, keycmp, pair_delete_keycmp);
+  compare_set_extra(compare, keycmp);
   return compare;
 }
 Pair pair_dummy(CompareElem key) {
