@@ -23,9 +23,6 @@ Compare *compare_new(CompareCmp cmp) {
   return compare;
 }
 void compare_delete(Compare *compare) {
-  if (compare->dtor) {
-    compare->dtor(compare->extra);
-  }
   UTILITY_FREE(compare);
 }
 Compare *compare_new_strcmp(void) {
