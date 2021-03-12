@@ -4,4 +4,5 @@ target_sources(compare PRIVATE
   )
 target_link_libraries(compare PRIVATE
   options
+  utility
   )
