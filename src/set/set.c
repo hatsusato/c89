@@ -33,8 +33,8 @@ void set_clear(Set *set) {
 }
 void set_insert(Set *set, CompareElem elem) {
   vector_push(set->vec, (VectorElem)elem);
-  quick_sort(set_begin(set), set_end(set), set->cmp);
+  set_quick_sort(set_begin(set), set_end(set), set->cmp);
 }
 const CompareElem *set_find(const Set *set, CompareElem key) {
-  return binary_search(key, set_begin(set), set_end(set), set->cmp);
+  return set_binary_search(key, set_begin(set), set_end(set), set->cmp);
 }
