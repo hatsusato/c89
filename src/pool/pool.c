@@ -9,7 +9,7 @@ struct struct_Pool {
   Set *set;
 };
 
-Pool *pool_new(Destructor dtor, Compare *compare) {
+Pool *pool_new(VectorDestructor dtor, Compare *compare) {
   Pool *pool = UTILITY_MALLOC(Pool);
   pool->vec = vector_new(dtor);
   pool->set = set_new(compare);

@@ -6,6 +6,5 @@
 #include "utility/stddef.h"
 
 typedef void *ElemType;
-typedef void (*Destructor)(ElemType);
 
 #endif /* INCLUDE_GUARD_ADFC65B2_9360_4BBE_84CD_607E1F3D622C */
