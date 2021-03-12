@@ -3,8 +3,9 @@
 
 #include "compare/typedef.h"
 #include "utility/types.h"
+#include "vector/typedef.h"
 
-Set *set_new(Compare *);
+Set *set_new(VectorDestructor, Compare *);
 void set_delete(Set *);
 void set_clear(Set *);
 void set_insert(Set *, CompareElem);
