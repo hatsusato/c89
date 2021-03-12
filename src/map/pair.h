@@ -11,7 +11,6 @@ typedef struct {
 Pair *pair_new(CompareElem, CompareElem);
 void pair_delete(Pair *);
 Compare *pair_new_compare(Compare *);
-Pair pair_dummy(CompareElem);
 CompareElem pair_key(const Pair *);
 CompareElem *pair_val(Pair *);
 

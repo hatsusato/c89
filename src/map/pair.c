@@ -21,12 +21,6 @@ Compare *pair_new_compare(Compare *keycmp) {
   compare_set_extra(compare, keycmp);
   return compare;
 }
-Pair pair_dummy(CompareElem key) {
-  Pair pair;
-  pair.key = key;
-  pair.val = NULL;
-  return pair;
-}
 CompareElem pair_key(const Pair *pair) {
   return pair->key;
 }

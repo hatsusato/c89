@@ -32,7 +32,9 @@ void map_insert(Map *map, CompareElem key, CompareElem val) {
   set_insert(map->set, pair_new(key, val));
 }
 CompareElem *map_find(Map *map, CompareElem key) {
-  Pair pair = pair_dummy(key);
-  const CompareElem *found = set_find(map->set, &pair);
+  const CompareElem *found;
+  Pair pair = {NULL, NULL};
+  pair.key = key;
+  found = set_find(map->set, &pair);
   return found ? pair_val((Pair *)*found) : NULL;
 }
