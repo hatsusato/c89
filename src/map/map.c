@@ -10,6 +10,12 @@ struct struct_Map {
   Set *set;
 };
 
+static Pair *map_pair_new(CompareElem key, CompareElem val) {
+  Pair *pair = UTILITY_MALLOC(Pair);
+  pair->key = key;
+  pair->val = val;
+  return pair;
+}
 static void map_pair_delete(VectorElem pair) {
   UTILITY_FREE(pair);
 }
@@ -34,7 +40,7 @@ void map_clear(Map *map) {
   set_clear(map->set);
 }
 void map_insert(Map *map, CompareElem key, CompareElem val) {
-  set_insert(map->set, pair_new(key, val));
+  set_insert(map->set, map_pair_new(key, val));
 }
 CompareElem map_find(Map *map, CompareElem key) {
   const CompareElem *found;
