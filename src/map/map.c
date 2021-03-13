@@ -1,7 +1,6 @@
 #include "map.h"
 
 #include "compare/compare.h"
-#include "map/pair.h"
 #include "set/set.h"
 #include "utility/utility.h"
 
@@ -9,6 +8,9 @@ struct struct_Map {
   Compare *cmp;
   Set *set;
 };
+typedef struct {
+  CompareElem key, val;
+} Pair;
 
 static Pair *map_pair_new(CompareElem key, CompareElem val) {
   Pair *pair = UTILITY_MALLOC(Pair);
