@@ -47,26 +47,24 @@ void table_insert_local(Table *table, const char *key, Instruction *val) {
   map_insert(vector_back(table->stack), key, val);
 }
 Value *table_find(Table *table, const char *key, Module *module) {
-  CompareElem *found;
+  Value *val;
   VectorElem *begin = vector_begin(table->stack);
   VectorElem *end = vector_end(table->stack);
   while (begin < end--) {
-    found = map_find(*end, key);
-    if (found) {
-      return (Value *)*found;
+    val = (Value *)map_find(*end, key);
+    if (val) {
+      return val;
     }
   }
-  found = map_find(table->global, key);
-  if (found) {
-    module_insert_prior(module, (Global *)*found);
-    return (Value *)*found;
+  val = (Value *)map_find(table->global, key);
+  if (val) {
+    module_insert_prior(module, (Global *)val);
   }
-  return NULL;
+  return val;
 }
 void table_label_insert(Table *table, const char *label, Block *block) {
   map_insert(table->labels, label, block);
 }
 Block *table_label_find(Table *table, const char *label) {
-  CompareElem *found = map_find(table->labels, label);
-  return (Block *)(found ? *found : found);
+  return (Block *)map_find(table->labels, label);
 }
