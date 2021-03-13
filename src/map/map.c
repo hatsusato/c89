@@ -13,10 +13,15 @@ struct struct_Map {
 static void map_delete_pair(VectorElem pair) {
   pair_delete(pair);
 }
+static int map_pair_cmp(CompareElem lhs, CompareElem rhs, CompareExtra extra) {
+  const Pair *l = lhs, *r = rhs;
+  return compare_cmp(extra, l->key, r->key);
+}
 
 Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
-  map->cmp = pair_new_compare(keycmp);
+  map->cmp = compare_new(map_pair_cmp);
+  compare_set_extra(map->cmp, keycmp);
   map->set = set_new(map_delete_pair, map->cmp);
   return map;
 }
