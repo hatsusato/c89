@@ -51,8 +51,8 @@ void set_quick_sort(CompareElem *begin, CompareElem *end, Compare *cmp) {
   set_quick_sort(begin, lo, cmp);
   set_quick_sort(lo, end, cmp);
 }
-const CompareElem *set_binary_search(CompareElem key, const CompareElem *begin,
-                                     const CompareElem *end, Compare *cmp) {
+CompareElem set_binary_search(CompareElem key, const CompareElem *begin,
+                              const CompareElem *end, Compare *cmp) {
   while (begin < end) {
     const CompareElem *mid = begin + (end - begin) / 2;
     int ret = compare_cmp(cmp, key, *mid);
@@ -61,7 +61,7 @@ const CompareElem *set_binary_search(CompareElem key, const CompareElem *begin,
     } else if (0 < ret) {
       begin = mid + 1;
     } else {
-      return mid;
+      return *mid;
     }
   }
   return NULL;
