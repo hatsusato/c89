@@ -10,8 +10,8 @@ struct struct_Map {
   Set *set;
 };
 
-static void map_delete_pair(VectorElem pair) {
-  pair_delete(pair);
+static void map_pair_delete(VectorElem pair) {
+  UTILITY_FREE(pair);
 }
 static int map_pair_cmp(CompareElem lhs, CompareElem rhs, CompareExtra extra) {
   const Pair *l = lhs, *r = rhs;
@@ -22,7 +22,7 @@ Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
   map->cmp = compare_new(map_pair_cmp);
   compare_set_extra(map->cmp, keycmp);
-  map->set = set_new(map_delete_pair, map->cmp);
+  map->set = set_new(map_pair_delete, map->cmp);
   return map;
 }
 void map_delete(Map *map) {
