@@ -39,11 +39,11 @@ void ast_set(Ast *ast, Sexp *sexp) {
   ast->sexp = sexp;
 }
 const char *ast_symbol(Ast *ast, const char *text, Size leng) {
-  const CompareElem *found;
+  CompareElem found;
   assert('\0' == text[leng]);
   found = set_find(ast->pool, text);
   if (found) {
-    return *found;
+    return found;
   } else {
     const char *elem = symbol_new(text, leng);
     set_insert(ast->pool, elem);

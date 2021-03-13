@@ -9,6 +9,6 @@ Set *set_new(VectorDestructor, Compare *);
 void set_delete(Set *);
 void set_clear(Set *);
 void set_insert(Set *, CompareElem);
-const CompareElem *set_find(const Set *, CompareElem);
+CompareElem set_find(const Set *, CompareElem);
 
 #endif /* INCLUDE_GUARD_DE6D0AC9_F1A3_4A4E_90C8_FBAA690CD01A */
