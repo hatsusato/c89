@@ -91,8 +91,7 @@ void module_delete(Module *module) {
   UTILITY_FREE(module);
 }
 Type *module_find_type(Module *module, Type *type) {
-  const CompareElem *found = set_find(module->types, type);
-  return found ? (Type *)*found : NULL;
+  return (Type *)set_find(module->types, type);
 }
 void module_insert_type(Module *module, Type *type) {
   set_insert(module->types, type);

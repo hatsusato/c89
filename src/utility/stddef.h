@@ -3,6 +3,10 @@
 
 #include <stddef.h>
 
+#define true (1)
+#define false (0)
+
+typedef int Bool;
 typedef int Size, Index;
 typedef unsigned char Byte;
 

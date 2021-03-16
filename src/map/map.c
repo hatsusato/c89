@@ -1,7 +1,6 @@
 #include "map.h"
 
 #include "compare/compare.h"
-#include "map/pair.h"
 #include "set/set.h"
 #include "utility/utility.h"
 
@@ -9,15 +8,28 @@ struct struct_Map {
   Compare *cmp;
   Set *set;
 };
+typedef struct {
+  CompareElem key, val;
+} Pair;
 
-static void map_delete_pair(VectorElem pair) {
-  pair_delete(pair);
+static Pair *map_pair_new(CompareElem key, CompareElem val) {
+  Pair *pair = UTILITY_MALLOC(Pair);
+  pair->key = key;
+  pair->val = val;
+  return pair;
+}
+static void map_pair_delete(VectorElem pair) {
+  UTILITY_FREE(pair);
+}
+static int map_pair_cmp(CompareElem lhs, CompareElem rhs, CompareExtra extra) {
+  const Pair *l = lhs, *r = rhs;
+  return compare_cmp(extra, l->key, r->key);
 }
 
 Map *map_new(Compare *keycmp) {
   Map *map = UTILITY_MALLOC(Map);
-  map->cmp = pair_new_compare(keycmp);
-  map->set = set_new(map_delete_pair, map->cmp);
+  map->cmp = compare_new(map_pair_cmp, keycmp);
+  map->set = set_new(map_pair_delete, map->cmp);
   return map;
 }
 void map_delete(Map *map) {
@@ -29,10 +41,12 @@ void map_clear(Map *map) {
   set_clear(map->set);
 }
 void map_insert(Map *map, CompareElem key, CompareElem val) {
-  set_insert(map->set, pair_new(key, val));
+  set_insert(map->set, map_pair_new(key, val));
 }
-CompareElem *map_find(Map *map, CompareElem key) {
-  Pair pair = pair_dummy(key);
-  const CompareElem *found = set_find(map->set, &pair);
-  return found ? pair_val((Pair *)*found) : NULL;
+CompareElem map_find(Map *map, CompareElem key) {
+  const Pair *found;
+  Pair pair = {NULL, NULL};
+  pair.key = key;
+  found = set_find(map->set, &pair);
+  return found ? found->val : NULL;
 }

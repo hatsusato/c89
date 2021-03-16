@@ -12,6 +12,9 @@ void utility_free(void *var) {
 void utility_memcpy(void *dst, const void *src, size_t count) {
   memcpy(dst, src, count);
 }
+void utility_memmove(void *dst, const void *src, size_t count) {
+  memmove(dst, src, count);
+}
 int utility_memcmp(const void *lhs, const void *rhs, size_t count) {
   return memcmp(lhs, rhs, count);
 }
