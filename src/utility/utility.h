@@ -23,10 +23,13 @@
 #define UTILITY_FREE(var) utility_free((void *)(var))
 #define UTILITY_MEMCPY(type, dst, src, count) \
   utility_memcpy((void *)(dst), (src), sizeof(type) * (count))
+#define UTILITY_MEMMOVE(type, dst, src, count) \
+  utility_memmove((void *)(dst), (src), sizeof(type) * (count))
 
 void *utility_malloc(size_t);
 void utility_free(void *);
 void utility_memcpy(void *, const void *, size_t);
+void utility_memmove(void *, const void *, size_t);
 int utility_memcmp(const void *, const void *, size_t);
 int utility_strcmp(const char *, const char *);
 int utility_intcmp(int, int);
