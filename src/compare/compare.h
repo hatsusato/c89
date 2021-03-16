@@ -6,8 +6,6 @@
 
 Compare *compare_new(CompareCmp, CompareExtra);
 void compare_delete(Compare *);
-CompareExtra compare_get_extra(Compare *);
-void compare_set_extra(Compare *, CompareExtra);
 int compare_cmp(Compare *, CompareElem, CompareElem);
 void compare_sort_quick(Compare *, CompareElem *, CompareElem *);
 CompareElem compare_binary_search(Compare *, CompareElem, const CompareElem *,

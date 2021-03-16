@@ -55,13 +55,6 @@ Compare *compare_new(CompareCmp cmp, CompareExtra extra) {
 void compare_delete(Compare *compare) {
   UTILITY_FREE(compare);
 }
-CompareExtra compare_get_extra(Compare *compare) {
-  return compare->extra;
-}
-void compare_set_extra(Compare *compare, CompareExtra extra) {
-  MutableCompare *mutcmp = (MutableCompare *)compare;
-  mutcmp->extra = extra;
-}
 int compare_cmp(Compare *compare, CompareElem lhs, CompareElem rhs) {
   if (compare && compare->cmp) {
     return compare->cmp(lhs, rhs, compare->extra);
