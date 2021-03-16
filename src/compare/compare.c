@@ -8,6 +8,18 @@ struct struct_Compare {
 };
 typedef struct struct_Compare MutableCompare;
 
+static void compare_sort_rotate(Compare *compare, CompareElem *lo,
+                                CompareElem *hi) {
+  CompareElem *it;
+  for (it = lo; it < hi; ++it) {
+    if (compare_cmp(compare, *hi, *it) < 0) {
+      CompareElem val = *hi;
+      UTILITY_MEMMOVE(CompareElem, it + 1, it, hi - it);
+      *it = val;
+      return;
+    }
+  }
+}
 Compare *compare_new(CompareCmp cmp) {
   MutableCompare *compare = UTILITY_MALLOC(MutableCompare);
   compare->cmp = cmp;
