@@ -20,6 +20,14 @@ static void compare_sort_rotate(Compare *compare, CompareElem *lo,
     }
   }
 }
+static void compare_sort_insert(Compare *compare, CompareElem *begin,
+                                CompareElem *end) {
+  CompareElem *it;
+  for (it = begin; it < end; ++it) {
+    compare_sort_rotate(compare, begin, it);
+  }
+}
+
 Compare *compare_new(CompareCmp cmp) {
   MutableCompare *compare = UTILITY_MALLOC(MutableCompare);
   compare->cmp = cmp;
