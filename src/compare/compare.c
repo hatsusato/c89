@@ -46,10 +46,10 @@ static CompareElem *compare_sort_once(Compare *compare, CompareElem *lo,
   return lo;
 }
 
-Compare *compare_new(CompareCmp cmp) {
+Compare *compare_new(CompareCmp cmp, CompareExtra extra) {
   MutableCompare *compare = UTILITY_MALLOC(MutableCompare);
   compare->cmp = cmp;
-  compare->extra = NULL;
+  compare->extra = extra;
   return compare;
 }
 void compare_delete(Compare *compare) {

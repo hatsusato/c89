@@ -4,7 +4,7 @@
 #include "compare/typedef.h"
 #include "utility/types.h"
 
-Compare *compare_new(CompareCmp);
+Compare *compare_new(CompareCmp, CompareExtra);
 void compare_delete(Compare *);
 CompareExtra compare_get_extra(Compare *);
 void compare_set_extra(Compare *, CompareExtra);
