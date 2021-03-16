@@ -80,3 +80,17 @@ void compare_sort_quick(Compare *compare, CompareElem *begin,
     compare_sort_insert(compare, begin, end);
   }
 }
+CompareElem compare_binary_search(Compare *compare, CompareElem key,
+                                  const CompareElem *begin,
+                                  const CompareElem *end) {
+  const CompareElem *it = begin;
+  Size size = end - begin;
+  while (size > 1) {
+    const Size half = size / 2;
+    if (compare_cmp(compare, it[half], key) <= 0) {
+      it += half;
+    }
+    size -= half;
+  }
+  return begin != end && compare_cmp(compare, *it, key) == 0 ? *it : NULL;
+}
