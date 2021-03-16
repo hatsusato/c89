@@ -1,6 +1,6 @@
 #include "set.h"
 
-#include "set/sort.h"
+#include "compare/compare.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
@@ -31,8 +31,8 @@ void set_clear(Set *set) {
 }
 void set_insert(Set *set, CompareElem elem) {
   vector_push(set->vec, (VectorElem)elem);
-  set_quick_sort(set_begin(set), set_end(set), set->cmp);
+  compare_sort_quick(set->cmp, set_begin(set), set_end(set));
 }
 CompareElem set_find(const Set *set, CompareElem key) {
-  return set_binary_search(key, set_begin(set), set_end(set), set->cmp);
+  return compare_binary_search(set->cmp, key, set_begin(set), set_end(set));
 }
