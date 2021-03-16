@@ -3,13 +3,13 @@
 #include <stdio.h>
 
 #include "ast/tag.h"
-#include "block.h"
-#include "builder.h"
-#include "module.h"
+#include "builder/builder.h"
+#include "ir/block.h"
+#include "ir/module.h"
+#include "ir/type.h"
+#include "ir/value.h"
 #include "sexp/sexp.h"
-#include "type.h"
 #include "utility/utility.h"
-#include "value.h"
 #include "vector/vector.h"
 
 struct struct_Function {

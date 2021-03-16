@@ -2,15 +2,15 @@
 
 #include <stdio.h>
 
-#include "builder/block.h"
 #include "builder/builder.h"
-#include "builder/constant.h"
-#include "builder/function.h"
-#include "builder/global.h"
-#include "builder/instruction.h"
-#include "builder/type.h"
-#include "builder/value.h"
 #include "compare/compare.h"
+#include "ir/block.h"
+#include "ir/constant.h"
+#include "ir/function.h"
+#include "ir/global.h"
+#include "ir/instruction.h"
+#include "ir/type.h"
+#include "ir/value.h"
 #include "set/set.h"
 #include "utility/utility.h"
 #include "vector/vector.h"

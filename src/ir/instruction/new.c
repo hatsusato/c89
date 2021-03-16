@@ -1,8 +1,8 @@
 #include "new.h"
 
-#include "../block.h"
-#include "../builder.h"
-#include "../type.h"
+#include "builder/builder.h"
+#include "ir/block.h"
+#include "ir/type.h"
 #include "struct.h"
 
 static Instruction *builder_new_instruction(Builder *builder,

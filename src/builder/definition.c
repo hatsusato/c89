@@ -1,10 +1,10 @@
 #include "definition.h"
 
 #include "ast/tag.h"
-#include "builder.h"
-#include "function.h"
+#include "builder/builder.h"
+#include "ir/function.h"
+#include "ir/type.h"
 #include "sexp/sexp.h"
-#include "type.h"
 #include "utility/utility.h"
 
 static const char *function_name(Sexp *ast) {

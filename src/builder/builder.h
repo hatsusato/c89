@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 #define INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 
-#include "module.h"
-#include "type/spec.h"
+#include "ir/module.h"
+#include "ir/type/spec.h"
 
 typedef enum {
   BUILDER_NEXT_ALLOC,

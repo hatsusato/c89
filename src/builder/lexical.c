@@ -1,13 +1,13 @@
 #include "lexical.h"
 
 #include "ast/tag.h"
-#include "builder.h"
-#include "constant.h"
-#include "instruction.h"
+#include "builder/builder.h"
+#include "ir/constant.h"
+#include "ir/instruction.h"
+#include "ir/type.h"
+#include "ir/value.h"
 #include "sexp/sexp.h"
-#include "type.h"
 #include "utility/utility.h"
-#include "value.h"
 
 void builder_identifier(Builder *builder, Sexp *ast) {
   const char *symbol;

@@ -1,6 +1,6 @@
 #include "table.h"
 
-#include "instruction.h"
+#include "ir/instruction.h"
 #include "map/map.h"
 #include "utility/utility.h"
 #include "vector/vector.h"

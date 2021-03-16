@@ -2,12 +2,12 @@
 
 #include <stdio.h>
 
-#include "builder.h"
-#include "instruction.h"
-#include "module.h"
-#include "type.h"
+#include "builder/builder.h"
+#include "ir/instruction.h"
+#include "ir/module.h"
+#include "ir/type.h"
+#include "ir/value.h"
 #include "utility/utility.h"
-#include "value.h"
 #include "vector/vector.h"
 
 struct struct_Block {

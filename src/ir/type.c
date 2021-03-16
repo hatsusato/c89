@@ -1,6 +1,6 @@
 #include "type.h"
 
-#include "builder.h"
+#include "builder/builder.h"
 #include "compare/compare.h"
 #include "set/set.h"
 #include "type/struct.h"

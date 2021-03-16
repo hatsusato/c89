@@ -2,12 +2,12 @@
 
 #include <stdio.h>
 
-#include "block.h"
-#include "constant.h"
-#include "function.h"
-#include "global.h"
-#include "instruction.h"
-#include "type.h"
+#include "ir/block.h"
+#include "ir/constant.h"
+#include "ir/function.h"
+#include "ir/global.h"
+#include "ir/instruction.h"
+#include "ir/type.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
