@@ -12,7 +12,7 @@ target_link_libraries(ir PRIVATE
   builder
   instruction
   options
-  type
+  ir_type
   )
 
 add_subdirectory(instruction)

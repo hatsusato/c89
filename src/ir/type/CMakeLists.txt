@@ -1,8 +1,7 @@
-add_library(type STATIC)
-target_sources(type PRIVATE
+add_library(ir_type STATIC)
+target_sources(ir_type PRIVATE
   print.c
-  spec.c
   )
-target_link_libraries(type PRIVATE
+target_link_libraries(ir_type PRIVATE
   options
   )

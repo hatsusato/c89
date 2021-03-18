@@ -1,6 +1,6 @@
 #include "spec.h"
 
-#include "struct.h"
+#include "ir/type/struct.h"
 #include "utility/utility.h"
 
 struct struct_TypeSpec {

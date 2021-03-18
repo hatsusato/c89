@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_288C5A5F_4870_4133_85EB_DBA30CC323B1
 #define INCLUDE_GUARD_288C5A5F_4870_4133_85EB_DBA30CC323B1
 
+#include "builder/type/spec.h"
 #include "type/print.h"
-#include "type/spec.h"
 #include "utility/types.h"
 
 Compare *type_compare_new(void);

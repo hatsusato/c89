@@ -12,6 +12,8 @@ target_link_libraries(builder PRIVATE
   map
   options
   statement
+  builder_type
   )
 
 add_subdirectory(statement)
+add_subdirectory(type)
