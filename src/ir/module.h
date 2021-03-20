@@ -11,7 +11,6 @@ void module_delete(Module *);
 Type *module_find_type(Module *, Type *);
 void module_insert_type(Module *, Type *);
 void module_insert_value(Module *, Value *);
-Block *module_new_block(Module *);
 Instruction *module_new_instruction(Module *);
 Constant *module_new_constant(Module *);
 Global *module_new_global(Module *);
