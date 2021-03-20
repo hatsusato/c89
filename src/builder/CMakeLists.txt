@@ -4,6 +4,7 @@ target_sources(builder PRIVATE
   declaration.c
   definition.c
   expression.c
+  ir.c
   lexical.c
   statement.c
   table.c
