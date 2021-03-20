@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 
-#include "builder/builder.h"
 #include "ir/constant.h"
 #include "ir/module.h"
 #include "ir/type.h"

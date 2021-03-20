@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 
-#include "builder/builder.h"
 #include "compare/compare.h"
 #include "ir/block.h"
 #include "ir/constant.h"

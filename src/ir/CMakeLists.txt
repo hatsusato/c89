@@ -9,7 +9,6 @@ target_sources(ir PRIVATE
   value.c
   )
 target_link_libraries(ir PRIVATE
-  builder
   instruction
   options
   ir_type
