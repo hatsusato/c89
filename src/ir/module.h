@@ -14,7 +14,6 @@ Type *module_type_label(Module *);
 Type *module_find_type(Module *, Type *);
 void module_insert_type(Module *, Type *);
 void module_insert_value(Module *, Value *);
-Global *module_new_global(Module *);
 void module_insert_prior(Module *, Global *);
 void module_build(Module *, Sexp *);
 void module_pretty(Module *);

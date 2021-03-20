@@ -17,13 +17,14 @@ struct struct_Global {
   Bool prior;
 };
 
-Global *global_new(void) {
+Global *global_new(Module *module, const char *name, Type *type) {
   Global *global = UTILITY_MALLOC(Global);
   global->kind = VALUE_GLOBAL;
-  global->type = NULL;
-  global->name = NULL;
+  global->type = type;
+  global->name = name;
   global->init = NULL;
   global->prior = false;
+  module_insert_value(module, value_of(global));
   return global;
 }
 void global_delete(Global *global) {
@@ -64,9 +65,8 @@ void global_pretty(Global *global) {
 
 void builder_new_global(Builder *builder, const char *symbol) {
   Module *module = builder_get_module(builder);
-  Global *global = module_new_global(module);
-  global->type = builder_get_type(builder);
-  global->name = symbol;
+  Type *type = builder_get_type(builder);
+  Global *global = global_new(module, symbol, type);
   builder_insert_global(builder, symbol, global);
   builder_set_value(builder, global_as_value(global));
 }

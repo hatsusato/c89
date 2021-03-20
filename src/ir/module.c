@@ -154,12 +154,6 @@ void module_insert_value(Module *module, Value *value) {
     break;
   }
 }
-Global *module_new_global(Module *module) {
-  Global *global = global_new();
-  vector_push(module->values, global);
-  vector_push(module->global, global);
-  return global;
-}
 void module_insert_prior(Module *module, Global *global) {
   if (!global_is_prior(global)) {
     vector_push(module->prior, global);

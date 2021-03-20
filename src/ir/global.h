@@ -3,7 +3,7 @@
 
 #include "utility/types.h"
 
-Global *global_new(void);
+Global *global_new(Module *, const char *, Type *);
 void global_delete(Global *);
 Type *global_type(Global *);
 void global_set_init(Global *, Constant *);
