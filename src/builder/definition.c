@@ -5,6 +5,7 @@
 #include "builder/ir.h"
 #include "ir/function.h"
 #include "ir/type.h"
+#include "ir/value.h"
 #include "sexp/sexp.h"
 #include "utility/utility.h"
 
@@ -54,9 +55,11 @@ static Type *builder_function_type(Builder *builder, Sexp *ast) {
   return builder_get_type(builder);
 }
 static void builder_function_init(Builder *builder, Sexp *ast) {
+  Module *module = builder_get_module(builder);
   const char *name = function_name(ast);
   Type *type = builder_function_type(builder, ast);
-  Function *func = builder_new_function(builder, name, type);
+  Function *func = function_new(name, type);
+  module_insert_value(module, value_of(func));
   builder_init_next(builder, func);
 }
 
