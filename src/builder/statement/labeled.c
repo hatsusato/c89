@@ -17,10 +17,11 @@ static void builder_label_statement(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 3));
 }
 static void builder_case_statement(Builder *builder, Sexp *ast) {
+  Module *module = builder_get_module(builder);
   Block *next = builder_get_next(builder, BUILDER_NEXT_CURRENT);
   Value *value;
   if (switch_new_case(builder)) {
-    next = builder_new_block(builder);
+    next = block_new(module);
     builder_instruction_br(builder, next);
     builder_jump_block(builder, next);
   }
@@ -31,7 +32,8 @@ static void builder_case_statement(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 4));
 }
 static void builder_default_statement(Builder *builder, Sexp *ast) {
-  Block *next = builder_new_block(builder);
+  Module *module = builder_get_module(builder);
+  Block *next = block_new(module);
   Block *prev_default = builder_set_next(builder, BUILDER_NEXT_DEFAULT, next);
   UTILITY_ASSERT(!prev_default);
   builder_instruction_br(builder, next);

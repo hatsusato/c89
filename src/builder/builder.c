@@ -62,8 +62,9 @@ void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
 void builder_init_next(Builder *builder, Function *func) {
-  Block *alloc = builder_new_block(builder);
-  Block *entry = builder_new_block(builder);
+  Module *module = builder_get_module(builder);
+  Block *alloc = block_new(module);
+  Block *entry = block_new(module);
   builder->func = func;
   builder_set_next(builder, BUILDER_NEXT_ALLOC, alloc);
   builder_set_next(builder, BUILDER_NEXT_CURRENT, entry);
@@ -71,7 +72,8 @@ void builder_init_next(Builder *builder, Function *func) {
   function_insert(builder->func, alloc);
 }
 void builder_init_return(Builder *builder) {
-  Block *ret = builder_new_block(builder);
+  Module *module = builder_get_module(builder);
+  Block *ret = block_new(module);
   builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
   if (!builder_function_is_void(builder)) {
     builder_new_local(builder);
@@ -105,15 +107,17 @@ void builder_pop_table(Builder *builder) {
   table_pop(builder->table);
 }
 void builder_init_global(Builder *builder, Value *dst, Value *src) {
+  Module *module = builder_get_module(builder);
   Global *global = value_as_global(dst);
   Constant *init = value_as_constant(src);
   global_set_init(global, init);
-  module_insert_prior(builder->module, global);
+  module_insert_prior(module, global);
 }
 Block *builder_label(Builder *builder, const char *label) {
+  Module *module = builder_get_module(builder);
   Block *block = table_label_find(builder->table, label);
   if (!block) {
-    block = builder_new_block(builder);
+    block = block_new(module);
     table_label_insert(builder->table, label, block);
   }
   return block;
@@ -127,7 +131,8 @@ void builder_insert_local(Builder *builder, const char *symbol,
   table_insert_local(builder->table, symbol, instr);
 }
 void builder_find_identifier(Builder *builder, const char *symbol) {
-  Value *value = table_find(builder->table, symbol, builder->module);
+  Module *module = builder_get_module(builder);
+  Value *value = table_find(builder->table, symbol, module);
   builder_set_value(builder, value);
 }
 void builder_jump_block(Builder *builder, Block *dest) {

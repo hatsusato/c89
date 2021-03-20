@@ -12,9 +12,10 @@ static void builder_continue_statement(Builder *builder) {
   builder_instruction_br(builder, next);
 }
 static void builder_break_statement(Builder *builder) {
+  Module *module = builder_get_module(builder);
   Block *next = builder_get_next(builder, BUILDER_NEXT_BREAK);
   if (!next) {
-    next = builder_new_block(builder);
+    next = block_new(module);
     builder_set_next(builder, BUILDER_NEXT_BREAK, next);
   }
   builder_instruction_br(builder, next);

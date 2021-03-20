@@ -70,11 +70,12 @@ void builder_instruction_switch(Builder *builder, Value *expr) {
   builder_instruction_unary(builder, INSTRUCTION_SWITCH, expr);
 }
 void builder_instruction_switch_finish(Builder *builder, Value *value) {
+  Module *module = builder_get_module(builder);
   Instruction *instr = value_as_instruction(value);
   Block *default_label = builder_get_next(builder, BUILDER_NEXT_DEFAULT);
   Block *break_label = builder_get_next(builder, BUILDER_NEXT_BREAK);
   Block *switch_block = builder_get_next(builder, BUILDER_NEXT_SWITCH);
-  Block *next = break_label ? break_label : builder_new_block(builder);
+  Block *next = break_label ? break_label : block_new(module);
   builder_instruction_br(builder, next);
   instr->operands[1] = block_as_value(default_label ? default_label : next);
   instr->operands[2] = block_as_value(switch_block);

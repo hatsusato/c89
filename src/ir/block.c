@@ -85,9 +85,3 @@ void block_pretty_switch(Block *block) {
     printf("\n");
   }
 }
-
-Block *builder_new_block(Builder *builder) {
-  Module *module = builder_get_module(builder);
-  Block *block = block_new(module);
-  return block;
-}
