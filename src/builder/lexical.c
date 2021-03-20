@@ -2,8 +2,8 @@
 
 #include "ast/tag.h"
 #include "builder/builder.h"
+#include "builder/instruction.h"
 #include "ir/constant.h"
-#include "ir/instruction.h"
 #include "ir/type.h"
 #include "ir/value.h"
 #include "sexp/sexp.h"

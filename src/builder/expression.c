@@ -2,7 +2,7 @@
 
 #include "ast/tag.h"
 #include "builder/builder.h"
-#include "ir/instruction.h"
+#include "builder/instruction.h"
 #include "sexp/sexp.h"
 #include "utility/utility.h"
 

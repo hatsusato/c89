@@ -1,9 +1,9 @@
-#include "new.h"
+#include "instruction.h"
 
 #include "builder/builder.h"
 #include "ir/block.h"
+#include "ir/instruction/struct.h"
 #include "ir/type.h"
-#include "struct.h"
 
 static Instruction *builder_new_instruction(Builder *builder,
                                             InstructionKind kind) {
@@ -42,7 +42,7 @@ static Bool builder_block_terminated(Builder *builder) {
 #define DO_HANDLE(name, str) \
   case name:                 \
     return true;
-#include "terminator.def"
+#include "ir/instruction/terminator.def"
 #undef DO_HANDLE
   default:
     return false;

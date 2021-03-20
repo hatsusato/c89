@@ -3,8 +3,8 @@
 
 #include "ast/tag.h"
 #include "builder/builder.h"
+#include "builder/instruction.h"
 #include "ir/block.h"
-#include "ir/instruction.h"
 #include "sexp/sexp.h"
 #include "utility/utility.h"
 
