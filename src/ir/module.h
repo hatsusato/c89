@@ -3,9 +3,6 @@
 
 #include "utility/types.h"
 
-struct struct_Module;
-typedef struct struct_Module Module;
-
 Module *module_new(void);
 void module_delete(Module *);
 Type *module_new_type(Module *, Type *);
