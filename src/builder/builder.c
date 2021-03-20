@@ -170,7 +170,8 @@ void builder_set_type(Builder *builder) {
   builder->type = type_new_from_spec(module, builder->spec);
 }
 void builder_set_type_int(Builder *builder) {
-  builder->type = builder_type_int(builder);
+  Module *module = builder_get_module(builder);
+  builder->type = module_type_int(module);
 }
 void builder_set_type_value(Builder *builder) {
   builder->type = value_type(builder->value);

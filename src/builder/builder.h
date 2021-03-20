@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 
 #include "builder/type/spec.h"
-#include "builder/type/type.h"
 #include "ir/module.h"
 
 typedef enum {

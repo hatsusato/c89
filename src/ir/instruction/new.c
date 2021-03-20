@@ -112,9 +112,10 @@ void builder_instruction_sext(Builder *builder, Value *src) {
   builder_instruction_unary(builder, INSTRUCTION_SEXT, src);
 }
 void builder_instruction_icmp_ne(Builder *builder, Value *lhs, Value *rhs) {
+  Module *module = builder_get_module(builder);
   Instruction *instr =
       builder_instruction_binary(builder, INSTRUCTION_ICMP_NE, lhs, rhs);
-  instr->type = builder_type_bool(builder);
+  instr->type = module_type_bool(module);
 }
 void builder_new_local(Builder *builder) {
   builder_new_instruction(builder, INSTRUCTION_ALLOCA);
