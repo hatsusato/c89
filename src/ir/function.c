@@ -3,9 +3,7 @@
 #include <stdio.h>
 
 #include "ast/tag.h"
-#include "builder/builder.h"
 #include "ir/block.h"
-#include "ir/module.h"
 #include "ir/type.h"
 #include "ir/value.h"
 #include "sexp/sexp.h"
@@ -67,11 +65,4 @@ int function_count_return(Sexp *ast) {
   } else {
     return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
   }
-}
-
-Function *builder_new_function(Builder *builder, const char *name, Type *type) {
-  Module *module = builder_get_module(builder);
-  Function *func = function_new(name, type);
-  module_insert_value(module, value_of(func));
-  return func;
 }

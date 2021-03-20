@@ -2,6 +2,7 @@
 
 #include "ast/tag.h"
 #include "builder/builder.h"
+#include "builder/ir.h"
 #include "ir/function.h"
 #include "ir/type.h"
 #include "sexp/sexp.h"
