@@ -12,6 +12,7 @@ typedef enum {
   VALUE_KIND_END
 } ValueKind;
 
+Value *value_of(void *);
 Value *function_as_value(Function *);
 Value *block_as_value(Block *);
 Value *instruction_as_value(Instruction *);

@@ -16,6 +16,9 @@ struct struct_Value {
   Type *type;
 };
 
+Value *value_of(void *v) {
+  return (Value *)v;
+}
 Value *function_as_value(Function *func) {
   return (Value *)func;
 }
