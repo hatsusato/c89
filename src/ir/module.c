@@ -116,6 +116,26 @@ Type *module_type_void(Module *module) {
   Type type = type_integer(0);
   return module_new_type(module, &type);
 }
+Type *module_type_bool(Module *module) {
+  Type type = type_integer(1);
+  return module_new_type(module, &type);
+}
+Type *module_type_int(Module *module) {
+  Type type = type_integer(32);
+  return module_new_type(module, &type);
+}
+Type *module_type_pointer(Module *module, Type *base) {
+  Type type;
+  type.kind = TYPE_POINTER;
+  type.data.type = base;
+  return module_new_type(module, &type);
+}
+Type *module_type_label(Module *module) {
+  Type type;
+  type.kind = TYPE_LABEL;
+  type.data.size = 0;
+  return module_new_type(module, &type);
+}
 Type *module_find_type(Module *module, Type *type) {
   return (Type *)set_find(module->types, type);
 }
