@@ -62,11 +62,3 @@ void global_pretty(Global *global) {
   }
   printf(", align 4\n");
 }
-
-void builder_new_global(Builder *builder, const char *symbol) {
-  Module *module = builder_get_module(builder);
-  Type *type = builder_get_type(builder);
-  Global *global = global_new(module, symbol, type);
-  builder_insert_global(builder, symbol, global);
-  builder_set_value(builder, global_as_value(global));
-}
