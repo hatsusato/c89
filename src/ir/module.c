@@ -77,6 +77,12 @@ static Type *type_new(void) {
   type->data.size = 0;
   return type;
 }
+static Type type_integer(int size) {
+  Type type;
+  type.kind = TYPE_INTEGER;
+  type.data.size = size;
+  return type;
+}
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
@@ -105,6 +111,10 @@ Type *module_new_type(Module *module, Type *type) {
     module_insert_type(module, found);
   }
   return found;
+}
+Type *module_type_void(Module *module) {
+  Type type = type_integer(0);
+  return module_new_type(module, &type);
 }
 Type *module_find_type(Module *module, Type *type) {
   return (Type *)set_find(module->types, type);
