@@ -1,15 +1,10 @@
 #include "type.h"
 
 #include "builder/builder.h"
+#include "ir/module.h"
 #include "ir/type/struct.h"
 #include "utility/utility.h"
 
-static Type *type_new(void) {
-  Type *type = UTILITY_MALLOC(Type);
-  type->kind = TYPE_INTEGER;
-  type->data.size = 0;
-  return type;
-}
 static Type type_integer(int size) {
   Type type;
   type.kind = TYPE_INTEGER;
@@ -19,13 +14,7 @@ static Type type_integer(int size) {
 
 static Type *builder_new_type(Builder *builder, Type *type) {
   Module *module = builder_get_module(builder);
-  Type *found = module_find_type(module, type);
-  if (!found) {
-    found = type_new();
-    *found = *type;
-    module_insert_type(module, found);
-  }
-  return found;
+  return module_new_type(module, type);
 }
 
 Type *builder_type(Builder *builder, TypeSpec *spec) {

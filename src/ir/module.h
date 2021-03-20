@@ -8,6 +8,7 @@ typedef struct struct_Module Module;
 
 Module *module_new(void);
 void module_delete(Module *);
+Type *module_new_type(Module *, Type *);
 Type *module_find_type(Module *, Type *);
 void module_insert_type(Module *, Type *);
 void module_insert_value(Module *, Value *);

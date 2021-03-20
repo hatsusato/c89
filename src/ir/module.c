@@ -10,6 +10,7 @@
 #include "ir/global.h"
 #include "ir/instruction.h"
 #include "ir/type.h"
+#include "ir/type/struct.h"
 #include "ir/value.h"
 #include "set/set.h"
 #include "utility/utility.h"
@@ -70,6 +71,12 @@ static void module_pretty_function(Module *module) {
     function_pretty(*begin++);
   }
 }
+static Type *type_new(void) {
+  Type *type = UTILITY_MALLOC(Type);
+  type->kind = TYPE_INTEGER;
+  type->data.size = 0;
+  return type;
+}
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
@@ -89,6 +96,15 @@ void module_delete(Module *module) {
   compare_delete(module->type_cmp);
   vector_delete(module->values);
   UTILITY_FREE(module);
+}
+Type *module_new_type(Module *module, Type *type) {
+  Type *found = module_find_type(module, type);
+  if (!found) {
+    found = type_new();
+    *found = *type;
+    module_insert_type(module, found);
+  }
+  return found;
 }
 Type *module_find_type(Module *module, Type *type) {
   return (Type *)set_find(module->types, type);
