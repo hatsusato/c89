@@ -166,7 +166,8 @@ Type *builder_get_type(Builder *builder) {
   return builder->type;
 }
 void builder_set_type(Builder *builder) {
-  builder->type = builder_type(builder, builder->spec);
+  Module *module = builder_get_module(builder);
+  builder->type = type_new_from_spec(module, builder->spec);
 }
 void builder_set_type_int(Builder *builder) {
   builder->type = builder_type_int(builder);
