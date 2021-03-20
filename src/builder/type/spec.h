@@ -24,5 +24,6 @@ void type_spec_delete(TypeSpec *);
 void type_spec_set(TypeSpec *, TypeSpecIndex);
 void type_spec_reset(TypeSpec *);
 void type_init_spec(Type *, TypeSpec *);
+Type *type_new_from_spec(Module *, TypeSpec *);
 
 #endif /* INCLUDE_GUARD_E88AF2CB_9E19_4C46_83B0_440BEC63AA1B */

@@ -1,5 +1,6 @@
 #include "spec.h"
 
+#include "ir/module.h"
 #include "ir/type/struct.h"
 #include "utility/utility.h"
 
@@ -47,4 +48,9 @@ void type_init_spec(Type *type, TypeSpec *spec) {
       type->data.size = 32;
     }
   }
+}
+Type *type_new_from_spec(Module *module, TypeSpec *spec) {
+  Type type;
+  type_init_spec(&type, spec);
+  return module_new_type(module, &type);
 }
