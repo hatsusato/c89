@@ -2,13 +2,14 @@
 
 #include "builder/builder.h"
 #include "ir/block.h"
+#include "ir/instruction.h"
 #include "ir/instruction/struct.h"
 #include "ir/type.h"
 
 static Instruction *builder_new_instruction(Builder *builder,
                                             InstructionKind kind) {
   Module *module = builder_get_module(builder);
-  Instruction *instr = module_new_instruction(module);
+  Instruction *instr = instruction_new(module);
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   instr->ikind = kind;

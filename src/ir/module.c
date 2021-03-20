@@ -154,11 +154,6 @@ void module_insert_value(Module *module, Value *value) {
     break;
   }
 }
-Instruction *module_new_instruction(Module *module) {
-  Instruction *instr = instruction_new();
-  vector_push(module->values, instr);
-  return instr;
-}
 Constant *module_new_constant(Module *module) {
   Constant *constant = constant_new();
   vector_push(module->values, constant);

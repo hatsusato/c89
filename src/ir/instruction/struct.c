@@ -1,8 +1,9 @@
 #include "struct.h"
 
+#include "ir/module.h"
 #include "utility/utility.h"
 
-Instruction *instruction_new(void) {
+Instruction *instruction_new(Module *module) {
   Index i = 0;
   Instruction *instr = UTILITY_MALLOC(Instruction);
   instr->kind = VALUE_INSTRUCTION;
@@ -12,6 +13,7 @@ Instruction *instruction_new(void) {
   while (i < INSTRUCTION_OPERAND_COUNT) {
     instr->operands[i++] = NULL;
   }
+  module_insert_value(module, value_of(instr));
   return instr;
 }
 void instruction_delete(Instruction *instr) {

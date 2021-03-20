@@ -3,7 +3,7 @@
 
 #include "utility/types.h"
 
-Instruction *instruction_new(void);
+Instruction *instruction_new(Module *);
 void instruction_delete(Instruction *);
 Type *instruction_type(Instruction *);
 int instruction_set_id(Instruction *, int);
