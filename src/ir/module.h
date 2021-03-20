@@ -10,6 +10,7 @@ Module *module_new(void);
 void module_delete(Module *);
 Type *module_find_type(Module *, Type *);
 void module_insert_type(Module *, Type *);
+void module_insert_value(Module *, Value *);
 Function *module_new_function(Module *);
 Block *module_new_block(Module *);
 Instruction *module_new_instruction(Module *);

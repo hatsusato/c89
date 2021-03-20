@@ -96,6 +96,18 @@ Type *module_find_type(Module *module, Type *type) {
 void module_insert_type(Module *module, Type *type) {
   set_insert(module->types, type);
 }
+void module_insert_value(Module *module, Value *value) {
+  vector_push(module->values, value);
+  switch (value_kind(value)) {
+  case VALUE_FUNCTION:
+    vector_push(module->func, value);
+    break;
+  case VALUE_GLOBAL:
+    vector_push(module->global, value);
+  default:
+    break;
+  }
+}
 Function *module_new_function(Module *module) {
   Function *func = function_new();
   vector_push(module->values, func);
