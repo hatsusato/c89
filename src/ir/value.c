@@ -2,12 +2,12 @@
 
 #include <stdio.h>
 
-#include "block.h"
-#include "constant.h"
-#include "function.h"
-#include "global.h"
-#include "instruction.h"
-#include "type.h"
+#include "ir/block.h"
+#include "ir/constant.h"
+#include "ir/function.h"
+#include "ir/global.h"
+#include "ir/instruction.h"
+#include "ir/type.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
@@ -16,6 +16,9 @@ struct struct_Value {
   Type *type;
 };
 
+Value *value_of(void *v) {
+  return (Value *)v;
+}
 Value *function_as_value(Function *func) {
   return (Value *)func;
 }

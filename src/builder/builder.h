@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 #define INCLUDE_GUARD_563AF498_DA6F_4E09_B103_794E175C655E
 
-#include "module.h"
-#include "type/spec.h"
+#include "builder/type/spec.h"
+#include "ir/module.h"
 
 typedef enum {
   BUILDER_NEXT_ALLOC,
@@ -29,6 +29,7 @@ void builder_push_table(Builder *);
 void builder_pop_table(Builder *);
 void builder_init_global(Builder *, Value *, Value *);
 Block *builder_label(Builder *, const char *);
+void builder_new_global(Builder *, const char *);
 void builder_insert_global(Builder *, const char *, Global *);
 void builder_insert_local(Builder *, const char *, Instruction *);
 void builder_find_identifier(Builder *, const char *);
@@ -39,6 +40,7 @@ Module *builder_get_module(Builder *);
 Value *builder_get_retval(Builder *);
 Value *builder_get_value(Builder *);
 void builder_set_value(Builder *, Value *);
+void builder_new_integer(Builder *, const char *);
 Type *builder_get_type(Builder *);
 void builder_set_type(Builder *);
 void builder_set_type_int(Builder *);

@@ -1,8 +1,8 @@
 #include "expression.h"
 
 #include "ast/tag.h"
-#include "builder.h"
-#include "instruction.h"
+#include "builder/builder.h"
+#include "builder/instruction.h"
 #include "sexp/sexp.h"
 #include "utility/utility.h"
 

@@ -1,14 +1,15 @@
-#include "new.h"
+#include "instruction.h"
 
-#include "../block.h"
-#include "../builder.h"
-#include "../type.h"
-#include "struct.h"
+#include "builder/builder.h"
+#include "ir/block.h"
+#include "ir/instruction.h"
+#include "ir/instruction/struct.h"
+#include "ir/type.h"
 
 static Instruction *builder_new_instruction(Builder *builder,
                                             InstructionKind kind) {
   Module *module = builder_get_module(builder);
-  Instruction *instr = module_new_instruction(module);
+  Instruction *instr = instruction_new(module);
   Block *current = builder_get_next(builder, BUILDER_NEXT_CURRENT);
   Block *alloc = builder_get_next(builder, BUILDER_NEXT_ALLOC);
   instr->ikind = kind;
@@ -42,7 +43,7 @@ static Bool builder_block_terminated(Builder *builder) {
 #define DO_HANDLE(name, str) \
   case name:                 \
     return true;
-#include "terminator.def"
+#include "ir/instruction/terminator.def"
 #undef DO_HANDLE
   default:
     return false;
@@ -70,11 +71,12 @@ void builder_instruction_switch(Builder *builder, Value *expr) {
   builder_instruction_unary(builder, INSTRUCTION_SWITCH, expr);
 }
 void builder_instruction_switch_finish(Builder *builder, Value *value) {
+  Module *module = builder_get_module(builder);
   Instruction *instr = value_as_instruction(value);
   Block *default_label = builder_get_next(builder, BUILDER_NEXT_DEFAULT);
   Block *break_label = builder_get_next(builder, BUILDER_NEXT_BREAK);
   Block *switch_block = builder_get_next(builder, BUILDER_NEXT_SWITCH);
-  Block *next = break_label ? break_label : builder_new_block(builder);
+  Block *next = break_label ? break_label : block_new(module);
   builder_instruction_br(builder, next);
   instr->operands[1] = block_as_value(default_label ? default_label : next);
   instr->operands[2] = block_as_value(switch_block);
@@ -112,9 +114,10 @@ void builder_instruction_sext(Builder *builder, Value *src) {
   builder_instruction_unary(builder, INSTRUCTION_SEXT, src);
 }
 void builder_instruction_icmp_ne(Builder *builder, Value *lhs, Value *rhs) {
+  Module *module = builder_get_module(builder);
   Instruction *instr =
       builder_instruction_binary(builder, INSTRUCTION_ICMP_NE, lhs, rhs);
-  instr->type = builder_type_bool(builder);
+  instr->type = module_type_bool(module);
 }
 void builder_new_local(Builder *builder) {
   builder_new_instruction(builder, INSTRUCTION_ALLOCA);

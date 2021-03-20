@@ -14,9 +14,10 @@ static void builder_body_statement(Builder *builder, Sexp *ast,
 }
 
 static void builder_while_statement(Builder *builder, Sexp *ast) {
-  Block *guard = builder_new_block(builder);
-  Block *body = builder_new_block(builder);
-  Block *next = builder_new_block(builder);
+  Module *module = builder_get_module(builder);
+  Block *guard = block_new(module);
+  Block *body = block_new(module);
+  Block *next = block_new(module);
   builder_instruction_br(builder, guard);
   builder_jump_block(builder, guard);
   builder_guard_statement(builder, sexp_at(ast, 3), body, next);
@@ -25,9 +26,10 @@ static void builder_while_statement(Builder *builder, Sexp *ast) {
   builder_jump_block(builder, next);
 }
 static void builder_do_while_statement(Builder *builder, Sexp *ast) {
-  Block *body = builder_new_block(builder);
-  Block *guard = builder_new_block(builder);
-  Block *next = builder_new_block(builder);
+  Module *module = builder_get_module(builder);
+  Block *body = block_new(module);
+  Block *guard = block_new(module);
+  Block *next = block_new(module);
   builder_instruction_br(builder, body);
   builder_jump_block(builder, body);
   builder_body_statement(builder, sexp_at(ast, 2), next, guard);
@@ -37,11 +39,12 @@ static void builder_do_while_statement(Builder *builder, Sexp *ast) {
 }
 static Block *builder_for_guard_statement(Builder *builder, Sexp *ast,
                                           Block *body, Block *next) {
+  Module *module = builder_get_module(builder);
   if (sexp_is_nil(ast)) {
     builder_instruction_br(builder, body);
     return body;
   } else {
-    Block *guard = builder_new_block(builder);
+    Block *guard = block_new(module);
     builder_instruction_br(builder, guard);
     builder_jump_block(builder, guard);
     builder_guard_statement(builder, ast, body, next);
@@ -50,10 +53,11 @@ static Block *builder_for_guard_statement(Builder *builder, Sexp *ast,
 }
 static void builder_for_step_statement(Builder *builder, Sexp *ast, Sexp *body,
                                        Block *guard, Block *next) {
+  Module *module = builder_get_module(builder);
   if (sexp_is_nil(ast)) {
     builder_body_statement(builder, body, next, guard);
   } else {
-    Block *step = builder_new_block(builder);
+    Block *step = block_new(module);
     builder_body_statement(builder, body, next, step);
     builder_jump_block(builder, step);
     builder_ast(builder, ast);
@@ -61,9 +65,10 @@ static void builder_for_step_statement(Builder *builder, Sexp *ast, Sexp *body,
   }
 }
 static void builder_for_statement(Builder *builder, Sexp *ast) {
+  Module *module = builder_get_module(builder);
   Block *guard;
-  Block *body = builder_new_block(builder);
-  Block *next = builder_new_block(builder);
+  Block *body = block_new(module);
+  Block *next = block_new(module);
   builder_ast(builder, sexp_at(ast, 3));
   guard = builder_for_guard_statement(builder, sexp_at(ast, 5), body, next);
   builder_jump_block(builder, body);

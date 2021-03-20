@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 
-#include "../block.h"
-#include "../type.h"
+#include "ir/block.h"
+#include "ir/type.h"
 #include "struct.h"
 #include "utility/utility.h"
 

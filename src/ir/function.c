@@ -3,13 +3,12 @@
 #include <stdio.h>
 
 #include "ast/tag.h"
-#include "block.h"
-#include "builder.h"
-#include "module.h"
+#include "ir/block.h"
+#include "ir/module.h"
+#include "ir/type.h"
+#include "ir/value.h"
 #include "sexp/sexp.h"
-#include "type.h"
 #include "utility/utility.h"
-#include "value.h"
 #include "vector/vector.h"
 
 struct struct_Function {
@@ -19,12 +18,13 @@ struct struct_Function {
   Vector *vec;
 };
 
-Function *function_new(void) {
+Function *function_new(Module *module, const char *name, Type *type) {
   Function *func = UTILITY_MALLOC(Function);
   func->kind = VALUE_FUNCTION;
-  func->type = NULL;
-  func->name = NULL;
+  func->type = type;
+  func->name = name;
   func->vec = vector_new(NULL);
+  module_insert_value(module, value_of(func));
   return func;
 }
 void function_delete(Function *func) {
@@ -67,12 +67,4 @@ int function_count_return(Sexp *ast) {
   } else {
     return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
   }
-}
-
-Function *builder_new_function(Builder *builder, const char *name, Type *type) {
-  Module *module = builder_get_module(builder);
-  Function *func = module_new_function(module);
-  func->name = name;
-  func->type = type;
-  return func;
 }

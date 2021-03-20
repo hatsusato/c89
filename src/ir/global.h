@@ -3,7 +3,7 @@
 
 #include "utility/types.h"
 
-Global *global_new(void);
+Global *global_new(Module *, const char *, Type *);
 void global_delete(Global *);
 Type *global_type(Global *);
 void global_set_init(Global *, Constant *);
@@ -12,7 +12,5 @@ void global_set_prior(Global *);
 void global_print(Global *);
 void global_print_type(Global *);
 void global_pretty(Global *);
-
-void builder_new_global(Builder *, const char *);
 
 #endif /* INCLUDE_GUARD_BFACDD17_F309_4216_B735_6340D39BC17A */

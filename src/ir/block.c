@@ -2,12 +2,11 @@
 
 #include <stdio.h>
 
-#include "builder.h"
-#include "instruction.h"
-#include "module.h"
-#include "type.h"
+#include "ir/instruction.h"
+#include "ir/module.h"
+#include "ir/type.h"
+#include "ir/value.h"
 #include "utility/utility.h"
-#include "value.h"
 #include "vector/vector.h"
 
 struct struct_Block {
@@ -17,12 +16,13 @@ struct struct_Block {
   Vector *vec;
 };
 
-Block *block_new(void) {
+Block *block_new(Module *module) {
   Block *block = UTILITY_MALLOC(Block);
   block->kind = VALUE_BLOCK;
-  block->type = NULL;
+  block->type = module_type_label(module);
   block->id = -1;
   block->vec = vector_new(NULL);
+  module_insert_value(module, value_of(block));
   return block;
 }
 void block_delete(Block *block) {
@@ -83,11 +83,4 @@ void block_pretty_switch(Block *block) {
     value_print_with_type(*begin++, true);
     printf("\n");
   }
-}
-
-Block *builder_new_block(Builder *builder) {
-  Module *module = builder_get_module(builder);
-  Block *block = module_new_block(module);
-  block->type = builder_type_label(builder);
-  return block;
 }

@@ -1,11 +1,11 @@
 #include "declaration.h"
 
 #include "ast/tag.h"
-#include "builder.h"
-#include "global.h"
-#include "instruction.h"
+#include "builder/builder.h"
+#include "builder/instruction.h"
+#include "ir/global.h"
+#include "ir/type.h"
 #include "sexp/sexp.h"
-#include "type.h"
 #include "utility/utility.h"
 
 void builder_declaration(Builder *builder, Sexp *ast) {

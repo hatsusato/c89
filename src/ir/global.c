@@ -2,12 +2,11 @@
 
 #include <stdio.h>
 
-#include "builder.h"
-#include "constant.h"
-#include "module.h"
-#include "type.h"
+#include "ir/constant.h"
+#include "ir/module.h"
+#include "ir/type.h"
+#include "ir/value.h"
 #include "utility/utility.h"
-#include "value.h"
 
 struct struct_Global {
   ValueKind kind;
@@ -17,13 +16,14 @@ struct struct_Global {
   Bool prior;
 };
 
-Global *global_new(void) {
+Global *global_new(Module *module, const char *name, Type *type) {
   Global *global = UTILITY_MALLOC(Global);
   global->kind = VALUE_GLOBAL;
-  global->type = NULL;
-  global->name = NULL;
+  global->type = type;
+  global->name = name;
   global->init = NULL;
   global->prior = false;
+  module_insert_value(module, value_of(global));
   return global;
 }
 void global_delete(Global *global) {
@@ -60,13 +60,4 @@ void global_pretty(Global *global) {
     printf("0");
   }
   printf(", align 4\n");
-}
-
-void builder_new_global(Builder *builder, const char *symbol) {
-  Module *module = builder_get_module(builder);
-  Global *global = module_new_global(module);
-  global->type = builder_get_type(builder);
-  global->name = symbol;
-  builder_insert_global(builder, symbol, global);
-  builder_set_value(builder, global_as_value(global));
 }

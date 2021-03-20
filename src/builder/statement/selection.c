@@ -10,16 +10,18 @@ static void builder_branch(Builder *builder, Sexp *ast, Block *current,
 }
 
 static void builder_if_statement(Builder *builder, Sexp *ast) {
-  Block *next = builder_new_block(builder);
-  Block *then_block = builder_new_block(builder);
+  Module *module = builder_get_module(builder);
+  Block *next = block_new(module);
+  Block *then_block = block_new(module);
   builder_guard_statement(builder, sexp_at(ast, 3), then_block, next);
   builder_branch(builder, sexp_at(ast, 5), then_block, next);
   builder_jump_block(builder, next);
 }
 static void builder_if_else_statement(Builder *builder, Sexp *ast) {
-  Block *next = builder_new_block(builder);
-  Block *then_block = builder_new_block(builder);
-  Block *else_block = builder_new_block(builder);
+  Module *module = builder_get_module(builder);
+  Block *next = block_new(module);
+  Block *then_block = block_new(module);
+  Block *else_block = block_new(module);
   Block *prev, *then_next, *else_next;
   builder_guard_statement(builder, sexp_at(ast, 3), then_block, else_block);
   prev = builder_set_next(builder, BUILDER_NEXT_BLOCK, next);
@@ -32,7 +34,8 @@ static void builder_if_else_statement(Builder *builder, Sexp *ast) {
   }
 }
 static void builder_switch_body(Builder *builder, Sexp *ast, Value *instr) {
-  Block *block = builder_new_block(builder);
+  Module *module = builder_get_module(builder);
+  Block *block = block_new(module);
   Block *next_break = builder_set_next(builder, BUILDER_NEXT_BREAK, NULL);
   Block *next_default = builder_set_next(builder, BUILDER_NEXT_DEFAULT, NULL);
   Block *next_switch = builder_set_next(builder, BUILDER_NEXT_SWITCH, block);

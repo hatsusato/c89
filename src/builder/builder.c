@@ -1,21 +1,22 @@
 #include "builder.h"
 
 #include "ast/tag.h"
-#include "block.h"
-#include "declaration.h"
-#include "definition.h"
-#include "expression.h"
-#include "function.h"
-#include "global.h"
-#include "instruction.h"
-#include "lexical.h"
-#include "module.h"
+#include "builder/declaration.h"
+#include "builder/definition.h"
+#include "builder/expression.h"
+#include "builder/instruction.h"
+#include "builder/lexical.h"
+#include "builder/table.h"
+#include "ir/block.h"
+#include "ir/constant.h"
+#include "ir/function.h"
+#include "ir/global.h"
+#include "ir/module.h"
+#include "ir/type.h"
+#include "ir/value.h"
 #include "sexp/sexp.h"
 #include "statement.h"
-#include "table.h"
-#include "type.h"
 #include "utility/utility.h"
-#include "value.h"
 
 struct struct_Builder {
   Module *module;
@@ -62,8 +63,9 @@ void builder_delete(Builder *builder) {
   UTILITY_FREE(builder);
 }
 void builder_init_next(Builder *builder, Function *func) {
-  Block *alloc = builder_new_block(builder);
-  Block *entry = builder_new_block(builder);
+  Module *module = builder_get_module(builder);
+  Block *alloc = block_new(module);
+  Block *entry = block_new(module);
   builder->func = func;
   builder_set_next(builder, BUILDER_NEXT_ALLOC, alloc);
   builder_set_next(builder, BUILDER_NEXT_CURRENT, entry);
@@ -71,7 +73,8 @@ void builder_init_next(Builder *builder, Function *func) {
   function_insert(builder->func, alloc);
 }
 void builder_init_return(Builder *builder) {
-  Block *ret = builder_new_block(builder);
+  Module *module = builder_get_module(builder);
+  Block *ret = block_new(module);
   builder_set_next(builder, BUILDER_NEXT_RETURN, ret);
   if (!builder_function_is_void(builder)) {
     builder_new_local(builder);
@@ -105,18 +108,27 @@ void builder_pop_table(Builder *builder) {
   table_pop(builder->table);
 }
 void builder_init_global(Builder *builder, Value *dst, Value *src) {
+  Module *module = builder_get_module(builder);
   Global *global = value_as_global(dst);
   Constant *init = value_as_constant(src);
   global_set_init(global, init);
-  module_insert_prior(builder->module, global);
+  module_insert_prior(module, global);
 }
 Block *builder_label(Builder *builder, const char *label) {
+  Module *module = builder_get_module(builder);
   Block *block = table_label_find(builder->table, label);
   if (!block) {
-    block = builder_new_block(builder);
+    block = block_new(module);
     table_label_insert(builder->table, label, block);
   }
   return block;
+}
+void builder_new_global(Builder *builder, const char *symbol) {
+  Module *module = builder_get_module(builder);
+  Type *type = builder_get_type(builder);
+  Global *global = global_new(module, symbol, type);
+  builder_insert_global(builder, symbol, global);
+  builder_set_value(builder, global_as_value(global));
 }
 void builder_insert_global(Builder *builder, const char *symbol,
                            Global *global) {
@@ -127,7 +139,8 @@ void builder_insert_local(Builder *builder, const char *symbol,
   table_insert_local(builder->table, symbol, instr);
 }
 void builder_find_identifier(Builder *builder, const char *symbol) {
-  Value *value = table_find(builder->table, symbol, builder->module);
+  Module *module = builder_get_module(builder);
+  Value *value = table_find(builder->table, symbol, module);
   builder_set_value(builder, value);
 }
 void builder_jump_block(Builder *builder, Block *dest) {
@@ -162,14 +175,22 @@ Value *builder_get_value(Builder *builder) {
 void builder_set_value(Builder *builder, Value *value) {
   builder->value = value;
 }
+void builder_new_integer(Builder *builder, const char *integer) {
+  Module *module = builder_get_module(builder);
+  Type *type = builder_get_type(builder);
+  Constant *constant = constant_new(module, integer, type);
+  builder_set_value(builder, constant_as_value(constant));
+}
 Type *builder_get_type(Builder *builder) {
   return builder->type;
 }
 void builder_set_type(Builder *builder) {
-  builder->type = builder_type(builder, builder->spec);
+  Module *module = builder_get_module(builder);
+  builder->type = type_new_from_spec(module, builder->spec);
 }
 void builder_set_type_int(Builder *builder) {
-  builder->type = builder_type_int(builder);
+  Module *module = builder_get_module(builder);
+  builder->type = module_type_int(module);
 }
 void builder_set_type_value(Builder *builder) {
   builder->type = value_type(builder->value);

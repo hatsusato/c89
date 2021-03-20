@@ -2,15 +2,15 @@
 
 #include <stdio.h>
 
-#include "builder/block.h"
-#include "builder/builder.h"
-#include "builder/constant.h"
-#include "builder/function.h"
-#include "builder/global.h"
-#include "builder/instruction.h"
-#include "builder/type.h"
-#include "builder/value.h"
 #include "compare/compare.h"
+#include "ir/block.h"
+#include "ir/constant.h"
+#include "ir/function.h"
+#include "ir/global.h"
+#include "ir/instruction.h"
+#include "ir/type.h"
+#include "ir/type/struct.h"
+#include "ir/value.h"
 #include "set/set.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
@@ -70,6 +70,18 @@ static void module_pretty_function(Module *module) {
     function_pretty(*begin++);
   }
 }
+static Type *type_new(void) {
+  Type *type = UTILITY_MALLOC(Type);
+  type->kind = TYPE_INTEGER;
+  type->data.size = 0;
+  return type;
+}
+static Type type_integer(int size) {
+  Type type;
+  type.kind = TYPE_INTEGER;
+  type.data.size = size;
+  return type;
+}
 
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
@@ -90,49 +102,62 @@ void module_delete(Module *module) {
   vector_delete(module->values);
   UTILITY_FREE(module);
 }
+Type *module_new_type(Module *module, Type *type) {
+  Type *found = module_find_type(module, type);
+  if (!found) {
+    found = type_new();
+    *found = *type;
+    module_insert_type(module, found);
+  }
+  return found;
+}
+Type *module_type_void(Module *module) {
+  Type type = type_integer(0);
+  return module_new_type(module, &type);
+}
+Type *module_type_bool(Module *module) {
+  Type type = type_integer(1);
+  return module_new_type(module, &type);
+}
+Type *module_type_int(Module *module) {
+  Type type = type_integer(32);
+  return module_new_type(module, &type);
+}
+Type *module_type_pointer(Module *module, Type *base) {
+  Type type;
+  type.kind = TYPE_POINTER;
+  type.data.type = base;
+  return module_new_type(module, &type);
+}
+Type *module_type_label(Module *module) {
+  Type type;
+  type.kind = TYPE_LABEL;
+  type.data.size = 0;
+  return module_new_type(module, &type);
+}
 Type *module_find_type(Module *module, Type *type) {
   return (Type *)set_find(module->types, type);
 }
 void module_insert_type(Module *module, Type *type) {
   set_insert(module->types, type);
 }
-Function *module_new_function(Module *module) {
-  Function *func = function_new();
-  vector_push(module->values, func);
-  vector_push(module->func, func);
-  return func;
-}
-Block *module_new_block(Module *module) {
-  Block *block = block_new();
-  vector_push(module->values, block);
-  return block;
-}
-Instruction *module_new_instruction(Module *module) {
-  Instruction *instr = instruction_new();
-  vector_push(module->values, instr);
-  return instr;
-}
-Constant *module_new_constant(Module *module) {
-  Constant *constant = constant_new();
-  vector_push(module->values, constant);
-  return constant;
-}
-Global *module_new_global(Module *module) {
-  Global *global = global_new();
-  vector_push(module->values, global);
-  vector_push(module->global, global);
-  return global;
+void module_insert_value(Module *module, Value *value) {
+  vector_push(module->values, value);
+  switch (value_kind(value)) {
+  case VALUE_FUNCTION:
+    vector_push(module->func, value);
+    break;
+  case VALUE_GLOBAL:
+    vector_push(module->global, value);
+  default:
+    break;
+  }
 }
 void module_insert_prior(Module *module, Global *global) {
   if (!global_is_prior(global)) {
     vector_push(module->prior, global);
     global_set_prior(global);
   }
-}
-void module_build(Module *module, Sexp *ast) {
-  Builder *builder = builder_new(module);
-  builder_ast(builder, ast);
-  builder_delete(builder);
 }
 void module_pretty(Module *module) {
   printf("target triple = \"x86_64-unknown-linux-gnu\"\n");
