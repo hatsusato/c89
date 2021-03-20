@@ -3,7 +3,7 @@
 
 #include "utility/types.h"
 
-Function *function_new(void);
+Function *function_new(const char *, Type *);
 void function_delete(Function *);
 void function_insert(Function *, Block *);
 Type *function_return_type(Function *);

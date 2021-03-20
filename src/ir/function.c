@@ -19,11 +19,11 @@ struct struct_Function {
   Vector *vec;
 };
 
-Function *function_new(void) {
+Function *function_new(const char *name, Type *type) {
   Function *func = UTILITY_MALLOC(Function);
   func->kind = VALUE_FUNCTION;
-  func->type = NULL;
-  func->name = NULL;
+  func->type = type;
+  func->name = name;
   func->vec = vector_new(NULL);
   return func;
 }
@@ -71,9 +71,7 @@ int function_count_return(Sexp *ast) {
 
 Function *builder_new_function(Builder *builder, const char *name, Type *type) {
   Module *module = builder_get_module(builder);
-  Function *func = function_new();
-  func->name = name;
-  func->type = type;
+  Function *func = function_new(name, type);
   module_insert_value(module, value_of(func));
   return func;
 }
