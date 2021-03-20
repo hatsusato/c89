@@ -23,6 +23,7 @@ Block *block_new(Module *module) {
   block->type = module_type_label(module);
   block->id = -1;
   block->vec = vector_new(NULL);
+  module_insert_value(module, value_of(block));
   return block;
 }
 void block_delete(Block *block) {
@@ -88,6 +89,5 @@ void block_pretty_switch(Block *block) {
 Block *builder_new_block(Builder *builder) {
   Module *module = builder_get_module(builder);
   Block *block = block_new(module);
-  module_insert_value(module, value_of(block));
   return block;
 }
