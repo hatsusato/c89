@@ -108,12 +108,6 @@ void module_insert_value(Module *module, Value *value) {
     break;
   }
 }
-Function *module_new_function(Module *module) {
-  Function *func = function_new();
-  vector_push(module->values, func);
-  vector_push(module->func, func);
-  return func;
-}
 Block *module_new_block(Module *module) {
   Block *block = block_new();
   vector_push(module->values, block);
