@@ -58,8 +58,7 @@ static void builder_function_init(Builder *builder, Sexp *ast) {
   Module *module = builder_get_module(builder);
   const char *name = function_name(ast);
   Type *type = builder_function_type(builder, ast);
-  Function *func = function_new(name, type);
-  module_insert_value(module, value_of(func));
+  Function *func = function_new(module, name, type);
   builder_init_next(builder, func);
 }
 

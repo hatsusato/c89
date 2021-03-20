@@ -4,6 +4,7 @@
 
 #include "ast/tag.h"
 #include "ir/block.h"
+#include "ir/module.h"
 #include "ir/type.h"
 #include "ir/value.h"
 #include "sexp/sexp.h"
@@ -17,12 +18,13 @@ struct struct_Function {
   Vector *vec;
 };
 
-Function *function_new(const char *name, Type *type) {
+Function *function_new(Module *module, const char *name, Type *type) {
   Function *func = UTILITY_MALLOC(Function);
   func->kind = VALUE_FUNCTION;
   func->type = type;
   func->name = name;
   func->vec = vector_new(NULL);
+  module_insert_value(module, value_of(func));
   return func;
 }
 void function_delete(Function *func) {
