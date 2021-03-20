@@ -15,7 +15,6 @@ Type *module_find_type(Module *, Type *);
 void module_insert_type(Module *, Type *);
 void module_insert_value(Module *, Value *);
 void module_insert_prior(Module *, Global *);
-void module_build(Module *, Sexp *);
 void module_pretty(Module *);
 
 #endif /* INCLUDE_GUARD_2066624D_9BD2_42A1_8E82_3B559F049976 */

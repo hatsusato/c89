@@ -160,11 +160,6 @@ void module_insert_prior(Module *module, Global *global) {
     global_set_prior(global);
   }
 }
-void module_build(Module *module, Sexp *ast) {
-  Builder *builder = builder_new(module);
-  builder_ast(builder, ast);
-  builder_delete(builder);
-}
 void module_pretty(Module *module) {
   printf("target triple = \"x86_64-unknown-linux-gnu\"\n");
   if (!vector_empty(module->global)) {

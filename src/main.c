@@ -1,11 +1,14 @@
 #include "ast/ast.h"
+#include "builder/builder.h"
 #include "ir/module.h"
 #include "print.h"
 #include "scanner/scanner.h"
 
 static void build(Sexp *ast) {
   Module *module = module_new();
-  module_build(module, ast);
+  Builder *builder = builder_new(module);
+  builder_ast(builder, ast);
+  builder_delete(builder);
   module_pretty(module);
   module_delete(module);
 }
