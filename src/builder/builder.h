@@ -39,6 +39,7 @@ Module *builder_get_module(Builder *);
 Value *builder_get_retval(Builder *);
 Value *builder_get_value(Builder *);
 void builder_set_value(Builder *, Value *);
+void builder_new_integer(Builder *, const char *);
 Type *builder_get_type(Builder *);
 void builder_set_type(Builder *);
 void builder_set_type_int(Builder *);

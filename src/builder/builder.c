@@ -8,6 +8,7 @@
 #include "builder/lexical.h"
 #include "builder/table.h"
 #include "ir/block.h"
+#include "ir/constant.h"
 #include "ir/function.h"
 #include "ir/global.h"
 #include "ir/module.h"
@@ -166,6 +167,12 @@ Value *builder_get_value(Builder *builder) {
 }
 void builder_set_value(Builder *builder, Value *value) {
   builder->value = value;
+}
+void builder_new_integer(Builder *builder, const char *integer) {
+  Module *module = builder_get_module(builder);
+  Type *type = builder_get_type(builder);
+  Constant *constant = constant_new(module, integer, type);
+  builder_set_value(builder, constant_as_value(constant));
 }
 Type *builder_get_type(Builder *builder) {
   return builder->type;

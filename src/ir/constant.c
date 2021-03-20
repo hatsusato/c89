@@ -31,10 +31,3 @@ Type *constant_type(Constant *constant) {
 void constant_print(Constant *constant) {
   printf("%s", constant->symbol);
 }
-
-void builder_new_integer(Builder *builder, const char *integer) {
-  Module *module = builder_get_module(builder);
-  Type *type = builder_get_type(builder);
-  Constant *constant = constant_new(module, integer, type);
-  builder_set_value(builder, constant_as_value(constant));
-}
