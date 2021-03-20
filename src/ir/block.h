@@ -3,7 +3,7 @@
 
 #include "utility/types.h"
 
-Block *block_new(void);
+Block *block_new(Module *);
 void block_delete(Block *);
 void block_insert(Block *, Instruction *);
 void block_insert_switch(Block *, Value *, Block *);

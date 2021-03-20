@@ -17,10 +17,10 @@ struct struct_Block {
   Vector *vec;
 };
 
-Block *block_new(void) {
+Block *block_new(Module *module) {
   Block *block = UTILITY_MALLOC(Block);
   block->kind = VALUE_BLOCK;
-  block->type = NULL;
+  block->type = module_type_label(module);
   block->id = -1;
   block->vec = vector_new(NULL);
   return block;
@@ -87,8 +87,7 @@ void block_pretty_switch(Block *block) {
 
 Block *builder_new_block(Builder *builder) {
   Module *module = builder_get_module(builder);
-  Block *block = block_new();
-  block->type = module_type_label(module);
+  Block *block = block_new(module);
   module_insert_value(module, value_of(block));
   return block;
 }
