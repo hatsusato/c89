@@ -154,11 +154,6 @@ void module_insert_value(Module *module, Value *value) {
     break;
   }
 }
-Constant *module_new_constant(Module *module) {
-  Constant *constant = constant_new();
-  vector_push(module->values, constant);
-  return constant;
-}
 Global *module_new_global(Module *module) {
   Global *global = global_new();
   vector_push(module->values, global);

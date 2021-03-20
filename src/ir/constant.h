@@ -3,7 +3,7 @@
 
 #include "utility/types.h"
 
-Constant *constant_new(void);
+Constant *constant_new(Module *, const char *, Type *);
 void constant_delete(Constant *);
 Type *constant_type(Constant *);
 void constant_print(Constant *);

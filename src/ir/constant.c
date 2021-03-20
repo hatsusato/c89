@@ -14,11 +14,12 @@ struct struct_Constant {
   const char *symbol;
 };
 
-Constant *constant_new(void) {
+Constant *constant_new(Module *module, const char *integer, Type *type) {
   Constant *constant = UTILITY_MALLOC(Constant);
   constant->kind = VALUE_CONSTANT;
-  constant->type = NULL;
-  constant->symbol = NULL;
+  constant->type = type;
+  constant->symbol = integer;
+  module_insert_value(module, value_of(constant));
   return constant;
 }
 void constant_delete(Constant *constant) {
@@ -33,8 +34,7 @@ void constant_print(Constant *constant) {
 
 void builder_new_integer(Builder *builder, const char *integer) {
   Module *module = builder_get_module(builder);
-  Constant *constant = module_new_constant(module);
-  constant->type = builder_get_type(builder);
-  constant->symbol = integer;
+  Type *type = builder_get_type(builder);
+  Constant *constant = constant_new(module, integer, type);
   builder_set_value(builder, constant_as_value(constant));
 }
