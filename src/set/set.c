@@ -1,6 +1,5 @@
 #include "set.h"
 
-#include "compare/compare.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
@@ -22,10 +21,10 @@ void set_delete(Set *set) {
 void set_clear(Set *set) {
   vector_clear(set->vec);
 }
-void set_insert(Set *set, CompareElem elem) {
+void set_insert(Set *set, VectorCmpElem elem) {
   vector_push(set->vec, (VectorElem)elem);
   vector_sort(set->vec, set->cmp);
 }
-CompareElem set_find(const Set *set, CompareElem key) {
+VectorCmpElem set_find(const Set *set, VectorCmpElem key) {
   return vector_search(set->vec, &key, set->cmp);
 }
