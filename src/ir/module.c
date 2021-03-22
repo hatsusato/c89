@@ -87,7 +87,7 @@ Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->values = vector_new(module_delete_value);
   module->type_cmp = type_compare_new();
-  module->types = type_set_new(module->type_cmp);
+  module->types = set_new(type_delete, module->type_cmp);
   module->prior = vector_new(NULL);
   module->global = vector_new(NULL);
   module->func = vector_new(NULL);
@@ -97,7 +97,7 @@ void module_delete(Module *module) {
   vector_delete(module->func);
   vector_delete(module->global);
   vector_delete(module->prior);
-  type_set_delete(module->types);
+  set_delete(module->types);
   compare_delete(module->type_cmp);
   vector_delete(module->values);
   UTILITY_FREE(module);

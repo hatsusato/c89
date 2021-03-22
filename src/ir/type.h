@@ -8,8 +8,6 @@
 int type_cmp_for_vector(const VectorCmpElem *, const VectorCmpElem *);
 void type_delete(VectorElem);
 Compare *type_compare_new(void);
-Set *type_set_new(Compare *);
-void type_set_delete(Set *);
 
 Bool type_equals(Type *, Type *);
 Bool type_is_void(Type *);

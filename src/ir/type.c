@@ -46,13 +46,6 @@ void type_delete(VectorElem type) {
 Compare *type_compare_new(void) {
   return compare_new_for_vector(type_cmp_for_vector);
 }
-Set *type_set_new(Compare *cmp) {
-  Set *set = set_new(type_delete, cmp);
-  return set;
-}
-void type_set_delete(Set *set) {
-  set_delete(set);
-}
 
 Bool type_equals(Type *lhs, Type *rhs) {
   return 0 == type_cmp(lhs, rhs, NULL);
