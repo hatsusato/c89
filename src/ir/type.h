@@ -7,8 +7,6 @@
 
 typedef Set TypePool;
 
-void type_delete(Generic);
-int type_cmp(const ConstGeneric *, const ConstGeneric *);
 Bool type_equals(Type *, Type *);
 Bool type_is_void(Type *);
 int type_sizeof(Type *);
