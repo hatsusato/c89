@@ -4,6 +4,7 @@ target_sources(map PRIVATE
   )
 target_link_libraries(map PRIVATE
   options
+  set
   utility
   vector
   )
