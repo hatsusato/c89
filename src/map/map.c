@@ -22,15 +22,9 @@ static Pair *map_pair_new(const char *key, MapElem val) {
 static void map_pair_delete(VectorElem pair) {
   UTILITY_FREE(pair);
 }
-static int map_cmp(const void *lhs, const void *rhs) {
-  const VectorElem *pl = lhs, *pr = rhs;
-  const Pair *l = *pl, *r = *pr;
+static int map_cmp(const VectorCmpElem *lhs, const VectorCmpElem *rhs) {
+  const Pair *l = *lhs, *r = *rhs;
   return utility_strcmp(l->key, r->key);
-}
-static void map_sort(const Map *map) {
-  VectorElem *base = vector_begin(map->vec);
-  Size len = vector_length(map->vec);
-  qsort(base, len, sizeof(VectorElem), map_cmp);
 }
 static const Pair *map_search(const Map *map, const char *key) {
   VectorElem *base = vector_begin(map->vec);
@@ -39,7 +33,8 @@ static const Pair *map_search(const Map *map, const char *key) {
   Pair pair = {NULL, NULL};
   const Pair *p = &pair;
   pair.key = key;
-  found = bsearch(&p, base, len, sizeof(VectorElem), map_cmp);
+  found = bsearch(&p, base, len, sizeof(VectorElem),
+                  (int (*)(const void *, const void *))map_cmp);
   return found ? *found : NULL;
 }
 
@@ -57,7 +52,7 @@ void map_clear(Map *map) {
 }
 void map_insert(Map *map, const char *key, MapElem val) {
   vector_push(map->vec, map_pair_new(key, val));
-  map_sort(map);
+  vector_sort(map->vec, map_cmp);
 }
 MapElem map_find(Map *map, const char *key) {
   const Pair *found = map_search(map, key);

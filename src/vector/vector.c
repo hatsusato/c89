@@ -1,6 +1,10 @@
 #include "vector.h"
 
+#include <stdlib.h>
+
 #include "utility/utility.h"
+
+typedef int (*CmpType)(const void *, const void *);
 
 struct struct_Vector {
   VectorElem *begin, *end, *last;
@@ -89,4 +93,9 @@ void vector_clear(Vector *v) {
   while (!vector_empty(v)) {
     vector_pop(v);
   }
+}
+void vector_sort(Vector *v, VectorCmp cmp) {
+  VectorElem *base = vector_begin(v);
+  Size len = vector_length(v);
+  qsort(base, len, sizeof(VectorElem), (CmpType)cmp);
 }
