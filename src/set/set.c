@@ -10,13 +10,6 @@ struct struct_Set {
   VectorCmp vcmp;
 };
 
-static CompareElem *set_begin(const Set *set) {
-  return (CompareElem *)vector_begin(set->vec);
-}
-static CompareElem *set_end(const Set *set) {
-  return (CompareElem *)vector_end(set->vec);
-}
-
 Set *set_new(VectorDestructor dtor, VectorCmp cmp) {
   Set *set = UTILITY_MALLOC(Set);
   set->vec = vector_new(dtor);
@@ -36,8 +29,8 @@ void set_clear(Set *set) {
 }
 void set_insert(Set *set, CompareElem elem) {
   vector_push(set->vec, (VectorElem)elem);
-  compare_sort_quick(set->cmp, set_begin(set), set_end(set));
+  vector_sort(set->vec, set->vcmp);
 }
 CompareElem set_find(const Set *set, CompareElem key) {
-  return compare_binary_search(set->cmp, key, set_begin(set), set_end(set));
+  return vector_search(set->vec, &key, set->vcmp);
 }
