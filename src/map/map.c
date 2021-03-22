@@ -26,17 +26,6 @@ static int map_cmp(const VectorCmpElem *lhs, const VectorCmpElem *rhs) {
   const Pair *l = *lhs, *r = *rhs;
   return utility_strcmp(l->key, r->key);
 }
-static const Pair *map_search(const Map *map, const char *key) {
-  VectorElem *base = vector_begin(map->vec);
-  Size len = vector_length(map->vec);
-  const VectorElem *found = NULL;
-  Pair pair = {NULL, NULL};
-  const Pair *p = &pair;
-  pair.key = key;
-  found = bsearch(&p, base, len, sizeof(VectorElem),
-                  (int (*)(const void *, const void *))map_cmp);
-  return found ? *found : NULL;
-}
 
 Map *map_new(void) {
   Map *map = UTILITY_MALLOC(Map);
@@ -55,6 +44,9 @@ void map_insert(Map *map, const char *key, MapElem val) {
   vector_sort(map->vec, map_cmp);
 }
 MapElem map_find(Map *map, const char *key) {
-  const Pair *found = map_search(map, key);
+  const Pair *found = NULL;
+  Pair pair = {NULL, NULL};
+  pair.key = key;
+  found = vector_search(map->vec, &pair, map_cmp);
   return found ? found->val : NULL;
 }
