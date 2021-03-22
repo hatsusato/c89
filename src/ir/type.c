@@ -1,6 +1,5 @@
 #include "type.h"
 
-#include "compare/compare.h"
 #include "ir/type/struct.h"
 #include "set/set.h"
 #include "utility/utility.h"

@@ -1,6 +1,5 @@
 #include "ast.h"
 
-#include "compare/compare.h"
 #include "set/set.h"
 #include "sexp/sexp.h"
 #include "utility/utility.h"
@@ -42,7 +41,7 @@ void ast_set(Ast *ast, Sexp *sexp) {
   ast->sexp = sexp;
 }
 const char *ast_symbol(Ast *ast, const char *text, Size leng) {
-  CompareElem found;
+  VectorCmpElem found;
   assert('\0' == text[leng]);
   found = set_find(ast->pool, text);
   if (found) {

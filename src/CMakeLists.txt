@@ -6,7 +6,6 @@ target_sources(main PRIVATE
 target_link_libraries(main PRIVATE
   ast
   builder
-  compare
   ir
   options
   map
@@ -22,7 +21,6 @@ set_target_properties(main PROPERTIES
 
 add_subdirectory(ast)
 add_subdirectory(builder)
-add_subdirectory(compare)
 add_subdirectory(ir)
 add_subdirectory(map)
 add_subdirectory(scanner)
