@@ -1,5 +1,7 @@
 #include "map.h"
 
+#include <stdlib.h>
+
 #include "compare/compare.h"
 #include "set/set.h"
 #include "utility/utility.h"
@@ -28,6 +30,16 @@ static int map_pair_cmp(CompareElem lhs, CompareElem rhs, CompareExtra extra) {
   const Pair *l = lhs, *r = rhs;
   return compare_cmp(extra, l->key, r->key);
 }
+static int map_cmp(const void *lhs, const void *rhs) {
+  const VectorElem *pl = lhs, *pr = rhs;
+  const Pair *l = *pl, *r = *pr;
+  return utility_strcmp(l->key, r->key);
+}
+static void map_sort(const Map *map) {
+  VectorElem *base = vector_begin(map->vec);
+  Size len = vector_length(map->vec);
+  qsort(base, len, sizeof(VectorElem), map_cmp);
+}
 
 Map *map_new(void) {
   Map *map = UTILITY_MALLOC(Map);
@@ -48,6 +60,8 @@ void map_clear(Map *map) {
 }
 void map_insert(Map *map, const char *key, MapElem val) {
   set_insert(map->set, map_pair_new(key, val));
+  vector_push(map->vec, map_pair_new(key, val));
+  map_sort(map);
 }
 MapElem map_find(Map *map, const char *key) {
   const Pair *found;
