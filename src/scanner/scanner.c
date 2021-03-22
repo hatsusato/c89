@@ -11,16 +11,11 @@ typedef struct {
   Set *typedefs;
 } Scanner;
 
-static int scanner_typedefs_cmp(const ConstGeneric *lhs,
-                                const ConstGeneric *rhs) {
-  return utility_strcmp(*lhs, *rhs);
-}
-
 static void scanner_init(yyscan_t yyscan) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
   yyset_extra(scanner, yyscan);
   scanner->ast = ast_new();
-  scanner->typedefs = set_new(NULL, scanner_typedefs_cmp);
+  scanner->typedefs = set_new(NULL, NULL);
 }
 static Ast *scanner_ast(yyscan_t yyscan) {
   Scanner *scanner = yyget_extra(yyscan);

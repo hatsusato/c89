@@ -8,10 +8,14 @@ struct struct_Set {
   VectorCmp cmp;
 };
 
+static int set_cmp_default(const ConstGeneric *lhs, const ConstGeneric *rhs) {
+  return utility_strcmp(*lhs, *rhs);
+}
+
 Set *set_new(VectorDestructor dtor, VectorCmp cmp) {
   Set *set = UTILITY_MALLOC(Set);
   set->vec = vector_new(dtor);
-  set->cmp = cmp;
+  set->cmp = cmp ? cmp : set_cmp_default;
   return set;
 }
 void set_delete(Set *set) {
