@@ -7,10 +7,17 @@
 
 static int type_do_cmp(const Type *lhs, const Type *rhs) {
   VectorCmpElem l = lhs, r = rhs;
-  return type_cmp_for_vector(&l, &r);
+  return type_cmp(&l, &r);
 }
 
-int type_cmp_for_vector(const VectorCmpElem *lhs, const VectorCmpElem *rhs) {
+void type_delete(VectorElem type) {
+  UTILITY_FREE(type);
+}
+Compare *type_compare_new(void) {
+  return compare_new_for_vector(type_cmp);
+}
+
+int type_cmp(const VectorCmpElem *lhs, const VectorCmpElem *rhs) {
   const Type *l = *lhs, *r = *rhs;
   if (l->kind != r->kind) {
     return (l->kind < r->kind) ? -1 : 1;
@@ -26,13 +33,6 @@ int type_cmp_for_vector(const VectorCmpElem *lhs, const VectorCmpElem *rhs) {
     return 0;
   }
 }
-void type_delete(VectorElem type) {
-  UTILITY_FREE(type);
-}
-Compare *type_compare_new(void) {
-  return compare_new_for_vector(type_cmp_for_vector);
-}
-
 Bool type_equals(Type *lhs, Type *rhs) {
   return 0 == type_do_cmp(lhs, rhs);
 }

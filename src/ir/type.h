@@ -5,10 +5,10 @@
 #include "utility/types.h"
 #include "vector/typedef.h"
 
-int type_cmp_for_vector(const VectorCmpElem *, const VectorCmpElem *);
 void type_delete(VectorElem);
 Compare *type_compare_new(void);
 
+int type_cmp(const VectorCmpElem *, const VectorCmpElem *);
 Bool type_equals(Type *, Type *);
 Bool type_is_void(Type *);
 int type_sizeof(Type *);
