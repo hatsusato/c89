@@ -3,8 +3,10 @@
 
 #include "compare/typedef.h"
 #include "utility/types.h"
+#include "vector/typedef.h"
 
 Compare *compare_new(CompareCmp, CompareExtra);
+Compare *compare_new_for_vector(VectorCmp);
 void compare_delete(Compare *);
 int compare_cmp(Compare *, CompareElem, CompareElem);
 void compare_sort_quick(Compare *, CompareElem *, CompareElem *);

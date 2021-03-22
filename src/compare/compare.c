@@ -45,6 +45,12 @@ static CompareElem *compare_sort_once(Compare *compare, CompareElem *lo,
   }
   return lo;
 }
+static int compare_for_vector(CompareElem l, CompareElem r, CompareExtra x) {
+  UTILITY_UNUSED(l);
+  UTILITY_UNUSED(r);
+  UTILITY_UNUSED(x);
+  return 0;
+}
 
 Compare *compare_new(CompareCmp cmp, CompareExtra extra) {
   MutableCompare *compare = UTILITY_MALLOC(MutableCompare);
@@ -52,11 +58,21 @@ Compare *compare_new(CompareCmp cmp, CompareExtra extra) {
   compare->extra = extra;
   return compare;
 }
+Compare *compare_new_for_vector(VectorCmp cmp) {
+  MutableCompare *compare = UTILITY_MALLOC(MutableCompare);
+  compare->cmp = compare_for_vector;
+  compare->extra = (CompareExtra)cmp;
+  return compare;
+}
 void compare_delete(Compare *compare) {
   UTILITY_FREE(compare);
 }
 int compare_cmp(Compare *compare, CompareElem lhs, CompareElem rhs) {
-  if (compare && compare->cmp) {
+  if (!compare) {
+    return utility_strcmp(lhs, rhs);
+  } else if (compare->cmp == compare_for_vector) {
+    return ((VectorCmp)compare->extra)(&lhs, &rhs);
+  } else if (compare->cmp) {
     return compare->cmp(lhs, rhs, compare->extra);
   } else {
     return utility_strcmp(lhs, rhs);
