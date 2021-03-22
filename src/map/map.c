@@ -3,10 +3,12 @@
 #include "compare/compare.h"
 #include "set/set.h"
 #include "utility/utility.h"
+#include "vector/vector.h"
 
 struct struct_Map {
   Compare *cmp;
   Set *set;
+  Vector *vec;
 };
 typedef struct {
   const char *key;
@@ -31,15 +33,18 @@ Map *map_new(void) {
   Map *map = UTILITY_MALLOC(Map);
   map->cmp = compare_new(map_pair_cmp, NULL);
   map->set = set_new(map_pair_delete, map->cmp);
+  map->vec = vector_new(map_pair_delete);
   return map;
 }
 void map_delete(Map *map) {
+  vector_delete(map->vec);
   set_delete(map->set);
   compare_delete(map->cmp);
   UTILITY_FREE(map);
 }
 void map_clear(Map *map) {
   set_clear(map->set);
+  vector_clear(map->vec);
 }
 void map_insert(Map *map, const char *key, MapElem val) {
   set_insert(map->set, map_pair_new(key, val));
