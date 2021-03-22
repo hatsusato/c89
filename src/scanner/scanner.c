@@ -21,7 +21,7 @@ static void scanner_init(yyscan_t yyscan) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
   yyset_extra(scanner, yyscan);
   scanner->ast = ast_new();
-  scanner->typedefs = set_new_for_vector(NULL, scanner_typedefs_cmp);
+  scanner->typedefs = set_new(NULL, scanner_typedefs_cmp);
 }
 static Ast *scanner_ast(yyscan_t yyscan) {
   Scanner *scanner = yyget_extra(yyscan);

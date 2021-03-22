@@ -17,7 +17,7 @@ static CompareElem *set_end(const Set *set) {
   return (CompareElem *)vector_end(set->vec);
 }
 
-Set *set_new_for_vector(VectorDestructor dtor, VectorCmp cmp) {
+Set *set_new(VectorDestructor dtor, VectorCmp cmp) {
   Set *set = UTILITY_MALLOC(Set);
   set->vec = vector_new(dtor);
   set->cmp = compare_new_for_vector(cmp);

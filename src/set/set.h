@@ -5,7 +5,7 @@
 #include "utility/types.h"
 #include "vector/typedef.h"
 
-Set *set_new_for_vector(VectorDestructor, VectorCmp);
+Set *set_new(VectorDestructor, VectorCmp);
 void set_delete(Set *);
 void set_clear(Set *);
 void set_insert(Set *, CompareElem);

@@ -84,7 +84,7 @@ static Type type_integer(int size) {
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->values = vector_new(module_delete_value);
-  module->types = set_new_for_vector(type_delete, type_cmp);
+  module->types = set_new(type_delete, type_cmp);
   module->prior = vector_new(NULL);
   module->global = vector_new(NULL);
   module->func = vector_new(NULL);
