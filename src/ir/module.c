@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 
-#include "compare/compare.h"
 #include "ir/block.h"
 #include "ir/constant.h"
 #include "ir/function.h"
@@ -17,7 +16,6 @@
 
 struct struct_Module {
   Vector *values;
-  Compare *type_cmp;
   Set *types;
   Vector *prior, *global, *func;
 };
@@ -86,8 +84,7 @@ static Type type_integer(int size) {
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->values = vector_new(module_delete_value);
-  module->type_cmp = type_compare_new();
-  module->types = set_new(type_delete, module->type_cmp);
+  module->types = set_new_for_vector(type_delete, type_cmp);
   module->prior = vector_new(NULL);
   module->global = vector_new(NULL);
   module->func = vector_new(NULL);
@@ -98,7 +95,6 @@ void module_delete(Module *module) {
   vector_delete(module->global);
   vector_delete(module->prior);
   set_delete(module->types);
-  compare_delete(module->type_cmp);
   vector_delete(module->values);
   UTILITY_FREE(module);
 }
