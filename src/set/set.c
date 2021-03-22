@@ -7,6 +7,7 @@
 struct struct_Set {
   Vector *vec;
   Compare *cmp;
+  VectorCmp vcmp;
 };
 
 static CompareElem *set_begin(const Set *set) {
@@ -20,9 +21,20 @@ Set *set_new(VectorDestructor dtor, Compare *cmp) {
   Set *set = UTILITY_MALLOC(Set);
   set->vec = vector_new(dtor);
   set->cmp = cmp;
+  set->vcmp = NULL;
+  return set;
+}
+Set *set_new_for_vector(VectorDestructor dtor, VectorCmp cmp) {
+  Set *set = UTILITY_MALLOC(Set);
+  set->vec = vector_new(dtor);
+  set->cmp = compare_new_for_vector(cmp);
+  set->vcmp = cmp;
   return set;
 }
 void set_delete(Set *set) {
+  if (set->vcmp) {
+    compare_delete(set->cmp);
+  }
   vector_delete(set->vec);
   UTILITY_FREE(set);
 }
