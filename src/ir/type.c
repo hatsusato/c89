@@ -13,10 +13,6 @@ static int type_do_cmp(const Type *lhs, const Type *rhs) {
 void type_delete(VectorElem type) {
   UTILITY_FREE(type);
 }
-Compare *type_compare_new(void) {
-  return compare_new_for_vector(type_cmp);
-}
-
 int type_cmp(const VectorCmpElem *lhs, const VectorCmpElem *rhs) {
   const Type *l = *lhs, *r = *rhs;
   if (l->kind != r->kind) {

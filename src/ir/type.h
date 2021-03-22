@@ -6,8 +6,6 @@
 #include "vector/typedef.h"
 
 void type_delete(VectorElem);
-Compare *type_compare_new(void);
-
 int type_cmp(const VectorCmpElem *, const VectorCmpElem *);
 Bool type_equals(Type *, Type *);
 Bool type_is_void(Type *);
