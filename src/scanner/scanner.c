@@ -12,11 +12,16 @@ typedef struct {
   Set *typedefs;
 } Scanner;
 
+static int scanner_typedefs_cmp(const VectorCmpElem *lhs,
+                                const VectorCmpElem *rhs) {
+  return utility_strcmp(*lhs, *rhs);
+}
+
 static void scanner_init(yyscan_t yyscan) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
   yyset_extra(scanner, yyscan);
   scanner->ast = ast_new();
-  scanner->typedefs = set_new(NULL, NULL);
+  scanner->typedefs = set_new_for_vector(NULL, scanner_typedefs_cmp);
 }
 static Ast *scanner_ast(yyscan_t yyscan) {
   Scanner *scanner = yyget_extra(yyscan);
