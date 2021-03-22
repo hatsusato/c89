@@ -19,10 +19,13 @@ static const char *symbol_new(const void *text, Size size) {
 static void symbol_free(VectorElem symbol) {
   UTILITY_FREE(symbol);
 }
+static int symbol_cmp(const VectorCmpElem *lhs, const VectorCmpElem *rhs) {
+  return utility_strcmp(*lhs, *rhs);
+}
 
 Ast *ast_new(void) {
   Ast *ast = UTILITY_MALLOC(Ast);
-  ast->pool = set_new(symbol_free, NULL);
+  ast->pool = set_new_for_vector(symbol_free, symbol_cmp);
   ast->sexp = sexp_nil();
   return ast;
 }
