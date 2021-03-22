@@ -5,9 +5,6 @@
 #include "utility/utility.h"
 
 static int type_do_cmp(const Type *, const Type *);
-static void type_delete(Generic type) {
-  UTILITY_FREE(type);
-}
 static int type_cmp(const ConstGeneric *lhs, const ConstGeneric *rhs) {
   const Type *l = *lhs, *r = *rhs;
   if (l->kind != r->kind) {
@@ -38,7 +35,7 @@ int type_sizeof(Type *type) {
 }
 
 TypePool *type_pool_new(void) {
-  return set_new(type_delete, type_cmp);
+  return set_new(utility_free, type_cmp);
 }
 void type_pool_delete(TypePool *pool) {
   set_delete(pool);

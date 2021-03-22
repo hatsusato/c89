@@ -17,9 +17,6 @@ static Pair *map_pair_new(const char *key, MapElem val) {
   pair->val = val;
   return pair;
 }
-static void map_pair_delete(Generic pair) {
-  UTILITY_FREE(pair);
-}
 static int map_cmp(const ConstGeneric *lhs, const ConstGeneric *rhs) {
   const Pair *l = *lhs, *r = *rhs;
   return utility_strcmp(l->key, r->key);
@@ -27,7 +24,7 @@ static int map_cmp(const ConstGeneric *lhs, const ConstGeneric *rhs) {
 
 Map *map_new(void) {
   Map *map = UTILITY_MALLOC(Map);
-  map->set = set_new(map_pair_delete, map_cmp);
+  map->set = set_new(utility_free, map_cmp);
   return map;
 }
 void map_delete(Map *map) {
