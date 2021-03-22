@@ -9,10 +9,11 @@ struct struct_Map {
   Set *set;
 };
 typedef struct {
-  CompareElem key, val;
+  const char *key;
+  MapElem val;
 } Pair;
 
-static Pair *map_pair_new(CompareElem key, CompareElem val) {
+static Pair *map_pair_new(const char *key, MapElem val) {
   Pair *pair = UTILITY_MALLOC(Pair);
   pair->key = key;
   pair->val = val;
@@ -40,10 +41,10 @@ void map_delete(Map *map) {
 void map_clear(Map *map) {
   set_clear(map->set);
 }
-void map_insert(Map *map, CompareElem key, CompareElem val) {
+void map_insert(Map *map, const char *key, MapElem val) {
   set_insert(map->set, map_pair_new(key, val));
 }
-CompareElem map_find(Map *map, CompareElem key) {
+MapElem map_find(Map *map, const char *key) {
   const Pair *found;
   Pair pair = {NULL, NULL};
   pair.key = key;
