@@ -6,13 +6,13 @@
 
 struct struct_Set {
   Vector *vec;
-  VectorCmp vcmp;
+  VectorCmp cmp;
 };
 
 Set *set_new(VectorDestructor dtor, VectorCmp cmp) {
   Set *set = UTILITY_MALLOC(Set);
   set->vec = vector_new(dtor);
-  set->vcmp = cmp;
+  set->cmp = cmp;
   return set;
 }
 void set_delete(Set *set) {
@@ -24,8 +24,8 @@ void set_clear(Set *set) {
 }
 void set_insert(Set *set, CompareElem elem) {
   vector_push(set->vec, (VectorElem)elem);
-  vector_sort(set->vec, set->vcmp);
+  vector_sort(set->vec, set->cmp);
 }
 CompareElem set_find(const Set *set, CompareElem key) {
-  return vector_search(set->vec, &key, set->vcmp);
+  return vector_search(set->vec, &key, set->cmp);
 }
