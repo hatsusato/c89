@@ -26,9 +26,9 @@ static int map_pair_cmp(CompareElem lhs, CompareElem rhs, CompareExtra extra) {
   return compare_cmp(extra, l->key, r->key);
 }
 
-Map *map_new(Compare *keycmp) {
+Map *map_new(void) {
   Map *map = UTILITY_MALLOC(Map);
-  map->cmp = compare_new(map_pair_cmp, keycmp);
+  map->cmp = compare_new(map_pair_cmp, NULL);
   map->set = set_new(map_pair_delete, map->cmp);
   return map;
 }

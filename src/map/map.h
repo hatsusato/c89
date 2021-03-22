@@ -4,7 +4,7 @@
 #include "compare/typedef.h"
 #include "utility/types.h"
 
-Map *map_new(Compare *);
+Map *map_new(void);
 void map_delete(Map *);
 void map_clear(Map *);
 void map_insert(Map *, CompareElem, CompareElem);
