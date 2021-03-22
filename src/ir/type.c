@@ -5,14 +5,14 @@
 #include "utility/utility.h"
 
 static int type_do_cmp(const Type *lhs, const Type *rhs) {
-  VectorCmpElem l = lhs, r = rhs;
+  ConstGeneric l = lhs, r = rhs;
   return type_cmp(&l, &r);
 }
 
-void type_delete(VectorElem type) {
+void type_delete(Generic type) {
   UTILITY_FREE(type);
 }
-int type_cmp(const VectorCmpElem *lhs, const VectorCmpElem *rhs) {
+int type_cmp(const ConstGeneric *lhs, const ConstGeneric *rhs) {
   const Type *l = *lhs, *r = *rhs;
   if (l->kind != r->kind) {
     return (l->kind < r->kind) ? -1 : 1;

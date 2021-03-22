@@ -20,7 +20,7 @@ struct struct_Module {
   Vector *prior, *global, *func;
 };
 
-static void module_delete_value(VectorElem value) {
+static void module_delete_value(Generic value) {
   switch (value_kind(value)) {
   case VALUE_FUNCTION:
     function_delete(value);

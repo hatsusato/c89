@@ -15,10 +15,10 @@ static const char *symbol_new(const void *text, Size size) {
   symbol[size] = '\0';
   return symbol;
 }
-static void symbol_free(VectorElem symbol) {
+static void symbol_free(Generic symbol) {
   UTILITY_FREE(symbol);
 }
-static int symbol_cmp(const VectorCmpElem *lhs, const VectorCmpElem *rhs) {
+static int symbol_cmp(const ConstGeneric *lhs, const ConstGeneric *rhs) {
   return utility_strcmp(*lhs, *rhs);
 }
 
@@ -41,7 +41,7 @@ void ast_set(Ast *ast, Sexp *sexp) {
   ast->sexp = sexp;
 }
 const char *ast_symbol(Ast *ast, const char *text, Size leng) {
-  VectorCmpElem found;
+  ConstGeneric found;
   assert('\0' == text[leng]);
   found = set_find(ast->pool, text);
   if (found) {

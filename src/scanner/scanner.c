@@ -11,8 +11,8 @@ typedef struct {
   Set *typedefs;
 } Scanner;
 
-static int scanner_typedefs_cmp(const VectorCmpElem *lhs,
-                                const VectorCmpElem *rhs) {
+static int scanner_typedefs_cmp(const ConstGeneric *lhs,
+                                const ConstGeneric *rhs) {
   return utility_strcmp(*lhs, *rhs);
 }
 

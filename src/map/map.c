@@ -19,10 +19,10 @@ static Pair *map_pair_new(const char *key, MapElem val) {
   pair->val = val;
   return pair;
 }
-static void map_pair_delete(VectorElem pair) {
+static void map_pair_delete(Generic pair) {
   UTILITY_FREE(pair);
 }
-static int map_cmp(const VectorCmpElem *lhs, const VectorCmpElem *rhs) {
+static int map_cmp(const ConstGeneric *lhs, const ConstGeneric *rhs) {
   const Pair *l = *lhs, *r = *rhs;
   return utility_strcmp(l->key, r->key);
 }

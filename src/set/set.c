@@ -21,10 +21,10 @@ void set_delete(Set *set) {
 void set_clear(Set *set) {
   vector_clear(set->vec);
 }
-void set_insert(Set *set, VectorCmpElem elem) {
-  vector_push(set->vec, (VectorElem)elem);
+void set_insert(Set *set, ConstGeneric elem) {
+  vector_push(set->vec, (Generic)elem);
   vector_sort(set->vec, set->cmp);
 }
-VectorCmpElem set_find(const Set *set, VectorCmpElem key) {
+ConstGeneric set_find(const Set *set, ConstGeneric key) {
   return vector_search(set->vec, &key, set->cmp);
 }

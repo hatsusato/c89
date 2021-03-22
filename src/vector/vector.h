@@ -19,6 +19,6 @@ void vector_push(Vector *, VectorElem);
 void vector_pop(Vector *);
 void vector_clear(Vector *);
 void vector_sort(Vector *, VectorCmp);
-VectorCmpElem vector_search(const Vector *, VectorCmpElem, VectorCmp);
+ConstGeneric vector_search(const Vector *, ConstGeneric, VectorCmp);
 
 #endif /* INCLUDE_GUARD_228B134A_0631_479A_9421_9C226E168C9E */

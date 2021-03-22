@@ -7,7 +7,7 @@
 Set *set_new(VectorDestructor, VectorCmp);
 void set_delete(Set *);
 void set_clear(Set *);
-void set_insert(Set *, VectorCmpElem);
-VectorCmpElem set_find(const Set *, VectorCmpElem);
+void set_insert(Set *, ConstGeneric);
+ConstGeneric set_find(const Set *, ConstGeneric);
 
 #endif /* INCLUDE_GUARD_DE6D0AC9_F1A3_4A4E_90C8_FBAA690CD01A */

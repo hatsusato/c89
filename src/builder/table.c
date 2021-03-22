@@ -11,7 +11,7 @@ struct struct_Table {
   Map *labels;
 };
 
-static void table_delete_map(VectorElem map) {
+static void table_delete_map(Generic map) {
   map_delete(map);
 }
 
