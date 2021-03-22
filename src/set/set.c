@@ -6,21 +6,16 @@
 
 struct struct_Set {
   Vector *vec;
-  Compare *cmp;
   VectorCmp vcmp;
 };
 
 Set *set_new(VectorDestructor dtor, VectorCmp cmp) {
   Set *set = UTILITY_MALLOC(Set);
   set->vec = vector_new(dtor);
-  set->cmp = compare_new_for_vector(cmp);
   set->vcmp = cmp;
   return set;
 }
 void set_delete(Set *set) {
-  if (set->vcmp) {
-    compare_delete(set->cmp);
-  }
   vector_delete(set->vec);
   UTILITY_FREE(set);
 }
