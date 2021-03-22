@@ -2,12 +2,10 @@
 
 #include <stdlib.h>
 
-#include "compare/compare.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
 struct struct_Map {
-  Compare *cmp;
   Vector *vec;
 };
 typedef struct {
@@ -23,10 +21,6 @@ static Pair *map_pair_new(const char *key, MapElem val) {
 }
 static void map_pair_delete(VectorElem pair) {
   UTILITY_FREE(pair);
-}
-static int map_pair_cmp(CompareElem lhs, CompareElem rhs, CompareExtra extra) {
-  const Pair *l = lhs, *r = rhs;
-  return compare_cmp(extra, l->key, r->key);
 }
 static int map_cmp(const void *lhs, const void *rhs) {
   const VectorElem *pl = lhs, *pr = rhs;
@@ -51,13 +45,11 @@ static const Pair *map_search(const Map *map, const char *key) {
 
 Map *map_new(void) {
   Map *map = UTILITY_MALLOC(Map);
-  map->cmp = compare_new(map_pair_cmp, NULL);
   map->vec = vector_new(map_pair_delete);
   return map;
 }
 void map_delete(Map *map) {
   vector_delete(map->vec);
-  compare_delete(map->cmp);
   UTILITY_FREE(map);
 }
 void map_clear(Map *map) {
