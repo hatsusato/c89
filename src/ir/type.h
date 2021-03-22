@@ -3,7 +3,9 @@
 
 #include "type/print.h"
 #include "utility/types.h"
+#include "vector/typedef.h"
 
+int type_cmp_for_vector(const VectorCmpElem *, const VectorCmpElem *);
 Compare *type_compare_new(void);
 Set *type_set_new(Compare *);
 void type_set_delete(Set *);

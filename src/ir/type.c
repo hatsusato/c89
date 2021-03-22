@@ -19,12 +19,32 @@ static int type_cmp(CompareElem lhs, CompareElem rhs, CompareExtra extra) {
     return 0;
   }
 }
+static int type_do_cmp(const Type *lhs, const Type *rhs) {
+  VectorCmpElem l = lhs, r = rhs;
+  return type_cmp_for_vector(&l, &r);
+}
+int type_cmp_for_vector(const VectorCmpElem *lhs, const VectorCmpElem *rhs) {
+  const Type *l = *lhs, *r = *rhs;
+  if (l->kind != r->kind) {
+    return (l->kind < r->kind) ? -1 : 1;
+  }
+  switch (l->kind) {
+  case TYPE_INTEGER:
+    return utility_intcmp(l->data.size, r->data.size);
+  case TYPE_POINTER:
+    l = l->data.type;
+    r = r->data.type;
+    return type_do_cmp(l, r);
+  default:
+    return 0;
+  }
+}
 static void type_delete(VectorElem type) {
   UTILITY_FREE(type);
 }
 
 Compare *type_compare_new(void) {
-  return compare_new(type_cmp, NULL);
+  return compare_new_for_vector(type_cmp_for_vector);
 }
 Set *type_set_new(Compare *cmp) {
   Set *set = set_new(type_delete, cmp);
