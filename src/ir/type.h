@@ -5,10 +5,17 @@
 #include "utility/types.h"
 #include "vector/typedef.h"
 
+typedef Set TypePool;
+
 void type_delete(Generic);
 int type_cmp(const ConstGeneric *, const ConstGeneric *);
 Bool type_equals(Type *, Type *);
 Bool type_is_void(Type *);
 int type_sizeof(Type *);
+
+TypePool *type_pool_new(void);
+void type_pool_delete(TypePool *);
+void type_pool_insert(TypePool *, Type *);
+Type *type_pool_find(TypePool *, Type *);
 
 #endif /* INCLUDE_GUARD_288C5A5F_4870_4133_85EB_DBA30CC323B1 */

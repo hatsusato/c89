@@ -10,13 +10,12 @@
 #include "ir/type.h"
 #include "ir/type/struct.h"
 #include "ir/value.h"
-#include "set/set.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
 struct struct_Module {
   Vector *values;
-  Set *types;
+  TypePool *types;
   Vector *prior, *global, *func;
 };
 
@@ -84,7 +83,7 @@ static Type type_integer(int size) {
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->values = vector_new(module_delete_value);
-  module->types = set_new(type_delete, type_cmp);
+  module->types = type_pool_new();
   module->prior = vector_new(NULL);
   module->global = vector_new(NULL);
   module->func = vector_new(NULL);
@@ -94,7 +93,7 @@ void module_delete(Module *module) {
   vector_delete(module->func);
   vector_delete(module->global);
   vector_delete(module->prior);
-  set_delete(module->types);
+  type_pool_delete(module->types);
   vector_delete(module->values);
   UTILITY_FREE(module);
 }
@@ -132,10 +131,10 @@ Type *module_type_label(Module *module) {
   return module_new_type(module, &type);
 }
 Type *module_find_type(Module *module, Type *type) {
-  return (Type *)set_find(module->types, type);
+  return type_pool_find(module->types, type);
 }
 void module_insert_type(Module *module, Type *type) {
-  set_insert(module->types, type);
+  type_pool_insert(module->types, type);
 }
 void module_insert_value(Module *module, Value *value) {
   vector_push(module->values, value);

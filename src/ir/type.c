@@ -37,3 +37,16 @@ Bool type_is_void(Type *type) {
 int type_sizeof(Type *type) {
   return TYPE_INTEGER == type->kind ? type->data.size : 0;
 }
+
+TypePool *type_pool_new(void) {
+  return set_new(type_delete, type_cmp);
+}
+void type_pool_delete(TypePool *pool) {
+  set_delete(pool);
+}
+void type_pool_insert(TypePool *pool, Type *type) {
+  set_insert(pool, type);
+}
+Type *type_pool_find(TypePool *pool, Type *type) {
+  return (Type *)set_find(pool, type);
+}
