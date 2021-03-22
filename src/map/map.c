@@ -40,6 +40,16 @@ static void map_sort(const Map *map) {
   Size len = vector_length(map->vec);
   qsort(base, len, sizeof(VectorElem), map_cmp);
 }
+static const Pair *map_search(const Map *map, const char *key) {
+  VectorElem *base = vector_begin(map->vec);
+  Size len = vector_length(map->vec);
+  const VectorElem *found = NULL;
+  Pair pair = {NULL, NULL};
+  const Pair *p = &pair;
+  pair.key = key;
+  found = bsearch(&p, base, len, sizeof(VectorElem), map_cmp);
+  return found ? *found : NULL;
+}
 
 Map *map_new(void) {
   Map *map = UTILITY_MALLOC(Map);
@@ -68,5 +78,6 @@ MapElem map_find(Map *map, const char *key) {
   Pair pair = {NULL, NULL};
   pair.key = key;
   found = set_find(map->set, &pair);
+  found = map_search(map, key);
   return found ? found->val : NULL;
 }
