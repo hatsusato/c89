@@ -9,5 +9,7 @@
 typedef int Bool;
 typedef int Size, Index;
 typedef unsigned char Byte;
+typedef void *Generic;
+typedef const void *ConstGeneric;
 
 #endif /* INCLUDE_GUARD_DF00C770_FBCB_42E9_A315_0DD752E63E44 */

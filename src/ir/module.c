@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 
-#include "compare/compare.h"
 #include "ir/block.h"
 #include "ir/constant.h"
 #include "ir/function.h"
@@ -11,18 +10,16 @@
 #include "ir/type.h"
 #include "ir/type/struct.h"
 #include "ir/value.h"
-#include "set/set.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
 struct struct_Module {
   Vector *values;
-  Compare *type_cmp;
-  Set *types;
+  TypePool *types;
   Vector *prior, *global, *func;
 };
 
-static void module_delete_value(VectorElem value) {
+static void module_delete_value(Generic value) {
   switch (value_kind(value)) {
   case VALUE_FUNCTION:
     function_delete(value);
@@ -86,8 +83,7 @@ static Type type_integer(int size) {
 Module *module_new(void) {
   Module *module = UTILITY_MALLOC(Module);
   module->values = vector_new(module_delete_value);
-  module->type_cmp = type_compare_new();
-  module->types = type_set_new(module->type_cmp);
+  module->types = type_pool_new();
   module->prior = vector_new(NULL);
   module->global = vector_new(NULL);
   module->func = vector_new(NULL);
@@ -97,8 +93,7 @@ void module_delete(Module *module) {
   vector_delete(module->func);
   vector_delete(module->global);
   vector_delete(module->prior);
-  type_set_delete(module->types);
-  compare_delete(module->type_cmp);
+  type_pool_delete(module->types);
   vector_delete(module->values);
   UTILITY_FREE(module);
 }
@@ -136,10 +131,10 @@ Type *module_type_label(Module *module) {
   return module_new_type(module, &type);
 }
 Type *module_find_type(Module *module, Type *type) {
-  return (Type *)set_find(module->types, type);
+  return type_pool_find(module->types, type);
 }
 void module_insert_type(Module *module, Type *type) {
-  set_insert(module->types, type);
+  type_pool_insert(module->types, type);
 }
 void module_insert_value(Module *module, Value *value) {
   vector_push(module->values, value);

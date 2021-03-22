@@ -1,6 +1,5 @@
 #include "ast.h"
 
-#include "compare/compare.h"
 #include "set/set.h"
 #include "sexp/sexp.h"
 #include "utility/utility.h"
@@ -16,7 +15,7 @@ static const char *symbol_new(const void *text, Size size) {
   symbol[size] = '\0';
   return symbol;
 }
-static void symbol_free(VectorElem symbol) {
+static void symbol_free(Generic symbol) {
   UTILITY_FREE(symbol);
 }
 
@@ -39,7 +38,7 @@ void ast_set(Ast *ast, Sexp *sexp) {
   ast->sexp = sexp;
 }
 const char *ast_symbol(Ast *ast, const char *text, Size leng) {
-  CompareElem found;
+  ConstGeneric found;
   assert('\0' == text[leng]);
   found = set_find(ast->pool, text);
   if (found) {
