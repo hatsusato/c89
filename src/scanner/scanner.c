@@ -6,10 +6,10 @@
 #include "set/set.h"
 #include "utility/utility.h"
 
-typedef struct {
+struct struct_Scanner {
   Ast *ast;
   Set *typedefs;
-} Scanner;
+};
 
 static void scanner_init(yyscan_t yyscan) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
