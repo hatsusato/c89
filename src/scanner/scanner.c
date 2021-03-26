@@ -9,6 +9,7 @@
 struct struct_Scanner {
   Ast *ast;
   Set *typedefs;
+  yyscan_t yyscan;
 };
 
 static void scanner_init(yyscan_t yyscan) {
@@ -16,6 +17,7 @@ static void scanner_init(yyscan_t yyscan) {
   yyset_extra(scanner, yyscan);
   scanner->ast = ast_new();
   scanner->typedefs = set_new(NULL, NULL);
+  scanner->yyscan = yyscan;
 }
 static Ast *scanner_ast(yyscan_t yyscan) {
   Scanner *scanner = yyget_extra(yyscan);
@@ -46,6 +48,9 @@ int scanner_parse(yyscan_t yyscan) {
 }
 Ast *scanner_get(yyscan_t yyscan) {
   return scanner_ast(yyscan);
+}
+yyscan_t scanner_yyscan(Scanner *scanner) {
+  return scanner->yyscan;
 }
 
 void scanner_finish(yyscan_t yyscan, Sexp *ast) {
