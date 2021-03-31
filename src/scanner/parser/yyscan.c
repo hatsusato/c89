@@ -1,11 +1,10 @@
 #include "yyscan.h"
 
-#include "ast/ast.h"
 #include "parser.tab.h"
 #include "print.h"
 #include "scanner/register.h"
 #include "scanner/scanner.h"
-#include "set/set.h"
+#include "sexp/sexp.h"
 #include "utility/utility.h"
 
 void yyerror(yyscan_t scan, const char *msg) {
@@ -25,6 +24,27 @@ int yyscan_parse(Scanner *scanner) {
   ret = yyparse(yyscanner);
   yylex_destroy(yyscanner);
   return ret;
+}
+Sexp *yyscan_nil(void) {
+  return sexp_nil();
+}
+Sexp *yyscan_cons(Sexp *x, Sexp *xs) {
+  return sexp_pair(x, xs);
+}
+Sexp *yyscan_snoc(Sexp *xs, Sexp *x) {
+  return sexp_snoc(xs, x);
+}
+Sexp *yyscan_list(Sexp *x) {
+  return yyscan_cons(x, yyscan_nil());
+}
+Sexp *yyscan_symbol(AstTag tag) {
+  return sexp_number(tag);
+}
+Sexp *yyscan_tag(AstTag tag) {
+  return yyscan_list(yyscan_symbol(tag));
+}
+Sexp *yyscan_append(Sexp *xs, Sexp *ys) {
+  return sexp_append(xs, ys);
 }
 Sexp *yyscan_token(yyscan_t yyscanner) {
   Scanner *scanner = yyget_extra(yyscanner);
