@@ -19,11 +19,11 @@ static void scanner_init(Scanner *scanner) {
   scanner->typedefs = set_new(NULL, NULL);
   scanner->yyscan = yyscan;
 }
-static Ast *scanner_ast(yyscan_t yyscan) {
+Ast *scanner_ast(yyscan_t yyscan) {
   Scanner *scanner = yyget_extra(yyscan);
   return scanner->ast;
 }
-static Set *scanner_typedefs(yyscan_t yyscan) {
+Set *scanner_typedefs(yyscan_t yyscan) {
   Scanner *scanner = yyget_extra(yyscan);
   return scanner->typedefs;
 }
