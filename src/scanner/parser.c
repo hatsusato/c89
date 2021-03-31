@@ -4,9 +4,6 @@
 #include "scanner/register.h"
 #include "utility/utility.h"
 
-Sexp *parser_nil(void) {
-  return sexp_nil();
-}
 Sexp *parser_list_nil(AstTag tag) {
   return PARSER_LIST1(sexp_number(tag));
 }

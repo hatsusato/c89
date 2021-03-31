@@ -10,7 +10,7 @@
 #define PARSER_TAG(tag, list) sexp_pair(sexp_number(tag), list)
 #define PARSER_TOKEN(yyscan) sexp_symbol(scanner_token(yyscan))
 #define PARSER_CONS(car, cdr) sexp_pair(car, cdr)
-#define PARSER_LIST0() parser_nil()
+#define PARSER_LIST0() sexp_nil()
 #define PARSER_LIST1(ast0) PARSER_CONS(ast0, PARSER_LIST0())
 #define PARSER_LIST2(ast0, ast1) PARSER_CONS(ast0, PARSER_LIST1(ast1))
 #define PARSER_LIST3(ast0, ast1, ast2) \
@@ -29,7 +29,6 @@
   PARSER_CONS(ast0,                                                        \
               PARSER_LIST8(ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8))
 
-Sexp *parser_nil(void);
 Sexp *parser_list_nil(AstTag);
 Sexp *parser_list_atom(AstTag, Sexp *);
 Sexp *parser_list_snoc(Sexp *, Sexp *);
