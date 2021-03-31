@@ -1,7 +1,7 @@
 #include "scanner.h"
 
 #include "ast/ast.h"
-#include "parser.tab.h"
+#include "scanner/yyscan.h"
 #include "set/set.h"
 #include "utility/utility.h"
 
@@ -21,15 +21,9 @@ static void scanner_delete(Scanner *scanner) {
   UTILITY_FREE(scanner);
 }
 int scanner_parse(Ast *ast) {
-  yyscan_t yyscan;
-  int ret = yylex_init(&yyscan);
   Scanner *scanner = scanner_new(ast);
-  UTILITY_ASSERT(0 == ret);
-  yyset_extra(scanner, yyscan);
-  yyscan_register("__builtin_va_list", yyscan);
-  ret = yyparse(yyscan);
+  int ret = yyscan_parse(scanner);
   scanner_delete(scanner);
-  yylex_destroy(yyscan);
   return ret;
 }
 const char *scanner_symbol(Scanner *scanner, const char *text, Size leng) {

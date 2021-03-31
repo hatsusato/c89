@@ -16,6 +16,16 @@ void yyerror(yyscan_t scan, const char *msg) {
   print_verbatim(fp, yyget_text(scan), yyget_leng(scan));
   print_newline(fp);
 }
+int yyscan_parse(Scanner *scanner) {
+  yyscan_t yyscanner;
+  int ret = yylex_init(&yyscanner);
+  UTILITY_ASSERT(0 == ret);
+  yyset_extra(scanner, yyscanner);
+  yyscan_register("__builtin_va_list", yyscanner);
+  ret = yyparse(yyscanner);
+  yylex_destroy(yyscanner);
+  return ret;
+}
 Sexp *yyscan_token(yyscan_t yyscanner) {
   Scanner *scanner = yyget_extra(yyscanner);
   const char *text = yyget_text(yyscanner);
