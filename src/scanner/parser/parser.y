@@ -344,7 +344,7 @@ postfix-expression.suffix
 | decrement {$$ = PARSER_LIST1($1);}
 ;
 argument-expression-list.opt
-: %empty {$$ = parser_list_nil(AST_ARGUMENT_EXPRESSION_LIST);}
+: %empty {$$ = PARSER_LIST_NIL(AST_ARGUMENT_EXPRESSION_LIST);}
 | argument-expression-list
 ;
 argument-expression-list
@@ -535,7 +535,7 @@ declaration-specifier
 | type-qualifier
 ;
 init-declarator-list.opt
-: %empty {$$ = parser_list_nil(AST_INIT_DECLARATOR_LIST);}
+: %empty {$$ = PARSER_LIST_NIL(AST_INIT_DECLARATOR_LIST);}
 | init-declarator-list
 ;
 init-declarator-list
@@ -672,7 +672,7 @@ pointer.tag
 | pointer asterisk type-qualifier-list.opt {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 type-qualifier-list.opt
-: %empty {$$ = parser_list_nil(AST_TYPE_QUALIFIER_LIST);}
+: %empty {$$ = PARSER_LIST_NIL(AST_TYPE_QUALIFIER_LIST);}
 | type-qualifier-list
 ;
 type-qualifier-list
@@ -680,7 +680,7 @@ type-qualifier-list
 | type-qualifier-list type-qualifier {$$ = parser_list_snoc($1, $2);}
 ;
 parameter-type-list.opt
-: %empty {$$ = parser_list_nil(AST_PARAMETER_LIST);}
+: %empty {$$ = PARSER_LIST_NIL(AST_PARAMETER_LIST);}
 | parameter-type-list
 ;
 parameter-type-list
@@ -775,7 +775,7 @@ compound-statement.tag
 : left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
 ;
 declaration-list.opt
-: %empty {$$ = parser_list_nil(AST_DECLARATION_LIST);}
+: %empty {$$ = PARSER_LIST_NIL(AST_DECLARATION_LIST);}
 | declaration-list
 ;
 declaration-list
@@ -783,7 +783,7 @@ declaration-list
 | declaration-list declaration {$$ = parser_list_snoc($1, $2);}
 ;
 statement-list.opt
-: %empty {$$ = parser_list_nil(AST_STATEMENT_LIST);}
+: %empty {$$ = PARSER_LIST_NIL(AST_STATEMENT_LIST);}
 | statement-list
 ;
 statement-list

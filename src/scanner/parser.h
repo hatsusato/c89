@@ -28,8 +28,8 @@
 #define PARSER_LIST9(ast0, ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8) \
   PARSER_CONS(ast0,                                                        \
               PARSER_LIST8(ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8))
+#define PARSER_LIST_NIL(tag) PARSER_LIST1(sexp_number(tag))
 
-Sexp *parser_list_nil(AstTag);
 Sexp *parser_list_atom(AstTag, Sexp *);
 Sexp *parser_list_snoc(Sexp *, Sexp *);
 

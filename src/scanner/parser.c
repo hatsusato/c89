@@ -4,9 +4,6 @@
 #include "scanner/register.h"
 #include "utility/utility.h"
 
-Sexp *parser_list_nil(AstTag tag) {
-  return PARSER_LIST1(sexp_number(tag));
-}
 Sexp *parser_list_atom(AstTag tag, Sexp *ast) {
   return PARSER_LIST2(sexp_number(tag), ast);
 }
