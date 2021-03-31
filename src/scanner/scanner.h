@@ -5,7 +5,7 @@
 
 int scanner_parse(Ast *);
 const char *scanner_symbol(Scanner *, const char *, Size);
-Bool scanner_find(Scanner *, const char *);
+Bool scanner_exists(Scanner *, const char *);
 void scanner_register(Scanner *, const char *);
 void scanner_finish(Scanner *, Sexp *);
 

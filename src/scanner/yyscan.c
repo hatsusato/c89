@@ -35,7 +35,7 @@ Sexp *yyscan_token(yyscan_t yyscanner) {
 }
 Bool yyscan_query(const char *symbol, yyscan_t yyscanner) {
   Scanner *scanner = yyget_extra(yyscanner);
-  return scanner_find(scanner, symbol);
+  return scanner_exists(scanner, symbol);
 }
 void yyscan_finish(Sexp *ast, yyscan_t yyscanner) {
   Scanner *scanner = yyget_extra(yyscanner);

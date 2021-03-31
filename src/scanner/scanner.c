@@ -29,11 +29,11 @@ int scanner_parse(Ast *ast) {
 const char *scanner_symbol(Scanner *scanner, const char *text, Size leng) {
   return ast_symbol(scanner->ast, text, leng);
 }
-Bool scanner_find(Scanner *scanner, const char *symbol) {
+Bool scanner_exists(Scanner *scanner, const char *symbol) {
   return set_find(scanner->typedefs, symbol) != NULL;
 }
 void scanner_register(Scanner *scanner, const char *symbol) {
-  if (!scanner_find(scanner, symbol)) {
+  if (!scanner_exists(scanner, symbol)) {
     set_insert(scanner->typedefs, symbol);
   }
 }
