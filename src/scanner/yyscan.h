@@ -8,6 +8,7 @@
 #define YYSCAN_DECLARATION(ast) yyscan_declaration(ast, yyscanner)
 
 void yyerror(yyscan_t, const char *);
+Sexp *yyscan_token(yyscan_t);
 void yyscan_finish(Sexp *, yyscan_t);
 void yyscan_declaration(Sexp *, yyscan_t);
 
