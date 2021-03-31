@@ -5,7 +5,7 @@
 
 %define api.pure full
 %define api.value.type {Sexp *}
-%param {yyscan_t scanner}
+%param {yyscan_t yyscanner}
 
 %code provides {
 #include "ast/tag.h"
@@ -281,40 +281,40 @@ identifier
 : identifier.tag {$$ = PARSER_LIST_ATOM(AST_IDENTIFIER, $1);}
 ;
 identifier.tag
-: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
+: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN();}
 ;
 typedef-identifier
 : typedef-identifier.tag {$$ = PARSER_LIST_ATOM(AST_TYPEDEF_IDENTIFIER, $1);}
 ;
 typedef-identifier.tag
-: TOKEN_TYPEDEF_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
+: TOKEN_TYPEDEF_IDENTIFIER {$$ = PARSER_TOKEN();}
 ;
 floating-constant
 : floating-constant.tag {$$ = PARSER_LIST_ATOM(AST_FLOATING_CONSTANT, $1);}
 ;
 floating-constant.tag
-: TOKEN_FLOATING_CONSTANT {$$ = PARSER_TOKEN(scanner);}
+: TOKEN_FLOATING_CONSTANT {$$ = PARSER_TOKEN();}
 ;
 integer-constant
 : integer-constant.tag {$$ = PARSER_LIST_ATOM(AST_INTEGER_CONSTANT, $1);}
 ;
 integer-constant.tag
-: TOKEN_INTEGER_CONSTANT {$$ = PARSER_TOKEN(scanner);}
+: TOKEN_INTEGER_CONSTANT {$$ = PARSER_TOKEN();}
 ;
 enumeration-constant
 : enumeration-constant.tag {$$ = PARSER_LIST_ATOM(AST_ENUMERATION_CONSTANT, $1);}
 ;
 enumeration-constant.tag
-: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
+: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN();}
 ;
 character-constant
 : character-constant.tag {$$ = PARSER_LIST_ATOM(AST_CHARACTER_CONSTANT, $1);}
 ;
 character-constant.tag
-: TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TOKEN(scanner);}
+: TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TOKEN();}
 ;
 string-literal
-: TOKEN_STRING_LITERAL {$$ = PARSER_TOKEN(scanner);}
+: TOKEN_STRING_LITERAL {$$ = PARSER_TOKEN();}
 ;
 string-constant
 : string-literal {$$ = PARSER_LIST_ATOM(AST_STRING_LITERAL, $1);}
@@ -826,7 +826,7 @@ jump-statement.tag
 
 /* 6.7 External definitions */
 top
-: translation-unit {scanner_finish(scanner, $1);}
+: translation-unit {scanner_finish(yyscanner, $1);}
 ;
 translation-unit
 : external-declaration {$$ = PARSER_LIST_ATOM(AST_TRANSLATION_UNIT, $1);}
@@ -834,7 +834,7 @@ translation-unit
 ;
 external-declaration
 : function-definition
-| declaration {$$ = PARSER_TAG(AST_EXTERNAL_DECLARATION, PARSER_LIST1($1)); register_declaration(scanner, $1);}
+| declaration {$$ = PARSER_TAG(AST_EXTERNAL_DECLARATION, PARSER_LIST1($1)); register_declaration(yyscanner, $1);}
 ;
 function-definition
 : function-definition.tag {$$ = PARSER_TAG(AST_FUNCTION_DEFINITION, $1);}
