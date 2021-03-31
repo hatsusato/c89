@@ -1,11 +1,7 @@
 #ifndef INCLUDE_GUARD_AD2E6BDC_1852_434E_87C9_94003CD02072
 #define INCLUDE_GUARD_AD2E6BDC_1852_434E_87C9_94003CD02072
 
-#ifndef YY_TYPEDEF_YY_SCANNER_T
-#define YY_TYPEDEF_YY_SCANNER_T
-typedef void *yyscan_t;
-#endif
-
+#include "scanner/yyscan_t.h"
 #include "sexp/opaque.h"
 
 #define YYSCAN_FINISH(ast) yyscan_finish(ast, yyscanner)

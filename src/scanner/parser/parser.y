@@ -1,5 +1,6 @@
 %code requires {
-#include "scanner/yyscan.h"
+#include "scanner/yyscan_t.h"
+#include "sexp/opaque.h"
 }
 
 %define api.pure full
@@ -12,6 +13,7 @@
 #include "parser.h"
 #include "scanner/register.h"
 #include "scanner/impl.h"
+#include "scanner/yyscan.h"
 #include "sexp/sexp.h"
 }
 
