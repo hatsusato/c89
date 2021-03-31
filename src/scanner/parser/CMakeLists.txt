@@ -21,6 +21,7 @@ target_sources(parser PRIVATE
   ${FLEX_lexer_OUTPUTS}
   )
 target_include_directories(parser PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
   )
 target_link_libraries(parser PRIVATE

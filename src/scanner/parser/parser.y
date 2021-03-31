@@ -10,7 +10,7 @@
 %code provides {
 #include "ast/tag.h"
 #include "lexer.h"
-#include "scanner/parser.h"
+#include "parser.h"
 #include "scanner/register.h"
 #include "scanner/impl.h"
 #include "sexp/sexp.h"
