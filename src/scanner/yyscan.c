@@ -21,7 +21,7 @@ int yyscan_parse(Scanner *scanner) {
   int ret = yylex_init(&yyscanner);
   UTILITY_ASSERT(0 == ret);
   yyset_extra(scanner, yyscanner);
-  yyscan_register("__builtin_va_list", yyscanner);
+  scanner_register(scanner, "__builtin_va_list");
   ret = yyparse(yyscanner);
   yylex_destroy(yyscanner);
   return ret;
@@ -36,11 +36,6 @@ Sexp *yyscan_token(yyscan_t yyscanner) {
 Bool yyscan_query(const char *symbol, yyscan_t yyscanner) {
   Scanner *scanner = yyget_extra(yyscanner);
   return scanner_find(scanner, symbol);
-}
-void yyscan_register(const char *symbol, yyscan_t yyscanner) {
-  Scanner *scanner = yyget_extra(yyscanner);
-  UTILITY_ASSERT("redefinition of typedef" && !yyscan_query(symbol, yyscanner));
-  scanner_register(scanner, symbol);
 }
 void yyscan_finish(Sexp *ast, yyscan_t yyscanner) {
   Scanner *scanner = yyget_extra(yyscanner);

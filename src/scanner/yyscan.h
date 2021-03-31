@@ -12,7 +12,6 @@ void yyerror(yyscan_t, const char *);
 int yyscan_parse(Scanner *);
 Sexp *yyscan_token(yyscan_t);
 Bool yyscan_query(const char *, yyscan_t);
-void yyscan_register(const char *, yyscan_t);
 void yyscan_finish(Sexp *, yyscan_t);
 void yyscan_declaration(Sexp *, yyscan_t);
 
