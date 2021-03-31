@@ -20,29 +20,27 @@ Set *scanner_typedefs(yyscan_t yyscan) {
   return scanner->typedefs;
 }
 
-Scanner *scanner_new(Ast *ast) {
-  yyscan_t yyscan;
+static Scanner *scanner_new(Ast *ast, yyscan_t yyscan) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
-  int ret = yylex_init(&yyscan);
-  assert(0 == ret);
-  UTILITY_UNUSED(ret);
-  yyset_extra(scanner, yyscan);
   scanner->ast = ast;
   scanner->typedefs = set_new(NULL, NULL);
   scanner->yyscan = yyscan;
-  yyscan_register("__builtin_va_list", yyscan);
   return scanner;
 }
-void scanner_delete(Scanner *scanner) {
-  yyscan_t yyscan = scanner->yyscan;
-  set_delete(scanner_typedefs(yyscan));
-  UTILITY_FREE(yyget_extra(yyscan));
-  yylex_destroy(yyscan);
+static void scanner_delete(Scanner *scanner) {
+  set_delete(scanner->typedefs);
+  UTILITY_FREE(scanner);
 }
 int scanner_parse(Ast *ast) {
-  Scanner *scanner = scanner_new(ast);
-  int ret = yyparse(scanner->yyscan);
+  yyscan_t yyscan;
+  int ret = yylex_init(&yyscan);
+  Scanner *scanner = scanner_new(ast, yyscan);
+  UTILITY_ASSERT(0 == ret);
+  yyset_extra(scanner, yyscan);
+  yyscan_register("__builtin_va_list", yyscan);
+  ret = yyparse(yyscan);
   scanner_delete(scanner);
+  yylex_destroy(yyscan);
   return ret;
 }
 Ast *scanner_get(Scanner *scanner) {
