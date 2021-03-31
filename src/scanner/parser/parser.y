@@ -276,37 +276,37 @@ identifier.opt
 | identifier
 ;
 identifier
-: identifier.tag {$$ = parser_list_atom(AST_IDENTIFIER, $1);}
+: identifier.tag {$$ = PARSER_LIST_ATOM(AST_IDENTIFIER, $1);}
 ;
 identifier.tag
 : TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
 ;
 typedef-identifier
-: typedef-identifier.tag {$$ = parser_list_atom(AST_TYPEDEF_IDENTIFIER, $1);}
+: typedef-identifier.tag {$$ = PARSER_LIST_ATOM(AST_TYPEDEF_IDENTIFIER, $1);}
 ;
 typedef-identifier.tag
 : TOKEN_TYPEDEF_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
 ;
 floating-constant
-: floating-constant.tag {$$ = parser_list_atom(AST_FLOATING_CONSTANT, $1);}
+: floating-constant.tag {$$ = PARSER_LIST_ATOM(AST_FLOATING_CONSTANT, $1);}
 ;
 floating-constant.tag
 : TOKEN_FLOATING_CONSTANT {$$ = PARSER_TOKEN(scanner);}
 ;
 integer-constant
-: integer-constant.tag {$$ = parser_list_atom(AST_INTEGER_CONSTANT, $1);}
+: integer-constant.tag {$$ = PARSER_LIST_ATOM(AST_INTEGER_CONSTANT, $1);}
 ;
 integer-constant.tag
 : TOKEN_INTEGER_CONSTANT {$$ = PARSER_TOKEN(scanner);}
 ;
 enumeration-constant
-: enumeration-constant.tag {$$ = parser_list_atom(AST_ENUMERATION_CONSTANT, $1);}
+: enumeration-constant.tag {$$ = PARSER_LIST_ATOM(AST_ENUMERATION_CONSTANT, $1);}
 ;
 enumeration-constant.tag
 : TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
 ;
 character-constant
-: character-constant.tag {$$ = parser_list_atom(AST_CHARACTER_CONSTANT, $1);}
+: character-constant.tag {$$ = PARSER_LIST_ATOM(AST_CHARACTER_CONSTANT, $1);}
 ;
 character-constant.tag
 : TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TOKEN(scanner);}
@@ -315,7 +315,7 @@ string-literal
 : TOKEN_STRING_LITERAL {$$ = PARSER_TOKEN(scanner);}
 ;
 string-constant
-: string-literal {$$ = parser_list_atom(AST_STRING_LITERAL, $1);}
+: string-literal {$$ = PARSER_LIST_ATOM(AST_STRING_LITERAL, $1);}
 | string-constant string-literal {$$ = parser_list_snoc($1, $2);}
 ;
 
@@ -348,7 +348,7 @@ argument-expression-list.opt
 | argument-expression-list
 ;
 argument-expression-list
-: assignment-expression {$$ = parser_list_atom(AST_ARGUMENT_EXPRESSION_LIST, $1);}
+: assignment-expression {$$ = PARSER_LIST_ATOM(AST_ARGUMENT_EXPRESSION_LIST, $1);}
 | argument-expression-list "," assignment-expression {$$ = parser_list_snoc($1, $3);}
 ;
 unary-expression
@@ -526,7 +526,7 @@ declaration.tag
 : declaration-specifiers init-declarator-list.opt semicolon {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 declaration-specifiers
-: declaration-specifier {$$ = parser_list_atom(AST_DECLARATION_SPECIFIERS, $1);}
+: declaration-specifier {$$ = PARSER_LIST_ATOM(AST_DECLARATION_SPECIFIERS, $1);}
 | declaration-specifiers declaration-specifier {$$ = parser_list_snoc($1, $2);}
 ;
 declaration-specifier
@@ -539,7 +539,7 @@ init-declarator-list.opt
 | init-declarator-list
 ;
 init-declarator-list
-: init-declarator {$$ = parser_list_atom(AST_INIT_DECLARATOR_LIST, $1);}
+: init-declarator {$$ = PARSER_LIST_ATOM(AST_INIT_DECLARATOR_LIST, $1);}
 | init-declarator-list "," init-declarator {$$ = parser_list_snoc($1, $3);}
 ;
 init-declarator
@@ -588,7 +588,7 @@ struct-or-union
 | union
 ;
 struct-declaration-list
-: struct-declaration {$$ = parser_list_atom(AST_STRUCT_DECLARATION_LIST, $1);}
+: struct-declaration {$$ = PARSER_LIST_ATOM(AST_STRUCT_DECLARATION_LIST, $1);}
 | struct-declaration-list struct-declaration {$$ = parser_list_snoc($1, $2);}
 ;
 struct-declaration
@@ -597,7 +597,7 @@ struct-declaration.tag
 : specifier-qualifier-list struct-declarator-list semicolon {$$ = PARSER_LIST3($1, $2, $3);}
 ;
 specifier-qualifier-list
-: specifier-qualifier {$$ = parser_list_atom(AST_SPECIFIER_QUALIFIER_LIST, $1);}
+: specifier-qualifier {$$ = PARSER_LIST_ATOM(AST_SPECIFIER_QUALIFIER_LIST, $1);}
 | specifier-qualifier-list specifier-qualifier {$$ = parser_list_snoc($1, $2);}
 ;
 specifier-qualifier
@@ -605,7 +605,7 @@ specifier-qualifier
 | type-qualifier
 ;
 struct-declarator-list
-: struct-declarator {$$ = parser_list_atom(AST_STRUCT_DECLARATOR_LIST, $1);}
+: struct-declarator {$$ = PARSER_LIST_ATOM(AST_STRUCT_DECLARATOR_LIST, $1);}
 | struct-declarator-list "," struct-declarator {$$ = parser_list_snoc($1, $3);}
 ;
 struct-declarator
@@ -623,7 +623,7 @@ enum-specifier.tag
 | enum identifier {$$ = PARSER_LIST2($1, $2);}
 ;
 enumerator-list
-: enumerator {$$ = parser_list_atom(AST_ENUMERATOR_LIST, $1);}
+: enumerator {$$ = PARSER_LIST_ATOM(AST_ENUMERATOR_LIST, $1);}
 | enumerator-list "," enumerator {$$ = parser_list_snoc($1, $3);}
 ;
 enumerator
@@ -676,7 +676,7 @@ type-qualifier-list.opt
 | type-qualifier-list
 ;
 type-qualifier-list
-: type-qualifier {$$ = parser_list_atom(AST_TYPE_QUALIFIER_LIST, $1);}
+: type-qualifier {$$ = PARSER_LIST_ATOM(AST_TYPE_QUALIFIER_LIST, $1);}
 | type-qualifier-list type-qualifier {$$ = parser_list_snoc($1, $2);}
 ;
 parameter-type-list.opt
@@ -688,7 +688,7 @@ parameter-type-list
 | parameter-list "," ellipsis {$$ = parser_list_snoc($1, $3);}
 ;
 parameter-list
-: parameter-declaration {$$ = parser_list_atom(AST_PARAMETER_LIST, $1);}
+: parameter-declaration {$$ = PARSER_LIST_ATOM(AST_PARAMETER_LIST, $1);}
 | parameter-list "," parameter-declaration {$$ = parser_list_snoc($1, $3);}
 ;
 parameter-declaration
@@ -699,7 +699,7 @@ parameter-declaration.tag
 | declaration-specifiers abstract-declarator.opt {$$ = PARSER_LIST2($1, $2);}
 ;
 identifier-list
-: identifier {$$ = parser_list_atom(AST_IDENTIFIER_LIST, $1);}
+: identifier {$$ = PARSER_LIST_ATOM(AST_IDENTIFIER_LIST, $1);}
 | identifier-list "," identifier {$$ = parser_list_snoc($1, $3);}
 ;
 type-name
@@ -744,7 +744,7 @@ initializer.tag
 | left-brace initializer-list comma right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
 ;
 initializer-list
-: initializer {$$ = parser_list_atom(AST_INITIALIZER_LIST, $1);}
+: initializer {$$ = PARSER_LIST_ATOM(AST_INITIALIZER_LIST, $1);}
 | initializer-list "," initializer {$$ = parser_list_snoc($1, $3);}
 ;
 
@@ -779,7 +779,7 @@ declaration-list.opt
 | declaration-list
 ;
 declaration-list
-: declaration {$$ = parser_list_atom(AST_DECLARATION_LIST, $1);}
+: declaration {$$ = PARSER_LIST_ATOM(AST_DECLARATION_LIST, $1);}
 | declaration-list declaration {$$ = parser_list_snoc($1, $2);}
 ;
 statement-list.opt
@@ -787,7 +787,7 @@ statement-list.opt
 | statement-list
 ;
 statement-list
-: statement {$$ = parser_list_atom(AST_STATEMENT_LIST, $1);}
+: statement {$$ = PARSER_LIST_ATOM(AST_STATEMENT_LIST, $1);}
 | statement-list statement {$$ = parser_list_snoc($1, $2);}
 ;
 expression-statement
@@ -827,7 +827,7 @@ top
 : translation-unit {scanner_finish(scanner, $1);}
 ;
 translation-unit
-: external-declaration {$$ = parser_list_atom(AST_TRANSLATION_UNIT, $1);}
+: external-declaration {$$ = PARSER_LIST_ATOM(AST_TRANSLATION_UNIT, $1);}
 | translation-unit external-declaration {$$ = parser_list_snoc($1, $2);}
 ;
 external-declaration
