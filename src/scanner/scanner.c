@@ -11,13 +11,6 @@ struct struct_Scanner {
   yyscan_t yyscan;
 };
 
-static void scanner_init(Scanner *scanner) {
-  yyscan_t yyscan = scanner->yyscan;
-  yyset_extra(scanner, yyscan);
-  scanner->ast = ast_new();
-  scanner->typedefs = set_new(NULL, NULL);
-  scanner->yyscan = yyscan;
-}
 Ast *scanner_ast(yyscan_t yyscan) {
   Scanner *scanner = yyget_extra(yyscan);
   return scanner->ast;
@@ -33,8 +26,10 @@ Scanner *scanner_new(void) {
   int ret = yylex_init(&yyscan);
   assert(0 == ret);
   UTILITY_UNUSED(ret);
+  yyset_extra(scanner, yyscan);
+  scanner->ast = ast_new();
+  scanner->typedefs = set_new(NULL, NULL);
   scanner->yyscan = yyscan;
-  scanner_init(scanner);
   yyscan_register("__builtin_va_list", yyscan);
   return scanner;
 }
