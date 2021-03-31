@@ -32,8 +32,10 @@ const char *scanner_symbol(Scanner *scanner, const char *text, Size leng) {
 Bool scanner_find(Scanner *scanner, const char *symbol) {
   return set_find(scanner->typedefs, symbol) != NULL;
 }
-void scanner_insert(Scanner *scanner, const char *symbol) {
-  set_insert(scanner->typedefs, symbol);
+void scanner_register(Scanner *scanner, const char *symbol) {
+  if (!scanner_find(scanner, symbol)) {
+    set_insert(scanner->typedefs, symbol);
+  }
 }
 void scanner_finish(Scanner *scanner, Sexp *ast) {
   ast_set(scanner->ast, ast);

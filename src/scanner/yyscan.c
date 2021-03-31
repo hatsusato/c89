@@ -40,7 +40,7 @@ Bool yyscan_query(const char *symbol, yyscan_t yyscanner) {
 void yyscan_register(const char *symbol, yyscan_t yyscanner) {
   Scanner *scanner = yyget_extra(yyscanner);
   UTILITY_ASSERT("redefinition of typedef" && !yyscan_query(symbol, yyscanner));
-  scanner_insert(scanner, symbol);
+  scanner_register(scanner, symbol);
 }
 void yyscan_finish(Sexp *ast, yyscan_t yyscanner) {
   Scanner *scanner = yyget_extra(yyscanner);
