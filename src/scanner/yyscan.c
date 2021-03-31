@@ -33,7 +33,8 @@ void yyscan_register(const char *symbol, yyscan_t yyscanner) {
   scanner_insert(scanner, symbol);
 }
 void yyscan_finish(Sexp *ast, yyscan_t yyscanner) {
-  ast_set(scanner_ast(yyscanner), ast);
+  Scanner *scanner = yyget_extra(yyscanner);
+  scanner_finish(scanner, ast);
 }
 void yyscan_declaration(Sexp *ast, yyscan_t yyscanner) {
   register_declaration(yyscanner, ast);
