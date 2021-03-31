@@ -2,7 +2,7 @@
 #include "builder/builder.h"
 #include "ir/module.h"
 #include "print.h"
-#include "scanner/scanner.h"
+#include "scanner/parse.h"
 
 static void build(Sexp *ast) {
   Module *module = module_new();

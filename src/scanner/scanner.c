@@ -1,7 +1,6 @@
 #include "scanner.h"
 
 #include "ast/ast.h"
-#include "scanner/parser/yyscan.h"
 #include "set/set.h"
 #include "utility/utility.h"
 
@@ -19,12 +18,6 @@ Scanner *scanner_new(Ast *ast) {
 void scanner_delete(Scanner *scanner) {
   set_delete(scanner->typedefs);
   UTILITY_FREE(scanner);
-}
-int scanner_parse(Ast *ast) {
-  Scanner *scanner = scanner_new(ast);
-  int ret = yyscan_parse(scanner);
-  scanner_delete(scanner);
-  return ret;
 }
 const char *scanner_symbol(Scanner *scanner, const char *text, Size leng) {
   return ast_symbol(scanner->ast, text, leng);

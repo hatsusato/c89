@@ -5,7 +5,6 @@
 
 Scanner *scanner_new(Ast *);
 void scanner_delete(Scanner *);
-int scanner_parse(Ast *);
 const char *scanner_symbol(Scanner *, const char *, Size);
 Bool scanner_exists(Scanner *, const char *);
 void scanner_register(Scanner *, const char *);
