@@ -16,6 +16,7 @@ Bool sexp_is_number(Sexp *);
 Bool sexp_is_list(Sexp *);
 Sexp *sexp_car(Sexp *);
 Sexp *sexp_cdr(Sexp *);
+Sexp *sexp_append(Sexp *, Sexp *);
 Sexp *sexp_snoc(Sexp *, Sexp *);
 Sexp *sexp_at(Sexp *, Index);
 const char *sexp_get_symbol(Sexp *);
