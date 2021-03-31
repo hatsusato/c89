@@ -40,22 +40,19 @@ Scanner *scanner_new(void) {
   return scanner;
 }
 void scanner_delete(Scanner *scanner) {
-  yyscan_t yyscan = scanner_yyscan(scanner);
+  yyscan_t yyscan = scanner->yyscan;
   set_delete(scanner_typedefs(yyscan));
   ast_delete(scanner_ast(yyscan));
   UTILITY_FREE(yyget_extra(yyscan));
   yylex_destroy(yyscan);
 }
 int scanner_parse(Scanner *scanner) {
-  yyscan_t yyscan = scanner_yyscan(scanner);
+  yyscan_t yyscan = scanner->yyscan;
   return yyparse(yyscan);
 }
 Ast *scanner_get(Scanner *scanner) {
-  yyscan_t yyscan = scanner_yyscan(scanner);
+  yyscan_t yyscan = scanner->yyscan;
   return scanner_ast(yyscan);
-}
-yyscan_t scanner_yyscan(Scanner *scanner) {
-  return scanner->yyscan;
 }
 
 void scanner_finish(yyscan_t yyscan, Sexp *ast) {
