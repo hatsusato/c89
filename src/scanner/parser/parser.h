@@ -3,7 +3,6 @@
 
 #define PARSER_SYMBOL(tag) sexp_number(tag)
 #define PARSER_TAG(tag, list) sexp_pair(sexp_number(tag), list)
-#define PARSER_TOKEN() sexp_symbol(scanner_token(yyscanner))
 #define PARSER_CONS(car, cdr) sexp_pair(car, cdr)
 #define PARSER_LIST0() sexp_nil()
 #define PARSER_LIST1(ast0) PARSER_CONS(ast0, PARSER_LIST0())

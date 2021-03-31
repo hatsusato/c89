@@ -4,6 +4,7 @@
 #include "scanner/yyscan_t.h"
 #include "sexp/opaque.h"
 
+#define YYSCAN_TOKEN() yyscan_token(yyscanner)
 #define YYSCAN_FINISH(ast) yyscan_finish(ast, yyscanner)
 #define YYSCAN_DECLARATION(ast) yyscan_declaration(ast, yyscanner)
 
