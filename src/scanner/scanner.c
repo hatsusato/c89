@@ -49,3 +49,6 @@ Ast *scanner_get(Scanner *scanner) {
   yyscan_t yyscan = scanner->yyscan;
   return scanner_ast(yyscan);
 }
+const char *scanner_symbol(Scanner *scanner, const char *text, Size leng) {
+  return ast_symbol(scanner->ast, text, leng);
+}

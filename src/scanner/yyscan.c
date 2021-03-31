@@ -17,10 +17,10 @@ void yyerror(yyscan_t scan, const char *msg) {
   print_newline(fp);
 }
 Sexp *yyscan_token(yyscan_t yyscanner) {
+  Scanner *scanner = yyget_extra(yyscanner);
   const char *text = yyget_text(yyscanner);
   Size leng = yyget_leng(yyscanner);
-  Ast *ast = scanner_ast(yyscanner);
-  const char *symbol = ast_symbol(ast, text, leng);
+  const char *symbol = scanner_symbol(scanner, text, leng);
   return sexp_symbol(symbol);
 }
 Bool yyscan_query(const char *symbol, yyscan_t yyscanner) {
