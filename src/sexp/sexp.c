@@ -31,11 +31,13 @@ static void sexp_free(MutableSexp *sexp) {
     UTILITY_FREE(sexp);
   }
 }
+static void sexp_set_cdr(Sexp *sexp, Sexp *cdr) {
+  UTILITY_ASSERT(sexp_is_pair(sexp));
+  ((MutableSexp *)sexp)->data.pair.cdr = cdr;
+}
 static void sexp_set_cdar(Sexp *sexp, Sexp *cdar) {
-  if (sexp_is_pair(sexp)) {
-    Sexp *cdr = sexp_pair(cdar, sexp_cdr(sexp));
-    ((MutableSexp *)sexp)->data.pair.cdr = cdr;
-  }
+  UTILITY_ASSERT(sexp_is_pair(sexp));
+  sexp_set_cdr(sexp, sexp_pair(cdar, sexp_cdr(sexp)));
 }
 
 void sexp_delete(Sexp *sexp) {
