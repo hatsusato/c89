@@ -55,9 +55,6 @@ Ast *scanner_get(Scanner *scanner) {
   return scanner_ast(yyscan);
 }
 
-void scanner_finish(yyscan_t yyscan, Sexp *ast) {
-  ast_set(scanner_ast(yyscan), ast);
-}
 void scanner_register(yyscan_t yyscan, const char *symbol) {
   assert("redefinition of typedef" && !scanner_query(yyscan, symbol));
   set_insert(scanner_typedefs(yyscan), symbol);

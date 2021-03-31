@@ -4,7 +4,6 @@
 #include "scanner/yyscan_t.h"
 #include "utility/types.h"
 
-void scanner_finish(yyscan_t, Sexp *);
 void scanner_register(yyscan_t, const char *);
 Bool scanner_query(yyscan_t, const char *);
 

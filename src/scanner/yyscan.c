@@ -23,7 +23,7 @@ Sexp *yyscan_token(yyscan_t yyscanner) {
   return sexp_symbol(symbol);
 }
 void yyscan_finish(Sexp *ast, yyscan_t yyscanner) {
-  scanner_finish(yyscanner, ast);
+  ast_set(scanner_ast(yyscanner), ast);
 }
 void yyscan_declaration(Sexp *ast, yyscan_t yyscanner) {
   register_declaration(yyscanner, ast);
