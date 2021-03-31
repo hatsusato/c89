@@ -7,6 +7,7 @@
 #include "utility/types.h"
 
 #define PARSER_SYMBOL(tag) sexp_number(tag)
+#define PARSER_TAG(tag, list) sexp_pair(sexp_number(tag), list)
 #define PARSER_LIST0() parser_nil()
 #define PARSER_LIST1(ast0) parser_cons(ast0, PARSER_LIST0())
 #define PARSER_LIST2(ast0, ast1) parser_cons(ast0, PARSER_LIST1(ast1))
@@ -26,7 +27,6 @@
   parser_cons(ast0,                                                        \
               PARSER_LIST8(ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8))
 
-Sexp *parser_tag(AstTag, Sexp *);
 Sexp *parser_token(yyscan_t);
 Sexp *parser_nil(void);
 Sexp *parser_cons(Sexp *, Sexp *);
