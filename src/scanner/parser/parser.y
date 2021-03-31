@@ -12,7 +12,6 @@
 #include "lexer.h"
 #include "parser.h"
 #include "scanner/register.h"
-#include "scanner/impl.h"
 #include "scanner/yyscan.h"
 #include "sexp/sexp.h"
 }

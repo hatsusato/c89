@@ -2,7 +2,6 @@
 
 #include "ast/ast.h"
 #include "parser.tab.h"
-#include "scanner/impl.h"
 #include "set/set.h"
 #include "utility/utility.h"
 
@@ -36,7 +35,7 @@ Scanner *scanner_new(void) {
   UTILITY_UNUSED(ret);
   scanner->yyscan = yyscan;
   scanner_init(scanner);
-  scanner_register(yyscan, "__builtin_va_list");
+  yyscan_register("__builtin_va_list", yyscan);
   return scanner;
 }
 void scanner_delete(Scanner *scanner) {
@@ -53,12 +52,4 @@ int scanner_parse(Scanner *scanner) {
 Ast *scanner_get(Scanner *scanner) {
   yyscan_t yyscan = scanner->yyscan;
   return scanner_ast(yyscan);
-}
-
-void scanner_register(yyscan_t yyscan, const char *symbol) {
-  assert("redefinition of typedef" && !scanner_query(yyscan, symbol));
-  set_insert(scanner_typedefs(yyscan), symbol);
-}
-Bool scanner_query(yyscan_t yyscan, const char *symbol) {
-  return set_find(scanner_typedefs(yyscan), symbol) != NULL;
 }

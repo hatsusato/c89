@@ -4,7 +4,6 @@
 #include "parser.tab.h"
 #include "print.h"
 #include "scanner.h"
-#include "scanner/impl.h"
 #include "scanner/register.h"
 #include "set/set.h"
 #include "utility/utility.h"
