@@ -4,9 +4,6 @@
 #include "scanner/register.h"
 #include "utility/utility.h"
 
-Sexp *parser_token(yyscan_t yyscan) {
-  return sexp_symbol(scanner_token(yyscan));
-}
 Sexp *parser_nil(void) {
   return sexp_nil();
 }

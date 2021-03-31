@@ -279,40 +279,40 @@ identifier
 : identifier.tag {$$ = parser_list_atom(AST_IDENTIFIER, $1);}
 ;
 identifier.tag
-: TOKEN_IDENTIFIER {$$ = parser_token(scanner);}
+: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
 ;
 typedef-identifier
 : typedef-identifier.tag {$$ = parser_list_atom(AST_TYPEDEF_IDENTIFIER, $1);}
 ;
 typedef-identifier.tag
-: TOKEN_TYPEDEF_IDENTIFIER {$$ = parser_token(scanner);}
+: TOKEN_TYPEDEF_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
 ;
 floating-constant
 : floating-constant.tag {$$ = parser_list_atom(AST_FLOATING_CONSTANT, $1);}
 ;
 floating-constant.tag
-: TOKEN_FLOATING_CONSTANT {$$ = parser_token(scanner);}
+: TOKEN_FLOATING_CONSTANT {$$ = PARSER_TOKEN(scanner);}
 ;
 integer-constant
 : integer-constant.tag {$$ = parser_list_atom(AST_INTEGER_CONSTANT, $1);}
 ;
 integer-constant.tag
-: TOKEN_INTEGER_CONSTANT {$$ = parser_token(scanner);}
+: TOKEN_INTEGER_CONSTANT {$$ = PARSER_TOKEN(scanner);}
 ;
 enumeration-constant
 : enumeration-constant.tag {$$ = parser_list_atom(AST_ENUMERATION_CONSTANT, $1);}
 ;
 enumeration-constant.tag
-: TOKEN_IDENTIFIER {$$ = parser_token(scanner);}
+: TOKEN_IDENTIFIER {$$ = PARSER_TOKEN(scanner);}
 ;
 character-constant
 : character-constant.tag {$$ = parser_list_atom(AST_CHARACTER_CONSTANT, $1);}
 ;
 character-constant.tag
-: TOKEN_CHARACTER_CONSTANT {$$ = parser_token(scanner);}
+: TOKEN_CHARACTER_CONSTANT {$$ = PARSER_TOKEN(scanner);}
 ;
 string-literal
-: TOKEN_STRING_LITERAL {$$ = parser_token(scanner);}
+: TOKEN_STRING_LITERAL {$$ = PARSER_TOKEN(scanner);}
 ;
 string-constant
 : string-literal {$$ = parser_list_atom(AST_STRING_LITERAL, $1);}
