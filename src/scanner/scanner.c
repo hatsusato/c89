@@ -46,10 +46,12 @@ void scanner_delete(Scanner *scanner) {
   UTILITY_FREE(yyget_extra(yyscan));
   yylex_destroy(yyscan);
 }
-int scanner_parse(yyscan_t yyscan) {
+int scanner_parse(Scanner *scanner) {
+  yyscan_t yyscan = scanner_yyscan(scanner);
   return yyparse(yyscan);
 }
-Ast *scanner_get(yyscan_t yyscan) {
+Ast *scanner_get(Scanner *scanner) {
+  yyscan_t yyscan = scanner_yyscan(scanner);
   return scanner_ast(yyscan);
 }
 yyscan_t scanner_yyscan(Scanner *scanner) {

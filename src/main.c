@@ -15,9 +15,9 @@ static void build(Sexp *ast) {
 
 int main(void) {
   Scanner *scanner = scanner_new();
-  int ret = scanner_parse(scanner_yyscan(scanner));
+  int ret = scanner_parse(scanner);
   if (0 == ret) {
-    Sexp *ast = ast_get(scanner_get(scanner_yyscan(scanner)));
+    Sexp *ast = ast_get(scanner_get(scanner));
     print_ast(ast);
     build(ast);
   }
