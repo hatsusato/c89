@@ -24,13 +24,13 @@ Sexp *yyscan_token(yyscan_t yyscanner) {
   return sexp_symbol(symbol);
 }
 Bool yyscan_query(const char *symbol, yyscan_t yyscanner) {
-  Set *typedefs = scanner_typedefs(yyscanner);
-  return set_find(typedefs, symbol) != NULL;
+  Scanner *scanner = yyget_extra(yyscanner);
+  return scanner_find(scanner, symbol);
 }
 void yyscan_register(const char *symbol, yyscan_t yyscanner) {
-  Set *typedefs = scanner_typedefs(yyscanner);
+  Scanner *scanner = yyget_extra(yyscanner);
   UTILITY_ASSERT("redefinition of typedef" && !yyscan_query(symbol, yyscanner));
-  set_insert(typedefs, symbol);
+  scanner_insert(scanner, symbol);
 }
 void yyscan_finish(Sexp *ast, yyscan_t yyscanner) {
   ast_set(scanner_ast(yyscanner), ast);
