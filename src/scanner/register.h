@@ -3,6 +3,6 @@
 
 #include "utility/types.h"
 
-void register_declaration(Scanner *, Sexp *);
+void scanner_register_declaration(Scanner *, Sexp *);
 
 #endif /* INCLUDE_GUARD_2F3411B7_BDBD_4EB1_815C_B08161816E03 */

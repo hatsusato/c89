@@ -43,5 +43,5 @@ void yyscan_finish(Sexp *ast, yyscan_t yyscanner) {
 }
 void yyscan_declaration(Sexp *ast, yyscan_t yyscanner) {
   Scanner *scanner = yyget_extra(yyscanner);
-  register_declaration(scanner, ast);
+  scanner_register_declaration(scanner, ast);
 }

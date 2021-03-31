@@ -82,7 +82,8 @@ static void register_init_declarator_list(Scanner *scanner, Sexp *ast) {
     register_init_declarator(scanner, sexp_car(ast));
   }
 }
-void register_declaration(Scanner *scanner, Sexp *ast) {
+
+void scanner_register_declaration(Scanner *scanner, Sexp *ast) {
   assert(check_tag(ast, AST_DECLARATION));
   if (is_typedef_declaration(ast)) {
     ast = sexp_at(ast, 2);
