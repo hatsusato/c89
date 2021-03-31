@@ -6,6 +6,8 @@
 #include "scanner.h"
 #include "scanner/impl.h"
 #include "scanner/register.h"
+#include "set/set.h"
+#include "utility/utility.h"
 
 void yyerror(yyscan_t scan, const char *msg) {
   FILE *fp = stderr;
@@ -21,6 +23,15 @@ Sexp *yyscan_token(yyscan_t yyscanner) {
   Ast *ast = scanner_ast(yyscanner);
   const char *symbol = ast_symbol(ast, text, leng);
   return sexp_symbol(symbol);
+}
+Bool yyscan_query(const char *symbol, yyscan_t yyscanner) {
+  Set *typedefs = scanner_typedefs(yyscanner);
+  return set_find(typedefs, symbol) != NULL;
+}
+void yyscan_register(const char *symbol, yyscan_t yyscanner) {
+  Set *typedefs = scanner_typedefs(yyscanner);
+  UTILITY_ASSERT("redefinition of typedef" && !yyscan_query(symbol, yyscanner));
+  set_insert(typedefs, symbol);
 }
 void yyscan_finish(Sexp *ast, yyscan_t yyscanner) {
   ast_set(scanner_ast(yyscanner), ast);

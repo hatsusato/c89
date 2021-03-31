@@ -2,7 +2,7 @@
 #define INCLUDE_GUARD_AD2E6BDC_1852_434E_87C9_94003CD02072
 
 #include "scanner/yyscan_t.h"
-#include "sexp/opaque.h"
+#include "utility/types.h"
 
 #define YYSCAN_TOKEN() yyscan_token(yyscanner)
 #define YYSCAN_FINISH(ast) yyscan_finish(ast, yyscanner)
@@ -10,6 +10,8 @@
 
 void yyerror(yyscan_t, const char *);
 Sexp *yyscan_token(yyscan_t);
+Bool yyscan_query(const char *, yyscan_t);
+void yyscan_register(const char *, yyscan_t);
 void yyscan_finish(Sexp *, yyscan_t);
 void yyscan_declaration(Sexp *, yyscan_t);
 
