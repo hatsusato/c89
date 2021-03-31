@@ -11,15 +11,6 @@ struct struct_Scanner {
   yyscan_t yyscan;
 };
 
-Ast *scanner_ast(yyscan_t yyscan) {
-  Scanner *scanner = yyget_extra(yyscan);
-  return scanner->ast;
-}
-Set *scanner_typedefs(yyscan_t yyscan) {
-  Scanner *scanner = yyget_extra(yyscan);
-  return scanner->typedefs;
-}
-
 static Scanner *scanner_new(Ast *ast, yyscan_t yyscan) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
   scanner->ast = ast;
@@ -42,10 +33,6 @@ int scanner_parse(Ast *ast) {
   scanner_delete(scanner);
   yylex_destroy(yyscan);
   return ret;
-}
-Ast *scanner_get(Scanner *scanner) {
-  yyscan_t yyscan = scanner->yyscan;
-  return scanner_ast(yyscan);
 }
 const char *scanner_symbol(Scanner *scanner, const char *text, Size leng) {
   return ast_symbol(scanner->ast, text, leng);
