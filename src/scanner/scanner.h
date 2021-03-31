@@ -3,6 +3,8 @@
 
 #include "utility/types.h"
 
+Scanner *scanner_new(Ast *);
+void scanner_delete(Scanner *);
 int scanner_parse(Ast *);
 const char *scanner_symbol(Scanner *, const char *, Size);
 Bool scanner_exists(Scanner *, const char *);

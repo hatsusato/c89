@@ -10,13 +10,13 @@ struct struct_Scanner {
   Set *typedefs;
 };
 
-static Scanner *scanner_new(Ast *ast) {
+Scanner *scanner_new(Ast *ast) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
   scanner->ast = ast;
   scanner->typedefs = set_new(NULL, NULL);
   return scanner;
 }
-static void scanner_delete(Scanner *scanner) {
+void scanner_delete(Scanner *scanner) {
   set_delete(scanner->typedefs);
   UTILITY_FREE(scanner);
 }
