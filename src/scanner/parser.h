@@ -30,7 +30,6 @@
               PARSER_LIST8(ast1, ast2, ast3, ast4, ast5, ast6, ast7, ast8))
 #define PARSER_LIST_NIL(tag) PARSER_LIST1(sexp_number(tag))
 #define PARSER_LIST_ATOM(tag, ast) PARSER_LIST2(sexp_number(tag), ast)
-
-Sexp *parser_list_snoc(Sexp *, Sexp *);
+#define PARSER_LIST_SNOC(list, ast) sexp_snoc(list, ast)
 
 #endif /* INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD */
