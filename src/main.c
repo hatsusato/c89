@@ -14,13 +14,13 @@ static void build(Sexp *ast) {
 }
 
 int main(void) {
-  yyscan_t scanner = scanner_new();
-  int ret = scanner_parse(scanner);
+  Scanner *scanner = scanner_new();
+  int ret = scanner_parse(scanner_yyscan(scanner));
   if (0 == ret) {
-    Sexp *ast = ast_get(scanner_get(scanner));
+    Sexp *ast = ast_get(scanner_get(scanner_yyscan(scanner)));
     print_ast(ast);
     build(ast);
   }
-  scanner_delete(scanner);
+  scanner_delete(scanner_yyscan(scanner));
   return ret;
 }

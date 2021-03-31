@@ -28,7 +28,7 @@ static Set *scanner_typedefs(yyscan_t yyscan) {
   return scanner->typedefs;
 }
 
-yyscan_t scanner_new(void) {
+Scanner *scanner_new(void) {
   yyscan_t yyscan;
   Scanner *scanner = UTILITY_MALLOC(Scanner);
   int ret = yylex_init(&yyscan);
@@ -37,7 +37,7 @@ yyscan_t scanner_new(void) {
   scanner->yyscan = yyscan;
   scanner_init(scanner);
   scanner_register(yyscan, "__builtin_va_list");
-  return yyscan;
+  return scanner;
 }
 void scanner_delete(yyscan_t yyscan) {
   set_delete(scanner_typedefs(yyscan));

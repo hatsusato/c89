@@ -4,7 +4,7 @@
 #include "scanner/yyscan.h"
 #include "utility/types.h"
 
-yyscan_t scanner_new(void);
+Scanner *scanner_new(void);
 void scanner_delete(yyscan_t);
 int scanner_parse(yyscan_t);
 Ast *scanner_get(yyscan_t);
