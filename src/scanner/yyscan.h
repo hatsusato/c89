@@ -8,6 +8,9 @@ typedef void *yyscan_t;
 
 #include "sexp/opaque.h"
 
+#define YYSCAN_FINISH(ast) yyscan_finish(ast, yyscanner)
+#define YYSCAN_DECLARATION(ast) yyscan_declaration(ast, yyscanner)
+
 void yyerror(yyscan_t, const char *);
 void yyscan_finish(Sexp *, yyscan_t);
 void yyscan_declaration(Sexp *, yyscan_t);

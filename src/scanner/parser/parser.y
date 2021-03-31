@@ -825,7 +825,7 @@ jump-statement.tag
 
 /* 6.7 External definitions */
 top
-: translation-unit {scanner_finish(yyscanner, $1);}
+: translation-unit {YYSCAN_FINISH($1);}
 ;
 translation-unit
 : external-declaration {$$ = PARSER_LIST_ATOM(AST_TRANSLATION_UNIT, $1);}
@@ -833,7 +833,7 @@ translation-unit
 ;
 external-declaration
 : function-definition
-| declaration {$$ = PARSER_TAG(AST_EXTERNAL_DECLARATION, PARSER_LIST1($1)); register_declaration(yyscanner, $1);}
+| declaration {$$ = PARSER_TAG(AST_EXTERNAL_DECLARATION, PARSER_LIST1($1)); YYSCAN_DECLARATION($1);}
 ;
 function-definition
 : function-definition.tag {$$ = PARSER_TAG(AST_FUNCTION_DEFINITION, $1);}
