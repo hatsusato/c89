@@ -10,7 +10,6 @@
 %code provides {
 #include "ast/tag.h"
 #include "lexer.h"
-#include "parser.h"
 #include "yyscan.h"
 #include "sexp/sexp.h"
 }
@@ -112,212 +111,407 @@
 
 %start top
 %%
-auto: "auto" {$$ = PARSER_SYMBOL(AST_AUTO);}
+auto: "auto" {
+  $$ = YYSCAN_SYMBOL(AST_AUTO);
+}
 ;
-break: "break" {$$ = PARSER_SYMBOL(AST_BREAK);}
+break: "break" {
+  $$ = YYSCAN_SYMBOL(AST_BREAK);
+}
 ;
-case: "case" {$$ = PARSER_SYMBOL(AST_CASE);}
+case: "case" {
+  $$ = YYSCAN_SYMBOL(AST_CASE);
+}
 ;
-char: "char" {$$ = PARSER_SYMBOL(AST_CHAR);}
+char: "char" {
+  $$ = YYSCAN_SYMBOL(AST_CHAR);
+}
 ;
-const: "const" {$$ = PARSER_SYMBOL(AST_CONST);}
+const: "const" {
+  $$ = YYSCAN_SYMBOL(AST_CONST);
+}
 ;
-continue: "continue" {$$ = PARSER_SYMBOL(AST_CONTINUE);}
+continue: "continue" {
+  $$ = YYSCAN_SYMBOL(AST_CONTINUE);
+}
 ;
-default: "default" {$$ = PARSER_SYMBOL(AST_DEFAULT);}
+default: "default" {
+  $$ = YYSCAN_SYMBOL(AST_DEFAULT);
+}
 ;
-do: "do" {$$ = PARSER_SYMBOL(AST_DO);}
+do: "do" {
+  $$ = YYSCAN_SYMBOL(AST_DO);
+}
 ;
-double: "double" {$$ = PARSER_SYMBOL(AST_DOUBLE);}
+double: "double" {
+  $$ = YYSCAN_SYMBOL(AST_DOUBLE);
+}
 ;
-else: "else" {$$ = PARSER_SYMBOL(AST_ELSE);}
+else: "else" {
+  $$ = YYSCAN_SYMBOL(AST_ELSE);
+}
 ;
-enum: "enum" {$$ = PARSER_SYMBOL(AST_ENUM);}
+enum: "enum" {
+  $$ = YYSCAN_SYMBOL(AST_ENUM);
+}
 ;
-extern: "extern" {$$ = PARSER_SYMBOL(AST_EXTERN);}
+extern: "extern" {
+  $$ = YYSCAN_SYMBOL(AST_EXTERN);
+}
 ;
-float: "float" {$$ = PARSER_SYMBOL(AST_FLOAT);}
+float: "float" {
+  $$ = YYSCAN_SYMBOL(AST_FLOAT);
+}
 ;
-for: "for" {$$ = PARSER_SYMBOL(AST_FOR);}
+for: "for" {
+  $$ = YYSCAN_SYMBOL(AST_FOR);
+}
 ;
-goto: "goto" {$$ = PARSER_SYMBOL(AST_GOTO);}
+goto: "goto" {
+  $$ = YYSCAN_SYMBOL(AST_GOTO);
+}
 ;
-if: "if" {$$ = PARSER_SYMBOL(AST_IF);}
+if: "if" {
+  $$ = YYSCAN_SYMBOL(AST_IF);
+}
 ;
-int: "int" {$$ = PARSER_SYMBOL(AST_INT);}
+int: "int" {
+  $$ = YYSCAN_SYMBOL(AST_INT);
+}
 ;
-long: "long" {$$ = PARSER_SYMBOL(AST_LONG);}
+long: "long" {
+  $$ = YYSCAN_SYMBOL(AST_LONG);
+}
 ;
-register: "register" {$$ = PARSER_SYMBOL(AST_REGISTER);}
+register: "register" {
+  $$ = YYSCAN_SYMBOL(AST_REGISTER);
+}
 ;
-return: "return" {$$ = PARSER_SYMBOL(AST_RETURN);}
+return: "return" {
+  $$ = YYSCAN_SYMBOL(AST_RETURN);
+}
 ;
-short: "short" {$$ = PARSER_SYMBOL(AST_SHORT);}
+short: "short" {
+  $$ = YYSCAN_SYMBOL(AST_SHORT);
+}
 ;
-signed: "signed" {$$ = PARSER_SYMBOL(AST_SIGNED);}
+signed: "signed" {
+  $$ = YYSCAN_SYMBOL(AST_SIGNED);
+}
 ;
-sizeof: "sizeof" {$$ = PARSER_SYMBOL(AST_SIZEOF);}
+sizeof: "sizeof" {
+  $$ = YYSCAN_SYMBOL(AST_SIZEOF);
+}
 ;
-static: "static" {$$ = PARSER_SYMBOL(AST_STATIC);}
+static: "static" {
+  $$ = YYSCAN_SYMBOL(AST_STATIC);
+}
 ;
-struct: "struct" {$$ = PARSER_SYMBOL(AST_STRUCT);}
+struct: "struct" {
+  $$ = YYSCAN_SYMBOL(AST_STRUCT);
+}
 ;
-switch: "switch" {$$ = PARSER_SYMBOL(AST_SWITCH);}
+switch: "switch" {
+  $$ = YYSCAN_SYMBOL(AST_SWITCH);
+}
 ;
-typedef: "typedef" {$$ = PARSER_SYMBOL(AST_TYPEDEF);}
+typedef: "typedef" {
+  $$ = YYSCAN_SYMBOL(AST_TYPEDEF);
+}
 ;
-union: "union" {$$ = PARSER_SYMBOL(AST_UNION);}
+union: "union" {
+  $$ = YYSCAN_SYMBOL(AST_UNION);
+}
 ;
-unsigned: "unsigned" {$$ = PARSER_SYMBOL(AST_UNSIGNED);}
+unsigned: "unsigned" {
+  $$ = YYSCAN_SYMBOL(AST_UNSIGNED);
+}
 ;
-void: "void" {$$ = PARSER_SYMBOL(AST_VOID);}
+void: "void" {
+  $$ = YYSCAN_SYMBOL(AST_VOID);
+}
 ;
-volatile: "volatile" {$$ = PARSER_SYMBOL(AST_VOLATILE);}
+volatile: "volatile" {
+  $$ = YYSCAN_SYMBOL(AST_VOLATILE);
+}
 ;
-while: "while" {$$ = PARSER_SYMBOL(AST_WHILE);}
+while: "while" {
+  $$ = YYSCAN_SYMBOL(AST_WHILE);
+}
 ;
 
-period: "." {$$ = PARSER_SYMBOL(AST_PERIOD);}
+period: "." {
+  $$ = YYSCAN_SYMBOL(AST_PERIOD);
+}
 ;
-arrow: "->" {$$ = PARSER_SYMBOL(AST_ARROW);}
+arrow: "->" {
+  $$ = YYSCAN_SYMBOL(AST_ARROW);
+}
 ;
-increment: "++" {$$ = PARSER_SYMBOL(AST_INCREMENT);}
+increment: "++" {
+  $$ = YYSCAN_SYMBOL(AST_INCREMENT);
+}
 ;
-decrement: "--" {$$ = PARSER_SYMBOL(AST_DECREMENT);}
+decrement: "--" {
+  $$ = YYSCAN_SYMBOL(AST_DECREMENT);
+}
 ;
-ampersand: "&" {$$ = PARSER_SYMBOL(AST_AMPERSAND);}
+ampersand: "&" {
+  $$ = YYSCAN_SYMBOL(AST_AMPERSAND);
+}
 ;
-asterisk: "*" {$$ = PARSER_SYMBOL(AST_ASTERISK);}
+asterisk: "*" {
+  $$ = YYSCAN_SYMBOL(AST_ASTERISK);
+}
 ;
-plus: "+" {$$ = PARSER_SYMBOL(AST_PLUS);}
+plus: "+" {
+  $$ = YYSCAN_SYMBOL(AST_PLUS);
+}
 ;
-minus: "-" {$$ = PARSER_SYMBOL(AST_MINUS);}
+minus: "-" {
+  $$ = YYSCAN_SYMBOL(AST_MINUS);
+}
 ;
-tilde: "~" {$$ = PARSER_SYMBOL(AST_TILDE);}
+tilde: "~" {
+  $$ = YYSCAN_SYMBOL(AST_TILDE);
+}
 ;
-exclamation: "!" {$$ = PARSER_SYMBOL(AST_EXCLAMATION);}
+exclamation: "!" {
+  $$ = YYSCAN_SYMBOL(AST_EXCLAMATION);
+}
 ;
-slash: "/" {$$ = PARSER_SYMBOL(AST_SLASH);}
+slash: "/" {
+  $$ = YYSCAN_SYMBOL(AST_SLASH);
+}
 ;
-percent: "%" {$$ = PARSER_SYMBOL(AST_PERCENT);}
+percent: "%" {
+  $$ = YYSCAN_SYMBOL(AST_PERCENT);
+}
 ;
-left-shift: "<<" {$$ = PARSER_SYMBOL(AST_LEFT_SHIFT);}
+left-shift: "<<" {
+  $$ = YYSCAN_SYMBOL(AST_LEFT_SHIFT);
+}
 ;
-right-shift: ">>" {$$ = PARSER_SYMBOL(AST_RIGHT_SHIFT);}
+right-shift: ">>" {
+  $$ = YYSCAN_SYMBOL(AST_RIGHT_SHIFT);
+}
 ;
-less-than: "<" {$$ = PARSER_SYMBOL(AST_LESS_THAN);}
+less-than: "<" {
+  $$ = YYSCAN_SYMBOL(AST_LESS_THAN);
+}
 ;
-greater-than: ">" {$$ = PARSER_SYMBOL(AST_GREATER_THAN);}
+greater-than: ">" {
+  $$ = YYSCAN_SYMBOL(AST_GREATER_THAN);
+}
 ;
-less-equal: "<=" {$$ = PARSER_SYMBOL(AST_LESS_EQUAL);}
+less-equal: "<=" {
+  $$ = YYSCAN_SYMBOL(AST_LESS_EQUAL);
+}
 ;
-greater-equal: ">=" {$$ = PARSER_SYMBOL(AST_GREATER_EQUAL);}
+greater-equal: ">=" {
+  $$ = YYSCAN_SYMBOL(AST_GREATER_EQUAL);
+}
 ;
-equal: "==" {$$ = PARSER_SYMBOL(AST_EQUAL);}
+equal: "==" {
+  $$ = YYSCAN_SYMBOL(AST_EQUAL);
+}
 ;
-not-equal: "!=" {$$ = PARSER_SYMBOL(AST_NOT_EQUAL);}
+not-equal: "!=" {
+  $$ = YYSCAN_SYMBOL(AST_NOT_EQUAL);
+}
 ;
-caret: "^" {$$ = PARSER_SYMBOL(AST_CARET);}
+caret: "^" {
+  $$ = YYSCAN_SYMBOL(AST_CARET);
+}
 ;
-bar: "|" {$$ = PARSER_SYMBOL(AST_BAR);}
+bar: "|" {
+  $$ = YYSCAN_SYMBOL(AST_BAR);
+}
 ;
-and: "&&" {$$ = PARSER_SYMBOL(AST_AND);}
+and: "&&" {
+  $$ = YYSCAN_SYMBOL(AST_AND);
+}
 ;
-or: "||" {$$ = PARSER_SYMBOL(AST_OR);}
+or: "||" {
+  $$ = YYSCAN_SYMBOL(AST_OR);
+}
 ;
-question: "?" {$$ = PARSER_SYMBOL(AST_QUESTION);}
+question: "?" {
+  $$ = YYSCAN_SYMBOL(AST_QUESTION);
+}
 ;
-assign: "=" {$$ = PARSER_SYMBOL(AST_ASSIGN);}
+assign: "=" {
+  $$ = YYSCAN_SYMBOL(AST_ASSIGN);
+}
 ;
-asterisk-assign: "*=" {$$ = PARSER_SYMBOL(AST_ASTERISK_ASSIGN);}
+asterisk-assign: "*=" {
+  $$ = YYSCAN_SYMBOL(AST_ASTERISK_ASSIGN);
+}
 ;
-slash-assign: "/=" {$$ = PARSER_SYMBOL(AST_SLASH_ASSIGN);}
+slash-assign: "/=" {
+  $$ = YYSCAN_SYMBOL(AST_SLASH_ASSIGN);
+}
 ;
-percent-assign: "%=" {$$ = PARSER_SYMBOL(AST_PERCENT_ASSIGN);}
+percent-assign: "%=" {
+  $$ = YYSCAN_SYMBOL(AST_PERCENT_ASSIGN);
+}
 ;
-plus-assign: "+=" {$$ = PARSER_SYMBOL(AST_PLUS_ASSIGN);}
+plus-assign: "+=" {
+  $$ = YYSCAN_SYMBOL(AST_PLUS_ASSIGN);
+}
 ;
-minus-assign: "-=" {$$ = PARSER_SYMBOL(AST_MINUS_ASSIGN);}
+minus-assign: "-=" {
+  $$ = YYSCAN_SYMBOL(AST_MINUS_ASSIGN);
+}
 ;
-left-shift-assign: "<<=" {$$ = PARSER_SYMBOL(AST_LEFT_SHIFT_ASSIGN);}
+left-shift-assign: "<<=" {
+  $$ = YYSCAN_SYMBOL(AST_LEFT_SHIFT_ASSIGN);
+}
 ;
-right-shift-assign: ">>=" {$$ = PARSER_SYMBOL(AST_RIGHT_SHIFT_ASSIGN);}
+right-shift-assign: ">>=" {
+  $$ = YYSCAN_SYMBOL(AST_RIGHT_SHIFT_ASSIGN);
+}
 ;
-ampersand-assign: "&=" {$$ = PARSER_SYMBOL(AST_AMPERSAND_ASSIGN);}
+ampersand-assign: "&=" {
+  $$ = YYSCAN_SYMBOL(AST_AMPERSAND_ASSIGN);
+}
 ;
-caret-assign: "^=" {$$ = PARSER_SYMBOL(AST_CARET_ASSIGN);}
+caret-assign: "^=" {
+  $$ = YYSCAN_SYMBOL(AST_CARET_ASSIGN);
+}
 ;
-bar-assign: "|=" {$$ = PARSER_SYMBOL(AST_BAR_ASSIGN);}
+bar-assign: "|=" {
+  $$ = YYSCAN_SYMBOL(AST_BAR_ASSIGN);
+}
 ;
 
-left-bracket: "[" {$$ = PARSER_SYMBOL(AST_LEFT_BRACKET);}
+left-bracket: "[" {
+  $$ = YYSCAN_SYMBOL(AST_LEFT_BRACKET);
+}
 ;
-right-bracket: "]" {$$ = PARSER_SYMBOL(AST_RIGHT_BRACKET);}
+right-bracket: "]" {
+  $$ = YYSCAN_SYMBOL(AST_RIGHT_BRACKET);
+}
 ;
-left-paren: "(" {$$ = PARSER_SYMBOL(AST_LEFT_PAREN);}
+left-paren: "(" {
+  $$ = YYSCAN_SYMBOL(AST_LEFT_PAREN);
+}
 ;
-right-paren: ")" {$$ = PARSER_SYMBOL(AST_RIGHT_PAREN);}
+right-paren: ")" {
+  $$ = YYSCAN_SYMBOL(AST_RIGHT_PAREN);
+}
 ;
-left-brace: "{" {$$ = PARSER_SYMBOL(AST_LEFT_BRACE);}
+left-brace: "{" {
+  $$ = YYSCAN_SYMBOL(AST_LEFT_BRACE);
+}
 ;
-right-brace: "}" {$$ = PARSER_SYMBOL(AST_RIGHT_BRACE);}
+right-brace: "}" {
+  $$ = YYSCAN_SYMBOL(AST_RIGHT_BRACE);
+}
 ;
-comma: "," {$$ = PARSER_SYMBOL(AST_COMMA);}
+comma: "," {
+  $$ = YYSCAN_SYMBOL(AST_COMMA);
+}
 ;
-colon: ":" {$$ = PARSER_SYMBOL(AST_COLON);}
+colon: ":" {
+  $$ = YYSCAN_SYMBOL(AST_COLON);
+}
 ;
-semicolon: ";" {$$ = PARSER_SYMBOL(AST_SEMICOLON);}
+semicolon: ";" {
+  $$ = YYSCAN_SYMBOL(AST_SEMICOLON);
+}
 ;
-ellipsis: "..." {$$ = PARSER_SYMBOL(AST_ELLIPSIS);}
+ellipsis: "..." {
+  $$ = YYSCAN_SYMBOL(AST_ELLIPSIS);
+}
 ;
 
 /* 6.1 Lexical elements */
 identifier.opt
-: %empty {$$ = PARSER_LIST0();}
+: %empty {
+  $$ = YYSCAN_NIL();
+}
 | identifier
 ;
 identifier
-: identifier.tag {$$ = PARSER_LIST_ATOM(AST_IDENTIFIER, $1);}
+: identifier.tag {
+  $$ = YYSCAN_TAG(AST_IDENTIFIER);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 identifier.tag
-: TOKEN_IDENTIFIER {$$ = YYSCAN_TOKEN();}
+: TOKEN_IDENTIFIER {
+  $$ = YYSCAN_TOKEN();
+}
 ;
 typedef-identifier
-: typedef-identifier.tag {$$ = PARSER_LIST_ATOM(AST_TYPEDEF_IDENTIFIER, $1);}
+: typedef-identifier.tag {
+  $$ = YYSCAN_TAG(AST_TYPEDEF_IDENTIFIER);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 typedef-identifier.tag
-: TOKEN_TYPEDEF_IDENTIFIER {$$ = YYSCAN_TOKEN();}
+: TOKEN_TYPEDEF_IDENTIFIER {
+  $$ = YYSCAN_TOKEN();
+}
 ;
 floating-constant
-: floating-constant.tag {$$ = PARSER_LIST_ATOM(AST_FLOATING_CONSTANT, $1);}
+: floating-constant.tag {
+  $$ = YYSCAN_TAG(AST_FLOATING_CONSTANT);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 floating-constant.tag
-: TOKEN_FLOATING_CONSTANT {$$ = YYSCAN_TOKEN();}
+: TOKEN_FLOATING_CONSTANT {
+  $$ = YYSCAN_TOKEN();
+}
 ;
 integer-constant
-: integer-constant.tag {$$ = PARSER_LIST_ATOM(AST_INTEGER_CONSTANT, $1);}
+: integer-constant.tag {
+  $$ = YYSCAN_TAG(AST_INTEGER_CONSTANT);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 integer-constant.tag
-: TOKEN_INTEGER_CONSTANT {$$ = YYSCAN_TOKEN();}
+: TOKEN_INTEGER_CONSTANT {
+  $$ = YYSCAN_TOKEN();
+}
 ;
 enumeration-constant
-: enumeration-constant.tag {$$ = PARSER_LIST_ATOM(AST_ENUMERATION_CONSTANT, $1);}
+: enumeration-constant.tag {
+  $$ = YYSCAN_TAG(AST_ENUMERATION_CONSTANT);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 enumeration-constant.tag
-: TOKEN_IDENTIFIER {$$ = YYSCAN_TOKEN();}
+: TOKEN_IDENTIFIER {
+  $$ = YYSCAN_TOKEN();
+}
 ;
 character-constant
-: character-constant.tag {$$ = PARSER_LIST_ATOM(AST_CHARACTER_CONSTANT, $1);}
+: character-constant.tag {
+  $$ = YYSCAN_TAG(AST_CHARACTER_CONSTANT);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 character-constant.tag
-: TOKEN_CHARACTER_CONSTANT {$$ = YYSCAN_TOKEN();}
+: TOKEN_CHARACTER_CONSTANT {
+  $$ = YYSCAN_TOKEN();
+}
 ;
 string-literal
-: TOKEN_STRING_LITERAL {$$ = YYSCAN_TOKEN();}
+: TOKEN_STRING_LITERAL {
+  $$ = YYSCAN_TOKEN();
+}
 ;
 string-constant
-: string-literal {$$ = PARSER_LIST_ATOM(AST_STRING_LITERAL, $1);}
-| string-constant string-literal {$$ = PARSER_LIST_SNOC($1, $2);}
+: string-literal {
+  $$ = YYSCAN_TAG(AST_STRING_LITERAL);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| string-constant string-literal {
+  $$ = YYSCAN_SNOC($1, $2);
+}
 ;
 
 /* 6.3 Expressions */
@@ -327,41 +521,96 @@ primary-expression
 | integer-constant
 | character-constant
 | string-constant
-| left-paren expression right-paren {$$ = PARSER_TAG(AST_PRIMARY_EXPRESSION, PARSER_LIST3($1, $2, $3));}
+| left-paren expression right-paren {
+  $$ = YYSCAN_TAG(AST_PRIMARY_EXPRESSION);
+  $$ = YYSCAN_SNOC($$, $1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 postfix-expression
 : primary-expression
-| postfix-expression.tag {$$ = PARSER_TAG(AST_POSTFIX_EXPRESSION, $1);}
+| postfix-expression.tag {
+  $$ = YYSCAN_TAG(AST_POSTFIX_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 postfix-expression.tag
-: postfix-expression postfix-expression.suffix {$$ = PARSER_CONS($1, $2);}
+: postfix-expression postfix-expression.suffix {
+  $$ = YYSCAN_CONS($1, $2);
+}
 ;
 postfix-expression.suffix
-: left-bracket expression right-bracket {$$ = PARSER_LIST3($1, $2, $3);}
-| left-paren argument-expression-list.opt right-paren {$$ = PARSER_LIST3($1, $2, $3);}
-| period identifier {$$ = PARSER_LIST2($1, $2);}
-| arrow identifier {$$ = PARSER_LIST2($1, $2);}
-| increment {$$ = PARSER_LIST1($1);}
-| decrement {$$ = PARSER_LIST1($1);}
+: left-bracket expression right-bracket {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
+| left-paren argument-expression-list.opt right-paren {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
+| period identifier {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
+| arrow identifier {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
+| increment {
+  $$ = YYSCAN_LIST($1);
+}
+| decrement {
+  $$ = YYSCAN_LIST($1);
+}
 ;
 argument-expression-list.opt
-: %empty {$$ = PARSER_LIST_NIL(AST_ARGUMENT_EXPRESSION_LIST);}
+: %empty {
+  $$ = YYSCAN_TAG(AST_ARGUMENT_EXPRESSION_LIST);
+}
 | argument-expression-list
 ;
 argument-expression-list
-: assignment-expression {$$ = PARSER_LIST_ATOM(AST_ARGUMENT_EXPRESSION_LIST, $1);}
-| argument-expression-list "," assignment-expression {$$ = PARSER_LIST_SNOC($1, $3);}
+: assignment-expression {
+  $$ = YYSCAN_TAG(AST_ARGUMENT_EXPRESSION_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| argument-expression-list "," assignment-expression {
+  $$ = YYSCAN_SNOC($1, $3);
+}
 ;
 unary-expression
 : postfix-expression
-| unary-expression.tag {$$ = PARSER_TAG(AST_UNARY_EXPRESSION, $1);}
+| unary-expression.tag {
+  $$ = YYSCAN_TAG(AST_UNARY_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 unary-expression.tag
-: increment unary-expression {$$ = PARSER_LIST2($1, $2);}
-| decrement unary-expression {$$ = PARSER_LIST2($1, $2);}
-| unary-operator cast-expression {$$ = PARSER_LIST2($1, $2);}
-| sizeof unary-expression {$$ = PARSER_LIST2($1, $2);}
-| sizeof left-paren type-name right-paren {$$ = PARSER_LIST4($1, $2, $3, $4);}
+: increment unary-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
+| decrement unary-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
+| unary-operator cast-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
+| sizeof unary-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
+| sizeof left-paren type-name right-paren {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+}
 ;
 unary-operator
 : ampersand
@@ -373,17 +622,32 @@ unary-operator
 ;
 cast-expression
 : unary-expression
-| cast-expression.tag {$$ = PARSER_TAG(AST_CAST_EXPRESSION, $1);}
+| cast-expression.tag {
+  $$ = YYSCAN_TAG(AST_CAST_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 cast-expression.tag
-: left-paren type-name right-paren cast-expression {$$ = PARSER_LIST4($1, $2, $3, $4);}
+: left-paren type-name right-paren cast-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+}
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression.tag {$$ = PARSER_TAG(AST_MULTIPLICATIVE_EXPRESSION, $1);}
+| multiplicative-expression.tag {
+  $$ = YYSCAN_TAG(AST_MULTIPLICATIVE_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 multiplicative-expression.tag
-: multiplicative-expression multiplicative-operator cast-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: multiplicative-expression multiplicative-operator cast-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 multiplicative-operator
 : asterisk
@@ -392,10 +656,17 @@ multiplicative-operator
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression.tag {$$ = PARSER_TAG(AST_ADDITIVE_EXPRESSION, $1);}
+| additive-expression.tag {
+  $$ = YYSCAN_TAG(AST_ADDITIVE_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 additive-expression.tag
-: additive-expression additive-operator multiplicative-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: additive-expression additive-operator multiplicative-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 additive-operator
 : plus
@@ -403,10 +674,17 @@ additive-operator
 ;
 shift-expression
 : additive-expression
-| shift-expression.tag {$$ = PARSER_TAG(AST_SHIFT_EXPRESSION, $1);}
+| shift-expression.tag {
+  $$ = YYSCAN_TAG(AST_SHIFT_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 shift-expression.tag
-: shift-expression shift-operator additive-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: shift-expression shift-operator additive-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 shift-operator
 : left-shift
@@ -414,10 +692,17 @@ shift-operator
 ;
 relational-expression
 : shift-expression
-| relational-expression.tag {$$ = PARSER_TAG(AST_RELATIONAL_EXPRESSION, $1);}
+| relational-expression.tag {
+  $$ = YYSCAN_TAG(AST_RELATIONAL_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 relational-expression.tag
-: relational-expression relational-operator shift-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: relational-expression relational-operator shift-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 relational-operator
 : less-than
@@ -427,10 +712,17 @@ relational-operator
 ;
 equality-expression
 : relational-expression
-| equality-expression.tag {$$ = PARSER_TAG(AST_EQUALITY_EXPRESSION, $1);}
+| equality-expression.tag {
+  $$ = YYSCAN_TAG(AST_EQUALITY_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 equality-expression.tag
-: equality-expression equality-operator relational-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: equality-expression equality-operator relational-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 equality-operator
 : equal
@@ -438,52 +730,103 @@ equality-operator
 ;
 and-expression
 : equality-expression
-| and-expression.tag {$$ = PARSER_TAG(AST_AND_EXPRESSION, $1);}
+| and-expression.tag {
+  $$ = YYSCAN_TAG(AST_AND_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 and-expression.tag
-: and-expression ampersand equality-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: and-expression ampersand equality-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 exclusive-or-expression
 : and-expression
-| exclusive-or-expression.tag {$$ = PARSER_TAG(AST_EXCLUSIVE_OR_EXPRESSION, $1);}
+| exclusive-or-expression.tag {
+  $$ = YYSCAN_TAG(AST_EXCLUSIVE_OR_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 exclusive-or-expression.tag
-: exclusive-or-expression caret and-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: exclusive-or-expression caret and-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 inclusive-or-expression
 : exclusive-or-expression
-| inclusive-or-expression.tag {$$ = PARSER_TAG(AST_INCLUSIVE_OR_EXPRESSION, $1);}
+| inclusive-or-expression.tag {
+  $$ = YYSCAN_TAG(AST_INCLUSIVE_OR_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 inclusive-or-expression.tag
-: inclusive-or-expression bar exclusive-or-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: inclusive-or-expression bar exclusive-or-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 logical-and-expression
 : inclusive-or-expression
-| logical-and-expression.tag {$$ = PARSER_TAG(AST_LOGICAL_AND_EXPRESSION, $1);}
+| logical-and-expression.tag {
+  $$ = YYSCAN_TAG(AST_LOGICAL_AND_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 logical-and-expression.tag
-: logical-and-expression and inclusive-or-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: logical-and-expression and inclusive-or-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 logical-or-expression
 : logical-and-expression
-| logical-or-expression.tag {$$ = PARSER_TAG(AST_LOGICAL_OR_EXPRESSION, $1);}
+| logical-or-expression.tag {
+  $$ = YYSCAN_TAG(AST_LOGICAL_OR_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 logical-or-expression.tag
-: logical-or-expression or logical-and-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: logical-or-expression or logical-and-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 conditional-expression
 : logical-or-expression
-| conditional-expression.tag {$$ = PARSER_TAG(AST_CONDITIONAL_EXPRESSION, $1);}
+| conditional-expression.tag {
+  $$ = YYSCAN_TAG(AST_CONDITIONAL_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 conditional-expression.tag
-: logical-or-expression question expression colon conditional-expression {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
+: logical-or-expression question expression colon conditional-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+  $$ = YYSCAN_SNOC($$, $5);
+}
 ;
 assignment-expression
 : conditional-expression
-| assignment-expression.tag {$$ = PARSER_TAG(AST_ASSIGNMENT_EXPRESSION, $1);}
+| assignment-expression.tag {
+  $$ = YYSCAN_TAG(AST_ASSIGNMENT_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 assignment-expression.tag
-: unary-expression assignment-operator assignment-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: unary-expression assignment-operator assignment-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 assignment-operator
 : assign
@@ -499,36 +842,61 @@ assignment-operator
 | bar-assign
 ;
 expression.opt
-: %empty {$$ = PARSER_LIST0();}
+: %empty {
+  $$ = YYSCAN_NIL();
+}
 | expression
 ;
 expression
 : assignment-expression
-| expression.tag {$$ = PARSER_TAG(AST_EXPRESSION, $1);}
+| expression.tag {
+  $$ = YYSCAN_TAG(AST_EXPRESSION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 expression.tag
-: expression "," assignment-expression {$$ = PARSER_LIST2($1, $3);}
+: expression "," assignment-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty {$$ = PARSER_LIST0();}
+: %empty {
+  $$ = YYSCAN_NIL();
+}
 | constant-expression
 ;
 constant-expression
-: conditional-expression {$$ = PARSER_TAG(AST_CONSTANT_EXPRESSION, PARSER_LIST1($1));}
+: conditional-expression {
+  $$ = YYSCAN_TAG(AST_CONSTANT_EXPRESSION);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 
 /* 6.5 Declarations */
 declaration
-: declaration.tag {$$ = PARSER_TAG(AST_DECLARATION, $1);}
+: declaration.tag {
+  $$ = YYSCAN_TAG(AST_DECLARATION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 declaration.tag
-: declaration-specifiers init-declarator-list.opt semicolon {$$ = PARSER_LIST3($1, $2, $3);}
+: declaration-specifiers init-declarator-list.opt semicolon {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 declaration-specifiers
-: declaration-specifier {$$ = PARSER_LIST_ATOM(AST_DECLARATION_SPECIFIERS, $1);}
-| declaration-specifiers declaration-specifier {$$ = PARSER_LIST_SNOC($1, $2);}
+: declaration-specifier {
+  $$ = YYSCAN_TAG(AST_DECLARATION_SPECIFIERS);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| declaration-specifiers declaration-specifier {
+  $$ = YYSCAN_SNOC($1, $2);
+}
 ;
 declaration-specifier
 : storage-class-specifier
@@ -536,22 +904,41 @@ declaration-specifier
 | type-qualifier
 ;
 init-declarator-list.opt
-: %empty {$$ = PARSER_LIST_NIL(AST_INIT_DECLARATOR_LIST);}
+: %empty {
+  $$ = YYSCAN_TAG(AST_INIT_DECLARATOR_LIST);
+}
 | init-declarator-list
 ;
 init-declarator-list
-: init-declarator {$$ = PARSER_LIST_ATOM(AST_INIT_DECLARATOR_LIST, $1);}
-| init-declarator-list "," init-declarator {$$ = PARSER_LIST_SNOC($1, $3);}
+: init-declarator {
+  $$ = YYSCAN_TAG(AST_INIT_DECLARATOR_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| init-declarator-list "," init-declarator {
+  $$ = YYSCAN_SNOC($1, $3);
+}
 ;
 init-declarator
-: init-declarator.tag {$$ = PARSER_TAG(AST_INIT_DECLARATOR, $1);}
+: init-declarator.tag {
+  $$ = YYSCAN_TAG(AST_INIT_DECLARATOR);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 init-declarator.tag
-: declarator {$$ = PARSER_LIST1($1);}
-| declarator assign initializer {$$ = PARSER_LIST3($1, $2, $3);}
+: declarator {
+  $$ = YYSCAN_LIST($1);
+}
+| declarator assign initializer {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 storage-class-specifier
-: storage-class-specifier.tag {$$ = PARSER_TAG(AST_STORAGE_CLASS_SPECIFIER, PARSER_LIST1($1));}
+: storage-class-specifier.tag {
+  $$ = YYSCAN_TAG(AST_STORAGE_CLASS_SPECIFIER);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 storage-class-specifier.tag
 : typedef
@@ -561,7 +948,10 @@ storage-class-specifier.tag
 | register
 ;
 type-specifier
-: type-specifier.tag {$$ = PARSER_TAG(AST_TYPE_SPECIFIER, PARSER_LIST1($1));}
+: type-specifier.tag {
+  $$ = YYSCAN_TAG(AST_TYPE_SPECIFIER);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 type-specifier.tag
 : void
@@ -578,180 +968,383 @@ type-specifier.tag
 | typedef-name
 ;
 struct-or-union-specifier
-: struct-or-union-specifier.tag {$$ = PARSER_TAG(AST_STRUCT_OR_UNION_SPECIFIER, $1);}
+: struct-or-union-specifier.tag {
+  $$ = YYSCAN_TAG(AST_STRUCT_OR_UNION_SPECIFIER);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 struct-or-union-specifier.tag
-: struct-or-union identifier.opt left-brace struct-declaration-list right-brace {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
-| struct-or-union identifier {$$ = PARSER_LIST2($1, $2);}
+: struct-or-union identifier.opt left-brace struct-declaration-list right-brace {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+  $$ = YYSCAN_SNOC($$, $5);
+}
+| struct-or-union identifier {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
 ;
 struct-or-union
 : struct
 | union
 ;
 struct-declaration-list
-: struct-declaration {$$ = PARSER_LIST_ATOM(AST_STRUCT_DECLARATION_LIST, $1);}
-| struct-declaration-list struct-declaration {$$ = PARSER_LIST_SNOC($1, $2);}
+: struct-declaration {
+  $$ = YYSCAN_TAG(AST_STRUCT_DECLARATION_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| struct-declaration-list struct-declaration {
+  $$ = YYSCAN_SNOC($1, $2);
+}
 ;
 struct-declaration
-: struct-declaration.tag {$$ = PARSER_TAG(AST_STRUCT_DECLARATION, $1);}
+: struct-declaration.tag {
+  $$ = YYSCAN_TAG(AST_STRUCT_DECLARATION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 struct-declaration.tag
-: specifier-qualifier-list struct-declarator-list semicolon {$$ = PARSER_LIST3($1, $2, $3);}
+: specifier-qualifier-list struct-declarator-list semicolon {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 specifier-qualifier-list
-: specifier-qualifier {$$ = PARSER_LIST_ATOM(AST_SPECIFIER_QUALIFIER_LIST, $1);}
-| specifier-qualifier-list specifier-qualifier {$$ = PARSER_LIST_SNOC($1, $2);}
+: specifier-qualifier {
+  $$ = YYSCAN_TAG(AST_SPECIFIER_QUALIFIER_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| specifier-qualifier-list specifier-qualifier {
+  $$ = YYSCAN_SNOC($1, $2);
+}
 ;
 specifier-qualifier
 : type-specifier
 | type-qualifier
 ;
 struct-declarator-list
-: struct-declarator {$$ = PARSER_LIST_ATOM(AST_STRUCT_DECLARATOR_LIST, $1);}
-| struct-declarator-list "," struct-declarator {$$ = PARSER_LIST_SNOC($1, $3);}
+: struct-declarator {
+  $$ = YYSCAN_TAG(AST_STRUCT_DECLARATOR_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| struct-declarator-list "," struct-declarator {
+  $$ = YYSCAN_SNOC($1, $3);
+}
 ;
 struct-declarator
-: struct-declarator.tag {$$ = PARSER_TAG(AST_STRUCT_DECLARATOR, $1);}
+: struct-declarator.tag {
+  $$ = YYSCAN_TAG(AST_STRUCT_DECLARATOR);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 struct-declarator.tag
-: declarator {$$ = PARSER_LIST1($1);}
-| declarator.opt colon constant-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: declarator {
+  $$ = YYSCAN_LIST($1);
+}
+| declarator.opt colon constant-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 enum-specifier
-: enum-specifier.tag {$$ = PARSER_TAG(AST_ENUM_SPECIFIER, $1);}
+: enum-specifier.tag {
+  $$ = YYSCAN_TAG(AST_ENUM_SPECIFIER);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 enum-specifier.tag
-: enum identifier.opt left-brace enumerator-list right-brace {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
-| enum identifier {$$ = PARSER_LIST2($1, $2);}
+: enum identifier.opt left-brace enumerator-list right-brace {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+  $$ = YYSCAN_SNOC($$, $5);
+}
+| enum identifier {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
 ;
 enumerator-list
-: enumerator {$$ = PARSER_LIST_ATOM(AST_ENUMERATOR_LIST, $1);}
-| enumerator-list "," enumerator {$$ = PARSER_LIST_SNOC($1, $3);}
+: enumerator {
+  $$ = YYSCAN_TAG(AST_ENUMERATOR_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| enumerator-list "," enumerator {
+  $$ = YYSCAN_SNOC($1, $3);
+}
 ;
 enumerator
-: enumerator.tag {$$ = PARSER_TAG(AST_ENUMERATOR, $1);}
+: enumerator.tag {
+  $$ = YYSCAN_TAG(AST_ENUMERATOR);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 enumerator.tag
-: enumeration-constant {$$ = PARSER_LIST1($1);}
-| enumeration-constant assign constant-expression {$$ = PARSER_LIST3($1, $2, $3);}
+: enumeration-constant {
+  $$ = YYSCAN_LIST($1);
+}
+| enumeration-constant assign constant-expression {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 type-qualifier
-: type-qualifier.tag {$$ = PARSER_TAG(AST_TYPE_QUALIFIER, PARSER_LIST1($1));}
+: type-qualifier.tag {
+  $$ = YYSCAN_TAG(AST_TYPE_QUALIFIER);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 type-qualifier.tag
 : const
 | volatile
 ;
 declarator.opt
-: %empty {$$ = PARSER_LIST0();}
+: %empty {
+  $$ = YYSCAN_NIL();
+}
 | declarator
 ;
 declarator
-: declarator.tag {$$ = PARSER_TAG(AST_DECLARATOR, $1);}
+: declarator.tag {
+  $$ = YYSCAN_TAG(AST_DECLARATOR);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 declarator.tag
-: direct-declarator {$$ = PARSER_LIST1($1);}
-| pointer direct-declarator {$$ = PARSER_LIST2($1, $2);}
+: direct-declarator {
+  $$ = YYSCAN_LIST($1);
+}
+| pointer direct-declarator {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
 ;
 direct-declarator
-: direct-declarator.tag {$$ = PARSER_TAG(AST_DIRECT_DECLARATOR, $1);}
+: direct-declarator.tag {
+  $$ = YYSCAN_TAG(AST_DIRECT_DECLARATOR);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 direct-declarator.tag
-: identifier {$$ = PARSER_LIST1($1);}
-| left-paren declarator right-paren {$$ = PARSER_LIST3($1, $2, $3);}
-| direct-declarator direct-declarator.suffix {$$ = PARSER_CONS($1, $2);}
+: identifier {
+  $$ = YYSCAN_LIST($1);
+}
+| left-paren declarator right-paren {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
+| direct-declarator direct-declarator.suffix {
+  $$ = YYSCAN_CONS($1, $2);
+}
 ;
 direct-declarator.suffix
-: left-bracket constant-expression.opt right-bracket {$$ = PARSER_LIST3($1, $2, $3);}
-| left-paren parameter-type-list.opt right-paren {$$ = PARSER_LIST3($1, $2, $3);}
-| left-paren identifier-list right-paren {$$ = PARSER_LIST3($1, $2, $3);}
+: left-bracket constant-expression.opt right-bracket {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
+| left-paren parameter-type-list.opt right-paren {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
+| left-paren identifier-list right-paren {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 pointer
-: pointer.tag {$$ = PARSER_TAG(AST_POINTER, $1);}
+: pointer.tag {
+  $$ = YYSCAN_TAG(AST_POINTER);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 pointer.tag
-: asterisk type-qualifier-list.opt {$$ = PARSER_LIST2($1, $2);}
-| pointer asterisk type-qualifier-list.opt {$$ = PARSER_LIST3($1, $2, $3);}
+: asterisk type-qualifier-list.opt {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
+| pointer asterisk type-qualifier-list.opt {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 type-qualifier-list.opt
-: %empty {$$ = PARSER_LIST_NIL(AST_TYPE_QUALIFIER_LIST);}
+: %empty {
+  $$ = YYSCAN_TAG(AST_TYPE_QUALIFIER_LIST);
+}
 | type-qualifier-list
 ;
 type-qualifier-list
-: type-qualifier {$$ = PARSER_LIST_ATOM(AST_TYPE_QUALIFIER_LIST, $1);}
-| type-qualifier-list type-qualifier {$$ = PARSER_LIST_SNOC($1, $2);}
+: type-qualifier {
+  $$ = YYSCAN_TAG(AST_TYPE_QUALIFIER_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| type-qualifier-list type-qualifier {
+  $$ = YYSCAN_SNOC($1, $2);
+}
 ;
 parameter-type-list.opt
-: %empty {$$ = PARSER_LIST_NIL(AST_PARAMETER_LIST);}
+: %empty {
+  $$ = YYSCAN_TAG(AST_PARAMETER_LIST);
+}
 | parameter-type-list
 ;
 parameter-type-list
 : parameter-list
-| parameter-list "," ellipsis {$$ = PARSER_LIST_SNOC($1, $3);}
+| parameter-list "," ellipsis {
+  $$ = YYSCAN_SNOC($1, $3);
+}
 ;
 parameter-list
-: parameter-declaration {$$ = PARSER_LIST_ATOM(AST_PARAMETER_LIST, $1);}
-| parameter-list "," parameter-declaration {$$ = PARSER_LIST_SNOC($1, $3);}
+: parameter-declaration {
+  $$ = YYSCAN_TAG(AST_PARAMETER_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| parameter-list "," parameter-declaration {
+  $$ = YYSCAN_SNOC($1, $3);
+}
 ;
 parameter-declaration
-: parameter-declaration.tag {$$ = PARSER_TAG(AST_PARAMETER_DECLARATION, $1);}
+: parameter-declaration.tag {
+  $$ = YYSCAN_TAG(AST_PARAMETER_DECLARATION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 parameter-declaration.tag
-: declaration-specifiers declarator {$$ = PARSER_LIST2($1, $2);}
-| declaration-specifiers abstract-declarator.opt {$$ = PARSER_LIST2($1, $2);}
+: declaration-specifiers declarator {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
+| declaration-specifiers abstract-declarator.opt {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
 ;
 identifier-list
-: identifier {$$ = PARSER_LIST_ATOM(AST_IDENTIFIER_LIST, $1);}
-| identifier-list "," identifier {$$ = PARSER_LIST_SNOC($1, $3);}
+: identifier {
+  $$ = YYSCAN_TAG(AST_IDENTIFIER_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| identifier-list "," identifier {
+  $$ = YYSCAN_SNOC($1, $3);
+}
 ;
 type-name
-: type-name.tag {$$ = PARSER_TAG(AST_TYPE_NAME, $1);}
+: type-name.tag {
+  $$ = YYSCAN_TAG(AST_TYPE_NAME);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 type-name.tag
-: specifier-qualifier-list abstract-declarator.opt {$$ = PARSER_LIST2($1, $2);}
+: specifier-qualifier-list abstract-declarator.opt {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
 ;
 abstract-declarator.opt
-: %empty {$$ = PARSER_LIST0();}
+: %empty {
+  $$ = YYSCAN_NIL();
+}
 | abstract-declarator
 ;
 abstract-declarator
-: abstract-declarator.tag {$$ = PARSER_TAG(AST_ABSTRACT_DECLARATOR, $1);}
+: abstract-declarator.tag {
+  $$ = YYSCAN_TAG(AST_ABSTRACT_DECLARATOR);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 abstract-declarator.tag
-: pointer {$$ = PARSER_LIST1($1);}
-| direct-abstract-declarator {$$ = PARSER_LIST1($1);}
-| pointer direct-abstract-declarator {$$ = PARSER_LIST2($1, $2);}
+: pointer {
+  $$ = YYSCAN_LIST($1);
+}
+| direct-abstract-declarator {
+  $$ = YYSCAN_LIST($1);
+}
+| pointer direct-abstract-declarator {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
 ;
 direct-abstract-declarator
-: direct-abstract-declarator.tag {$$ = PARSER_TAG(AST_DIRECT_ABSTRACT_DECLARATOR, $1);}
+: direct-abstract-declarator.tag {
+  $$ = YYSCAN_TAG(AST_DIRECT_ABSTRACT_DECLARATOR);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 direct-abstract-declarator.tag
-: left-paren abstract-declarator right-paren {$$ = PARSER_LIST3($1, $2, $3);}
+: left-paren abstract-declarator right-paren {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 | direct-abstract-declarator.suffix
-| direct-abstract-declarator direct-abstract-declarator.suffix {$$ = PARSER_CONS($1, $2);}
+| direct-abstract-declarator direct-abstract-declarator.suffix {
+  $$ = YYSCAN_CONS($1, $2);
+}
 ;
 direct-abstract-declarator.suffix
-: left-bracket constant-expression.opt right-bracket {$$ = PARSER_LIST3($1, $2, $3);}
-| left-paren parameter-type-list.opt right-paren {$$ = PARSER_LIST3($1, $2, $3);}
+: left-bracket constant-expression.opt right-bracket {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
+| left-paren parameter-type-list.opt right-paren {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 typedef-name
-: typedef-identifier {$$ = PARSER_TAG(AST_TYPEDEF_NAME, PARSER_LIST1($1));}
+: typedef-identifier {
+  $$ = YYSCAN_TAG(AST_TYPEDEF_NAME);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 initializer
 : assignment-expression
-| initializer.tag {$$ = PARSER_TAG(AST_INITIALIZER, $1);}
+| initializer.tag {
+  $$ = YYSCAN_TAG(AST_INITIALIZER);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 initializer.tag
-: left-brace initializer-list right-brace {$$ = PARSER_LIST3($1, $2, $3);}
-| left-brace initializer-list comma right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
+: left-brace initializer-list right-brace {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
+| left-brace initializer-list comma right-brace {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+}
 ;
 initializer-list
-: initializer {$$ = PARSER_LIST_ATOM(AST_INITIALIZER_LIST, $1);}
-| initializer-list "," initializer {$$ = PARSER_LIST_SNOC($1, $3);}
+: initializer {
+  $$ = YYSCAN_TAG(AST_INITIALIZER_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| initializer-list "," initializer {
+  $$ = YYSCAN_SNOC($1, $3);
+}
 ;
 
 /* 6.6 Statements */
 statement
-: statement.tag {$$ = PARSER_TAG(AST_STATEMENT, PARSER_LIST1($1));}
+: statement.tag {
+  $$ = YYSCAN_TAG(AST_STATEMENT);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 statement.tag
 : labeled-statement
@@ -762,84 +1355,218 @@ statement.tag
 | jump-statement
 ;
 labeled-statement
-: labeled-statement.tag {$$ = PARSER_TAG(AST_LABELED_STATEMENT, $1);}
+: labeled-statement.tag {
+  $$ = YYSCAN_TAG(AST_LABELED_STATEMENT);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 labeled-statement.tag
-: identifier colon statement {$$ = PARSER_LIST3($1, $2, $3);}
-| case constant-expression colon statement {$$ = PARSER_LIST4($1, $2, $3, $4);}
-| default colon statement {$$ = PARSER_LIST3($1, $2, $3);}
+: identifier colon statement {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
+| case constant-expression colon statement {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+}
+| default colon statement {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 compound-statement
-: compound-statement.tag {$$ = PARSER_TAG(AST_COMPOUND_STATEMENT, $1);}
+: compound-statement.tag {
+  $$ = YYSCAN_TAG(AST_COMPOUND_STATEMENT);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 compound-statement.tag
-: left-brace declaration-list.opt statement-list.opt right-brace {$$ = PARSER_LIST4($1, $2, $3, $4);}
+: left-brace declaration-list.opt statement-list.opt right-brace {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+}
 ;
 declaration-list.opt
-: %empty {$$ = PARSER_LIST_NIL(AST_DECLARATION_LIST);}
+: %empty {
+  $$ = YYSCAN_TAG(AST_DECLARATION_LIST);
+}
 | declaration-list
 ;
 declaration-list
-: declaration {$$ = PARSER_LIST_ATOM(AST_DECLARATION_LIST, $1);}
-| declaration-list declaration {$$ = PARSER_LIST_SNOC($1, $2);}
+: declaration {
+  $$ = YYSCAN_TAG(AST_DECLARATION_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| declaration-list declaration {
+  $$ = YYSCAN_SNOC($1, $2);
+}
 ;
 statement-list.opt
-: %empty {$$ = PARSER_LIST_NIL(AST_STATEMENT_LIST);}
+: %empty {
+  $$ = YYSCAN_TAG(AST_STATEMENT_LIST);
+}
 | statement-list
 ;
 statement-list
-: statement {$$ = PARSER_LIST_ATOM(AST_STATEMENT_LIST, $1);}
-| statement-list statement {$$ = PARSER_LIST_SNOC($1, $2);}
+: statement {
+  $$ = YYSCAN_TAG(AST_STATEMENT_LIST);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| statement-list statement {
+  $$ = YYSCAN_SNOC($1, $2);
+}
 ;
 expression-statement
-: expression-statement.tag {$$ = PARSER_TAG(AST_EXPRESSION_STATEMENT, $1);}
+: expression-statement.tag {
+  $$ = YYSCAN_TAG(AST_EXPRESSION_STATEMENT);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 expression-statement.tag
-: expression.opt semicolon {$$ = PARSER_LIST2($1, $2);}
+: expression.opt semicolon {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
 ;
 selection-statement
-: selection-statement.tag {$$ = PARSER_TAG(AST_SELECTION_STATEMENT, $1);}
+: selection-statement.tag {
+  $$ = YYSCAN_TAG(AST_SELECTION_STATEMENT);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 selection-statement.tag
-: if left-paren expression right-paren statement %prec THEN {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
-| if left-paren expression right-paren statement else statement {$$ = PARSER_LIST7($1, $2, $3, $4, $5, $6, $7);}
-| switch left-paren expression right-paren statement {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
+: if left-paren expression right-paren statement %prec THEN {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+  $$ = YYSCAN_SNOC($$, $5);
+}
+| if left-paren expression right-paren statement else statement {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+  $$ = YYSCAN_SNOC($$, $5);
+  $$ = YYSCAN_SNOC($$, $6);
+  $$ = YYSCAN_SNOC($$, $7);
+}
+| switch left-paren expression right-paren statement {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+  $$ = YYSCAN_SNOC($$, $5);
+}
 ;
 iteration-statement
-: iteration-statement.tag {$$ = PARSER_TAG(AST_ITERATION_STATEMENT, $1);}
+: iteration-statement.tag {
+  $$ = YYSCAN_TAG(AST_ITERATION_STATEMENT);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 iteration-statement.tag
-: while left-paren expression right-paren statement {$$ = PARSER_LIST5($1, $2, $3, $4, $5);}
-| do statement while left-paren expression right-paren semicolon {$$ = PARSER_LIST7($1, $2, $3, $4, $5, $6, $7);}
-| for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {$$ = PARSER_LIST9($1, $2, $3, $4, $5, $6, $7, $8, $9);}
+: while left-paren expression right-paren statement {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+  $$ = YYSCAN_SNOC($$, $5);
+}
+| do statement while left-paren expression right-paren semicolon {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+  $$ = YYSCAN_SNOC($$, $5);
+  $$ = YYSCAN_SNOC($$, $6);
+  $$ = YYSCAN_SNOC($$, $7);
+}
+| for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+  $$ = YYSCAN_SNOC($$, $5);
+  $$ = YYSCAN_SNOC($$, $6);
+  $$ = YYSCAN_SNOC($$, $7);
+  $$ = YYSCAN_SNOC($$, $8);
+  $$ = YYSCAN_SNOC($$, $9);
+}
 ;
 jump-statement
-: jump-statement.tag {$$ = PARSER_TAG(AST_JUMP_STATEMENT, $1);}
+: jump-statement.tag {
+  $$ = YYSCAN_TAG(AST_JUMP_STATEMENT);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 jump-statement.tag
-: goto identifier semicolon {$$ = PARSER_LIST3($1, $2, $3);}
-| continue semicolon {$$ = PARSER_LIST2($1, $2);}
-| break semicolon {$$ = PARSER_LIST2($1, $2);}
-| return expression.opt semicolon {$$ = PARSER_LIST3($1, $2, $3);}
+: goto identifier semicolon {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
+| continue semicolon {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
+| break semicolon {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+}
+| return expression.opt semicolon {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
 ;
 
 /* 6.7 External definitions */
 top
-: translation-unit {YYSCAN_FINISH($1);}
+: translation-unit {
+  YYSCAN_FINISH($1);
+}
 ;
 translation-unit
-: external-declaration {$$ = PARSER_LIST_ATOM(AST_TRANSLATION_UNIT, $1);}
-| translation-unit external-declaration {$$ = PARSER_LIST_SNOC($1, $2);}
+: external-declaration {
+  $$ = YYSCAN_TAG(AST_TRANSLATION_UNIT);
+  $$ = YYSCAN_SNOC($$, $1);
+}
+| translation-unit external-declaration {
+  $$ = YYSCAN_SNOC($1, $2);
+}
 ;
 external-declaration
 : function-definition
-| declaration {$$ = PARSER_TAG(AST_EXTERNAL_DECLARATION, PARSER_LIST1($1)); YYSCAN_DECLARATION($1);}
+| declaration {
+  YYSCAN_DECLARATION($1);
+  $$ = YYSCAN_TAG(AST_EXTERNAL_DECLARATION);
+  $$ = YYSCAN_SNOC($$, $1);
+}
 ;
 function-definition
-: function-definition.tag {$$ = PARSER_TAG(AST_FUNCTION_DEFINITION, $1);}
+: function-definition.tag {
+  $$ = YYSCAN_TAG(AST_FUNCTION_DEFINITION);
+  $$ = YYSCAN_APPEND($$, $1);
+}
 ;
 function-definition.tag
-: declarator declaration-list.opt compound-statement {$$ = PARSER_LIST3($1, $2, $3);}
-| declaration-specifiers declarator declaration-list.opt compound-statement {$$ = PARSER_LIST4($1, $2, $3, $4);}
+: declarator declaration-list.opt compound-statement {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+}
+| declaration-specifiers declarator declaration-list.opt compound-statement {
+  $$ = YYSCAN_LIST($1);
+  $$ = YYSCAN_SNOC($$, $2);
+  $$ = YYSCAN_SNOC($$, $3);
+  $$ = YYSCAN_SNOC($$, $4);
+}
 ;
 %%

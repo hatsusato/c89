@@ -4,6 +4,13 @@
 #include "utility/types.h"
 #include "yyscan_t.h"
 
+#define YYSCAN_NIL() sexp_nil()
+#define YYSCAN_CONS(x, xs) sexp_pair(x, xs)
+#define YYSCAN_SNOC(xs, x) sexp_snoc(xs, x)
+#define YYSCAN_LIST(x) YYSCAN_CONS(x, YYSCAN_NIL())
+#define YYSCAN_SYMBOL(tag) sexp_number(tag)
+#define YYSCAN_TAG(tag) YYSCAN_LIST(YYSCAN_SYMBOL(tag))
+#define YYSCAN_APPEND(xs, ys) sexp_append(xs, ys);
 #define YYSCAN_TOKEN() yyscan_token(yyscanner)
 #define YYSCAN_FINISH(ast) yyscan_finish(ast, yyscanner)
 #define YYSCAN_DECLARATION(ast) yyscan_declaration(ast, yyscanner)
