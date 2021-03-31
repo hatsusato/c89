@@ -6,6 +6,10 @@
 typedef void *yyscan_t;
 #endif
 
+#include "sexp/opaque.h"
+
 void yyerror(yyscan_t, const char *);
+void yyscan_finish(Sexp *, yyscan_t);
+void yyscan_declaration(Sexp *, yyscan_t);
 
 #endif /* INCLUDE_GUARD_AD2E6BDC_1852_434E_87C9_94003CD02072 */

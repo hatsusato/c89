@@ -1,5 +1,4 @@
 %code requires {
-#include "sexp/opaque.h"
 #include "scanner/yyscan.h"
 }
 
