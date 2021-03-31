@@ -1,19 +1,32 @@
 #include "yyscan.h"
 
+#include <ctype.h>
+#include <stdio.h>
+
 #include "parser.tab.h"
-#include "print.h"
 #include "scanner/register.h"
 #include "scanner/scanner.h"
 #include "sexp/sexp.h"
 #include "utility/utility.h"
 
-void yyerror(yyscan_t scan, const char *msg) {
+static void verbatim(FILE *fp, char c) {
+  if (isprint(c)) {
+    fprintf(fp, "%c", c);
+  } else {
+    fprintf(fp, "\\x%02x", (unsigned char)c);
+  }
+}
+
+void yyerror(yyscan_t yyscanner, const char *msg) {
   FILE *fp = stderr;
-  print_message(fp, "yyerror: ");
-  print_message(fp, msg);
-  print_message(fp, ": ");
-  print_verbatim(fp, yyget_text(scan), yyget_leng(scan));
-  print_newline(fp);
+  const char *text = yyget_text(yyscanner);
+  int leng = yyget_leng(yyscanner);
+  int i;
+  fprintf(fp, "yyerror: %s: ", msg);
+  for (i = 0; i < leng; ++i) {
+    verbatim(fp, text[i]);
+  }
+  fprintf(fp, "\n");
 }
 int yyscan_parse(Scanner *scanner) {
   yyscan_t yyscanner;
