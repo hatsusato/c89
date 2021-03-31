@@ -2,12 +2,8 @@
 
 #include "scanner/impl.h"
 #include "scanner/register.h"
-#include "sexp/sexp.h"
 #include "utility/utility.h"
 
-Sexp *parser_symbol(AstTag tag) {
-  return sexp_number(tag);
-}
 Sexp *parser_tag(AstTag tag, Sexp *list) {
   assert(sexp_is_list(list));
   return sexp_pair(sexp_number(tag), list);
