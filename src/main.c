@@ -15,14 +15,12 @@ static void build(Sexp *ast) {
 
 int main(void) {
   Ast *ast = ast_new();
-  Scanner *scanner = scanner_new(ast);
-  int ret = scanner_parse(scanner);
+  int ret = scanner_parse(ast);
   if (0 == ret) {
-    Sexp *ast = ast_get(scanner_get(scanner));
-    print_ast(ast);
-    build(ast);
+    Sexp *sexp = ast_get(ast);
+    print_ast(sexp);
+    build(sexp);
   }
-  scanner_delete(scanner);
   ast_delete(ast);
   return ret;
 }
