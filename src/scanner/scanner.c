@@ -39,7 +39,8 @@ Scanner *scanner_new(void) {
   scanner_register(yyscan, "__builtin_va_list");
   return scanner;
 }
-void scanner_delete(yyscan_t yyscan) {
+void scanner_delete(Scanner *scanner) {
+  yyscan_t yyscan = scanner_yyscan(scanner);
   set_delete(scanner_typedefs(yyscan));
   ast_delete(scanner_ast(yyscan));
   UTILITY_FREE(yyget_extra(yyscan));

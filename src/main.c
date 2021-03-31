@@ -21,6 +21,6 @@ int main(void) {
     print_ast(ast);
     build(ast);
   }
-  scanner_delete(scanner_yyscan(scanner));
+  scanner_delete(scanner);
   return ret;
 }
