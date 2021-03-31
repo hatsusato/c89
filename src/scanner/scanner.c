@@ -1,7 +1,7 @@
 #include "scanner.h"
 
 #include "ast/ast.h"
-#include "scanner/yyscan.h"
+#include "scanner/parser/yyscan.h"
 #include "set/set.h"
 #include "utility/utility.h"
 

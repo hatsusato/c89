@@ -1,5 +1,5 @@
 %code requires {
-#include "scanner/yyscan_t.h"
+#include "yyscan_t.h"
 #include "sexp/opaque.h"
 }
 
@@ -11,8 +11,7 @@
 #include "ast/tag.h"
 #include "lexer.h"
 #include "parser.h"
-#include "scanner/register.h"
-#include "scanner/yyscan.h"
+#include "yyscan.h"
 #include "sexp/sexp.h"
 }
 

@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_AD2E6BDC_1852_434E_87C9_94003CD02072
 #define INCLUDE_GUARD_AD2E6BDC_1852_434E_87C9_94003CD02072
 
-#include "scanner/yyscan_t.h"
 #include "utility/types.h"
+#include "yyscan_t.h"
 
 #define YYSCAN_TOKEN() yyscan_token(yyscanner)
 #define YYSCAN_FINISH(ast) yyscan_finish(ast, yyscanner)

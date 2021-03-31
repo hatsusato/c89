@@ -1,7 +1,6 @@
 %{
 #define yyHEADER_H
 #include "parser.tab.h"
-#include "scanner/yyscan.h"
 %}
 
 %option noinput

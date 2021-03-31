@@ -19,6 +19,7 @@ add_library(parser OBJECT)
 target_sources(parser PRIVATE
   ${BISON_parser_OUTPUTS}
   ${FLEX_lexer_OUTPUTS}
+  yyscan.c
   )
 target_include_directories(parser PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}

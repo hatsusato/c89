@@ -1,10 +1,10 @@
-#include "scanner/yyscan.h"
+#include "yyscan.h"
 
 #include "ast/ast.h"
 #include "parser.tab.h"
 #include "print.h"
-#include "scanner.h"
 #include "scanner/register.h"
+#include "scanner/scanner.h"
 #include "set/set.h"
 #include "utility/utility.h"
 
