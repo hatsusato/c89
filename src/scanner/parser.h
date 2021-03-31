@@ -1,11 +1,6 @@
 #ifndef INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD
 #define INCLUDE_GUARD_084F183E_587F_408F_9792_59D56118F8FD
 
-#include "ast/tag.h"
-#include "scanner/yyscan.h"
-#include "sexp/sexp.h"
-#include "utility/types.h"
-
 #define PARSER_SYMBOL(tag) sexp_number(tag)
 #define PARSER_TAG(tag, list) sexp_pair(sexp_number(tag), list)
 #define PARSER_TOKEN(yyscan) sexp_symbol(scanner_token(yyscan))

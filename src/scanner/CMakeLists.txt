@@ -1,6 +1,5 @@
 add_library(scanner STATIC)
 target_sources(scanner PRIVATE
-  parser.c
   register.c
   scanner.c
   yyscan.c

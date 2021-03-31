@@ -8,10 +8,12 @@
 %param {yyscan_t scanner}
 
 %code provides {
+#include "ast/tag.h"
 #include "lexer.h"
 #include "scanner/parser.h"
 #include "scanner/register.h"
 #include "scanner/impl.h"
+#include "sexp/sexp.h"
 }
 
 /* 6.1 Lexical elements */
