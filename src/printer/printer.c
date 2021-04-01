@@ -1,5 +1,6 @@
 #include "printer.h"
 
+#include <stdarg.h>
 #include <stdio.h>
 
 #include "utility/utility.h"
@@ -15,4 +16,12 @@ Printer *printer_new(PrinterFile fp) {
 }
 void printer_delete(Printer *printer) {
   UTILITY_FREE(printer);
+}
+void printer_print(Printer *printer, const char *format, ...) {
+  if (printer->fp) {
+    va_list args;
+    va_start(args, format);
+    vfprintf(printer->fp, format, args);
+    va_end(args);
+  }
 }
