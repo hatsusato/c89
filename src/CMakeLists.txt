@@ -8,6 +8,7 @@ target_link_libraries(main PRIVATE
   builder
   ir
   options
+  printer
   map
   scanner
   set
@@ -23,6 +24,7 @@ add_subdirectory(ast)
 add_subdirectory(builder)
 add_subdirectory(ir)
 add_subdirectory(map)
+add_subdirectory(printer)
 add_subdirectory(scanner)
 add_subdirectory(set)
 add_subdirectory(sexp)
