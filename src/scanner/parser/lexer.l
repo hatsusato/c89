@@ -149,7 +149,7 @@ s-char                  {character-set}|{single-quote}|{escape-sequence}
 "..."   { return TOKEN_ELLIPSIS;      }
 
 {identifier} {
-  if (scanner_query(yyscanner, yytext)) {
+  if (yyscan_query(yytext, yyscanner)) {
     return TOKEN_TYPEDEF_IDENTIFIER;
   } else {
     return TOKEN_IDENTIFIER;

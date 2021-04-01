@@ -1,12 +1,13 @@
 #ifndef INCLUDE_GUARD_29982745_2BB0_454B_9528_9FABEC206FF9
 #define INCLUDE_GUARD_29982745_2BB0_454B_9528_9FABEC206FF9
 
-#include "scanner/yyscan.h"
 #include "utility/types.h"
 
-yyscan_t scanner_new(void);
-void scanner_delete(yyscan_t);
-int scanner_parse(yyscan_t);
-Ast *scanner_get(yyscan_t);
+Scanner *scanner_new(Ast *);
+void scanner_delete(Scanner *);
+const char *scanner_symbol(Scanner *, const char *, Size);
+Bool scanner_exists(Scanner *, const char *);
+void scanner_register(Scanner *, const char *);
+void scanner_finish(Scanner *, Sexp *);
 
 #endif /* INCLUDE_GUARD_29982745_2BB0_454B_9528_9FABEC206FF9 */

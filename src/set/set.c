@@ -26,6 +26,7 @@ void set_clear(Set *set) {
   vector_clear(set->vec);
 }
 void set_insert(Set *set, ConstGeneric elem) {
+  UTILITY_ASSERT(elem != NULL);
   vector_push(set->vec, (Generic)elem);
   vector_sort(set->vec, set->cmp);
 }

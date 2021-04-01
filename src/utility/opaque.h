@@ -5,6 +5,7 @@
 #include "builder/opaque.h"
 #include "ir/opaque.h"
 #include "map/opaque.h"
+#include "scanner/opaque.h"
 #include "set/opaque.h"
 #include "sexp/opaque.h"
 #include "vector/opaque.h"

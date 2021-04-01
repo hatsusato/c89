@@ -31,11 +31,13 @@ static void sexp_free(MutableSexp *sexp) {
     UTILITY_FREE(sexp);
   }
 }
+static void sexp_set_cdr(Sexp *sexp, Sexp *cdr) {
+  UTILITY_ASSERT(sexp_is_pair(sexp));
+  ((MutableSexp *)sexp)->data.pair.cdr = cdr;
+}
 static void sexp_set_cdar(Sexp *sexp, Sexp *cdar) {
-  if (sexp_is_pair(sexp)) {
-    Sexp *cdr = sexp_pair(cdar, sexp_cdr(sexp));
-    ((MutableSexp *)sexp)->data.pair.cdr = cdr;
-  }
+  UTILITY_ASSERT(sexp_is_pair(sexp));
+  sexp_set_cdr(sexp, sexp_pair(cdar, sexp_cdr(sexp)));
 }
 
 void sexp_delete(Sexp *sexp) {
@@ -95,6 +97,21 @@ Bool sexp_is_list(Sexp *list) {
     list = sexp_cdr(list);
   }
   return sexp_is_nil(list);
+}
+Sexp *sexp_append(Sexp *xs, Sexp *ys) {
+  UTILITY_ASSERT(sexp_is_list(xs));
+  if (sexp_is_pair(xs)) {
+    Sexp *it = xs;
+    while (sexp_is_pair(sexp_cdr(it))) {
+      it = sexp_cdr(it);
+    }
+    UTILITY_ASSERT(sexp_is_nil(sexp_cdr(it)));
+    sexp_set_cdr(it, ys);
+    return xs;
+  } else {
+    UTILITY_ASSERT(sexp_is_nil(xs));
+    return ys;
+  }
 }
 Sexp *sexp_snoc(Sexp *xs, Sexp *x) {
   if (sexp_is_pair(xs)) {

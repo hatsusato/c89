@@ -2,7 +2,7 @@
 #include "builder/builder.h"
 #include "ir/module.h"
 #include "print.h"
-#include "scanner/scanner.h"
+#include "scanner/parse.h"
 
 static void build(Sexp *ast) {
   Module *module = module_new();
@@ -14,13 +14,13 @@ static void build(Sexp *ast) {
 }
 
 int main(void) {
-  yyscan_t scanner = scanner_new();
-  int ret = scanner_parse(scanner);
+  Ast *ast = ast_new();
+  int ret = scanner_parse(ast);
   if (0 == ret) {
-    Sexp *ast = ast_get(scanner_get(scanner));
-    print_ast(ast);
-    build(ast);
+    Sexp *sexp = ast_get(ast);
+    print_ast(sexp);
+    build(sexp);
   }
-  scanner_delete(scanner);
+  ast_delete(ast);
   return ret;
 }

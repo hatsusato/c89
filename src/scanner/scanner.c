@@ -1,65 +1,35 @@
 #include "scanner.h"
 
 #include "ast/ast.h"
-#include "parser.tab.h"
-#include "scanner/impl.h"
 #include "set/set.h"
 #include "utility/utility.h"
 
-typedef struct {
+struct struct_Scanner {
   Ast *ast;
   Set *typedefs;
-} Scanner;
+};
 
-static void scanner_init(yyscan_t yyscan) {
+Scanner *scanner_new(Ast *ast) {
   Scanner *scanner = UTILITY_MALLOC(Scanner);
-  yyset_extra(scanner, yyscan);
-  scanner->ast = ast_new();
+  scanner->ast = ast;
   scanner->typedefs = set_new(NULL, NULL);
+  return scanner;
 }
-static Ast *scanner_ast(yyscan_t yyscan) {
-  Scanner *scanner = yyget_extra(yyscan);
-  return scanner->ast;
+void scanner_delete(Scanner *scanner) {
+  set_delete(scanner->typedefs);
+  UTILITY_FREE(scanner);
 }
-static Set *scanner_typedefs(yyscan_t yyscan) {
-  Scanner *scanner = yyget_extra(yyscan);
-  return scanner->typedefs;
+const char *scanner_symbol(Scanner *scanner, const char *text, Size leng) {
+  return ast_symbol(scanner->ast, text, leng);
 }
-
-yyscan_t scanner_new(void) {
-  yyscan_t yyscan;
-  int ret = yylex_init(&yyscan);
-  assert(0 == ret);
-  UTILITY_UNUSED(ret);
-  scanner_init(yyscan);
-  scanner_register(yyscan, "__builtin_va_list");
-  return yyscan;
+Bool scanner_exists(Scanner *scanner, const char *symbol) {
+  return set_find(scanner->typedefs, symbol) != NULL;
 }
-void scanner_delete(yyscan_t yyscan) {
-  set_delete(scanner_typedefs(yyscan));
-  ast_delete(scanner_ast(yyscan));
-  UTILITY_FREE(yyget_extra(yyscan));
-  yylex_destroy(yyscan);
+void scanner_register(Scanner *scanner, const char *symbol) {
+  if (!scanner_exists(scanner, symbol)) {
+    set_insert(scanner->typedefs, symbol);
+  }
 }
-int scanner_parse(yyscan_t yyscan) {
-  return yyparse(yyscan);
-}
-Ast *scanner_get(yyscan_t yyscan) {
-  return scanner_ast(yyscan);
-}
-
-void scanner_finish(yyscan_t yyscan, Sexp *ast) {
-  ast_set(scanner_ast(yyscan), ast);
-}
-const char *scanner_token(yyscan_t yyscan) {
-  const char *text = yyget_text(yyscan);
-  Size leng = yyget_leng(yyscan);
-  return ast_symbol(scanner_ast(yyscan), text, leng);
-}
-void scanner_register(yyscan_t yyscan, const char *symbol) {
-  assert("redefinition of typedef" && !scanner_query(yyscan, symbol));
-  set_insert(scanner_typedefs(yyscan), symbol);
-}
-Bool scanner_query(yyscan_t yyscan, const char *symbol) {
-  return set_find(scanner_typedefs(yyscan), symbol) != NULL;
+void scanner_finish(Scanner *scanner, Sexp *ast) {
+  ast_set(scanner->ast, ast);
 }
