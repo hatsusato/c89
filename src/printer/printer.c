@@ -16,6 +16,12 @@ static void printer_fputc(Printer *printer, char c) {
     fputc(c, printer->fp);
   }
 }
+static void printer_vfprintf(Printer *printer, const char *format,
+                             va_list args) {
+  if (printer->fp) {
+    vfprintf(printer->fp, format, args);
+  }
+}
 static void printer_print_indent(Printer *printer) {
   if (printer->newline) {
     int i;
@@ -37,13 +43,11 @@ void printer_delete(Printer *printer) {
   UTILITY_FREE(printer);
 }
 void printer_print(Printer *printer, const char *format, ...) {
-  if (printer->fp) {
-    va_list args;
-    va_start(args, format);
-    printer_print_indent(printer);
-    vfprintf(printer->fp, format, args);
-    va_end(args);
-  }
+  va_list args;
+  va_start(args, format);
+  printer_print_indent(printer);
+  printer_vfprintf(printer, format, args);
+  va_end(args);
 }
 void printer_indent(Printer *printer, int indent) {
   printer->indent += indent;
