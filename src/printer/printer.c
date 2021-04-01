@@ -17,10 +17,13 @@ static void printer_fputc(Printer *printer, char c) {
   }
 }
 static void printer_print_indent(Printer *printer) {
-  int i;
-  for (i = 0; i < printer->indent; ++i) {
-    printer_fputc(printer, ' ');
+  if (printer->newline) {
+    int i;
+    for (i = 0; i < printer->indent; ++i) {
+      printer_fputc(printer, ' ');
+    }
   }
+  printer->newline = false;
 }
 
 Printer *printer_new(PrinterFile fp) {
@@ -37,10 +40,7 @@ void printer_print(Printer *printer, const char *format, ...) {
   if (printer->fp) {
     va_list args;
     va_start(args, format);
-    if (printer->newline) {
-      printer_print_indent(printer);
-      printer->newline = false;
-    }
+    printer_print_indent(printer);
     vfprintf(printer->fp, format, args);
     va_end(args);
   }
