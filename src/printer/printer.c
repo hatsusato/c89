@@ -8,9 +8,9 @@ struct struct_Printer {
   FILE *fp;
 };
 
-Printer *printer_new(void) {
+Printer *printer_new(PrinterFile fp) {
   Printer *printer = UTILITY_MALLOC(Printer);
-  printer->fp = NULL;
+  printer->fp = fp;
   return printer;
 }
 void printer_delete(Printer *printer) {
