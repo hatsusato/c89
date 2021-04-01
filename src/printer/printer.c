@@ -11,9 +11,12 @@ struct struct_Printer {
   Bool newline;
 };
 
-static void printer_fputc(Printer *printer, char c) {
+static void printer_fputc(Printer *printer, char c, int n) {
   if (printer->fp) {
-    fputc(c, printer->fp);
+    int i;
+    for (i = 0; i < n; ++i) {
+      fputc(c, printer->fp);
+    }
   }
 }
 static void printer_vfprintf(Printer *printer, const char *format,
@@ -24,10 +27,7 @@ static void printer_vfprintf(Printer *printer, const char *format,
 }
 static void printer_print_indent(Printer *printer) {
   if (printer->newline) {
-    int i;
-    for (i = 0; i < printer->indent; ++i) {
-      printer_fputc(printer, ' ');
-    }
+    printer_fputc(printer, ' ', printer->indent);
   }
   printer->newline = false;
 }
@@ -53,6 +53,6 @@ void printer_indent(Printer *printer, int indent) {
   printer->indent += indent;
 }
 void printer_newline(Printer *printer) {
-  printer_fputc(printer, '\n');
+  printer_fputc(printer, '\n', 1);
   printer->newline = true;
 }
