@@ -59,10 +59,13 @@ check() {
     return 1
   fi
 }
+main() {
+  local f count=0
+  for f in $(tests); do
+    check "$f" || ((++count))
+  done
+  exit $count
+}
 
 build
-count=0
-for f in $(tests); do
-  check "$f" || ((++count))
-done
-exit $count
+main
