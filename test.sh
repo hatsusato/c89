@@ -18,12 +18,12 @@ error() {
 comp() {
   local sh=./compile.sh
   test -x "$sh" || error "$sh not found"
-  "$sh" -S "$1"
+  "$sh" "$1"
 }
 emit() {
-  local sh=./emit-llvm.sh
+  local sh=./compile.sh
   test -x "$sh" || error "$sh not found"
-  "$sh" "$1"
+  "$sh" -s "$1"
 }
 compare() {
   local target=$1
