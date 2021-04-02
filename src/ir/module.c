@@ -45,9 +45,8 @@ static void module_pretty_prior(Module *module, Printer *printer) {
   VectorElem *end = vector_end(module->prior);
   while (begin < end) {
     Global *global = *begin++;
-    global_pretty(global);
+    global_pretty(global, printer);
   }
-  UTILITY_UNUSED(printer);
 }
 static void module_pretty_global(Module *module, Printer *printer) {
   VectorElem *begin = vector_begin(module->global);
@@ -55,10 +54,9 @@ static void module_pretty_global(Module *module, Printer *printer) {
   while (begin < end) {
     Global *global = *begin++;
     if (!global_is_prior(global)) {
-      global_pretty(global);
+      global_pretty(global, printer);
     }
   }
-  UTILITY_UNUSED(printer);
 }
 static void module_pretty_function(Module *module, Printer *printer) {
   VectorElem *begin = vector_begin(module->func);

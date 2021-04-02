@@ -73,7 +73,7 @@ void value_print(Value *value, Bool comma) {
     constant_print(value_as_constant(value));
     break;
   case VALUE_GLOBAL:
-    global_print(value_as_global(value));
+    global_print(value_as_global(value), NULL);
     break;
   default:
     UTILITY_ASSERT(0);
@@ -86,7 +86,7 @@ void value_print_type(Value *value) {
     instruction_print_type(value_as_instruction(value));
     break;
   case VALUE_GLOBAL:
-    global_print_type(value_as_global(value));
+    global_print_type(value_as_global(value), NULL);
     break;
   default:
     type_print(value->type);
