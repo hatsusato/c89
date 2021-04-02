@@ -71,9 +71,8 @@ void block_pretty(Block *block, Printer *printer) {
   VectorElem *begin = vector_begin(block->vec);
   VectorElem *end = vector_end(block->vec);
   while (begin < end) {
-    instruction_pretty(*begin++);
+    instruction_pretty(*begin++, printer);
   }
-  UTILITY_UNUSED(printer);
 }
 void block_pretty_switch(Block *block, Printer *printer) {
   VectorElem *begin = vector_begin(block->vec);
