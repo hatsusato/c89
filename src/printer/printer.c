@@ -12,24 +12,28 @@ struct struct_Printer {
 };
 
 static void printer_fputc(Printer *printer, char c, int n) {
-  if (printer->fp) {
+  FILE *fp = printer ? printer->fp : stdout;
+  if (fp) {
     int i;
     for (i = 0; i < n; ++i) {
-      fputc(c, printer->fp);
+      fputc(c, fp);
     }
   }
 }
 static void printer_vfprintf(Printer *printer, const char *format,
                              va_list args) {
-  if (printer->fp) {
-    vfprintf(printer->fp, format, args);
+  FILE *fp = printer ? printer->fp : stdout;
+  if (fp) {
+    vfprintf(fp, format, args);
   }
 }
 static void printer_print_indent(Printer *printer) {
-  if (printer->newline) {
-    printer_fputc(printer, ' ', printer->indent);
+  if (printer) {
+    if (printer->newline) {
+      printer_fputc(printer, ' ', printer->indent);
+    }
+    printer->newline = false;
   }
-  printer->newline = false;
 }
 
 Printer *printer_new(PrinterFile fp) {
@@ -50,9 +54,13 @@ void printer_print(Printer *printer, const char *format, ...) {
   va_end(args);
 }
 void printer_indent(Printer *printer, int indent) {
-  printer->indent += indent;
+  if (printer) {
+    printer->indent += indent;
+  }
 }
 void printer_newline(Printer *printer) {
   printer_fputc(printer, '\n', 1);
-  printer->newline = true;
+  if (printer) {
+    printer->newline = true;
+  }
 }
