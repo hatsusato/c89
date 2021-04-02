@@ -2,6 +2,8 @@
 
 set -eu
 
+EXCLUDES=()
+
 build() {
   local top_dir=$(dirname "$BASH_SOURCE")
   local build_dir=${BUILD_DIR:-build}
@@ -10,6 +12,13 @@ build() {
   local target_dir=$(cd -P "$build_dir" ; pwd)
   cmake -B "$target_dir" "$@" .
   make -C "$target_dir" --no-print-directory
+}
+tests() {
+  local f opts=(-name '*.c')
+  for f in "${EXCLUDES[@]}"; do
+    opts+=('!' -name "$f")
+  done
+  find test/ "${opts[@]}" | sort
 }
 error() {
   echo "ERROR: $*"
@@ -48,13 +57,8 @@ check() {
 }
 
 build
-excludes=()
-opts=(-name '*.c')
-for f in "${excludes[@]}"; do
-  opts+=('!' -name "$f")
-done
 count=0
-for f in $(find test/ "${opts[@]}" | sort); do
+for f in $(tests); do
   check "$f" || ((++count))
 done
 exit $count
