@@ -41,20 +41,20 @@ compare() {
   fi
   diff "$1" <(compile -s "$2") <(compile "$2") >&$out
 }
-color() {
-  local bold=$'\e['1m
-  local color=$'\e['"$1"m
-  local normal=$'\e['0m
-  echo "$bold$color$2$normal$3"
+print() {
+  local e=$'\e['
+  local bold=${e}1m
+  local color=${e}${1}m
+  local normal=${e}0m
+  local name=${3##*/}
+  echo "$bold$color$2$normal: ${name%.c}"
 }
 check() {
-  local name=${1##*/}
-  name=${name%.c}
   compile "$1" >/dev/null || exit
   if compare -q "$1"; then
-    color 32 OK ": $name"
+    print 32 OK "$1"
   else
-    color 31 NG ": $name"
+    print 31 NG "$1"
     compare -y "$1"
     return 1
   fi
