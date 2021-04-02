@@ -26,33 +26,19 @@ cc() {
   rm -f "$out"
 }
 error() {
-  echo ERROR: "$@" >&2
+  echo "ERROR: $@" >&2
   exit 1
 }
 
-files=()
-eflag=
-sflag=
-xflag=
-for arg in "$@"; do
-  case "$arg" in
-    -E) eflag=on;;
-    -S) sflag=on;;
-    -X) xflag=on;;
-    -*) FLAGS+=("$arg");;
-    *) files+=("$arg");;
-  esac
-done
-
-for TARGET in "${files[@]}"; do
-  cpp "$TARGET" >/dev/null || error "$TARGET"
-  if test "$eflag"; then
-    cpp "$TARGET"
-  elif test "$sflag"; then
-    cpp "$TARGET" | main
-  elif test "$xflag"; then
-    cpp "$TARGET" | main | cc "$TARGET"
-  else
-    cpp "$TARGET" | main
-  fi
-done
+flag=
+if [[ "$1" == -* ]]; then
+  flag="$1"
+  shift
+fi
+cpp "$1" >/dev/null || error "$1"
+case "$flag" in
+  -e) cpp "$1";;
+  -d) cpp "$1" | main --debug;;
+  -x) cpp "$1" | main | cc "$1";;
+  *) cpp "$1" | main;;
+esac
