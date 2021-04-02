@@ -24,20 +24,20 @@ error() {
   echo "ERROR: $*"
   exit 1
 }
-comp() {
-  local sh=./compile.sh
-  test -x "$sh" || error "$sh not found"
-  "$sh" "$1"
-}
-emit() {
-  local sh=./compile.sh
-  test -x "$sh" || error "$sh not found"
-  "$sh" -s "$1"
+compile() {
+  local top_dir=$(dirname "$BASH_SOURCE")
+  local sh=$top_dir/compile.sh
+  if test -x "$sh"; then
+    "$sh" "$@"
+  else
+    echo "ERROR: $sh not found" >&2
+    exit 1
+  fi
 }
 compare() {
   local target=$1
   shift
-  diff "$@" <(emit "$target") <(comp "$target")
+  diff "$@" <(compile -s "$target") <(compile "$target")
 }
 color() {
   local bold=$'\e['1m
@@ -48,7 +48,7 @@ color() {
 check() {
   local name=${1##*/}
   name=${name%.c}
-  comp "$1" >/dev/null || exit
+  compile "$1" >/dev/null || exit
   if compare "$1" >/dev/null; then
     color 32 OK ": $name"
   else
