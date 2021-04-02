@@ -52,11 +52,11 @@ void function_pretty(Function *func, Printer *printer) {
   printer_print(printer, " @%s() {", func->name);
   printer_newline(printer);
   UTILITY_ASSERT(begin != end);
-  block_pretty(*begin++);
+  block_pretty(*begin++, printer);
   for (; begin < end; ++begin) {
     printer_newline(printer);
     block_print_label(*begin, printer);
-    block_pretty(*begin);
+    block_pretty(*begin, printer);
   }
   printer_print(printer, "}");
   printer_newline(printer);

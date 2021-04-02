@@ -1,7 +1,5 @@
 #include "block.h"
 
-#include <stdio.h>
-
 #include "ir/instruction.h"
 #include "ir/module.h"
 #include "ir/type.h"
@@ -69,20 +67,21 @@ void block_print_label(Block *block, Printer *printer) {
   printer_print(printer, "%d:", block->id);
   printer_newline(printer);
 }
-void block_pretty(Block *block) {
+void block_pretty(Block *block, Printer *printer) {
   VectorElem *begin = vector_begin(block->vec);
   VectorElem *end = vector_end(block->vec);
   while (begin < end) {
     instruction_pretty(*begin++);
   }
+  UTILITY_UNUSED(printer);
 }
-void block_pretty_switch(Block *block) {
+void block_pretty_switch(Block *block, Printer *printer) {
   VectorElem *begin = vector_begin(block->vec);
   VectorElem *end = vector_end(block->vec);
   while (begin < end) {
-    printf("    ");
+    printer_print(printer, "    ");
     value_print_with_type(*begin++, false);
     value_print_with_type(*begin++, true);
-    printf("\n");
+    printer_newline(printer);
   }
 }

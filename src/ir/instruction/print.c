@@ -66,7 +66,7 @@ static void instruction_pretty_switch(Instruction *instr) {
   value_print_with_type(instr->operands[1], true);
   printf(" [");
   print_newline();
-  block_pretty_switch(value_as_block(instr->operands[2]));
+  block_pretty_switch(value_as_block(instr->operands[2]), NULL);
   print_indent();
   printf("]");
 }
