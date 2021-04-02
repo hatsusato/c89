@@ -62,7 +62,6 @@ check() {
   fi
 }
 main() {
-  tests
   local f count=0
   for f in ${FILES[@]}; do
     check "$f" || ((++count))
@@ -71,4 +70,5 @@ main() {
 }
 
 (build "$@")
+tests
 main

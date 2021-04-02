@@ -16,8 +16,13 @@ EOF
 main() {
   local top_dir=$(dirname "$BASH_SOURCE")
   local build_dir=${BUILD_DIR:-build}
-  local main=$top_dir/$build_dir/main.out
-  "$main" "$@"
+  local main=$build_dir/main.out
+  cd "$top_dir"
+  if test -x "$main"; then
+    "$main" "$@"
+  else
+    error "$main not found"
+  fi
 }
 cc() {
   local out=$1.out
