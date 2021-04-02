@@ -1,7 +1,5 @@
 #include "value.h"
 
-#include <stdio.h>
-
 #include "ir/block.h"
 #include "ir/constant.h"
 #include "ir/function.h"
@@ -96,9 +94,11 @@ void value_print_type(Value *value, Printer *printer) {
     break;
   }
 }
-void value_print_with_type(Value *value, Bool comma) {
-  printf(comma ? ", " : "");
-  value_print_type(value, NULL);
-  printf(" ");
-  value_print(value, false, NULL);
+void value_print_with_type(Value *value, Bool comma, Printer *printer) {
+  if (comma) {
+    printer_print(printer, ", ");
+  }
+  value_print_type(value, printer);
+  printer_print(printer, " ");
+  value_print(value, false, printer);
 }

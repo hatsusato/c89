@@ -79,8 +79,8 @@ void block_pretty_switch(Block *block, Printer *printer) {
   VectorElem *end = vector_end(block->vec);
   while (begin < end) {
     printer_print(printer, "    ");
-    value_print_with_type(*begin++, false);
-    value_print_with_type(*begin++, true);
+    value_print_with_type(*begin++, false, printer);
+    value_print_with_type(*begin++, true, printer);
     printer_newline(printer);
   }
 }
