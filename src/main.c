@@ -9,18 +9,13 @@
 #include "utility/utility.h"
 
 static void build(Module *module, Sexp *ast) {
-  Printer *printer = printer_new(stdout);
   Builder *builder = builder_new(module);
   builder_ast(builder, ast);
   builder_delete(builder);
-  module_pretty(module, printer);
-  printer_delete(printer);
 }
-static void print(Sexp *ast) {
-  Printer *printer = printer_new(stderr);
+static void print(Sexp *ast, Printer *printer) {
   sexp_print(ast, printer);
   printer_newline(printer);
-  printer_delete(printer);
 }
 static Bool is_debug(int argc, char *argv[]) {
   int i;
@@ -38,10 +33,14 @@ int main(int argc, char *argv[]) {
   if (0 == ret) {
     Sexp *sexp = ast_get(ast);
     Module *module = module_new();
+    Printer *printer = printer_new(stdout);
     if (is_debug(argc, argv)) {
-      print(sexp);
+      print(sexp, printer);
+    } else {
+      build(module, sexp);
+      module_pretty(module, printer);
     }
-    build(module, sexp);
+    printer_delete(printer);
     module_delete(module);
   }
   ast_delete(ast);
