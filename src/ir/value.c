@@ -8,6 +8,7 @@
 #include "ir/global.h"
 #include "ir/instruction.h"
 #include "ir/type.h"
+#include "printer/printer.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
@@ -60,20 +61,22 @@ ValueKind value_kind(Value *value) {
 Type *value_type(Value *value) {
   return value->type;
 }
-void value_print(Value *value, Bool comma) {
-  printf(comma ? ", " : "");
+void value_print(Value *value, Bool comma, Printer *printer) {
+  if (comma) {
+    printer_print(printer, ", ");
+  }
   switch (value->kind) {
   case VALUE_BLOCK:
-    block_print(value_as_block(value), NULL);
+    block_print(value_as_block(value), printer);
     break;
   case VALUE_INSTRUCTION:
-    instruction_print(value_as_instruction(value), NULL);
+    instruction_print(value_as_instruction(value), printer);
     break;
   case VALUE_CONSTANT:
-    constant_print(value_as_constant(value), NULL);
+    constant_print(value_as_constant(value), printer);
     break;
   case VALUE_GLOBAL:
-    global_print(value_as_global(value), NULL);
+    global_print(value_as_global(value), printer);
     break;
   default:
     UTILITY_ASSERT(0);
@@ -97,5 +100,5 @@ void value_print_with_type(Value *value, Bool comma) {
   printf(comma ? ", " : "");
   value_print_type(value);
   printf(" ");
-  value_print(value, false);
+  value_print(value, false, NULL);
 }

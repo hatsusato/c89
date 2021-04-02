@@ -66,12 +66,12 @@ static void instruction_pretty_switch(Instruction *instr, Printer *printer) {
 static void instruction_pretty_add(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
   value_print_with_type(instr->operands[0], false);
-  value_print(instr->operands[1], true);
+  value_print(instr->operands[1], true, printer);
 }
 static void instruction_pretty_sub(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
   value_print_with_type(instr->operands[0], false);
-  value_print(instr->operands[1], true);
+  value_print(instr->operands[1], true, printer);
 }
 static void instruction_pretty_alloca(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
@@ -105,7 +105,7 @@ static void instruction_pretty_sext(Instruction *instr, Printer *printer) {
 static void instruction_pretty_icmp_ne(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
   value_print_with_type(instr->operands[0], false);
-  value_print(instr->operands[1], true);
+  value_print(instr->operands[1], true, printer);
 }
 
 void instruction_print(Instruction *instr, Printer *printer) {
