@@ -2,11 +2,10 @@
 
 set -eu
 
-TARGET=
-FLAGS=(-x c -P -E -)
-FLAGS+=(-Wall -Wextra -Werror -ansi -pedantic)
-print() {
-  cat - "$TARGET" <<EOF | clang "${FLAGS[@]}"
+cpp() {
+  local flags=(-x c -P -E -)
+  flags+=(-Wall -Wextra -Werror -ansi -pedantic)
+  cat - "$1" <<EOF | clang "${flags[@]}"
 #define __attribute__(x)
 #define __asm__(x)
 #define __extension__
@@ -35,15 +34,15 @@ done
 
 main=${MAIN_DIR-./build}/main.out
 for TARGET in "${files[@]}"; do
-  print >/dev/null || error "$TARGET"
+  cpp "$TARGET" >/dev/null || error "$TARGET"
   if test "$eflag"; then
-    print
+    cpp "$TARGET"
   elif test "$sflag"; then
-    print | "$main" 2>/dev/null
+    cpp "$TARGET" | "$main" 2>/dev/null
   elif test "$xflag"; then
-    print | "$main" 2>/dev/null | llc | clang -x assembler -
+    cpp "$TARGET" | "$main" 2>/dev/null | llc | clang -x assembler -
     ./a.out
   else
-    print | "$main" >/dev/null
+    cpp "$TARGET" | "$main" >/dev/null
   fi
 done
