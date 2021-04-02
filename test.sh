@@ -35,9 +35,11 @@ compile() {
   fi
 }
 compare() {
-  local target=$1
-  shift
-  diff "$@" <(compile -s "$target") <(compile "$target")
+  local out=1
+  if [[ "$1" == -q ]]; then
+    exec {out}>/dev/null
+  fi
+  diff "$1" <(compile -s "$2") <(compile "$2") >&$out
 }
 color() {
   local bold=$'\e['1m
@@ -49,11 +51,11 @@ check() {
   local name=${1##*/}
   name=${name%.c}
   compile "$1" >/dev/null || exit
-  if compare "$1" >/dev/null; then
+  if compare -q "$1"; then
     color 32 OK ": $name"
   else
     color 31 NG ": $name"
-    compare "$1" -y
+    compare -y "$1"
     return 1
   fi
 }
