@@ -76,19 +76,19 @@ static void instruction_pretty_sub(Instruction *instr, Printer *printer) {
 static void instruction_pretty_alloca(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
   type_print(instr->type, printer);
-  type_print_align(instr->type);
+  type_print_align(instr->type, printer);
 }
 static void instruction_pretty_load(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
   type_print(instr->type, printer);
   value_print_with_type(instr->operands[0], true, printer);
-  type_print_align(instr->type);
+  type_print_align(instr->type, printer);
 }
 static void instruction_pretty_store(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
   value_print_with_type(instr->operands[0], false, printer);
   value_print_with_type(instr->operands[1], true, printer);
-  type_print_align(instr->type);
+  type_print_align(instr->type, printer);
 }
 static void instruction_pretty_trunc(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);

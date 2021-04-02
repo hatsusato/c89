@@ -1,7 +1,5 @@
 #include "print.h"
 
-#include <stdio.h>
-
 #include "printer/printer.h"
 #include "struct.h"
 
@@ -29,13 +27,13 @@ void type_print(Type *type, Printer *printer) {
     break;
   }
 }
-void type_print_elem(Type *type) {
+void type_print_elem(Type *type, Printer *printer) {
   if (TYPE_POINTER == type->kind) {
-    type_print(type->data.type, NULL);
+    type_print(type->data.type, printer);
   }
 }
-void type_print_align(Type *type) {
+void type_print_align(Type *type, Printer *printer) {
   if (TYPE_INTEGER == type->kind) {
-    printf(", align %d", type->data.size / 8);
+    printer_print(printer, ", align %d", type->data.size / 8);
   }
 }
