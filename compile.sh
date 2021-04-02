@@ -25,6 +25,24 @@ cc() {
   "$out"
   rm -f "$out"
 }
+filter() {
+  local opts=(-e 's/^; <label>://')
+  opts+=(-e '/^[ ]*;/d' -e 's/[ ]*;.*$//')
+  opts+=(-e '/^attributes /d' -e 's/ #[0-9]*//')
+  opts+=(-e '/^!/d')
+  opts+=(-e 's/ common//' -e 's/ dso_local//' -e 's/ signext//')
+  sed "${opts[@]}"
+}
+lines() {
+  grep -n "$@" | cut -d: -f1
+}
+emit() {
+  local flags=(-O0 -S -emit-llvm -target x86_64-unknown-linux-gnu)
+  local out=$(clang "${flags[@]}" -c "$1" -o - | filter)
+  local beg=$(<<<"$out" lines '^target triple' | head -n1)
+  local end=$(<<<"$out" lines -v '^$' | tail -n1)
+  <<<"$out" sed -n "$beg,$end"p
+}
 error() {
   echo "ERROR: $@" >&2
   exit 1
@@ -39,6 +57,7 @@ cpp "$1" >/dev/null || error "$1"
 case "$flag" in
   -e) cpp "$1";;
   -d) cpp "$1" | main --debug;;
+  -s) emit "$1";;
   -x) cpp "$1" | main | cc "$1";;
   *) cpp "$1" | main;;
 esac
