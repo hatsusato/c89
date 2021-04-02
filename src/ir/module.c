@@ -1,7 +1,5 @@
 #include "module.h"
 
-#include <stdio.h>
-
 #include "ir/block.h"
 #include "ir/constant.h"
 #include "ir/function.h"
@@ -10,6 +8,7 @@
 #include "ir/type.h"
 #include "ir/type/struct.h"
 #include "ir/value.h"
+#include "printer/printer.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
@@ -41,15 +40,16 @@ static void module_delete_value(Generic value) {
     break;
   }
 }
-static void module_pretty_prior(Module *module) {
+static void module_pretty_prior(Module *module, Printer *printer) {
   VectorElem *begin = vector_begin(module->prior);
   VectorElem *end = vector_end(module->prior);
   while (begin < end) {
     Global *global = *begin++;
     global_pretty(global);
   }
+  UTILITY_UNUSED(printer);
 }
-static void module_pretty_global(Module *module) {
+static void module_pretty_global(Module *module, Printer *printer) {
   VectorElem *begin = vector_begin(module->global);
   VectorElem *end = vector_end(module->global);
   while (begin < end) {
@@ -58,12 +58,13 @@ static void module_pretty_global(Module *module) {
       global_pretty(global);
     }
   }
+  UTILITY_UNUSED(printer);
 }
-static void module_pretty_function(Module *module) {
+static void module_pretty_function(Module *module, Printer *printer) {
   VectorElem *begin = vector_begin(module->func);
   VectorElem *end = vector_end(module->func);
   while (begin < end) {
-    printf("\n");
+    printer_newline(printer);
     function_pretty(*begin++);
   }
 }
@@ -154,12 +155,13 @@ void module_insert_prior(Module *module, Global *global) {
     global_set_prior(global);
   }
 }
-void module_pretty(Module *module) {
-  printf("target triple = \"x86_64-unknown-linux-gnu\"\n");
+void module_pretty(Module *module, Printer *printer) {
+  printer_print(printer, "target triple = \"x86_64-unknown-linux-gnu\"");
+  printer_newline(printer);
   if (!vector_empty(module->global)) {
-    printf("\n");
-    module_pretty_prior(module);
-    module_pretty_global(module);
+    printer_newline(printer);
+    module_pretty_prior(module, printer);
+    module_pretty_global(module, printer);
   }
-  module_pretty_function(module);
+  module_pretty_function(module, printer);
 }

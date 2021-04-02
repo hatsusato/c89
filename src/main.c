@@ -2,15 +2,18 @@
 #include "builder/builder.h"
 #include "ir/module.h"
 #include "print.h"
+#include "printer/printer.h"
 #include "scanner/parse.h"
 
 static void build(Sexp *ast) {
+  Printer *printer = printer_new(stdout);
   Module *module = module_new();
   Builder *builder = builder_new(module);
   builder_ast(builder, ast);
   builder_delete(builder);
-  module_pretty(module);
+  module_pretty(module, printer);
   module_delete(module);
+  printer_delete(printer);
 }
 
 int main(void) {
