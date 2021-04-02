@@ -13,6 +13,12 @@ cpp() {
 #define __restrict
 EOF
 }
+main() {
+  local top_dir=$(dirname "$BASH_SOURCE")
+  local build_dir=${BUILD_DIR:-build}
+  local main=$top_dir/$build_dir/main.out
+  "$main" "$@"
+}
 error() {
   echo ERROR: "$@" >&2
   exit 1
@@ -32,17 +38,16 @@ for arg in "$@"; do
   esac
 done
 
-main=${MAIN_DIR-./build}/main.out
 for TARGET in "${files[@]}"; do
   cpp "$TARGET" >/dev/null || error "$TARGET"
   if test "$eflag"; then
     cpp "$TARGET"
   elif test "$sflag"; then
-    cpp "$TARGET" | "$main" 2>/dev/null
+    cpp "$TARGET" | main
   elif test "$xflag"; then
-    cpp "$TARGET" | "$main" 2>/dev/null | llc | clang -x assembler -
+    cpp "$TARGET" | main | llc | clang -x assembler -
     ./a.out
   else
-    cpp "$TARGET" | "$main" >/dev/null
+    cpp "$TARGET" | main
   fi
 done
