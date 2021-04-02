@@ -7,6 +7,10 @@ FILES=()
 TOP_DIR=$(dirname "$BASH_SOURCE")
 cd "$TOP_DIR"
 
+error() {
+  echo "ERROR: $*" >&2
+  exit 1
+}
 build() {
   local build_dir=${BUILD_DIR:-build}
   mkdir -p "$build_dir"
@@ -23,17 +27,12 @@ tests() {
     FILES+=("$f")
   done < <(find test/ "${opts[@]}" | sort)
 }
-error() {
-  echo "ERROR: $*"
-  exit 1
-}
 compile() {
   local sh=./compile.sh
   if test -x "$sh"; then
     "$sh" "$@"
   else
-    echo "ERROR: $sh not found" >&2
-    exit 1
+    error "$sh not found"
   fi
 }
 compare() {

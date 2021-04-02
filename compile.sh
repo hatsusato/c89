@@ -2,6 +2,10 @@
 
 set -eu
 
+error() {
+  echo "ERROR: $*" >&2
+  exit 1
+}
 cpp() {
   local flags=(-x c -P -E -)
   flags+=(-Wall -Wextra -Werror -ansi -pedantic)
@@ -47,10 +51,6 @@ emit() {
   local beg=$(<<<"$out" lines '^target triple' | head -n1)
   local end=$(<<<"$out" lines -v '^$' | tail -n1)
   <<<"$out" sed -n "$beg,$end"p
-}
-error() {
-  echo "ERROR: $@" >&2
-  exit 1
 }
 
 flag=
