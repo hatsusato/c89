@@ -90,7 +90,7 @@ void value_print_type(Value *value, Printer *printer) {
     global_print_type(value_as_global(value), printer);
     break;
   default:
-    type_print(value->type);
+    type_print(value->type, printer);
     break;
   }
 }

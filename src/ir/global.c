@@ -45,13 +45,13 @@ void global_print(Global *global, Printer *printer) {
   printer_print(printer, "@%s", global->name);
 }
 void global_print_type(Global *global, Printer *printer) {
-  type_print(global->type);
+  type_print(global->type, printer);
   printer_print(printer, "*");
 }
 void global_pretty(Global *global, Printer *printer) {
   global_print(global, printer);
   printer_print(printer, " = global ");
-  type_print(global->type);
+  type_print(global->type, printer);
   printer_print(printer, " ");
   if (global->init) {
     constant_print(global->init, printer);

@@ -48,7 +48,7 @@ void function_pretty(Function *func, Printer *printer) {
   VectorElem *begin = vector_begin(func->vec);
   VectorElem *end = vector_end(func->vec);
   printer_print(printer, "define ");
-  type_print(func->type);
+  type_print(func->type, printer);
   printer_print(printer, " @%s() {", func->name);
   printer_newline(printer);
   UTILITY_ASSERT(begin != end);

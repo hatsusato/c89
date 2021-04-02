@@ -3,7 +3,7 @@
 
 #include "utility/types.h"
 
-void type_print(Type *);
+void type_print(Type *, Printer *);
 void type_print_elem(Type *);
 void type_print_align(Type *);
 

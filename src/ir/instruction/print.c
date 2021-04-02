@@ -75,12 +75,12 @@ static void instruction_pretty_sub(Instruction *instr, Printer *printer) {
 }
 static void instruction_pretty_alloca(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
-  type_print(instr->type);
+  type_print(instr->type, printer);
   type_print_align(instr->type);
 }
 static void instruction_pretty_load(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
-  type_print(instr->type);
+  type_print(instr->type, printer);
   value_print_with_type(instr->operands[0], true, printer);
   type_print_align(instr->type);
 }
@@ -94,13 +94,13 @@ static void instruction_pretty_trunc(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
   value_print_with_type(instr->operands[0], false, printer);
   printer_print(printer, " to ");
-  type_print(instr->type);
+  type_print(instr->type, printer);
 }
 static void instruction_pretty_sext(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
   value_print_with_type(instr->operands[0], false, printer);
   printer_print(printer, " to ");
-  type_print(instr->type);
+  type_print(instr->type, printer);
 }
 static void instruction_pretty_icmp_ne(Instruction *instr, Printer *printer) {
   instruction_print_name(instr, printer);
@@ -112,7 +112,7 @@ void instruction_print(Instruction *instr, Printer *printer) {
   printer_print(printer, "%%%d", instr->id);
 }
 void instruction_print_type(Instruction *instr, Printer *printer) {
-  type_print(instr->type);
+  type_print(instr->type, printer);
   if (INSTRUCTION_ALLOCA == instr->ikind) {
     printer_print(printer, "*");
   }
