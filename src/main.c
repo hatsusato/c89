@@ -8,14 +8,12 @@
 #include "sexp/sexp.h"
 #include "utility/utility.h"
 
-static void build(Sexp *ast) {
+static void build(Module *module, Sexp *ast) {
   Printer *printer = printer_new(stdout);
-  Module *module = module_new();
   Builder *builder = builder_new(module);
   builder_ast(builder, ast);
   builder_delete(builder);
   module_pretty(module, printer);
-  module_delete(module);
   printer_delete(printer);
 }
 static void print(Sexp *ast) {
@@ -39,10 +37,12 @@ int main(int argc, char *argv[]) {
   int ret = scanner_parse(ast);
   if (0 == ret) {
     Sexp *sexp = ast_get(ast);
+    Module *module = module_new();
     if (is_debug(argc, argv)) {
       print(sexp);
     }
-    build(sexp);
+    build(module, sexp);
+    module_delete(module);
   }
   ast_delete(ast);
   return ret;
