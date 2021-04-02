@@ -18,6 +18,10 @@ build() {
   cmake -B "$target_dir" "$@" .
   make -C "$target_dir" --no-print-directory
 }
+clean() {
+  local build_dir=${BUILD_DIR:-build}
+  make -C "$build_dir" clean >/dev/null
+}
 tests() {
   local f opts=(-name '*.c')
   for f in "${EXCLUDES[@]}"; do
@@ -68,6 +72,10 @@ main() {
   exit $count
 }
 
-(build "$@")
-tests
-main
+if [[ "$*" == clean && "$*" == "$1" ]]; then
+  clean
+else
+  (build "$@")
+  tests
+  main
+fi
