@@ -55,7 +55,7 @@ void function_pretty(Function *func, Printer *printer) {
   block_pretty(*begin++);
   for (; begin < end; ++begin) {
     printer_newline(printer);
-    block_print_label(*begin);
+    block_print_label(*begin, printer);
     block_pretty(*begin);
   }
   printer_print(printer, "}");

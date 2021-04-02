@@ -64,7 +64,7 @@ void value_print(Value *value, Bool comma) {
   printf(comma ? ", " : "");
   switch (value->kind) {
   case VALUE_BLOCK:
-    block_print(value_as_block(value));
+    block_print(value_as_block(value), NULL);
     break;
   case VALUE_INSTRUCTION:
     instruction_print(value_as_instruction(value));

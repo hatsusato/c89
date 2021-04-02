@@ -6,6 +6,7 @@
 #include "ir/module.h"
 #include "ir/type.h"
 #include "ir/value.h"
+#include "printer/printer.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
@@ -59,13 +60,14 @@ int block_set_id(Block *block, int id) {
   }
   return id;
 }
-void block_print(Block *block) {
+void block_print(Block *block, Printer *printer) {
   UTILITY_ASSERT(0 <= block->id);
-  printf("%%%d", block->id);
+  printer_print(printer, "%%%d", block->id);
 }
-void block_print_label(Block *block) {
+void block_print_label(Block *block, Printer *printer) {
   UTILITY_ASSERT(0 <= block->id);
-  printf("%d:\n", block->id);
+  printer_print(printer, "%d:", block->id);
+  printer_newline(printer);
 }
 void block_pretty(Block *block) {
   VectorElem *begin = vector_begin(block->vec);

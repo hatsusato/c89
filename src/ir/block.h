@@ -11,8 +11,8 @@ void block_append(Block *, Block *);
 Bool block_empty(Block *);
 Instruction *block_last(Block *);
 int block_set_id(Block *, int);
-void block_print(Block *);
-void block_print_label(Block *);
+void block_print(Block *, Printer *);
+void block_print_label(Block *, Printer *);
 void block_pretty(Block *);
 void block_pretty_switch(Block *);
 
