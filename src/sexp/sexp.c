@@ -1,5 +1,7 @@
 #include "sexp.h"
 
+#include "ast/tag.h"
+#include "printer/printer.h"
 #include "utility/utility.h"
 
 typedef enum { SEXP_NIL, SEXP_PAIR, SEXP_SYMBOL, SEXP_NUMBER } SexpKind;
@@ -160,5 +162,24 @@ int sexp_get_tag(Sexp *sexp) {
   } else {
     assert(sexp_is_number(sexp));
     return sexp_get_number(sexp);
+  }
+}
+void sexp_print(Sexp *sexp, Printer *printer) {
+  if (sexp_is_pair(sexp)) {
+    printer_print(printer, "(");
+    printer_indent(printer, 1);
+    sexp_print(sexp_car(sexp), printer);
+    for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+      printer_newline(printer);
+      sexp_print(sexp_car(sexp), printer);
+    }
+    printer_indent(printer, -1);
+    printer_print(printer, ")");
+  } else if (sexp_is_symbol(sexp)) {
+    printer_print(printer, "\"%s\"", sexp_get_symbol(sexp));
+  } else if (sexp_is_number(sexp)) {
+    printer_print(printer, "'%s'", ast_show(sexp_get_number(sexp)));
+  } else {
+    printer_print(printer, "()");
   }
 }
