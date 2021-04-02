@@ -19,6 +19,12 @@ main() {
   local main=$top_dir/$build_dir/main.out
   "$main" "$@"
 }
+cc() {
+  local out=$1.out
+  llc | clang -o "$out" -x assembler -
+  "$out"
+  rm -f "$out"
+}
 error() {
   echo ERROR: "$@" >&2
   exit 1
@@ -45,8 +51,7 @@ for TARGET in "${files[@]}"; do
   elif test "$sflag"; then
     cpp "$TARGET" | main
   elif test "$xflag"; then
-    cpp "$TARGET" | main | llc | clang -x assembler -
-    ./a.out
+    cpp "$TARGET" | main | cc "$TARGET"
   else
     cpp "$TARGET" | main
   fi
