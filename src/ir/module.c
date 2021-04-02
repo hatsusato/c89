@@ -65,7 +65,7 @@ static void module_pretty_function(Module *module, Printer *printer) {
   VectorElem *end = vector_end(module->func);
   while (begin < end) {
     printer_newline(printer);
-    function_pretty(*begin++);
+    function_pretty(*begin++, printer);
   }
 }
 static Type *type_new(void) {

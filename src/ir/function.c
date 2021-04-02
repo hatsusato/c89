@@ -1,12 +1,11 @@
 #include "function.h"
 
-#include <stdio.h>
-
 #include "ast/tag.h"
 #include "ir/block.h"
 #include "ir/module.h"
 #include "ir/type.h"
 #include "ir/value.h"
+#include "printer/printer.h"
 #include "sexp/sexp.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
@@ -45,20 +44,22 @@ void function_set_id(Function *func) {
     id = block_set_id(*begin++, id);
   }
 }
-void function_pretty(Function *func) {
+void function_pretty(Function *func, Printer *printer) {
   VectorElem *begin = vector_begin(func->vec);
   VectorElem *end = vector_end(func->vec);
-  printf("define ");
+  printer_print(printer, "define ");
   type_print(func->type);
-  printf(" @%s() {\n", func->name);
+  printer_print(printer, " @%s() {", func->name);
+  printer_newline(printer);
   UTILITY_ASSERT(begin != end);
   block_pretty(*begin++);
   for (; begin < end; ++begin) {
-    printf("\n");
+    printer_newline(printer);
     block_print_label(*begin);
     block_pretty(*begin);
   }
-  printf("}\n");
+  printer_print(printer, "}");
+  printer_newline(printer);
 }
 int function_count_return(Sexp *ast) {
   if (sexp_is_pair(ast)) {
