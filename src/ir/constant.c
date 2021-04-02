@@ -1,10 +1,9 @@
 #include "constant.h"
 
-#include <stdio.h>
-
 #include "ir/module.h"
 #include "ir/type.h"
 #include "ir/value.h"
+#include "printer/printer.h"
 #include "utility/utility.h"
 
 struct struct_Constant {
@@ -27,6 +26,6 @@ void constant_delete(Constant *constant) {
 Type *constant_type(Constant *constant) {
   return constant->type;
 }
-void constant_print(Constant *constant) {
-  printf("%s", constant->symbol);
+void constant_print(Constant *constant, Printer *printer) {
+  printer_print(printer, "%s", constant->symbol);
 }

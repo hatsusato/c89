@@ -54,7 +54,7 @@ void global_pretty(Global *global, Printer *printer) {
   type_print(global->type);
   printer_print(printer, " ");
   if (global->init) {
-    constant_print(global->init);
+    constant_print(global->init, printer);
   } else {
     printer_print(printer, "0");
   }

@@ -70,7 +70,7 @@ void value_print(Value *value, Bool comma) {
     instruction_print(value_as_instruction(value));
     break;
   case VALUE_CONSTANT:
-    constant_print(value_as_constant(value));
+    constant_print(value_as_constant(value), NULL);
     break;
   case VALUE_GLOBAL:
     global_print(value_as_global(value), NULL);
