@@ -67,7 +67,7 @@ void value_print(Value *value, Bool comma) {
     block_print(value_as_block(value), NULL);
     break;
   case VALUE_INSTRUCTION:
-    instruction_print(value_as_instruction(value));
+    instruction_print(value_as_instruction(value), NULL);
     break;
   case VALUE_CONSTANT:
     constant_print(value_as_constant(value), NULL);
@@ -83,7 +83,7 @@ void value_print(Value *value, Bool comma) {
 void value_print_type(Value *value) {
   switch (value->kind) {
   case VALUE_INSTRUCTION:
-    instruction_print_type(value_as_instruction(value));
+    instruction_print_type(value_as_instruction(value), NULL);
     break;
   case VALUE_GLOBAL:
     global_print_type(value_as_global(value), NULL);

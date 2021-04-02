@@ -4,6 +4,7 @@
 
 #include "ir/block.h"
 #include "ir/type.h"
+#include "printer/printer.h"
 #include "struct.h"
 #include "utility/utility.h"
 
@@ -25,7 +26,7 @@ static const char *instruction_name(Instruction *instr) {
     return NULL;
   }
 }
-static void instruction_print_name(Instruction *instr) {
+static void instruction_print_name(Instruction *instr, Printer *printer) {
   switch (instr->ikind) {
 #define DO_HANDLE(name, str) \
   case name:                 \
@@ -35,15 +36,15 @@ static void instruction_print_name(Instruction *instr) {
   case INSTRUCTION_STORE:
     break;
   default:
-    instruction_print(instr);
-    printf(" = ");
+    instruction_print(instr, printer);
+    printer_print(printer, " = ");
     break;
   }
-  printf("%s ", instruction_name(instr));
+  printer_print(printer, "%s ", instruction_name(instr));
 }
 
 static void instruction_pretty_ret(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   if (instr->operands[0]) {
     value_print_with_type(instr->operands[0], false);
   } else {
@@ -51,17 +52,17 @@ static void instruction_pretty_ret(Instruction *instr) {
   }
 }
 static void instruction_pretty_br(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   value_print_with_type(instr->operands[0], false);
 }
 static void instruction_pretty_br_cond(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   value_print_with_type(instr->operands[0], false);
   value_print_with_type(instr->operands[1], true);
   value_print_with_type(instr->operands[2], true);
 }
 static void instruction_pretty_switch(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   value_print_with_type(instr->operands[0], false);
   value_print_with_type(instr->operands[1], true);
   printf(" [");
@@ -71,57 +72,57 @@ static void instruction_pretty_switch(Instruction *instr) {
   printf("]");
 }
 static void instruction_pretty_add(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   value_print_with_type(instr->operands[0], false);
   value_print(instr->operands[1], true);
 }
 static void instruction_pretty_sub(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   value_print_with_type(instr->operands[0], false);
   value_print(instr->operands[1], true);
 }
 static void instruction_pretty_alloca(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   type_print(instr->type);
   type_print_align(instr->type);
 }
 static void instruction_pretty_load(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   type_print(instr->type);
   value_print_with_type(instr->operands[0], true);
   type_print_align(instr->type);
 }
 static void instruction_pretty_store(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   value_print_with_type(instr->operands[0], false);
   value_print_with_type(instr->operands[1], true);
   type_print_align(instr->type);
 }
 static void instruction_pretty_trunc(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   value_print_with_type(instr->operands[0], false);
   printf(" to ");
   type_print(instr->type);
 }
 static void instruction_pretty_sext(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   value_print_with_type(instr->operands[0], false);
   printf(" to ");
   type_print(instr->type);
 }
 static void instruction_pretty_icmp_ne(Instruction *instr) {
-  instruction_print_name(instr);
+  instruction_print_name(instr, NULL);
   value_print_with_type(instr->operands[0], false);
   value_print(instr->operands[1], true);
 }
 
-void instruction_print(Instruction *instr) {
-  printf("%%%d", instr->id);
+void instruction_print(Instruction *instr, Printer *printer) {
+  printer_print(printer, "%%%d", instr->id);
 }
-void instruction_print_type(Instruction *instr) {
+void instruction_print_type(Instruction *instr, Printer *printer) {
   type_print(instr->type);
   if (INSTRUCTION_ALLOCA == instr->ikind) {
-    printf("*");
+    printer_print(printer, "*");
   }
 }
 void instruction_pretty(Instruction *instr) {
