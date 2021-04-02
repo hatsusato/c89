@@ -3,6 +3,7 @@
 set -eu
 
 EXCLUDES=()
+FILES=()
 
 build() {
   local top_dir=$(dirname "$BASH_SOURCE")
@@ -18,7 +19,9 @@ tests() {
   for f in "${EXCLUDES[@]}"; do
     opts+=('!' -name "$f")
   done
-  find test/ "${opts[@]}" | sort
+  while read -r f; do
+    FILES+=("$f")
+  done < <(find test/ "${opts[@]}" | sort)
 }
 error() {
   echo "ERROR: $*"
@@ -60,8 +63,9 @@ check() {
   fi
 }
 main() {
+  tests
   local f count=0
-  for f in $(tests); do
+  for f in ${FILES[@]}; do
     check "$f" || ((++count))
   done
   exit $count
