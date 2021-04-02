@@ -17,16 +17,19 @@ static void build(Sexp *ast) {
   module_delete(module);
   printer_delete(printer);
 }
+static void print(Sexp *ast) {
+  Printer *printer = printer_new(stderr);
+  sexp_print(ast, printer);
+  printer_newline(printer);
+  printer_delete(printer);
+}
 
 int main(void) {
   Ast *ast = ast_new();
   int ret = scanner_parse(ast);
   if (0 == ret) {
     Sexp *sexp = ast_get(ast);
-    Printer *printer = printer_new(stderr);
-    sexp_print(sexp, printer);
-    printer_newline(printer);
-    printer_delete(printer);
+    print(sexp);
     build(sexp);
   }
   ast_delete(ast);
