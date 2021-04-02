@@ -39,18 +39,20 @@ compare() {
   shift
   diff "$@" <(emit "$target") <(comp "$target")
 }
+color() {
+  local bold=$'\e['1m
+  local color=$'\e['"$1"m
+  local normal=$'\e['0m
+  echo "$bold$color$2$normal$3"
+}
 check() {
-  local bold=$'\e[1m'
-  local green=$'\e[32m'
-  local red=$'\e[31m'
-  local normal=$'\e[0m'
   local name=${1##*/}
   name=${name%.c}
   comp "$1" >/dev/null || exit
   if compare "$1" >/dev/null; then
-    echo "$bold${green}OK$normal: $name"
+    color 32 OK ": $name"
   else
-    echo "$bold${red}NG$normal: $name"
+    color 31 NG ": $name"
     compare "$1" -y
     return 1
   fi
