@@ -2,15 +2,15 @@
 
 set -eu
 
-top_dir=$(dirname "$BASH_SOURCE")
-cd -P "$top_dir"
-top_dir=$(pwd)
-mkdir -p build
-cd -P build
-cmake "$top_dir" &>/dev/null
-make &>/dev/null
-cd -P "$top_dir"
-
+build() {
+  local top_dir=$(dirname "$BASH_SOURCE")
+  local build_dir=${BUILD_DIR:-build}
+  cd -P "$top_dir"
+  mkdir -p "$build_dir"
+  local target_dir=$(cd -P "$build_dir" ; pwd)
+  cmake -B "$target_dir" "$@" .
+  make -C "$target_dir" --no-print-directory
+}
 error() {
   echo "ERROR: $*"
   exit 1
@@ -47,6 +47,7 @@ check() {
   fi
 }
 
+build
 excludes=()
 opts=(-name '*.c')
 for f in "${excludes[@]}"; do
