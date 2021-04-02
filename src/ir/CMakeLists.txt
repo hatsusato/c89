@@ -11,6 +11,7 @@ target_sources(ir PRIVATE
 target_link_libraries(ir PRIVATE
   instruction
   options
+  printer
   ir_type
   )
 

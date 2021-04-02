@@ -5,4 +5,5 @@ target_sources(sexp PRIVATE
 target_link_libraries(sexp PRIVATE
   ast
   options
+  printer
   )

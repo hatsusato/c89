@@ -1,7 +1,6 @@
 add_executable(main)
 target_sources(main PRIVATE
   main.c
-  print.c
   )
 target_link_libraries(main PRIVATE
   ast

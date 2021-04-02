@@ -1,9 +1,11 @@
+#include <stdio.h>
+
 #include "ast/ast.h"
 #include "builder/builder.h"
 #include "ir/module.h"
-#include "print.h"
 #include "printer/printer.h"
 #include "scanner/parse.h"
+#include "sexp/sexp.h"
 
 static void build(Sexp *ast) {
   Printer *printer = printer_new(stdout);
@@ -21,7 +23,10 @@ int main(void) {
   int ret = scanner_parse(ast);
   if (0 == ret) {
     Sexp *sexp = ast_get(ast);
-    print_ast(sexp);
+    Printer *printer = printer_new(stderr);
+    sexp_print(sexp, printer);
+    printer_newline(printer);
+    printer_delete(printer);
     build(sexp);
   }
   ast_delete(ast);
