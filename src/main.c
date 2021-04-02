@@ -6,6 +6,7 @@
 #include "printer/printer.h"
 #include "scanner/parse.h"
 #include "sexp/sexp.h"
+#include "utility/utility.h"
 
 static void build(Sexp *ast) {
   Printer *printer = printer_new(stdout);
@@ -23,13 +24,24 @@ static void print(Sexp *ast) {
   printer_newline(printer);
   printer_delete(printer);
 }
+static Bool is_debug(int argc, char *argv[]) {
+  int i;
+  for (i = 1; i < argc; ++i) {
+    if (utility_strcmp(argv[i], "--debug") == 0) {
+      return true;
+    }
+  }
+  return false;
+}
 
-int main(void) {
+int main(int argc, char *argv[]) {
   Ast *ast = ast_new();
   int ret = scanner_parse(ast);
   if (0 == ret) {
     Sexp *sexp = ast_get(ast);
-    print(sexp);
+    if (is_debug(argc, argv)) {
+      print(sexp);
+    }
     build(sexp);
   }
   ast_delete(ast);
