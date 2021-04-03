@@ -21,6 +21,16 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        include:
+          - build_type: Release
+            build_dir: release
+          - build_type: Debug
+            build_dir: debug
+      fail-fast: false
+      max-parallel: 2
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -30,4 +40,6 @@ jobs:
         run: for cmd in clang flex bison make cmake; do $cmd --version | head -n1; done
 
       - name: Test
-        run: ./test.sh
+        env:
+          BUILD_DIR: ${{ matrix.build_dir }}
+        run: ./test.sh -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
