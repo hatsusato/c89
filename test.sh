@@ -3,6 +3,7 @@
 set -eu
 
 EXCLUDES=()
+BUILD_DIR=${BUILD_DIR:-build}
 TEST_DIR=${TEST_DIR:-test}
 FILES=()
 TOP_DIR=$(dirname "$BASH_SOURCE")
@@ -13,15 +14,13 @@ error() {
   exit 1
 }
 build() {
-  local build_dir=${BUILD_DIR:-build}
-  mkdir -p "$build_dir"
-  local target_dir=$(cd -P "$build_dir" ; pwd)
+  mkdir -p "$BUILD_DIR"
+  local target_dir=$(cd -P "$BUILD_DIR"; pwd)
   cmake -B "$target_dir" "$@" .
-  make -C "$target_dir" --no-print-directory
+  make --no-print-directory -C "$target_dir"
 }
 clean() {
-  local build_dir=${BUILD_DIR:-build}
-  make -C "$build_dir" clean >/dev/null
+  make -C "$BUILD_DIR" clean >/dev/null
 }
 tests() {
   local f opts=(-name '*.c')
