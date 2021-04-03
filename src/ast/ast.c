@@ -36,7 +36,6 @@ Sexp *ast_get(Ast *ast) {
   return ast->sexp;
 }
 void ast_set(Ast *ast, Sexp *sexp) {
-  assert(sexp_is_nil(ast->sexp));
   ast->sexp = sexp;
 }
 const char *ast_symbol(Ast *ast, const char *text, Size leng) {

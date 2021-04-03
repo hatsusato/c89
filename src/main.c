@@ -1,10 +1,12 @@
 #include <stdio.h>
 
 #include "ast/ast.h"
+#include "ast/convert.h"
 #include "builder/builder.h"
 #include "ir/module.h"
 #include "printer/printer.h"
 #include "scanner/parse.h"
+#include "sexp/sexp.h"
 #include "utility/utility.h"
 
 static void build(Module *module, Ast *ast) {
@@ -27,6 +29,9 @@ int main(int argc, char *argv[]) {
   int ret = scanner_parse(ast);
   if (0 == ret) {
     Printer *printer = printer_new(stdout);
+    Sexp *sexp = ast_get(ast);
+    ast_set(ast, ast_convert(sexp));
+    sexp_delete(sexp);
     if (is_debug(argc, argv)) {
       ast_print(ast, printer);
     } else {
