@@ -1,5 +1,5 @@
 /* 6.7 External definitions */
 
-DO_HANDLE(AST_TRANSLATION_UNIT, translation-unit)
-DO_HANDLE(AST_EXTERNAL_DECLARATION, external-declaration)
-DO_HANDLE(AST_FUNCTION_DEFINITION, function-definition)
+HANDLE(AST_TRANSLATION_UNIT, "translation-unit")
+HANDLE(AST_EXTERNAL_DECLARATION, "external-declaration")
+HANDLE(AST_FUNCTION_DEFINITION, "function-definition")
