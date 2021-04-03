@@ -5,4 +5,8 @@ target_sources(ast PRIVATE
   )
 target_link_libraries(ast PRIVATE
   options
+  printer
+  set
+  sexp
+  utility
   )

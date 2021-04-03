@@ -5,17 +5,12 @@
 #include "ir/module.h"
 #include "printer/printer.h"
 #include "scanner/parse.h"
-#include "sexp/sexp.h"
 #include "utility/utility.h"
 
 static void build(Module *module, Ast *ast) {
   Builder *builder = builder_new(module);
   builder_ast(builder, ast_get(ast));
   builder_delete(builder);
-}
-static void print(Ast *ast, Printer *printer) {
-  sexp_print(ast_get(ast), printer);
-  printer_newline(printer);
 }
 static Bool is_debug(int argc, char *argv[]) {
   int i;
@@ -33,7 +28,7 @@ int main(int argc, char *argv[]) {
   if (0 == ret) {
     Printer *printer = printer_new(stdout);
     if (is_debug(argc, argv)) {
-      print(ast, printer);
+      ast_print(ast, printer);
     } else {
       Module *module = module_new();
       build(module, ast);

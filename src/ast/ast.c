@@ -1,5 +1,7 @@
 #include "ast.h"
 
+#include "ast/tag.h"
+#include "printer/printer.h"
 #include "set/set.h"
 #include "sexp/sexp.h"
 #include "utility/utility.h"
@@ -48,4 +50,27 @@ const char *ast_symbol(Ast *ast, const char *text, Size leng) {
     set_insert(ast->pool, elem);
     return elem;
   }
+}
+static void ast_print_sexp(Sexp *sexp, Printer *printer) {
+  if (sexp_is_pair(sexp)) {
+    printer_print(printer, "(");
+    printer_indent(printer, 1);
+    ast_print_sexp(sexp_car(sexp), printer);
+    for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+      printer_newline(printer);
+      ast_print_sexp(sexp_car(sexp), printer);
+    }
+    printer_indent(printer, -1);
+    printer_print(printer, ")");
+  } else if (sexp_is_symbol(sexp)) {
+    printer_print(printer, "\"%s\"", sexp_get_symbol(sexp));
+  } else if (sexp_is_number(sexp)) {
+    printer_print(printer, "'%s'", ast_show(sexp_get_number(sexp)));
+  } else {
+    printer_print(printer, "()");
+  }
+}
+void ast_print(Ast *ast, Printer *printer) {
+  ast_print_sexp(ast->sexp, printer);
+  printer_newline(printer);
 }
