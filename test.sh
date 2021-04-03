@@ -3,6 +3,7 @@
 set -eu
 
 EXCLUDES=()
+TEST_DIR=${TEST_DIR:-test}
 FILES=()
 TOP_DIR=$(dirname "$BASH_SOURCE")
 cd "$TOP_DIR"
@@ -29,7 +30,7 @@ tests() {
   done
   while read -r f; do
     FILES+=("$f")
-  done < <(find test/ "${opts[@]}" | sort)
+  done < <(find "$TEST_DIR" "${opts[@]}" | sort)
 }
 compile() {
   local sh=./compile.sh
@@ -51,8 +52,8 @@ print() {
   local bold=${e}1m
   local color=${e}${1}m
   local normal=${e}0m
-  local name=${3##*/}
-  echo "$bold$color$2$normal: ${name%.c}"
+  local name=${3#$TEST_DIR}
+  echo "$bold$color$2$normal: ${name#/}"
 }
 check() {
   compile "$1" >/dev/null || exit
