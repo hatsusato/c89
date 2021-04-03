@@ -10,38 +10,9 @@
 #include "utility/utility.h"
 
 static const char *function_name(Sexp *ast) {
-  switch (sexp_get_tag(ast)) {
-  case SYNTAX_IDENTIFIER:
-    return identifier_symbol(ast);
-  case SYNTAX_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      return function_name(sexp_at(ast, 1));
-    case 3:
-      return function_name(sexp_at(ast, 2));
-    default:
-      UTILITY_ASSERT(0);
-      return NULL;
-    }
-  case SYNTAX_DIRECT_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      return function_name(sexp_at(ast, 1));
-    case 4:
-      return function_name(sexp_at(ast, 2));
-    case 5:
-      return function_name(sexp_at(ast, 1));
-    default:
-      UTILITY_ASSERT(0);
-      return NULL;
-    }
-  case ABSTRACT_FUNCTION_DEFINITION:
-    UTILITY_ASSERT(6 == sexp_length(ast));
-    return function_name(sexp_at(ast, 2));
-  default:
-    UTILITY_ASSERT(0);
-    return NULL;
-  }
+  ast = sexp_at(ast, 5);
+  UTILITY_ASSERT(sexp_get_tag(ast) == SYNTAX_IDENTIFIER);
+  return identifier_symbol(ast);
 }
 static Type *builder_function_type(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(6 == sexp_length(ast));
