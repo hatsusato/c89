@@ -35,7 +35,7 @@ static const char *function_name(Sexp *ast) {
       UTILITY_ASSERT(0);
       return NULL;
     }
-  case SYNTAX_FUNCTION_DEFINITION:
+  case ABSTRACT_FUNCTION_DEFINITION:
     UTILITY_ASSERT(5 == sexp_length(ast));
     return function_name(sexp_at(ast, 2));
   default:
@@ -70,7 +70,6 @@ void builder_external_declaration(Builder *builder, Sexp *ast) {
   builder_ast(builder, sexp_at(ast, 1));
 }
 void builder_function_definition(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(SYNTAX_FUNCTION_DEFINITION == sexp_get_tag(ast));
   builder_function_init(builder, ast);
   if (1 < function_count_return(ast)) {
     builder_init_return(builder);

@@ -9,3 +9,4 @@ HANDLE(SYNTAX_NULL, "null")
 
 HANDLE(ABSTRACT_TRANSLATION_UNIT, "@translation-unit")
 HANDLE(ABSTRACT_EXTERNAL_DECLARATION, "@external-declaration")
+HANDLE(ABSTRACT_FUNCTION_DEFINITION, "@function-definition")

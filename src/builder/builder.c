@@ -418,7 +418,7 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case ABSTRACT_EXTERNAL_DECLARATION:
     builder_external_declaration(builder, ast);
     break;
-  case SYNTAX_FUNCTION_DEFINITION:
+  case ABSTRACT_FUNCTION_DEFINITION:
     builder_function_definition(builder, ast);
     break;
   default:
