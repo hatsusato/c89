@@ -12,11 +12,14 @@ static Sexp *ast_convert_list(Sexp *sexp) {
   }
   return ret;
 }
+static Sexp *ast_tag_cons(SyntaxTag tag, Sexp *cdr) {
+  return sexp_pair(sexp_number(tag), cdr);
+}
 /* translation-unit ::=
    (external-declaration | function-definition)+ */
 static Sexp *ast_convert_translation_unit(Sexp *sexp) {
   SyntaxTag tag = ABSTRACT_TRANSLATION_UNIT;
-  return sexp_pair(sexp_number(tag), ast_convert_list(sexp_cdr(sexp)));
+  return ast_tag_cons(tag, ast_convert_list(sexp_cdr(sexp)));
 }
 
 Sexp *ast_convert(Sexp *sexp) {
