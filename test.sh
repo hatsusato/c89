@@ -15,7 +15,13 @@ build() {
   mkdir -p "$BUILD_DIR"
   local target_dir=$(cd -P "$BUILD_DIR"; pwd)
   cmake -B "$target_dir" "$@" .
-  make --no-print-directory -C "$target_dir"
+  local arg opts=(--no-print-directory -C "$BUILD_DIR")
+  for arg; do
+    if [[ "$arg" == -j ]]; then
+      opts+=(-j)
+    fi
+  done
+  make "${opts[@]}"
 }
 clean() {
   if [[ "$*" == clean && "$*" == "$1" ]]; then
