@@ -7,8 +7,8 @@ typedef enum {
 #include "ast/tag.def"
 #undef HANDLE
   AST_TAG_COUNT
-} AstTag;
+} SyntaxTag;
 
-const char *ast_show(AstTag);
+const char *ast_show(SyntaxTag);
 
 #endif /* INCLUDE_GUARD_35338543_3CA8_4BC0_811F_5E8A24EDBED1 */

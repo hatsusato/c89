@@ -5,7 +5,7 @@
 #include "sexp/sexp.h"
 #include "utility/utility.h"
 
-static Bool check_tag(Sexp *ast, AstTag tag) {
+static Bool check_tag(Sexp *ast, SyntaxTag tag) {
   if (sexp_is_pair(ast)) {
     assert(sexp_is_list(ast));
     ast = sexp_car(ast);

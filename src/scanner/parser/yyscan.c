@@ -50,10 +50,10 @@ Sexp *yyscan_snoc(Sexp *xs, Sexp *x) {
 Sexp *yyscan_list(Sexp *x) {
   return yyscan_cons(x, yyscan_nil());
 }
-Sexp *yyscan_symbol(AstTag tag) {
+Sexp *yyscan_symbol(SyntaxTag tag) {
   return sexp_number(tag);
 }
-Sexp *yyscan_tag(AstTag tag) {
+Sexp *yyscan_tag(SyntaxTag tag) {
   return yyscan_list(yyscan_symbol(tag));
 }
 Sexp *yyscan_append(Sexp *xs, Sexp *ys) {

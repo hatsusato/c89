@@ -2,7 +2,7 @@
 
 #include "sexp/sexp.h"
 
-const char *ast_show(AstTag tag) {
+const char *ast_show(SyntaxTag tag) {
   const char *name[] = {"",
 #define HANDLE(name, str) str,
 #include "ast/tag.def"
