@@ -1,13 +1,12 @@
 #include "value.h"
 
-#include <stdio.h>
-
 #include "ir/block.h"
 #include "ir/constant.h"
 #include "ir/function.h"
 #include "ir/global.h"
 #include "ir/instruction.h"
 #include "ir/type.h"
+#include "printer/printer.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
@@ -60,42 +59,46 @@ ValueKind value_kind(Value *value) {
 Type *value_type(Value *value) {
   return value->type;
 }
-void value_print(Value *value, Bool comma) {
-  printf(comma ? ", " : "");
+void value_print(Value *value, Bool comma, Printer *printer) {
+  if (comma) {
+    printer_print(printer, ", ");
+  }
   switch (value->kind) {
   case VALUE_BLOCK:
-    block_print(value_as_block(value));
+    block_print(value_as_block(value), printer);
     break;
   case VALUE_INSTRUCTION:
-    instruction_print(value_as_instruction(value));
+    instruction_print(value_as_instruction(value), printer);
     break;
   case VALUE_CONSTANT:
-    constant_print(value_as_constant(value));
+    constant_print(value_as_constant(value), printer);
     break;
   case VALUE_GLOBAL:
-    global_print(value_as_global(value));
+    global_print(value_as_global(value), printer);
     break;
   default:
     UTILITY_ASSERT(0);
     break;
   }
 }
-void value_print_type(Value *value) {
+void value_print_type(Value *value, Printer *printer) {
   switch (value->kind) {
   case VALUE_INSTRUCTION:
-    instruction_print_type(value_as_instruction(value));
+    instruction_print_type(value_as_instruction(value), printer);
     break;
   case VALUE_GLOBAL:
-    global_print_type(value_as_global(value));
+    global_print_type(value_as_global(value), printer);
     break;
   default:
-    type_print(value->type);
+    type_print(value->type, printer);
     break;
   }
 }
-void value_print_with_type(Value *value, Bool comma) {
-  printf(comma ? ", " : "");
-  value_print_type(value);
-  printf(" ");
-  value_print(value, false);
+void value_print_with_type(Value *value, Bool comma, Printer *printer) {
+  if (comma) {
+    printer_print(printer, ", ");
+  }
+  value_print_type(value, printer);
+  printer_print(printer, " ");
+  value_print(value, false, printer);
 }

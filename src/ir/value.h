@@ -25,8 +25,8 @@ Constant *value_as_constant(Value *);
 Global *value_as_global(Value *);
 ValueKind value_kind(Value *);
 Type *value_type(Value *);
-void value_print(Value *, Bool);
-void value_print_type(Value *);
-void value_print_with_type(Value *, Bool);
+void value_print(Value *, Bool, Printer *);
+void value_print_type(Value *, Printer *);
+void value_print_with_type(Value *, Bool, Printer *);
 
 #endif /* INCLUDE_GUARD_FE2AA6D9_B675_4B2E_839A_2B085264192A */

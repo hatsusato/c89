@@ -1,11 +1,10 @@
 #include "block.h"
 
-#include <stdio.h>
-
 #include "ir/instruction.h"
 #include "ir/module.h"
 #include "ir/type.h"
 #include "ir/value.h"
+#include "printer/printer.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
@@ -59,28 +58,29 @@ int block_set_id(Block *block, int id) {
   }
   return id;
 }
-void block_print(Block *block) {
+void block_print(Block *block, Printer *printer) {
   UTILITY_ASSERT(0 <= block->id);
-  printf("%%%d", block->id);
+  printer_print(printer, "%%%d", block->id);
 }
-void block_print_label(Block *block) {
+void block_print_label(Block *block, Printer *printer) {
   UTILITY_ASSERT(0 <= block->id);
-  printf("%d:\n", block->id);
+  printer_print(printer, "%d:", block->id);
+  printer_newline(printer);
 }
-void block_pretty(Block *block) {
+void block_pretty(Block *block, Printer *printer) {
   VectorElem *begin = vector_begin(block->vec);
   VectorElem *end = vector_end(block->vec);
   while (begin < end) {
-    instruction_pretty(*begin++);
+    instruction_pretty(*begin++, printer);
   }
 }
-void block_pretty_switch(Block *block) {
+void block_pretty_switch(Block *block, Printer *printer) {
   VectorElem *begin = vector_begin(block->vec);
   VectorElem *end = vector_end(block->vec);
   while (begin < end) {
-    printf("    ");
-    value_print_with_type(*begin++, false);
-    value_print_with_type(*begin++, true);
-    printf("\n");
+    printer_print(printer, "    ");
+    value_print_with_type(*begin++, false, printer);
+    value_print_with_type(*begin++, true, printer);
+    printer_newline(printer);
   }
 }

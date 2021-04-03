@@ -1,18 +1,11 @@
 #include "print.h"
 
-#include <stdio.h>
-
 #include "ir/block.h"
 #include "ir/type.h"
+#include "printer/printer.h"
 #include "struct.h"
 #include "utility/utility.h"
 
-static void print_newline(void) {
-  printf("\n");
-}
-static void print_indent(void) {
-  printf("  ");
-}
 static const char *instruction_name(Instruction *instr) {
   switch (instr->ikind) {
 #define DO_HANDLE(name, str) \
@@ -25,7 +18,7 @@ static const char *instruction_name(Instruction *instr) {
     return NULL;
   }
 }
-static void instruction_print_name(Instruction *instr) {
+static void instruction_print_name(Instruction *instr, Printer *printer) {
   switch (instr->ikind) {
 #define DO_HANDLE(name, str) \
   case name:                 \
@@ -35,97 +28,97 @@ static void instruction_print_name(Instruction *instr) {
   case INSTRUCTION_STORE:
     break;
   default:
-    instruction_print(instr);
-    printf(" = ");
+    instruction_print(instr, printer);
+    printer_print(printer, " = ");
     break;
   }
-  printf("%s ", instruction_name(instr));
+  printer_print(printer, "%s ", instruction_name(instr));
 }
 
-static void instruction_pretty_ret(Instruction *instr) {
-  instruction_print_name(instr);
+static void instruction_pretty_ret(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
   if (instr->operands[0]) {
-    value_print_with_type(instr->operands[0], false);
+    value_print_with_type(instr->operands[0], false, printer);
   } else {
-    printf("void");
+    printer_print(printer, "void");
   }
 }
-static void instruction_pretty_br(Instruction *instr) {
-  instruction_print_name(instr);
-  value_print_with_type(instr->operands[0], false);
+static void instruction_pretty_br(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
+  value_print_with_type(instr->operands[0], false, printer);
 }
-static void instruction_pretty_br_cond(Instruction *instr) {
-  instruction_print_name(instr);
-  value_print_with_type(instr->operands[0], false);
-  value_print_with_type(instr->operands[1], true);
-  value_print_with_type(instr->operands[2], true);
+static void instruction_pretty_br_cond(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
+  value_print_with_type(instr->operands[0], false, printer);
+  value_print_with_type(instr->operands[1], true, printer);
+  value_print_with_type(instr->operands[2], true, printer);
 }
-static void instruction_pretty_switch(Instruction *instr) {
-  instruction_print_name(instr);
-  value_print_with_type(instr->operands[0], false);
-  value_print_with_type(instr->operands[1], true);
-  printf(" [");
-  print_newline();
-  block_pretty_switch(value_as_block(instr->operands[2]));
-  print_indent();
-  printf("]");
+static void instruction_pretty_switch(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
+  value_print_with_type(instr->operands[0], false, printer);
+  value_print_with_type(instr->operands[1], true, printer);
+  printer_print(printer, " [");
+  printer_newline(printer);
+  block_pretty_switch(value_as_block(instr->operands[2]), printer);
+  printer_print(printer, "  ");
+  printer_print(printer, "]");
 }
-static void instruction_pretty_add(Instruction *instr) {
-  instruction_print_name(instr);
-  value_print_with_type(instr->operands[0], false);
-  value_print(instr->operands[1], true);
+static void instruction_pretty_add(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
+  value_print_with_type(instr->operands[0], false, printer);
+  value_print(instr->operands[1], true, printer);
 }
-static void instruction_pretty_sub(Instruction *instr) {
-  instruction_print_name(instr);
-  value_print_with_type(instr->operands[0], false);
-  value_print(instr->operands[1], true);
+static void instruction_pretty_sub(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
+  value_print_with_type(instr->operands[0], false, printer);
+  value_print(instr->operands[1], true, printer);
 }
-static void instruction_pretty_alloca(Instruction *instr) {
-  instruction_print_name(instr);
-  type_print(instr->type);
-  type_print_align(instr->type);
+static void instruction_pretty_alloca(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
+  type_print(instr->type, printer);
+  type_print_align(instr->type, printer);
 }
-static void instruction_pretty_load(Instruction *instr) {
-  instruction_print_name(instr);
-  type_print(instr->type);
-  value_print_with_type(instr->operands[0], true);
-  type_print_align(instr->type);
+static void instruction_pretty_load(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
+  type_print(instr->type, printer);
+  value_print_with_type(instr->operands[0], true, printer);
+  type_print_align(instr->type, printer);
 }
-static void instruction_pretty_store(Instruction *instr) {
-  instruction_print_name(instr);
-  value_print_with_type(instr->operands[0], false);
-  value_print_with_type(instr->operands[1], true);
-  type_print_align(instr->type);
+static void instruction_pretty_store(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
+  value_print_with_type(instr->operands[0], false, printer);
+  value_print_with_type(instr->operands[1], true, printer);
+  type_print_align(instr->type, printer);
 }
-static void instruction_pretty_trunc(Instruction *instr) {
-  instruction_print_name(instr);
-  value_print_with_type(instr->operands[0], false);
-  printf(" to ");
-  type_print(instr->type);
+static void instruction_pretty_trunc(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
+  value_print_with_type(instr->operands[0], false, printer);
+  printer_print(printer, " to ");
+  type_print(instr->type, printer);
 }
-static void instruction_pretty_sext(Instruction *instr) {
-  instruction_print_name(instr);
-  value_print_with_type(instr->operands[0], false);
-  printf(" to ");
-  type_print(instr->type);
+static void instruction_pretty_sext(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
+  value_print_with_type(instr->operands[0], false, printer);
+  printer_print(printer, " to ");
+  type_print(instr->type, printer);
 }
-static void instruction_pretty_icmp_ne(Instruction *instr) {
-  instruction_print_name(instr);
-  value_print_with_type(instr->operands[0], false);
-  value_print(instr->operands[1], true);
+static void instruction_pretty_icmp_ne(Instruction *instr, Printer *printer) {
+  instruction_print_name(instr, printer);
+  value_print_with_type(instr->operands[0], false, printer);
+  value_print(instr->operands[1], true, printer);
 }
 
-void instruction_print(Instruction *instr) {
-  printf("%%%d", instr->id);
+void instruction_print(Instruction *instr, Printer *printer) {
+  printer_print(printer, "%%%d", instr->id);
 }
-void instruction_print_type(Instruction *instr) {
-  type_print(instr->type);
+void instruction_print_type(Instruction *instr, Printer *printer) {
+  type_print(instr->type, printer);
   if (INSTRUCTION_ALLOCA == instr->ikind) {
-    printf("*");
+    printer_print(printer, "*");
   }
 }
-void instruction_pretty(Instruction *instr) {
-  void (*pretty[])(Instruction *) = {
+void instruction_pretty(Instruction *instr, Printer *printer) {
+  void (*pretty[])(Instruction *, Printer *) = {
       instruction_pretty_ret,     instruction_pretty_br,
       instruction_pretty_br_cond, instruction_pretty_switch,
       instruction_pretty_add,     instruction_pretty_sub,
@@ -134,7 +127,7 @@ void instruction_pretty(Instruction *instr) {
       instruction_pretty_sext,    instruction_pretty_icmp_ne,
   };
   UTILITY_ASSERT(0 <= instr->ikind && instr->ikind < INSTRUCTION_KIND_COUNT);
-  print_indent();
-  pretty[instr->ikind](instr);
-  print_newline();
+  printer_print(printer, "  ");
+  pretty[instr->ikind](instr, printer);
+  printer_newline(printer);
 }

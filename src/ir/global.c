@@ -1,11 +1,10 @@
 #include "global.h"
 
-#include <stdio.h>
-
 #include "ir/constant.h"
 #include "ir/module.h"
 #include "ir/type.h"
 #include "ir/value.h"
+#include "printer/printer.h"
 #include "utility/utility.h"
 
 struct struct_Global {
@@ -41,23 +40,24 @@ Bool global_is_prior(Global *global) {
 void global_set_prior(Global *global) {
   global->prior = true;
 }
-void global_print(Global *global) {
+void global_print(Global *global, Printer *printer) {
   UTILITY_ASSERT(global->name);
-  printf("@%s", global->name);
+  printer_print(printer, "@%s", global->name);
 }
-void global_print_type(Global *global) {
-  type_print(global->type);
-  printf("*");
+void global_print_type(Global *global, Printer *printer) {
+  type_print(global->type, printer);
+  printer_print(printer, "*");
 }
-void global_pretty(Global *global) {
-  global_print(global);
-  printf(" = global ");
-  type_print(global->type);
-  printf(" ");
+void global_pretty(Global *global, Printer *printer) {
+  global_print(global, printer);
+  printer_print(printer, " = global ");
+  type_print(global->type, printer);
+  printer_print(printer, " ");
   if (global->init) {
-    constant_print(global->init);
+    constant_print(global->init, printer);
   } else {
-    printf("0");
+    printer_print(printer, "0");
   }
-  printf(", align 4\n");
+  printer_print(printer, ", align 4");
+  printer_newline(printer);
 }
