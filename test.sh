@@ -59,22 +59,44 @@ print() {
   local color=${e}${1}m
   local normal=${e}0m
   local name=${3#$TEST_DIR}
-  echo "$bold$color$2$normal: ${name#/}"
+  echo "$bold$color$2$normal: ${name#/}" >&2
 }
 check() {
   compile "$1" >/dev/null || exit
   if compare -q "$1"; then
-    print 32 OK "$1"
+    print 32 PASS "$1"
   else
-    print 31 NG "$1"
+    print 31 FAIL "$1"
     compare -y "$1"
     return 1
+  fi
+}
+memcheck() {
+  local out main=$BUILD_DIR/main.out
+  exec {out}>&1
+  local opts=(--tool=memcheck --log-fd=$out "$main")
+  valgrind "${opts[@]}" >/dev/null
+}
+verify() {
+  local msg=$(./compile.sh -e "$1" | memcheck)
+  local leak=$(<<<"$msg" grep exit | cut -d: -f2)
+  local zero=' 0 bytes in 0 blocks'
+  if [[ "$leak" != "$zero" ]]; then
+    print 31 LEAK "$leak"
+  fi
+}
+enabled() {
+  if test "${DISABLE_VALGRIND+defined}"; then
+    return 1
+  else
+    which valgrind >/dev/null || return
   fi
 }
 main() {
   local f count=0
   while read -r f; do
     check "$f" || ((++count))
+    enabled && verify "$f"
   done
   exit $count
 }
