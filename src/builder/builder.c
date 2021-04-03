@@ -412,7 +412,7 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case SYNTAX_JUMP_STATEMENT:
     builder_jump_statement(builder, ast);
     break;
-  case SYNTAX_TRANSLATION_UNIT:
+  case ABSTRACT_TRANSLATION_UNIT:
     builder_translation_unit(builder, ast);
     break;
   case SYNTAX_EXTERNAL_DECLARATION:

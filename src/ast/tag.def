@@ -6,3 +6,5 @@ HANDLE(SYNTAX_NULL, "null")
 #include "declaration.def"
 #include "statement.def"
 #include "definition.def"
+
+HANDLE(ABSTRACT_TRANSLATION_UNIT, "@translation-unit")

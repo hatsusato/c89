@@ -63,7 +63,6 @@ static void builder_function_init(Builder *builder, Sexp *ast) {
 }
 
 void builder_translation_unit(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(SYNTAX_TRANSLATION_UNIT == sexp_get_tag(ast));
   builder_ast_map(builder, ast);
 }
 void builder_external_declaration(Builder *builder, Sexp *ast) {
