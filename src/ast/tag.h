@@ -2,11 +2,11 @@
 #define INCLUDE_GUARD_35338543_3CA8_4BC0_811F_5E8A24EDBED1
 
 typedef enum {
-  AST_NULL,
+  SYNTAX_NULL,
 #define HANDLE(name, str) name,
 #include "ast/tag.def"
 #undef HANDLE
-  AST_TAG_COUNT
+  SYNTAX_TAG_COUNT
 } SyntaxTag;
 
 const char *ast_show(SyntaxTag);

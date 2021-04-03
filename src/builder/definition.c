@@ -11,9 +11,9 @@
 
 static const char *function_name(Sexp *ast) {
   switch (sexp_get_tag(ast)) {
-  case AST_IDENTIFIER:
+  case SYNTAX_IDENTIFIER:
     return identifier_symbol(ast);
-  case AST_DECLARATOR:
+  case SYNTAX_DECLARATOR:
     switch (sexp_length(ast)) {
     case 2:
       return function_name(sexp_at(ast, 1));
@@ -23,7 +23,7 @@ static const char *function_name(Sexp *ast) {
       UTILITY_ASSERT(0);
       return NULL;
     }
-  case AST_DIRECT_DECLARATOR:
+  case SYNTAX_DIRECT_DECLARATOR:
     switch (sexp_length(ast)) {
     case 2:
       return function_name(sexp_at(ast, 1));
@@ -35,7 +35,7 @@ static const char *function_name(Sexp *ast) {
       UTILITY_ASSERT(0);
       return NULL;
     }
-  case AST_FUNCTION_DEFINITION:
+  case SYNTAX_FUNCTION_DEFINITION:
     UTILITY_ASSERT(5 == sexp_length(ast));
     return function_name(sexp_at(ast, 2));
   default:
@@ -63,16 +63,16 @@ static void builder_function_init(Builder *builder, Sexp *ast) {
 }
 
 void builder_translation_unit(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_TRANSLATION_UNIT == sexp_get_tag(ast));
+  UTILITY_ASSERT(SYNTAX_TRANSLATION_UNIT == sexp_get_tag(ast));
   builder_ast_map(builder, ast);
 }
 void builder_external_declaration(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_EXTERNAL_DECLARATION == sexp_get_tag(ast));
+  UTILITY_ASSERT(SYNTAX_EXTERNAL_DECLARATION == sexp_get_tag(ast));
   UTILITY_ASSERT(!builder_is_local(builder));
   builder_ast(builder, sexp_at(ast, 1));
 }
 void builder_function_definition(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
+  UTILITY_ASSERT(SYNTAX_FUNCTION_DEFINITION == sexp_get_tag(ast));
   builder_function_init(builder, ast);
   if (1 < function_count_return(ast)) {
     builder_init_return(builder);

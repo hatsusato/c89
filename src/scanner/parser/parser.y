@@ -110,317 +110,317 @@
 %start top
 %%
 auto: "auto" {
-  $$ = yyscan_symbol(AST_AUTO);
+  $$ = yyscan_symbol(SYNTAX_AUTO);
 }
 ;
 break: "break" {
-  $$ = yyscan_symbol(AST_BREAK);
+  $$ = yyscan_symbol(SYNTAX_BREAK);
 }
 ;
 case: "case" {
-  $$ = yyscan_symbol(AST_CASE);
+  $$ = yyscan_symbol(SYNTAX_CASE);
 }
 ;
 char: "char" {
-  $$ = yyscan_symbol(AST_CHAR);
+  $$ = yyscan_symbol(SYNTAX_CHAR);
 }
 ;
 const: "const" {
-  $$ = yyscan_symbol(AST_CONST);
+  $$ = yyscan_symbol(SYNTAX_CONST);
 }
 ;
 continue: "continue" {
-  $$ = yyscan_symbol(AST_CONTINUE);
+  $$ = yyscan_symbol(SYNTAX_CONTINUE);
 }
 ;
 default: "default" {
-  $$ = yyscan_symbol(AST_DEFAULT);
+  $$ = yyscan_symbol(SYNTAX_DEFAULT);
 }
 ;
 do: "do" {
-  $$ = yyscan_symbol(AST_DO);
+  $$ = yyscan_symbol(SYNTAX_DO);
 }
 ;
 double: "double" {
-  $$ = yyscan_symbol(AST_DOUBLE);
+  $$ = yyscan_symbol(SYNTAX_DOUBLE);
 }
 ;
 else: "else" {
-  $$ = yyscan_symbol(AST_ELSE);
+  $$ = yyscan_symbol(SYNTAX_ELSE);
 }
 ;
 enum: "enum" {
-  $$ = yyscan_symbol(AST_ENUM);
+  $$ = yyscan_symbol(SYNTAX_ENUM);
 }
 ;
 extern: "extern" {
-  $$ = yyscan_symbol(AST_EXTERN);
+  $$ = yyscan_symbol(SYNTAX_EXTERN);
 }
 ;
 float: "float" {
-  $$ = yyscan_symbol(AST_FLOAT);
+  $$ = yyscan_symbol(SYNTAX_FLOAT);
 }
 ;
 for: "for" {
-  $$ = yyscan_symbol(AST_FOR);
+  $$ = yyscan_symbol(SYNTAX_FOR);
 }
 ;
 goto: "goto" {
-  $$ = yyscan_symbol(AST_GOTO);
+  $$ = yyscan_symbol(SYNTAX_GOTO);
 }
 ;
 if: "if" {
-  $$ = yyscan_symbol(AST_IF);
+  $$ = yyscan_symbol(SYNTAX_IF);
 }
 ;
 int: "int" {
-  $$ = yyscan_symbol(AST_INT);
+  $$ = yyscan_symbol(SYNTAX_INT);
 }
 ;
 long: "long" {
-  $$ = yyscan_symbol(AST_LONG);
+  $$ = yyscan_symbol(SYNTAX_LONG);
 }
 ;
 register: "register" {
-  $$ = yyscan_symbol(AST_REGISTER);
+  $$ = yyscan_symbol(SYNTAX_REGISTER);
 }
 ;
 return: "return" {
-  $$ = yyscan_symbol(AST_RETURN);
+  $$ = yyscan_symbol(SYNTAX_RETURN);
 }
 ;
 short: "short" {
-  $$ = yyscan_symbol(AST_SHORT);
+  $$ = yyscan_symbol(SYNTAX_SHORT);
 }
 ;
 signed: "signed" {
-  $$ = yyscan_symbol(AST_SIGNED);
+  $$ = yyscan_symbol(SYNTAX_SIGNED);
 }
 ;
 sizeof: "sizeof" {
-  $$ = yyscan_symbol(AST_SIZEOF);
+  $$ = yyscan_symbol(SYNTAX_SIZEOF);
 }
 ;
 static: "static" {
-  $$ = yyscan_symbol(AST_STATIC);
+  $$ = yyscan_symbol(SYNTAX_STATIC);
 }
 ;
 struct: "struct" {
-  $$ = yyscan_symbol(AST_STRUCT);
+  $$ = yyscan_symbol(SYNTAX_STRUCT);
 }
 ;
 switch: "switch" {
-  $$ = yyscan_symbol(AST_SWITCH);
+  $$ = yyscan_symbol(SYNTAX_SWITCH);
 }
 ;
 typedef: "typedef" {
-  $$ = yyscan_symbol(AST_TYPEDEF);
+  $$ = yyscan_symbol(SYNTAX_TYPEDEF);
 }
 ;
 union: "union" {
-  $$ = yyscan_symbol(AST_UNION);
+  $$ = yyscan_symbol(SYNTAX_UNION);
 }
 ;
 unsigned: "unsigned" {
-  $$ = yyscan_symbol(AST_UNSIGNED);
+  $$ = yyscan_symbol(SYNTAX_UNSIGNED);
 }
 ;
 void: "void" {
-  $$ = yyscan_symbol(AST_VOID);
+  $$ = yyscan_symbol(SYNTAX_VOID);
 }
 ;
 volatile: "volatile" {
-  $$ = yyscan_symbol(AST_VOLATILE);
+  $$ = yyscan_symbol(SYNTAX_VOLATILE);
 }
 ;
 while: "while" {
-  $$ = yyscan_symbol(AST_WHILE);
+  $$ = yyscan_symbol(SYNTAX_WHILE);
 }
 ;
 
 period: "." {
-  $$ = yyscan_symbol(AST_PERIOD);
+  $$ = yyscan_symbol(SYNTAX_PERIOD);
 }
 ;
 arrow: "->" {
-  $$ = yyscan_symbol(AST_ARROW);
+  $$ = yyscan_symbol(SYNTAX_ARROW);
 }
 ;
 increment: "++" {
-  $$ = yyscan_symbol(AST_INCREMENT);
+  $$ = yyscan_symbol(SYNTAX_INCREMENT);
 }
 ;
 decrement: "--" {
-  $$ = yyscan_symbol(AST_DECREMENT);
+  $$ = yyscan_symbol(SYNTAX_DECREMENT);
 }
 ;
 ampersand: "&" {
-  $$ = yyscan_symbol(AST_AMPERSAND);
+  $$ = yyscan_symbol(SYNTAX_AMPERSAND);
 }
 ;
 asterisk: "*" {
-  $$ = yyscan_symbol(AST_ASTERISK);
+  $$ = yyscan_symbol(SYNTAX_ASTERISK);
 }
 ;
 plus: "+" {
-  $$ = yyscan_symbol(AST_PLUS);
+  $$ = yyscan_symbol(SYNTAX_PLUS);
 }
 ;
 minus: "-" {
-  $$ = yyscan_symbol(AST_MINUS);
+  $$ = yyscan_symbol(SYNTAX_MINUS);
 }
 ;
 tilde: "~" {
-  $$ = yyscan_symbol(AST_TILDE);
+  $$ = yyscan_symbol(SYNTAX_TILDE);
 }
 ;
 exclamation: "!" {
-  $$ = yyscan_symbol(AST_EXCLAMATION);
+  $$ = yyscan_symbol(SYNTAX_EXCLAMATION);
 }
 ;
 slash: "/" {
-  $$ = yyscan_symbol(AST_SLASH);
+  $$ = yyscan_symbol(SYNTAX_SLASH);
 }
 ;
 percent: "%" {
-  $$ = yyscan_symbol(AST_PERCENT);
+  $$ = yyscan_symbol(SYNTAX_PERCENT);
 }
 ;
 left-shift: "<<" {
-  $$ = yyscan_symbol(AST_LEFT_SHIFT);
+  $$ = yyscan_symbol(SYNTAX_LEFT_SHIFT);
 }
 ;
 right-shift: ">>" {
-  $$ = yyscan_symbol(AST_RIGHT_SHIFT);
+  $$ = yyscan_symbol(SYNTAX_RIGHT_SHIFT);
 }
 ;
 less-than: "<" {
-  $$ = yyscan_symbol(AST_LESS_THAN);
+  $$ = yyscan_symbol(SYNTAX_LESS_THAN);
 }
 ;
 greater-than: ">" {
-  $$ = yyscan_symbol(AST_GREATER_THAN);
+  $$ = yyscan_symbol(SYNTAX_GREATER_THAN);
 }
 ;
 less-equal: "<=" {
-  $$ = yyscan_symbol(AST_LESS_EQUAL);
+  $$ = yyscan_symbol(SYNTAX_LESS_EQUAL);
 }
 ;
 greater-equal: ">=" {
-  $$ = yyscan_symbol(AST_GREATER_EQUAL);
+  $$ = yyscan_symbol(SYNTAX_GREATER_EQUAL);
 }
 ;
 equal: "==" {
-  $$ = yyscan_symbol(AST_EQUAL);
+  $$ = yyscan_symbol(SYNTAX_EQUAL);
 }
 ;
 not-equal: "!=" {
-  $$ = yyscan_symbol(AST_NOT_EQUAL);
+  $$ = yyscan_symbol(SYNTAX_NOT_EQUAL);
 }
 ;
 caret: "^" {
-  $$ = yyscan_symbol(AST_CARET);
+  $$ = yyscan_symbol(SYNTAX_CARET);
 }
 ;
 bar: "|" {
-  $$ = yyscan_symbol(AST_BAR);
+  $$ = yyscan_symbol(SYNTAX_BAR);
 }
 ;
 and: "&&" {
-  $$ = yyscan_symbol(AST_AND);
+  $$ = yyscan_symbol(SYNTAX_AND);
 }
 ;
 or: "||" {
-  $$ = yyscan_symbol(AST_OR);
+  $$ = yyscan_symbol(SYNTAX_OR);
 }
 ;
 question: "?" {
-  $$ = yyscan_symbol(AST_QUESTION);
+  $$ = yyscan_symbol(SYNTAX_QUESTION);
 }
 ;
 assign: "=" {
-  $$ = yyscan_symbol(AST_ASSIGN);
+  $$ = yyscan_symbol(SYNTAX_ASSIGN);
 }
 ;
 asterisk-assign: "*=" {
-  $$ = yyscan_symbol(AST_ASTERISK_ASSIGN);
+  $$ = yyscan_symbol(SYNTAX_ASTERISK_ASSIGN);
 }
 ;
 slash-assign: "/=" {
-  $$ = yyscan_symbol(AST_SLASH_ASSIGN);
+  $$ = yyscan_symbol(SYNTAX_SLASH_ASSIGN);
 }
 ;
 percent-assign: "%=" {
-  $$ = yyscan_symbol(AST_PERCENT_ASSIGN);
+  $$ = yyscan_symbol(SYNTAX_PERCENT_ASSIGN);
 }
 ;
 plus-assign: "+=" {
-  $$ = yyscan_symbol(AST_PLUS_ASSIGN);
+  $$ = yyscan_symbol(SYNTAX_PLUS_ASSIGN);
 }
 ;
 minus-assign: "-=" {
-  $$ = yyscan_symbol(AST_MINUS_ASSIGN);
+  $$ = yyscan_symbol(SYNTAX_MINUS_ASSIGN);
 }
 ;
 left-shift-assign: "<<=" {
-  $$ = yyscan_symbol(AST_LEFT_SHIFT_ASSIGN);
+  $$ = yyscan_symbol(SYNTAX_LEFT_SHIFT_ASSIGN);
 }
 ;
 right-shift-assign: ">>=" {
-  $$ = yyscan_symbol(AST_RIGHT_SHIFT_ASSIGN);
+  $$ = yyscan_symbol(SYNTAX_RIGHT_SHIFT_ASSIGN);
 }
 ;
 ampersand-assign: "&=" {
-  $$ = yyscan_symbol(AST_AMPERSAND_ASSIGN);
+  $$ = yyscan_symbol(SYNTAX_AMPERSAND_ASSIGN);
 }
 ;
 caret-assign: "^=" {
-  $$ = yyscan_symbol(AST_CARET_ASSIGN);
+  $$ = yyscan_symbol(SYNTAX_CARET_ASSIGN);
 }
 ;
 bar-assign: "|=" {
-  $$ = yyscan_symbol(AST_BAR_ASSIGN);
+  $$ = yyscan_symbol(SYNTAX_BAR_ASSIGN);
 }
 ;
 
 left-bracket: "[" {
-  $$ = yyscan_symbol(AST_LEFT_BRACKET);
+  $$ = yyscan_symbol(SYNTAX_LEFT_BRACKET);
 }
 ;
 right-bracket: "]" {
-  $$ = yyscan_symbol(AST_RIGHT_BRACKET);
+  $$ = yyscan_symbol(SYNTAX_RIGHT_BRACKET);
 }
 ;
 left-paren: "(" {
-  $$ = yyscan_symbol(AST_LEFT_PAREN);
+  $$ = yyscan_symbol(SYNTAX_LEFT_PAREN);
 }
 ;
 right-paren: ")" {
-  $$ = yyscan_symbol(AST_RIGHT_PAREN);
+  $$ = yyscan_symbol(SYNTAX_RIGHT_PAREN);
 }
 ;
 left-brace: "{" {
-  $$ = yyscan_symbol(AST_LEFT_BRACE);
+  $$ = yyscan_symbol(SYNTAX_LEFT_BRACE);
 }
 ;
 right-brace: "}" {
-  $$ = yyscan_symbol(AST_RIGHT_BRACE);
+  $$ = yyscan_symbol(SYNTAX_RIGHT_BRACE);
 }
 ;
 comma: "," {
-  $$ = yyscan_symbol(AST_COMMA);
+  $$ = yyscan_symbol(SYNTAX_COMMA);
 }
 ;
 colon: ":" {
-  $$ = yyscan_symbol(AST_COLON);
+  $$ = yyscan_symbol(SYNTAX_COLON);
 }
 ;
 semicolon: ";" {
-  $$ = yyscan_symbol(AST_SEMICOLON);
+  $$ = yyscan_symbol(SYNTAX_SEMICOLON);
 }
 ;
 ellipsis: "..." {
-  $$ = yyscan_symbol(AST_ELLIPSIS);
+  $$ = yyscan_symbol(SYNTAX_ELLIPSIS);
 }
 ;
 
@@ -433,7 +433,7 @@ identifier.opt
 ;
 identifier
 : identifier.tag {
-  $$ = yyscan_tag(AST_IDENTIFIER);
+  $$ = yyscan_tag(SYNTAX_IDENTIFIER);
   $$ = yyscan_snoc($$, $1);
 }
 ;
@@ -444,7 +444,7 @@ identifier.tag
 ;
 typedef-identifier
 : typedef-identifier.tag {
-  $$ = yyscan_tag(AST_TYPEDEF_IDENTIFIER);
+  $$ = yyscan_tag(SYNTAX_TYPEDEF_IDENTIFIER);
   $$ = yyscan_snoc($$, $1);
 }
 ;
@@ -455,7 +455,7 @@ typedef-identifier.tag
 ;
 floating-constant
 : floating-constant.tag {
-  $$ = yyscan_tag(AST_FLOATING_CONSTANT);
+  $$ = yyscan_tag(SYNTAX_FLOATING_CONSTANT);
   $$ = yyscan_snoc($$, $1);
 }
 ;
@@ -466,7 +466,7 @@ floating-constant.tag
 ;
 integer-constant
 : integer-constant.tag {
-  $$ = yyscan_tag(AST_INTEGER_CONSTANT);
+  $$ = yyscan_tag(SYNTAX_INTEGER_CONSTANT);
   $$ = yyscan_snoc($$, $1);
 }
 ;
@@ -477,7 +477,7 @@ integer-constant.tag
 ;
 enumeration-constant
 : enumeration-constant.tag {
-  $$ = yyscan_tag(AST_ENUMERATION_CONSTANT);
+  $$ = yyscan_tag(SYNTAX_ENUMERATION_CONSTANT);
   $$ = yyscan_snoc($$, $1);
 }
 ;
@@ -488,7 +488,7 @@ enumeration-constant.tag
 ;
 character-constant
 : character-constant.tag {
-  $$ = yyscan_tag(AST_CHARACTER_CONSTANT);
+  $$ = yyscan_tag(SYNTAX_CHARACTER_CONSTANT);
   $$ = yyscan_snoc($$, $1);
 }
 ;
@@ -504,7 +504,7 @@ string-literal
 ;
 string-constant
 : string-literal {
-  $$ = yyscan_tag(AST_STRING_LITERAL);
+  $$ = yyscan_tag(SYNTAX_STRING_LITERAL);
   $$ = yyscan_snoc($$, $1);
 }
 | string-constant string-literal {
@@ -520,7 +520,7 @@ primary-expression
 | character-constant
 | string-constant
 | left-paren expression right-paren {
-  $$ = yyscan_tag(AST_PRIMARY_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_PRIMARY_EXPRESSION);
   $$ = yyscan_snoc($$, $1);
   $$ = yyscan_snoc($$, $2);
   $$ = yyscan_snoc($$, $3);
@@ -529,7 +529,7 @@ primary-expression
 postfix-expression
 : primary-expression
 | postfix-expression.tag {
-  $$ = yyscan_tag(AST_POSTFIX_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_POSTFIX_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -566,13 +566,13 @@ postfix-expression.suffix
 ;
 argument-expression-list.opt
 : %empty {
-  $$ = yyscan_tag(AST_ARGUMENT_EXPRESSION_LIST);
+  $$ = yyscan_tag(SYNTAX_ARGUMENT_EXPRESSION_LIST);
 }
 | argument-expression-list
 ;
 argument-expression-list
 : assignment-expression {
-  $$ = yyscan_tag(AST_ARGUMENT_EXPRESSION_LIST);
+  $$ = yyscan_tag(SYNTAX_ARGUMENT_EXPRESSION_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | argument-expression-list "," assignment-expression {
@@ -582,7 +582,7 @@ argument-expression-list
 unary-expression
 : postfix-expression
 | unary-expression.tag {
-  $$ = yyscan_tag(AST_UNARY_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_UNARY_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -621,7 +621,7 @@ unary-operator
 cast-expression
 : unary-expression
 | cast-expression.tag {
-  $$ = yyscan_tag(AST_CAST_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_CAST_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -636,7 +636,7 @@ cast-expression.tag
 multiplicative-expression
 : cast-expression
 | multiplicative-expression.tag {
-  $$ = yyscan_tag(AST_MULTIPLICATIVE_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_MULTIPLICATIVE_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -655,7 +655,7 @@ multiplicative-operator
 additive-expression
 : multiplicative-expression
 | additive-expression.tag {
-  $$ = yyscan_tag(AST_ADDITIVE_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_ADDITIVE_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -673,7 +673,7 @@ additive-operator
 shift-expression
 : additive-expression
 | shift-expression.tag {
-  $$ = yyscan_tag(AST_SHIFT_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_SHIFT_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -691,7 +691,7 @@ shift-operator
 relational-expression
 : shift-expression
 | relational-expression.tag {
-  $$ = yyscan_tag(AST_RELATIONAL_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_RELATIONAL_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -711,7 +711,7 @@ relational-operator
 equality-expression
 : relational-expression
 | equality-expression.tag {
-  $$ = yyscan_tag(AST_EQUALITY_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_EQUALITY_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -729,7 +729,7 @@ equality-operator
 and-expression
 : equality-expression
 | and-expression.tag {
-  $$ = yyscan_tag(AST_AND_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_AND_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -743,7 +743,7 @@ and-expression.tag
 exclusive-or-expression
 : and-expression
 | exclusive-or-expression.tag {
-  $$ = yyscan_tag(AST_EXCLUSIVE_OR_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_EXCLUSIVE_OR_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -757,7 +757,7 @@ exclusive-or-expression.tag
 inclusive-or-expression
 : exclusive-or-expression
 | inclusive-or-expression.tag {
-  $$ = yyscan_tag(AST_INCLUSIVE_OR_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_INCLUSIVE_OR_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -771,7 +771,7 @@ inclusive-or-expression.tag
 logical-and-expression
 : inclusive-or-expression
 | logical-and-expression.tag {
-  $$ = yyscan_tag(AST_LOGICAL_AND_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_LOGICAL_AND_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -785,7 +785,7 @@ logical-and-expression.tag
 logical-or-expression
 : logical-and-expression
 | logical-or-expression.tag {
-  $$ = yyscan_tag(AST_LOGICAL_OR_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_LOGICAL_OR_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -799,7 +799,7 @@ logical-or-expression.tag
 conditional-expression
 : logical-or-expression
 | conditional-expression.tag {
-  $$ = yyscan_tag(AST_CONDITIONAL_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_CONDITIONAL_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -815,7 +815,7 @@ conditional-expression.tag
 assignment-expression
 : conditional-expression
 | assignment-expression.tag {
-  $$ = yyscan_tag(AST_ASSIGNMENT_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_ASSIGNMENT_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -848,7 +848,7 @@ expression.opt
 expression
 : assignment-expression
 | expression.tag {
-  $$ = yyscan_tag(AST_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_EXPRESSION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -868,7 +868,7 @@ constant-expression.opt
 ;
 constant-expression
 : conditional-expression {
-  $$ = yyscan_tag(AST_CONSTANT_EXPRESSION);
+  $$ = yyscan_tag(SYNTAX_CONSTANT_EXPRESSION);
   $$ = yyscan_snoc($$, $1);
 }
 ;
@@ -876,7 +876,7 @@ constant-expression
 /* 6.5 Declarations */
 declaration
 : declaration.tag {
-  $$ = yyscan_tag(AST_DECLARATION);
+  $$ = yyscan_tag(SYNTAX_DECLARATION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -889,7 +889,7 @@ declaration.tag
 ;
 declaration-specifiers
 : declaration-specifier {
-  $$ = yyscan_tag(AST_DECLARATION_SPECIFIERS);
+  $$ = yyscan_tag(SYNTAX_DECLARATION_SPECIFIERS);
   $$ = yyscan_snoc($$, $1);
 }
 | declaration-specifiers declaration-specifier {
@@ -903,13 +903,13 @@ declaration-specifier
 ;
 init-declarator-list.opt
 : %empty {
-  $$ = yyscan_tag(AST_INIT_DECLARATOR_LIST);
+  $$ = yyscan_tag(SYNTAX_INIT_DECLARATOR_LIST);
 }
 | init-declarator-list
 ;
 init-declarator-list
 : init-declarator {
-  $$ = yyscan_tag(AST_INIT_DECLARATOR_LIST);
+  $$ = yyscan_tag(SYNTAX_INIT_DECLARATOR_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | init-declarator-list "," init-declarator {
@@ -918,7 +918,7 @@ init-declarator-list
 ;
 init-declarator
 : init-declarator.tag {
-  $$ = yyscan_tag(AST_INIT_DECLARATOR);
+  $$ = yyscan_tag(SYNTAX_INIT_DECLARATOR);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -934,7 +934,7 @@ init-declarator.tag
 ;
 storage-class-specifier
 : storage-class-specifier.tag {
-  $$ = yyscan_tag(AST_STORAGE_CLASS_SPECIFIER);
+  $$ = yyscan_tag(SYNTAX_STORAGE_CLASS_SPECIFIER);
   $$ = yyscan_snoc($$, $1);
 }
 ;
@@ -947,7 +947,7 @@ storage-class-specifier.tag
 ;
 type-specifier
 : type-specifier.tag {
-  $$ = yyscan_tag(AST_TYPE_SPECIFIER);
+  $$ = yyscan_tag(SYNTAX_TYPE_SPECIFIER);
   $$ = yyscan_snoc($$, $1);
 }
 ;
@@ -967,7 +967,7 @@ type-specifier.tag
 ;
 struct-or-union-specifier
 : struct-or-union-specifier.tag {
-  $$ = yyscan_tag(AST_STRUCT_OR_UNION_SPECIFIER);
+  $$ = yyscan_tag(SYNTAX_STRUCT_OR_UNION_SPECIFIER);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -990,7 +990,7 @@ struct-or-union
 ;
 struct-declaration-list
 : struct-declaration {
-  $$ = yyscan_tag(AST_STRUCT_DECLARATION_LIST);
+  $$ = yyscan_tag(SYNTAX_STRUCT_DECLARATION_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | struct-declaration-list struct-declaration {
@@ -999,7 +999,7 @@ struct-declaration-list
 ;
 struct-declaration
 : struct-declaration.tag {
-  $$ = yyscan_tag(AST_STRUCT_DECLARATION);
+  $$ = yyscan_tag(SYNTAX_STRUCT_DECLARATION);
   $$ = yyscan_append($$, $1);
 }
 struct-declaration.tag
@@ -1011,7 +1011,7 @@ struct-declaration.tag
 ;
 specifier-qualifier-list
 : specifier-qualifier {
-  $$ = yyscan_tag(AST_SPECIFIER_QUALIFIER_LIST);
+  $$ = yyscan_tag(SYNTAX_SPECIFIER_QUALIFIER_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | specifier-qualifier-list specifier-qualifier {
@@ -1024,7 +1024,7 @@ specifier-qualifier
 ;
 struct-declarator-list
 : struct-declarator {
-  $$ = yyscan_tag(AST_STRUCT_DECLARATOR_LIST);
+  $$ = yyscan_tag(SYNTAX_STRUCT_DECLARATOR_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | struct-declarator-list "," struct-declarator {
@@ -1033,7 +1033,7 @@ struct-declarator-list
 ;
 struct-declarator
 : struct-declarator.tag {
-  $$ = yyscan_tag(AST_STRUCT_DECLARATOR);
+  $$ = yyscan_tag(SYNTAX_STRUCT_DECLARATOR);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1049,7 +1049,7 @@ struct-declarator.tag
 ;
 enum-specifier
 : enum-specifier.tag {
-  $$ = yyscan_tag(AST_ENUM_SPECIFIER);
+  $$ = yyscan_tag(SYNTAX_ENUM_SPECIFIER);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1068,7 +1068,7 @@ enum-specifier.tag
 ;
 enumerator-list
 : enumerator {
-  $$ = yyscan_tag(AST_ENUMERATOR_LIST);
+  $$ = yyscan_tag(SYNTAX_ENUMERATOR_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | enumerator-list "," enumerator {
@@ -1077,7 +1077,7 @@ enumerator-list
 ;
 enumerator
 : enumerator.tag {
-  $$ = yyscan_tag(AST_ENUMERATOR);
+  $$ = yyscan_tag(SYNTAX_ENUMERATOR);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1093,7 +1093,7 @@ enumerator.tag
 ;
 type-qualifier
 : type-qualifier.tag {
-  $$ = yyscan_tag(AST_TYPE_QUALIFIER);
+  $$ = yyscan_tag(SYNTAX_TYPE_QUALIFIER);
   $$ = yyscan_snoc($$, $1);
 }
 ;
@@ -1109,7 +1109,7 @@ declarator.opt
 ;
 declarator
 : declarator.tag {
-  $$ = yyscan_tag(AST_DECLARATOR);
+  $$ = yyscan_tag(SYNTAX_DECLARATOR);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1124,7 +1124,7 @@ declarator.tag
 ;
 direct-declarator
 : direct-declarator.tag {
-  $$ = yyscan_tag(AST_DIRECT_DECLARATOR);
+  $$ = yyscan_tag(SYNTAX_DIRECT_DECLARATOR);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1160,7 +1160,7 @@ direct-declarator.suffix
 ;
 pointer
 : pointer.tag {
-  $$ = yyscan_tag(AST_POINTER);
+  $$ = yyscan_tag(SYNTAX_POINTER);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1177,13 +1177,13 @@ pointer.tag
 ;
 type-qualifier-list.opt
 : %empty {
-  $$ = yyscan_tag(AST_TYPE_QUALIFIER_LIST);
+  $$ = yyscan_tag(SYNTAX_TYPE_QUALIFIER_LIST);
 }
 | type-qualifier-list
 ;
 type-qualifier-list
 : type-qualifier {
-  $$ = yyscan_tag(AST_TYPE_QUALIFIER_LIST);
+  $$ = yyscan_tag(SYNTAX_TYPE_QUALIFIER_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | type-qualifier-list type-qualifier {
@@ -1192,7 +1192,7 @@ type-qualifier-list
 ;
 parameter-type-list.opt
 : %empty {
-  $$ = yyscan_tag(AST_PARAMETER_LIST);
+  $$ = yyscan_tag(SYNTAX_PARAMETER_LIST);
 }
 | parameter-type-list
 ;
@@ -1204,7 +1204,7 @@ parameter-type-list
 ;
 parameter-list
 : parameter-declaration {
-  $$ = yyscan_tag(AST_PARAMETER_LIST);
+  $$ = yyscan_tag(SYNTAX_PARAMETER_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | parameter-list "," parameter-declaration {
@@ -1213,7 +1213,7 @@ parameter-list
 ;
 parameter-declaration
 : parameter-declaration.tag {
-  $$ = yyscan_tag(AST_PARAMETER_DECLARATION);
+  $$ = yyscan_tag(SYNTAX_PARAMETER_DECLARATION);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1229,7 +1229,7 @@ parameter-declaration.tag
 ;
 identifier-list
 : identifier {
-  $$ = yyscan_tag(AST_IDENTIFIER_LIST);
+  $$ = yyscan_tag(SYNTAX_IDENTIFIER_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | identifier-list "," identifier {
@@ -1238,7 +1238,7 @@ identifier-list
 ;
 type-name
 : type-name.tag {
-  $$ = yyscan_tag(AST_TYPE_NAME);
+  $$ = yyscan_tag(SYNTAX_TYPE_NAME);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1256,7 +1256,7 @@ abstract-declarator.opt
 ;
 abstract-declarator
 : abstract-declarator.tag {
-  $$ = yyscan_tag(AST_ABSTRACT_DECLARATOR);
+  $$ = yyscan_tag(SYNTAX_ABSTRACT_DECLARATOR);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1274,7 +1274,7 @@ abstract-declarator.tag
 ;
 direct-abstract-declarator
 : direct-abstract-declarator.tag {
-  $$ = yyscan_tag(AST_DIRECT_ABSTRACT_DECLARATOR);
+  $$ = yyscan_tag(SYNTAX_DIRECT_ABSTRACT_DECLARATOR);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1303,14 +1303,14 @@ direct-abstract-declarator.suffix
 ;
 typedef-name
 : typedef-identifier {
-  $$ = yyscan_tag(AST_TYPEDEF_NAME);
+  $$ = yyscan_tag(SYNTAX_TYPEDEF_NAME);
   $$ = yyscan_snoc($$, $1);
 }
 ;
 initializer
 : assignment-expression
 | initializer.tag {
-  $$ = yyscan_tag(AST_INITIALIZER);
+  $$ = yyscan_tag(SYNTAX_INITIALIZER);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1329,7 +1329,7 @@ initializer.tag
 ;
 initializer-list
 : initializer {
-  $$ = yyscan_tag(AST_INITIALIZER_LIST);
+  $$ = yyscan_tag(SYNTAX_INITIALIZER_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | initializer-list "," initializer {
@@ -1340,7 +1340,7 @@ initializer-list
 /* 6.6 Statements */
 statement
 : statement.tag {
-  $$ = yyscan_tag(AST_STATEMENT);
+  $$ = yyscan_tag(SYNTAX_STATEMENT);
   $$ = yyscan_snoc($$, $1);
 }
 ;
@@ -1354,7 +1354,7 @@ statement.tag
 ;
 labeled-statement
 : labeled-statement.tag {
-  $$ = yyscan_tag(AST_LABELED_STATEMENT);
+  $$ = yyscan_tag(SYNTAX_LABELED_STATEMENT);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1378,7 +1378,7 @@ labeled-statement.tag
 ;
 compound-statement
 : compound-statement.tag {
-  $$ = yyscan_tag(AST_COMPOUND_STATEMENT);
+  $$ = yyscan_tag(SYNTAX_COMPOUND_STATEMENT);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1392,13 +1392,13 @@ compound-statement.tag
 ;
 declaration-list.opt
 : %empty {
-  $$ = yyscan_tag(AST_DECLARATION_LIST);
+  $$ = yyscan_tag(SYNTAX_DECLARATION_LIST);
 }
 | declaration-list
 ;
 declaration-list
 : declaration {
-  $$ = yyscan_tag(AST_DECLARATION_LIST);
+  $$ = yyscan_tag(SYNTAX_DECLARATION_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | declaration-list declaration {
@@ -1407,13 +1407,13 @@ declaration-list
 ;
 statement-list.opt
 : %empty {
-  $$ = yyscan_tag(AST_STATEMENT_LIST);
+  $$ = yyscan_tag(SYNTAX_STATEMENT_LIST);
 }
 | statement-list
 ;
 statement-list
 : statement {
-  $$ = yyscan_tag(AST_STATEMENT_LIST);
+  $$ = yyscan_tag(SYNTAX_STATEMENT_LIST);
   $$ = yyscan_snoc($$, $1);
 }
 | statement-list statement {
@@ -1422,7 +1422,7 @@ statement-list
 ;
 expression-statement
 : expression-statement.tag {
-  $$ = yyscan_tag(AST_EXPRESSION_STATEMENT);
+  $$ = yyscan_tag(SYNTAX_EXPRESSION_STATEMENT);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1434,7 +1434,7 @@ expression-statement.tag
 ;
 selection-statement
 : selection-statement.tag {
-  $$ = yyscan_tag(AST_SELECTION_STATEMENT);
+  $$ = yyscan_tag(SYNTAX_SELECTION_STATEMENT);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1465,7 +1465,7 @@ selection-statement.tag
 ;
 iteration-statement
 : iteration-statement.tag {
-  $$ = yyscan_tag(AST_ITERATION_STATEMENT);
+  $$ = yyscan_tag(SYNTAX_ITERATION_STATEMENT);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1500,7 +1500,7 @@ iteration-statement.tag
 ;
 jump-statement
 : jump-statement.tag {
-  $$ = yyscan_tag(AST_JUMP_STATEMENT);
+  $$ = yyscan_tag(SYNTAX_JUMP_STATEMENT);
   $$ = yyscan_append($$, $1);
 }
 ;
@@ -1533,7 +1533,7 @@ top
 ;
 translation-unit
 : external-declaration {
-  $$ = yyscan_tag(AST_TRANSLATION_UNIT);
+  $$ = yyscan_tag(SYNTAX_TRANSLATION_UNIT);
   $$ = yyscan_snoc($$, $1);
 }
 | translation-unit external-declaration {
@@ -1544,13 +1544,13 @@ external-declaration
 : function-definition
 | declaration {
   yyscan_declaration($1, yyscanner);
-  $$ = yyscan_tag(AST_EXTERNAL_DECLARATION);
+  $$ = yyscan_tag(SYNTAX_EXTERNAL_DECLARATION);
   $$ = yyscan_snoc($$, $1);
 }
 ;
 function-definition
 : function-definition.tag {
-  $$ = yyscan_tag(AST_FUNCTION_DEFINITION);
+  $$ = yyscan_tag(SYNTAX_FUNCTION_DEFINITION);
   $$ = yyscan_append($$, $1);
 }
 ;

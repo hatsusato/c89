@@ -8,7 +8,7 @@ const char *ast_show(SyntaxTag tag) {
 #include "ast/tag.def"
 #undef HANDLE
                         "tag-count"};
-  if (AST_NULL < tag && tag < AST_TAG_COUNT) {
+  if (SYNTAX_NULL < tag && tag < SYNTAX_TAG_COUNT) {
     return name[tag];
   }
   return NULL;

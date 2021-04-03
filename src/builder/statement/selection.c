@@ -56,9 +56,9 @@ static void builder_switch_statement(Builder *builder, Sexp *ast) {
 }
 
 void builder_selection_statement(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_SELECTION_STATEMENT == sexp_get_tag(ast));
+  UTILITY_ASSERT(SYNTAX_SELECTION_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
-  case AST_IF:
+  case SYNTAX_IF:
     if (6 == sexp_length(ast)) {
       builder_if_statement(builder, ast);
     } else {
@@ -66,7 +66,7 @@ void builder_selection_statement(Builder *builder, Sexp *ast) {
       builder_if_else_statement(builder, ast);
     }
     break;
-  case AST_SWITCH:
+  case SYNTAX_SWITCH:
     builder_switch_statement(builder, ast);
     break;
   default:

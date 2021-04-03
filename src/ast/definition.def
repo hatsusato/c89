@@ -1,5 +1,5 @@
 /* 6.7 External definitions */
 
-HANDLE(AST_TRANSLATION_UNIT, "translation-unit")
-HANDLE(AST_EXTERNAL_DECLARATION, "external-declaration")
-HANDLE(AST_FUNCTION_DEFINITION, "function-definition")
+HANDLE(SYNTAX_TRANSLATION_UNIT, "translation-unit")
+HANDLE(SYNTAX_EXTERNAL_DECLARATION, "external-declaration")
+HANDLE(SYNTAX_FUNCTION_DEFINITION, "function-definition")

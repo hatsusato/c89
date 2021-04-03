@@ -42,15 +42,15 @@ static void builder_default_statement(Builder *builder, Sexp *ast) {
 }
 
 void builder_labeled_statement(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_LABELED_STATEMENT == sexp_get_tag(ast));
+  UTILITY_ASSERT(SYNTAX_LABELED_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
-  case AST_IDENTIFIER:
+  case SYNTAX_IDENTIFIER:
     builder_label_statement(builder, ast);
     break;
-  case AST_CASE:
+  case SYNTAX_CASE:
     builder_case_statement(builder, ast);
     break;
-  case AST_DEFAULT:
+  case SYNTAX_DEFAULT:
     builder_default_statement(builder, ast);
     break;
   default:

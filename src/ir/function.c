@@ -66,6 +66,6 @@ int function_count_return(Sexp *ast) {
     return function_count_return(sexp_car(ast)) +
            function_count_return(sexp_cdr(ast));
   } else {
-    return sexp_is_number(ast) && AST_RETURN == sexp_get_number(ast);
+    return sexp_is_number(ast) && SYNTAX_RETURN == sexp_get_number(ast);
   }
 }
