@@ -44,14 +44,8 @@ static const char *function_name(Sexp *ast) {
   }
 }
 static Type *builder_function_type(Builder *builder, Sexp *ast) {
-  if (4 == sexp_length(ast)) {
-    builder_reset_type_spec(builder);
-    builder_set_type_spec(builder, TYPE_SPEC_INT);
-    builder_set_type(builder);
-  } else {
-    UTILITY_ASSERT(5 == sexp_length(ast));
-    builder_ast(builder, sexp_at(ast, 1));
-  }
+  UTILITY_ASSERT(5 == sexp_length(ast));
+  builder_ast(builder, sexp_at(ast, 1));
   return builder_get_type(builder);
 }
 static void builder_function_init(Builder *builder, Sexp *ast) {
@@ -73,10 +67,10 @@ void builder_function_definition(Builder *builder, Sexp *ast) {
   builder_function_init(builder, ast);
   if (1 < function_count_return(ast)) {
     builder_init_return(builder);
-    builder_ast(builder, sexp_at(ast, sexp_length(ast) - 1));
+    builder_ast(builder, sexp_at(ast, 4));
     builder_finish_return(builder);
   } else {
-    builder_ast(builder, sexp_at(ast, sexp_length(ast) - 1));
+    builder_ast(builder, sexp_at(ast, 4));
   }
   builder_function_finish(builder);
 }
