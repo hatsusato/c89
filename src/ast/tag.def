@@ -1,3 +1,4 @@
+HANDLE(SYNTAX_NULL, "null")
 #include "keyword.def"
 #include "token.def"
 #include "symbol.def"
