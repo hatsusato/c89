@@ -18,7 +18,10 @@ build() {
   make --no-print-directory -C "$target_dir"
 }
 clean() {
-  make -C "$BUILD_DIR" clean >/dev/null
+  if [[ "$*" == clean && "$*" == "$1" ]]; then
+    make -C "$BUILD_DIR" clean >/dev/null
+    exit
+  fi
 }
 tests() {
   local f opts=(-name '*.c') x=excludes.txt
@@ -70,9 +73,6 @@ main() {
   exit $count
 }
 
-if [[ "$*" == clean && "$*" == "$1" ]]; then
-  clean
-else
-  (build "$@")
-  tests | main
-fi
+clean "$@"
+build "$@"
+tests | main
