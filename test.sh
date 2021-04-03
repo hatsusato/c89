@@ -2,7 +2,6 @@
 
 set -eu
 
-EXCLUDES=()
 BUILD_DIR=${BUILD_DIR:-build}
 TEST_DIR=${TEST_DIR:-test}
 TOP_DIR=$(dirname "$BASH_SOURCE")
@@ -22,10 +21,12 @@ clean() {
   make -C "$BUILD_DIR" clean >/dev/null
 }
 tests() {
-  local f opts=(-name '*.c')
-  for f in "${EXCLUDES[@]}"; do
-    opts+=('!' -name "$f")
-  done
+  local f opts=(-name '*.c') x=excludes.txt
+  if test -f "$x"; then
+    cat "$x" | while read -r f; do
+      opts+=('!' -name "$f")
+    done
+  fi
   find "$TEST_DIR" "${opts[@]}" | sort
 }
 compile() {
