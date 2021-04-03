@@ -23,6 +23,5 @@ const char *sexp_get_symbol(Sexp *);
 int sexp_get_number(Sexp *);
 int sexp_length(Sexp *);
 int sexp_get_tag(Sexp *);
-void sexp_print(Sexp *, Printer *);
 
 #endif /* INCLUDE_GUARD_3397EB56_FB26_40B7_AD9E_F7B3DA519335 */
