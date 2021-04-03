@@ -6,6 +6,20 @@ error() {
   echo "ERROR: $*" >&2
   exit 1
 }
+usage() {
+  cat - <<EOF
+USAGE: $0 [-dehsx] <file>
+    Compile <file> into LLVM IR
+
+OPTIONS:
+    -d  Print AST for debug
+    -e  Preprocess only
+    -h  Print this help
+    -s  Emit LLVM IR by clang
+    -x  Execute produced LLVM IR
+EOF
+  exit
+}
 cpp() {
   local flags=(-x c -P -E -)
   flags+=(-Wall -Wextra -Werror -ansi -pedantic)
@@ -53,15 +67,21 @@ emit() {
   <<<"$out" sed -n "$beg,$end"p
 }
 
+(($#)) || usage
 flag=
-if [[ "$1" == -* ]]; then
-  flag="$1"
-  shift
+case "$1" in
+  -h) usage;;
+  -*) flag="$1"; shift;;
+esac
+(($#)) || usage
+if test -f "$1"; then
+  cpp "$1" >/dev/null || error "failed to preprocess: $1"
+else
+  error "$1 not found"
 fi
-cpp "$1" >/dev/null || error "$1"
 case "$flag" in
-  -e) cpp "$1";;
   -d) cpp "$1" | main --debug;;
+  -e) cpp "$1";;
   -s) emit "$1";;
   -x) cpp "$1" | main | cc "$1";;
   *) cpp "$1" | main;;
