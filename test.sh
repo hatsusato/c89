@@ -5,7 +5,6 @@ set -eu
 EXCLUDES=()
 BUILD_DIR=${BUILD_DIR:-build}
 TEST_DIR=${TEST_DIR:-test}
-FILES=()
 TOP_DIR=$(dirname "$BASH_SOURCE")
 cd "$TOP_DIR"
 
@@ -27,9 +26,7 @@ tests() {
   for f in "${EXCLUDES[@]}"; do
     opts+=('!' -name "$f")
   done
-  while read -r f; do
-    FILES+=("$f")
-  done < <(find "$TEST_DIR" "${opts[@]}" | sort)
+  find "$TEST_DIR" "${opts[@]}" | sort
 }
 compile() {
   local sh=./compile.sh
@@ -66,7 +63,7 @@ check() {
 }
 main() {
   local f count=0
-  for f in ${FILES[@]}; do
+  while read -r f; do
     check "$f" || ((++count))
   done
   exit $count
@@ -76,6 +73,5 @@ if [[ "$*" == clean && "$*" == "$1" ]]; then
   clean
 else
   (build "$@")
-  tests
-  main
+  tests | main
 fi
