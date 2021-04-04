@@ -34,6 +34,42 @@ static Sexp *identifier_from_declarator(Sexp *sexp) {
   }
   return identifier_from_declarator(sexp);
 }
+int count_return_statement(Sexp *sexp) {
+  Size leng = sexp_length(sexp);
+  int sum = 0;
+  switch (sexp_get_tag(sexp)) {
+  case SYNTAX_STATEMENT:
+    return count_return_statement(sexp_at(sexp, 1));
+  case SYNTAX_LABELED_STATEMENT:
+    return count_return_statement(sexp_at(sexp, leng - 1));
+  case SYNTAX_COMPOUND_STATEMENT:
+    return count_return_statement(sexp_at(sexp, 3));
+  case SYNTAX_DECLARATION_LIST:
+    return 0;
+  case SYNTAX_STATEMENT_LIST:
+    for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+      sum += count_return_statement(sexp_car(sexp));
+    }
+    return sum;
+  case SYNTAX_EXPRESSION_STATEMENT:
+    return 0;
+  case SYNTAX_SELECTION_STATEMENT:
+    UTILITY_ASSERT(6 == leng || 8 == leng);
+    sum += count_return_statement(sexp_at(sexp, 5));
+    if (8 == leng) {
+      sum += count_return_statement(sexp_at(sexp, 7));
+    }
+    return sum;
+  case SYNTAX_ITERATION_STATEMENT:
+    UTILITY_ASSERT(6 == leng || 8 == leng || 10 == leng);
+    return count_return_statement(sexp_at(sexp, 8 == leng ? 2 : leng - 1));
+  case SYNTAX_JUMP_STATEMENT:
+    return SYNTAX_RETURN == sexp_get_tag(sexp_at(sexp, 1)) ? 1 : 0;
+  default:
+    UTILITY_ASSERT(0);
+    return 0;
+  }
+}
 
 /* translation-unit ::=
    (external-declaration | function-definition)+ */
