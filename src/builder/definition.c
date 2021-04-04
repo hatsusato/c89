@@ -14,6 +14,11 @@ static const char *function_name(Sexp *ast) {
   UTILITY_ASSERT(sexp_get_tag(ast) == SYNTAX_IDENTIFIER);
   return identifier_symbol(ast);
 }
+static int function_count_return(Sexp *ast) {
+  ast = sexp_at(ast, 6);
+  UTILITY_ASSERT(sexp_is_number(ast));
+  return sexp_get_number(ast);
+}
 static Type *builder_function_type(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(7 == sexp_length(ast));
   builder_ast(builder, sexp_at(ast, 1));

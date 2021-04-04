@@ -1,12 +1,10 @@
 #include "function.h"
 
-#include "ast/tag.h"
 #include "ir/block.h"
 #include "ir/module.h"
 #include "ir/type.h"
 #include "ir/value.h"
 #include "printer/printer.h"
-#include "sexp/sexp.h"
 #include "utility/utility.h"
 #include "vector/vector.h"
 
@@ -60,12 +58,4 @@ void function_pretty(Function *func, Printer *printer) {
   }
   printer_print(printer, "}");
   printer_newline(printer);
-}
-int function_count_return(Sexp *ast) {
-  if (sexp_is_pair(ast)) {
-    return function_count_return(sexp_car(ast)) +
-           function_count_return(sexp_cdr(ast));
-  } else {
-    return sexp_is_number(ast) && SYNTAX_RETURN == sexp_get_number(ast);
-  }
 }
