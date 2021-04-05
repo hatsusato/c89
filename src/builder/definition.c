@@ -1,5 +1,6 @@
 #include "definition.h"
 
+#include "ast/get.h"
 #include "ast/tag.h"
 #include "builder/builder.h"
 #include "builder/ir.h"
@@ -10,48 +11,16 @@
 #include "utility/utility.h"
 
 static const char *function_name(Sexp *ast) {
-  switch (sexp_get_tag(ast)) {
-  case AST_IDENTIFIER:
-    return identifier_symbol(ast);
-  case AST_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      return function_name(sexp_at(ast, 1));
-    case 3:
-      return function_name(sexp_at(ast, 2));
-    default:
-      UTILITY_ASSERT(0);
-      return NULL;
-    }
-  case AST_DIRECT_DECLARATOR:
-    switch (sexp_length(ast)) {
-    case 2:
-      return function_name(sexp_at(ast, 1));
-    case 4:
-      return function_name(sexp_at(ast, 2));
-    case 5:
-      return function_name(sexp_at(ast, 1));
-    default:
-      UTILITY_ASSERT(0);
-      return NULL;
-    }
-  case AST_FUNCTION_DEFINITION:
-    UTILITY_ASSERT(5 == sexp_length(ast));
-    return function_name(sexp_at(ast, 2));
-  default:
-    UTILITY_ASSERT(0);
-    return NULL;
-  }
+  ast = ast_get_function_name(ast);
+  UTILITY_ASSERT(sexp_is_symbol(ast));
+  return sexp_get_symbol(ast);
+}
+static Bool function_count_return(Sexp *ast) {
+  ast = ast_get_function_return_count(ast);
+  return sexp_is_true(ast);
 }
 static Type *builder_function_type(Builder *builder, Sexp *ast) {
-  if (4 == sexp_length(ast)) {
-    builder_reset_type_spec(builder);
-    builder_set_type_spec(builder, TYPE_SPEC_INT);
-    builder_set_type(builder);
-  } else {
-    UTILITY_ASSERT(5 == sexp_length(ast));
-    builder_ast(builder, sexp_at(ast, 1));
-  }
+  builder_ast(builder, ast_get_function_type(ast));
   return builder_get_type(builder);
 }
 static void builder_function_init(Builder *builder, Sexp *ast) {
@@ -63,23 +32,20 @@ static void builder_function_init(Builder *builder, Sexp *ast) {
 }
 
 void builder_translation_unit(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_TRANSLATION_UNIT == sexp_get_tag(ast));
   builder_ast_map(builder, ast);
 }
 void builder_external_declaration(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_EXTERNAL_DECLARATION == sexp_get_tag(ast));
   UTILITY_ASSERT(!builder_is_local(builder));
   builder_ast(builder, sexp_at(ast, 1));
 }
 void builder_function_definition(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_FUNCTION_DEFINITION == sexp_get_tag(ast));
   builder_function_init(builder, ast);
-  if (1 < function_count_return(ast)) {
+  if (function_count_return(ast)) {
     builder_init_return(builder);
-    builder_ast(builder, sexp_at(ast, sexp_length(ast) - 1));
+    builder_ast(builder, ast_get_function_body(ast));
     builder_finish_return(builder);
   } else {
-    builder_ast(builder, sexp_at(ast, sexp_length(ast) - 1));
+    builder_ast(builder, ast_get_function_body(ast));
   }
   builder_function_finish(builder);
 }

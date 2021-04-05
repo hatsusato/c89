@@ -4,5 +4,12 @@ target_sources(ast PRIVATE
   tag.c
   )
 target_link_libraries(ast PRIVATE
+  convert
   options
+  printer
+  set
+  sexp
+  utility
   )
+
+add_subdirectory(convert)

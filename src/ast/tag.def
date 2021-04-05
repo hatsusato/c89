@@ -1,17 +1,16 @@
-#define DO_HANDLE(name, str) HANDLE(name, STRINGIFY(str))
-
-#define STRINGIFY(x) #x
+HANDLE(SYNTAX_NULL, "null")
 #include "keyword.def"
 #include "token.def"
-#undef STRINGIFY
-#define STRINGIFY(x) x
 #include "symbol.def"
-#undef STRINGIFY
-#define STRINGIFY(x) #x
 #include "expression.def"
 #include "declaration.def"
 #include "statement.def"
 #include "definition.def"
-#undef STRINGIFY
 
-#undef DO_HANDLE
+HANDLE(ABSTRACT_GOTO_LABEL, "@goto-label")
+HANDLE(ABSTRACT_CASE_LABEL, "@case-label")
+HANDLE(ABSTRACT_DEFAULT_LABEL, "@default-label")
+HANDLE(ABSTRACT_COMPOUND_STATEMENT, "@compound-statement")
+HANDLE(ABSTRACT_TRANSLATION_UNIT, "@translation-unit")
+HANDLE(ABSTRACT_EXTERNAL_DECLARATION, "@external-declaration")
+HANDLE(ABSTRACT_FUNCTION_DEFINITION, "@function-definition")

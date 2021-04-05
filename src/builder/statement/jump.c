@@ -42,18 +42,18 @@ static void builder_return_statement(Builder *builder, Sexp *ast) {
 }
 
 void builder_jump_statement(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(AST_JUMP_STATEMENT == sexp_get_tag(ast));
+  UTILITY_ASSERT(SYNTAX_JUMP_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
-  case AST_GOTO:
+  case SYNTAX_GOTO:
     builder_goto_statement(builder, ast);
     break;
-  case AST_CONTINUE:
+  case SYNTAX_CONTINUE:
     builder_continue_statement(builder);
     break;
-  case AST_BREAK:
+  case SYNTAX_BREAK:
     builder_break_statement(builder);
     break;
-  case AST_RETURN:
+  case SYNTAX_RETURN:
     builder_return_statement(builder, ast);
     break;
   default:

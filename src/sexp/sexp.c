@@ -1,7 +1,5 @@
 #include "sexp.h"
 
-#include "ast/tag.h"
-#include "printer/printer.h"
 #include "utility/utility.h"
 
 typedef enum { SEXP_NIL, SEXP_PAIR, SEXP_SYMBOL, SEXP_NUMBER } SexpKind;
@@ -82,6 +80,9 @@ Sexp *sexp_number(int number) {
   sexp->data.number = number;
   return sexp;
 }
+Sexp *sexp_bool(Bool bool) {
+  return bool ? sexp_symbol("t") : sexp_nil();
+}
 Bool sexp_is_nil(Sexp *sexp) {
   return SEXP_NIL == sexp_kind(sexp);
 }
@@ -93,6 +94,9 @@ Bool sexp_is_symbol(Sexp *sexp) {
 }
 Bool sexp_is_number(Sexp *sexp) {
   return SEXP_NUMBER == sexp_kind(sexp);
+}
+Bool sexp_is_true(Sexp *sexp) {
+  return !sexp_is_nil(sexp);
 }
 Bool sexp_is_list(Sexp *list) {
   while (sexp_is_pair(list)) {
@@ -162,24 +166,5 @@ int sexp_get_tag(Sexp *sexp) {
   } else {
     assert(sexp_is_number(sexp));
     return sexp_get_number(sexp);
-  }
-}
-void sexp_print(Sexp *sexp, Printer *printer) {
-  if (sexp_is_pair(sexp)) {
-    printer_print(printer, "(");
-    printer_indent(printer, 1);
-    sexp_print(sexp_car(sexp), printer);
-    for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
-      printer_newline(printer);
-      sexp_print(sexp_car(sexp), printer);
-    }
-    printer_indent(printer, -1);
-    printer_print(printer, ")");
-  } else if (sexp_is_symbol(sexp)) {
-    printer_print(printer, "\"%s\"", sexp_get_symbol(sexp));
-  } else if (sexp_is_number(sexp)) {
-    printer_print(printer, "'%s'", ast_show(sexp_get_number(sexp)));
-  } else {
-    printer_print(printer, "()");
   }
 }

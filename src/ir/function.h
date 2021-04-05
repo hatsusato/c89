@@ -9,6 +9,5 @@ void function_insert(Function *, Block *);
 Type *function_return_type(Function *);
 void function_set_id(Function *);
 void function_pretty(Function *, Printer *);
-int function_count_return(Sexp *);
 
 #endif /* INCLUDE_GUARD_9CEF8276_25CA_4457_A042_1492E261359B */

@@ -43,7 +43,7 @@ static Bool builder_function_is_void(Builder *builder) {
 }
 
 const char *identifier_symbol(Sexp *ast) {
-  UTILITY_ASSERT(AST_IDENTIFIER == sexp_get_tag(ast));
+  UTILITY_ASSERT(SYNTAX_IDENTIFIER == sexp_get_tag(ast));
   ast = sexp_at(ast, 1);
   UTILITY_ASSERT(sexp_is_symbol(ast));
   return sexp_get_symbol(ast);
@@ -210,215 +210,215 @@ Block *builder_set_next(Builder *builder, BuilderNextTag tag, Block *next) {
   UTILITY_SWAP(Block *, builder->next[tag], next);
   return next;
 }
-void builder_ast_map(Builder *builder, Sexp *ast) {
-  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+void builder_ast_list(Builder *builder, Sexp *ast) {
+  for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     builder_ast(builder, sexp_car(ast));
   }
+}
+void builder_ast_map(Builder *builder, Sexp *ast) {
+  builder_ast_list(builder, sexp_cdr(ast));
 }
 void builder_ast(Builder *builder, Sexp *ast) {
   if (sexp_is_nil(ast)) {
     return;
   }
   switch (sexp_get_tag(ast)) {
-  case AST_IDENTIFIER:
+  case SYNTAX_IDENTIFIER:
     builder_identifier(builder, ast);
     break;
-  case AST_TYPEDEF_IDENTIFIER:
+  case SYNTAX_TYPEDEF_IDENTIFIER:
     builder_typedef_identifier(builder, ast);
     break;
-  case AST_FLOATING_CONSTANT:
+  case SYNTAX_FLOATING_CONSTANT:
     builder_floating_constant(builder, ast);
     break;
-  case AST_INTEGER_CONSTANT:
+  case SYNTAX_INTEGER_CONSTANT:
     builder_integer_constant(builder, ast);
     break;
-  case AST_ENUMERATION_CONSTANT:
+  case SYNTAX_ENUMERATION_CONSTANT:
     builder_enumeration_constant(builder, ast);
     break;
-  case AST_CHARACTER_CONSTANT:
+  case SYNTAX_CHARACTER_CONSTANT:
     builder_character_constant(builder, ast);
     break;
-  case AST_STRING_LITERAL:
+  case SYNTAX_STRING_LITERAL:
     builder_string_literal(builder, ast);
     break;
-  case AST_PRIMARY_EXPRESSION:
+  case SYNTAX_PRIMARY_EXPRESSION:
     builder_primary_expression(builder, ast);
     break;
-  case AST_POSTFIX_EXPRESSION:
+  case SYNTAX_POSTFIX_EXPRESSION:
     builder_postfix_expression(builder, ast);
     break;
-  case AST_ARGUMENT_EXPRESSION_LIST:
+  case SYNTAX_ARGUMENT_EXPRESSION_LIST:
     builder_argument_expression_list(builder, ast);
     break;
-  case AST_UNARY_EXPRESSION:
+  case SYNTAX_UNARY_EXPRESSION:
     builder_unary_expression(builder, ast);
     break;
-  case AST_CAST_EXPRESSION:
+  case SYNTAX_CAST_EXPRESSION:
     builder_cast_expression(builder, ast);
     break;
-  case AST_MULTIPLICATIVE_EXPRESSION:
+  case SYNTAX_MULTIPLICATIVE_EXPRESSION:
     builder_multiplicative_expression(builder, ast);
     break;
-  case AST_ADDITIVE_EXPRESSION:
+  case SYNTAX_ADDITIVE_EXPRESSION:
     builder_additive_expression(builder, ast);
     break;
-  case AST_SHIFT_EXPRESSION:
+  case SYNTAX_SHIFT_EXPRESSION:
     builder_shift_expression(builder, ast);
     break;
-  case AST_RELATIONAL_EXPRESSION:
+  case SYNTAX_RELATIONAL_EXPRESSION:
     builder_relational_expression(builder, ast);
     break;
-  case AST_EQUALITY_EXPRESSION:
+  case SYNTAX_EQUALITY_EXPRESSION:
     builder_equality_expression(builder, ast);
     break;
-  case AST_AND_EXPRESSION:
+  case SYNTAX_AND_EXPRESSION:
     builder_and_expression(builder, ast);
     break;
-  case AST_EXCLUSIVE_OR_EXPRESSION:
+  case SYNTAX_EXCLUSIVE_OR_EXPRESSION:
     builder_exclusive_or_expression(builder, ast);
     break;
-  case AST_INCLUSIVE_OR_EXPRESSION:
+  case SYNTAX_INCLUSIVE_OR_EXPRESSION:
     builder_inclusive_or_expression(builder, ast);
     break;
-  case AST_LOGICAL_AND_EXPRESSION:
+  case SYNTAX_LOGICAL_AND_EXPRESSION:
     builder_logical_and_expression(builder, ast);
     break;
-  case AST_LOGICAL_OR_EXPRESSION:
+  case SYNTAX_LOGICAL_OR_EXPRESSION:
     builder_logical_or_expression(builder, ast);
     break;
-  case AST_CONDITIONAL_EXPRESSION:
+  case SYNTAX_CONDITIONAL_EXPRESSION:
     builder_conditional_expression(builder, ast);
     break;
-  case AST_ASSIGNMENT_EXPRESSION:
+  case SYNTAX_ASSIGNMENT_EXPRESSION:
     builder_assignment_expression(builder, ast);
     break;
-  case AST_EXPRESSION:
+  case SYNTAX_EXPRESSION:
     builder_expression(builder, ast);
     break;
-  case AST_CONSTANT_EXPRESSION:
+  case SYNTAX_CONSTANT_EXPRESSION:
     builder_constant_expression(builder, ast);
     break;
-  case AST_DECLARATION:
+  case SYNTAX_DECLARATION:
     builder_declaration(builder, ast);
     break;
-  case AST_DECLARATION_SPECIFIERS:
+  case SYNTAX_DECLARATION_SPECIFIERS:
     builder_declaration_specifiers(builder, ast);
     break;
-  case AST_INIT_DECLARATOR_LIST:
+  case SYNTAX_INIT_DECLARATOR_LIST:
     builder_init_declarator_list(builder, ast);
     break;
-  case AST_INIT_DECLARATOR:
+  case SYNTAX_INIT_DECLARATOR:
     builder_init_declarator(builder, ast);
     break;
-  case AST_STORAGE_CLASS_SPECIFIER:
+  case SYNTAX_STORAGE_CLASS_SPECIFIER:
     builder_storage_class_specifier(builder, ast);
     break;
-  case AST_TYPE_SPECIFIER:
+  case SYNTAX_TYPE_SPECIFIER:
     builder_type_specifier(builder, ast);
     break;
-  case AST_STRUCT_OR_UNION_SPECIFIER:
+  case SYNTAX_STRUCT_OR_UNION_SPECIFIER:
     builder_struct_or_union_specifier(builder, ast);
     break;
-  case AST_STRUCT_DECLARATION_LIST:
+  case SYNTAX_STRUCT_DECLARATION_LIST:
     builder_struct_declaration_list(builder, ast);
     break;
-  case AST_STRUCT_DECLARATION:
+  case SYNTAX_STRUCT_DECLARATION:
     builder_struct_declaration(builder, ast);
     break;
-  case AST_SPECIFIER_QUALIFIER_LIST:
+  case SYNTAX_SPECIFIER_QUALIFIER_LIST:
     builder_specifier_qualifier_list(builder, ast);
     break;
-  case AST_STRUCT_DECLARATOR_LIST:
+  case SYNTAX_STRUCT_DECLARATOR_LIST:
     builder_struct_declarator_list(builder, ast);
     break;
-  case AST_STRUCT_DECLARATOR:
+  case SYNTAX_STRUCT_DECLARATOR:
     builder_struct_declarator(builder, ast);
     break;
-  case AST_ENUM_SPECIFIER:
+  case SYNTAX_ENUM_SPECIFIER:
     builder_enum_specifier(builder, ast);
     break;
-  case AST_ENUMERATOR_LIST:
+  case SYNTAX_ENUMERATOR_LIST:
     builder_enumerator_list(builder, ast);
     break;
-  case AST_ENUMERATOR:
+  case SYNTAX_ENUMERATOR:
     builder_enumerator(builder, ast);
     break;
-  case AST_TYPE_QUALIFIER:
+  case SYNTAX_TYPE_QUALIFIER:
     builder_type_qualifier(builder, ast);
     break;
-  case AST_DECLARATOR:
+  case SYNTAX_DECLARATOR:
     builder_declarator(builder, ast);
     break;
-  case AST_DIRECT_DECLARATOR:
+  case SYNTAX_DIRECT_DECLARATOR:
     builder_direct_declarator(builder, ast);
     break;
-  case AST_POINTER:
+  case SYNTAX_POINTER:
     builder_pointer(builder, ast);
     break;
-  case AST_TYPE_QUALIFIER_LIST:
+  case SYNTAX_TYPE_QUALIFIER_LIST:
     builder_type_qualifier_list(builder, ast);
     break;
-  case AST_PARAMETER_LIST:
+  case SYNTAX_PARAMETER_LIST:
     builder_parameter_list(builder, ast);
     break;
-  case AST_PARAMETER_DECLARATION:
+  case SYNTAX_PARAMETER_DECLARATION:
     builder_parameter_declaration(builder, ast);
     break;
-  case AST_IDENTIFIER_LIST:
+  case SYNTAX_IDENTIFIER_LIST:
     builder_identifier_list(builder, ast);
     break;
-  case AST_TYPE_NAME:
+  case SYNTAX_TYPE_NAME:
     builder_type_name(builder, ast);
     break;
-  case AST_ABSTRACT_DECLARATOR:
+  case SYNTAX_ABSTRACT_DECLARATOR:
     builder_abstract_declarator(builder, ast);
     break;
-  case AST_DIRECT_ABSTRACT_DECLARATOR:
+  case SYNTAX_DIRECT_ABSTRACT_DECLARATOR:
     builder_direct_abstract_declarator(builder, ast);
     break;
-  case AST_TYPEDEF_NAME:
+  case SYNTAX_TYPEDEF_NAME:
     builder_typedef_name(builder, ast);
     break;
-  case AST_INITIALIZER:
+  case SYNTAX_INITIALIZER:
     builder_initializer(builder, ast);
     break;
-  case AST_INITIALIZER_LIST:
+  case SYNTAX_INITIALIZER_LIST:
     builder_initializer_list(builder, ast);
     break;
-  case AST_STATEMENT:
-    builder_statement(builder, ast);
+  case ABSTRACT_GOTO_LABEL:
+    builder_goto_label(builder, ast);
     break;
-  case AST_LABELED_STATEMENT:
-    builder_labeled_statement(builder, ast);
+  case ABSTRACT_CASE_LABEL:
+    builder_case_label(builder, ast);
     break;
-  case AST_COMPOUND_STATEMENT:
+  case ABSTRACT_DEFAULT_LABEL:
+    builder_default_label(builder, ast);
+    break;
+  case ABSTRACT_COMPOUND_STATEMENT:
     builder_compound_statement(builder, ast);
     break;
-  case AST_DECLARATION_LIST:
-    builder_declaration_list(builder, ast);
-    break;
-  case AST_STATEMENT_LIST:
-    builder_statement_list(builder, ast);
-    break;
-  case AST_EXPRESSION_STATEMENT:
+  case SYNTAX_EXPRESSION_STATEMENT:
     builder_expression_statement(builder, ast);
     break;
-  case AST_SELECTION_STATEMENT:
+  case SYNTAX_SELECTION_STATEMENT:
     builder_selection_statement(builder, ast);
     break;
-  case AST_ITERATION_STATEMENT:
+  case SYNTAX_ITERATION_STATEMENT:
     builder_iteration_statement(builder, ast);
     break;
-  case AST_JUMP_STATEMENT:
+  case SYNTAX_JUMP_STATEMENT:
     builder_jump_statement(builder, ast);
     break;
-  case AST_TRANSLATION_UNIT:
+  case ABSTRACT_TRANSLATION_UNIT:
     builder_translation_unit(builder, ast);
     break;
-  case AST_EXTERNAL_DECLARATION:
+  case ABSTRACT_EXTERNAL_DECLARATION:
     builder_external_declaration(builder, ast);
     break;
-  case AST_FUNCTION_DEFINITION:
+  case ABSTRACT_FUNCTION_DEFINITION:
     builder_function_definition(builder, ast);
     break;
   default:

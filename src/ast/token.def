@@ -1,13 +1,13 @@
 /* 6.1 Lexical elements */
 
 /* 6.1.2 Identifiers */
-DO_HANDLE(AST_IDENTIFIER, identifier)
-DO_HANDLE(AST_TYPEDEF_IDENTIFIER, typedef-identifier)
+HANDLE(SYNTAX_IDENTIFIER, "identifier")
+HANDLE(SYNTAX_TYPEDEF_IDENTIFIER, "typedef-identifier")
 /* 6.1.3 Constants */
-DO_HANDLE(AST_CONSTANT, constant)
-DO_HANDLE(AST_FLOATING_CONSTANT, floating-constant)
-DO_HANDLE(AST_INTEGER_CONSTANT, integer-constant)
-DO_HANDLE(AST_ENUMERATION_CONSTANT, enumeration-constant)
-DO_HANDLE(AST_CHARACTER_CONSTANT, character-constant)
+HANDLE(SYNTAX_CONSTANT, "constant")
+HANDLE(SYNTAX_FLOATING_CONSTANT, "floating-constant")
+HANDLE(SYNTAX_INTEGER_CONSTANT, "integer-constant")
+HANDLE(SYNTAX_ENUMERATION_CONSTANT, "enumeration-constant")
+HANDLE(SYNTAX_CHARACTER_CONSTANT, "character-constant")
 /* 6.1.4 String literals */
-DO_HANDLE(AST_STRING_LITERAL, string-literal)
+HANDLE(SYNTAX_STRING_LITERAL, "string-literal")

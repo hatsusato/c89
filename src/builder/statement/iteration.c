@@ -79,15 +79,15 @@ static void builder_for_statement(Builder *builder, Sexp *ast) {
 
 void builder_iteration_statement(Builder *builder, Sexp *ast) {
   Block *next_switch = builder_set_next(builder, BUILDER_NEXT_SWITCH, NULL);
-  UTILITY_ASSERT(AST_ITERATION_STATEMENT == sexp_get_tag(ast));
+  UTILITY_ASSERT(SYNTAX_ITERATION_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
-  case AST_WHILE:
+  case SYNTAX_WHILE:
     builder_while_statement(builder, ast);
     break;
-  case AST_DO:
+  case SYNTAX_DO:
     builder_do_while_statement(builder, ast);
     break;
-  case AST_FOR:
+  case SYNTAX_FOR:
     builder_for_statement(builder, ast);
     break;
   default:
