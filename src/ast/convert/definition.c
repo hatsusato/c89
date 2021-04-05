@@ -83,17 +83,28 @@ Sexp *convert_external_declaration(Sexp *sexp) {
 */
 Sexp *convert_function_definition(Sexp *sexp) {
   SyntaxTag tag = ABSTRACT_FUNCTION_DEFINITION;
-  Sexp *list = convert_ast(sexp_cdr(sexp));
-  Sexp *decl = sexp_at(list, 1);
-  Sexp *body = sexp_at(list, 3);
-  if (sexp_length(sexp) == 4) {
-    Sexp *type = sexp_number(SYNTAX_INT);
+  Size leng = sexp_length(sexp);
+  Sexp *type, *decl, *body;
+  Sexp *list = sexp_nil();
+  UTILITY_ASSERT(4 == leng || 5 == leng);
+  if (4 == leng) {
+    type = sexp_number(SYNTAX_INT);
     type = convert_cons_tag(SYNTAX_TYPE_SPECIFIER, type);
     type = convert_cons_tag(SYNTAX_DECLARATION_SPECIFIERS, type);
-    list = sexp_pair(type, list);
+    decl = sexp_at(sexp, 1);
+    body = sexp_at(sexp, 3);
   } else {
-    UTILITY_ASSERT(sexp_length(sexp) == 5);
+    type = sexp_at(sexp, 1);
+    type = convert_ast(type);
+    decl = sexp_at(sexp, 2);
+    body = sexp_at(sexp, 4);
   }
+  decl = convert_ast(decl);
+  body = convert_ast(body);
+  list = sexp_snoc(list, type);
+  list = sexp_snoc(list, decl);
+  list = sexp_snoc(list, sexp_nil());
+  list = sexp_snoc(list, body);
   list = sexp_snoc(list, name_of_declarator(decl));
   list = sexp_snoc(list, sexp_bool(1 < count_return_statement(body)));
   return convert_cons_tag(tag, list);
