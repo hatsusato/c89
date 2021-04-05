@@ -35,9 +35,12 @@ static int count_return_statement(Sexp *sexp) {
     return count_return_statement(sexp_at(sexp, 1));
   case SYNTAX_LABELED_STATEMENT:
     return count_return_statement(sexp_at(sexp, leng - 1));
-  case ABSTRACT_COMPOUND_STATEMENT:
-    sexp = ast_get_statement_list(sexp);
-    for (; sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+  case SYNTAX_COMPOUND_STATEMENT:
+    return count_return_statement(sexp_at(sexp, 3));
+  case SYNTAX_DECLARATION_LIST:
+    return 0;
+  case SYNTAX_STATEMENT_LIST:
+    for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
       sum += count_return_statement(sexp_car(sexp));
     }
     return sum;
@@ -99,11 +102,10 @@ Sexp *convert_function_definition(Sexp *sexp) {
     decl = sexp_at(sexp, 2);
     body = sexp_at(sexp, 4);
   }
-  body = convert_ast(body);
   list = sexp_snoc(list, type);
   list = sexp_snoc(list, convert_ast(decl));
   list = sexp_snoc(list, sexp_nil());
-  list = sexp_snoc(list, body);
+  list = sexp_snoc(list, convert_ast(body));
   list = sexp_snoc(list, name_of_declarator(decl));
   list = sexp_snoc(list, sexp_bool(1 < count_return_statement(body)));
   return convert_cons_tag(tag, list);
