@@ -12,7 +12,7 @@ static Sexp *name_of_declarator(Sexp *sexp) {
   case SYNTAX_IDENTIFIER:
     sexp = sexp_at(sexp, 1);
     UTILITY_ASSERT(sexp_is_symbol(sexp));
-    return sexp;
+    return convert_ast(sexp);
   case SYNTAX_DECLARATOR:
     UTILITY_ASSERT(2 == leng || 3 == leng);
     sexp = sexp_at(sexp, leng - 1);
@@ -99,10 +99,9 @@ Sexp *convert_function_definition(Sexp *sexp) {
     decl = sexp_at(sexp, 2);
     body = sexp_at(sexp, 4);
   }
-  decl = convert_ast(decl);
   body = convert_ast(body);
   list = sexp_snoc(list, type);
-  list = sexp_snoc(list, decl);
+  list = sexp_snoc(list, convert_ast(decl));
   list = sexp_snoc(list, sexp_nil());
   list = sexp_snoc(list, body);
   list = sexp_snoc(list, name_of_declarator(decl));
