@@ -27,11 +27,13 @@ int main(int argc, char *argv[]) {
   int ret = scanner_parse(ast);
   if (0 == ret) {
     Printer *printer = printer_new(stdout);
-    ast_convert(ast);
     if (is_debug(argc, argv)) {
+      ast_print(ast, printer);
+      ast_convert(ast);
       ast_print(ast, printer);
     } else {
       Module *module = module_new();
+      ast_convert(ast);
       build(module, ast);
       module_pretty(module, printer);
       module_delete(module);
