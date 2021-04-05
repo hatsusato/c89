@@ -10,7 +10,7 @@ static Bool switch_new_case(Builder *builder) {
   return block_empty(swch) || !block_empty(curr) || dflt == curr;
 }
 
-static void builder_label_statement(Builder *builder, Sexp *ast) {
+static void builder_goto_label(Builder *builder, Sexp *ast) {
   const char *label = sexp_get_symbol(ast_get_label_goto(ast));
   Block *next = builder_label(builder, label);
   builder_instruction_br(builder, next);
@@ -45,8 +45,8 @@ static void builder_default_statement(Builder *builder, Sexp *ast) {
 void builder_labeled_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(SYNTAX_LABELED_STATEMENT == sexp_get_tag(ast));
   switch (sexp_get_tag(sexp_at(ast, 1))) {
-  case SYNTAX_IDENTIFIER:
-    builder_label_statement(builder, ast);
+  case ABSTRACT_GOTO_LABEL:
+    builder_goto_label(builder, ast);
     break;
   case SYNTAX_CASE:
     builder_case_statement(builder, ast);

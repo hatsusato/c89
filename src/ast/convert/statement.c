@@ -9,10 +9,27 @@ Sexp* convert_statement(Sexp* sexp) {
   sexp = sexp_car(sexp);
   return convert_ast(sexp);
 }
+/* goto-label ::=
+   <label>:symbol
+   statement */
+static Sexp* convert_goto_label(Sexp* sexp) {
+  SyntaxTag tag = ABSTRACT_GOTO_LABEL;
+  Sexp* label = sexp_at(sexp, 0);
+  Sexp* stmt = sexp_at(sexp, 2);
+  Sexp* list = sexp_nil();
+  UTILITY_ASSERT(SYNTAX_IDENTIFIER == sexp_get_tag(label));
+  label = sexp_at(label, 1);
+  UTILITY_ASSERT(sexp_is_symbol(label));
+  list = sexp_snoc(list, convert_ast(label));
+  list = sexp_snoc(list, convert_ast(stmt));
+  return convert_cons_tag(tag, list);
+}
 Sexp* convert_labeled_statement(Sexp* sexp) {
   sexp = sexp_cdr(sexp);
   switch (sexp_get_tag(sexp)) {
   case SYNTAX_IDENTIFIER:
+    sexp = convert_goto_label(sexp);
+    break;
   case SYNTAX_CASE:
   case SYNTAX_DEFAULT:
     sexp = convert_ast(sexp);
@@ -43,9 +60,7 @@ Sexp* convert_compound_statement(Sexp* sexp) {
 Sexp* ast_get_label_goto(Sexp* sexp) {
   UTILITY_ASSERT(SYNTAX_LABELED_STATEMENT == sexp_get_tag(sexp));
   sexp = sexp_cdr(sexp);
-  UTILITY_ASSERT(SYNTAX_IDENTIFIER == sexp_get_tag(sexp));
-  sexp = sexp_car(sexp);
-  UTILITY_ASSERT(SYNTAX_IDENTIFIER == sexp_get_tag(sexp));
+  UTILITY_ASSERT(ABSTRACT_GOTO_LABEL == sexp_get_tag(sexp));
   sexp = sexp_at(sexp, 1);
   UTILITY_ASSERT(sexp_is_symbol(sexp));
   return sexp;
@@ -60,7 +75,7 @@ Sexp* ast_get_label_statement(Sexp* sexp) {
   UTILITY_ASSERT(SYNTAX_LABELED_STATEMENT == sexp_get_tag(sexp));
   sexp = sexp_cdr(sexp);
   switch (sexp_get_tag(sexp)) {
-  case SYNTAX_IDENTIFIER:
+  case ABSTRACT_GOTO_LABEL:
     return sexp_at(sexp, 2);
   case SYNTAX_CASE:
     return sexp_at(sexp, 3);
