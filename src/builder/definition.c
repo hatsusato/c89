@@ -1,5 +1,6 @@
 #include "definition.h"
 
+#include "ast/get.h"
 #include "ast/tag.h"
 #include "builder/builder.h"
 #include "builder/ir.h"
@@ -10,12 +11,12 @@
 #include "utility/utility.h"
 
 static const char *function_name(Sexp *ast) {
-  ast = sexp_at(ast, 5);
+  ast = ast_get_function_name(ast);
   UTILITY_ASSERT(sexp_get_tag(ast) == SYNTAX_IDENTIFIER);
   return identifier_symbol(ast);
 }
 static int function_count_return(Sexp *ast) {
-  ast = sexp_at(ast, 6);
+  ast = ast_get_function_return_count(ast);
   UTILITY_ASSERT(sexp_is_number(ast));
   return sexp_get_number(ast);
 }

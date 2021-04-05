@@ -102,3 +102,14 @@ Sexp *convert_function_definition(Sexp *sexp) {
   list = sexp_snoc(list, count);
   return convert_cons_tag(tag, list);
 }
+
+Sexp *ast_get_function_name(Sexp *sexp) {
+  UTILITY_ASSERT(ABSTRACT_FUNCTION_DEFINITION == sexp_get_tag(sexp));
+  UTILITY_ASSERT(7 == sexp_length(sexp));
+  return sexp_at(sexp, 5);
+}
+Sexp *ast_get_function_return_count(Sexp *sexp) {
+  UTILITY_ASSERT(ABSTRACT_FUNCTION_DEFINITION == sexp_get_tag(sexp));
+  UTILITY_ASSERT(7 == sexp_length(sexp));
+  return sexp_at(sexp, 6);
+}
