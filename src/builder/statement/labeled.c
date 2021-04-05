@@ -17,7 +17,7 @@ static void builder_goto_label(Builder *builder, Sexp *ast) {
   builder_jump_block(builder, next);
   builder_ast(builder, ast_get_label_statement(ast));
 }
-static void builder_case_statement(Builder *builder, Sexp *ast) {
+static void builder_case_label(Builder *builder, Sexp *ast) {
   Module *module = builder_get_module(builder);
   Block *next = builder_get_next(builder, BUILDER_NEXT_CURRENT);
   Value *value;
@@ -48,8 +48,8 @@ void builder_labeled_statement(Builder *builder, Sexp *ast) {
   case ABSTRACT_GOTO_LABEL:
     builder_goto_label(builder, ast);
     break;
-  case SYNTAX_CASE:
-    builder_case_statement(builder, ast);
+  case ABSTRACT_CASE_LABEL:
+    builder_case_label(builder, ast);
     break;
   case SYNTAX_DEFAULT:
     builder_default_statement(builder, ast);

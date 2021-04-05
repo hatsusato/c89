@@ -24,6 +24,18 @@ static Sexp* convert_goto_label(Sexp* sexp) {
   list = sexp_snoc(list, convert_ast(stmt));
   return convert_cons_tag(tag, list);
 }
+/* case-label ::=
+   constant-expression
+   statement */
+static Sexp* convert_case_label(Sexp* sexp) {
+  SyntaxTag tag = ABSTRACT_CASE_LABEL;
+  Sexp* c = sexp_at(sexp, 1);
+  Sexp* s = sexp_at(sexp, 3);
+  Sexp* list = sexp_nil();
+  list = sexp_snoc(list, convert_ast(c));
+  list = sexp_snoc(list, convert_ast(s));
+  return convert_cons_tag(tag, list);
+}
 Sexp* convert_labeled_statement(Sexp* sexp) {
   sexp = sexp_cdr(sexp);
   switch (sexp_get_tag(sexp)) {
@@ -31,6 +43,8 @@ Sexp* convert_labeled_statement(Sexp* sexp) {
     sexp = convert_goto_label(sexp);
     break;
   case SYNTAX_CASE:
+    sexp = convert_case_label(sexp);
+    break;
   case SYNTAX_DEFAULT:
     sexp = convert_ast(sexp);
     break;
@@ -68,7 +82,7 @@ Sexp* ast_get_label_goto(Sexp* sexp) {
 Sexp* ast_get_label_case(Sexp* sexp) {
   UTILITY_ASSERT(SYNTAX_LABELED_STATEMENT == sexp_get_tag(sexp));
   sexp = sexp_cdr(sexp);
-  UTILITY_ASSERT(SYNTAX_CASE == sexp_get_tag(sexp));
+  UTILITY_ASSERT(ABSTRACT_CASE_LABEL == sexp_get_tag(sexp));
   return sexp_at(sexp, 1);
 }
 Sexp* ast_get_label_statement(Sexp* sexp) {
@@ -77,8 +91,8 @@ Sexp* ast_get_label_statement(Sexp* sexp) {
   switch (sexp_get_tag(sexp)) {
   case ABSTRACT_GOTO_LABEL:
     return sexp_at(sexp, 2);
-  case SYNTAX_CASE:
-    return sexp_at(sexp, 3);
+  case ABSTRACT_CASE_LABEL:
+    return sexp_at(sexp, 2);
   case SYNTAX_DEFAULT:
     return sexp_at(sexp, 2);
   default:
