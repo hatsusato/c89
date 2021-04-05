@@ -111,10 +111,20 @@ Sexp *convert_function_definition(Sexp *sexp) {
   return convert_cons_tag(tag, list);
 }
 
+Sexp *ast_get_function_type(Sexp *sexp) {
+  UTILITY_ASSERT(ABSTRACT_FUNCTION_DEFINITION == sexp_get_tag(sexp));
+  UTILITY_ASSERT(7 == sexp_length(sexp));
+  return sexp_at(sexp, 1);
+}
 Sexp *ast_get_function_name(Sexp *sexp) {
   UTILITY_ASSERT(ABSTRACT_FUNCTION_DEFINITION == sexp_get_tag(sexp));
   UTILITY_ASSERT(7 == sexp_length(sexp));
   return sexp_at(sexp, 5);
+}
+Sexp *ast_get_function_body(Sexp *sexp) {
+  UTILITY_ASSERT(ABSTRACT_FUNCTION_DEFINITION == sexp_get_tag(sexp));
+  UTILITY_ASSERT(7 == sexp_length(sexp));
+  return sexp_at(sexp, 4);
 }
 Sexp *ast_get_function_return_count(Sexp *sexp) {
   UTILITY_ASSERT(ABSTRACT_FUNCTION_DEFINITION == sexp_get_tag(sexp));
