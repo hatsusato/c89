@@ -41,8 +41,3 @@ void builder_default_label(Builder *builder, Sexp *ast) {
   builder_jump_block(builder, next);
   builder_ast(builder, ast_get_label_statement(ast));
 }
-
-void builder_labeled_statement(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(SYNTAX_LABELED_STATEMENT == sexp_get_tag(ast));
-  builder_ast(builder, sexp_cdr(ast));
-}

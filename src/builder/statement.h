@@ -4,7 +4,6 @@
 #include "builder/statement/labeled.h"
 #include "utility/types.h"
 
-void builder_labeled_statement(Builder *, Sexp *);
 void builder_compound_statement(Builder *, Sexp *);
 void builder_expression_statement(Builder *, Sexp *);
 void builder_selection_statement(Builder *, Sexp *);

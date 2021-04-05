@@ -388,9 +388,6 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case SYNTAX_INITIALIZER_LIST:
     builder_initializer_list(builder, ast);
     break;
-  case SYNTAX_LABELED_STATEMENT:
-    builder_labeled_statement(builder, ast);
-    break;
   case ABSTRACT_GOTO_LABEL:
     builder_goto_label(builder, ast);
     break;

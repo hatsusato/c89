@@ -49,19 +49,15 @@ Sexp* convert_labeled_statement(Sexp* sexp) {
   sexp = sexp_cdr(sexp);
   switch (sexp_get_tag(sexp)) {
   case SYNTAX_IDENTIFIER:
-    sexp = convert_goto_label(sexp);
-    break;
+    return convert_goto_label(sexp);
   case SYNTAX_CASE:
-    sexp = convert_case_label(sexp);
-    break;
+    return convert_case_label(sexp);
   case SYNTAX_DEFAULT:
-    sexp = convert_default_label(sexp);
-    break;
+    return convert_default_label(sexp);
   default:
     UTILITY_ASSERT(0);
-    break;
+    return NULL;
   }
-  return convert_cons_tag(SYNTAX_LABELED_STATEMENT, sexp);
 }
 /* compound-statement ::=
    declaration-list
