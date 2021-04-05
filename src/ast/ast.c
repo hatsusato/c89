@@ -1,5 +1,6 @@
 #include "ast.h"
 
+#include "ast/convert/convert.h"
 #include "ast/tag.h"
 #include "printer/printer.h"
 #include "set/set.h"
@@ -49,6 +50,11 @@ const char *ast_symbol(Ast *ast, const char *text, Size leng) {
     set_insert(ast->pool, elem);
     return elem;
   }
+}
+void ast_convert(Ast *ast) {
+  Sexp *old = ast->sexp;
+  ast->sexp = convert_ast(old);
+  sexp_delete(old);
 }
 static void ast_print_sexp(Sexp *sexp, Printer *printer) {
   if (sexp_is_pair(sexp)) {
