@@ -44,7 +44,8 @@ static void builder_default_label(Builder *builder, Sexp *ast) {
 
 void builder_labeled_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(SYNTAX_LABELED_STATEMENT == sexp_get_tag(ast));
-  switch (sexp_get_tag(sexp_at(ast, 1))) {
+  ast = sexp_cdr(ast);
+  switch (sexp_get_tag(ast)) {
   case ABSTRACT_GOTO_LABEL:
     builder_goto_label(builder, ast);
     break;

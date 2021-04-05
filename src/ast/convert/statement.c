@@ -81,22 +81,16 @@ Sexp* convert_compound_statement(Sexp* sexp) {
 }
 
 Sexp* ast_get_label_goto(Sexp* sexp) {
-  UTILITY_ASSERT(SYNTAX_LABELED_STATEMENT == sexp_get_tag(sexp));
-  sexp = sexp_cdr(sexp);
   UTILITY_ASSERT(ABSTRACT_GOTO_LABEL == sexp_get_tag(sexp));
   sexp = sexp_at(sexp, 1);
   UTILITY_ASSERT(sexp_is_symbol(sexp));
   return sexp;
 }
 Sexp* ast_get_label_case(Sexp* sexp) {
-  UTILITY_ASSERT(SYNTAX_LABELED_STATEMENT == sexp_get_tag(sexp));
-  sexp = sexp_cdr(sexp);
   UTILITY_ASSERT(ABSTRACT_CASE_LABEL == sexp_get_tag(sexp));
   return sexp_at(sexp, 1);
 }
 Sexp* ast_get_label_statement(Sexp* sexp) {
-  UTILITY_ASSERT(SYNTAX_LABELED_STATEMENT == sexp_get_tag(sexp));
-  sexp = sexp_cdr(sexp);
   switch (sexp_get_tag(sexp)) {
   case ABSTRACT_GOTO_LABEL:
   case ABSTRACT_CASE_LABEL:
