@@ -78,8 +78,6 @@ Sexp *convert_external_declaration(Sexp *sexp) {
 }
 /* function-definition ::=
    declaration-specifiers
-   declarator
-   declaration-list.opt
    compound-statement
    <function name>:symbol
    <has multiple return statement>:bool
@@ -103,8 +101,6 @@ Sexp *convert_function_definition(Sexp *sexp) {
     body = sexp_at(sexp, 4);
   }
   list = sexp_snoc(list, type);
-  list = sexp_snoc(list, convert_ast(decl));
-  list = sexp_snoc(list, sexp_nil());
   list = sexp_snoc(list, convert_ast(body));
   list = sexp_snoc(list, name_of_declarator(decl));
   list = sexp_snoc(list, sexp_bool(1 < count_return_statement(body)));
@@ -113,21 +109,21 @@ Sexp *convert_function_definition(Sexp *sexp) {
 
 Sexp *ast_get_function_type(Sexp *sexp) {
   UTILITY_ASSERT(ABSTRACT_FUNCTION_DEFINITION == sexp_get_tag(sexp));
-  UTILITY_ASSERT(7 == sexp_length(sexp));
+  UTILITY_ASSERT(5 == sexp_length(sexp));
   return sexp_at(sexp, 1);
 }
 Sexp *ast_get_function_name(Sexp *sexp) {
   UTILITY_ASSERT(ABSTRACT_FUNCTION_DEFINITION == sexp_get_tag(sexp));
-  UTILITY_ASSERT(7 == sexp_length(sexp));
-  return sexp_at(sexp, 5);
+  UTILITY_ASSERT(5 == sexp_length(sexp));
+  return sexp_at(sexp, 3);
 }
 Sexp *ast_get_function_body(Sexp *sexp) {
   UTILITY_ASSERT(ABSTRACT_FUNCTION_DEFINITION == sexp_get_tag(sexp));
-  UTILITY_ASSERT(7 == sexp_length(sexp));
-  return sexp_at(sexp, 4);
+  UTILITY_ASSERT(5 == sexp_length(sexp));
+  return sexp_at(sexp, 2);
 }
 Sexp *ast_get_function_return_count(Sexp *sexp) {
   UTILITY_ASSERT(ABSTRACT_FUNCTION_DEFINITION == sexp_get_tag(sexp));
-  UTILITY_ASSERT(7 == sexp_length(sexp));
-  return sexp_at(sexp, 6);
+  UTILITY_ASSERT(5 == sexp_length(sexp));
+  return sexp_at(sexp, 4);
 }
