@@ -5,10 +5,12 @@
 #include "sexp/sexp.h"
 #include "utility/utility.h"
 
-static Sexp *identifier_from_declarator(Sexp *sexp) {
+static Sexp *name_of_declarator(Sexp *sexp) {
   Size leng = sexp_length(sexp);
   switch (sexp_get_tag(sexp)) {
   case SYNTAX_IDENTIFIER:
+    sexp = sexp_at(sexp, 1);
+    UTILITY_ASSERT(sexp_is_symbol(sexp));
     return sexp;
   case SYNTAX_DECLARATOR:
     UTILITY_ASSERT(2 == leng || 3 == leng);
@@ -22,7 +24,7 @@ static Sexp *identifier_from_declarator(Sexp *sexp) {
     UTILITY_ASSERT(0);
     break;
   }
-  return identifier_from_declarator(sexp);
+  return name_of_declarator(sexp);
 }
 static int count_return_statement(Sexp *sexp) {
   Size leng = sexp_length(sexp);
@@ -78,7 +80,7 @@ Sexp *convert_external_declaration(Sexp *sexp) {
    declarator
    declaration-list.opt
    compound-statement
-   <function name>:identifier
+   <function name>:symbol
    <has multiple return statement>:bool
 */
 Sexp *convert_function_definition(Sexp *sexp) {
@@ -94,7 +96,7 @@ Sexp *convert_function_definition(Sexp *sexp) {
   } else {
     UTILITY_ASSERT(sexp_length(sexp) == 5);
   }
-  list = sexp_snoc(list, identifier_from_declarator(decl));
+  list = sexp_snoc(list, name_of_declarator(decl));
   list = sexp_snoc(list, sexp_bool(1 < count_return_statement(body)));
   return convert_cons_tag(tag, list);
 }

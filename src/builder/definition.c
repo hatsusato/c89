@@ -12,8 +12,8 @@
 
 static const char *function_name(Sexp *ast) {
   ast = ast_get_function_name(ast);
-  UTILITY_ASSERT(sexp_get_tag(ast) == SYNTAX_IDENTIFIER);
-  return identifier_symbol(ast);
+  UTILITY_ASSERT(sexp_is_symbol(ast));
+  return sexp_get_symbol(ast);
 }
 static Bool function_count_return(Sexp *ast) {
   ast = ast_get_function_return_count(ast);
