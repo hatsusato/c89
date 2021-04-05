@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "ast/ast.h"
-#include "ast/convert.h"
+#include "ast/convert/convert.h"
 #include "builder/builder.h"
 #include "ir/module.h"
 #include "printer/printer.h"
