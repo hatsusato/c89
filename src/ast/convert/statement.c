@@ -23,6 +23,10 @@ Sexp* convert_declaration_list(Sexp* sexp) {
   sexp = sexp_cdr(sexp);
   return convert_list(sexp);
 }
+Sexp* convert_statement_list(Sexp* sexp) {
+  sexp = sexp_cdr(sexp);
+  return convert_list(sexp);
+}
 
 Sexp* ast_get_declaration_list(Sexp* sexp) {
   UTILITY_ASSERT(ABSTRACT_COMPOUND_STATEMENT == sexp_get_tag(sexp));

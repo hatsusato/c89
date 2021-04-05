@@ -37,9 +37,7 @@ static int count_return_statement(Sexp *sexp) {
     return count_return_statement(sexp_at(sexp, leng - 1));
   case ABSTRACT_COMPOUND_STATEMENT:
     sexp = ast_get_statement_list(sexp);
-    return count_return_statement(sexp);
-  case SYNTAX_STATEMENT_LIST:
-    for (sexp = sexp_cdr(sexp); sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
+    for (; sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
       sum += count_return_statement(sexp_car(sexp));
     }
     return sum;

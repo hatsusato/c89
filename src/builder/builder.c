@@ -394,9 +394,6 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case ABSTRACT_COMPOUND_STATEMENT:
     builder_compound_statement(builder, ast);
     break;
-  case SYNTAX_STATEMENT_LIST:
-    builder_statement_list(builder, ast);
-    break;
   case SYNTAX_EXPRESSION_STATEMENT:
     builder_expression_statement(builder, ast);
     break;
