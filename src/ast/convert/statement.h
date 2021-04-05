@@ -4,5 +4,6 @@
 #include "utility/types.h"
 
 Sexp* convert_statement(Sexp*);
+Sexp* convert_compound_statement(Sexp*);
 
 #endif /* INCLUDE_GUARD_AE9097FF_C7A1_4884_A304_CCD889C23F41 */

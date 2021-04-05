@@ -388,7 +388,7 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case SYNTAX_LABELED_STATEMENT:
     builder_labeled_statement(builder, ast);
     break;
-  case SYNTAX_COMPOUND_STATEMENT:
+  case ABSTRACT_COMPOUND_STATEMENT:
     builder_compound_statement(builder, ast);
     break;
   case SYNTAX_DECLARATION_LIST:

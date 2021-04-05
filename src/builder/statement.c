@@ -7,7 +7,6 @@
 #include "utility/utility.h"
 
 void builder_compound_statement(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(SYNTAX_COMPOUND_STATEMENT == sexp_get_tag(ast));
   builder_push_table(builder);
   builder_ast(builder, ast_get_declaration_list(ast));
   builder_ast(builder, ast_get_statement_list(ast));

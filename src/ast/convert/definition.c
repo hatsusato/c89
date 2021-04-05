@@ -35,8 +35,9 @@ static int count_return_statement(Sexp *sexp) {
     return count_return_statement(sexp_at(sexp, 1));
   case SYNTAX_LABELED_STATEMENT:
     return count_return_statement(sexp_at(sexp, leng - 1));
-  case SYNTAX_COMPOUND_STATEMENT:
-    return count_return_statement(ast_get_statement_list(sexp));
+  case ABSTRACT_COMPOUND_STATEMENT:
+    sexp = ast_get_statement_list(sexp);
+    return count_return_statement(sexp);
   case SYNTAX_DECLARATION_LIST:
     return 0;
   case SYNTAX_STATEMENT_LIST:
