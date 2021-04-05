@@ -9,6 +9,20 @@ Sexp* convert_statement(Sexp* sexp) {
   sexp = sexp_car(sexp);
   return convert_ast(sexp);
 }
+Sexp* convert_labeled_statement(Sexp* sexp) {
+  sexp = sexp_cdr(sexp);
+  switch (sexp_get_tag(sexp)) {
+  case SYNTAX_IDENTIFIER:
+  case SYNTAX_CASE:
+  case SYNTAX_DEFAULT:
+    sexp = convert_ast(sexp);
+    break;
+  default:
+    UTILITY_ASSERT(0);
+    break;
+  }
+  return convert_cons_tag(SYNTAX_LABELED_STATEMENT, sexp);
+}
 /* compound-statement ::=
    declaration-list
    statement-list */
