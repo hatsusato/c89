@@ -584,8 +584,9 @@ argument-expression-list
   $$ = yyscan_tag(SYNTAX_ARGUMENT_EXPRESSION_LIST);
   $$ = yyscan_push($$, $1);
 }
-| argument-expression-list "," assignment-expression {
+| argument-expression-list comma assignment-expression {
   $$ = $1;
+  $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 ;
@@ -881,9 +882,10 @@ expression
 }
 ;
 expression.tag
-: expression "," assignment-expression {
+: expression comma assignment-expression {
   $$ = yyscan_nil();
   $$ = yyscan_push($$, $1);
+  $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 ;
@@ -943,8 +945,9 @@ init-declarator-list
   $$ = yyscan_tag(SYNTAX_INIT_DECLARATOR_LIST);
   $$ = yyscan_push($$, $1);
 }
-| init-declarator-list "," init-declarator {
+| init-declarator-list comma init-declarator {
   $$ = $1;
+  $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 ;
@@ -1066,8 +1069,9 @@ struct-declarator-list
   $$ = yyscan_tag(SYNTAX_STRUCT_DECLARATOR_LIST);
   $$ = yyscan_push($$, $1);
 }
-| struct-declarator-list "," struct-declarator {
+| struct-declarator-list comma struct-declarator {
   $$ = $1;
+  $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 ;
@@ -1115,8 +1119,9 @@ enumerator-list
   $$ = yyscan_tag(SYNTAX_ENUMERATOR_LIST);
   $$ = yyscan_push($$, $1);
 }
-| enumerator-list "," enumerator {
+| enumerator-list comma enumerator {
   $$ = $1;
+  $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 ;
@@ -1257,8 +1262,9 @@ parameter-type-list.opt
 ;
 parameter-type-list
 : parameter-list
-| parameter-list "," ellipsis {
+| parameter-list comma ellipsis {
   $$ = $1;
+  $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 ;
@@ -1267,8 +1273,9 @@ parameter-list
   $$ = yyscan_tag(SYNTAX_PARAMETER_LIST);
   $$ = yyscan_push($$, $1);
 }
-| parameter-list "," parameter-declaration {
+| parameter-list comma parameter-declaration {
   $$ = $1;
+  $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 ;
@@ -1295,8 +1302,9 @@ identifier-list
   $$ = yyscan_tag(SYNTAX_IDENTIFIER_LIST);
   $$ = yyscan_push($$, $1);
 }
-| identifier-list "," identifier {
+| identifier-list comma identifier {
   $$ = $1;
+  $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 ;
@@ -1407,8 +1415,9 @@ initializer-list
   $$ = yyscan_tag(SYNTAX_INITIALIZER_LIST);
   $$ = yyscan_push($$, $1);
 }
-| initializer-list "," initializer {
+| initializer-list comma initializer {
   $$ = $1;
+  $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 ;
