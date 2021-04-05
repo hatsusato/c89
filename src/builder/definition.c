@@ -15,10 +15,9 @@ static const char *function_name(Sexp *ast) {
   UTILITY_ASSERT(sexp_get_tag(ast) == SYNTAX_IDENTIFIER);
   return identifier_symbol(ast);
 }
-static int function_count_return(Sexp *ast) {
+static Bool function_count_return(Sexp *ast) {
   ast = ast_get_function_return_count(ast);
-  UTILITY_ASSERT(sexp_is_number(ast));
-  return sexp_get_number(ast);
+  return sexp_is_true(ast);
 }
 static Type *builder_function_type(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(7 == sexp_length(ast));
@@ -42,7 +41,7 @@ void builder_external_declaration(Builder *builder, Sexp *ast) {
 }
 void builder_function_definition(Builder *builder, Sexp *ast) {
   builder_function_init(builder, ast);
-  if (1 < function_count_return(ast)) {
+  if (function_count_return(ast)) {
     builder_init_return(builder);
     builder_ast(builder, sexp_at(ast, 4));
     builder_finish_return(builder);

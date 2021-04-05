@@ -78,13 +78,14 @@ Sexp *convert_external_declaration(Sexp *sexp) {
    declarator
    declaration-list.opt
    compound-statement
-   identifier // function name
-   <integer> // count of return statement
+   <function name>:identifier
+   <has multiple return statement>:bool
 */
 Sexp *convert_function_definition(Sexp *sexp) {
   SyntaxTag tag = ABSTRACT_FUNCTION_DEFINITION;
   Sexp *list = convert_ast(sexp_cdr(sexp));
-  Sexp *ident, *count;
+  Sexp *decl = sexp_at(list, 1);
+  Sexp *body = sexp_at(list, 3);
   if (sexp_length(sexp) == 4) {
     Sexp *type = sexp_number(SYNTAX_INT);
     type = convert_cons_tag(SYNTAX_TYPE_SPECIFIER, type);
@@ -93,13 +94,8 @@ Sexp *convert_function_definition(Sexp *sexp) {
   } else {
     UTILITY_ASSERT(sexp_length(sexp) == 5);
   }
-  ident = sexp_at(list, 1); /* declarator */
-  ident = identifier_from_declarator(ident);
-  ident = sexp_clone(ident);
-  count = sexp_at(list, 3); /* compound-statement */
-  count = sexp_number(count_return_statement(count));
-  list = sexp_snoc(list, ident);
-  list = sexp_snoc(list, count);
+  list = sexp_snoc(list, identifier_from_declarator(decl));
+  list = sexp_snoc(list, sexp_bool(1 < count_return_statement(body)));
   return convert_cons_tag(tag, list);
 }
 
