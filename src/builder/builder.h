@@ -49,6 +49,7 @@ void builder_set_type_spec(Builder *, TypeSpecIndex);
 void builder_reset_type_spec(Builder *);
 Block *builder_get_next(Builder *, BuilderNextTag);
 Block *builder_set_next(Builder *, BuilderNextTag, Block *);
+void builder_ast_list(Builder *, Sexp *);
 void builder_ast_map(Builder *, Sexp *);
 void builder_ast(Builder *, Sexp *);
 

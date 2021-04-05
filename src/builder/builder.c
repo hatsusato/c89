@@ -210,10 +210,13 @@ Block *builder_set_next(Builder *builder, BuilderNextTag tag, Block *next) {
   UTILITY_SWAP(Block *, builder->next[tag], next);
   return next;
 }
-void builder_ast_map(Builder *builder, Sexp *ast) {
-  for (ast = sexp_cdr(ast); sexp_is_pair(ast); ast = sexp_cdr(ast)) {
+void builder_ast_list(Builder *builder, Sexp *ast) {
+  for (; sexp_is_pair(ast); ast = sexp_cdr(ast)) {
     builder_ast(builder, sexp_car(ast));
   }
+}
+void builder_ast_map(Builder *builder, Sexp *ast) {
+  builder_ast_list(builder, sexp_cdr(ast));
 }
 void builder_ast(Builder *builder, Sexp *ast) {
   if (sexp_is_nil(ast)) {
