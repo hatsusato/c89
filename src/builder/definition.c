@@ -15,7 +15,7 @@ static const char *function_name(Sexp *ast) {
   return identifier_symbol(ast);
 }
 static Type *builder_function_type(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(6 == sexp_length(ast));
+  UTILITY_ASSERT(7 == sexp_length(ast));
   builder_ast(builder, sexp_at(ast, 1));
   return builder_get_type(builder);
 }
