@@ -19,6 +19,10 @@ Sexp* convert_compound_statement(Sexp* sexp) {
   list = sexp_snoc(list, convert_ast(sexp_at(sexp, 3)));
   return convert_cons_tag(tag, list);
 }
+Sexp* convert_declaration_list(Sexp* sexp) {
+  sexp = sexp_cdr(sexp);
+  return convert_list(sexp);
+}
 
 Sexp* ast_get_declaration_list(Sexp* sexp) {
   UTILITY_ASSERT(ABSTRACT_COMPOUND_STATEMENT == sexp_get_tag(sexp));

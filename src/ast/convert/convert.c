@@ -27,6 +27,8 @@ Sexp *convert_ast(Sexp *sexp) {
     return convert_statement(sexp);
   case SYNTAX_COMPOUND_STATEMENT:
     return convert_compound_statement(sexp);
+  case SYNTAX_DECLARATION_LIST:
+    return convert_declaration_list(sexp);
   case SYNTAX_TRANSLATION_UNIT:
     return convert_translation_unit(sexp);
   case SYNTAX_EXTERNAL_DECLARATION:
