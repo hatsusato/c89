@@ -391,6 +391,15 @@ void builder_ast(Builder *builder, Sexp *ast) {
   case SYNTAX_LABELED_STATEMENT:
     builder_labeled_statement(builder, ast);
     break;
+  case ABSTRACT_GOTO_LABEL:
+    builder_goto_label(builder, ast);
+    break;
+  case ABSTRACT_CASE_LABEL:
+    builder_case_label(builder, ast);
+    break;
+  case ABSTRACT_DEFAULT_LABEL:
+    builder_default_label(builder, ast);
+    break;
   case ABSTRACT_COMPOUND_STATEMENT:
     builder_compound_statement(builder, ast);
     break;
