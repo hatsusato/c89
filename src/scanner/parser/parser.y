@@ -541,28 +541,34 @@ postfix-expression.tag
 ;
 postfix-expression.suffix
 : left-bracket expression right-bracket {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 | left-paren argument-expression-list.opt right-paren {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 | period identifier {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 | arrow identifier {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 | increment {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
 }
 | decrement {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
 }
 ;
 argument-expression-list.opt
@@ -590,23 +596,28 @@ unary-expression
 ;
 unary-expression.tag
 : increment unary-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 | decrement unary-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 | unary-operator cast-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 | sizeof unary-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 | sizeof left-paren type-name right-paren {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
@@ -629,7 +640,8 @@ cast-expression
 ;
 cast-expression.tag
 : left-paren type-name right-paren cast-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
@@ -644,7 +656,8 @@ multiplicative-expression
 ;
 multiplicative-expression.tag
 : multiplicative-expression multiplicative-operator cast-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -663,7 +676,8 @@ additive-expression
 ;
 additive-expression.tag
 : additive-expression additive-operator multiplicative-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -681,7 +695,8 @@ shift-expression
 ;
 shift-expression.tag
 : shift-expression shift-operator additive-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -699,7 +714,8 @@ relational-expression
 ;
 relational-expression.tag
 : relational-expression relational-operator shift-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -719,7 +735,8 @@ equality-expression
 ;
 equality-expression.tag
 : equality-expression equality-operator relational-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -737,7 +754,8 @@ and-expression
 ;
 and-expression.tag
 : and-expression ampersand equality-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -751,7 +769,8 @@ exclusive-or-expression
 ;
 exclusive-or-expression.tag
 : exclusive-or-expression caret and-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -765,7 +784,8 @@ inclusive-or-expression
 ;
 inclusive-or-expression.tag
 : inclusive-or-expression bar exclusive-or-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -779,7 +799,8 @@ logical-and-expression
 ;
 logical-and-expression.tag
 : logical-and-expression and inclusive-or-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -793,7 +814,8 @@ logical-or-expression
 ;
 logical-or-expression.tag
 : logical-or-expression or logical-and-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -807,7 +829,8 @@ conditional-expression
 ;
 conditional-expression.tag
 : logical-or-expression question expression colon conditional-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
@@ -823,7 +846,8 @@ assignment-expression
 ;
 assignment-expression.tag
 : unary-expression assignment-operator assignment-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -856,7 +880,8 @@ expression
 ;
 expression.tag
 : expression "," assignment-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $3);
 }
 ;
@@ -884,7 +909,8 @@ declaration
 ;
 declaration.tag
 : declaration-specifiers init-declarator-list.opt semicolon {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -928,10 +954,12 @@ init-declarator
 ;
 init-declarator.tag
 : declarator {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
 }
 | declarator assign initializer {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -977,14 +1005,16 @@ struct-or-union-specifier
 ;
 struct-or-union-specifier.tag
 : struct-or-union identifier.opt left-brace struct-declaration-list right-brace {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
   $$ = yyscan_push($$, $5);
 }
 | struct-or-union identifier {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 ;
@@ -1009,7 +1039,8 @@ struct-declaration
 }
 struct-declaration.tag
 : specifier-qualifier-list struct-declarator-list semicolon {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -1046,10 +1077,12 @@ struct-declarator
 ;
 struct-declarator.tag
 : declarator {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
 }
 | declarator.opt colon constant-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -1062,14 +1095,16 @@ enum-specifier
 ;
 enum-specifier.tag
 : enum identifier.opt left-brace enumerator-list right-brace {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
   $$ = yyscan_push($$, $5);
 }
 | enum identifier {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 ;
@@ -1091,10 +1126,12 @@ enumerator
 ;
 enumerator.tag
 : enumeration-constant {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
 }
 | enumeration-constant assign constant-expression {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -1123,10 +1160,12 @@ declarator
 ;
 declarator.tag
 : direct-declarator {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
 }
 | pointer direct-declarator {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 ;
@@ -1138,10 +1177,12 @@ direct-declarator
 ;
 direct-declarator.tag
 : identifier {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
 }
 | left-paren declarator right-paren {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -1151,17 +1192,20 @@ direct-declarator.tag
 ;
 direct-declarator.suffix
 : left-bracket constant-expression.opt right-bracket {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 | left-paren parameter-type-list.opt right-paren {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 | left-paren identifier-list right-paren {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -1174,11 +1218,13 @@ pointer
 ;
 pointer.tag
 : asterisk type-qualifier-list.opt {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 | pointer asterisk type-qualifier-list.opt {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -1230,11 +1276,13 @@ parameter-declaration
 ;
 parameter-declaration.tag
 : declaration-specifiers declarator {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 | declaration-specifiers abstract-declarator.opt {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 ;
@@ -1256,7 +1304,8 @@ type-name
 ;
 type-name.tag
 : specifier-qualifier-list abstract-declarator.opt {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 ;
@@ -1274,13 +1323,16 @@ abstract-declarator
 ;
 abstract-declarator.tag
 : pointer {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
 }
 | direct-abstract-declarator {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
 }
 | pointer direct-abstract-declarator {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 ;
@@ -1292,7 +1344,8 @@ direct-abstract-declarator
 ;
 direct-abstract-declarator.tag
 : left-paren abstract-declarator right-paren {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -1303,12 +1356,14 @@ direct-abstract-declarator.tag
 ;
 direct-abstract-declarator.suffix
 : left-bracket constant-expression.opt right-bracket {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 | left-paren parameter-type-list.opt right-paren {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -1328,12 +1383,14 @@ initializer
 ;
 initializer.tag
 : left-brace initializer-list right-brace {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 | left-brace initializer-list comma right-brace {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
@@ -1373,18 +1430,21 @@ labeled-statement
 ;
 labeled-statement.tag
 : identifier colon statement {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 | case constant-expression colon statement {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
 }
 | default colon statement {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -1397,7 +1457,8 @@ compound-statement
 ;
 compound-statement.tag
 : left-brace declaration-list.opt statement-list.opt right-brace {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
@@ -1443,7 +1504,8 @@ expression-statement
 ;
 expression-statement.tag
 : expression.opt semicolon {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 ;
@@ -1455,14 +1517,16 @@ selection-statement
 ;
 selection-statement.tag
 : if left-paren expression right-paren statement %prec THEN {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
   $$ = yyscan_push($$, $5);
 }
 | if left-paren expression right-paren statement else statement {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
@@ -1471,7 +1535,8 @@ selection-statement.tag
   $$ = yyscan_push($$, $7);
 }
 | switch left-paren expression right-paren statement {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
@@ -1486,14 +1551,16 @@ iteration-statement
 ;
 iteration-statement.tag
 : while left-paren expression right-paren statement {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
   $$ = yyscan_push($$, $5);
 }
 | do statement while left-paren expression right-paren semicolon {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
@@ -1502,7 +1569,8 @@ iteration-statement.tag
   $$ = yyscan_push($$, $7);
 }
 | for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
@@ -1521,20 +1589,24 @@ jump-statement
 ;
 jump-statement.tag
 : goto identifier semicolon {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 | continue semicolon {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 | break semicolon {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
 }
 | return expression.opt semicolon {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
@@ -1572,12 +1644,14 @@ function-definition
 ;
 function-definition.tag
 : declarator declaration-list.opt compound-statement {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
 }
 | declaration-specifiers declarator declaration-list.opt compound-statement {
-  $$ = yyscan_list($1);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
   $$ = yyscan_push($$, $2);
   $$ = yyscan_push($$, $3);
   $$ = yyscan_push($$, $4);
