@@ -3,6 +3,9 @@
 
 #include "utility/types.h"
 
+Sexp *ast_get_label_goto(Sexp *);
+Sexp *ast_get_label_case(Sexp *);
+Sexp *ast_get_label_statement(Sexp *);
 Sexp *ast_get_declaration_list(Sexp *);
 Sexp *ast_get_statement_list(Sexp *);
 Sexp *ast_get_function_type(Sexp *);
