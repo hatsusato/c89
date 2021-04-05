@@ -14,18 +14,16 @@ Sexp* convert_statement(Sexp* sexp) {
    statement-list */
 Sexp* convert_compound_statement(Sexp* sexp) {
   SyntaxTag tag = ABSTRACT_COMPOUND_STATEMENT;
+  Sexp* decls = sexp_at(sexp, 2);
+  Sexp* stats = sexp_at(sexp, 3);
   Sexp* list = sexp_nil();
-  list = sexp_snoc(list, convert_ast(sexp_at(sexp, 2)));
-  list = sexp_snoc(list, convert_ast(sexp_at(sexp, 3)));
+  UTILITY_ASSERT(SYNTAX_DECLARATION_LIST == sexp_get_tag(decls));
+  UTILITY_ASSERT(SYNTAX_STATEMENT_LIST == sexp_get_tag(stats));
+  decls = sexp_cdr(decls);
+  stats = sexp_cdr(stats);
+  list = sexp_snoc(list, convert_list(decls));
+  list = sexp_snoc(list, convert_list(stats));
   return convert_cons_tag(tag, list);
-}
-Sexp* convert_declaration_list(Sexp* sexp) {
-  sexp = sexp_cdr(sexp);
-  return convert_list(sexp);
-}
-Sexp* convert_statement_list(Sexp* sexp) {
-  sexp = sexp_cdr(sexp);
-  return convert_list(sexp);
 }
 
 Sexp* ast_get_declaration_list(Sexp* sexp) {
