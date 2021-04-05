@@ -32,7 +32,7 @@ static void builder_case_label(Builder *builder, Sexp *ast) {
   builder_instruction_switch_case(builder, value, next);
   builder_ast(builder, ast_get_label_statement(ast));
 }
-static void builder_default_statement(Builder *builder, Sexp *ast) {
+static void builder_default_label(Builder *builder, Sexp *ast) {
   Module *module = builder_get_module(builder);
   Block *next = block_new(module);
   Block *prev_default = builder_set_next(builder, BUILDER_NEXT_DEFAULT, next);
@@ -51,8 +51,8 @@ void builder_labeled_statement(Builder *builder, Sexp *ast) {
   case ABSTRACT_CASE_LABEL:
     builder_case_label(builder, ast);
     break;
-  case SYNTAX_DEFAULT:
-    builder_default_statement(builder, ast);
+  case ABSTRACT_DEFAULT_LABEL:
+    builder_default_label(builder, ast);
     break;
   default:
     UTILITY_ASSERT(0);
