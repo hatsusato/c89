@@ -3,6 +3,6 @@
 
 #include "utility/types.h"
 
-Sexp *ast_convert(Sexp *);
+Sexp *convert_ast(Sexp *);
 
 #endif /* INCLUDE_GUARD_06236191_5488_4569_8D7C_EE618E9BD306 */

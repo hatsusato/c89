@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   if (0 == ret) {
     Printer *printer = printer_new(stdout);
     Sexp *sexp = ast_get(ast);
-    ast_set(ast, ast_convert(sexp));
+    ast_set(ast, convert_ast(sexp));
     sexp_delete(sexp);
     if (is_debug(argc, argv)) {
       ast_print(ast, printer);

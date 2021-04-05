@@ -4,15 +4,15 @@
 #include "sexp/sexp.h"
 #include "utility/utility.h"
 
-static Sexp *ast_convert_list(Sexp *sexp) {
+static Sexp *convert_list(Sexp *sexp) {
   Sexp *ret = sexp_nil();
   UTILITY_ASSERT(sexp_is_list(sexp));
   for (; sexp_is_pair(sexp); sexp = sexp_cdr(sexp)) {
-    ret = sexp_snoc(ret, ast_convert(sexp_car(sexp)));
+    ret = sexp_snoc(ret, convert_ast(sexp_car(sexp)));
   }
   return ret;
 }
-static Sexp *ast_tag_cons(SyntaxTag tag, Sexp *cdr) {
+static Sexp *convert_cons_tag(SyntaxTag tag, Sexp *cdr) {
   return sexp_pair(sexp_number(tag), cdr);
 }
 static Sexp *identifier_from_declarator(Sexp *sexp) {
@@ -73,15 +73,15 @@ int count_return_statement(Sexp *sexp) {
 
 /* translation-unit ::=
    (external-declaration | function-definition)+ */
-static Sexp *ast_convert_translation_unit(Sexp *sexp) {
+static Sexp *convert_translation_unit(Sexp *sexp) {
   SyntaxTag tag = ABSTRACT_TRANSLATION_UNIT;
-  return ast_tag_cons(tag, ast_convert_list(sexp_cdr(sexp)));
+  return convert_cons_tag(tag, convert_list(sexp_cdr(sexp)));
 }
 /* external-declaration ::=
    declaration */
-static Sexp *ast_convert_external_declaration(Sexp *sexp) {
+static Sexp *convert_external_declaration(Sexp *sexp) {
   SyntaxTag tag = ABSTRACT_EXTERNAL_DECLARATION;
-  return ast_tag_cons(tag, ast_convert(sexp_cdr(sexp)));
+  return convert_cons_tag(tag, convert_ast(sexp_cdr(sexp)));
 }
 /* function-definition ::=
    declaration-specifiers
@@ -91,14 +91,14 @@ static Sexp *ast_convert_external_declaration(Sexp *sexp) {
    identifier // function name
    <integer> // count of return statement
 */
-static Sexp *ast_convert_function_definition(Sexp *sexp) {
+static Sexp *convert_function_definition(Sexp *sexp) {
   SyntaxTag tag = ABSTRACT_FUNCTION_DEFINITION;
-  Sexp *list = ast_convert(sexp_cdr(sexp));
+  Sexp *list = convert_ast(sexp_cdr(sexp));
   Sexp *ident, *count;
   if (sexp_length(sexp) == 4) {
     Sexp *type = sexp_number(SYNTAX_INT);
-    type = ast_tag_cons(SYNTAX_TYPE_SPECIFIER, type);
-    type = ast_tag_cons(SYNTAX_DECLARATION_SPECIFIERS, type);
+    type = convert_cons_tag(SYNTAX_TYPE_SPECIFIER, type);
+    type = convert_cons_tag(SYNTAX_DECLARATION_SPECIFIERS, type);
     list = sexp_pair(type, list);
   } else {
     UTILITY_ASSERT(sexp_length(sexp) == 5);
@@ -110,17 +110,17 @@ static Sexp *ast_convert_function_definition(Sexp *sexp) {
   count = sexp_number(count_return_statement(count));
   list = sexp_snoc(list, ident);
   list = sexp_snoc(list, count);
-  return ast_tag_cons(tag, list);
+  return convert_cons_tag(tag, list);
 }
 
-Sexp *ast_convert(Sexp *sexp) {
+Sexp *convert_ast(Sexp *sexp) {
   switch (sexp_get_tag(sexp)) {
   case SYNTAX_TRANSLATION_UNIT:
-    return ast_convert_translation_unit(sexp);
+    return convert_translation_unit(sexp);
   case SYNTAX_EXTERNAL_DECLARATION:
-    return ast_convert_external_declaration(sexp);
+    return convert_external_declaration(sexp);
   case SYNTAX_FUNCTION_DEFINITION:
-    return ast_convert_function_definition(sexp);
+    return convert_function_definition(sexp);
   default:
     return sexp_clone(sexp);
   }
