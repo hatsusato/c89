@@ -80,6 +80,9 @@ Sexp *sexp_number(int number) {
   sexp->data.number = number;
   return sexp;
 }
+Sexp *sexp_bool(Bool bool) {
+  return bool ? sexp_symbol("t") : sexp_nil();
+}
 Bool sexp_is_nil(Sexp *sexp) {
   return SEXP_NIL == sexp_kind(sexp);
 }
@@ -91,6 +94,9 @@ Bool sexp_is_symbol(Sexp *sexp) {
 }
 Bool sexp_is_number(Sexp *sexp) {
   return SEXP_NUMBER == sexp_kind(sexp);
+}
+Bool sexp_is_true(Sexp *sexp) {
+  return !sexp_is_nil(sexp);
 }
 Bool sexp_is_list(Sexp *list) {
   while (sexp_is_pair(list)) {
