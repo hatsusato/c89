@@ -1,5 +1,6 @@
 #include "statement.h"
 
+#include "ast/get.h"
 #include "ast/tag.h"
 #include "builder/builder.h"
 #include "sexp/sexp.h"
@@ -8,8 +9,8 @@
 void builder_compound_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(SYNTAX_COMPOUND_STATEMENT == sexp_get_tag(ast));
   builder_push_table(builder);
-  builder_ast(builder, sexp_at(ast, 2));
-  builder_ast(builder, sexp_at(ast, 3));
+  builder_ast(builder, ast_get_declaration_list(ast));
+  builder_ast(builder, ast_get_statement_list(ast));
   builder_pop_table(builder);
 }
 void builder_declaration_list(Builder *builder, Sexp *ast) {

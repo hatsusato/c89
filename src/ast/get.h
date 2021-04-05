@@ -3,6 +3,8 @@
 
 #include "utility/types.h"
 
+Sexp *ast_get_declaration_list(Sexp *);
+Sexp *ast_get_statement_list(Sexp *);
 Sexp *ast_get_function_name(Sexp *);
 Sexp *ast_get_function_return_count(Sexp *);
 
