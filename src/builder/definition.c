@@ -36,7 +36,7 @@ static const char *function_name(Sexp *ast) {
       return NULL;
     }
   case ABSTRACT_FUNCTION_DEFINITION:
-    UTILITY_ASSERT(5 == sexp_length(ast));
+    UTILITY_ASSERT(6 == sexp_length(ast));
     return function_name(sexp_at(ast, 2));
   default:
     UTILITY_ASSERT(0);
@@ -44,7 +44,7 @@ static const char *function_name(Sexp *ast) {
   }
 }
 static Type *builder_function_type(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(5 == sexp_length(ast));
+  UTILITY_ASSERT(6 == sexp_length(ast));
   builder_ast(builder, sexp_at(ast, 1));
   return builder_get_type(builder);
 }

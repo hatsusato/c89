@@ -15,6 +15,26 @@ static Sexp *ast_convert_list(Sexp *sexp) {
 static Sexp *ast_tag_cons(SyntaxTag tag, Sexp *cdr) {
   return sexp_pair(sexp_number(tag), cdr);
 }
+static Sexp *identifier_from_declarator(Sexp *sexp) {
+  Size leng = sexp_length(sexp);
+  switch (sexp_get_tag(sexp)) {
+  case SYNTAX_IDENTIFIER:
+    return sexp;
+  case SYNTAX_DECLARATOR:
+    UTILITY_ASSERT(2 == leng || 3 == leng);
+    sexp = sexp_at(sexp, leng - 1);
+    break;
+  case SYNTAX_DIRECT_DECLARATOR:
+    UTILITY_ASSERT(2 == leng || 4 == leng || 5 == leng);
+    sexp = sexp_at(sexp, 4 == leng ? 2 : 1);
+    break;
+  default:
+    UTILITY_ASSERT(0);
+    break;
+  }
+  return identifier_from_declarator(sexp);
+}
+
 /* translation-unit ::=
    (external-declaration | function-definition)+ */
 static Sexp *ast_convert_translation_unit(Sexp *sexp) {
@@ -31,10 +51,12 @@ static Sexp *ast_convert_external_declaration(Sexp *sexp) {
    declaration-specifiers
    declarator
    declaration-list.opt
-   compound-statement */
+   compound-statement
+   identifier */
 static Sexp *ast_convert_function_definition(Sexp *sexp) {
   SyntaxTag tag = ABSTRACT_FUNCTION_DEFINITION;
   Sexp *list = ast_convert(sexp_cdr(sexp));
+  Sexp *ident;
   if (sexp_length(sexp) == 4) {
     Sexp *type = sexp_number(SYNTAX_INT);
     type = ast_tag_cons(SYNTAX_TYPE_SPECIFIER, type);
@@ -43,6 +65,10 @@ static Sexp *ast_convert_function_definition(Sexp *sexp) {
   } else {
     UTILITY_ASSERT(sexp_length(sexp) == 5);
   }
+  ident = sexp_at(list, 1);
+  ident = identifier_from_declarator(ident);
+  ident = sexp_clone(ident);
+  list = sexp_snoc(list, ident);
   return ast_tag_cons(tag, list);
 }
 
