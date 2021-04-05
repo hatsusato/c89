@@ -223,6 +223,8 @@ void builder_ast(Builder *builder, Sexp *ast) {
     return;
   }
   switch (sexp_get_tag(ast)) {
+  case SYNTAX_COMMA:
+    break;
   case SYNTAX_IDENTIFIER:
     builder_identifier(builder, ast);
     break;

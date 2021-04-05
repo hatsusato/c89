@@ -41,20 +41,14 @@ int yyscan_parse(Scanner *scanner) {
 Sexp *yyscan_nil(void) {
   return sexp_nil();
 }
-Sexp *yyscan_cons(Sexp *x, Sexp *xs) {
-  return sexp_pair(x, xs);
-}
-Sexp *yyscan_snoc(Sexp *xs, Sexp *x) {
+Sexp *yyscan_push(Sexp *xs, Sexp *x) {
   return sexp_snoc(xs, x);
-}
-Sexp *yyscan_list(Sexp *x) {
-  return yyscan_cons(x, yyscan_nil());
 }
 Sexp *yyscan_symbol(SyntaxTag tag) {
   return sexp_number(tag);
 }
 Sexp *yyscan_tag(SyntaxTag tag) {
-  return yyscan_list(yyscan_symbol(tag));
+  return sexp_pair(sexp_number(tag), sexp_nil());
 }
 Sexp *yyscan_append(Sexp *xs, Sexp *ys) {
   return sexp_append(xs, ys);

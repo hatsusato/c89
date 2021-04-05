@@ -18,7 +18,7 @@ static Sexp *name_of_declarator(Sexp *sexp) {
     sexp = sexp_at(sexp, leng - 1);
     break;
   case SYNTAX_DIRECT_DECLARATOR:
-    UTILITY_ASSERT(2 == leng || 4 == leng || 5 == leng);
+    UTILITY_ASSERT(2 == leng || 4 == leng || 3 == leng);
     sexp = sexp_at(sexp, 4 == leng ? 2 : 1);
     break;
   default:
