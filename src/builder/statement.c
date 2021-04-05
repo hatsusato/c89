@@ -5,10 +5,6 @@
 #include "sexp/sexp.h"
 #include "utility/utility.h"
 
-void builder_statement(Builder *builder, Sexp *ast) {
-  UTILITY_ASSERT(SYNTAX_STATEMENT == sexp_get_tag(ast));
-  builder_ast(builder, sexp_at(ast, 1));
-}
 void builder_compound_statement(Builder *builder, Sexp *ast) {
   UTILITY_ASSERT(SYNTAX_COMPOUND_STATEMENT == sexp_get_tag(ast));
   builder_push_table(builder);

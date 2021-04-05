@@ -1,6 +1,7 @@
 #include "convert.h"
 
 #include "ast/convert/definition.h"
+#include "ast/convert/statement.h"
 #include "ast/tag.h"
 #include "sexp/sexp.h"
 #include "utility/utility.h"
@@ -22,6 +23,8 @@ Sexp *convert_ast(Sexp *sexp) {
     return sexp_clone(sexp);
   }
   switch (sexp_get_tag(sexp)) {
+  case SYNTAX_STATEMENT:
+    return convert_statement(sexp);
   case SYNTAX_TRANSLATION_UNIT:
     return convert_translation_unit(sexp);
   case SYNTAX_EXTERNAL_DECLARATION:

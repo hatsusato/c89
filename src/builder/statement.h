@@ -3,7 +3,6 @@
 
 #include "utility/types.h"
 
-void builder_statement(Builder *, Sexp *);
 void builder_labeled_statement(Builder *, Sexp *);
 void builder_compound_statement(Builder *, Sexp *);
 void builder_declaration_list(Builder *, Sexp *);
