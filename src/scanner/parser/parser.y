@@ -508,7 +508,8 @@ string-constant
   $$ = yyscan_snoc($$, $1);
 }
 | string-constant string-literal {
-  $$ = yyscan_snoc($1, $2);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $2);
 }
 ;
 
@@ -576,7 +577,8 @@ argument-expression-list
   $$ = yyscan_snoc($$, $1);
 }
 | argument-expression-list "," assignment-expression {
-  $$ = yyscan_snoc($1, $3);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $3);
 }
 ;
 unary-expression
@@ -893,7 +895,8 @@ declaration-specifiers
   $$ = yyscan_snoc($$, $1);
 }
 | declaration-specifiers declaration-specifier {
-  $$ = yyscan_snoc($1, $2);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $2);
 }
 ;
 declaration-specifier
@@ -913,7 +916,8 @@ init-declarator-list
   $$ = yyscan_snoc($$, $1);
 }
 | init-declarator-list "," init-declarator {
-  $$ = yyscan_snoc($1, $3);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $3);
 }
 ;
 init-declarator
@@ -994,7 +998,8 @@ struct-declaration-list
   $$ = yyscan_snoc($$, $1);
 }
 | struct-declaration-list struct-declaration {
-  $$ = yyscan_snoc($1, $2);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $2);
 }
 ;
 struct-declaration
@@ -1015,7 +1020,8 @@ specifier-qualifier-list
   $$ = yyscan_snoc($$, $1);
 }
 | specifier-qualifier-list specifier-qualifier {
-  $$ = yyscan_snoc($1, $2);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $2);
 }
 ;
 specifier-qualifier
@@ -1028,7 +1034,8 @@ struct-declarator-list
   $$ = yyscan_snoc($$, $1);
 }
 | struct-declarator-list "," struct-declarator {
-  $$ = yyscan_snoc($1, $3);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $3);
 }
 ;
 struct-declarator
@@ -1072,7 +1079,8 @@ enumerator-list
   $$ = yyscan_snoc($$, $1);
 }
 | enumerator-list "," enumerator {
-  $$ = yyscan_snoc($1, $3);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $3);
 }
 ;
 enumerator
@@ -1187,7 +1195,8 @@ type-qualifier-list
   $$ = yyscan_snoc($$, $1);
 }
 | type-qualifier-list type-qualifier {
-  $$ = yyscan_snoc($1, $2);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $2);
 }
 ;
 parameter-type-list.opt
@@ -1199,7 +1208,8 @@ parameter-type-list.opt
 parameter-type-list
 : parameter-list
 | parameter-list "," ellipsis {
-  $$ = yyscan_snoc($1, $3);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $3);
 }
 ;
 parameter-list
@@ -1208,7 +1218,8 @@ parameter-list
   $$ = yyscan_snoc($$, $1);
 }
 | parameter-list "," parameter-declaration {
-  $$ = yyscan_snoc($1, $3);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $3);
 }
 ;
 parameter-declaration
@@ -1233,7 +1244,8 @@ identifier-list
   $$ = yyscan_snoc($$, $1);
 }
 | identifier-list "," identifier {
-  $$ = yyscan_snoc($1, $3);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $3);
 }
 ;
 type-name
@@ -1333,7 +1345,8 @@ initializer-list
   $$ = yyscan_snoc($$, $1);
 }
 | initializer-list "," initializer {
-  $$ = yyscan_snoc($1, $3);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $3);
 }
 ;
 
@@ -1402,7 +1415,8 @@ declaration-list
   $$ = yyscan_snoc($$, $1);
 }
 | declaration-list declaration {
-  $$ = yyscan_snoc($1, $2);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $2);
 }
 ;
 statement-list.opt
@@ -1417,7 +1431,8 @@ statement-list
   $$ = yyscan_snoc($$, $1);
 }
 | statement-list statement {
-  $$ = yyscan_snoc($1, $2);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $2);
 }
 ;
 expression-statement
@@ -1537,7 +1552,8 @@ translation-unit
   $$ = yyscan_snoc($$, $1);
 }
 | translation-unit external-declaration {
-  $$ = yyscan_snoc($1, $2);
+  $$ = $1;
+  $$ = yyscan_snoc($$, $2);
 }
 ;
 external-declaration
