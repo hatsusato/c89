@@ -8,7 +8,6 @@
 void yyerror(yyscan_t, const char *);
 int yyscan_parse(Scanner *);
 Sexp *yyscan_nil(void);
-Sexp *yyscan_cons(Sexp *, Sexp *);
 Sexp *yyscan_push(Sexp *, Sexp *);
 Sexp *yyscan_symbol(SyntaxTag);
 Sexp *yyscan_tag(SyntaxTag);

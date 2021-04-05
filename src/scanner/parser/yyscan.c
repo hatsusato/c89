@@ -41,9 +41,6 @@ int yyscan_parse(Scanner *scanner) {
 Sexp *yyscan_nil(void) {
   return sexp_nil();
 }
-Sexp *yyscan_cons(Sexp *x, Sexp *xs) {
-  return sexp_pair(x, xs);
-}
 Sexp *yyscan_push(Sexp *xs, Sexp *x) {
   return sexp_snoc(xs, x);
 }

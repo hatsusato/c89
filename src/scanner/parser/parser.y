@@ -536,7 +536,9 @@ postfix-expression
 ;
 postfix-expression.tag
 : postfix-expression postfix-expression.suffix {
-  $$ = yyscan_cons($1, $2);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
+  $$ = yyscan_push($$, $2);
 }
 ;
 postfix-expression.suffix
@@ -1187,7 +1189,9 @@ direct-declarator.tag
   $$ = yyscan_push($$, $3);
 }
 | direct-declarator direct-declarator.suffix {
-  $$ = yyscan_cons($1, $2);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
+  $$ = yyscan_push($$, $2);
 }
 ;
 direct-declarator.suffix
@@ -1351,7 +1355,9 @@ direct-abstract-declarator.tag
 }
 | direct-abstract-declarator.suffix
 | direct-abstract-declarator direct-abstract-declarator.suffix {
-  $$ = yyscan_cons($1, $2);
+  $$ = yyscan_nil();
+  $$ = yyscan_push($$, $1);
+  $$ = yyscan_push($$, $2);
 }
 ;
 direct-abstract-declarator.suffix
