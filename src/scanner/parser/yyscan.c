@@ -44,7 +44,7 @@ Sexp *yyscan_nil(void) {
 Sexp *yyscan_cons(Sexp *x, Sexp *xs) {
   return sexp_pair(x, xs);
 }
-Sexp *yyscan_snoc(Sexp *xs, Sexp *x) {
+Sexp *yyscan_push(Sexp *xs, Sexp *x) {
   return sexp_snoc(xs, x);
 }
 Sexp *yyscan_list(Sexp *x) {

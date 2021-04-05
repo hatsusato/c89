@@ -434,7 +434,7 @@ identifier.opt
 identifier
 : identifier.tag {
   $$ = yyscan_tag(SYNTAX_IDENTIFIER);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 identifier.tag
@@ -445,7 +445,7 @@ identifier.tag
 typedef-identifier
 : typedef-identifier.tag {
   $$ = yyscan_tag(SYNTAX_TYPEDEF_IDENTIFIER);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 typedef-identifier.tag
@@ -456,7 +456,7 @@ typedef-identifier.tag
 floating-constant
 : floating-constant.tag {
   $$ = yyscan_tag(SYNTAX_FLOATING_CONSTANT);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 floating-constant.tag
@@ -467,7 +467,7 @@ floating-constant.tag
 integer-constant
 : integer-constant.tag {
   $$ = yyscan_tag(SYNTAX_INTEGER_CONSTANT);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 integer-constant.tag
@@ -478,7 +478,7 @@ integer-constant.tag
 enumeration-constant
 : enumeration-constant.tag {
   $$ = yyscan_tag(SYNTAX_ENUMERATION_CONSTANT);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 enumeration-constant.tag
@@ -489,7 +489,7 @@ enumeration-constant.tag
 character-constant
 : character-constant.tag {
   $$ = yyscan_tag(SYNTAX_CHARACTER_CONSTANT);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 character-constant.tag
@@ -505,11 +505,11 @@ string-literal
 string-constant
 : string-literal {
   $$ = yyscan_tag(SYNTAX_STRING_LITERAL);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | string-constant string-literal {
   $$ = $1;
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 
@@ -522,9 +522,9 @@ primary-expression
 | string-constant
 | left-paren expression right-paren {
   $$ = yyscan_tag(SYNTAX_PRIMARY_EXPRESSION);
-  $$ = yyscan_snoc($$, $1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $1);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 postfix-expression
@@ -542,21 +542,21 @@ postfix-expression.tag
 postfix-expression.suffix
 : left-bracket expression right-bracket {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 | left-paren argument-expression-list.opt right-paren {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 | period identifier {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 | arrow identifier {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 | increment {
   $$ = yyscan_list($1);
@@ -574,11 +574,11 @@ argument-expression-list.opt
 argument-expression-list
 : assignment-expression {
   $$ = yyscan_tag(SYNTAX_ARGUMENT_EXPRESSION_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | argument-expression-list "," assignment-expression {
   $$ = $1;
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $3);
 }
 ;
 unary-expression
@@ -591,25 +591,25 @@ unary-expression
 unary-expression.tag
 : increment unary-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 | decrement unary-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 | unary-operator cast-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 | sizeof unary-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 | sizeof left-paren type-name right-paren {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
 }
 ;
 unary-operator
@@ -630,9 +630,9 @@ cast-expression
 cast-expression.tag
 : left-paren type-name right-paren cast-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
 }
 ;
 multiplicative-expression
@@ -645,8 +645,8 @@ multiplicative-expression
 multiplicative-expression.tag
 : multiplicative-expression multiplicative-operator cast-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 multiplicative-operator
@@ -664,8 +664,8 @@ additive-expression
 additive-expression.tag
 : additive-expression additive-operator multiplicative-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 additive-operator
@@ -682,8 +682,8 @@ shift-expression
 shift-expression.tag
 : shift-expression shift-operator additive-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 shift-operator
@@ -700,8 +700,8 @@ relational-expression
 relational-expression.tag
 : relational-expression relational-operator shift-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 relational-operator
@@ -720,8 +720,8 @@ equality-expression
 equality-expression.tag
 : equality-expression equality-operator relational-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 equality-operator
@@ -738,8 +738,8 @@ and-expression
 and-expression.tag
 : and-expression ampersand equality-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 exclusive-or-expression
@@ -752,8 +752,8 @@ exclusive-or-expression
 exclusive-or-expression.tag
 : exclusive-or-expression caret and-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 inclusive-or-expression
@@ -766,8 +766,8 @@ inclusive-or-expression
 inclusive-or-expression.tag
 : inclusive-or-expression bar exclusive-or-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 logical-and-expression
@@ -780,8 +780,8 @@ logical-and-expression
 logical-and-expression.tag
 : logical-and-expression and inclusive-or-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 logical-or-expression
@@ -794,8 +794,8 @@ logical-or-expression
 logical-or-expression.tag
 : logical-or-expression or logical-and-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 conditional-expression
@@ -808,10 +808,10 @@ conditional-expression
 conditional-expression.tag
 : logical-or-expression question expression colon conditional-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
-  $$ = yyscan_snoc($$, $5);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
+  $$ = yyscan_push($$, $5);
 }
 ;
 assignment-expression
@@ -824,8 +824,8 @@ assignment-expression
 assignment-expression.tag
 : unary-expression assignment-operator assignment-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 assignment-operator
@@ -857,7 +857,7 @@ expression
 expression.tag
 : expression "," assignment-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $3);
 }
 ;
 
@@ -871,7 +871,7 @@ constant-expression.opt
 constant-expression
 : conditional-expression {
   $$ = yyscan_tag(SYNTAX_CONSTANT_EXPRESSION);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 
@@ -885,18 +885,18 @@ declaration
 declaration.tag
 : declaration-specifiers init-declarator-list.opt semicolon {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 declaration-specifiers
 : declaration-specifier {
   $$ = yyscan_tag(SYNTAX_DECLARATION_SPECIFIERS);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | declaration-specifiers declaration-specifier {
   $$ = $1;
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 declaration-specifier
@@ -913,11 +913,11 @@ init-declarator-list.opt
 init-declarator-list
 : init-declarator {
   $$ = yyscan_tag(SYNTAX_INIT_DECLARATOR_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | init-declarator-list "," init-declarator {
   $$ = $1;
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $3);
 }
 ;
 init-declarator
@@ -932,14 +932,14 @@ init-declarator.tag
 }
 | declarator assign initializer {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 storage-class-specifier
 : storage-class-specifier.tag {
   $$ = yyscan_tag(SYNTAX_STORAGE_CLASS_SPECIFIER);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 storage-class-specifier.tag
@@ -952,7 +952,7 @@ storage-class-specifier.tag
 type-specifier
 : type-specifier.tag {
   $$ = yyscan_tag(SYNTAX_TYPE_SPECIFIER);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 type-specifier.tag
@@ -978,14 +978,14 @@ struct-or-union-specifier
 struct-or-union-specifier.tag
 : struct-or-union identifier.opt left-brace struct-declaration-list right-brace {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
-  $$ = yyscan_snoc($$, $5);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
+  $$ = yyscan_push($$, $5);
 }
 | struct-or-union identifier {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 struct-or-union
@@ -995,11 +995,11 @@ struct-or-union
 struct-declaration-list
 : struct-declaration {
   $$ = yyscan_tag(SYNTAX_STRUCT_DECLARATION_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | struct-declaration-list struct-declaration {
   $$ = $1;
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 struct-declaration
@@ -1010,18 +1010,18 @@ struct-declaration
 struct-declaration.tag
 : specifier-qualifier-list struct-declarator-list semicolon {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 specifier-qualifier-list
 : specifier-qualifier {
   $$ = yyscan_tag(SYNTAX_SPECIFIER_QUALIFIER_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | specifier-qualifier-list specifier-qualifier {
   $$ = $1;
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 specifier-qualifier
@@ -1031,11 +1031,11 @@ specifier-qualifier
 struct-declarator-list
 : struct-declarator {
   $$ = yyscan_tag(SYNTAX_STRUCT_DECLARATOR_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | struct-declarator-list "," struct-declarator {
   $$ = $1;
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $3);
 }
 ;
 struct-declarator
@@ -1050,8 +1050,8 @@ struct-declarator.tag
 }
 | declarator.opt colon constant-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 enum-specifier
@@ -1063,24 +1063,24 @@ enum-specifier
 enum-specifier.tag
 : enum identifier.opt left-brace enumerator-list right-brace {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
-  $$ = yyscan_snoc($$, $5);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
+  $$ = yyscan_push($$, $5);
 }
 | enum identifier {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 enumerator-list
 : enumerator {
   $$ = yyscan_tag(SYNTAX_ENUMERATOR_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | enumerator-list "," enumerator {
   $$ = $1;
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $3);
 }
 ;
 enumerator
@@ -1095,14 +1095,14 @@ enumerator.tag
 }
 | enumeration-constant assign constant-expression {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 type-qualifier
 : type-qualifier.tag {
   $$ = yyscan_tag(SYNTAX_TYPE_QUALIFIER);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 type-qualifier.tag
@@ -1127,7 +1127,7 @@ declarator.tag
 }
 | pointer direct-declarator {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 direct-declarator
@@ -1142,8 +1142,8 @@ direct-declarator.tag
 }
 | left-paren declarator right-paren {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 | direct-declarator direct-declarator.suffix {
   $$ = yyscan_cons($1, $2);
@@ -1152,18 +1152,18 @@ direct-declarator.tag
 direct-declarator.suffix
 : left-bracket constant-expression.opt right-bracket {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 | left-paren parameter-type-list.opt right-paren {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 | left-paren identifier-list right-paren {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 pointer
@@ -1175,12 +1175,12 @@ pointer
 pointer.tag
 : asterisk type-qualifier-list.opt {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 | pointer asterisk type-qualifier-list.opt {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 type-qualifier-list.opt
@@ -1192,11 +1192,11 @@ type-qualifier-list.opt
 type-qualifier-list
 : type-qualifier {
   $$ = yyscan_tag(SYNTAX_TYPE_QUALIFIER_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | type-qualifier-list type-qualifier {
   $$ = $1;
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 parameter-type-list.opt
@@ -1209,17 +1209,17 @@ parameter-type-list
 : parameter-list
 | parameter-list "," ellipsis {
   $$ = $1;
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $3);
 }
 ;
 parameter-list
 : parameter-declaration {
   $$ = yyscan_tag(SYNTAX_PARAMETER_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | parameter-list "," parameter-declaration {
   $$ = $1;
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $3);
 }
 ;
 parameter-declaration
@@ -1231,21 +1231,21 @@ parameter-declaration
 parameter-declaration.tag
 : declaration-specifiers declarator {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 | declaration-specifiers abstract-declarator.opt {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 identifier-list
 : identifier {
   $$ = yyscan_tag(SYNTAX_IDENTIFIER_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | identifier-list "," identifier {
   $$ = $1;
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $3);
 }
 ;
 type-name
@@ -1257,7 +1257,7 @@ type-name
 type-name.tag
 : specifier-qualifier-list abstract-declarator.opt {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 abstract-declarator.opt
@@ -1281,7 +1281,7 @@ abstract-declarator.tag
 }
 | pointer direct-abstract-declarator {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 direct-abstract-declarator
@@ -1293,8 +1293,8 @@ direct-abstract-declarator
 direct-abstract-declarator.tag
 : left-paren abstract-declarator right-paren {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 | direct-abstract-declarator.suffix
 | direct-abstract-declarator direct-abstract-declarator.suffix {
@@ -1304,19 +1304,19 @@ direct-abstract-declarator.tag
 direct-abstract-declarator.suffix
 : left-bracket constant-expression.opt right-bracket {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 | left-paren parameter-type-list.opt right-paren {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 typedef-name
 : typedef-identifier {
   $$ = yyscan_tag(SYNTAX_TYPEDEF_NAME);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 initializer
@@ -1329,24 +1329,24 @@ initializer
 initializer.tag
 : left-brace initializer-list right-brace {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 | left-brace initializer-list comma right-brace {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
 }
 ;
 initializer-list
 : initializer {
   $$ = yyscan_tag(SYNTAX_INITIALIZER_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | initializer-list "," initializer {
   $$ = $1;
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $3);
 }
 ;
 
@@ -1354,7 +1354,7 @@ initializer-list
 statement
 : statement.tag {
   $$ = yyscan_tag(SYNTAX_STATEMENT);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 statement.tag
@@ -1374,19 +1374,19 @@ labeled-statement
 labeled-statement.tag
 : identifier colon statement {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 | case constant-expression colon statement {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
 }
 | default colon statement {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 compound-statement
@@ -1398,9 +1398,9 @@ compound-statement
 compound-statement.tag
 : left-brace declaration-list.opt statement-list.opt right-brace {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
 }
 ;
 declaration-list.opt
@@ -1412,11 +1412,11 @@ declaration-list.opt
 declaration-list
 : declaration {
   $$ = yyscan_tag(SYNTAX_DECLARATION_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | declaration-list declaration {
   $$ = $1;
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 statement-list.opt
@@ -1428,11 +1428,11 @@ statement-list.opt
 statement-list
 : statement {
   $$ = yyscan_tag(SYNTAX_STATEMENT_LIST);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | statement-list statement {
   $$ = $1;
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 expression-statement
@@ -1444,7 +1444,7 @@ expression-statement
 expression-statement.tag
 : expression.opt semicolon {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 selection-statement
@@ -1456,26 +1456,26 @@ selection-statement
 selection-statement.tag
 : if left-paren expression right-paren statement %prec THEN {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
-  $$ = yyscan_snoc($$, $5);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
+  $$ = yyscan_push($$, $5);
 }
 | if left-paren expression right-paren statement else statement {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
-  $$ = yyscan_snoc($$, $5);
-  $$ = yyscan_snoc($$, $6);
-  $$ = yyscan_snoc($$, $7);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
+  $$ = yyscan_push($$, $5);
+  $$ = yyscan_push($$, $6);
+  $$ = yyscan_push($$, $7);
 }
 | switch left-paren expression right-paren statement {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
-  $$ = yyscan_snoc($$, $5);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
+  $$ = yyscan_push($$, $5);
 }
 ;
 iteration-statement
@@ -1487,30 +1487,30 @@ iteration-statement
 iteration-statement.tag
 : while left-paren expression right-paren statement {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
-  $$ = yyscan_snoc($$, $5);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
+  $$ = yyscan_push($$, $5);
 }
 | do statement while left-paren expression right-paren semicolon {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
-  $$ = yyscan_snoc($$, $5);
-  $$ = yyscan_snoc($$, $6);
-  $$ = yyscan_snoc($$, $7);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
+  $$ = yyscan_push($$, $5);
+  $$ = yyscan_push($$, $6);
+  $$ = yyscan_push($$, $7);
 }
 | for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
-  $$ = yyscan_snoc($$, $5);
-  $$ = yyscan_snoc($$, $6);
-  $$ = yyscan_snoc($$, $7);
-  $$ = yyscan_snoc($$, $8);
-  $$ = yyscan_snoc($$, $9);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
+  $$ = yyscan_push($$, $5);
+  $$ = yyscan_push($$, $6);
+  $$ = yyscan_push($$, $7);
+  $$ = yyscan_push($$, $8);
+  $$ = yyscan_push($$, $9);
 }
 ;
 jump-statement
@@ -1522,21 +1522,21 @@ jump-statement
 jump-statement.tag
 : goto identifier semicolon {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 | continue semicolon {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 | break semicolon {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 | return expression.opt semicolon {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 ;
 
@@ -1549,11 +1549,11 @@ top
 translation-unit
 : external-declaration {
   $$ = yyscan_tag(SYNTAX_TRANSLATION_UNIT);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 | translation-unit external-declaration {
   $$ = $1;
-  $$ = yyscan_snoc($$, $2);
+  $$ = yyscan_push($$, $2);
 }
 ;
 external-declaration
@@ -1561,7 +1561,7 @@ external-declaration
 | declaration {
   yyscan_declaration($1, yyscanner);
   $$ = yyscan_tag(SYNTAX_EXTERNAL_DECLARATION);
-  $$ = yyscan_snoc($$, $1);
+  $$ = yyscan_push($$, $1);
 }
 ;
 function-definition
@@ -1573,14 +1573,14 @@ function-definition
 function-definition.tag
 : declarator declaration-list.opt compound-statement {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
 }
 | declaration-specifiers declarator declaration-list.opt compound-statement {
   $$ = yyscan_list($1);
-  $$ = yyscan_snoc($$, $2);
-  $$ = yyscan_snoc($$, $3);
-  $$ = yyscan_snoc($$, $4);
+  $$ = yyscan_push($$, $2);
+  $$ = yyscan_push($$, $3);
+  $$ = yyscan_push($$, $4);
 }
 ;
 %%
