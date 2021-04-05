@@ -18,6 +18,9 @@ Sexp *convert_cons_tag(SyntaxTag tag, Sexp *cdr) {
 }
 
 Sexp *convert_ast(Sexp *sexp) {
+  if (!sexp_is_pair(sexp)) {
+    return sexp_clone(sexp);
+  }
   switch (sexp_get_tag(sexp)) {
   case SYNTAX_TRANSLATION_UNIT:
     return convert_translation_unit(sexp);
@@ -26,6 +29,6 @@ Sexp *convert_ast(Sexp *sexp) {
   case SYNTAX_FUNCTION_DEFINITION:
     return convert_function_definition(sexp);
   default:
-    return sexp_clone(sexp);
+    return convert_list(sexp);
   }
 }
