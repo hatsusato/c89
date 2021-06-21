@@ -9,6 +9,9 @@ void vector_span_init(struct vector_span *span, byte_t *begin, size_t size) {
 size_t vector_span_length(const struct vector_span *span) {
   return (span->end - span->begin) / span->size;
 }
+byte_t *vector_span_at(const struct vector_span *span, index_t i) {
+  return span->begin + i * span->size;
+}
 void vector_span_push_back(struct vector_span *span, const struct buffer *buf) {
   if (buf) {
     struct buffer dst;
