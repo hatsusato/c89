@@ -54,3 +54,12 @@ size_t vec_length(const struct vec *vec) {
 bool_t vec_empty(const struct vec *vec) {
   return vec_length(vec) == 0;
 }
+void *vec_begin(struct vec *vec) {
+  return vec->span.begin;
+}
+void *vec_end(struct vec *vec) {
+  return vec->span.end;
+}
+void *vec_at(struct vec *vec, index_t i) {
+  return vector_span_at(&vec->span, i);
+}
