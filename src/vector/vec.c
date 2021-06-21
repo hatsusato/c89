@@ -30,6 +30,10 @@ static void vector_free(struct vec *self) {
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
 }
+void vec_init_buffer(struct vec *self, struct buffer *buf) {
+  size_t size = self->span.size * vec_length(self);
+  buffer_init(buf, vec_begin(self), size);
+}
 
 void vec_init(struct vec *self, size_t size, struct buffer *buf) {
   size = vector_aligned_size(size);
