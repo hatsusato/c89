@@ -2,6 +2,7 @@
 
 #include "span.h"
 #include "utility/buffer.h"
+#include "utility/type.h"
 
 static align_t vector_aligned_size(size_t size) {
   enum { vector_align = 8 };
@@ -10,9 +11,12 @@ static align_t vector_aligned_size(size_t size) {
   size *= vector_align;
   return size;
 }
+static align_t vector_align(const struct vec *self) {
+  return self->span.align;
+}
 static void vector_malloc_data(struct vec *self, size_t count) {
   struct buffer buf;
-  buffer_malloc(&buf, self->span.align * count);
+  buffer_malloc(&buf, vector_align(self) * count);
   vec_init(self, &buf);
 }
 static void vector_free_data(struct vec *self) {
@@ -64,7 +68,7 @@ void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
   vector_malloc_data(self, count);
 }
 size_t vec_capacity(const struct vec *self) {
-  return self->capacity / self->span.align;
+  return self->capacity / vector_align(self);
 }
 size_t vec_length(const struct vec *self) {
   return vector_span_length(&self->span);
