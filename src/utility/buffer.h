@@ -8,7 +8,7 @@ struct buffer {
   size_t size;
 };
 
-void buffer_malloc(struct buffer *);
+void buffer_malloc(struct buffer *, size_t);
 void buffer_free(struct buffer *);
 void buffer_memcpy(struct buffer *, const struct buffer *);
 

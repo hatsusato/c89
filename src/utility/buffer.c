@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-void buffer_malloc(struct buffer *buf) {
+void buffer_malloc(struct buffer *buf, size_t size) {
+  buf->size = size;
   buf->ptr = malloc(buf->size);
 }
 void buffer_free(struct buffer *buf) {

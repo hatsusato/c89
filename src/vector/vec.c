@@ -12,8 +12,7 @@ static size_t vector_aligned_size(size_t size) {
 }
 static void vector_malloc_data(struct vec *vec, size_t size, size_t count) {
   struct buffer buf;
-  buf.size = size * count;
-  buffer_malloc(&buf);
+  buffer_malloc(&buf, size * count);
   vec_init(vec, size, &buf);
 }
 static void vector_free_data(struct vec *vec) {
@@ -24,8 +23,7 @@ static void vector_free_data(struct vec *vec) {
 }
 static struct vec *vector_malloc(void) {
   struct buffer buf;
-  buf.size = sizeof(struct vec);
-  buffer_malloc(&buf);
+  buffer_malloc(&buf, sizeof(struct vec));
   return (struct vec *)buf.ptr;
 }
 static void vector_free(struct vec *vec) {
