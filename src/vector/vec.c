@@ -108,12 +108,12 @@ void *vec_at(struct vec *self, index_t i) {
 }
 void vec_push(struct vec *self, const struct buffer *buf) {
   if (!vec_full(self)) {
-    vector_span_push_back(&self->span, buf);
+    vector_span_push_back(&self->span, 1, buf);
   }
 }
 void vec_pop(struct vec *self, struct buffer *buf) {
   if (!vec_empty(self)) {
-    vector_span_pop_back(&self->span, buf);
+    vector_span_pop_back(&self->span, 1, buf);
   }
 }
 void vec_copy(struct vec *self, const struct vec *other) {
