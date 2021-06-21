@@ -8,7 +8,7 @@
 void vec_unittest(void) {
   struct vec *vec = vec_new(8);
   struct buffer buf;
-  index_t i;
+  long i;
   assert(sizeof(int) < 8);
   assert(vec_length(vec) == 0);
   assert(vec_capacity(vec) == 0);
@@ -24,7 +24,7 @@ void vec_unittest(void) {
   }
   assert(vec_length(vec) == 1000);
   assert(vec_capacity(vec) == 1024);
-  for (i = 0; i < (int)vec_length(vec); i++) {
+  for (i = 0; i < (long)vec_length(vec); i++) {
     assert(*(int *)vec_at(vec, i) == i);
   }
   for (i = 0; i < 500; i++) {
@@ -32,7 +32,7 @@ void vec_unittest(void) {
   }
   assert(vec_length(vec) == 500);
   assert(vec_capacity(vec) == 1024);
-  for (i = 0; i < (int)vec_length(vec); i++) {
+  for (i = 0; i < (long)vec_length(vec); i++) {
     assert(*(int *)vec_at(vec, i) == i);
   }
   for (i = 0; i < 1000; i++) {
