@@ -57,6 +57,9 @@ size_t vec_length(const struct vec *self) {
 bool_t vec_empty(const struct vec *self) {
   return vec_length(self) == 0;
 }
+bool_t vec_full(const struct vec *self) {
+  return vec_length(self) == vec_capacity(self);
+}
 void *vec_begin(struct vec *self) {
   return self->span.begin;
 }
