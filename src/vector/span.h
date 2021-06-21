@@ -9,5 +9,7 @@ struct vector_span {
 };
 
 void vector_span_init(struct vector_span *, byte_t *, size_t);
+void vector_span_push_back(struct vector_span *, byte_t *, size_t);
+byte_t *vector_span_pop_back(struct vector_span *);
 
 #endif /* INCLUDE_GUARD_55419819_A196_4816_9A82_349ADA502BAA */
