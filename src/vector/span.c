@@ -23,9 +23,11 @@ void vector_span_push_back(struct vector_span *span, const struct buffer *buf) {
   vector_span_memcpy(span->end, buf);
   span->end += span->size;
 }
-byte_t *vector_span_pop_back(struct vector_span *span) {
+void vector_span_pop_back(struct vector_span *span, struct buffer *buf) {
+  struct buffer src;
   span->end -= span->size;
-  return span->end;
+  buffer_init(&src, span->end, span->size);
+  buffer_memcpy(buf, &src);
 }
 void vector_span_push_front(struct vector_span *span,
                             const struct buffer *buf) {
@@ -33,8 +35,9 @@ void vector_span_push_front(struct vector_span *span,
   span->begin -= span->size;
   vector_span_memcpy(span->begin, buf);
 }
-byte_t *vector_span_pop_front(struct vector_span *span) {
-  byte_t *ptr = span->begin;
+void vector_span_pop_front(struct vector_span *span, struct buffer *buf) {
+  struct buffer src;
+  buffer_init(&src, span->begin, span->size);
+  buffer_memcpy(buf, &src);
   span->begin += span->size;
-  return ptr;
 }
