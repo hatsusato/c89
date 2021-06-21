@@ -22,6 +22,18 @@ void vector_free_data(struct vec *vec) {
   buf.size = vec->capacity;
   buffer_free(&buf);
 }
+struct vec *vector_malloc(void) {
+  struct buffer buf;
+  buf.size = sizeof(struct vec);
+  buffer_malloc(&buf);
+  return (struct vec *)buf.ptr;
+}
+void vector_free(struct vec *vec) {
+  struct buffer buf;
+  buf.ptr = (byte_t *)vec;
+  buf.size = sizeof(struct vec);
+  buffer_free(&buf);
+}
 
 void vec_init(struct vec *vec, size_t size, struct buffer *buf) {
   size = vector_aligned_size(size);
