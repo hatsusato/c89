@@ -103,4 +103,4 @@ main() {
 
 clean "$@"
 build "$@"
-tests | main
+# tests | main
