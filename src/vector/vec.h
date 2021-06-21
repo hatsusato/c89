@@ -12,5 +12,7 @@ struct vec {
 void vec_init(struct vec *, size_t, struct buffer *);
 struct vec *vec_create(size_t);
 void vec_delete(struct vec *);
+size_t vec_length(const struct vec *);
+bool_t vec_empty(const struct vec *);
 
 #endif /* INCLUDE_GUARD_C9808F6F_7A34_4226_A18A_9B7E94B05A1D */

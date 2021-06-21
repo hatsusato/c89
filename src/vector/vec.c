@@ -50,3 +50,9 @@ void vec_delete(struct vec *vec) {
   vector_free_data(vec);
   vector_free(vec);
 }
+size_t vec_length(const struct vec *vec) {
+  return vector_span_length(&vec->span);
+}
+bool_t vec_empty(const struct vec *vec) {
+  return vec_length(vec) == 0;
+}

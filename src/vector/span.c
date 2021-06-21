@@ -15,7 +15,7 @@ void vector_span_init(struct vector_span *span, byte_t *begin, size_t size) {
   span->begin = span->end = begin;
   span->size = size;
 }
-size_t vector_span_length(struct vector_span *span) {
+size_t vector_span_length(const struct vector_span *span) {
   return (span->end - span->begin) / span->size;
 }
 void vector_span_push_back(struct vector_span *span, const struct buffer *buf) {

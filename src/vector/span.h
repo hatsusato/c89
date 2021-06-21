@@ -10,7 +10,7 @@ struct vector_span {
 };
 
 void vector_span_init(struct vector_span *, byte_t *, size_t);
-size_t vector_span_length(struct vector_span *);
+size_t vector_span_length(const struct vector_span *);
 void vector_span_push_back(struct vector_span *, const struct buffer *);
 byte_t *vector_span_pop_back(struct vector_span *);
 void vector_span_push_front(struct vector_span *, const struct buffer *);
