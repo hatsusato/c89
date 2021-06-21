@@ -9,6 +9,12 @@ static size_t vector_span_aligned_size(size_t size) {
   size *= vector_span_align;
   return size;
 }
+static void vector_span_memcpy(byte_t *ptr, const struct vector_buffer *src) {
+  struct vector_buffer dst;
+  dst.ptr = ptr;
+  dst.size = src->size;
+  vector_buffer_memcpy(&dst, src);
+}
 
 void vector_span_init(struct vector_span *span, byte_t *begin, size_t size) {
   span->begin = span->end = begin;
