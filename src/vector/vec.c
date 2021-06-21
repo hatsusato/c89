@@ -89,3 +89,6 @@ void vec_copy(struct vec *self, const struct vec *other) {
   vec_init_buffer((struct vec *)other, &src);
   buffer_memcpy(&dst, &src);
 }
+void vec_clear(struct vec *self) {
+  self->span.end = self->span.begin;
+}
