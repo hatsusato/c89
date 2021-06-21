@@ -4,13 +4,6 @@
 
 #include "utility/buffer.h"
 
-static size_t vector_span_aligned_size(size_t size) {
-  enum { vector_span_align = 8 };
-  size += vector_span_align - 1;
-  size /= vector_span_align;
-  size *= vector_span_align;
-  return size;
-}
 static void vector_span_memcpy(byte_t *ptr, const struct buffer *src) {
   struct buffer dst;
   dst.ptr = ptr;
@@ -20,7 +13,7 @@ static void vector_span_memcpy(byte_t *ptr, const struct buffer *src) {
 
 void vector_span_init(struct vector_span *span, byte_t *begin, size_t size) {
   span->begin = span->end = begin;
-  span->size = vector_span_aligned_size(size);
+  span->size = size;
 }
 size_t vector_span_length(struct vector_span *span) {
   return (span->end - span->begin) / span->size;
