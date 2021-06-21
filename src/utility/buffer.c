@@ -1,6 +1,5 @@
 #include "buffer.h"
 
-#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -16,6 +15,6 @@ void buffer_free(struct buffer *buf) {
   buffer_init(buf, NULL, 0);
 }
 void buffer_memcpy(struct buffer *dst, const struct buffer *src) {
-  assert(dst->size >= src->size);
-  memcpy(dst->ptr, src->ptr, src->size);
+  size_t size = dst->size < src->size ? dst->size : src->size;
+  memcpy(dst->ptr, src->ptr, size);
 }
