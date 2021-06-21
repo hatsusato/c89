@@ -13,7 +13,7 @@ static size_t vector_aligned_size(size_t size) {
 static void vector_malloc_data(struct vec *self, size_t size, size_t count) {
   struct buffer buf;
   buffer_malloc(&buf, size * count);
-  vec_init(self, size, &buf);
+  vec_init(self, &buf);
 }
 static void vector_free_data(struct vec *self) {
   struct buffer buf;
@@ -35,9 +35,8 @@ static void vec_init_buffer(struct vec *self, struct buffer *buf) {
   buffer_init(buf, vec_begin(self), size);
 }
 
-void vec_init(struct vec *self, size_t size, struct buffer *buf) {
-  size = vector_aligned_size(size);
-  vector_span_init(&self->span, buf->ptr, size);
+void vec_init(struct vec *self, struct buffer *buf) {
+  vector_span_init(&self->span, buf->ptr, self->span.size);
   self->capacity = buf->size;
 }
 struct vec *vec_new(size_t size) {
