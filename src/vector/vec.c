@@ -30,9 +30,8 @@ static void vector_free(struct vec *self) {
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
 }
-static void vec_init_buffer(struct vec *self, struct buffer *buf) {
-  size_t size = self->span.size * vec_length(self);
-  buffer_init(buf, vec_begin(self), size);
+static void vector_init_buffer(struct vec *self, struct buffer *buf) {
+  buffer_init(buf, self->span.begin, self->capacity);
 }
 
 void vec_init(struct vec *self, struct buffer *buf) {
@@ -58,7 +57,7 @@ void vec_delete(struct vec *self) {
 }
 void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
   if (buf) {
-    vec_init_buffer(self, buf);
+    vector_init_buffer(self, buf);
   }
   if (count == 0) {
     count = 2 * vec_capacity(self);
@@ -98,8 +97,8 @@ void vec_pop(struct vec *self, struct buffer *buf) {
 }
 void vec_copy(struct vec *self, const struct vec *other) {
   struct buffer dst, src;
-  vec_init_buffer(self, &dst);
-  vec_init_buffer((struct vec *)other, &src);
+  vector_init_buffer(self, &dst);
+  vector_init_buffer((struct vec *)other, &src);
   buffer_memcpy(&dst, &src);
 }
 void vec_clear(struct vec *self) {
