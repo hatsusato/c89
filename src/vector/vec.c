@@ -49,8 +49,7 @@ struct vec *vec_new(size_t size) {
 }
 struct vec *vec_create(size_t size) {
   enum { vec_initial_count = 8 };
-  struct vec *self;
-  self = vec_new(size);
+  struct vec *self = vec_new(size);
   vector_malloc_data(self, vec_initial_count);
   return self;
 }
@@ -59,13 +58,32 @@ void vec_delete(struct vec *self) {
   vector_free(self);
 }
 void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
-  if (buf) {
-    vector_init_buffer(self, buf);
-  }
   if (count == 0) {
     count = 2 * vec_capacity(self);
   }
-  vector_malloc_data(self, count);
+  if (count > vec_capacity(self)) {
+    struct buffer dst, src;
+    align_t align = vector_align(self);
+    size_t cap = align * count;
+    size_t len = vec_length(self);
+    buffer_malloc(&dst, cap);
+    vector_init_buffer(self, &src);
+    if (!vec_empty(self)) {
+      src.ptr = self->span.begin;
+      src.size = align * len;
+      buffer_memcpy(&dst, &src);
+    }
+    self->span.begin = dst.ptr;
+    self->span.end = dst.ptr + align * len;
+    self->capacity = cap;
+    if (buf) {
+      *buf = src;
+      buf = NULL;
+    } else {
+      buf = &src;
+    }
+    buffer_free(buf);
+  }
 }
 size_t vec_capacity(const struct vec *self) {
   return self->capacity / vector_align(self);
