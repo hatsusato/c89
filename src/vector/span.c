@@ -23,3 +23,13 @@ byte_t *vector_span_pop_back(struct vector_span *span) {
   span->end -= span->size;
   return span->end;
 }
+void vector_span_push_front(struct vector_span *span, byte_t *data,
+                            size_t count) {
+  span->begin -= span->size;
+  memcpy(span->begin, data, count);
+}
+byte_t *vector_span_pop_front(struct vector_span *span) {
+  byte_t *ptr = span->begin;
+  span->begin += span->size;
+  return ptr;
+}
