@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+void buffer_init(struct buffer *buf, void *ptr, size_t size) {
+  buf->ptr = ptr;
+  buf->size = size;
+}
 void buffer_malloc(struct buffer *buf, size_t size) {
   buf->size = size;
   buf->ptr = malloc(buf->size);
