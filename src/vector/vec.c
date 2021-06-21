@@ -67,27 +67,16 @@ void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
     count = 2 * vec_capacity(self);
   }
   if (count > vec_capacity(self)) {
-    struct buffer dst, src;
-    align_t align = vector_align(self);
-    size_t cap = align * count;
     size_t len = vec_length(self);
-    buffer_malloc(&dst, cap);
-    vector_init_buffer(self, &src);
-    if (!vec_empty(self)) {
-      src.ptr = self->span.begin;
-      src.size = align * len;
-      buffer_memcpy(&dst, &src);
-    }
-    self->span.begin = dst.ptr;
-    self->span.end = dst.ptr + align * len;
-    self->capacity = cap;
+    struct buffer old;
+    vector_init_buffer(self, &old);
+    vec_init_malloc(self, count);
+    vector_span_push_back(&self->span, len, &old);
     if (buf) {
-      *buf = src;
-      buf = NULL;
+      *buf = old;
     } else {
-      buf = &src;
+      buffer_free(&old);
     }
-    buffer_free(buf);
   }
 }
 size_t vec_capacity(const struct vec *self) {
