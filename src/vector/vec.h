@@ -10,6 +10,7 @@ struct vec {
 };
 
 void vec_init(struct vec *, struct buffer *);
+void vec_init_malloc(struct vec *, size_t);
 struct vec *vec_new(size_t);
 struct vec *vec_create(size_t);
 void vec_delete(struct vec *);
