@@ -6,14 +6,12 @@
 
 static void vector_span_copy_to(struct buffer *buf, void *ptr, size_t size) {
   struct buffer src;
-  assert(size <= buf->size);
   buffer_init(&src, ptr, size);
   buffer_memcpy(buf, &src);
 }
 static void vector_span_copy_from(const struct buffer *buf, void *ptr,
                                   size_t size) {
   struct buffer dst;
-  assert(size <= buf->size);
   buffer_init(&dst, ptr, size);
   buffer_memcpy(&dst, buf);
 }
