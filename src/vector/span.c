@@ -2,7 +2,7 @@
 
 #include <assert.h>
 
-#include "buffer.h"
+#include "utility/buffer.h"
 
 static size_t vector_span_aligned_size(size_t size) {
   enum { vector_span_align = 8 };
@@ -11,11 +11,11 @@ static size_t vector_span_aligned_size(size_t size) {
   size *= vector_span_align;
   return size;
 }
-static void vector_span_memcpy(byte_t *ptr, const struct vector_buffer *src) {
-  struct vector_buffer dst;
+static void vector_span_memcpy(byte_t *ptr, const struct buffer *src) {
+  struct buffer dst;
   dst.ptr = ptr;
   dst.size = src->size;
-  vector_buffer_memcpy(&dst, src);
+  buffer_memcpy(&dst, src);
 }
 
 void vector_span_init(struct vector_span *span, byte_t *begin, size_t size) {
@@ -25,8 +25,7 @@ void vector_span_init(struct vector_span *span, byte_t *begin, size_t size) {
 size_t vector_span_length(struct vector_span *span) {
   return (span->end - span->begin) / span->size;
 }
-void vector_span_push_back(struct vector_span *span,
-                           const struct vector_buffer *buf) {
+void vector_span_push_back(struct vector_span *span, const struct buffer *buf) {
   assert(span->size >= buf->size);
   vector_span_memcpy(span->end, buf);
   span->end += span->size;
@@ -36,7 +35,7 @@ byte_t *vector_span_pop_back(struct vector_span *span) {
   return span->end;
 }
 void vector_span_push_front(struct vector_span *span,
-                            const struct vector_buffer *buf) {
+                            const struct buffer *buf) {
   assert(span->size >= buf->size);
   span->begin -= span->size;
   vector_span_memcpy(span->begin, buf);
