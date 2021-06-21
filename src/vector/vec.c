@@ -40,11 +40,17 @@ void vec_init(struct vec *self, size_t size, struct buffer *buf) {
   vector_span_init(&self->span, buf->ptr, size);
   self->capacity = buf->size;
 }
+struct vec *vec_new(size_t size) {
+  struct vec *self = vector_malloc();
+  size = vector_aligned_size(size);
+  vector_span_init(&self->span, NULL, size);
+  return self;
+}
 struct vec *vec_create(size_t size) {
   enum { vec_initial_count = 8 };
   struct vec *self;
   size = vector_aligned_size(size);
-  self = vector_malloc();
+  self = vec_new(size);
   vector_malloc_data(self, size, vec_initial_count);
   return self;
 }
