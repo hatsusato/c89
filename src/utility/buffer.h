@@ -3,6 +3,9 @@
 
 #include "type.h"
 
+#define BUFFER_INIT(buf, ptr) buffer_init((buf), (ptr), sizeof(*(ptr)))
+#define BUFFER_MALLOC(buf, type) buffer_malloc((buf), sizeof(type))
+
 struct buffer {
   byte_t *ptr;
   size_t size;

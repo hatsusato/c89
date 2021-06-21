@@ -22,12 +22,12 @@ static void vector_free_data(struct vec *vec) {
 }
 static struct vec *vector_malloc(void) {
   struct buffer buf;
-  buffer_malloc(&buf, sizeof(struct vec));
+  BUFFER_MALLOC(&buf, struct vec);
   return (struct vec *)buf.ptr;
 }
 static void vector_free(struct vec *vec) {
   struct buffer buf;
-  buffer_init(&buf, vec, sizeof(struct vec));
+  BUFFER_INIT(&buf, vec);
   buffer_free(&buf);
 }
 
