@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 
+typedef size_t align_t;
 typedef int bool_t;
 typedef unsigned char byte_t;
 typedef int index_t;
