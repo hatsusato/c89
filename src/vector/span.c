@@ -4,13 +4,6 @@
 
 #include "utility/buffer.h"
 
-static void vector_span_memcpy(byte_t *ptr, const struct buffer *src) {
-  struct buffer dst;
-  dst.ptr = ptr;
-  dst.size = src->size;
-  buffer_memcpy(&dst, src);
-}
-
 void vector_span_init(struct vector_span *span, byte_t *begin, size_t size) {
   span->begin = span->end = begin;
   span->size = size;
@@ -19,8 +12,10 @@ size_t vector_span_length(const struct vector_span *span) {
   return (span->end - span->begin) / span->size;
 }
 void vector_span_push_back(struct vector_span *span, const struct buffer *buf) {
+  struct buffer dst;
   assert(span->size >= buf->size);
-  vector_span_memcpy(span->end, buf);
+  buffer_init(&dst, span->end, span->size);
+  buffer_memcpy(&dst, buf);
   span->end += span->size;
 }
 void vector_span_pop_back(struct vector_span *span, struct buffer *buf) {
@@ -31,9 +26,11 @@ void vector_span_pop_back(struct vector_span *span, struct buffer *buf) {
 }
 void vector_span_push_front(struct vector_span *span,
                             const struct buffer *buf) {
+  struct buffer dst;
   assert(span->size >= buf->size);
   span->begin -= span->size;
-  vector_span_memcpy(span->begin, buf);
+  buffer_init(&dst, span->begin, span->size);
+  buffer_memcpy(&dst, buf);
 }
 void vector_span_pop_front(struct vector_span *span, struct buffer *buf) {
   struct buffer src;
