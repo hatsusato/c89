@@ -10,5 +10,6 @@ struct vector_buffer {
 
 void vector_buffer_malloc(struct vector_buffer *);
 void vector_buffer_free(struct vector_buffer *);
+void vector_buffer_memcpy(struct vector_buffer *, const struct vector_buffer *);
 
 #endif /* INCLUDE_GUARD_2505370A_1954_47A8_BF38_6BC8B1F6BF30 */
