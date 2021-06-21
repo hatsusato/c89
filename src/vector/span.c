@@ -9,7 +9,8 @@ void vector_span_init(struct vector_span *span, byte_t *begin, size_t size) {
   span->size = size;
 }
 size_t vector_span_length(const struct vector_span *span) {
-  return (span->end - span->begin) / span->size;
+  size_t size = (span->end && span->begin) ? (span->end - span->begin) : 0;
+  return size / span->size;
 }
 byte_t *vector_span_at(const struct vector_span *span, index_t i) {
   assert(span->begin);
