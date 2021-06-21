@@ -10,9 +10,9 @@ static size_t vector_aligned_size(size_t size) {
   size *= vector_align;
   return size;
 }
-static void vector_malloc_data(struct vec *self, size_t size, size_t count) {
+static void vector_malloc_data(struct vec *self, size_t count) {
   struct buffer buf;
-  buffer_malloc(&buf, size * count);
+  buffer_malloc(&buf, self->span.size * count);
   vec_init(self, &buf);
 }
 static void vector_free_data(struct vec *self) {
@@ -48,9 +48,8 @@ struct vec *vec_new(size_t size) {
 struct vec *vec_create(size_t size) {
   enum { vec_initial_count = 8 };
   struct vec *self;
-  size = vector_aligned_size(size);
   self = vec_new(size);
-  vector_malloc_data(self, size, vec_initial_count);
+  vector_malloc_data(self, vec_initial_count);
   return self;
 }
 void vec_delete(struct vec *self) {
@@ -64,7 +63,7 @@ void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
   if (count == 0) {
     count = 2 * vec_capacity(self);
   }
-  vector_malloc_data(self, self->span.size, count);
+  vector_malloc_data(self, count);
 }
 size_t vec_capacity(const struct vec *self) {
   return self->capacity / self->span.size;
