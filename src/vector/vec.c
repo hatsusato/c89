@@ -36,7 +36,7 @@ static void vec_init_buffer(struct vec *self, struct buffer *buf) {
 }
 
 void vec_init(struct vec *self, struct buffer *buf) {
-  vector_span_init(&self->span, buf->ptr, self->span.size);
+  vector_span_init(&self->span, buf->ptr, 0);
   self->capacity = buf->size;
 }
 struct vec *vec_new(size_t size) {

@@ -6,7 +6,9 @@
 
 void vector_span_init(struct vector_span *span, byte_t *begin, size_t size) {
   span->begin = span->end = begin;
-  span->size = size;
+  if (size > 0) {
+    span->size = size;
+  }
 }
 size_t vector_span_length(const struct vector_span *span) {
   size_t size = (span->end && span->begin) ? (span->end - span->begin) : 0;
