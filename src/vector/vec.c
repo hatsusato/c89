@@ -48,6 +48,9 @@ void vec_delete(struct vec *vec) {
   vector_free_data(vec);
   vector_free(vec);
 }
+size_t vec_capacity(const struct vec *vec) {
+  return vec->capacity / vec->span.size;
+}
 size_t vec_length(const struct vec *vec) {
   return vector_span_length(&vec->span);
 }
