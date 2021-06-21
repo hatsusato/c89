@@ -5,4 +5,5 @@ target_sources(vector PRIVATE
   )
 target_link_libraries(vector PRIVATE
   options
+  utility
   )
