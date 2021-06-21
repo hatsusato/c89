@@ -69,3 +69,13 @@ void *vec_end(struct vec *self) {
 void *vec_at(struct vec *self, index_t i) {
   return vector_span_at(&self->span, i);
 }
+void vec_push(struct vec *self, const struct buffer *buf) {
+  if (!vec_full(self)) {
+    vector_span_push_back(&self->span, buf);
+  }
+}
+void vec_pop(struct vec *self, struct buffer *buf) {
+  if (!vec_empty(self)) {
+    vector_span_pop_back(&self->span, buf);
+  }
+}

@@ -19,5 +19,7 @@ bool_t vec_full(const struct vec *);
 void *vec_begin(struct vec *);
 void *vec_end(struct vec *);
 void *vec_at(struct vec *, index_t);
+void vec_push(struct vec *, const struct buffer *);
+void vec_pop(struct vec *, struct buffer *);
 
 #endif /* INCLUDE_GUARD_C9808F6F_7A34_4226_A18A_9B7E94B05A1D */
