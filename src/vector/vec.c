@@ -30,7 +30,7 @@ static void vector_free(struct vec *self) {
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
 }
-void vec_init_buffer(struct vec *self, struct buffer *buf) {
+static void vec_init_buffer(struct vec *self, struct buffer *buf) {
   size_t size = self->span.size * vec_length(self);
   buffer_init(buf, vec_begin(self), size);
 }
@@ -82,4 +82,10 @@ void vec_pop(struct vec *self, struct buffer *buf) {
   if (!vec_empty(self)) {
     vector_span_pop_back(&self->span, buf);
   }
+}
+void vec_copy(struct vec *self, const struct vec *other) {
+  struct buffer dst, src;
+  vec_init_buffer(self, &dst);
+  vec_init_buffer((struct vec *)other, &src);
+  buffer_memcpy(&dst, &src);
 }
