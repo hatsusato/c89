@@ -16,7 +16,7 @@ static void vector_malloc_data(struct vec *vec, size_t size, size_t count) {
   buffer_malloc(&buf);
   vec_init(vec, size, &buf);
 }
-void vector_free_data(struct vec *vec) {
+static void vector_free_data(struct vec *vec) {
   struct buffer buf;
   buf.ptr = vec->span.begin;
   buf.size = vec->capacity;
@@ -28,7 +28,7 @@ static struct vec *vector_malloc(void) {
   buffer_malloc(&buf);
   return (struct vec *)buf.ptr;
 }
-void vector_free(struct vec *vec) {
+static void vector_free(struct vec *vec) {
   struct buffer buf;
   buf.ptr = (byte_t *)vec;
   buf.size = sizeof(struct vec);
@@ -47,4 +47,8 @@ struct vec *vec_create(size_t size) {
   vec = vector_malloc();
   vector_malloc_data(vec, size, vec_initial_count);
   return vec;
+}
+void vec_delete(struct vec *vec) {
+  vector_free_data(vec);
+  vector_free(vec);
 }
