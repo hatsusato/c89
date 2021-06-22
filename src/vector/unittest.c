@@ -134,7 +134,7 @@ static void vec_unittest(void) {
   } while (0)
 
 static void vec_ptr_unittest(void) {
-  struct vec_ptr *vec = vec_ptr_new();
+  struct vec_ptr *vec = vec_ptr_new(free);
   vec_ptr_unittest_check(vec, 0, 8);
   {
     vec_ptr_unittest_push(vec, 0, 1000);

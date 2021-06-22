@@ -14,11 +14,12 @@ static void vec_ptr_free(struct vec_ptr *self) {
   buffer_free(&buf);
 }
 
-struct vec_ptr *vec_ptr_new(void) {
+struct vec_ptr *vec_ptr_new(vec_ptr_destructor dtor) {
   enum { initial_count = 8 };
   struct vec_ptr *self = vec_ptr_malloc();
   vec_init(&self->vec, sizeof(void *));
   vec_alloc(&self->vec, initial_count);
+  self->dtor = dtor;
   return self;
 }
 void vec_ptr_delete(struct vec_ptr *self) {
