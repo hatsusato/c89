@@ -46,15 +46,13 @@ void vec_reset(struct vec *self) {
   self->length = 0;
 }
 void vec_reserve(struct vec *self, index_t count) {
-  count = (count == 0) ? 2 * vec_capacity(self) : count;
-  if (count > vec_capacity(self)) {
-    size_t length = vec_length(self);
-    struct buffer old = self->buf, src;
-    vector_init_buffer(self, 0, length, &src);
+  index_t cap = vec_capacity(self);
+  count = (count == 0) ? 2 * cap : count;
+  if (count > cap) {
+    struct vec old = *self;
     vec_alloc(self, count);
-    buffer_memcpy(&self->buf, &src);
-    self->length = length;
-    buffer_free(&old);
+    vec_insert(self, 0, vec_length(&old), &old.buf);
+    vec_reset(&old);
   }
 }
 index_t vec_capacity(const struct vec *self) {
