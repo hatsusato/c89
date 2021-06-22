@@ -19,12 +19,12 @@ void vec_delete(struct vec *);
 void vec_reserve(struct vec *, index_t);
 index_t vec_capacity(const struct vec *);
 index_t vec_length(const struct vec *);
-bool_t vec_empty(const struct vec *);
-bool_t vec_full(const struct vec *);
 void *vec_at(struct vec *, index_t);
 void vec_insert(struct vec *, index_t, index_t, const struct buffer *);
 void vec_remove(struct vec *, index_t, index_t);
 
+bool_t vec_empty(const struct vec *);
+bool_t vec_full(const struct vec *);
 void *vec_begin(struct vec *);
 void *vec_end(struct vec *);
 void vec_clear(struct vec *);
