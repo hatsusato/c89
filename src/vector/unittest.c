@@ -128,8 +128,7 @@ static void vec_unittest(void) {
   do {                                   \
     int i;                               \
     for (i = 0; i < count; i++) {        \
-      int *p = vec_ptr_pop(vec);         \
-      free(p);                           \
+      vec_ptr_pop(vec);                  \
     }                                    \
   } while (0)
 

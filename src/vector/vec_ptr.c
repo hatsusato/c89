@@ -13,6 +13,11 @@ static void vec_ptr_free(struct vec_ptr *self) {
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
 }
+static void vec_ptr_destruct(struct vec_ptr *self, void *ptr) {
+  if (self->dtor) {
+    (self->dtor)(ptr);
+  }
+}
 
 struct vec_ptr *vec_ptr_new(vec_ptr_destructor dtor) {
   enum { initial_count = 8 };
@@ -44,8 +49,8 @@ void vec_ptr_push(struct vec_ptr *self, void *ptr) {
   BUFFER_INIT(&buf, &ptr);
   vec_insert(vec, -1, 1, &buf);
 }
-void *vec_ptr_pop(struct vec_ptr *self) {
+void vec_ptr_pop(struct vec_ptr *self) {
   void *ptr = vec_ptr_at(self, vec_ptr_length(self) - 1);
+  vec_ptr_destruct(self, ptr);
   vec_remove(&self->vec, -1, 1);
-  return ptr;
 }
