@@ -43,9 +43,8 @@
   } while (0)
 
 void vec_unittest(void) {
-  struct vec *vec = vec_new(8);
+  struct vec *vec = vec_new(sizeof(int));
   vec_unittest_check(vec, 0, 0);
-  assert(sizeof(int) < 8);
   vec_reserve(vec, 8);
   vec_unittest_check(vec, 0, 8);
   vec_unittest_push(vec, 1000);

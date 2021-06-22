@@ -14,10 +14,6 @@ static void vector_free(struct vec *self) {
   buffer_free(&buf);
 }
 
-align_t vector_aligned_size(size_t size) {
-  enum { vec_align = 8 };
-  return (size + vec_align - 1) / vec_align * vec_align;
-}
 void vec_alloc(struct vec *self, size_t count) {
   buffer_malloc(&self->buf, self->align * count);
   vector_span_init(&self->span, self->buf.ptr);
@@ -28,9 +24,9 @@ void vec_reset(struct vec *self) {
   vector_span_init(&self->span, NULL);
   self->length = vector_span_length(&self->span);
 }
-struct vec *vec_new(size_t size) {
+struct vec *vec_new(align_t align) {
   struct vec *self = vector_malloc();
-  self->align = self->span.align = vector_aligned_size(size);
+  self->align = self->span.align = align;
   vector_span_init(&self->span, NULL);
   buffer_init(&self->buf, NULL, 0);
   self->length = vector_span_length(&self->span);

@@ -12,10 +12,9 @@ struct vec {
   size_t length;
 };
 
-align_t vector_aligned_size(size_t);
 void vec_alloc(struct vec *, size_t);
 void vec_reset(struct vec *);
-struct vec *vec_new(size_t);
+struct vec *vec_new(align_t);
 void vec_delete(struct vec *);
 void vec_reserve(struct vec *, size_t);
 size_t vec_capacity(const struct vec *);
