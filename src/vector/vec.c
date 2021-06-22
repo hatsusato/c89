@@ -18,7 +18,6 @@ static void vector_free(struct vec *self) {
 static void vector_slide(struct vec *self, index_t index, index_t count) {
   struct buffer src, dst;
   index_t length = vec_length(self);
-  assert(length + count <= vec_capacity(self));
   if (0 <= index && index < length) {
     size_t size = (length - index) * self->align;
     buffer_init(&src, vec_at(self, index), size);
@@ -96,8 +95,11 @@ void vec_clear(struct vec *self) {
 void vec_insert(struct vec *self, index_t index, index_t count,
                 const struct buffer *buf) {
   struct buffer dst;
+  index_t length = vec_length(self);
   size_t size = count * self->align;
-  assert(0 <= index && index <= self->length);
+  index = (index == -1) ? length : index;
+  assert(0 <= index && index <= length);
+  assert(0 <= count && length + count <= vec_capacity(self));
   assert(size <= buf->size);
   vector_slide(self, index, count);
   buffer_init(&dst, vec_at(self, index), size);
