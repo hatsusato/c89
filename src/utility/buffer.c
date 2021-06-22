@@ -16,8 +16,8 @@ void buffer_free(struct buffer *buf) {
   buffer_init(buf, NULL, 0);
 }
 void buffer_memcpy(struct buffer *dst, const struct buffer *src) {
-  size_t size = dst->size < src->size ? dst->size : src->size;
   if (dst->ptr && src->ptr) {
+    size_t size = dst->size < src->size ? dst->size : src->size;
     memcpy(dst->ptr, src->ptr, size);
   }
 }
