@@ -9,7 +9,7 @@ struct vector_span {
   align_t align;
 };
 
-void vector_span_init(struct vector_span *, byte_t *, align_t);
+void vector_span_init(struct vector_span *, byte_t *);
 size_t vector_span_length(const struct vector_span *);
 byte_t *vector_span_at(const struct vector_span *, index_t);
 void vector_span_push_back(struct vector_span *, size_t, const struct buffer *);

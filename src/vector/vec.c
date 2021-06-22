@@ -26,7 +26,7 @@ align_t vector_aligned_size(size_t size) {
   return (size + vec_align - 1) / vec_align * vec_align;
 }
 void vec_init(struct vec *self, struct buffer *buf) {
-  vector_span_init(&self->span, buf->ptr, 0);
+  vector_span_init(&self->span, buf->ptr);
   self->capacity = buf->size;
 }
 void vec_alloc(struct vec *self, size_t count) {
@@ -38,12 +38,13 @@ void vec_reset(struct vec *self) {
   struct buffer buf;
   vector_init_buffer(self, &buf);
   buffer_free(&buf);
-  vector_span_init(&self->span, NULL, 0);
+  vector_span_init(&self->span, NULL);
   self->capacity = 0;
 }
 struct vec *vec_new(size_t size) {
   struct vec *self = vector_malloc();
-  vector_span_init(&self->span, NULL, vector_aligned_size(size));
+  self->span.align = vector_aligned_size(size);
+  vector_span_init(&self->span, NULL);
   return self;
 }
 struct vec *vec_create(size_t size) {

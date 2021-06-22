@@ -16,11 +16,8 @@ static void vector_span_copy_from(const struct buffer *buf, void *ptr,
   buffer_memcpy(&dst, buf);
 }
 
-void vector_span_init(struct vector_span *span, byte_t *ptr, align_t align) {
+void vector_span_init(struct vector_span *span, byte_t *ptr) {
   span->begin = span->end = ptr;
-  if (align > 0) {
-    span->align = align;
-  }
 }
 size_t vector_span_length(const struct vector_span *span) {
   size_t size = (span->end && span->begin) ? (span->end - span->begin) : 0;
