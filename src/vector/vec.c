@@ -12,6 +12,10 @@ static void vector_free(struct vec *self) {
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
 }
+static index_t vector_buffer_capacity(const struct vec *self,
+                                      const struct buffer *buf) {
+  return buf->size / self->align;
+}
 static void vector_init_buffer(struct vec *self, index_t begin, index_t end,
                                struct buffer *buf) {
   buffer_init(buf, vec_at(self, begin), (end - begin) * self->align);
@@ -56,7 +60,7 @@ void vec_reserve(struct vec *self, index_t count) {
   }
 }
 index_t vec_capacity(const struct vec *self) {
-  return self->buf.size / self->align;
+  return vector_buffer_capacity(self, &self->buf);
 }
 index_t vec_length(const struct vec *self) {
   return self->length;
@@ -71,7 +75,7 @@ void vec_insert(struct vec *self, index_t index, index_t count,
   index = (index == -1) ? length : index;
   assert(0 <= index && index <= length);
   assert(0 <= count && length + count <= vec_capacity(self));
-  assert(count * self->align <= buf->size);
+  assert(count <= vector_buffer_capacity(self, buf));
   vector_slide(self, index, count);
   vector_init_buffer(self, index, index + count, &dst);
   buffer_memcpy(&dst, buf);
