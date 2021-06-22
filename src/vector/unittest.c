@@ -94,5 +94,9 @@ void vec_unittest(void) {
     vec_unittest_check(vec, 1000, 2048);
     vec_unittest_range(vec, 0, 0, 1000);
   }
+  {
+    vec_clear(vec);
+    vec_unittest_check(vec, 0, 2048);
+  }
   vec_delete(vec);
 }

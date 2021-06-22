@@ -85,10 +85,6 @@ void *vec_end(struct vec *self) {
 void *vec_at(struct vec *self, index_t i) {
   return vector_span_at(&self->span, i);
 }
-void vec_clear(struct vec *self) {
-  vector_span_pop_back(&self->span, vec_length(self), NULL);
-  self->length = vector_span_length(&self->span);
-}
 void vec_insert(struct vec *self, index_t index, index_t count,
                 const struct buffer *buf) {
   struct buffer dst;
@@ -113,4 +109,8 @@ void vec_remove(struct vec *self, index_t index, index_t count) {
   vector_slide(self, index + count, -count);
   self->span.end -= size;
   self->length -= count;
+}
+
+void vec_clear(struct vec *self) {
+  vec_remove(self, 0, vec_length(self));
 }
