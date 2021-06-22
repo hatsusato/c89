@@ -5,31 +5,34 @@
 #include "utility/buffer.h"
 #include "vec.h"
 
-static void vec_unittest_check(struct vec *vec, size_t len, size_t cap) {
-  assert(vec_length(vec) == len);
-  assert(vec_capacity(vec) == cap);
-}
-static void vec_unittest_push(struct vec *vec, int count) {
-  int i;
-  size_t len = vec_length(vec);
-  for (i = 0; i < count; i++) {
-    struct buffer buf;
-    BUFFER_INIT(&buf, &i);
-    if (vec_full(vec)) {
-      vec_reserve(vec, 0);
-    }
-    vec_push(vec, &buf);
-  }
-  assert(vec_length(vec) == len + count);
-}
-static void vec_unittest_pop(struct vec *vec, int count) {
-  int i;
-  size_t len = vec_length(vec);
-  for (i = 0; i < count; i++) {
-    vec_pop(vec, NULL);
-  }
-  assert(vec_length(vec) == len - count);
-}
+#define vec_unittest_check(vec, len, cap) \
+  do {                                    \
+    assert(vec_length(vec) == len);       \
+    assert(vec_capacity(vec) == cap);     \
+  } while (0)
+#define vec_unittest_push(vec, count)       \
+  do {                                      \
+    int i;                                  \
+    size_t len = vec_length(vec);           \
+    for (i = 0; i < count; i++) {           \
+      struct buffer buf;                    \
+      BUFFER_INIT(&buf, &i);                \
+      if (vec_full(vec)) {                  \
+        vec_reserve(vec, 0);                \
+      }                                     \
+      vec_push(vec, &buf);                  \
+    }                                       \
+    assert(vec_length(vec) == len + count); \
+  } while (0)
+#define vec_unittest_pop(vec, count)        \
+  do {                                      \
+    int i;                                  \
+    size_t len = vec_length(vec);           \
+    for (i = 0; i < count; i++) {           \
+      vec_pop(vec, NULL);                   \
+    }                                       \
+    assert(vec_length(vec) == len - count); \
+  } while (0)
 #define vec_unittest_range(vec, start, begin, end)  \
   do {                                              \
     int i, j;                                       \
