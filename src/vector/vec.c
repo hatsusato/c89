@@ -1,5 +1,7 @@
 #include "vec.h"
 
+#include <assert.h>
+
 #include "span.h"
 #include "utility/type.h"
 
@@ -12,6 +14,17 @@ static void vector_free(struct vec *self) {
   struct buffer buf;
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
+}
+void vector_slide(struct vec *self, index_t index, index_t count) {
+  struct buffer src, dst;
+  index_t length = vec_length(self);
+  assert(length + count <= vec_capacity(self));
+  if (0 <= index && index < length) {
+    size_t size = (length - index) * self->align;
+    buffer_init(&src, vec_at(self, index), size);
+    buffer_init(&dst, vec_at(self, index + count), size);
+    buffer_memmove(&dst, &src);
+  }
 }
 
 void vec_alloc(struct vec *self, index_t count) {
