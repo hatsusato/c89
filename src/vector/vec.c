@@ -39,6 +39,13 @@ void vec_init_malloc(struct vec *self, size_t count) {
   buffer_malloc(&buf, vector_align(self) * count);
   vec_init(self, &buf);
 }
+void vec_reset(struct vec *self) {
+  struct buffer buf;
+  vector_init_buffer(self, &buf);
+  buffer_free(&buf);
+  vector_span_init(&self->span, NULL, 0);
+  self->capacity = 0;
+}
 struct vec *vec_new(size_t size) {
   struct vec *self = vector_malloc();
   vector_span_init(&self->span, NULL, vector_aligned_size(size));
