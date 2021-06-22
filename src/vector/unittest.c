@@ -63,22 +63,36 @@
 void vec_unittest(void) {
   struct vec *vec = vec_new(sizeof(int));
   vec_unittest_check(vec, 0, 0);
-  vec_reserve(vec, 8);
-  vec_unittest_check(vec, 0, 8);
-  vec_unittest_push(vec, 1000);
-  vec_unittest_check(vec, 1000, 1024);
-  vec_unittest_range(vec, 0, 0, 1000);
-  vec_unittest_check(vec, 1000, 1024);
-  vec_unittest_pop(vec, 500);
-  vec_unittest_check(vec, 500, 1024);
-  vec_unittest_range(vec, 0, 0, 500);
-  vec_unittest_push(vec, 1000);
-  vec_unittest_range(vec, 0, 0, 500);
-  vec_unittest_range(vec, 500, 0, 1000);
-  vec_unittest_insert(vec, 500, 500, 1000);
-  vec_unittest_range(vec, 0, 0, 1000);
-  vec_unittest_range(vec, 1000, 0, 1000);
-  vec_unittest_remove(vec, 500, 1500);
-  vec_unittest_range(vec, 0, 0, 1000);
+  {
+    vec_reserve(vec, 8);
+    vec_unittest_check(vec, 0, 8);
+  }
+  {
+    vec_unittest_push(vec, 1000);
+    vec_unittest_check(vec, 1000, 1024);
+    vec_unittest_range(vec, 0, 0, 1000);
+  }
+  {
+    vec_unittest_pop(vec, 500);
+    vec_unittest_check(vec, 500, 1024);
+    vec_unittest_range(vec, 0, 0, 500);
+  }
+  {
+    vec_unittest_push(vec, 1000);
+    vec_unittest_check(vec, 1500, 2048);
+    vec_unittest_range(vec, 0, 0, 500);
+    vec_unittest_range(vec, 500, 0, 1000);
+  }
+  {
+    vec_unittest_insert(vec, 500, 500, 1000);
+    vec_unittest_check(vec, 2000, 2048);
+    vec_unittest_range(vec, 0, 0, 1000);
+    vec_unittest_range(vec, 1000, 0, 1000);
+  }
+  {
+    vec_unittest_remove(vec, 500, 1500);
+    vec_unittest_check(vec, 1000, 2048);
+    vec_unittest_range(vec, 0, 0, 1000);
+  }
   vec_delete(vec);
 }
