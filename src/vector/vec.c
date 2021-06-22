@@ -76,12 +76,6 @@ bool_t vec_empty(const struct vec *self) {
 bool_t vec_full(const struct vec *self) {
   return vec_length(self) == (index_t)vec_capacity(self);
 }
-void *vec_begin(struct vec *self) {
-  return self->span.begin;
-}
-void *vec_end(struct vec *self) {
-  return self->span.end;
-}
 void *vec_at(struct vec *self, index_t i) {
   return vector_span_at(&self->span, i);
 }
@@ -111,6 +105,12 @@ void vec_remove(struct vec *self, index_t index, index_t count) {
   self->length -= count;
 }
 
+void *vec_begin(struct vec *self) {
+  return vec_at(self, 0);
+}
+void *vec_end(struct vec *self) {
+  return vec_at(self, vec_length(self));
+}
 void vec_clear(struct vec *self) {
   vec_remove(self, 0, vec_length(self));
 }
