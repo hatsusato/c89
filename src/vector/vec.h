@@ -9,6 +9,7 @@ struct vec {
   size_t capacity;
 };
 
+align_t vector_aligned_size(size_t);
 void vec_init(struct vec *, struct buffer *);
 void vec_init_malloc(struct vec *, size_t);
 struct vec *vec_new(size_t);

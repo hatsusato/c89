@@ -4,13 +4,6 @@
 #include "utility/buffer.h"
 #include "utility/type.h"
 
-static align_t vector_aligned_size(size_t size) {
-  enum { vector_align = 8 };
-  size += vector_align - 1;
-  size /= vector_align;
-  size *= vector_align;
-  return size;
-}
 static align_t vector_align(const struct vec *self) {
   return self->span.align;
 }
@@ -38,6 +31,10 @@ static void vector_init_buffer(struct vec *self, struct buffer *buf) {
   buffer_init(buf, self->span.begin, self->capacity);
 }
 
+align_t vector_aligned_size(size_t size) {
+  enum { vec_align = 8 };
+  return (size + vec_align - 1) / vec_align * vec_align;
+}
 void vec_init(struct vec *self, struct buffer *buf) {
   vector_span_init(&self->span, buf->ptr, 0);
   self->capacity = buf->size;
