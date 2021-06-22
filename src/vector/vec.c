@@ -33,12 +33,6 @@ struct vec *vec_new(size_t size) {
   buffer_init(&self->buf, NULL, 0);
   return self;
 }
-struct vec *vec_create(size_t size) {
-  enum { vec_initial_count = 8 };
-  struct vec *self = vec_new(size);
-  vec_reserve(self, vec_initial_count, NULL);
-  return self;
-}
 void vec_delete(struct vec *self) {
   vec_reset(self);
   vector_free(self);

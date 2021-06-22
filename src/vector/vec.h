@@ -15,7 +15,6 @@ align_t vector_aligned_size(size_t);
 void vec_alloc(struct vec *, size_t);
 void vec_reset(struct vec *);
 struct vec *vec_new(size_t);
-struct vec *vec_create(size_t);
 void vec_delete(struct vec *);
 void vec_reserve(struct vec *, size_t, struct buffer *);
 size_t vec_capacity(const struct vec *);
