@@ -25,3 +25,9 @@ void vec_ptr_delete(struct vec_ptr *self) {
   vec_reset(&self->vec);
   vec_ptr_free(self);
 }
+index_t vec_ptr_capacity(struct vec_ptr *self) {
+  return vec_capacity(&self->vec);
+}
+index_t vec_ptr_length(struct vec_ptr *self) {
+  return vec_length(&self->vec);
+}
