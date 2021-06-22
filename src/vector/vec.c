@@ -34,7 +34,7 @@ struct vec *vec_new(align_t align) {
   self->align = self->span.align = align;
   vector_span_init(&self->span, NULL);
   buffer_init(&self->buf, NULL, 0);
-  self->length = vector_span_length(&self->span);
+  self->length = 0;
   return self;
 }
 void vec_delete(struct vec *self) {
@@ -44,12 +44,12 @@ void vec_delete(struct vec *self) {
 void vec_alloc(struct vec *self, index_t count) {
   buffer_malloc(&self->buf, self->align * count);
   vector_span_init(&self->span, self->buf.ptr);
-  self->length = vector_span_length(&self->span);
+  self->length = 0;
 }
 void vec_reset(struct vec *self) {
   buffer_free(&self->buf);
   vector_span_init(&self->span, NULL);
-  self->length = vector_span_length(&self->span);
+  self->length = 0;
 }
 void vec_reserve(struct vec *self, index_t count) {
   if (count == 0) {
@@ -60,7 +60,7 @@ void vec_reserve(struct vec *self, index_t count) {
     struct buffer old = self->buf;
     vec_alloc(self, count);
     vector_span_push_back(&self->span, len, &old);
-    self->length = vector_span_length(&self->span);
+    self->length = len;
     buffer_free(&old);
   }
 }
@@ -68,7 +68,7 @@ index_t vec_capacity(const struct vec *self) {
   return self->buf.size / self->align;
 }
 index_t vec_length(const struct vec *self) {
-  return vector_span_length(&self->span);
+  return self->length;
 }
 void *vec_at(struct vec *self, index_t i) {
   return vector_span_at(&self->span, i);
