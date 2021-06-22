@@ -15,13 +15,16 @@ static void vector_free(struct vec *self) {
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
 }
+static void vector_init_buffer(struct vec *self, index_t begin, index_t end,
+                               struct buffer *buf) {
+  buffer_init(buf, vec_at(self, begin), (end - begin) * self->align);
+}
 static void vector_slide(struct vec *self, index_t index, index_t count) {
   struct buffer src, dst;
   index_t length = vec_length(self);
   if (0 <= index && index < length) {
-    size_t size = (length - index) * self->align;
-    buffer_init(&src, vec_at(self, index), size);
-    buffer_init(&dst, vec_at(self, index + count), size);
+    vector_init_buffer(self, index, length, &src);
+    vector_init_buffer(self, index + count, length + count, &dst);
     buffer_memmove(&dst, &src);
   }
 }
@@ -102,7 +105,7 @@ void vec_insert(struct vec *self, index_t index, index_t count,
   assert(0 <= count && length + count <= vec_capacity(self));
   assert(size <= buf->size);
   vector_slide(self, index, count);
-  buffer_init(&dst, vec_at(self, index), size);
+  vector_init_buffer(self, index, index + count, &dst);
   buffer_memcpy(&dst, buf);
   self->span.end += size;
   self->length += count;
