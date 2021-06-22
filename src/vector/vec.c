@@ -7,11 +7,6 @@
 static align_t vector_align(const struct vec *self) {
   return self->span.align;
 }
-static void vector_free_data(struct vec *self) {
-  struct buffer buf;
-  buffer_init(&buf, self->span.begin, self->capacity);
-  buffer_free(&buf);
-}
 static struct vec *vector_malloc(void) {
   struct buffer buf;
   BUFFER_MALLOC(&buf, struct vec);
@@ -58,7 +53,7 @@ struct vec *vec_create(size_t size) {
   return self;
 }
 void vec_delete(struct vec *self) {
-  vector_free_data(self);
+  vec_reset(self);
   vector_free(self);
 }
 void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
