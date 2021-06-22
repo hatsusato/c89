@@ -20,7 +20,7 @@ static void vec_ptr_destruct(struct vec_ptr *self, void *ptr) {
   }
 }
 
-struct vec_ptr *vec_ptr_new(vec_ptr_destructor dtor) {
+struct vec_ptr *vec_ptr_new(void (*dtor)(void *)) {
   enum { initial_count = 8 };
   struct vec_ptr *self = vec_ptr_malloc();
   vec_init(&self->vec, sizeof(void *));

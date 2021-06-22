@@ -3,10 +3,9 @@
 
 #include "utility/type.h"
 
-typedef void (*vec_ptr_destructor)(void *);
 struct vec_ptr;
 
-struct vec_ptr *vec_ptr_new(vec_ptr_destructor);
+struct vec_ptr *vec_ptr_new(void (*)(void *));
 void vec_ptr_delete(struct vec_ptr *);
 index_t vec_ptr_capacity(struct vec_ptr *);
 index_t vec_ptr_length(struct vec_ptr *);

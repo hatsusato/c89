@@ -11,7 +11,7 @@ struct vec {
 
 struct vec_ptr {
   struct vec vec;
-  void (*dtor)(void*);
+  void (*dtor)(void *);
 };
 
 #endif /* INCLUDE_GUARD_05A3735D_C33C_4CD4_AF36_3968DD09F48F */
