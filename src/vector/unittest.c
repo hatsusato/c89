@@ -124,21 +124,27 @@ static void vec_unittest(void) {
       vec_ptr_push(vec, p);                    \
     }                                          \
   } while (0)
+#define vec_ptr_unittest_pop(vec, count) \
+  do {                                   \
+    int i;                               \
+    for (i = 0; i < count; i++) {        \
+      int *p = vec_ptr_pop(vec);         \
+      free(p);                           \
+    }                                    \
+  } while (0)
 
 static void vec_ptr_unittest(void) {
   struct vec_ptr *vec = vec_ptr_new();
-  int i;
   vec_ptr_unittest_check(vec, 0, 8);
   {
     vec_ptr_unittest_push(vec, 0, 1000);
     vec_ptr_unittest_check(vec, 1000, 1024);
     vec_ptr_unittest_range(vec, 0, 0, 1000);
   }
-  for (i = 0; i < 1000; i++) {
-    int *p = vec_ptr_pop(vec);
-    free(p);
+  {
+    vec_ptr_unittest_pop(vec, 1000);
+    vec_ptr_unittest_check(vec, 0, 1024);
   }
-  vec_ptr_unittest_check(vec, 0, 1024);
   vec_ptr_delete(vec);
 }
 
