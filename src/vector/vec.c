@@ -52,15 +52,14 @@ void vec_reset(struct vec *self) {
   self->length = 0;
 }
 void vec_reserve(struct vec *self, index_t count) {
-  if (count == 0) {
-    count = 2 * vec_capacity(self);
-  }
+  count = (count == 0) ? 2 * vec_capacity(self) : count;
   if (count > vec_capacity(self)) {
-    size_t len = vec_length(self);
-    struct buffer old = self->buf;
+    size_t length = vec_length(self);
+    struct buffer old = self->buf, src;
+    vector_init_buffer(self, 0, length, &src);
     vec_alloc(self, count);
-    vector_span_push_back(&self->span, len, &old);
-    self->length = len;
+    buffer_memcpy(&self->buf, &src);
+    self->length = length;
     buffer_free(&old);
   }
 }
