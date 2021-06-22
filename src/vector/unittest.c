@@ -13,20 +13,27 @@ static void vec_unittest_initial(struct vec *vec) {
   assert(vec_length(vec) == 0);
   assert(vec_capacity(vec) == 8);
 }
-
-void vec_unittest(void) {
-  struct vec *vec = vec_new(8);
-  struct buffer buf;
+static void vec_unittest_push(struct vec *vec, int count) {
   int i;
-  vec_unittest_initial(vec);
-  for (i = 0; i < 1000; i++) {
+  size_t len = vec_length(vec);
+  for (i = 0; i < count; i++) {
+    struct buffer buf;
     BUFFER_INIT(&buf, &i);
     if (vec_full(vec)) {
       vec_reserve(vec, 0);
     }
     vec_push(vec, &buf);
   }
-  assert(vec_length(vec) == 1000);
+  assert(vec_length(vec) == len + count);
+}
+
+void vec_unittest(void) {
+  struct vec *vec = vec_new(8);
+  struct buffer buf;
+  int i;
+  vec_unittest_initial(vec);
+  assert(vec_capacity(vec) == 8);
+  vec_unittest_push(vec, 1000);
   assert(vec_capacity(vec) == 1024);
   for (i = 0; i < (int)vec_length(vec); i++) {
     assert(*(int *)vec_at(vec, i) == i);
