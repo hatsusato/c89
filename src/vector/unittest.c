@@ -102,11 +102,12 @@ static void vec_unittest(void) {
   vec_delete(vec);
 }
 
-void vec_ptr_unittest(void) {
+static void vec_ptr_unittest(void) {
   struct vec_ptr *vec = vec_ptr_new();
   vec_ptr_delete(vec);
 }
 
 void unittest_vec(void) {
   vec_unittest();
+  vec_ptr_unittest();
 }
