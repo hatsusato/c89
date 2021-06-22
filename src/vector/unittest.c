@@ -1,6 +1,8 @@
 #include "unittest.h"
 
 #include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "utility/buffer.h"
 #include "vec.h"
@@ -41,6 +43,18 @@
       assert(*p == j);                              \
     }                                               \
   } while (0)
+#define vec_unittest_insert(vec, start, begin, end) \
+  do {                                              \
+    int i, count = end - begin, *p;                 \
+    struct buffer buf;                              \
+    buffer_malloc(&buf, sizeof(int) * count);       \
+    p = (int *)buf.ptr;                             \
+    for (i = begin; i < end; i++, p++) {            \
+      *p = i;                                       \
+    }                                               \
+    vec_insert(vec, start, count, &buf);            \
+    buffer_free(&buf);                              \
+  } while (0);
 
 void vec_unittest(void) {
   struct vec *vec = vec_new(sizeof(int));
@@ -57,5 +71,8 @@ void vec_unittest(void) {
   vec_unittest_push(vec, 1000);
   vec_unittest_range(vec, 0, 0, 500);
   vec_unittest_range(vec, 500, 0, 1000);
+  vec_unittest_insert(vec, 500, 500, 1000);
+  vec_unittest_range(vec, 0, 0, 1000);
+  vec_unittest_range(vec, 1000, 0, 1000);
   vec_delete(vec);
 }
