@@ -16,9 +16,6 @@ static void vector_free(struct vec *self) {
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
 }
-static void vector_init_buffer(struct vec *self, struct buffer *buf) {
-  *buf = self->buf;
-}
 
 align_t vector_aligned_size(size_t size) {
   enum { vec_align = 8 };
@@ -60,8 +57,7 @@ void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
   }
   if (count > vec_capacity(self)) {
     size_t len = vec_length(self);
-    struct buffer old;
-    vector_init_buffer(self, &old);
+    struct buffer old = self->buf;
     vec_alloc(self, count);
     vector_span_push_back(&self->span, len, &old);
     if (buf) {
