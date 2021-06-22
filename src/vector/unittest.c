@@ -6,6 +6,7 @@
 
 #include "utility/buffer.h"
 #include "vec.h"
+#include "vec_ptr.h"
 
 #define vec_unittest_check(vec, len, cap) \
   do {                                    \
@@ -99,4 +100,9 @@ void vec_unittest(void) {
     vec_unittest_check(vec, 0, 2048);
   }
   vec_delete(vec);
+}
+
+void vec_ptr_unittest(void) {
+  struct vec_ptr *vec = vec_ptr_new();
+  vec_ptr_delete(vec);
 }
