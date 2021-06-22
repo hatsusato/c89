@@ -111,5 +111,5 @@ void vec_copy(struct vec *self, const struct vec *other) {
   buffer_memcpy(&dst, &src);
 }
 void vec_clear(struct vec *self) {
-  self->span.end = self->span.begin;
+  vector_span_pop_back(&self->span, vec_length(self), NULL);
 }
