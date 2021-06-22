@@ -110,3 +110,13 @@ void vec_insert(struct vec *self, index_t index, index_t count,
   self->span.end += size;
   self->length += count;
 }
+void vec_remove(struct vec *self, index_t index, index_t count) {
+  index_t length = vec_length(self);
+  size_t size = count * self->align;
+  index = (index == -1) ? length - count : index;
+  assert(0 <= index && index <= length);
+  assert(0 <= count && index + count <= length);
+  vector_slide(self, index + count, -count);
+  self->span.end -= size;
+  self->length -= count;
+}
