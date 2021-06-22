@@ -1,13 +1,11 @@
 #ifndef INCLUDE_GUARD_C9808F6F_7A34_4226_A18A_9B7E94B05A1D
 #define INCLUDE_GUARD_C9808F6F_7A34_4226_A18A_9B7E94B05A1D
 
-#include "span.h"
 #include "utility/buffer.h"
 
 struct buffer;
 struct vec {
   align_t align;
-  struct vector_span span;
   struct buffer buf;
   index_t length;
 };
