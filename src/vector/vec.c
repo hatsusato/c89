@@ -15,7 +15,7 @@ static void vector_free(struct vec *self) {
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
 }
-void vector_slide(struct vec *self, index_t index, index_t count) {
+static void vector_slide(struct vec *self, index_t index, index_t count) {
   struct buffer src, dst;
   index_t length = vec_length(self);
   assert(length + count <= vec_capacity(self));
@@ -98,4 +98,16 @@ void vec_pop(struct vec *self, struct buffer *buf) {
 void vec_clear(struct vec *self) {
   vector_span_pop_back(&self->span, vec_length(self), NULL);
   self->length = vector_span_length(&self->span);
+}
+void vec_insert(struct vec *self, index_t index, index_t count,
+                const struct buffer *buf) {
+  struct buffer dst;
+  size_t size = count * self->align;
+  assert(0 <= index && index <= self->length);
+  assert(size <= buf->size);
+  vector_slide(self, index, count);
+  buffer_init(&dst, vec_at(self, index), size);
+  buffer_memcpy(&dst, buf);
+  self->span.end += size;
+  self->length += count;
 }
