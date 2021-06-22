@@ -30,6 +30,13 @@ static void vec_unittest_pop(struct vec *vec, int count) {
   }
   assert(vec_length(vec) == len - count);
 }
+static void vec_unittest_range(struct vec *vec, int start, int begin, int end) {
+  int i, j;
+  for (i = start, j = begin; j < end; i++, j++) {
+    int *p = vec_at(vec, i);
+    assert(*p == j);
+  }
+}
 
 void vec_unittest(void) {
   struct vec *vec = vec_new(8);
@@ -41,15 +48,11 @@ void vec_unittest(void) {
   vec_unittest_check(vec, 0, 8);
   vec_unittest_push(vec, 1000);
   vec_unittest_check(vec, 1000, 1024);
-  for (i = 0; i < (int)vec_length(vec); i++) {
-    assert(*(int *)vec_at(vec, i) == i);
-  }
+  vec_unittest_range(vec, 0, 0, 1000);
   vec_unittest_check(vec, 1000, 1024);
   vec_unittest_pop(vec, 500);
   vec_unittest_check(vec, 500, 1024);
-  for (i = 0; i < (int)vec_length(vec); i++) {
-    assert(*(int *)vec_at(vec, i) == i);
-  }
+  vec_unittest_range(vec, 0, 0, 500);
   for (i = 0; i < 1000; i++) {
     BUFFER_INIT(&buf, &i);
     if (vec_full(vec)) {
@@ -57,11 +60,7 @@ void vec_unittest(void) {
     }
     vec_push(vec, &buf);
   }
-  for (i = 0; i < 500; i++) {
-    assert(*(int *)vec_at(vec, i) == i);
-  }
-  for (i = 0; i < 1000; i++) {
-    assert(*(int *)vec_at(vec, 500 + i) == i);
-  }
+  vec_unittest_range(vec, 0, 0, 500);
+  vec_unittest_range(vec, 500, 0, 1000);
   vec_delete(vec);
 }
