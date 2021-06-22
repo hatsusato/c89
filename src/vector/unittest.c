@@ -30,13 +30,14 @@ static void vec_unittest_pop(struct vec *vec, int count) {
   }
   assert(vec_length(vec) == len - count);
 }
-static void vec_unittest_range(struct vec *vec, int start, int begin, int end) {
-  int i, j;
-  for (i = start, j = begin; j < end; i++, j++) {
-    int *p = vec_at(vec, i);
-    assert(*p == j);
-  }
-}
+#define vec_unittest_range(vec, start, begin, end)  \
+  do {                                              \
+    int i, j;                                       \
+    for (i = start, j = begin; j < end; i++, j++) { \
+      int *p = vec_at(vec, i);                      \
+      assert(*p == j);                              \
+    }                                               \
+  } while (0)
 
 void vec_unittest(void) {
   struct vec *vec = vec_new(8);
