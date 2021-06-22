@@ -12,19 +12,19 @@
     assert(vec_length(vec) == len);       \
     assert(vec_capacity(vec) == cap);     \
   } while (0)
-#define vec_unittest_push(vec, count)       \
-  do {                                      \
-    int i;                                  \
-    index_t len = vec_length(vec);          \
-    for (i = 0; i < count; i++) {           \
-      struct buffer buf;                    \
-      BUFFER_INIT(&buf, &i);                \
-      if (vec_full(vec)) {                  \
-        vec_reserve(vec, 0);                \
-      }                                     \
-      vec_push(vec, &buf);                  \
-    }                                       \
-    assert(vec_length(vec) == len + count); \
+#define vec_unittest_push(vec, count)            \
+  do {                                           \
+    int i;                                       \
+    index_t len = vec_length(vec);               \
+    for (i = 0; i < count; i++) {                \
+      struct buffer buf;                         \
+      BUFFER_INIT(&buf, &i);                     \
+      if (vec_full(vec)) {                       \
+        vec_reserve(vec, 0);                     \
+      }                                          \
+      vec_insert(vec, vec_length(vec), 1, &buf); \
+    }                                            \
+    assert(vec_length(vec) == len + count);      \
   } while (0)
 #define vec_unittest_pop(vec, count)        \
   do {                                      \
