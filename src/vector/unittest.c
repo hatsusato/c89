@@ -26,6 +26,14 @@ static void vec_unittest_push(struct vec *vec, int count) {
   }
   assert(vec_length(vec) == len + count);
 }
+static void vec_unittest_pop(struct vec *vec, int count) {
+  int i;
+  size_t len = vec_length(vec);
+  for (i = 0; i < count; i++) {
+    vec_pop(vec, NULL);
+  }
+  assert(vec_length(vec) == len - count);
+}
 
 void vec_unittest(void) {
   struct vec *vec = vec_new(8);
@@ -38,9 +46,9 @@ void vec_unittest(void) {
   for (i = 0; i < (int)vec_length(vec); i++) {
     assert(*(int *)vec_at(vec, i) == i);
   }
-  for (i = 0; i < 500; i++) {
-    vec_pop(vec, NULL);
-  }
+  assert(vec_length(vec) == 1000);
+  assert(vec_capacity(vec) == 1024);
+  vec_unittest_pop(vec, 500);
   assert(vec_length(vec) == 500);
   assert(vec_capacity(vec) == 1024);
   for (i = 0; i < (int)vec_length(vec); i++) {
