@@ -102,18 +102,22 @@ static void vec_unittest(void) {
   vec_delete(vec);
 }
 
+#define vec_ptr_unittest_check(vec, len, cap) \
+  do {                                        \
+    assert(vec_ptr_length(vec) == len);       \
+    assert(vec_ptr_capacity(vec) == cap);     \
+  } while (0)
+
 static void vec_ptr_unittest(void) {
   struct vec_ptr *vec = vec_ptr_new();
   int i;
-  assert(vec_ptr_length(vec) == 0);
-  assert(vec_ptr_capacity(vec) == 8);
+  vec_ptr_unittest_check(vec, 0, 8);
   for (i = 0; i < 1000; i++) {
     int *p = malloc(sizeof(int));
     *p = i;
     vec_ptr_push(vec, p);
   }
-  assert(vec_ptr_length(vec) == 1000);
-  assert(vec_ptr_capacity(vec) == 1024);
+  vec_ptr_unittest_check(vec, 1000, 1024);
   for (i = 0; i < 1000; i++) {
     int *p = vec_ptr_at(vec, i);
     assert(*p == i);
@@ -122,8 +126,7 @@ static void vec_ptr_unittest(void) {
     int *p = vec_ptr_pop(vec);
     free(p);
   }
-  assert(vec_ptr_length(vec) == 0);
-  assert(vec_ptr_capacity(vec) == 1024);
+  vec_ptr_unittest_check(vec, 0, 1024);
   vec_ptr_delete(vec);
 }
 
