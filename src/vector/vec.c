@@ -7,11 +7,6 @@
 static align_t vector_align(const struct vec *self) {
   return self->span.align;
 }
-static void vector_malloc_data(struct vec *self, size_t count) {
-  struct buffer buf;
-  buffer_malloc(&buf, vector_align(self) * count);
-  vec_init(self, &buf);
-}
 static void vector_free_data(struct vec *self) {
   struct buffer buf;
   buffer_init(&buf, self->span.begin, self->capacity);
@@ -52,7 +47,7 @@ struct vec *vec_new(size_t size) {
 struct vec *vec_create(size_t size) {
   enum { vec_initial_count = 8 };
   struct vec *self = vec_new(size);
-  vector_malloc_data(self, vec_initial_count);
+  vec_reserve(self, vec_initial_count, NULL);
   return self;
 }
 void vec_delete(struct vec *self) {
