@@ -34,14 +34,17 @@ static void vector_slide(struct vec *self, index_t index, index_t count) {
 
 struct vec *vec_new(align_t align) {
   struct vec *self = vector_malloc();
-  self->align = align;
-  buffer_init(&self->buf, NULL, 0);
-  self->length = 0;
+  vec_init(self, align);
   return self;
 }
 void vec_delete(struct vec *self) {
   vec_reset(self);
   vector_free(self);
+}
+void vec_init(struct vec *self, align_t align) {
+  self->align = align;
+  buffer_init(&self->buf, NULL, 0);
+  self->length = 0;
 }
 void vec_alloc(struct vec *self, index_t count) {
   buffer_malloc(&self->buf, self->align * count);
