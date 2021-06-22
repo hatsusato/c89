@@ -5,16 +5,20 @@
 #include "utility/buffer.h"
 #include "vec.h"
 
-void vec_unittest(void) {
-  struct vec *vec = vec_new(8);
-  struct buffer buf;
-  int i;
+static void vec_unittest_initial(struct vec *vec) {
   assert(sizeof(int) < 8);
   assert(vec_length(vec) == 0);
   assert(vec_capacity(vec) == 0);
   vec_reserve(vec, 8);
   assert(vec_length(vec) == 0);
   assert(vec_capacity(vec) == 8);
+}
+
+void vec_unittest(void) {
+  struct vec *vec = vec_new(8);
+  struct buffer buf;
+  int i;
+  vec_unittest_initial(vec);
   for (i = 0; i < 1000; i++) {
     BUFFER_INIT(&buf, &i);
     if (vec_full(vec)) {
