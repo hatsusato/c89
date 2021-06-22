@@ -2,6 +2,8 @@
 
 #include <assert.h>
 
+#include "type.h"
+
 static struct vec *vector_malloc(void) {
   struct buffer buf;
   BUFFER_MALLOC(&buf, struct vec);
