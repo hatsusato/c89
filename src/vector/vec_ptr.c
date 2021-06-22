@@ -56,6 +56,12 @@ void vec_ptr_pop(struct vec_ptr *self) {
   vec_ptr_destruct(self, ptr);
   vec_remove(&self->vec, -1, 1);
 }
+void **vec_ptr_begin(struct vec_ptr *self) {
+  return vec_begin(&self->vec);
+}
+void **vec_ptr_end(struct vec_ptr *self) {
+  return vec_end(&self->vec);
+}
 void vec_ptr_clear(struct vec_ptr *self) {
   index_t index, length = vec_ptr_length(self);
   for (index = length - 1; 0 <= index; index--) {
