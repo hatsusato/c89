@@ -66,7 +66,7 @@ index_t vec_length(const struct vec *self) {
   return self->length;
 }
 void *vec_at(struct vec *self, index_t i) {
-  return self->buf.ptr + i * self->align;
+  return self->buf.ptr ? self->buf.ptr + i * self->align : NULL;
 }
 void vec_insert(struct vec *self, index_t index, index_t count,
                 const struct buffer *buf) {

@@ -3,7 +3,6 @@
 
 #include "utility/buffer.h"
 
-struct buffer;
 struct vec {
   align_t align;
   struct buffer buf;
