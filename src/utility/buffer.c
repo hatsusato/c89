@@ -21,3 +21,9 @@ void buffer_memcpy(struct buffer *dst, const struct buffer *src) {
     memcpy(dst->ptr, src->ptr, size);
   }
 }
+void buffer_memmove(struct buffer *dst, const struct buffer *src) {
+  if (dst->ptr && src->ptr) {
+    size_t size = dst->size < src->size ? dst->size : src->size;
+    memmove(dst->ptr, src->ptr, size);
+  }
+}
