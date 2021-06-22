@@ -12,13 +12,13 @@ void vec_unittest(void) {
   assert(sizeof(int) < 8);
   assert(vec_length(vec) == 0);
   assert(vec_capacity(vec) == 0);
-  vec_reserve(vec, 8, NULL);
+  vec_reserve(vec, 8);
   assert(vec_length(vec) == 0);
   assert(vec_capacity(vec) == 8);
   for (i = 0; i < 1000; i++) {
     BUFFER_INIT(&buf, &i);
     if (vec_full(vec)) {
-      vec_reserve(vec, 0, NULL);
+      vec_reserve(vec, 0);
     }
     vec_push(vec, &buf);
   }
@@ -38,7 +38,7 @@ void vec_unittest(void) {
   for (i = 0; i < 1000; i++) {
     BUFFER_INIT(&buf, &i);
     if (vec_full(vec)) {
-      vec_reserve(vec, 0, NULL);
+      vec_reserve(vec, 0);
     }
     vec_push(vec, &buf);
   }

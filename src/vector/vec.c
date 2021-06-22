@@ -37,7 +37,7 @@ void vec_delete(struct vec *self) {
   vec_reset(self);
   vector_free(self);
 }
-void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
+void vec_reserve(struct vec *self, size_t count) {
   if (count == 0) {
     count = 2 * vec_capacity(self);
   }
@@ -46,11 +46,7 @@ void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
     struct buffer old = self->buf;
     vec_alloc(self, count);
     vector_span_push_back(&self->span, len, &old);
-    if (buf) {
-      *buf = old;
-    } else {
-      buffer_free(&old);
-    }
+    buffer_free(&old);
   }
 }
 size_t vec_capacity(const struct vec *self) {
