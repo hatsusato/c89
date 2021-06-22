@@ -31,3 +31,6 @@ index_t vec_ptr_capacity(struct vec_ptr *self) {
 index_t vec_ptr_length(struct vec_ptr *self) {
   return vec_length(&self->vec);
 }
+void *vec_ptr_at(struct vec_ptr *self, index_t index) {
+  return *(void **)vec_at(&self->vec, index);
+}
