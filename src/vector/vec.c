@@ -85,12 +85,6 @@ void *vec_end(struct vec *self) {
 void *vec_at(struct vec *self, index_t i) {
   return vector_span_at(&self->span, i);
 }
-void vec_pop(struct vec *self, struct buffer *buf) {
-  if (!vec_empty(self)) {
-    vector_span_pop_back(&self->span, 1, buf);
-    self->length = vector_span_length(&self->span);
-  }
-}
 void vec_clear(struct vec *self) {
   vector_span_pop_back(&self->span, vec_length(self), NULL);
   self->length = vector_span_length(&self->span);

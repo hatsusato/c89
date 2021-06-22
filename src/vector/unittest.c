@@ -31,7 +31,7 @@
     int i;                                  \
     index_t len = vec_length(vec);          \
     for (i = 0; i < count; i++) {           \
-      vec_pop(vec, NULL);                   \
+      vec_remove(vec, -1, 1);               \
     }                                       \
     assert(vec_length(vec) == len - count); \
   } while (0)

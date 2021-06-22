@@ -24,7 +24,6 @@ bool_t vec_full(const struct vec *);
 void *vec_begin(struct vec *);
 void *vec_end(struct vec *);
 void *vec_at(struct vec *, index_t);
-void vec_pop(struct vec *, struct buffer *);
 void vec_clear(struct vec *);
 void vec_insert(struct vec *, index_t, index_t, const struct buffer *);
 void vec_remove(struct vec *, index_t, index_t);
