@@ -6,6 +6,7 @@
 
 struct buffer;
 struct vec {
+  align_t align;
   struct vector_span span;
   struct buffer buf;
 };

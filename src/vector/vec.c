@@ -3,9 +3,6 @@
 #include "span.h"
 #include "utility/type.h"
 
-static align_t vector_align(const struct vec *self) {
-  return self->span.align;
-}
 static struct vec *vector_malloc(void) {
   struct buffer buf;
   BUFFER_MALLOC(&buf, struct vec);
@@ -22,7 +19,7 @@ align_t vector_aligned_size(size_t size) {
   return (size + vec_align - 1) / vec_align * vec_align;
 }
 void vec_alloc(struct vec *self, size_t count) {
-  buffer_malloc(&self->buf, vector_align(self) * count);
+  buffer_malloc(&self->buf, self->align * count);
   vector_span_init(&self->span, self->buf.ptr);
 }
 void vec_reset(struct vec *self) {
@@ -31,7 +28,7 @@ void vec_reset(struct vec *self) {
 }
 struct vec *vec_new(size_t size) {
   struct vec *self = vector_malloc();
-  self->span.align = vector_aligned_size(size);
+  self->align = self->span.align = vector_aligned_size(size);
   vector_span_init(&self->span, NULL);
   buffer_init(&self->buf, NULL, 0);
   return self;
@@ -63,7 +60,7 @@ void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
   }
 }
 size_t vec_capacity(const struct vec *self) {
-  return self->buf.size / vector_align(self);
+  return self->buf.size / self->align;
 }
 size_t vec_length(const struct vec *self) {
   return vector_span_length(&self->span);
