@@ -21,14 +21,9 @@ align_t vector_aligned_size(size_t size) {
   enum { vec_align = 8 };
   return (size + vec_align - 1) / vec_align * vec_align;
 }
-void vec_init(struct vec *self, struct buffer *buf) {
-  vector_span_init(&self->span, buf->ptr);
-  self->buf = *buf;
-}
 void vec_alloc(struct vec *self, size_t count) {
-  struct buffer buf;
-  buffer_malloc(&buf, vector_align(self) * count);
-  vec_init(self, &buf);
+  buffer_malloc(&self->buf, vector_align(self) * count);
+  vector_span_init(&self->span, self->buf.ptr);
 }
 void vec_reset(struct vec *self) {
   buffer_free(&self->buf);

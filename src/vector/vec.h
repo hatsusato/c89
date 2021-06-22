@@ -11,7 +11,6 @@ struct vec {
 };
 
 align_t vector_aligned_size(size_t);
-void vec_init(struct vec *, struct buffer *);
 void vec_alloc(struct vec *, size_t);
 void vec_reset(struct vec *);
 struct vec *vec_new(size_t);
