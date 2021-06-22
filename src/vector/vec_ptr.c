@@ -8,6 +8,11 @@ static struct vec_ptr *vec_ptr_malloc(void) {
   BUFFER_MALLOC(&buf, struct vec_ptr);
   return (struct vec_ptr *)buf.ptr;
 }
+static void vec_ptr_free(struct vec_ptr *self) {
+  struct buffer buf;
+  BUFFER_INIT(&buf, self);
+  buffer_free(&buf);
+}
 
 struct vec_ptr *vec_ptr_new(void) {
   enum { initial_count = 8 };
@@ -15,4 +20,8 @@ struct vec_ptr *vec_ptr_new(void) {
   vec_init(&self->vec, sizeof(void *));
   vec_alloc(&self->vec, initial_count);
   return self;
+}
+void vec_ptr_delete(struct vec_ptr *self) {
+  vec_reset(&self->vec);
+  vec_ptr_free(self);
 }

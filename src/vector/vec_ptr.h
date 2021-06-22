@@ -8,5 +8,6 @@ struct vec_ptr {
 };
 
 struct vec_ptr *vec_ptr_new(void);
+void vec_ptr_delete(struct vec_ptr *);
 
 #endif /* INCLUDE_GUARD_163637DD_0D83_468B_88CC_AEFD8917410E */
