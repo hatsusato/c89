@@ -14,7 +14,7 @@ static void vector_free(struct vec *self) {
   buffer_free(&buf);
 }
 
-void vec_alloc(struct vec *self, size_t count) {
+void vec_alloc(struct vec *self, index_t count) {
   buffer_malloc(&self->buf, self->align * count);
   vector_span_init(&self->span, self->buf.ptr);
   self->length = vector_span_length(&self->span);
@@ -36,7 +36,7 @@ void vec_delete(struct vec *self) {
   vec_reset(self);
   vector_free(self);
 }
-void vec_reserve(struct vec *self, size_t count) {
+void vec_reserve(struct vec *self, index_t count) {
   if (count == 0) {
     count = 2 * vec_capacity(self);
   }
@@ -49,7 +49,7 @@ void vec_reserve(struct vec *self, size_t count) {
     buffer_free(&old);
   }
 }
-size_t vec_capacity(const struct vec *self) {
+index_t vec_capacity(const struct vec *self) {
   return self->buf.size / self->align;
 }
 index_t vec_length(const struct vec *self) {
