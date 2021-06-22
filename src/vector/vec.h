@@ -26,7 +26,6 @@ void *vec_end(struct vec *);
 void *vec_at(struct vec *, index_t);
 void vec_push(struct vec *, const struct buffer *);
 void vec_pop(struct vec *, struct buffer *);
-void vec_copy(struct vec *, const struct vec *);
 void vec_clear(struct vec *);
 
 #endif /* INCLUDE_GUARD_C9808F6F_7A34_4226_A18A_9B7E94B05A1D */

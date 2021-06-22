@@ -104,12 +104,6 @@ void vec_pop(struct vec *self, struct buffer *buf) {
     vector_span_pop_back(&self->span, 1, buf);
   }
 }
-void vec_copy(struct vec *self, const struct vec *other) {
-  struct buffer dst, src;
-  vector_init_buffer(self, &dst);
-  vector_init_buffer((struct vec *)other, &src);
-  buffer_memcpy(&dst, &src);
-}
 void vec_clear(struct vec *self) {
   vector_span_pop_back(&self->span, vec_length(self), NULL);
 }
