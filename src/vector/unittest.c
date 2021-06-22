@@ -13,7 +13,7 @@
 #define vec_unittest_push(vec, count)       \
   do {                                      \
     int i;                                  \
-    size_t len = vec_length(vec);           \
+    index_t len = vec_length(vec);          \
     for (i = 0; i < count; i++) {           \
       struct buffer buf;                    \
       BUFFER_INIT(&buf, &i);                \
@@ -27,7 +27,7 @@
 #define vec_unittest_pop(vec, count)        \
   do {                                      \
     int i;                                  \
-    size_t len = vec_length(vec);           \
+    index_t len = vec_length(vec);          \
     for (i = 0; i < count; i++) {           \
       vec_pop(vec, NULL);                   \
     }                                       \
