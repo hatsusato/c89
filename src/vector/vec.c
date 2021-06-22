@@ -29,7 +29,7 @@ void vec_init(struct vec *self, struct buffer *buf) {
   vector_span_init(&self->span, buf->ptr, 0);
   self->capacity = buf->size;
 }
-void vec_init_malloc(struct vec *self, size_t count) {
+void vec_alloc(struct vec *self, size_t count) {
   struct buffer buf;
   buffer_malloc(&buf, vector_align(self) * count);
   vec_init(self, &buf);
@@ -64,7 +64,7 @@ void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
     size_t len = vec_length(self);
     struct buffer old;
     vector_init_buffer(self, &old);
-    vec_init_malloc(self, count);
+    vec_alloc(self, count);
     vector_span_push_back(&self->span, len, &old);
     if (buf) {
       *buf = old;
