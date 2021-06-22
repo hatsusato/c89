@@ -2,11 +2,12 @@
 #define INCLUDE_GUARD_C9808F6F_7A34_4226_A18A_9B7E94B05A1D
 
 #include "span.h"
+#include "utility/buffer.h"
 
 struct buffer;
 struct vec {
   struct vector_span span;
-  size_t capacity;
+  struct buffer buf;
 };
 
 align_t vector_aligned_size(size_t);

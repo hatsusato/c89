@@ -1,7 +1,6 @@
 #include "vec.h"
 
 #include "span.h"
-#include "utility/buffer.h"
 #include "utility/type.h"
 
 static align_t vector_align(const struct vec *self) {
@@ -18,7 +17,7 @@ static void vector_free(struct vec *self) {
   buffer_free(&buf);
 }
 static void vector_init_buffer(struct vec *self, struct buffer *buf) {
-  buffer_init(buf, self->span.begin, self->capacity);
+  *buf = self->buf;
 }
 
 align_t vector_aligned_size(size_t size) {
@@ -27,7 +26,7 @@ align_t vector_aligned_size(size_t size) {
 }
 void vec_init(struct vec *self, struct buffer *buf) {
   vector_span_init(&self->span, buf->ptr);
-  self->capacity = buf->size;
+  self->buf = *buf;
 }
 void vec_alloc(struct vec *self, size_t count) {
   struct buffer buf;
@@ -35,16 +34,14 @@ void vec_alloc(struct vec *self, size_t count) {
   vec_init(self, &buf);
 }
 void vec_reset(struct vec *self) {
-  struct buffer buf;
-  vector_init_buffer(self, &buf);
-  buffer_free(&buf);
+  buffer_free(&self->buf);
   vector_span_init(&self->span, NULL);
-  self->capacity = 0;
 }
 struct vec *vec_new(size_t size) {
   struct vec *self = vector_malloc();
   self->span.align = vector_aligned_size(size);
   vector_span_init(&self->span, NULL);
+  buffer_init(&self->buf, NULL, 0);
   return self;
 }
 struct vec *vec_create(size_t size) {
@@ -75,7 +72,7 @@ void vec_reserve(struct vec *self, size_t count, struct buffer *buf) {
   }
 }
 size_t vec_capacity(const struct vec *self) {
-  return self->capacity / vector_align(self);
+  return self->buf.size / vector_align(self);
 }
 size_t vec_length(const struct vec *self) {
   return vector_span_length(&self->span);
