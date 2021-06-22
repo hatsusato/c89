@@ -115,18 +115,25 @@ static void vec_unittest(void) {
       assert(*p == j);                                 \
     }                                                  \
   } while (0)
+#define vec_ptr_unittest_push(vec, begin, end) \
+  do {                                         \
+    int i;                                     \
+    for (i = begin; i < end; i++) {            \
+      int *p = malloc(sizeof(int));            \
+      *p = i;                                  \
+      vec_ptr_push(vec, p);                    \
+    }                                          \
+  } while (0)
 
 static void vec_ptr_unittest(void) {
   struct vec_ptr *vec = vec_ptr_new();
   int i;
   vec_ptr_unittest_check(vec, 0, 8);
-  for (i = 0; i < 1000; i++) {
-    int *p = malloc(sizeof(int));
-    *p = i;
-    vec_ptr_push(vec, p);
+  {
+    vec_ptr_unittest_push(vec, 0, 1000);
+    vec_ptr_unittest_check(vec, 1000, 1024);
+    vec_ptr_unittest_range(vec, 0, 0, 1000);
   }
-  vec_ptr_unittest_check(vec, 1000, 1024);
-  vec_ptr_unittest_range(vec, 0, 0, 1000);
   for (i = 0; i < 1000; i++) {
     int *p = vec_ptr_pop(vec);
     free(p);
