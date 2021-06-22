@@ -28,6 +28,7 @@ struct vec_ptr *vec_ptr_new(vec_ptr_destructor dtor) {
   return self;
 }
 void vec_ptr_delete(struct vec_ptr *self) {
+  vec_ptr_clear(self);
   vec_reset(&self->vec);
   vec_ptr_free(self);
 }
@@ -53,4 +54,12 @@ void vec_ptr_pop(struct vec_ptr *self) {
   void *ptr = vec_ptr_at(self, vec_ptr_length(self) - 1);
   vec_ptr_destruct(self, ptr);
   vec_remove(&self->vec, -1, 1);
+}
+void vec_ptr_clear(struct vec_ptr *self) {
+  index_t index, length = vec_ptr_length(self);
+  for (index = length - 1; 0 <= index; index--) {
+    void *ptr = vec_ptr_at(self, index);
+    vec_ptr_destruct(self, ptr);
+  }
+  vec_remove(&self->vec, 0, length);
 }
