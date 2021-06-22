@@ -12,10 +12,10 @@ struct vec {
   index_t length;
 };
 
-void vec_alloc(struct vec *, index_t);
-void vec_reset(struct vec *);
 struct vec *vec_new(align_t);
 void vec_delete(struct vec *);
+void vec_alloc(struct vec *, index_t);
+void vec_reset(struct vec *);
 void vec_reserve(struct vec *, index_t);
 index_t vec_capacity(const struct vec *);
 index_t vec_length(const struct vec *);

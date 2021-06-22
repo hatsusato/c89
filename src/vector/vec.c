@@ -29,16 +29,6 @@ static void vector_slide(struct vec *self, index_t index, index_t count) {
   }
 }
 
-void vec_alloc(struct vec *self, index_t count) {
-  buffer_malloc(&self->buf, self->align * count);
-  vector_span_init(&self->span, self->buf.ptr);
-  self->length = vector_span_length(&self->span);
-}
-void vec_reset(struct vec *self) {
-  buffer_free(&self->buf);
-  vector_span_init(&self->span, NULL);
-  self->length = vector_span_length(&self->span);
-}
 struct vec *vec_new(align_t align) {
   struct vec *self = vector_malloc();
   self->align = self->span.align = align;
@@ -50,6 +40,16 @@ struct vec *vec_new(align_t align) {
 void vec_delete(struct vec *self) {
   vec_reset(self);
   vector_free(self);
+}
+void vec_alloc(struct vec *self, index_t count) {
+  buffer_malloc(&self->buf, self->align * count);
+  vector_span_init(&self->span, self->buf.ptr);
+  self->length = vector_span_length(&self->span);
+}
+void vec_reset(struct vec *self) {
+  buffer_free(&self->buf);
+  vector_span_init(&self->span, NULL);
+  self->length = vector_span_length(&self->span);
 }
 void vec_reserve(struct vec *self, index_t count) {
   if (count == 0) {
