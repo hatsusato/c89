@@ -9,6 +9,7 @@ struct vec {
   align_t align;
   struct vector_span span;
   struct buffer buf;
+  size_t length;
 };
 
 align_t vector_aligned_size(size_t);
