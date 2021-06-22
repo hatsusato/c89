@@ -95,10 +95,6 @@ static void vec_unittest(void) {
     vec_unittest_check(vec, 1000, 2048);
     vec_unittest_range(vec, 0, 0, 1000);
   }
-  {
-    vec_clear(vec);
-    vec_unittest_check(vec, 0, 2048);
-  }
   vec_delete(vec);
 }
 
@@ -156,10 +152,6 @@ static void vec_ptr_unittest(void) {
     vec_ptr_unittest_check(vec, 1000, 2048);
     vec_ptr_unittest_range(vec, 0, 0, 500);
     vec_ptr_unittest_range(vec, 500, 0, 500);
-  }
-  {
-    vec_ptr_unittest_pop(vec, 1000);
-    vec_ptr_unittest_check(vec, 0, 2048);
   }
   vec_ptr_delete(vec);
 }
