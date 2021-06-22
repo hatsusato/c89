@@ -1,5 +1,6 @@
 #include "vec_ptr.h"
 
+#include "type.h"
 #include "utility/buffer.h"
 #include "vec.h"
 

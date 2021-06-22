@@ -1,13 +1,10 @@
 #ifndef INCLUDE_GUARD_163637DD_0D83_468B_88CC_AEFD8917410E
 #define INCLUDE_GUARD_163637DD_0D83_468B_88CC_AEFD8917410E
 
-#include "type.h"
+#include "utility/type.h"
 
 typedef void (*vec_ptr_destructor)(void *);
-struct vec_ptr {
-  struct vec vec;
-  vec_ptr_destructor dtor;
-};
+struct vec_ptr;
 
 struct vec_ptr *vec_ptr_new(vec_ptr_destructor);
 void vec_ptr_delete(struct vec_ptr *);
