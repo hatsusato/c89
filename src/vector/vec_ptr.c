@@ -34,3 +34,17 @@ index_t vec_ptr_length(struct vec_ptr *self) {
 void *vec_ptr_at(struct vec_ptr *self, index_t index) {
   return *(void **)vec_at(&self->vec, index);
 }
+void vec_ptr_push(struct vec_ptr *self, void *ptr) {
+  struct vec *vec = &self->vec;
+  struct buffer buf;
+  if (vec_full(vec)) {
+    vec_reserve(vec, 0);
+  }
+  BUFFER_INIT(&buf, &ptr);
+  vec_insert(vec, -1, 1, &buf);
+}
+void *vec_ptr_pop(struct vec_ptr *self) {
+  void *ptr = vec_ptr_at(self, vec_ptr_length(self) - 1);
+  vec_remove(&self->vec, -1, 1);
+  return ptr;
+}
