@@ -107,6 +107,14 @@ static void vec_unittest(void) {
     assert(vec_ptr_length(vec) == len);       \
     assert(vec_ptr_capacity(vec) == cap);     \
   } while (0)
+#define vec_ptr_unittest_range(vec, start, begin, end) \
+  do {                                                 \
+    int i, j;                                          \
+    for (i = start, j = begin; j < end; i++, j++) {    \
+      int *p = vec_ptr_at(vec, i);                     \
+      assert(*p == j);                                 \
+    }                                                  \
+  } while (0)
 
 static void vec_ptr_unittest(void) {
   struct vec_ptr *vec = vec_ptr_new();
@@ -118,10 +126,7 @@ static void vec_ptr_unittest(void) {
     vec_ptr_push(vec, p);
   }
   vec_ptr_unittest_check(vec, 1000, 1024);
-  for (i = 0; i < 1000; i++) {
-    int *p = vec_ptr_at(vec, i);
-    assert(*p == i);
-  }
+  vec_ptr_unittest_range(vec, 0, 0, 1000);
   for (i = 0; i < 1000; i++) {
     int *p = vec_ptr_pop(vec);
     free(p);
