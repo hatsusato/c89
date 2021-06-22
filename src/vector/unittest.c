@@ -9,10 +9,6 @@ static void vec_unittest_check(struct vec *vec, size_t len, size_t cap) {
   assert(vec_length(vec) == len);
   assert(vec_capacity(vec) == cap);
 }
-static void vec_unittest_initial(struct vec *vec) {
-  assert(sizeof(int) < 8);
-  vec_reserve(vec, 8);
-}
 static void vec_unittest_push(struct vec *vec, int count) {
   int i;
   size_t len = vec_length(vec);
@@ -40,7 +36,8 @@ void vec_unittest(void) {
   struct buffer buf;
   int i;
   vec_unittest_check(vec, 0, 0);
-  vec_unittest_initial(vec);
+  assert(sizeof(int) < 8);
+  vec_reserve(vec, 8);
   vec_unittest_check(vec, 0, 8);
   vec_unittest_push(vec, 1000);
   vec_unittest_check(vec, 1000, 1024);
