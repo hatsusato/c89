@@ -6,6 +6,7 @@
 
 #include "utility/buffer.h"
 #include "vec.h"
+#include "vec_ptr.h"
 
 #define vec_unittest_check(vec, len, cap) \
   do {                                    \
@@ -60,7 +61,7 @@
     vec_remove(vec, begin, end - begin);     \
   } while (0)
 
-void vec_unittest(void) {
+static void vec_unittest(void) {
   struct vec *vec = vec_new(sizeof(int));
   vec_unittest_check(vec, 0, 0);
   {
@@ -94,9 +95,68 @@ void vec_unittest(void) {
     vec_unittest_check(vec, 1000, 2048);
     vec_unittest_range(vec, 0, 0, 1000);
   }
-  {
-    vec_clear(vec);
-    vec_unittest_check(vec, 0, 2048);
-  }
   vec_delete(vec);
+}
+
+#define vec_ptr_unittest_check(vec, len, cap) \
+  do {                                        \
+    assert(vec_ptr_length(vec) == len);       \
+    assert(vec_ptr_capacity(vec) == cap);     \
+  } while (0)
+#define vec_ptr_unittest_range(vec, start, begin, end) \
+  do {                                                 \
+    int i, j;                                          \
+    for (i = start, j = begin; j < end; i++, j++) {    \
+      int *p = vec_ptr_at(vec, i);                     \
+      assert(*p == j);                                 \
+    }                                                  \
+  } while (0)
+#define vec_ptr_unittest_push(vec, begin, end) \
+  do {                                         \
+    int i;                                     \
+    for (i = begin; i < end; i++) {            \
+      int *p = malloc(sizeof(int));            \
+      *p = i;                                  \
+      vec_ptr_push(vec, p);                    \
+    }                                          \
+  } while (0)
+#define vec_ptr_unittest_pop(vec, count) \
+  do {                                   \
+    int i;                               \
+    for (i = 0; i < count; i++) {        \
+      vec_ptr_pop(vec);                  \
+    }                                    \
+  } while (0)
+
+static void vec_ptr_unittest(void) {
+  struct vec_ptr *vec = vec_ptr_new(free);
+  vec_ptr_unittest_check(vec, 0, 8);
+  {
+    vec_ptr_unittest_push(vec, 0, 1000);
+    vec_ptr_unittest_check(vec, 1000, 1024);
+    vec_ptr_unittest_range(vec, 0, 0, 1000);
+  }
+  {
+    vec_ptr_unittest_pop(vec, 500);
+    vec_ptr_unittest_check(vec, 500, 1024);
+    vec_ptr_unittest_range(vec, 0, 0, 500);
+  }
+  {
+    vec_ptr_unittest_push(vec, 0, 1000);
+    vec_ptr_unittest_check(vec, 1500, 2048);
+    vec_ptr_unittest_range(vec, 0, 0, 500);
+    vec_ptr_unittest_range(vec, 500, 0, 1000);
+  }
+  {
+    vec_ptr_unittest_pop(vec, 500);
+    vec_ptr_unittest_check(vec, 1000, 2048);
+    vec_ptr_unittest_range(vec, 0, 0, 500);
+    vec_ptr_unittest_range(vec, 500, 0, 500);
+  }
+  vec_ptr_delete(vec);
+}
+
+void unittest_vec(void) {
+  vec_unittest();
+  vec_ptr_unittest();
 }

@@ -1,8 +1,8 @@
-#include "vector/unittest.h"
+#include "vec/unittest.h"
 
 int main(int argc, char *argv[]) {
   (void)argc;
   (void)argv;
-  vec_unittest();
+  unittest_vec();
   return 0;
 }

@@ -13,13 +13,13 @@ set_target_properties(main PROPERTIES
 
 add_library(unittest STATIC)
 target_sources(unittest PRIVATE
-  vector/unittest.c
+  vec/unittest.c
   )
 target_link_libraries(unittest PRIVATE
   options
   utility
-  vector
+  vec
   )
 
 add_subdirectory(utility)
-add_subdirectory(vector)
+add_subdirectory(vec)
