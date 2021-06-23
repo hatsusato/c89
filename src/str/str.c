@@ -1,3 +1,8 @@
 #include "str.h"
 
-typedef int dummy;
+#include <string.h>
+
+void str_init(struct str *self, const char *str) {
+  self->ptr = str;
+  self->len = str ? strlen(str) : 0;
+}

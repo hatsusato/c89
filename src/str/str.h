@@ -8,4 +8,6 @@ struct str {
   index_t len;
 };
 
+void str_init(struct str *, const char *);
+
 #endif /* INCLUDE_GUARD_D25BBF12_114D_4DCE_BC2A_1ADD984F469C */
