@@ -19,6 +19,7 @@ target_sources(unittest PRIVATE
   )
 target_link_libraries(unittest PRIVATE
   options
+  str
   util
   vec
   )
