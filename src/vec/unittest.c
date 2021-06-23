@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "utility/buffer.h"
+#include "util/buffer.h"
 #include "vec.h"
 #include "vec_ptr.h"
 

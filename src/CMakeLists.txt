@@ -17,9 +17,9 @@ target_sources(unittest PRIVATE
   )
 target_link_libraries(unittest PRIVATE
   options
-  utility
+  util
   vec
   )
 
-add_subdirectory(utility)
+add_subdirectory(util)
 add_subdirectory(vec)

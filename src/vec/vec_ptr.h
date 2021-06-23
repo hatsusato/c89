@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_163637DD_0D83_468B_88CC_AEFD8917410E
 #define INCLUDE_GUARD_163637DD_0D83_468B_88CC_AEFD8917410E
 
-#include "utility/type.h"
+#include "util/type.h"
 
 struct vec_ptr;
 

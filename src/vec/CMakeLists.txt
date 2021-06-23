@@ -5,5 +5,5 @@ target_sources(vec PRIVATE
   )
 target_link_libraries(vec PRIVATE
   options
-  utility
+  util
   )

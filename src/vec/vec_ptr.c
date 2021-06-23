@@ -1,7 +1,7 @@
 #include "vec_ptr.h"
 
 #include "type.h"
-#include "utility/buffer.h"
+#include "util/buffer.h"
 #include "vec.h"
 
 static struct vec_ptr *vec_ptr_malloc(void) {
