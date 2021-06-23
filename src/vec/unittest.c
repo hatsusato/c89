@@ -61,7 +61,7 @@
     vec_remove(vec, begin, end - begin);     \
   } while (0)
 
-static void vec_unittest(void) {
+void vec_unittest(void) {
   struct vec *vec = vec_new(sizeof(int));
   vec_unittest_check(vec, 0, 0);
   {
@@ -128,7 +128,7 @@ static void vec_unittest(void) {
     }                                    \
   } while (0)
 
-static void vec_ptr_unittest(void) {
+void vec_ptr_unittest(void) {
   struct vec_ptr *vec = vec_ptr_new(free);
   vec_ptr_unittest_check(vec, 0, 8);
   {
