@@ -4,42 +4,42 @@
 
 #include "type.h"
 
-static struct vec *vector_malloc(void) {
+static struct vec *vec_malloc(void) {
   struct buffer buf;
   BUFFER_MALLOC(&buf, struct vec);
   return (struct vec *)buf.ptr;
 }
-static void vector_free(struct vec *self) {
+static void vec_free(struct vec *self) {
   struct buffer buf;
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
 }
-static index_t vector_buffer_capacity(const struct vec *self,
-                                      const struct buffer *buf) {
+static index_t vec_buffer_capacity(const struct vec *self,
+                                   const struct buffer *buf) {
   return buf->size / self->align;
 }
-static void vector_init_buffer(struct vec *self, index_t begin, index_t end,
-                               struct buffer *buf) {
+static void vec_init_buffer(struct vec *self, index_t begin, index_t end,
+                            struct buffer *buf) {
   buffer_init(buf, vec_at(self, begin), (end - begin) * self->align);
 }
-static void vector_slide(struct vec *self, index_t index, index_t count) {
+static void vec_slide(struct vec *self, index_t index, index_t count) {
   struct buffer src, dst;
   index_t length = vec_length(self);
   if (0 <= index && index < length) {
-    vector_init_buffer(self, index, length, &src);
-    vector_init_buffer(self, index + count, length + count, &dst);
+    vec_init_buffer(self, index, length, &src);
+    vec_init_buffer(self, index + count, length + count, &dst);
     buffer_memmove(&dst, &src);
   }
 }
 
 struct vec *vec_new(align_t align) {
-  struct vec *self = vector_malloc();
+  struct vec *self = vec_malloc();
   vec_init(self, align);
   return self;
 }
 void vec_delete(struct vec *self) {
   vec_reset(self);
-  vector_free(self);
+  vec_free(self);
 }
 void vec_init(struct vec *self, align_t align) {
   self->align = align;
@@ -65,7 +65,7 @@ void vec_reserve(struct vec *self, index_t count) {
   }
 }
 index_t vec_capacity(const struct vec *self) {
-  return vector_buffer_capacity(self, &self->buf);
+  return vec_buffer_capacity(self, &self->buf);
 }
 index_t vec_length(const struct vec *self) {
   return self->length;
@@ -80,9 +80,9 @@ void vec_insert(struct vec *self, index_t index, index_t count,
   index = (index == -1) ? length : index;
   assert(0 <= index && index <= length);
   assert(0 <= count && length + count <= vec_capacity(self));
-  assert(count <= vector_buffer_capacity(self, buf));
-  vector_slide(self, index, count);
-  vector_init_buffer(self, index, index + count, &dst);
+  assert(count <= vec_buffer_capacity(self, buf));
+  vec_slide(self, index, count);
+  vec_init_buffer(self, index, index + count, &dst);
   buffer_memcpy(&dst, buf);
   self->length += count;
 }
@@ -91,7 +91,7 @@ void vec_remove(struct vec *self, index_t index, index_t count) {
   index = (index == -1) ? length - count : index;
   assert(0 <= index && index <= length);
   assert(0 <= count && index + count <= length);
-  vector_slide(self, index + count, -count);
+  vec_slide(self, index + count, -count);
   self->length -= count;
 }
 
