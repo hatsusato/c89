@@ -8,12 +8,12 @@
   do {                                \
     assert(str_cmp(&lhs, &rhs) == 0); \
     assert(str_cmp(&rhs, &lhs) == 0); \
-  } while (0)
+  } while (false)
 #define str_unittest_lt(lhs, rhs)    \
   do {                               \
     assert(str_cmp(&lhs, &rhs) < 0); \
     assert(str_cmp(&rhs, &lhs) > 0); \
-  } while (0)
+  } while (false)
 
 void str_unittest(void) {
   struct str str, prefix, suffix;

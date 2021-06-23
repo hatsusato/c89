@@ -3,6 +3,9 @@
 
 #include <stddef.h>
 
+#define true (1)
+#define false (0)
+
 typedef size_t align_t;
 typedef int bool_t;
 typedef unsigned char byte_t;
