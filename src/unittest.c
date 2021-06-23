@@ -3,5 +3,6 @@
 #include "vec/unittest.h"
 
 void unittest(void) {
-  unittest_vec();
+  vec_unittest();
+  vec_ptr_unittest();
 }

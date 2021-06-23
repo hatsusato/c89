@@ -155,8 +155,3 @@ void vec_ptr_unittest(void) {
   }
   vec_ptr_delete(vec);
 }
-
-void unittest_vec(void) {
-  vec_unittest();
-  vec_ptr_unittest();
-}
