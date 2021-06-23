@@ -1,4 +1,4 @@
-#include "vector/unittest.h"
+#include "vec/unittest.h"
 
 int main(int argc, char *argv[]) {
   (void)argc;
