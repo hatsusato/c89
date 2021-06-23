@@ -14,6 +14,7 @@ set_target_properties(main PROPERTIES
 add_library(unittest STATIC)
 target_sources(unittest PRIVATE
   unittest.c
+  str/unittest.c
   vec/unittest.c
   )
 target_link_libraries(unittest PRIVATE
