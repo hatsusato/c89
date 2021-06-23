@@ -21,3 +21,8 @@ void str_remove_suffix(struct str *self, index_t count) {
     str_init(self, NULL);
   }
 }
+int str_cmp(const struct str *lhs, const struct str *rhs) {
+  index_t len = lhs->len < rhs->len ? lhs->len : rhs->len;
+  int ret = strncmp(lhs->ptr, rhs->ptr, len);
+  return (ret == 0) ? lhs->len - rhs->len : ret;
+}
