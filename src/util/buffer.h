@@ -16,5 +16,7 @@ void buffer_malloc(struct buffer *, size_t);
 void buffer_free(struct buffer *);
 void buffer_memcpy(struct buffer *, const struct buffer *);
 void buffer_memmove(struct buffer *, const struct buffer *);
+void buffer_slice(struct buffer *, size_t, size_t);
+void buffer_slide(struct buffer *, size_t, size_t, size_t);
 
 #endif /* INCLUDE_GUARD_2505370A_1954_47A8_BF38_6BC8B1F6BF30 */
