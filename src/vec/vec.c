@@ -23,6 +23,13 @@ void vec_delete(struct vec *self) {
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
 }
+void vec_malloc(struct vec *self, index_t count) {
+  assert(array_is_null(&self->array));
+  array_malloc(&self->array, count);
+}
+void vec_free(struct vec *self) {
+  array_free(&self->array);
+}
 void vec_init(struct vec *self, align_t align, index_t count) {
   if (align > 0) {
     array_init(&self->array, align);
