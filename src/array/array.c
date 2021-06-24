@@ -2,7 +2,7 @@
 
 #include <assert.h>
 
-void array_slide(struct array *self, index_t index, index_t count) {
+static void array_slide(struct array *self, index_t index, index_t count) {
   align_t align = array_align(self);
   index_t length = array_length(self);
   size_t from = index * align;
@@ -30,4 +30,20 @@ index_t array_length(const struct array *self) {
 void *array_at(struct array *self, index_t index) {
   assert(0 <= index && index < array_length(self));
   return self->buf.ptr + index * array_align(self);
+}
+void array_insert(struct array *self, index_t index, index_t count,
+                  const struct buffer *buf) {
+  struct buffer src = *buf, dst = self->buf;
+  align_t align = array_align(self);
+  assert(0 <= index && index <= array_length(self));
+  assert(0 <= count);
+  array_slide(self, index, count);
+  buffer_slice(&src, 0, count * align);
+  buffer_slice(&dst, index * align, count * align);
+  buffer_memcpy(&dst, buf);
+}
+void array_remove(struct array *self, index_t index, index_t count) {
+  assert(0 <= index && index <= array_length(self));
+  assert(0 <= count);
+  array_slide(self, index + count, -count);
 }

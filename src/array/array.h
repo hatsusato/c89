@@ -14,5 +14,7 @@ align_t array_align(const struct array *);
 index_t array_capacity(const struct array *);
 index_t array_length(const struct array *);
 void *array_at(struct array *, index_t);
+void array_insert(struct array *, index_t, index_t, const struct buffer *);
+void array_remove(struct array *, index_t, index_t);
 
 #endif /* INCLUDE_GUARD_9AEC46FD_3C00_49FC_AB18_C05CB1E03D70 */
