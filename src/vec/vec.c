@@ -8,10 +8,6 @@
 static struct array *vec_inner(const struct vec *self) {
   return (struct array *)&self->array;
 }
-static index_t vec_buffer_capacity(const struct vec *self,
-                                   const struct buffer *buf) {
-  return buf->size / array_align(vec_inner(self));
-}
 
 struct vec *vec_new(align_t align) {
   struct buffer buf;
@@ -62,18 +58,16 @@ void *vec_at(struct vec *self, index_t index) {
 }
 void vec_insert(struct vec *self, index_t index, index_t count,
                 const struct buffer *buf) {
-  index_t length = vec_length(self);
-  index = (index == -1) ? length : index;
-  assert(0 <= index && index <= length);
-  assert(0 <= count && length + count <= vec_capacity(self));
-  assert(count <= vec_buffer_capacity(self, buf));
+  index_t len = vec_length(self);
+  assert(0 <= index && 0 <= count);
+  assert(index <= len);
+  assert(count * array_align(vec_inner(self)) <= buf->size);
+  vec_reserve(self, len + count);
   array_insert(vec_inner(self), index, count, buf);
 }
 void vec_remove(struct vec *self, index_t index, index_t count) {
-  index_t length = vec_length(self);
-  index = (index == -1) ? length - count : index;
-  assert(0 <= index && index <= length);
-  assert(0 <= count && index + count <= length);
+  assert(0 <= index && 0 <= count);
+  assert(index + count <= vec_length(self));
   array_remove(vec_inner(self), index, count);
 }
 

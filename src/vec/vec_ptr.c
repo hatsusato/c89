@@ -49,12 +49,12 @@ void vec_ptr_push(struct vec_ptr *self, void *ptr) {
     vec_reserve(vec, 0);
   }
   BUFFER_INIT(&buf, &ptr);
-  vec_insert(vec, -1, 1, &buf);
+  vec_insert(vec, vec_length(vec), 1, &buf);
 }
 void vec_ptr_pop(struct vec_ptr *self) {
   void *ptr = vec_ptr_at(self, vec_ptr_length(self) - 1);
   vec_ptr_destruct(self, ptr);
-  vec_remove(&self->vec, -1, 1);
+  vec_remove(&self->vec, vec_length(&self->vec) - 1, 1);
 }
 void **vec_ptr_begin(struct vec_ptr *self) {
   return vec_begin(&self->vec);

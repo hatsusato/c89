@@ -13,28 +13,28 @@
     assert(vec_length(vec) == len);       \
     assert(vec_capacity(vec) == cap);     \
   } while (false)
-#define vec_unittest_push(vec, count)       \
-  do {                                      \
-    int i;                                  \
-    index_t len = vec_length(vec);          \
-    for (i = 0; i < count; i++) {           \
-      struct buffer buf;                    \
-      BUFFER_INIT(&buf, &i);                \
-      if (vec_full(vec)) {                  \
-        vec_reserve(vec, 0);                \
-      }                                     \
-      vec_insert(vec, -1, 1, &buf);         \
-    }                                       \
-    assert(vec_length(vec) == len + count); \
+#define vec_unittest_push(vec, count)            \
+  do {                                           \
+    int i;                                       \
+    index_t len = vec_length(vec);               \
+    for (i = 0; i < count; i++) {                \
+      struct buffer buf;                         \
+      BUFFER_INIT(&buf, &i);                     \
+      if (vec_full(vec)) {                       \
+        vec_reserve(vec, 0);                     \
+      }                                          \
+      vec_insert(vec, vec_length(vec), 1, &buf); \
+    }                                            \
+    assert(vec_length(vec) == len + count);      \
   } while (false)
-#define vec_unittest_pop(vec, count)        \
-  do {                                      \
-    int i;                                  \
-    index_t len = vec_length(vec);          \
-    for (i = 0; i < count; i++) {           \
-      vec_remove(vec, -1, 1);               \
-    }                                       \
-    assert(vec_length(vec) == len - count); \
+#define vec_unittest_pop(vec, count)           \
+  do {                                         \
+    int i;                                     \
+    index_t len = vec_length(vec);             \
+    for (i = 0; i < count; i++) {              \
+      vec_remove(vec, vec_length(vec) - 1, 1); \
+    }                                          \
+    assert(vec_length(vec) == len - count);    \
   } while (false)
 #define vec_unittest_range(vec, start, begin, end)  \
   do {                                              \
