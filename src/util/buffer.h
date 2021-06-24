@@ -12,7 +12,7 @@ struct buffer {
 };
 
 void buffer_init(struct buffer *, void *, size_t);
-void buffer_malloc(struct buffer *, size_t);
+void *buffer_malloc(struct buffer *, size_t);
 void buffer_free(struct buffer *);
 bool_t buffer_is_null(const struct buffer *);
 void buffer_memcpy(struct buffer *, const struct buffer *);

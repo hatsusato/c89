@@ -8,8 +8,9 @@ void buffer_init(struct buffer *buf, void *ptr, size_t size) {
   buf->ptr = ptr;
   buf->size = size;
 }
-void buffer_malloc(struct buffer *buf, size_t size) {
+void *buffer_malloc(struct buffer *buf, size_t size) {
   buffer_init(buf, malloc(size), size);
+  return buf->ptr;
 }
 void buffer_free(struct buffer *buf) {
   free(buf->ptr);
