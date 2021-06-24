@@ -36,6 +36,11 @@ void array_set(struct array *self, const struct buffer *buf) {
   self->buf = *buf;
   self->len = 0;
 }
+bool_t array_is_null(const struct array *self) {
+  bool_t ret = buffer_is_null(&self->buf);
+  assert(!ret || self->len == 0);
+  return ret;
+}
 align_t array_align(const struct array *self) {
   return self->align;
 }
