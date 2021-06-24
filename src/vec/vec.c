@@ -23,6 +23,10 @@ void vec_delete(struct vec *self) {
   BUFFER_INIT(&buf, self);
   buffer_free(&buf);
 }
+void vec_init(struct vec *self, align_t align) {
+  assert(align > 0);
+  array_init(&self->array, align);
+}
 void vec_malloc(struct vec *self, index_t count) {
   assert(array_is_null(&self->array));
   array_malloc(&self->array, count);
@@ -30,18 +34,14 @@ void vec_malloc(struct vec *self, index_t count) {
 void vec_free(struct vec *self) {
   array_free(&self->array);
 }
-void vec_init(struct vec *self, align_t align, index_t count) {
-  if (align > 0) {
-    array_init(&self->array, align);
-  }
-  array_malloc(&self->array, count);
-}
 void vec_reserve(struct vec *self, index_t count) {
   index_t cap = vec_capacity(self);
   count = (count == 0) ? 2 * cap : count;
   if (count > cap) {
     struct vec old = *self;
-    vec_init(self, 0, count);
+    align_t align = array_align(&self->array);
+    vec_init(self, align);
+    vec_malloc(self, count);
     vec_insert(self, 0, vec_length(&old), &old.array.buf);
     vec_free(&old);
   }
