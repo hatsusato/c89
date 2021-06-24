@@ -7,7 +7,6 @@
 struct vec {
   align_t align;
   struct buffer buf;
-  index_t length;
   struct array array;
 };
 
