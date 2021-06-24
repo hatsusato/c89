@@ -14,8 +14,14 @@ static void array_slide(struct array *self, index_t index, index_t count) {
 }
 
 void array_init(struct array *self, align_t align, struct buffer *buf) {
-  self->align = align;
-  self->buf = *buf;
+  if (align != 0) {
+    self->align = align;
+  }
+  if (buf) {
+    self->buf = *buf;
+  } else {
+    buffer_init(&self->buf, NULL, 0);
+  }
   self->len = 0;
 }
 align_t array_align(const struct array *self) {
