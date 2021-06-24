@@ -23,13 +23,13 @@ static void vec_ptr_destruct(struct vec_ptr *self, void *ptr) {
 struct vec_ptr *vec_ptr_new(void (*dtor)(void *)) {
   enum { initial_count = 8 };
   struct vec_ptr *self = vec_ptr_malloc();
-  vec_alloc(&self->vec, sizeof(void *), initial_count);
+  vec_init(&self->vec, sizeof(void *), initial_count);
   self->dtor = dtor;
   return self;
 }
 void vec_ptr_delete(struct vec_ptr *self) {
   vec_ptr_clear(self);
-  vec_reset(&self->vec);
+  vec_finish(&self->vec);
   vec_ptr_free(self);
 }
 index_t vec_ptr_capacity(struct vec_ptr *self) {

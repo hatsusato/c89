@@ -25,13 +25,13 @@ struct vec *vec_new(align_t align) {
   return self;
 }
 void vec_delete(struct vec *self) {
-  vec_reset(self);
+  vec_finish(self);
   vec_free(self);
 }
-void vec_alloc(struct vec *self, align_t align, index_t count) {
+void vec_init(struct vec *self, align_t align, index_t count) {
   array_malloc(&self->array, align, count);
 }
-void vec_reset(struct vec *self) {
+void vec_finish(struct vec *self) {
   array_free(&self->array);
 }
 void vec_reserve(struct vec *self, index_t count) {
@@ -39,9 +39,9 @@ void vec_reserve(struct vec *self, index_t count) {
   count = (count == 0) ? 2 * cap : count;
   if (count > cap) {
     struct vec old = *self;
-    vec_alloc(self, 0, count);
+    vec_init(self, 0, count);
     vec_insert(self, 0, vec_length(&old), &old.array.buf);
-    vec_reset(&old);
+    vec_finish(&old);
   }
 }
 index_t vec_capacity(const struct vec *self) {
