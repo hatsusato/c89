@@ -9,4 +9,6 @@ struct array {
   index_t len;
 };
 
+void array_init(struct array *, align_t, struct buffer *);
+
 #endif /* INCLUDE_GUARD_9AEC46FD_3C00_49FC_AB18_C05CB1E03D70 */
