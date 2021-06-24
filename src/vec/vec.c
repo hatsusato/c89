@@ -4,29 +4,24 @@
 
 #include "type.h"
 
-static struct vec *vec_malloc(void) {
-  struct buffer buf;
-  BUFFER_MALLOC(&buf, struct vec);
-  return (struct vec *)buf.ptr;
-}
-static void vec_free(struct vec *self) {
-  struct buffer buf;
-  BUFFER_INIT(&buf, self);
-  buffer_free(&buf);
-}
 static index_t vec_buffer_capacity(const struct vec *self,
                                    const struct buffer *buf) {
   return buf->size / array_align(&self->array);
 }
 
 struct vec *vec_new(align_t align) {
-  struct vec *self = vec_malloc();
+  struct buffer buf;
+  struct vec *self;
+  BUFFER_MALLOC(&buf, struct vec);
+  self = (struct vec *)buf.ptr;
   array_init(&self->array, align);
   return self;
 }
 void vec_delete(struct vec *self) {
+  struct buffer buf;
   vec_finish(self);
-  vec_free(self);
+  BUFFER_INIT(&buf, self);
+  buffer_free(&buf);
 }
 void vec_init(struct vec *self, align_t align, index_t count) {
   if (align > 0) {
