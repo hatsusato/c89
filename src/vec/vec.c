@@ -16,7 +16,7 @@ static void vec_free(struct vec *self) {
 }
 static index_t vec_buffer_capacity(const struct vec *self,
                                    const struct buffer *buf) {
-  return buf->size / self->align;
+  return buf->size / array_align(&self->array);
 }
 
 struct vec *vec_new(align_t align) {
@@ -29,12 +29,11 @@ void vec_delete(struct vec *self) {
   vec_free(self);
 }
 void vec_init(struct vec *self, align_t align) {
-  self->align = align;
   array_init(&self->array, align, NULL);
 }
 void vec_alloc(struct vec *self, index_t count) {
   struct buffer buf;
-  size_t size = self->align * count;
+  size_t size = array_align(&self->array) * count;
   buffer_malloc(&buf, size);
   array_init(&self->array, 0, &buf);
 }

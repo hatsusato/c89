@@ -5,7 +5,6 @@
 #include "util/buffer.h"
 
 struct vec {
-  align_t align;
   struct array array;
 };
 
