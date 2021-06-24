@@ -10,7 +10,6 @@ void vec_delete(struct vec *);
 void vec_malloc(struct vec *, index_t);
 void vec_free(struct vec *);
 void vec_init(struct vec *, align_t, index_t);
-void vec_finish(struct vec *);
 void vec_reserve(struct vec *, index_t);
 index_t vec_capacity(const struct vec *);
 index_t vec_length(const struct vec *);

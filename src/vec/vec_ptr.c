@@ -29,7 +29,7 @@ struct vec_ptr *vec_ptr_new(void (*dtor)(void *)) {
 }
 void vec_ptr_delete(struct vec_ptr *self) {
   vec_ptr_clear(self);
-  vec_finish(&self->vec);
+  vec_free(&self->vec);
   vec_ptr_free(self);
 }
 index_t vec_ptr_capacity(struct vec_ptr *self) {
