@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "type.h"
+#include "util/util.h"
 
 static index_t vec_buffer_capacity(const struct vec *self,
                                    const struct buffer *buf) {
@@ -36,14 +37,17 @@ void vec_free(struct vec *self) {
 }
 void vec_reserve(struct vec *self, index_t count) {
   index_t cap = vec_capacity(self);
+  assert(0 <= count);
   count = (count == 0) ? 2 * cap : count;
   if (count > cap) {
-    struct vec old = *self;
-    align_t align = array_align(&self->array);
-    vec_init(self, align);
-    vec_malloc(self, count);
-    vec_insert(self, 0, vec_length(&old), &old.array.buf);
-    vec_free(&old);
+    struct vec tmp;
+    struct buffer buf;
+    vec_init(&tmp, array_align(&self->array));
+    vec_malloc(&tmp, count);
+    array_get(&self->array, &buf);
+    vec_insert(&tmp, 0, vec_length(self), &buf);
+    UTIL_SWAP(struct vec, self, &tmp);
+    vec_free(&tmp);
   }
 }
 index_t vec_capacity(const struct vec *self) {
