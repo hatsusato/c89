@@ -19,13 +19,10 @@ void array_init(struct array *self, align_t align) {
   buffer_init(&self->buf, NULL, 0);
   self->len = 0;
 }
-void array_malloc(struct array *self, align_t align, index_t count) {
+void array_malloc(struct array *self, index_t count) {
   struct buffer buf;
-  assert(align > 0 || self->align > 0);
   assert(0 <= count);
-  align = (align == 0) ? self->align : align;
-  buffer_malloc(&buf, align * count);
-  array_init(self, align);
+  buffer_malloc(&buf, self->align * count);
   array_set(self, &buf);
 }
 void array_free(struct array *self) {

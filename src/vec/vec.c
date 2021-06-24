@@ -29,7 +29,10 @@ void vec_delete(struct vec *self) {
   vec_free(self);
 }
 void vec_init(struct vec *self, align_t align, index_t count) {
-  array_malloc(&self->array, align, count);
+  if (align > 0) {
+    array_init(&self->array, align);
+  }
+  array_malloc(&self->array, count);
 }
 void vec_finish(struct vec *self) {
   array_free(&self->array);
