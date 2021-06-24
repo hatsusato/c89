@@ -20,9 +20,6 @@
     for (i = 0; i < count; i++) {                \
       struct buffer buf;                         \
       BUFFER_INIT(&buf, &i);                     \
-      if (vec_full(vec)) {                       \
-        vec_reserve(vec, 0);                     \
-      }                                          \
       vec_insert(vec, vec_length(vec), 1, &buf); \
     }                                            \
     assert(vec_length(vec) == len + count);      \

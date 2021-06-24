@@ -45,9 +45,6 @@ void *vec_ptr_at(struct vec_ptr *self, index_t index) {
 void vec_ptr_push(struct vec_ptr *self, void *ptr) {
   struct vec *vec = &self->vec;
   struct buffer buf;
-  if (vec_full(vec)) {
-    vec_reserve(vec, 0);
-  }
   BUFFER_INIT(&buf, &ptr);
   vec_insert(vec, vec_length(vec), 1, &buf);
 }

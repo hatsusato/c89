@@ -35,12 +35,11 @@ void vec_free(struct vec *self) {
 void vec_reserve(struct vec *self, index_t count) {
   index_t cap = vec_capacity(self);
   assert(0 <= count);
-  count = (count == 0) ? 2 * cap : count;
   if (count > cap) {
     struct vec tmp;
     struct buffer buf;
     vec_init(&tmp, array_align(vec_inner(self)));
-    vec_malloc(&tmp, count);
+    vec_malloc(&tmp, count < 2 * cap ? 2 * cap : count);
     array_get(vec_inner(self), &buf);
     vec_insert(&tmp, 0, vec_length(self), &buf);
     UTIL_SWAP(struct vec, self, &tmp);
