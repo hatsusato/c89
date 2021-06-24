@@ -10,6 +10,7 @@ struct array {
 };
 
 void array_init(struct array *, align_t, struct buffer *);
+align_t array_align(const struct array *);
 index_t array_capacity(const struct array *);
 index_t array_length(const struct array *);
 void *array_at(struct array *, index_t);
