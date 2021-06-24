@@ -70,13 +70,6 @@ void vec_remove(struct vec *self, index_t index, index_t count) {
   assert(index + count <= vec_length(self));
   array_remove(vec_inner(self), index, count);
 }
-
-bool_t vec_empty(const struct vec *self) {
-  return vec_length(self) == 0;
-}
-bool_t vec_full(const struct vec *self) {
-  return vec_length(self) == vec_capacity(self);
-}
 void vec_clear(struct vec *self) {
   vec_remove(self, 0, vec_length(self));
 }
