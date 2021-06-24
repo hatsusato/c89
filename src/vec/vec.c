@@ -5,9 +5,12 @@
 #include "type.h"
 #include "util/util.h"
 
+static struct array *vec_inner(const struct vec *self) {
+  return (struct array *)&self->array;
+}
 static index_t vec_buffer_capacity(const struct vec *self,
                                    const struct buffer *buf) {
-  return buf->size / array_align(&self->array);
+  return buf->size / array_align(vec_inner(self));
 }
 
 struct vec *vec_new(align_t align) {
@@ -15,7 +18,7 @@ struct vec *vec_new(align_t align) {
   struct vec *self;
   BUFFER_MALLOC(&buf, struct vec);
   self = (struct vec *)buf.ptr;
-  array_init(&self->array, align);
+  array_init(vec_inner(self), align);
   return self;
 }
 void vec_delete(struct vec *self) {
@@ -26,14 +29,14 @@ void vec_delete(struct vec *self) {
 }
 void vec_init(struct vec *self, align_t align) {
   assert(align > 0);
-  array_init(&self->array, align);
+  array_init(vec_inner(self), align);
 }
 void vec_malloc(struct vec *self, index_t count) {
-  assert(array_is_null(&self->array));
-  array_malloc(&self->array, count);
+  assert(array_is_null(vec_inner(self)));
+  array_malloc(vec_inner(self), count);
 }
 void vec_free(struct vec *self) {
-  array_free(&self->array);
+  array_free(vec_inner(self));
 }
 void vec_reserve(struct vec *self, index_t count) {
   index_t cap = vec_capacity(self);
@@ -42,22 +45,22 @@ void vec_reserve(struct vec *self, index_t count) {
   if (count > cap) {
     struct vec tmp;
     struct buffer buf;
-    vec_init(&tmp, array_align(&self->array));
+    vec_init(&tmp, array_align(vec_inner(self)));
     vec_malloc(&tmp, count);
-    array_get(&self->array, &buf);
+    array_get(vec_inner(self), &buf);
     vec_insert(&tmp, 0, vec_length(self), &buf);
     UTIL_SWAP(struct vec, self, &tmp);
     vec_free(&tmp);
   }
 }
 index_t vec_capacity(const struct vec *self) {
-  return array_capacity(&self->array);
+  return array_capacity(vec_inner(self));
 }
 index_t vec_length(const struct vec *self) {
-  return array_length(&self->array);
+  return array_length(vec_inner(self));
 }
 void *vec_at(struct vec *self, index_t index) {
-  return array_at(&self->array, index);
+  return array_at(vec_inner(self), index);
 }
 void vec_insert(struct vec *self, index_t index, index_t count,
                 const struct buffer *buf) {
@@ -66,14 +69,14 @@ void vec_insert(struct vec *self, index_t index, index_t count,
   assert(0 <= index && index <= length);
   assert(0 <= count && length + count <= vec_capacity(self));
   assert(count <= vec_buffer_capacity(self, buf));
-  array_insert(&self->array, index, count, buf);
+  array_insert(vec_inner(self), index, count, buf);
 }
 void vec_remove(struct vec *self, index_t index, index_t count) {
   index_t length = vec_length(self);
   index = (index == -1) ? length - count : index;
   assert(0 <= index && index <= length);
   assert(0 <= count && index + count <= length);
-  array_remove(&self->array, index, count);
+  array_remove(vec_inner(self), index, count);
 }
 
 bool_t vec_empty(const struct vec *self) {
