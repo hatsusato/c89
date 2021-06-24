@@ -27,3 +27,14 @@ void buffer_memmove(struct buffer *dst, const struct buffer *src) {
     memmove(dst->ptr, src->ptr, size);
   }
 }
+void buffer_slice(struct buffer *buf, size_t offset, size_t size) {
+  assert(offset + size <= buf->size);
+  buf->ptr += offset;
+  buf->size = size;
+}
+void buffer_slide(struct buffer *buf, size_t from, size_t to, size_t size) {
+  struct buffer src = *buf, dst = *buf;
+  buffer_slice(&src, from, size);
+  buffer_slice(&dst, to, size);
+  buffer_memmove(&dst, &src);
+}
