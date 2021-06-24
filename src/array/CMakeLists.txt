@@ -4,4 +4,5 @@ target_sources(array PRIVATE
   )
 target_link_libraries(array PRIVATE
   options
+  util
   )
