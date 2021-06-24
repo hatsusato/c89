@@ -24,6 +24,7 @@ target_link_libraries(unittest PRIVATE
   vec
   )
 
+add_subdirectory(array)
 add_subdirectory(str)
 add_subdirectory(util)
 add_subdirectory(vec)
