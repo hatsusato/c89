@@ -8,6 +8,9 @@
 static struct array *vec_inner(const struct vec *self) {
   return (struct array *)&self->array;
 }
+static align_t vec_align(const struct vec *self) {
+  return array_align(vec_inner(self));
+}
 
 struct vec *vec_new(align_t align) {
   struct buffer buf;
@@ -40,7 +43,7 @@ void vec_reserve(struct vec *self, index_t count) {
   if (count <= cap) {
     return;
   }
-  vec_init(&tmp, array_align(vec_inner(self)));
+  vec_init(&tmp, vec_align(self));
   vec_malloc(&tmp, UTIL_MAX(count, 2 * cap));
   array_get(vec_inner(self), &buf);
   vec_insert(&tmp, 0, vec_length(self), &buf);
@@ -61,7 +64,7 @@ void vec_insert(struct vec *self, index_t index, index_t count,
   index_t len = vec_length(self);
   assert(0 <= index && 0 <= count);
   assert(index <= len);
-  assert(count * array_align(vec_inner(self)) <= buf->size);
+  assert(count * vec_align(self) <= buf->size);
   vec_reserve(self, len + count);
   array_insert(vec_inner(self), index, count, buf);
 }
