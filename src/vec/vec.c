@@ -21,7 +21,7 @@ static index_t vec_buffer_capacity(const struct vec *self,
 
 struct vec *vec_new(align_t align) {
   struct vec *self = vec_malloc();
-  array_init(&self->array, align, NULL);
+  array_init(&self->array, align);
   return self;
 }
 void vec_delete(struct vec *self) {

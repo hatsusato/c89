@@ -13,15 +13,10 @@ static void array_slide(struct array *self, index_t index, index_t count) {
   self->len += count;
 }
 
-void array_init(struct array *self, align_t align, struct buffer *buf) {
-  if (align != 0) {
-    self->align = align;
-  }
-  if (buf) {
-    self->buf = *buf;
-  } else {
-    buffer_init(&self->buf, NULL, 0);
-  }
+void array_init(struct array *self, align_t align) {
+  assert(align > 0);
+  self->align = align;
+  buffer_init(&self->buf, NULL, 0);
   self->len = 0;
 }
 void array_malloc(struct array *self, align_t align, index_t count) {
@@ -30,7 +25,8 @@ void array_malloc(struct array *self, align_t align, index_t count) {
   assert(0 <= count);
   align = (align == 0) ? self->align : align;
   buffer_malloc(&buf, align * count);
-  array_init(self, align, &buf);
+  array_init(self, align);
+  array_set(self, &buf);
 }
 void array_free(struct array *self) {
   buffer_free(&self->buf);
