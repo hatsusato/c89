@@ -36,6 +36,13 @@ void array_free(struct array *self) {
   buffer_free(&self->buf);
   self->len = 0;
 }
+void array_get(struct array *self, struct buffer *buf) {
+  *buf = self->buf;
+}
+void array_set(struct array *self, const struct buffer *buf) {
+  self->buf = *buf;
+  self->len = 0;
+}
 align_t array_align(const struct array *self) {
   return self->align;
 }
