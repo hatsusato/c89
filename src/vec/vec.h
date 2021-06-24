@@ -19,8 +19,6 @@ void vec_remove(struct vec *, index_t, index_t);
 
 bool_t vec_empty(const struct vec *);
 bool_t vec_full(const struct vec *);
-void *vec_begin(struct vec *);
-void *vec_end(struct vec *);
 void vec_clear(struct vec *);
 
 #endif /* INCLUDE_GUARD_C9808F6F_7A34_4226_A18A_9B7E94B05A1D */
