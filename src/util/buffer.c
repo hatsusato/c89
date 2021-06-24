@@ -15,6 +15,10 @@ void buffer_free(struct buffer *buf) {
   free(buf->ptr);
   buffer_init(buf, NULL, 0);
 }
+bool_t buffer_is_null(const struct buffer *buf) {
+  assert(buf->ptr || buf->size == 0);
+  return !buf->ptr;
+}
 void buffer_memcpy(struct buffer *dst, const struct buffer *src) {
   if (dst->ptr && src->ptr) {
     size_t size = dst->size < src->size ? dst->size : src->size;
