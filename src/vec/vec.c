@@ -39,7 +39,7 @@ void vec_reserve(struct vec *self, index_t count) {
     struct vec tmp;
     struct buffer buf;
     vec_init(&tmp, array_align(vec_inner(self)));
-    vec_malloc(&tmp, count < 2 * cap ? 2 * cap : count);
+    vec_malloc(&tmp, UTIL_MAX(count, 2 * cap));
     array_get(vec_inner(self), &buf);
     vec_insert(&tmp, 0, vec_length(self), &buf);
     UTIL_SWAP(struct vec, self, &tmp);

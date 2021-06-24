@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "util.h"
+
 void buffer_init(struct buffer *buf, void *ptr, size_t size) {
   buf->ptr = ptr;
   buf->size = size;
@@ -22,14 +24,12 @@ bool_t buffer_is_null(const struct buffer *buf) {
 }
 void buffer_memcpy(struct buffer *dst, const struct buffer *src) {
   if (dst->ptr && src->ptr) {
-    size_t size = dst->size < src->size ? dst->size : src->size;
-    memcpy(dst->ptr, src->ptr, size);
+    memcpy(dst->ptr, src->ptr, UTIL_MIN(dst->size, src->size));
   }
 }
 void buffer_memmove(struct buffer *dst, const struct buffer *src) {
   if (dst->ptr && src->ptr) {
-    size_t size = dst->size < src->size ? dst->size : src->size;
-    memmove(dst->ptr, src->ptr, size);
+    memmove(dst->ptr, src->ptr, UTIL_MIN(dst->size, src->size));
   }
 }
 void buffer_slice(struct buffer *buf, size_t offset, size_t size) {
