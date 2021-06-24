@@ -24,6 +24,18 @@ void array_init(struct array *self, align_t align, struct buffer *buf) {
   }
   self->len = 0;
 }
+void array_malloc(struct array *self, align_t align, index_t count) {
+  struct buffer buf;
+  assert(align > 0 || self->align > 0);
+  assert(0 <= count);
+  align = (align == 0) ? self->align : align;
+  buffer_malloc(&buf, align * count);
+  array_init(self, align, &buf);
+}
+void array_free(struct array *self) {
+  buffer_free(&self->buf);
+  self->len = 0;
+}
 align_t array_align(const struct array *self) {
   return self->align;
 }

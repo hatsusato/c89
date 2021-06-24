@@ -10,6 +10,8 @@ struct array {
 };
 
 void array_init(struct array *, align_t, struct buffer *);
+void array_malloc(struct array *, align_t, index_t);
+void array_free(struct array *);
 align_t array_align(const struct array *);
 index_t array_capacity(const struct array *);
 index_t array_length(const struct array *);

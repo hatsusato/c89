@@ -32,14 +32,10 @@ void vec_init(struct vec *self, align_t align) {
   array_init(&self->array, align, NULL);
 }
 void vec_alloc(struct vec *self, index_t count) {
-  struct buffer buf;
-  size_t size = array_align(&self->array) * count;
-  buffer_malloc(&buf, size);
-  array_init(&self->array, 0, &buf);
+  array_malloc(&self->array, 0, count);
 }
 void vec_reset(struct vec *self) {
-  buffer_free(&self->array.buf);
-  array_init(&self->array, 0, NULL);
+  array_free(&self->array);
 }
 void vec_reserve(struct vec *self, index_t count) {
   index_t cap = vec_capacity(self);
