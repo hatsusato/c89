@@ -45,14 +45,21 @@ void vec_init(struct vec *self, align_t align) {
   self->align = align;
   buffer_init(&self->buf, NULL, 0);
   self->length = 0;
+  array_init(&self->array, align, NULL);
 }
 void vec_alloc(struct vec *self, index_t count) {
-  buffer_malloc(&self->buf, self->align * count);
+  struct buffer buf;
+  size_t size = self->align * count;
+  buffer_malloc(&self->buf, size);
   self->length = 0;
+  buffer_malloc(&buf, size);
+  array_init(&self->array, 0, &buf);
 }
 void vec_reset(struct vec *self) {
   buffer_free(&self->buf);
   self->length = 0;
+  buffer_free(&self->array.buf);
+  array_init(&self->array, 0, NULL);
 }
 void vec_reserve(struct vec *self, index_t count) {
   index_t cap = vec_capacity(self);
@@ -85,6 +92,7 @@ void vec_insert(struct vec *self, index_t index, index_t count,
   vec_init_buffer(self, index, index + count, &dst);
   buffer_memcpy(&dst, buf);
   self->length += count;
+  array_insert(&self->array, index, count, buf);
 }
 void vec_remove(struct vec *self, index_t index, index_t count) {
   index_t length = vec_length(self);
@@ -93,6 +101,7 @@ void vec_remove(struct vec *self, index_t index, index_t count) {
   assert(0 <= count && index + count <= length);
   vec_slide(self, index + count, -count);
   self->length -= count;
+  array_remove(&self->array, index, count);
 }
 
 bool_t vec_empty(const struct vec *self) {
