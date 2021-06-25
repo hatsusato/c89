@@ -25,6 +25,7 @@ void array_insert(struct array *, const struct range *, const struct buffer *);
 void array_remove(struct array *, const struct range *);
 void array_push(struct array *, const struct buffer *);
 void array_pop(struct array *);
+void array_clear(struct array *);
 void array_sort(struct array *, int (*)(const void *, const void *));
 
 #endif /* INCLUDE_GUARD_9AEC46FD_3C00_49FC_AB18_C05CB1E03D70 */

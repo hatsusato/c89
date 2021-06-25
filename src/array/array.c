@@ -84,6 +84,11 @@ void array_pop(struct array *self) {
   range_init(&range, array_length(self) - 1, 1);
   array_remove(self, &range);
 }
+void array_clear(struct array *self) {
+  struct range range;
+  range_init(&range, 0, array_length(self));
+  array_remove(self, &range);
+}
 void array_sort(struct array *self, int (*cmp)(const void *, const void *)) {
   buffer_sort(&self->buf, self->len, self->align, cmp);
 }

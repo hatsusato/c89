@@ -79,7 +79,5 @@ void vec_remove(struct vec *self, const struct range *range) {
   array_remove(vec_inner(self), range);
 }
 void vec_clear(struct vec *self) {
-  struct range range;
-  range_init(&range, 0, vec_length(self));
-  vec_remove(self, &range);
+  array_clear(vec_inner(self));
 }
