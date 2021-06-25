@@ -74,6 +74,16 @@ void array_remove(struct array *self, const struct range *range) {
   inv.end = range->begin;
   array_slide(self, &inv);
 }
+void array_push(struct array *self, const struct buffer *buf) {
+  struct range range;
+  range_init(&range, array_length(self), 1);
+  array_insert(self, &range, buf);
+}
+void array_pop(struct array *self) {
+  struct range range;
+  range_init(&range, array_length(self) - 1, 1);
+  array_remove(self, &range);
+}
 void array_sort(struct array *self, int (*cmp)(const void *, const void *)) {
   buffer_sort(&self->buf, self->len, self->align, cmp);
 }
