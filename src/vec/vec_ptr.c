@@ -49,17 +49,13 @@ void vec_ptr_push(struct vec_ptr *self, void *ptr) {
   vec_push(&self->vec, &buf);
 }
 void vec_ptr_pop(struct vec_ptr *self) {
-  void *ptr = vec_ptr_at(self, vec_ptr_length(self) - 1);
-  vec_ptr_destruct(self, ptr);
+  vec_ptr_destruct(self, vec_ptr_at(self, -1));
   vec_pop(&self->vec);
 }
 void vec_ptr_clear(struct vec_ptr *self) {
-  struct range range;
   index_t index, length = vec_ptr_length(self);
-  range_init(&range, 0, length);
   for (index = length - 1; 0 <= index; index--) {
-    void *ptr = vec_ptr_at(self, index);
-    vec_ptr_destruct(self, ptr);
+    vec_ptr_destruct(self, vec_ptr_at(self, index));
   }
-  vec_remove(&self->vec, &range);
+  vec_clear(&self->vec);
 }

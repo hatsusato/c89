@@ -66,16 +66,10 @@ void *vec_at(struct vec *self, index_t index) {
 }
 void vec_insert(struct vec *self, const struct range *range,
                 const struct buffer *buf) {
-  index_t len = vec_length(self), count = range_count(range);
-  assert(range_is_valid(range));
-  assert(range->begin <= len);
-  assert(count * vec_align(self) <= buf->size);
-  vec_reserve(self, len + count);
+  vec_reserve(self, vec_length(self) + range_count(range));
   array_insert(vec_inner(self), range, buf);
 }
 void vec_remove(struct vec *self, const struct range *range) {
-  assert(range_is_valid(range));
-  assert(range->end <= vec_length(self));
   array_remove(vec_inner(self), range);
 }
 void vec_push(struct vec *self, const struct buffer *buf) {
