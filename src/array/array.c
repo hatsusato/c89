@@ -1,6 +1,7 @@
 #include "array.h"
 
 #include <assert.h>
+#include <stdlib.h>
 
 #include "util/range.h"
 
@@ -73,4 +74,7 @@ void array_remove(struct array *self, const struct range *range) {
   inv.begin = range->end;
   inv.end = range->begin;
   array_slide(self, &inv);
+}
+void array_sort(struct array *self, int (*cmp)(const void *, const void *)) {
+  qsort(self->buf.ptr, self->len, self->align, cmp);
 }
