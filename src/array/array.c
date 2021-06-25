@@ -43,7 +43,7 @@ align_t array_align(const struct array *self) {
   return self->align;
 }
 index_t array_capacity(const struct array *self) {
-  return self->buf.size / array_align(self);
+  return buffer_size(&self->buf) / array_align(self);
 }
 index_t array_length(const struct array *self) {
   return self->len;

@@ -10,6 +10,9 @@ void buffer_init(struct buffer *self, void *ptr, size_t size) {
   self->ptr = ptr;
   self->size = size;
 }
+size_t buffer_size(const struct buffer *self) {
+  return self->size;
+}
 void *buffer_malloc(struct buffer *self, size_t size) {
   buffer_init(self, malloc(size), size);
   return self->ptr;
