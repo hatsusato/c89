@@ -53,7 +53,7 @@
     struct range range;                             \
     range_init(&range, start, count);               \
     buffer_malloc(&buf, sizeof(int) * count);       \
-    p = (int *)buf.ptr;                             \
+    p = buffer_at(&buf, 0);                         \
     for (i = begin; i < end; i++, p++) {            \
       *p = i;                                       \
     }                                               \

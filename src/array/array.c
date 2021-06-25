@@ -52,7 +52,7 @@ void *array_at(struct array *self, index_t index) {
   index_t length = array_length(self);
   index += index < 0 ? length : 0;
   assert(0 <= index && index < length);
-  return self->buf.ptr + index * array_align(self);
+  return buffer_at(&self->buf, index * array_align(self));
 }
 void array_insert(struct array *self, const struct range *range,
                   const struct buffer *buf) {

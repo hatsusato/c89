@@ -10,6 +10,10 @@ void buffer_init(struct buffer *self, void *ptr, size_t size) {
   self->ptr = ptr;
   self->size = size;
 }
+void *buffer_at(const struct buffer *self, size_t index) {
+  assert(index < self->size);
+  return self->ptr + index;
+}
 size_t buffer_size(const struct buffer *self) {
   return self->size;
 }

@@ -8,7 +8,7 @@
 static struct vec_ptr *vec_ptr_malloc(void) {
   struct buffer buf;
   BUFFER_MALLOC(&buf, struct vec_ptr);
-  return (struct vec_ptr *)buf.ptr;
+  return buffer_at(&buf, 0);
 }
 static void vec_ptr_free(struct vec_ptr *self) {
   struct buffer buf;
