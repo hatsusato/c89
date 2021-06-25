@@ -85,3 +85,6 @@ void vec_clear(struct vec *self) {
 void vec_sort(struct vec *self, cmp_t cmp) {
   array_sort(vec_inner(self), cmp);
 }
+void *vec_search(const struct vec *self, const void *key, cmp_t cmp) {
+  return array_search(vec_inner(self), key, cmp);
+}
