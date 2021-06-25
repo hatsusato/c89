@@ -4,14 +4,11 @@
 
 #include "util/range.h"
 
-static void array_slide(struct array *self, index_t index, index_t count) {
+static void array_slide(struct array *self, const struct range *range) {
   align_t align = array_align(self);
-  index_t length = array_length(self);
-  size_t from = index * align;
-  size_t to = (index + count) * align;
-  size_t size = (length - index) * align;
-  buffer_slide(&self->buf, from, to, size);
-  self->len += count;
+  size_t size = (array_length(self) - range->begin) * align;
+  buffer_slide(&self->buf, range->begin * align, range->end * align, size);
+  self->len += range_count(range);
 }
 
 void array_init(struct array *self, align_t align) {
@@ -61,16 +58,19 @@ void array_insert(struct array *self, const struct range *range,
                   const struct buffer *buf) {
   struct buffer src = *buf, dst = self->buf;
   align_t align = array_align(self);
-  index_t index = range->begin, count = range_count(range);
+  size_t size = range_count(range) * align;
   assert(range_is_valid(range));
-  assert(index <= array_length(self));
-  array_slide(self, index, count);
-  buffer_slice(&src, 0, count * align);
-  buffer_slice(&dst, index * align, count * align);
+  assert(range->begin <= array_length(self));
+  array_slide(self, range);
+  buffer_slice(&src, 0, size);
+  buffer_slice(&dst, range->begin * align, size);
   buffer_memcpy(&dst, buf);
 }
 void array_remove(struct array *self, const struct range *range) {
+  struct range inv;
   assert(range_is_valid(range));
   assert(range->end <= array_length(self));
-  array_slide(self, range->end, -range_count(range));
+  inv.begin = range->end;
+  inv.end = range->begin;
+  array_slide(self, &inv);
 }
