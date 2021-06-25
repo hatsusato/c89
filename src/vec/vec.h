@@ -3,6 +3,7 @@
 
 #include "util/type.h"
 
+struct buffer;
 struct range;
 struct vec;
 
