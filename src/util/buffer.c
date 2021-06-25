@@ -43,3 +43,7 @@ void buffer_slide(struct buffer *buf, size_t from, size_t to, size_t size) {
   buffer_slice(&dst, to, size);
   buffer_memmove(&dst, &src);
 }
+void buffer_sort(struct buffer *buf, index_t count, align_t align, cmp_t cmp) {
+  assert(0 <= count && count * align <= buf->size);
+  qsort(buf->ptr, count, align, cmp);
+}
