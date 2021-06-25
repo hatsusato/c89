@@ -97,3 +97,9 @@ void array_sort(struct array *self, cmp_t cmp) {
 void *array_search(const struct array *self, const void *key, cmp_t cmp) {
   return buffer_search(&self->buf, key, self->len, self->align, cmp);
 }
+void array_map(struct array *self, void (*map)(void *)) {
+  index_t index;
+  for (index = 0; index < array_length(self); index++) {
+    map(array_at(self, index));
+  }
+}

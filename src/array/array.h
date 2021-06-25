@@ -28,5 +28,6 @@ void array_pop(struct array *);
 void array_clear(struct array *);
 void array_sort(struct array *, cmp_t);
 void *array_search(const struct array *, const void *, cmp_t);
+void array_map(struct array *, void (*)(void *));
 
 #endif /* INCLUDE_GUARD_9AEC46FD_3C00_49FC_AB18_C05CB1E03D70 */
