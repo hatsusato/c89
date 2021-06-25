@@ -27,14 +27,16 @@
     }                                         \
     assert(vec_length(vec) == len + count);   \
   } while (false)
-#define vec_unittest_pop(vec, count)           \
-  do {                                         \
-    int i;                                     \
-    index_t len = vec_length(vec);             \
-    for (i = 0; i < count; i++) {              \
-      vec_remove(vec, vec_length(vec) - 1, 1); \
-    }                                          \
-    assert(vec_length(vec) == len - count);    \
+#define vec_unittest_pop(vec, count)              \
+  do {                                            \
+    int i;                                        \
+    index_t len = vec_length(vec);                \
+    struct range range;                           \
+    for (i = 0; i < count; i++) {                 \
+      range_init(&range, vec_length(vec) - 1, 1); \
+      vec_remove(vec, &range);                    \
+    }                                             \
+    assert(vec_length(vec) == len - count);       \
   } while (false)
 #define vec_unittest_range(vec, start, begin, end)  \
   do {                                              \
@@ -58,9 +60,12 @@
     vec_insert(vec, &range, &buf);                  \
     buffer_free(&buf);                              \
   } while (false)
-#define vec_unittest_remove(vec, begin, end) \
-  do {                                       \
-    vec_remove(vec, begin, end - begin);     \
+#define vec_unittest_remove(vec, b, e) \
+  do {                                 \
+    struct range range;                \
+    range.begin = b;                   \
+    range.end = e;                     \
+    vec_remove(vec, &range);           \
   } while (false)
 
 void vec_unittest(void) {

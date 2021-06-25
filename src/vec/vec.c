@@ -71,13 +71,13 @@ void vec_insert(struct vec *self, const struct range *range,
   vec_reserve(self, len + count);
   array_insert(vec_inner(self), range, buf);
 }
-void vec_remove(struct vec *self, index_t index, index_t count) {
-  struct range range;
-  range_init(&range, index, count);
-  assert(range_is_valid(&range));
-  assert(range.end <= vec_length(self));
-  array_remove(vec_inner(self), &range);
+void vec_remove(struct vec *self, const struct range *range) {
+  assert(range_is_valid(range));
+  assert(range->end <= vec_length(self));
+  array_remove(vec_inner(self), range);
 }
 void vec_clear(struct vec *self) {
-  vec_remove(self, 0, vec_length(self));
+  struct range range;
+  range_init(&range, 0, vec_length(self));
+  vec_remove(self, &range);
 }
