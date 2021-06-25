@@ -54,3 +54,8 @@ void buffer_sort(struct buffer *self, index_t count, align_t align, cmp_t cmp) {
   assert(0 <= count && count * align <= self->size);
   qsort(self->ptr, count, align, cmp);
 }
+void *buffer_search(const struct buffer *self, const void *key, index_t count,
+                    align_t align, cmp_t cmp) {
+  assert(0 <= count && count * align <= self->size);
+  return bsearch(key, self->ptr, count, align, cmp);
+}
