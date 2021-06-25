@@ -26,6 +26,7 @@
 void array_unittest(void) {
   struct array array;
   struct buffer buf;
+  struct range range;
   int i;
   buffer_malloc(&buf, 100 * sizeof(int));
   array_init(&array, sizeof(int));
@@ -38,7 +39,9 @@ void array_unittest(void) {
   }
   assert(array_length(&array) == 100);
   array_unittest_range(array, 0, 0, 100);
-  array_remove(&array, 0, 100);
+  range.begin = 0;
+  range.end = array_length(&array);
+  array_remove(&array, &range);
   assert(array_capacity(&array) == 100);
   assert(array_length(&array) == 0);
   buffer_free(&buf);

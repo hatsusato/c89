@@ -69,7 +69,8 @@ void array_insert(struct array *self, const struct range *range,
   buffer_slice(&dst, index * align, count * align);
   buffer_memcpy(&dst, buf);
 }
-void array_remove(struct array *self, index_t index, index_t count) {
+void array_remove(struct array *self, const struct range *range) {
+  index_t index = range->begin, count = range->end - range->begin;
   assert(0 <= index && 0 <= count);
   assert(index + count <= array_length(self));
   array_slide(self, index + count, -count);
