@@ -82,3 +82,6 @@ void vec_pop(struct vec *self) {
 void vec_clear(struct vec *self) {
   array_clear(vec_inner(self));
 }
+void vec_sort(struct vec *self, cmp_t cmp) {
+  array_sort(vec_inner(self), cmp);
+}
