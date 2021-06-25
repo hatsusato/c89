@@ -3,6 +3,7 @@
 
 #include "util/type.h"
 
+struct range;
 struct vec;
 
 struct vec *vec_new(align_t);
@@ -14,7 +15,7 @@ void vec_reserve(struct vec *, index_t);
 index_t vec_capacity(const struct vec *);
 index_t vec_length(const struct vec *);
 void *vec_at(struct vec *, index_t);
-void vec_insert(struct vec *, index_t, index_t, const struct buffer *);
+void vec_insert(struct vec *, const struct range *, const struct buffer *);
 void vec_remove(struct vec *, index_t, index_t);
 void vec_clear(struct vec *);
 

@@ -39,7 +39,9 @@ void vec_free(struct vec *self) {
 void vec_reserve(struct vec *self, index_t count) {
   struct vec tmp;
   struct buffer buf;
+  struct range range;
   index_t cap = vec_capacity(self);
+  range_init(&range, 0, vec_length(self));
   assert(0 <= count);
   if (count <= cap) {
     return;
@@ -47,7 +49,7 @@ void vec_reserve(struct vec *self, index_t count) {
   vec_init(&tmp, vec_align(self));
   vec_malloc(&tmp, UTIL_MAX(count, 2 * cap));
   array_get(vec_inner(self), &buf);
-  vec_insert(&tmp, 0, vec_length(self), &buf);
+  vec_insert(&tmp, &range, &buf);
   UTIL_SWAP(struct vec, self, &tmp);
   vec_free(&tmp);
 }
@@ -60,16 +62,14 @@ index_t vec_length(const struct vec *self) {
 void *vec_at(struct vec *self, index_t index) {
   return array_at(vec_inner(self), index);
 }
-void vec_insert(struct vec *self, index_t index, index_t count,
+void vec_insert(struct vec *self, const struct range *range,
                 const struct buffer *buf) {
-  index_t len = vec_length(self);
-  struct range range;
-  range_init(&range, index, count);
-  assert(range_is_valid(&range));
-  assert(index <= len);
+  index_t len = vec_length(self), count = range_count(range);
+  assert(range_is_valid(range));
+  assert(range->begin <= len);
   assert(count * vec_align(self) <= buf->size);
   vec_reserve(self, len + count);
-  array_insert(vec_inner(self), &range, buf);
+  array_insert(vec_inner(self), range, buf);
 }
 void vec_remove(struct vec *self, index_t index, index_t count) {
   struct range range;

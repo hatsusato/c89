@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "util/buffer.h"
+#include "util/range.h"
 #include "vec.h"
 #include "vec_ptr.h"
 
@@ -13,16 +14,18 @@
     assert(vec_length(vec) == len);       \
     assert(vec_capacity(vec) == cap);     \
   } while (false)
-#define vec_unittest_push(vec, count)            \
-  do {                                           \
-    int i;                                       \
-    index_t len = vec_length(vec);               \
-    for (i = 0; i < count; i++) {                \
-      struct buffer buf;                         \
-      BUFFER_INIT(&buf, &i);                     \
-      vec_insert(vec, vec_length(vec), 1, &buf); \
-    }                                            \
-    assert(vec_length(vec) == len + count);      \
+#define vec_unittest_push(vec, count)         \
+  do {                                        \
+    int i;                                    \
+    index_t len = vec_length(vec);            \
+    for (i = 0; i < count; i++) {             \
+      struct buffer buf;                      \
+      struct range range;                     \
+      range_init(&range, vec_length(vec), 1); \
+      BUFFER_INIT(&buf, &i);                  \
+      vec_insert(vec, &range, &buf);          \
+    }                                         \
+    assert(vec_length(vec) == len + count);   \
   } while (false)
 #define vec_unittest_pop(vec, count)           \
   do {                                         \
@@ -45,12 +48,14 @@
   do {                                              \
     int i, count = end - begin, *p;                 \
     struct buffer buf;                              \
+    struct range range;                             \
+    range_init(&range, start, count);               \
     buffer_malloc(&buf, sizeof(int) * count);       \
     p = (int *)buf.ptr;                             \
     for (i = begin; i < end; i++, p++) {            \
       *p = i;                                       \
     }                                               \
-    vec_insert(vec, start, count, &buf);            \
+    vec_insert(vec, &range, &buf);                  \
     buffer_free(&buf);                              \
   } while (false)
 #define vec_unittest_remove(vec, begin, end) \

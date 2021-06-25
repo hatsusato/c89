@@ -2,6 +2,7 @@
 
 #include "type.h"
 #include "util/buffer.h"
+#include "util/range.h"
 #include "vec.h"
 
 static struct vec_ptr *vec_ptr_malloc(void) {
@@ -45,8 +46,10 @@ void *vec_ptr_at(struct vec_ptr *self, index_t index) {
 void vec_ptr_push(struct vec_ptr *self, void *ptr) {
   struct vec *vec = &self->vec;
   struct buffer buf;
+  struct range range;
+  range_init(&range, vec_length(vec), 1);
   BUFFER_INIT(&buf, &ptr);
-  vec_insert(vec, vec_length(vec), 1, &buf);
+  vec_insert(vec, &range, &buf);
 }
 void vec_ptr_pop(struct vec_ptr *self) {
   void *ptr = vec_ptr_at(self, vec_ptr_length(self) - 1);
