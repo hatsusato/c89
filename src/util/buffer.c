@@ -6,21 +6,21 @@
 
 #include "util.h"
 
-void buffer_init(struct buffer *buf, void *ptr, size_t size) {
-  buf->ptr = ptr;
-  buf->size = size;
+void buffer_init(struct buffer *self, void *ptr, size_t size) {
+  self->ptr = ptr;
+  self->size = size;
 }
-void *buffer_malloc(struct buffer *buf, size_t size) {
-  buffer_init(buf, malloc(size), size);
-  return buf->ptr;
+void *buffer_malloc(struct buffer *self, size_t size) {
+  buffer_init(self, malloc(size), size);
+  return self->ptr;
 }
-void buffer_free(struct buffer *buf) {
-  free(buf->ptr);
-  buffer_init(buf, NULL, 0);
+void buffer_free(struct buffer *self) {
+  free(self->ptr);
+  buffer_init(self, NULL, 0);
 }
-bool_t buffer_is_null(const struct buffer *buf) {
-  assert(buf->ptr || buf->size == 0);
-  return !buf->ptr;
+bool_t buffer_is_null(const struct buffer *self) {
+  assert(self->ptr || self->size == 0);
+  return !self->ptr;
 }
 void buffer_memcpy(struct buffer *dst, const struct buffer *src) {
   if (dst->ptr && src->ptr) {
@@ -32,18 +32,18 @@ void buffer_memmove(struct buffer *dst, const struct buffer *src) {
     memmove(dst->ptr, src->ptr, UTIL_MIN(dst->size, src->size));
   }
 }
-void buffer_slice(struct buffer *buf, size_t offset, size_t size) {
-  assert(offset + size <= buf->size);
-  buf->ptr += offset;
-  buf->size = size;
+void buffer_slice(struct buffer *self, size_t offset, size_t size) {
+  assert(offset + size <= self->size);
+  self->ptr += offset;
+  self->size = size;
 }
-void buffer_slide(struct buffer *buf, size_t from, size_t to, size_t size) {
-  struct buffer src = *buf, dst = *buf;
+void buffer_slide(struct buffer *self, size_t from, size_t to, size_t size) {
+  struct buffer src = *self, dst = *self;
   buffer_slice(&src, from, size);
   buffer_slice(&dst, to, size);
   buffer_memmove(&dst, &src);
 }
-void buffer_sort(struct buffer *buf, index_t count, align_t align, cmp_t cmp) {
-  assert(0 <= count && count * align <= buf->size);
-  qsort(buf->ptr, count, align, cmp);
+void buffer_sort(struct buffer *self, index_t count, align_t align, cmp_t cmp) {
+  assert(0 <= count && count * align <= self->size);
+  qsort(self->ptr, count, align, cmp);
 }
