@@ -78,6 +78,13 @@ void vec_remove(struct vec *self, const struct range *range) {
   assert(range->end <= vec_length(self));
   array_remove(vec_inner(self), range);
 }
+void vec_push(struct vec *self, const struct buffer *buf) {
+  vec_reserve(self, vec_length(self) + 1);
+  array_push(vec_inner(self), buf);
+}
+void vec_pop(struct vec *self) {
+  array_pop(vec_inner(self));
+}
 void vec_clear(struct vec *self) {
   array_clear(vec_inner(self));
 }

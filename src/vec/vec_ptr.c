@@ -44,19 +44,14 @@ void *vec_ptr_at(struct vec_ptr *self, index_t index) {
   return *(void **)vec_at(&self->vec, index);
 }
 void vec_ptr_push(struct vec_ptr *self, void *ptr) {
-  struct vec *vec = &self->vec;
   struct buffer buf;
-  struct range range;
-  range_init(&range, vec_length(vec), 1);
   BUFFER_INIT(&buf, &ptr);
-  vec_insert(vec, &range, &buf);
+  vec_push(&self->vec, &buf);
 }
 void vec_ptr_pop(struct vec_ptr *self) {
-  struct range range;
   void *ptr = vec_ptr_at(self, vec_ptr_length(self) - 1);
-  range_init(&range, vec_length(&self->vec) - 1, 1);
   vec_ptr_destruct(self, ptr);
-  vec_remove(&self->vec, &range);
+  vec_pop(&self->vec);
 }
 void vec_ptr_clear(struct vec_ptr *self) {
   struct range range;
