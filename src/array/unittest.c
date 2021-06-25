@@ -5,13 +5,11 @@
 #include "array.h"
 #include "util/range.h"
 
-#define array_unittest_push(array, val)          \
-  do {                                           \
-    struct buffer buf;                           \
-    struct range range;                          \
-    buffer_init(&buf, &val, sizeof(int));        \
-    range_init(&range, array_length(&array), 1); \
-    array_insert(&array, &range, &buf);          \
+#define array_unittest_push(array, val)   \
+  do {                                    \
+    struct buffer buf;                    \
+    buffer_init(&buf, &val, sizeof(int)); \
+    array_push(&array, &buf);             \
   } while (false)
 #define array_unittest_range(array, index, begin, end) \
   do {                                                 \
@@ -25,7 +23,6 @@
 void array_unittest(void) {
   struct array array;
   struct buffer buf;
-  struct range range;
   int i;
   buffer_malloc(&buf, 100 * sizeof(int));
   array_init(&array, sizeof(int));
@@ -38,8 +35,7 @@ void array_unittest(void) {
   }
   assert(array_length(&array) == 100);
   array_unittest_range(array, 0, 0, 100);
-  range_init(&range, 0, 100);
-  array_remove(&array, &range);
+  array_clear(&array);
   assert(array_capacity(&array) == 100);
   assert(array_length(&array) == 0);
   buffer_free(&buf);
