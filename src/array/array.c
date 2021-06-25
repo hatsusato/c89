@@ -94,3 +94,6 @@ void array_clear(struct array *self) {
 void array_sort(struct array *self, cmp_t cmp) {
   buffer_sort(&self->buf, self->len, self->align, cmp);
 }
+void *array_search(struct array *self, const void *key, cmp_t cmp) {
+  return buffer_search(&self->buf, key, self->len, self->align, cmp);
+}
