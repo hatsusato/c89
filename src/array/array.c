@@ -62,7 +62,7 @@ void array_insert(struct array *self, const struct range *range,
   struct buffer src = *buf, dst = self->buf;
   align_t align = array_align(self);
   index_t index = range->begin, count = range->end - range->begin;
-  assert(0 <= index && 0 <= count);
+  assert(range_is_valid(range));
   assert(index <= array_length(self));
   array_slide(self, index, count);
   buffer_slice(&src, 0, count * align);
@@ -70,8 +70,8 @@ void array_insert(struct array *self, const struct range *range,
   buffer_memcpy(&dst, buf);
 }
 void array_remove(struct array *self, const struct range *range) {
-  index_t index = range->begin, count = range->end - range->begin;
-  assert(0 <= index && 0 <= count);
-  assert(index + count <= array_length(self));
-  array_slide(self, index + count, -count);
+  index_t count = range->end - range->begin;
+  assert(range_is_valid(range));
+  assert(range->end <= array_length(self));
+  array_slide(self, range->end, -count);
 }

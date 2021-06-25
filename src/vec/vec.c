@@ -64,18 +64,18 @@ void vec_insert(struct vec *self, index_t index, index_t count,
                 const struct buffer *buf) {
   index_t len = vec_length(self);
   struct range range;
-  assert(0 <= index && 0 <= count);
+  range_init(&range, index, count);
+  assert(range_is_valid(&range));
   assert(index <= len);
   assert(count * vec_align(self) <= buf->size);
   vec_reserve(self, len + count);
-  range_init(&range, index, count);
   array_insert(vec_inner(self), &range, buf);
 }
 void vec_remove(struct vec *self, index_t index, index_t count) {
   struct range range;
-  assert(0 <= index && 0 <= count);
-  assert(index + count <= vec_length(self));
   range_init(&range, index, count);
+  assert(range_is_valid(&range));
+  assert(range.end <= vec_length(self));
   array_remove(vec_inner(self), &range);
 }
 void vec_clear(struct vec *self) {
