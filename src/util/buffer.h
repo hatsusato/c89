@@ -10,7 +10,6 @@ struct buffer {
   byte_t *ptr;
   size_t size;
 };
-typedef int (*cmp_t)(const void *, const void *);
 
 void buffer_init(struct buffer *, void *, size_t);
 void *buffer_at(const struct buffer *, size_t);

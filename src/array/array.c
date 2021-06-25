@@ -89,6 +89,6 @@ void array_clear(struct array *self) {
   range_init(&range, 0, array_length(self));
   array_remove(self, &range);
 }
-void array_sort(struct array *self, int (*cmp)(const void *, const void *)) {
+void array_sort(struct array *self, cmp_t cmp) {
   buffer_sort(&self->buf, self->len, self->align, cmp);
 }
