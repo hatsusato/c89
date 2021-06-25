@@ -9,5 +9,6 @@ struct range {
 
 void range_init(struct range *, index_t, index_t);
 bool_t range_is_valid(const struct range *);
+index_t range_count(const struct range *);
 
 #endif /* INCLUDE_GUARD_08A15673_FD7A_4FF2_A832_8E821FC95753 */
