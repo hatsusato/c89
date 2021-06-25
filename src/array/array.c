@@ -2,6 +2,8 @@
 
 #include <assert.h>
 
+#include "util/range.h"
+
 static void array_slide(struct array *self, index_t index, index_t count) {
   align_t align = array_align(self);
   index_t length = array_length(self);
@@ -55,10 +57,11 @@ void *array_at(struct array *self, index_t index) {
   assert(0 <= index && index < length);
   return self->buf.ptr + index * array_align(self);
 }
-void array_insert(struct array *self, index_t index, index_t count,
+void array_insert(struct array *self, const struct range *range,
                   const struct buffer *buf) {
   struct buffer src = *buf, dst = self->buf;
   align_t align = array_align(self);
+  index_t index = range->begin, count = range->end - range->begin;
   assert(0 <= index && 0 <= count);
   assert(index <= array_length(self));
   array_slide(self, index, count);

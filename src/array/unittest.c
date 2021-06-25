@@ -3,12 +3,16 @@
 #include <assert.h>
 
 #include "array.h"
+#include "util/range.h"
 
-#define array_unittest_push(array, val)                  \
-  do {                                                   \
-    struct buffer buf;                                   \
-    buffer_init(&buf, &val, sizeof(int));                \
-    array_insert(&array, array_length(&array), 1, &buf); \
+#define array_unittest_push(array, val)   \
+  do {                                    \
+    struct buffer buf;                    \
+    struct range range;                   \
+    buffer_init(&buf, &val, sizeof(int)); \
+    range.begin = array_length(&array);   \
+    range.end = range.begin + 1;          \
+    array_insert(&array, &range, &buf);   \
   } while (false)
 #define array_unittest_range(array, index, begin, end) \
   do {                                                 \

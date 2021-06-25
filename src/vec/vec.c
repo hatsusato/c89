@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "type.h"
+#include "util/range.h"
 #include "util/util.h"
 
 static struct array *vec_inner(const struct vec *self) {
@@ -62,11 +63,14 @@ void *vec_at(struct vec *self, index_t index) {
 void vec_insert(struct vec *self, index_t index, index_t count,
                 const struct buffer *buf) {
   index_t len = vec_length(self);
+  struct range range;
   assert(0 <= index && 0 <= count);
   assert(index <= len);
   assert(count * vec_align(self) <= buf->size);
   vec_reserve(self, len + count);
-  array_insert(vec_inner(self), index, count, buf);
+  range.begin = index;
+  range.end = index + count;
+  array_insert(vec_inner(self), &range, buf);
 }
 void vec_remove(struct vec *self, index_t index, index_t count) {
   assert(0 <= index && 0 <= count);
