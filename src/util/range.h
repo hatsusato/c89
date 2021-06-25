@@ -7,4 +7,6 @@ struct range {
   index_t begin, end;
 };
 
+void range_init(struct range *, index_t, index_t);
+
 #endif /* INCLUDE_GUARD_08A15673_FD7A_4FF2_A832_8E821FC95753 */

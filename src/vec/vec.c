@@ -68,16 +68,14 @@ void vec_insert(struct vec *self, index_t index, index_t count,
   assert(index <= len);
   assert(count * vec_align(self) <= buf->size);
   vec_reserve(self, len + count);
-  range.begin = index;
-  range.end = index + count;
+  range_init(&range, index, count);
   array_insert(vec_inner(self), &range, buf);
 }
 void vec_remove(struct vec *self, index_t index, index_t count) {
   struct range range;
   assert(0 <= index && 0 <= count);
   assert(index + count <= vec_length(self));
-  range.begin = index;
-  range.end = index + count;
+  range_init(&range, index, count);
   array_remove(vec_inner(self), &range);
 }
 void vec_clear(struct vec *self) {
