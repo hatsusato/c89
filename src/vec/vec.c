@@ -36,22 +36,24 @@ void vec_malloc(struct vec *self, index_t count) {
 void vec_free(struct vec *self) {
   array_free(vec_inner(self));
 }
-void vec_reserve(struct vec *self, index_t count) {
-  struct vec tmp;
+static void vec_assign(struct vec *dst, const struct vec *src, index_t count) {
   struct buffer buf;
   struct range range;
+  array_get(vec_inner(src), &buf);
+  range_init(&range, 0, vec_length(src));
+  vec_init(dst, vec_align(src));
+  vec_malloc(dst, count);
+  vec_insert(dst, &range, &buf);
+}
+void vec_reserve(struct vec *self, index_t count) {
   index_t cap = vec_capacity(self);
-  range_init(&range, 0, vec_length(self));
   assert(0 <= count);
-  if (count <= cap) {
-    return;
+  if (count > cap) {
+    struct vec tmp;
+    vec_assign(&tmp, self, UTIL_MAX(count, 2 * cap));
+    UTIL_SWAP(struct vec, self, &tmp);
+    vec_free(&tmp);
   }
-  vec_init(&tmp, vec_align(self));
-  vec_malloc(&tmp, UTIL_MAX(count, 2 * cap));
-  array_get(vec_inner(self), &buf);
-  vec_insert(&tmp, &range, &buf);
-  UTIL_SWAP(struct vec, self, &tmp);
-  vec_free(&tmp);
 }
 index_t vec_capacity(const struct vec *self) {
   return array_capacity(vec_inner(self));
