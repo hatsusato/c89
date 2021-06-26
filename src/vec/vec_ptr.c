@@ -48,8 +48,7 @@ void vec_ptr_push(struct vec_ptr *self, void *ptr) {
   struct buffer buf;
   struct slice slice;
   BUFFER_INIT(&buf, &ptr);
-  slice_init(&slice, sizeof(void *));
-  slice_set(&slice, &buf);
+  slice_init(&slice, sizeof(void *), &buf);
   vec_push(&self->vec, &slice);
 }
 void vec_ptr_pop(struct vec_ptr *self) {

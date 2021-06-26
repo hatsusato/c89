@@ -5,10 +5,10 @@
 #include "buffer.h"
 #include "range.h"
 
-void slice_init(struct slice *self, align_t align) {
+void slice_init(struct slice *self, align_t align, const struct buffer *buf) {
   self->align = align;
-  self->ptr = NULL;
-  self->len = 0;
+  self->ptr = buffer_at(buf, 0);
+  self->len = buffer_size(buf) / align;
 }
 void slice_set(struct slice *self, const struct buffer *buf) {
   self->ptr = buffer_at(buf, 0);

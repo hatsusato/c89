@@ -23,8 +23,7 @@
       struct buffer buf;                    \
       struct slice slice;                   \
       BUFFER_INIT(&buf, &i);                \
-      slice_init(&slice, sizeof(i));        \
-      slice_set(&slice, &buf);              \
+      slice_init(&slice, sizeof(i), &buf);  \
       vec_push(vec, &slice);                \
     }                                       \
     assert(vec_length(vec) == len + count); \
@@ -58,8 +57,7 @@
     for (i = begin; i < end; i++, p++) {            \
       *p = i;                                       \
     }                                               \
-    slice_init(&slice, sizeof(int));                \
-    slice_set(&slice, &buf);                        \
+    slice_init(&slice, sizeof(int), &buf);          \
     vec_insert(vec, &range, &slice);                \
     buffer_free(&buf);                              \
   } while (false)

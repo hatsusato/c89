@@ -12,7 +12,7 @@ struct slice {
   index_t len;
 };
 
-void slice_init(struct slice *, align_t);
+void slice_init(struct slice *, align_t, const struct buffer *);
 void slice_set(struct slice *, const struct buffer *);
 void slice_slice(struct slice *, const struct range *);
 bool_t slice_is_null(const struct slice *);
