@@ -4,6 +4,7 @@
 #include "util/buffer.h"
 
 struct range;
+struct slice;
 
 struct array {
   align_t align;
@@ -22,7 +23,7 @@ align_t array_align(const struct array *);
 index_t array_capacity(const struct array *);
 index_t array_length(const struct array *);
 void *array_at(struct array *, index_t);
-void array_insert(struct array *, const struct range *, const struct buffer *);
+void array_insert(struct array *, const struct range *, const struct slice *);
 void array_remove(struct array *, const struct range *);
 void array_push(struct array *, const struct buffer *);
 void array_pop(struct array *);

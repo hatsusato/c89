@@ -64,20 +64,17 @@ void *array_at(struct array *self, index_t index) {
   return buffer_at(&self->buf, index * array_align(self));
 }
 void array_insert(struct array *self, const struct range *range,
-                  const struct buffer *buf) {
+                  const struct slice *slice) {
   struct buffer dst = self->buf;
-  struct slice slice;
   align_t align = array_align(self);
   index_t index = range->begin;
   size_t size = range_count(range) * align;
   assert(range_is_valid(range));
   assert(index <= array_length(self));
-  assert(size <= buffer_size(buf));
+  assert(size <= slice_size(slice));
   array_slide(self, range);
   buffer_slice(&dst, index * align, size);
-  slice_init(&slice, align);
-  slice_set(&slice, buf);
-  buffer_memcpy(&dst, &slice);
+  buffer_memcpy(&dst, slice);
 }
 void array_remove(struct array *self, const struct range *range) {
   struct range inv;
@@ -89,8 +86,11 @@ void array_remove(struct array *self, const struct range *range) {
 }
 void array_push(struct array *self, const struct buffer *buf) {
   struct range range;
+  struct slice slice;
   range_init(&range, array_length(self), 1);
-  array_insert(self, &range, buf);
+  slice_init(&slice, array_align(self));
+  slice_set(&slice, buf);
+  array_insert(self, &range, &slice);
 }
 void array_pop(struct array *self) {
   struct range range;

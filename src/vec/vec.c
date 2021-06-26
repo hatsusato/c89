@@ -4,6 +4,7 @@
 
 #include "type.h"
 #include "util/range.h"
+#include "util/slice.h"
 #include "util/util.h"
 
 static struct array *vec_inner(const struct vec *self) {
@@ -66,8 +67,11 @@ void *vec_at(struct vec *self, index_t index) {
 }
 void vec_insert(struct vec *self, const struct range *range,
                 const struct buffer *buf) {
+  struct slice slice;
+  slice_init(&slice, array_align(vec_inner(self)));
+  slice_set(&slice, buf);
   vec_reserve(self, vec_length(self) + range_count(range));
-  array_insert(vec_inner(self), range, buf);
+  array_insert(vec_inner(self), range, &slice);
 }
 void vec_remove(struct vec *self, const struct range *range) {
   array_remove(vec_inner(self), range);
