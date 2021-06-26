@@ -21,6 +21,9 @@ bool_t slice_is_null(const struct slice *self) {
   assert(self->ptr || self->len == 0);
   return !self->ptr;
 }
+index_t slice_length(const struct slice *self) {
+  return self->len;
+}
 size_t slice_size(const struct slice *self) {
   return self->len * self->align;
 }
