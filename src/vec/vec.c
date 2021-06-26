@@ -39,7 +39,10 @@ void vec_malloc(struct vec *self, index_t count) {
   array_init(vec_inner(self), align, &buf);
 }
 void vec_free(struct vec *self) {
-  array_free(vec_inner(self));
+  struct buffer buf;
+  array_get(vec_inner(self), &buf);
+  buffer_free(&buf);
+  array_init(vec_inner(self), vec_align(self), NULL);
 }
 static void vec_assign(struct vec *dst, const struct vec *src, index_t count) {
   struct slice slice;

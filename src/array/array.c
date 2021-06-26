@@ -23,10 +23,6 @@ void array_init(struct array *self, align_t align, struct buffer *buf) {
   }
   self->len = 0;
 }
-void array_free(struct array *self) {
-  buffer_free(&self->buf);
-  self->len = 0;
-}
 void array_get(struct array *self, struct buffer *buf) {
   *buf = self->buf;
 }
