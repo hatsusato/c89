@@ -22,7 +22,6 @@ bool_t buffer_is_null(const struct buffer *);
 void buffer_memcpy(struct buffer *, const struct slice *);
 void buffer_slice(struct buffer *, size_t, size_t);
 void buffer_slide(struct buffer *, size_t, size_t, size_t);
-void buffer_sort(struct buffer *, index_t, align_t, cmp_t);
 void *buffer_search(const struct buffer *, const void *, index_t, align_t,
                     cmp_t);
 

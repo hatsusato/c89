@@ -1,6 +1,7 @@
 #include "array.h"
 
 #include <assert.h>
+#include <stdlib.h>
 
 #include "util/range.h"
 #include "util/slice.h"
@@ -102,7 +103,7 @@ void array_clear(struct array *self) {
   array_remove(self, &range);
 }
 void array_sort(struct array *self, cmp_t cmp) {
-  buffer_sort(&self->buf, self->len, self->align, cmp);
+  qsort(array_at(self, 0), array_length(self), array_align(self), cmp);
 }
 void *array_search(const struct array *self, const void *key, cmp_t cmp) {
   return buffer_search(&self->buf, key, self->len, self->align, cmp);
