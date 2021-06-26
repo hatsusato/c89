@@ -3,6 +3,8 @@
 
 #include "type.h"
 
+struct buffer;
+
 struct slice {
   align_t align;
   const byte_t *ptr;
@@ -10,6 +12,7 @@ struct slice {
 };
 
 void slice_init(struct slice *, align_t);
+void slice_set(struct slice *, const struct buffer *);
 size_t slice_size(const struct slice *);
 const void *slice_at(const struct slice *, index_t);
 
