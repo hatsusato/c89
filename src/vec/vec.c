@@ -31,8 +31,12 @@ void vec_init(struct vec *self, align_t align) {
   array_init(vec_inner(self), align, NULL);
 }
 void vec_malloc(struct vec *self, index_t count) {
+  struct buffer buf;
+  align_t align = vec_align(self);
   assert(array_is_null(vec_inner(self)));
-  array_malloc(vec_inner(self), count);
+  assert(0 <= count);
+  buffer_malloc(&buf, align * count);
+  array_init(vec_inner(self), align, &buf);
 }
 void vec_free(struct vec *self) {
   array_free(vec_inner(self));
