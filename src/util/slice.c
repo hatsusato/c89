@@ -10,10 +10,6 @@ void slice_init(struct slice *self, align_t align, const struct buffer *buf) {
   self->ptr = buffer_at(buf, 0);
   self->len = buffer_size(buf) / align;
 }
-void slice_set(struct slice *self, const struct buffer *buf) {
-  self->ptr = buffer_at(buf, 0);
-  self->len = buffer_size(buf) / self->align;
-}
 void slice_slice(struct slice *self, const struct range *range) {
   assert(range_is_valid(range));
   assert(range->end <= self->len);
