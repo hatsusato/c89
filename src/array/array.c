@@ -35,6 +35,13 @@ void array_set(struct array *self, const struct buffer *buf) {
   self->buf = *buf;
   self->len = 0;
 }
+void array_slice(const struct array *self, struct slice *slice) {
+  struct buffer buf;
+  align_t align = array_align(self);
+  buffer_init(&buf, buffer_at(&self->buf, 0), array_length(self) * align);
+  slice_init(slice, align);
+  slice_set(slice, &buf);
+}
 bool_t array_is_null(const struct array *self) {
   bool_t ret = buffer_is_null(&self->buf);
   assert(!ret || self->len == 0);
