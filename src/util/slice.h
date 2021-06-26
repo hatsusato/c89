@@ -9,6 +9,7 @@ struct slice {
   index_t len;
 };
 
+void slice_init(struct slice *, align_t);
 size_t slice_size(const struct slice *);
 const void *slice_at(const struct slice *, index_t);
 

@@ -2,6 +2,11 @@
 
 #include <assert.h>
 
+void slice_init(struct slice *self, align_t align) {
+  self->align = align;
+  self->ptr = NULL;
+  self->len = 0;
+}
 size_t slice_size(const struct slice *self) {
   return self->len * self->align;
 }
