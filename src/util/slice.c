@@ -2,13 +2,14 @@
 
 #include <assert.h>
 
-#include "buffer.h"
 #include "range.h"
 
-void slice_init(struct slice *self, align_t align, const struct buffer *buf) {
+void slice_init(struct slice *self, align_t align, const void *ptr,
+                index_t len) {
+  assert(0 <= len);
   self->align = align;
-  self->ptr = buffer_at(buf, 0);
-  self->len = buffer_size(buf) / align;
+  self->ptr = ptr;
+  self->len = len;
 }
 void slice_slice(struct slice *self, const struct range *range) {
   assert(range_is_valid(range));

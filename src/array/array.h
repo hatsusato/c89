@@ -15,7 +15,7 @@ struct array {
 void array_init(struct array *, align_t, struct buffer *);
 void array_get(struct array *, struct buffer *);
 void array_set(struct array *, const struct buffer *);
-void array_slice(const struct array *, struct slice *);
+void array_slice(struct array *, struct slice *);
 bool_t array_is_null(const struct array *);
 align_t array_align(const struct array *);
 index_t array_capacity(const struct array *);

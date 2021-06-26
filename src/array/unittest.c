@@ -6,13 +6,11 @@
 #include "util/range.h"
 #include "util/slice.h"
 
-#define array_unittest_push(array, val)    \
-  do {                                     \
-    struct buffer buf;                     \
-    struct slice slice;                    \
-    buffer_init(&buf, &val, sizeof(int));  \
-    slice_init(&slice, sizeof(int), &buf); \
-    array_push(&array, &slice);            \
+#define array_unittest_push(array, val)       \
+  do {                                        \
+    struct slice slice;                       \
+    slice_init(&slice, sizeof(int), &val, 1); \
+    array_push(&array, &slice);               \
   } while (false)
 #define array_unittest_range(array, index, begin, end) \
   do {                                                 \

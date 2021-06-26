@@ -20,10 +20,8 @@
     int i;                                  \
     index_t len = vec_length(vec);          \
     for (i = 0; i < count; i++) {           \
-      struct buffer buf;                    \
       struct slice slice;                   \
-      BUFFER_INIT(&buf, &i);                \
-      slice_init(&slice, sizeof(i), &buf);  \
+      slice_init(&slice, sizeof(i), &i, 1); \
       vec_push(vec, &slice);                \
     }                                       \
     assert(vec_length(vec) == len + count); \
@@ -45,21 +43,21 @@
       assert(*p == j);                              \
     }                                               \
   } while (false)
-#define vec_unittest_insert(vec, start, begin, end) \
-  do {                                              \
-    int i, count = end - begin, *p;                 \
-    struct buffer buf;                              \
-    struct slice slice;                             \
-    struct range range;                             \
-    range_init(&range, start, count);               \
-    buffer_malloc(&buf, sizeof(int) * count);       \
-    p = buffer_at(&buf, 0);                         \
-    for (i = begin; i < end; i++, p++) {            \
-      *p = i;                                       \
-    }                                               \
-    slice_init(&slice, sizeof(int), &buf);          \
-    vec_insert(vec, &range, &slice);                \
-    buffer_free(&buf);                              \
+#define vec_unittest_insert(vec, start, begin, end)             \
+  do {                                                          \
+    int i, count = end - begin, *p;                             \
+    struct buffer buf;                                          \
+    struct slice slice;                                         \
+    struct range range;                                         \
+    range_init(&range, start, count);                           \
+    buffer_malloc(&buf, sizeof(int) * count);                   \
+    p = buffer_at(&buf, 0);                                     \
+    for (i = begin; i < end; i++, p++) {                        \
+      *p = i;                                                   \
+    }                                                           \
+    slice_init(&slice, sizeof(int), buffer_at(&buf, 0), count); \
+    vec_insert(vec, &range, &slice);                            \
+    buffer_free(&buf);                                          \
   } while (false)
 #define vec_unittest_remove(vec, b, e) \
   do {                                 \
