@@ -48,9 +48,6 @@ bool_t array_is_null(const struct array *self) {
 align_t array_align(const struct array *self) {
   return self->align;
 }
-index_t array_capacity(const struct array *self) {
-  return buffer_size(&self->buf) / array_align(self);
-}
 index_t array_length(const struct array *self) {
   return slice_length(&self->slice);
 }

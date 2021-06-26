@@ -28,7 +28,6 @@ void array_unittest(void) {
   buffer_malloc(&buf, 100 * sizeof(int));
   array_init(&array, sizeof(int), &buf);
   assert(array_align(&array) == sizeof(int));
-  assert(array_capacity(&array) == 100);
   assert(array_length(&array) == 0);
   for (i = 0; i < 100; i++) {
     array_unittest_push(array, i);
@@ -36,7 +35,6 @@ void array_unittest(void) {
   assert(array_length(&array) == 100);
   array_unittest_range(array, 0, 0, 100);
   array_clear(&array);
-  assert(array_capacity(&array) == 100);
   assert(array_length(&array) == 0);
   buffer_free(&buf);
 }
