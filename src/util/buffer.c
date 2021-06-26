@@ -45,8 +45,3 @@ void buffer_slide(struct buffer *self, size_t src, size_t dst, size_t size) {
   assert(dst + size <= self->size);
   memmove(self->ptr + dst, self->ptr + src, size);
 }
-void *buffer_search(const struct buffer *self, const void *key, index_t count,
-                    align_t align, cmp_t cmp) {
-  assert(0 <= count && count * align <= self->size);
-  return bsearch(key, self->ptr, count, align, cmp);
-}
