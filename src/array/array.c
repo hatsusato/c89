@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "util/range.h"
 #include "util/slice.h"
@@ -10,7 +11,9 @@ static void array_slide(struct array *self, const struct range *range) {
   align_t align = array_align(self);
   index_t len = array_length(self);
   size_t size = (len - range->begin) * align;
-  buffer_slide(&self->buf, range->begin * align, range->end * align, size);
+  void *src = array_at(self, range->begin);
+  void *dst = array_at(self, range->end);
+  memmove(dst, src, size);
   slice_init(&self->slice, align, array_at(self, 0), len + range_count(range));
 }
 
