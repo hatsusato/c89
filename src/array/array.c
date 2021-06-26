@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "util/range.h"
+#include "util/slice.h"
 
 static void array_slide(struct array *self, const struct range *range) {
   align_t align = array_align(self);
@@ -56,7 +57,8 @@ void *array_at(struct array *self, index_t index) {
 }
 void array_insert(struct array *self, const struct range *range,
                   const struct buffer *buf) {
-  struct buffer src = *buf, dst = self->buf;
+  struct buffer dst = self->buf;
+  struct slice slice;
   align_t align = array_align(self);
   index_t index = range->begin;
   size_t size = range_count(range) * align;
@@ -64,9 +66,10 @@ void array_insert(struct array *self, const struct range *range,
   assert(index <= array_length(self));
   assert(size <= buffer_size(buf));
   array_slide(self, range);
-  buffer_slice(&src, 0, size);
   buffer_slice(&dst, index * align, size);
-  buffer_memcpy(&dst, buf);
+  slice_init(&slice, align);
+  slice_set(&slice, buf);
+  buffer_memcpy(&dst, &slice);
 }
 void array_remove(struct array *self, const struct range *range) {
   struct range inv;

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "slice.h"
 #include "util.h"
 
 void buffer_init(struct buffer *self, void *ptr, size_t size) {
@@ -29,9 +30,10 @@ bool_t buffer_is_null(const struct buffer *self) {
   assert(self->ptr || self->size == 0);
   return !self->ptr;
 }
-void buffer_memcpy(struct buffer *dst, const struct buffer *src) {
-  if (dst->ptr && src->ptr) {
-    memcpy(dst->ptr, src->ptr, UTIL_MIN(dst->size, src->size));
+void buffer_memcpy(struct buffer *self, const struct slice *slice) {
+  size_t size = UTIL_MIN(self->size, slice_size(slice));
+  if (!buffer_is_null(self) && !slice_is_null(slice) && size > 0) {
+    memcpy(self->ptr, slice_at(slice, 0), size);
   }
 }
 void buffer_memmove(struct buffer *dst, const struct buffer *src) {
