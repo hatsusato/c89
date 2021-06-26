@@ -8,9 +8,11 @@
 
 static void array_slide(struct array *self, const struct range *range) {
   align_t align = array_align(self);
-  size_t size = (array_length(self) - range->begin) * align;
+  index_t len = array_length(self);
+  size_t size = (len - range->begin) * align;
   buffer_slide(&self->buf, range->begin * align, range->end * align, size);
   self->len += range_count(range);
+  slice_init(&self->slice, align, array_at(self, 0), len + range_count(range));
 }
 
 void array_init(struct array *self, align_t align, struct buffer *buf) {
@@ -18,8 +20,10 @@ void array_init(struct array *self, align_t align, struct buffer *buf) {
   self->align = align;
   if (buf) {
     self->buf = *buf;
+    slice_init(&self->slice, align, buffer_at(buf, 0), 0);
   } else {
     buffer_init(&self->buf, NULL, 0);
+    slice_init(&self->slice, align, NULL, 0);
   }
   self->len = 0;
 }
@@ -48,8 +52,9 @@ index_t array_length(const struct array *self) {
 void *array_at(struct array *self, index_t index) {
   index_t length = array_length(self);
   index += (index < 0 ? length : 0);
-  assert(0 <= index && index < length);
-  return buffer_at(&self->buf, index * array_align(self));
+  return (0 <= index && index < length)
+             ? buffer_at(&self->buf, index * array_align(self))
+             : NULL;
 }
 void array_insert(struct array *self, const struct range *range,
                   const struct slice *slice) {
