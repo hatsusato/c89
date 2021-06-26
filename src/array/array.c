@@ -85,13 +85,10 @@ void array_remove(struct array *self, const struct range *range) {
   inv.end = range->begin;
   array_slide(self, &inv);
 }
-void array_push(struct array *self, const struct buffer *buf) {
+void array_push(struct array *self, const struct slice *slice) {
   struct range range;
-  struct slice slice;
   range_init(&range, array_length(self), 1);
-  slice_init(&slice, array_align(self));
-  slice_set(&slice, buf);
-  array_insert(self, &range, &slice);
+  array_insert(self, &range, slice);
 }
 void array_pop(struct array *self) {
   struct range range;

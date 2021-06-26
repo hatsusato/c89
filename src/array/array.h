@@ -25,7 +25,7 @@ index_t array_length(const struct array *);
 void *array_at(struct array *, index_t);
 void array_insert(struct array *, const struct range *, const struct slice *);
 void array_remove(struct array *, const struct range *);
-void array_push(struct array *, const struct buffer *);
+void array_push(struct array *, const struct slice *);
 void array_pop(struct array *);
 void array_clear(struct array *);
 void array_sort(struct array *, cmp_t);
