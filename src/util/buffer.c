@@ -35,21 +35,15 @@ void buffer_memcpy(struct buffer *self, const struct slice *slice) {
     memcpy(self->ptr, slice_at(slice, 0), size);
   }
 }
-void buffer_memmove(struct buffer *dst, const struct buffer *src) {
-  if (dst->ptr && src->ptr) {
-    memmove(dst->ptr, src->ptr, UTIL_MIN(dst->size, src->size));
-  }
-}
 void buffer_slice(struct buffer *self, size_t offset, size_t size) {
   assert(offset + size <= self->size);
   self->ptr += offset;
   self->size = size;
 }
-void buffer_slide(struct buffer *self, size_t from, size_t to, size_t size) {
-  struct buffer src = *self, dst = *self;
-  buffer_slice(&src, from, size);
-  buffer_slice(&dst, to, size);
-  buffer_memmove(&dst, &src);
+void buffer_slide(struct buffer *self, size_t src, size_t dst, size_t size) {
+  assert(src + size <= self->size);
+  assert(dst + size <= self->size);
+  memmove(self->ptr + dst, self->ptr + src, size);
 }
 void buffer_sort(struct buffer *self, index_t count, align_t align, cmp_t cmp) {
   assert(0 <= count && count * align <= self->size);
