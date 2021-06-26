@@ -12,7 +12,7 @@ struct array {
   index_t len;
 };
 
-void array_init(struct array *, align_t);
+void array_init(struct array *, align_t, struct buffer *);
 void array_malloc(struct array *, index_t);
 void array_free(struct array *);
 void array_get(struct array *, struct buffer *);

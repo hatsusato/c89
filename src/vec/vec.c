@@ -28,7 +28,7 @@ void vec_delete(struct vec *self) {
 }
 void vec_init(struct vec *self, align_t align) {
   assert(align > 0);
-  array_init(vec_inner(self), align);
+  array_init(vec_inner(self), align, NULL);
 }
 void vec_malloc(struct vec *self, index_t count) {
   assert(array_is_null(vec_inner(self)));

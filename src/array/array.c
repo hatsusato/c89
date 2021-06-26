@@ -13,10 +13,14 @@ static void array_slide(struct array *self, const struct range *range) {
   self->len += range_count(range);
 }
 
-void array_init(struct array *self, align_t align) {
+void array_init(struct array *self, align_t align, struct buffer *buf) {
   assert(align > 0);
   self->align = align;
-  buffer_init(&self->buf, NULL, 0);
+  if (buf) {
+    self->buf = *buf;
+  } else {
+    buffer_init(&self->buf, NULL, 0);
+  }
   self->len = 0;
 }
 void array_malloc(struct array *self, index_t count) {
