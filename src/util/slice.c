@@ -20,6 +20,10 @@ void slice_slice(struct slice *self, const struct range *range) {
   self->ptr += range->begin;
   self->len = range_count(range);
 }
+bool_t slice_is_null(const struct slice *self) {
+  assert(self->ptr || self->len == 0);
+  return !self->ptr;
+}
 size_t slice_size(const struct slice *self) {
   return self->len * self->align;
 }
