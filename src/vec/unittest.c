@@ -21,8 +21,11 @@
     index_t len = vec_length(vec);          \
     for (i = 0; i < count; i++) {           \
       struct buffer buf;                    \
+      struct slice slice;                   \
       BUFFER_INIT(&buf, &i);                \
-      vec_push(vec, &buf);                  \
+      slice_init(&slice, sizeof(i));        \
+      slice_set(&slice, &buf);              \
+      vec_push(vec, &slice);                \
     }                                       \
     assert(vec_length(vec) == len + count); \
   } while (false)

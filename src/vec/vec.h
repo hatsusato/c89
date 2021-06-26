@@ -3,7 +3,6 @@
 
 #include "util/type.h"
 
-struct buffer;
 struct range;
 struct slice;
 struct vec;
@@ -19,7 +18,7 @@ index_t vec_length(const struct vec *);
 void *vec_at(struct vec *, index_t);
 void vec_insert(struct vec *, const struct range *, const struct slice *);
 void vec_remove(struct vec *, const struct range *);
-void vec_push(struct vec *, const struct buffer *);
+void vec_push(struct vec *, const struct slice *);
 void vec_pop(struct vec *);
 void vec_clear(struct vec *);
 void vec_sort(struct vec *, cmp_t);

@@ -3,6 +3,7 @@
 #include "type.h"
 #include "util/buffer.h"
 #include "util/range.h"
+#include "util/slice.h"
 #include "vec.h"
 
 static struct vec_ptr *vec_ptr_malloc(void) {
@@ -45,8 +46,11 @@ void *vec_ptr_at(struct vec_ptr *self, index_t index) {
 }
 void vec_ptr_push(struct vec_ptr *self, void *ptr) {
   struct buffer buf;
+  struct slice slice;
   BUFFER_INIT(&buf, &ptr);
-  vec_push(&self->vec, &buf);
+  slice_init(&slice, sizeof(void *));
+  slice_set(&slice, &buf);
+  vec_push(&self->vec, &slice);
 }
 void vec_ptr_pop(struct vec_ptr *self) {
   vec_ptr_destruct(self, vec_ptr_at(self, -1));
