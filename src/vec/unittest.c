@@ -6,6 +6,7 @@
 
 #include "util/buffer.h"
 #include "util/range.h"
+#include "util/slice.h"
 #include "vec.h"
 #include "vec_ptr.h"
 
@@ -46,6 +47,7 @@
   do {                                              \
     int i, count = end - begin, *p;                 \
     struct buffer buf;                              \
+    struct slice slice;                             \
     struct range range;                             \
     range_init(&range, start, count);               \
     buffer_malloc(&buf, sizeof(int) * count);       \
@@ -53,7 +55,9 @@
     for (i = begin; i < end; i++, p++) {            \
       *p = i;                                       \
     }                                               \
-    vec_insert(vec, &range, &buf);                  \
+    slice_init(&slice, sizeof(int));                \
+    slice_set(&slice, &buf);                        \
+    vec_insert(vec, &range, &slice);                \
     buffer_free(&buf);                              \
   } while (false)
 #define vec_unittest_remove(vec, b, e) \

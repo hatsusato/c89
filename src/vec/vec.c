@@ -38,13 +38,13 @@ void vec_free(struct vec *self) {
   array_free(vec_inner(self));
 }
 static void vec_assign(struct vec *dst, const struct vec *src, index_t count) {
-  struct buffer buf;
+  struct slice slice;
   struct range range;
-  array_get(vec_inner(src), &buf);
+  array_slice(vec_inner(src), &slice);
   range_init(&range, 0, vec_length(src));
   vec_init(dst, vec_align(src));
   vec_malloc(dst, count);
-  vec_insert(dst, &range, &buf);
+  vec_insert(dst, &range, &slice);
 }
 void vec_reserve(struct vec *self, index_t count) {
   index_t cap = vec_capacity(self);
@@ -66,12 +66,9 @@ void *vec_at(struct vec *self, index_t index) {
   return array_at(vec_inner(self), index);
 }
 void vec_insert(struct vec *self, const struct range *range,
-                const struct buffer *buf) {
-  struct slice slice;
-  slice_init(&slice, array_align(vec_inner(self)));
-  slice_set(&slice, buf);
+                const struct slice *slice) {
   vec_reserve(self, vec_length(self) + range_count(range));
-  array_insert(vec_inner(self), range, &slice);
+  array_insert(vec_inner(self), range, slice);
 }
 void vec_remove(struct vec *self, const struct range *range) {
   array_remove(vec_inner(self), range);
