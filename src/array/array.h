@@ -11,7 +11,6 @@ struct array {
   align_t align;
   struct buffer buf;
   struct slice slice;
-  index_t len;
 };
 
 void array_init(struct array *, align_t, struct buffer *);
