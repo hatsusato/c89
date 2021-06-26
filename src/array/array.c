@@ -26,10 +26,6 @@ void array_init(struct array *self, align_t align, struct buffer *buf) {
 void array_get(struct array *self, struct buffer *buf) {
   *buf = self->buf;
 }
-void array_set(struct array *self, const struct buffer *buf) {
-  self->buf = *buf;
-  self->len = 0;
-}
 void array_slice(struct array *self, struct slice *slice) {
   index_t length = array_length(self);
   void *ptr = length > 0 ? array_at(self, 0) : NULL;
