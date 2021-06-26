@@ -29,6 +29,7 @@ void vec_delete(struct vec *self) {
 void vec_init(struct vec *self, align_t align) {
   assert(align > 0);
   array_init(vec_inner(self), align, NULL);
+  self->capacity = 0;
 }
 void vec_malloc(struct vec *self, index_t count) {
   struct buffer buf;
@@ -37,12 +38,14 @@ void vec_malloc(struct vec *self, index_t count) {
   assert(0 <= count);
   buffer_malloc(&buf, align * count);
   array_init(vec_inner(self), align, &buf);
+  self->capacity = count;
 }
 void vec_free(struct vec *self) {
   struct buffer buf;
   array_get(vec_inner(self), &buf);
   buffer_free(&buf);
   array_init(vec_inner(self), vec_align(self), NULL);
+  self->capacity = 0;
 }
 static void vec_assign(struct vec *dst, const struct vec *src, index_t count) {
   struct slice slice;
@@ -64,7 +67,7 @@ void vec_reserve(struct vec *self, index_t count) {
   }
 }
 index_t vec_capacity(const struct vec *self) {
-  return array_capacity(vec_inner(self));
+  return self->capacity;
 }
 index_t vec_length(const struct vec *self) {
   return array_length(vec_inner(self));

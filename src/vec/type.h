@@ -6,6 +6,7 @@
 
 struct vec {
   struct array array;
+  index_t capacity;
 };
 
 struct vec_ptr {
