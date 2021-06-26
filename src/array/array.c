@@ -16,6 +16,10 @@ static void array_slide(struct array *self, const struct range *range) {
   memmove(dst, src, size);
   slice_init(&self->slice, align, array_at(self, 0), len + range_count(range));
 }
+static void array_copy(struct array *self, index_t index,
+                       const struct slice *slice) {
+  memcpy(array_at(self, index), slice_at(slice, 0), slice_size(slice));
+}
 
 void array_init(struct array *self, align_t align, struct buffer *buf) {
   assert(align > 0);
@@ -59,17 +63,11 @@ void *array_at(struct array *self, index_t index) {
 }
 void array_insert(struct array *self, const struct range *range,
                   const struct slice *slice) {
-  struct buffer dst = self->buf, src;
-  align_t align = array_align(self);
   index_t index = range->begin;
-  size_t size = range_count(range) * align;
   assert(range_is_valid(range));
   assert(index <= array_length(self));
-  assert(size <= slice_size(slice));
   array_slide(self, range);
-  buffer_slice(&dst, index * align, size);
-  buffer_init(&src, (void *)slice_at(slice, 0), slice_size(slice));
-  buffer_memcpy(&dst, &src);
+  array_copy(self, index, slice);
 }
 void array_remove(struct array *self, const struct range *range) {
   struct range inv;
