@@ -8,17 +8,21 @@
 #include "util/slice.h"
 
 static void array_slide(struct array *self, const struct range *range) {
-  align_t align = array_align(self);
-  index_t len = array_length(self);
-  size_t size = (len - range->begin) * align;
   void *src = array_at(self, range->begin);
   void *dst = array_at(self, range->end);
-  memmove(dst, src, size);
+  if (src && dst) {
+    size_t size = (array_length(self) - range->begin) * array_align(self);
+    memmove(dst, src, size);
+  }
   slice_resize(&self->slice, range_count(range));
 }
 static void array_copy(struct array *self, index_t index,
                        const struct slice *slice) {
-  memcpy(array_at(self, index), slice_at(slice, 0), slice_size(slice));
+  void *dst = array_at(self, index);
+  const void *src = slice_at(slice, 0);
+  if (src && dst) {
+    memcpy(dst, src, slice_size(slice));
+  }
 }
 
 void array_init(struct array *self, align_t align, struct buffer *buf) {
