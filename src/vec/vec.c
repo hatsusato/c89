@@ -76,7 +76,7 @@ void *vec_at(struct vec *self, index_t index) {
 void vec_insert(struct vec *self, const struct range *range,
                 const struct slice *slice) {
   vec_reserve(self, vec_length(self) + range_count(range));
-  array_insert(vec_inner(self), range, slice);
+  array_insert(vec_inner(self), range->begin, slice);
 }
 void vec_remove(struct vec *self, const struct range *range) {
   array_remove(vec_inner(self), range);

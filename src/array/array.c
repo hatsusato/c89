@@ -41,13 +41,11 @@ index_t array_length(const struct array *self) {
 void *array_at(struct array *self, index_t index) {
   return (void *)slice_at(&self->slice, index);
 }
-void array_insert(struct array *self, const struct range *range,
+void array_insert(struct array *self, index_t offset,
                   const struct slice *slice) {
-  index_t index = range->begin;
-  assert(range_is_valid(range));
-  assert(index <= array_length(self));
-  array_slide(self, index, range->end);
-  array_copy(self, index, slice);
+  assert(0 <= offset && offset <= array_length(self));
+  array_slide(self, offset, offset + slice_length(slice));
+  array_copy(self, offset, slice);
 }
 void array_remove(struct array *self, const struct range *range) {
   assert(range_is_valid(range));
@@ -55,9 +53,7 @@ void array_remove(struct array *self, const struct range *range) {
   array_slide(self, range->end, range->begin);
 }
 void array_push(struct array *self, const struct slice *slice) {
-  struct range range;
-  range_init(&range, array_length(self), 1);
-  array_insert(self, &range, slice);
+  array_insert(self, array_length(self), slice);
 }
 void array_pop(struct array *self) {
   struct range range;
