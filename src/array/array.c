@@ -60,7 +60,10 @@ void array_clear(struct array *self) {
   array_remove(self, 0, array_length(self));
 }
 void array_sort(struct array *self, cmp_t cmp) {
-  qsort(array_at(self, 0), array_length(self), array_align(self), cmp);
+  void *ptr = array_at(self, 0);
+  if (ptr) {
+    qsort(ptr, array_length(self), array_align(self), cmp);
+  }
 }
 void *array_search(const struct array *self, const void *key, cmp_t cmp) {
   void *ptr = array_at((struct array *)self, 0);
