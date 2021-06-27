@@ -2,20 +2,8 @@
 
 #include "type.h"
 #include "util/buffer.h"
-#include "util/range.h"
-#include "util/slice.h"
 #include "vec.h"
 
-static struct vec_ptr *vec_ptr_malloc(void) {
-  struct buffer buf;
-  BUFFER_MALLOC(&buf, struct vec_ptr);
-  return buffer_at(&buf, 0);
-}
-static void vec_ptr_free(struct vec_ptr *self) {
-  struct buffer buf;
-  BUFFER_INIT(&buf, self);
-  buffer_free(&buf);
-}
 static void vec_ptr_destruct(struct vec_ptr *self, void *ptr) {
   if (self->dtor) {
     (self->dtor)(ptr);
@@ -24,16 +12,20 @@ static void vec_ptr_destruct(struct vec_ptr *self, void *ptr) {
 
 struct vec_ptr *vec_ptr_new(void (*dtor)(void *)) {
   enum { initial_count = 8 };
-  struct vec_ptr *self = vec_ptr_malloc();
+  struct buffer buf;
+  struct vec_ptr *self = BUFFER_MALLOC(&buf, struct vec_ptr);
   vec_init(&self->vec, sizeof(void *));
   vec_malloc(&self->vec, initial_count);
   self->dtor = dtor;
   return self;
 }
 void vec_ptr_delete(struct vec_ptr *self) {
+  struct buffer buf;
   vec_ptr_clear(self);
+  BUFFER_INIT(&buf, self);
   vec_free(&self->vec);
-  vec_ptr_free(self);
+  self->dtor = NULL;
+  buffer_free(&buf);
 }
 index_t vec_ptr_capacity(struct vec_ptr *self) {
   return vec_capacity(&self->vec);
