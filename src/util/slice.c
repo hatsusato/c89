@@ -15,14 +15,6 @@ void slice_init(struct slice *self, align_t align, const void *ptr,
   self->len = len;
   assert(slice_is_valid(self));
 }
-void slice_slice(struct slice *self, const struct range *range) {
-  assert(range_is_valid(range));
-  assert(range->end <= self->len);
-  assert(self->ptr);
-  self->ptr += range->begin;
-  self->len = range_count(range);
-  assert(slice_is_valid(self));
-}
 void slice_resize(struct slice *self, index_t count) {
   self->len += count;
   assert(slice_is_valid(self));
