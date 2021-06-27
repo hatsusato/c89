@@ -36,9 +36,6 @@ void array_init(struct array *self, align_t align, struct buffer *buf) {
     slice_init(&self->slice, align, NULL, 0);
   }
 }
-void array_get(struct array *self, struct buffer *buf) {
-  *buf = self->buf;
-}
 void array_slice(struct array *self, struct slice *slice) {
   *slice = self->slice;
 }
