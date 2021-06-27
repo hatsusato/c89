@@ -2,6 +2,8 @@
 
 #include <string.h>
 
+#include "util/util.h"
+
 void str_init(struct str *self, const char *str) {
   self->ptr = str;
   self->len = str ? strlen(str) : 0;
@@ -22,7 +24,6 @@ void str_remove_suffix(struct str *self, index_t count) {
   }
 }
 int str_cmp(const struct str *lhs, const struct str *rhs) {
-  index_t len = lhs->len < rhs->len ? lhs->len : rhs->len;
-  int ret = strncmp(lhs->ptr, rhs->ptr, len);
+  int ret = strncmp(lhs->ptr, rhs->ptr, UTIL_MIN(lhs->len, rhs->len));
   return (ret == 0) ? lhs->len - rhs->len : ret;
 }

@@ -3,110 +3,98 @@
 #include <assert.h>
 
 #include "type.h"
+#include "util/buffer.h"
+#include "util/slice.h"
+#include "util/util.h"
 
-static struct vec *vec_malloc(void) {
-  struct buffer buf;
-  BUFFER_MALLOC(&buf, struct vec);
-  return (struct vec *)buf.ptr;
+static struct array *vec_inner(const struct vec *self) {
+  return (struct array *)&self->array;
 }
-static void vec_free(struct vec *self) {
-  struct buffer buf;
-  BUFFER_INIT(&buf, self);
-  buffer_free(&buf);
-}
-static index_t vec_buffer_capacity(const struct vec *self,
-                                   const struct buffer *buf) {
-  return buf->size / self->align;
-}
-static void vec_init_buffer(struct vec *self, index_t begin, index_t end,
-                            struct buffer *buf) {
-  buffer_init(buf, vec_at(self, begin), (end - begin) * self->align);
-}
-static void vec_slide(struct vec *self, index_t index, index_t count) {
-  struct buffer src, dst;
-  index_t length = vec_length(self);
-  if (0 <= index && index < length) {
-    vec_init_buffer(self, index, length, &src);
-    vec_init_buffer(self, index + count, length + count, &dst);
-    buffer_memmove(&dst, &src);
-  }
+static align_t vec_align(const struct vec *self) {
+  return array_align(vec_inner(self));
 }
 
 struct vec *vec_new(align_t align) {
-  struct vec *self = vec_malloc();
+  struct buffer buf;
+  struct vec *self = BUFFER_MALLOC(&buf, struct vec);
   vec_init(self, align);
   return self;
 }
 void vec_delete(struct vec *self) {
-  vec_reset(self);
+  struct buffer buf;
   vec_free(self);
+  BUFFER_INIT(&buf, self);
+  buffer_free(&buf);
 }
 void vec_init(struct vec *self, align_t align) {
-  self->align = align;
-  buffer_init(&self->buf, NULL, 0);
-  self->length = 0;
+  assert(align > 0);
+  array_init(vec_inner(self), align, NULL);
+  self->capacity = 0;
 }
-void vec_alloc(struct vec *self, index_t count) {
-  buffer_malloc(&self->buf, self->align * count);
-  self->length = 0;
+void vec_malloc(struct vec *self, index_t len) {
+  struct buffer buf;
+  align_t align = vec_align(self);
+  assert(!slice_ptr(array_slice(vec_inner(self))));
+  assert(0 <= len);
+  array_init(vec_inner(self), align, buffer_malloc(&buf, align * len));
+  self->capacity = len;
 }
-void vec_reset(struct vec *self) {
-  buffer_free(&self->buf);
-  self->length = 0;
+void vec_free(struct vec *self) {
+  struct buffer buf;
+  void *ptr = (void *)slice_ptr(array_slice(vec_inner(self)));
+  buffer_init(&buf, ptr, self->capacity);
+  buffer_free(&buf);
+  array_init(vec_inner(self), vec_align(self), NULL);
+  self->capacity = 0;
 }
-void vec_reserve(struct vec *self, index_t count) {
+static void vec_assign(struct vec *dst, const struct vec *src, index_t len) {
+  vec_init(dst, vec_align(src));
+  vec_malloc(dst, len);
+  vec_insert(dst, 0, array_slice(vec_inner(src)));
+}
+void vec_reserve(struct vec *self, index_t len) {
   index_t cap = vec_capacity(self);
-  count = (count == 0) ? 2 * cap : count;
-  if (count > cap) {
-    struct vec old = *self;
-    vec_alloc(self, count);
-    vec_insert(self, 0, vec_length(&old), &old.buf);
-    vec_reset(&old);
+  assert(0 <= len);
+  if (len > cap) {
+    struct vec tmp;
+    vec_assign(&tmp, self, UTIL_MAX(len, 2 * cap));
+    UTIL_SWAP(struct vec, self, &tmp);
+    vec_free(&tmp);
   }
 }
 index_t vec_capacity(const struct vec *self) {
-  return vec_buffer_capacity(self, &self->buf);
+  return self->capacity;
 }
 index_t vec_length(const struct vec *self) {
-  return self->length;
+  return array_length(vec_inner(self));
 }
-void *vec_at(struct vec *self, index_t i) {
-  return self->buf.ptr ? self->buf.ptr + i * self->align : NULL;
+const struct slice *vec_slice(const struct vec *self) {
+  return array_slice(vec_inner(self));
 }
-void vec_insert(struct vec *self, index_t index, index_t count,
-                const struct buffer *buf) {
-  struct buffer dst;
-  index_t length = vec_length(self);
-  index = (index == -1) ? length : index;
-  assert(0 <= index && index <= length);
-  assert(0 <= count && length + count <= vec_capacity(self));
-  assert(count <= vec_buffer_capacity(self, buf));
-  vec_slide(self, index, count);
-  vec_init_buffer(self, index, index + count, &dst);
-  buffer_memcpy(&dst, buf);
-  self->length += count;
+void *vec_at(struct vec *self, index_t index) {
+  return array_at(vec_inner(self), index);
 }
-void vec_remove(struct vec *self, index_t index, index_t count) {
-  index_t length = vec_length(self);
-  index = (index == -1) ? length - count : index;
-  assert(0 <= index && index <= length);
-  assert(0 <= count && index + count <= length);
-  vec_slide(self, index + count, -count);
-  self->length -= count;
+void vec_insert(struct vec *self, index_t offset, const struct slice *slice) {
+  vec_reserve(self, vec_length(self) + slice_length(slice));
+  array_insert(vec_inner(self), offset, slice);
 }
-
-bool_t vec_empty(const struct vec *self) {
-  return vec_length(self) == 0;
+void vec_remove(struct vec *self, index_t offset, index_t length) {
+  array_remove(vec_inner(self), offset, length);
 }
-bool_t vec_full(const struct vec *self) {
-  return vec_length(self) == vec_capacity(self);
+void vec_push(struct vec *self, const void *ptr) {
+  struct slice slice;
+  slice_init(&slice, vec_align(self), ptr, 1);
+  vec_insert(self, vec_length(self), &slice);
 }
-void *vec_begin(struct vec *self) {
-  return vec_at(self, 0);
-}
-void *vec_end(struct vec *self) {
-  return vec_at(self, vec_length(self));
+void vec_pop(struct vec *self) {
+  vec_remove(self, vec_length(self) - 1, 1);
 }
 void vec_clear(struct vec *self) {
   vec_remove(self, 0, vec_length(self));
+}
+void vec_sort(struct vec *self, cmp_t cmp) {
+  array_sort(vec_inner(self), cmp);
+}
+void *vec_search(const struct vec *self, const void *key, cmp_t cmp) {
+  return array_search(vec_inner(self), key, cmp);
 }

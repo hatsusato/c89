@@ -4,37 +4,47 @@
 #include <stdlib.h>
 #include <string.h>
 
-void buffer_init(struct buffer *buf, void *ptr, size_t size) {
-  buf->ptr = ptr;
-  buf->size = size;
+#include "util.h"
+
+void buffer_init(struct buffer *self, void *ptr, size_t size) {
+  assert(ptr || size == 0);
+  self->ptr = ptr;
+  self->size = size;
 }
-void buffer_malloc(struct buffer *buf, size_t size) {
-  buffer_init(buf, malloc(size), size);
-}
-void buffer_free(struct buffer *buf) {
-  free(buf->ptr);
-  buffer_init(buf, NULL, 0);
-}
-void buffer_memcpy(struct buffer *dst, const struct buffer *src) {
-  if (dst->ptr && src->ptr) {
-    size_t size = dst->size < src->size ? dst->size : src->size;
-    memcpy(dst->ptr, src->ptr, size);
+void *buffer_at(const struct buffer *self, size_t index) {
+  if (index < self->size) {
+    assert(self->ptr);
+    return self->ptr + index;
+  } else {
+    return NULL;
   }
 }
-void buffer_memmove(struct buffer *dst, const struct buffer *src) {
-  if (dst->ptr && src->ptr) {
-    size_t size = dst->size < src->size ? dst->size : src->size;
-    memmove(dst->ptr, src->ptr, size);
+size_t buffer_size(const struct buffer *self) {
+  return self->size;
+}
+void *buffer_malloc(struct buffer *self, size_t size) {
+  buffer_init(self, malloc(size), size);
+  return self->ptr;
+}
+void buffer_free(struct buffer *self) {
+  free(self->ptr);
+  buffer_init(self, NULL, 0);
+}
+void buffer_memcpy(struct buffer *self, const struct buffer *buf) {
+  assert(self->size >= buf->size);
+  if (self->ptr && buf->ptr) {
+    memcpy(self->ptr, buf->ptr, buf->size);
   }
 }
-void buffer_slice(struct buffer *buf, size_t offset, size_t size) {
-  assert(offset + size <= buf->size);
-  buf->ptr += offset;
-  buf->size = size;
+void buffer_slice(struct buffer *self, size_t offset, size_t size) {
+  assert(self->ptr);
+  assert(offset + size <= self->size);
+  self->ptr += offset;
+  self->size = size;
 }
-void buffer_slide(struct buffer *buf, size_t from, size_t to, size_t size) {
-  struct buffer src = *buf, dst = *buf;
-  buffer_slice(&src, from, size);
-  buffer_slice(&dst, to, size);
-  buffer_memmove(&dst, &src);
+void buffer_slide(struct buffer *self, size_t src, size_t dst, size_t size) {
+  assert(self->ptr);
+  assert(src + size <= self->size);
+  assert(dst + size <= self->size);
+  memmove(self->ptr + dst, self->ptr + src, size);
 }

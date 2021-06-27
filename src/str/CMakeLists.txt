@@ -4,4 +4,5 @@ target_sources(str PRIVATE
   )
 target_link_libraries(str PRIVATE
   options
+  util
   )

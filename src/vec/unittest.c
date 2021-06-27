@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "util/buffer.h"
+#include "util/slice.h"
 #include "vec.h"
 #include "vec_ptr.h"
 
@@ -18,12 +19,7 @@
     int i;                                  \
     index_t len = vec_length(vec);          \
     for (i = 0; i < count; i++) {           \
-      struct buffer buf;                    \
-      BUFFER_INIT(&buf, &i);                \
-      if (vec_full(vec)) {                  \
-        vec_reserve(vec, 0);                \
-      }                                     \
-      vec_insert(vec, -1, 1, &buf);         \
+      vec_push(vec, &i);                    \
     }                                       \
     assert(vec_length(vec) == len + count); \
   } while (false)
@@ -32,7 +28,7 @@
     int i;                                  \
     index_t len = vec_length(vec);          \
     for (i = 0; i < count; i++) {           \
-      vec_remove(vec, -1, 1);               \
+      vec_pop(vec);                         \
     }                                       \
     assert(vec_length(vec) == len - count); \
   } while (false)
@@ -44,21 +40,23 @@
       assert(*p == j);                              \
     }                                               \
   } while (false)
-#define vec_unittest_insert(vec, start, begin, end) \
-  do {                                              \
-    int i, count = end - begin, *p;                 \
-    struct buffer buf;                              \
-    buffer_malloc(&buf, sizeof(int) * count);       \
-    p = (int *)buf.ptr;                             \
-    for (i = begin; i < end; i++, p++) {            \
-      *p = i;                                       \
-    }                                               \
-    vec_insert(vec, start, count, &buf);            \
-    buffer_free(&buf);                              \
+#define vec_unittest_insert(vec, start, begin, end)             \
+  do {                                                          \
+    int i, count = end - begin, *p;                             \
+    struct buffer buf;                                          \
+    struct slice slice;                                         \
+    buffer_malloc(&buf, sizeof(int) * count);                   \
+    p = buffer_at(&buf, 0);                                     \
+    for (i = begin; i < end; i++, p++) {                        \
+      *p = i;                                                   \
+    }                                                           \
+    slice_init(&slice, sizeof(int), buffer_at(&buf, 0), count); \
+    vec_insert(vec, start, &slice);                             \
+    buffer_free(&buf);                                          \
   } while (false)
-#define vec_unittest_remove(vec, begin, end) \
-  do {                                       \
-    vec_remove(vec, begin, end - begin);     \
+#define vec_unittest_remove(vec, b, e) \
+  do {                                 \
+    vec_remove(vec, b, e - b);         \
   } while (false)
 
 void vec_unittest(void) {
