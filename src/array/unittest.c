@@ -26,8 +26,7 @@ void array_unittest(void) {
   struct array array;
   struct buffer buf;
   int i;
-  buffer_malloc(&buf, 100 * sizeof(int));
-  array_init(&array, sizeof(int), &buf);
+  array_init(&array, sizeof(int), buffer_malloc(&buf, 100 * sizeof(int)));
   assert(array_align(&array) == sizeof(int));
   assert(array_length(&array) == 0);
   for (i = 0; i < 100; i++) {

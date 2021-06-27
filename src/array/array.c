@@ -26,13 +26,8 @@ static void array_copy(struct array *self, index_t index,
   }
 }
 
-void array_init(struct array *self, align_t align, struct buffer *buf) {
-  assert(align > 0);
-  if (buf) {
-    slice_init(&self->slice, align, buffer_at(buf, 0), 0);
-  } else {
-    slice_init(&self->slice, align, NULL, 0);
-  }
+void array_init(struct array *self, align_t align, void *ptr) {
+  slice_init(&self->slice, align, ptr, 0);
 }
 const struct slice *array_slice(const struct array *self) {
   return &self->slice;
