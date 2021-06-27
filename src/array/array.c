@@ -14,7 +14,7 @@ static void array_slide(struct array *self, const struct range *range) {
   void *src = array_at(self, range->begin);
   void *dst = array_at(self, range->end);
   memmove(dst, src, size);
-  slice_init(&self->slice, align, array_at(self, 0), len + range_count(range));
+  slice_init(&self->slice, align, self->slice.ptr, len + range_count(range));
 }
 static void array_copy(struct array *self, index_t index,
                        const struct slice *slice) {
