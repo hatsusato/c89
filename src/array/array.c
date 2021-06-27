@@ -40,9 +40,7 @@ void array_get(struct array *self, struct buffer *buf) {
   *buf = self->buf;
 }
 void array_slice(struct array *self, struct slice *slice) {
-  index_t length = array_length(self);
-  void *ptr = length > 0 ? array_at(self, 0) : NULL;
-  slice_init(slice, array_align(self), ptr, length);
+  *slice = self->slice;
 }
 bool_t array_is_null(const struct array *self) {
   bool_t ret = buffer_is_null(&self->buf);
