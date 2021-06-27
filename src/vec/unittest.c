@@ -5,7 +5,6 @@
 #include <stdlib.h>
 
 #include "util/buffer.h"
-#include "util/range.h"
 #include "util/slice.h"
 #include "vec.h"
 #include "vec_ptr.h"

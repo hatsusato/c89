@@ -4,7 +4,6 @@
 
 #include "array.h"
 #include "util/buffer.h"
-#include "util/range.h"
 #include "util/slice.h"
 
 #define array_unittest_range(array, index, begin, end) \

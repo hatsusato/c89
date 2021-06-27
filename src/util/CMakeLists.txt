@@ -1,7 +1,6 @@
 add_library(util STATIC)
 target_sources(util PRIVATE
   buffer.c
-  range.c
   slice.c
   type.c
   util.c
