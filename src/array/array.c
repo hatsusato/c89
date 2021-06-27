@@ -4,10 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "util/buffer.h"
-#include "util/range.h"
-#include "util/slice.h"
-
 static void array_slide(struct array *self, index_t from, index_t to) {
   const void *src = array_at(self, from);
   void *dst = array_at(self, to);

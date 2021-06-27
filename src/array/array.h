@@ -3,10 +3,6 @@
 
 #include "util/slice.h"
 
-struct buffer;
-struct range;
-struct slice;
-
 struct array {
   struct slice slice;
 };
