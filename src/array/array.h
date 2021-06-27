@@ -8,7 +8,6 @@ struct range;
 struct slice;
 
 struct array {
-  align_t align;
   struct slice slice;
 };
 

@@ -28,7 +28,6 @@ static void array_copy(struct array *self, index_t index,
 
 void array_init(struct array *self, align_t align, struct buffer *buf) {
   assert(align > 0);
-  self->align = align;
   if (buf) {
     slice_init(&self->slice, align, buffer_at(buf, 0), 0);
   } else {
@@ -44,7 +43,7 @@ bool_t array_is_null(const struct array *self) {
   return ret;
 }
 align_t array_align(const struct array *self) {
-  return self->align;
+  return slice_align(&self->slice);
 }
 index_t array_length(const struct array *self) {
   return slice_length(&self->slice);
