@@ -69,9 +69,3 @@ void *array_search(const struct array *self, const void *key, cmp_t cmp) {
   void *ptr = array_at((struct array *)self, 0);
   return bsearch(key, ptr, array_length(self), array_align(self), cmp);
 }
-void array_map(struct array *self, void (*map)(void *)) {
-  index_t index;
-  for (index = 0; index < array_length(self); index++) {
-    map(array_at(self, index));
-  }
-}
