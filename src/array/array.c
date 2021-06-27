@@ -34,8 +34,8 @@ void array_init(struct array *self, align_t align, struct buffer *buf) {
     slice_init(&self->slice, align, NULL, 0);
   }
 }
-void array_slice(struct array *self, struct slice *slice) {
-  *slice = self->slice;
+const struct slice *array_slice(const struct array *self) {
+  return &self->slice;
 }
 bool_t array_is_null(const struct array *self) {
   bool_t ret = slice_is_null(&self->slice);

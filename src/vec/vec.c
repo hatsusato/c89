@@ -42,21 +42,18 @@ void vec_malloc(struct vec *self, index_t count) {
 }
 void vec_free(struct vec *self) {
   struct buffer buf;
-  struct slice slice;
-  array_slice(&self->array, &slice);
-  buffer_init(&buf, (void *)slice_ptr(&slice), self->capacity);
+  void *ptr = (void *)slice_ptr(array_slice(&self->array));
+  buffer_init(&buf, ptr, self->capacity);
   buffer_free(&buf);
   array_init(vec_inner(self), vec_align(self), NULL);
   self->capacity = 0;
 }
 static void vec_assign(struct vec *dst, const struct vec *src, index_t count) {
-  struct slice slice;
   struct range range;
-  array_slice(vec_inner(src), &slice);
   range_init(&range, 0, vec_length(src));
   vec_init(dst, vec_align(src));
   vec_malloc(dst, count);
-  vec_insert(dst, &range, &slice);
+  vec_insert(dst, &range, array_slice(vec_inner(src)));
 }
 void vec_reserve(struct vec *self, index_t count) {
   index_t cap = vec_capacity(self);
