@@ -17,7 +17,7 @@ index_t vec_length(const struct vec *);
 void *vec_at(struct vec *, index_t);
 void vec_insert(struct vec *, index_t, const struct slice *);
 void vec_remove(struct vec *, index_t, index_t);
-void vec_push(struct vec *, const struct slice *);
+void vec_push(struct vec *, const void *);
 void vec_pop(struct vec *);
 void vec_clear(struct vec *);
 void vec_sort(struct vec *, cmp_t);

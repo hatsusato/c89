@@ -45,9 +45,7 @@ void *vec_ptr_at(struct vec_ptr *self, index_t index) {
   return *(void **)vec_at(&self->vec, index);
 }
 void vec_ptr_push(struct vec_ptr *self, void *ptr) {
-  struct slice slice;
-  slice_init(&slice, sizeof(void *), &ptr, 1);
-  vec_push(&self->vec, &slice);
+  vec_push(&self->vec, &ptr);
 }
 void vec_ptr_pop(struct vec_ptr *self) {
   vec_ptr_destruct(self, vec_ptr_at(self, -1));

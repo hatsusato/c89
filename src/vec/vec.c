@@ -77,9 +77,9 @@ void vec_insert(struct vec *self, index_t offset, const struct slice *slice) {
 void vec_remove(struct vec *self, index_t offset, index_t length) {
   array_remove(vec_inner(self), offset, length);
 }
-void vec_push(struct vec *self, const struct slice *slice) {
+void vec_push(struct vec *self, const void *ptr) {
   vec_reserve(self, vec_length(self) + 1);
-  array_push(vec_inner(self), slice_at(slice, 0));
+  array_push(vec_inner(self), ptr);
 }
 void vec_pop(struct vec *self) {
   array_pop(vec_inner(self));

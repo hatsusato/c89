@@ -20,9 +20,7 @@
     int i;                                  \
     index_t len = vec_length(vec);          \
     for (i = 0; i < count; i++) {           \
-      struct slice slice;                   \
-      slice_init(&slice, sizeof(i), &i, 1); \
-      vec_push(vec, &slice);                \
+      vec_push(vec, &i);                    \
     }                                       \
     assert(vec_length(vec) == len + count); \
   } while (false)
