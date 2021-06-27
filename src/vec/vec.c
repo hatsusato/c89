@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "type.h"
+#include "util/buffer.h"
 #include "util/slice.h"
 #include "util/util.h"
 
