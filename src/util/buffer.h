@@ -16,7 +16,6 @@ void *buffer_at(const struct buffer *, size_t);
 size_t buffer_size(const struct buffer *);
 void *buffer_malloc(struct buffer *, size_t);
 void buffer_free(struct buffer *);
-bool_t buffer_is_null(const struct buffer *);
 void buffer_memcpy(struct buffer *, const struct buffer *);
 void buffer_slice(struct buffer *, size_t, size_t);
 void buffer_slide(struct buffer *, size_t, size_t, size_t);

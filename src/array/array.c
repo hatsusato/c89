@@ -32,11 +32,6 @@ void array_init(struct array *self, align_t align, void *ptr) {
 const struct slice *array_slice(const struct array *self) {
   return &self->slice;
 }
-bool_t array_is_null(const struct array *self) {
-  bool_t ret = slice_is_null(&self->slice);
-  assert(!ret || array_length(self) == 0);
-  return ret;
-}
 align_t array_align(const struct array *self) {
   return slice_align(&self->slice);
 }

@@ -30,9 +30,6 @@ void buffer_free(struct buffer *self) {
   free(self->ptr);
   buffer_init(self, NULL, 0);
 }
-bool_t buffer_is_null(const struct buffer *self) {
-  return !self->ptr;
-}
 void buffer_memcpy(struct buffer *self, const struct buffer *buf) {
   assert(self->size >= buf->size);
   if (self->ptr && buf->ptr) {

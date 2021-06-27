@@ -19,9 +19,6 @@ void slice_resize(struct slice *self, index_t count) {
   self->len += count;
   assert(slice_is_valid(self));
 }
-bool_t slice_is_null(const struct slice *self) {
-  return !self->ptr;
-}
 align_t slice_align(const struct slice *self) {
   return self->align;
 }

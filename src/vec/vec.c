@@ -34,7 +34,7 @@ void vec_init(struct vec *self, align_t align) {
 void vec_malloc(struct vec *self, index_t count) {
   struct buffer buf;
   align_t align = vec_align(self);
-  assert(array_is_null(vec_inner(self)));
+  assert(!slice_ptr(array_slice(vec_inner(self))));
   assert(0 <= count);
   array_init(vec_inner(self), align, buffer_malloc(&buf, align * count));
   self->capacity = count;
