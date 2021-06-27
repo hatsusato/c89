@@ -47,23 +47,19 @@ void array_insert(struct array *self, index_t offset,
   array_slide(self, offset, offset + slice_length(slice));
   array_copy(self, offset, slice);
 }
-void array_remove(struct array *self, const struct range *range) {
-  assert(range_is_valid(range));
-  assert(range->end <= array_length(self));
-  array_slide(self, range->end, range->begin);
+void array_remove(struct array *self, index_t offset, index_t length) {
+  index_t from = offset + length, to = offset;
+  assert(0 <= offset && 0 <= length && from <= array_length(self));
+  array_slide(self, from, to);
 }
 void array_push(struct array *self, const struct slice *slice) {
   array_insert(self, array_length(self), slice);
 }
 void array_pop(struct array *self) {
-  struct range range;
-  range_init(&range, array_length(self) - 1, 1);
-  array_remove(self, &range);
+  array_remove(self, array_length(self) - 1, 1);
 }
 void array_clear(struct array *self) {
-  struct range range;
-  range_init(&range, 0, array_length(self));
-  array_remove(self, &range);
+  array_remove(self, 0, array_length(self));
 }
 void array_sort(struct array *self, cmp_t cmp) {
   qsort(array_at(self, 0), array_length(self), array_align(self), cmp);

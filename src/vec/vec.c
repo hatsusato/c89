@@ -79,7 +79,7 @@ void vec_insert(struct vec *self, const struct range *range,
   array_insert(vec_inner(self), range->begin, slice);
 }
 void vec_remove(struct vec *self, const struct range *range) {
-  array_remove(vec_inner(self), range);
+  array_remove(vec_inner(self), range->begin, range_count(range));
 }
 void vec_push(struct vec *self, const struct slice *slice) {
   vec_reserve(self, vec_length(self) + 1);
