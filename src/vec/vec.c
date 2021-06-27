@@ -30,33 +30,33 @@ void vec_init(struct vec *self, align_t align) {
   array_init(vec_inner(self), align, NULL);
   self->capacity = 0;
 }
-void vec_malloc(struct vec *self, index_t count) {
+void vec_malloc(struct vec *self, index_t len) {
   struct buffer buf;
   align_t align = vec_align(self);
   assert(!slice_ptr(array_slice(vec_inner(self))));
-  assert(0 <= count);
-  array_init(vec_inner(self), align, buffer_malloc(&buf, align * count));
-  self->capacity = count;
+  assert(0 <= len);
+  array_init(vec_inner(self), align, buffer_malloc(&buf, align * len));
+  self->capacity = len;
 }
 void vec_free(struct vec *self) {
   struct buffer buf;
-  void *ptr = (void *)slice_ptr(array_slice(&self->array));
+  void *ptr = (void *)slice_ptr(array_slice(vec_inner(self)));
   buffer_init(&buf, ptr, self->capacity);
   buffer_free(&buf);
   array_init(vec_inner(self), vec_align(self), NULL);
   self->capacity = 0;
 }
-static void vec_assign(struct vec *dst, const struct vec *src, index_t count) {
+static void vec_assign(struct vec *dst, const struct vec *src, index_t len) {
   vec_init(dst, vec_align(src));
-  vec_malloc(dst, count);
+  vec_malloc(dst, len);
   vec_insert(dst, 0, array_slice(vec_inner(src)));
 }
-void vec_reserve(struct vec *self, index_t count) {
+void vec_reserve(struct vec *self, index_t len) {
   index_t cap = vec_capacity(self);
-  assert(0 <= count);
-  if (count > cap) {
+  assert(0 <= len);
+  if (len > cap) {
     struct vec tmp;
-    vec_assign(&tmp, self, UTIL_MAX(count, 2 * cap));
+    vec_assign(&tmp, self, UTIL_MAX(len, 2 * cap));
     UTIL_SWAP(struct vec, self, &tmp);
     vec_free(&tmp);
   }
