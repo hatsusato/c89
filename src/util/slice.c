@@ -22,6 +22,9 @@ void slice_resize(struct slice *self, index_t count) {
 bool_t slice_is_null(const struct slice *self) {
   return !self->ptr;
 }
+align_t slice_align(const struct slice *self) {
+  return self->align;
+}
 index_t slice_length(const struct slice *self) {
   return self->len;
 }
