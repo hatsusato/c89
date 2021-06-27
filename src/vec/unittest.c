@@ -48,15 +48,13 @@
     int i, count = end - begin, *p;                             \
     struct buffer buf;                                          \
     struct slice slice;                                         \
-    struct range range;                                         \
-    range_init(&range, start, count);                           \
     buffer_malloc(&buf, sizeof(int) * count);                   \
     p = buffer_at(&buf, 0);                                     \
     for (i = begin; i < end; i++, p++) {                        \
       *p = i;                                                   \
     }                                                           \
     slice_init(&slice, sizeof(int), buffer_at(&buf, 0), count); \
-    vec_insert(vec, &range, &slice);                            \
+    vec_insert(vec, start, &slice);                             \
     buffer_free(&buf);                                          \
   } while (false)
 #define vec_unittest_remove(vec, b, e) \
