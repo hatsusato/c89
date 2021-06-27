@@ -13,6 +13,7 @@ struct slice {
 
 void slice_init(struct slice *, align_t, const void *, index_t);
 void slice_slice(struct slice *, const struct range *);
+void slice_resize(struct slice *, index_t);
 bool_t slice_is_null(const struct slice *);
 index_t slice_length(const struct slice *);
 size_t slice_size(const struct slice *);

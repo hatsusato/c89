@@ -23,6 +23,10 @@ void slice_slice(struct slice *self, const struct range *range) {
   self->len = range_count(range);
   assert(slice_is_valid(self));
 }
+void slice_resize(struct slice *self, index_t count) {
+  self->len += count;
+  assert(slice_is_valid(self));
+}
 bool_t slice_is_null(const struct slice *self) {
   return !self->ptr;
 }
