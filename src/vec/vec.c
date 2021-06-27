@@ -42,7 +42,9 @@ void vec_malloc(struct vec *self, index_t count) {
 }
 void vec_free(struct vec *self) {
   struct buffer buf;
-  array_get(vec_inner(self), &buf);
+  struct slice slice;
+  array_slice(&self->array, &slice);
+  buffer_init(&buf, (void *)slice_ptr(&slice), self->capacity);
   buffer_free(&buf);
   array_init(vec_inner(self), vec_align(self), NULL);
   self->capacity = 0;

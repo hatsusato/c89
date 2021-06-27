@@ -28,6 +28,9 @@ index_t slice_length(const struct slice *self) {
 size_t slice_size(const struct slice *self) {
   return self->len * self->align;
 }
+const void *slice_ptr(const struct slice *self) {
+  return self->ptr;
+}
 const void *slice_at(const struct slice *self, index_t index) {
   if (index < 0) {
     index += self->len;
