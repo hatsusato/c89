@@ -83,7 +83,7 @@ void vec_remove(struct vec *self, const struct range *range) {
 }
 void vec_push(struct vec *self, const struct slice *slice) {
   vec_reserve(self, vec_length(self) + 1);
-  array_push(vec_inner(self), slice);
+  array_push(vec_inner(self), slice_at(slice, 0));
 }
 void vec_pop(struct vec *self) {
   array_pop(vec_inner(self));

@@ -7,12 +7,6 @@
 #include "util/range.h"
 #include "util/slice.h"
 
-#define array_unittest_push(array, val)       \
-  do {                                        \
-    struct slice slice;                       \
-    slice_init(&slice, sizeof(int), &val, 1); \
-    array_push(&array, &slice);               \
-  } while (false)
 #define array_unittest_range(array, index, begin, end) \
   do {                                                 \
     int i, j;                                          \
@@ -30,7 +24,7 @@ void array_unittest(void) {
   assert(array_align(&array) == sizeof(int));
   assert(array_length(&array) == 0);
   for (i = 0; i < 100; i++) {
-    array_unittest_push(array, i);
+    array_push(&array, &i);
   }
   assert(array_length(&array) == 100);
   array_unittest_range(array, 0, 0, 100);
