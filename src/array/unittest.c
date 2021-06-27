@@ -23,11 +23,13 @@ void array_unittest(void) {
   assert(array_align(&array) == sizeof(int));
   assert(array_length(&array) == 0);
   for (i = 0; i < 100; i++) {
-    array_push(&array, &i);
+    struct slice slice;
+    slice_init(&slice, sizeof(int), &i, 1);
+    array_insert(&array, array_length(&array), &slice);
   }
   assert(array_length(&array) == 100);
   array_unittest_range(array, 0, 0, 100);
-  array_clear(&array);
+  array_remove(&array, 0, 100);
   assert(array_length(&array) == 0);
   buffer_free(&buf);
 }

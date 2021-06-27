@@ -48,17 +48,6 @@ void array_remove(struct array *self, index_t offset, index_t length) {
   assert(0 <= offset && 0 <= length && from <= array_length(self));
   array_slide(self, from, to);
 }
-void array_push(struct array *self, const void *ptr) {
-  struct slice slice;
-  slice_init(&slice, array_align(self), ptr, 1);
-  array_insert(self, array_length(self), &slice);
-}
-void array_pop(struct array *self) {
-  array_remove(self, array_length(self) - 1, 1);
-}
-void array_clear(struct array *self) {
-  array_remove(self, 0, array_length(self));
-}
 void array_sort(struct array *self, cmp_t cmp) {
   void *ptr = array_at(self, 0);
   if (ptr) {

@@ -82,14 +82,15 @@ void vec_remove(struct vec *self, index_t offset, index_t length) {
   array_remove(vec_inner(self), offset, length);
 }
 void vec_push(struct vec *self, const void *ptr) {
-  vec_reserve(self, vec_length(self) + 1);
-  array_push(vec_inner(self), ptr);
+  struct slice slice;
+  slice_init(&slice, vec_align(self), ptr, 1);
+  vec_insert(self, vec_length(self), &slice);
 }
 void vec_pop(struct vec *self) {
-  array_pop(vec_inner(self));
+  vec_remove(self, vec_length(self) - 1, 1);
 }
 void vec_clear(struct vec *self) {
-  array_clear(vec_inner(self));
+  vec_remove(self, 0, vec_length(self));
 }
 void vec_sort(struct vec *self, cmp_t cmp) {
   array_sort(vec_inner(self), cmp);
