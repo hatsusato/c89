@@ -8,19 +8,19 @@
 #include "util/range.h"
 #include "util/slice.h"
 
-static void array_slide(struct array *self, const struct range *range) {
-  void *src = array_at(self, range->begin);
-  void *dst = array_at(self, range->end);
+static void array_slide(struct array *self, index_t from, index_t to) {
+  const void *src = array_at(self, from);
+  void *dst = array_at(self, to);
   if (src && dst) {
-    size_t size = (array_length(self) - range->begin) * array_align(self);
+    size_t size = (array_length(self) - from) * array_align(self);
     memmove(dst, src, size);
   }
-  slice_resize(&self->slice, range_count(range));
+  slice_resize(&self->slice, to - from);
 }
 static void array_copy(struct array *self, index_t index,
                        const struct slice *slice) {
-  void *dst = array_at(self, index);
   const void *src = slice_at(slice, 0);
+  void *dst = array_at(self, index);
   if (src && dst) {
     memcpy(dst, src, slice_size(slice));
   }
@@ -46,16 +46,13 @@ void array_insert(struct array *self, const struct range *range,
   index_t index = range->begin;
   assert(range_is_valid(range));
   assert(index <= array_length(self));
-  array_slide(self, range);
+  array_slide(self, index, range->end);
   array_copy(self, index, slice);
 }
 void array_remove(struct array *self, const struct range *range) {
-  struct range inv;
   assert(range_is_valid(range));
   assert(range->end <= array_length(self));
-  inv.begin = range->end;
-  inv.end = range->begin;
-  array_slide(self, &inv);
+  array_slide(self, range->end, range->begin);
 }
 void array_push(struct array *self, const struct slice *slice) {
   struct range range;
