@@ -1,15 +1,14 @@
 #ifndef INCLUDE_GUARD_9AEC46FD_3C00_49FC_AB18_C05CB1E03D70
 #define INCLUDE_GUARD_9AEC46FD_3C00_49FC_AB18_C05CB1E03D70
 
-#include "util/buffer.h"
 #include "util/slice.h"
 
+struct buffer;
 struct range;
 struct slice;
 
 struct array {
   align_t align;
-  struct buffer buf;
   struct slice slice;
 };
 

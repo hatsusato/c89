@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "util/buffer.h"
 #include "util/range.h"
 #include "util/slice.h"
 
@@ -29,10 +30,8 @@ void array_init(struct array *self, align_t align, struct buffer *buf) {
   assert(align > 0);
   self->align = align;
   if (buf) {
-    self->buf = *buf;
     slice_init(&self->slice, align, buffer_at(buf, 0), 0);
   } else {
-    buffer_init(&self->buf, NULL, 0);
     slice_init(&self->slice, align, NULL, 0);
   }
 }
@@ -40,7 +39,7 @@ void array_slice(struct array *self, struct slice *slice) {
   *slice = self->slice;
 }
 bool_t array_is_null(const struct array *self) {
-  bool_t ret = buffer_is_null(&self->buf);
+  bool_t ret = slice_is_null(&self->slice);
   assert(!ret || array_length(self) == 0);
   return ret;
 }
