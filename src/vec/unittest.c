@@ -59,10 +59,7 @@
   } while (false)
 #define vec_unittest_remove(vec, b, e) \
   do {                                 \
-    struct range range;                \
-    range.begin = b;                   \
-    range.end = e;                     \
-    vec_remove(vec, &range);           \
+    vec_remove(vec, b, e - b);         \
   } while (false)
 
 void vec_unittest(void) {

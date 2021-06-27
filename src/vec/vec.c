@@ -3,7 +3,6 @@
 #include <assert.h>
 
 #include "type.h"
-#include "util/range.h"
 #include "util/slice.h"
 #include "util/util.h"
 
@@ -75,8 +74,8 @@ void vec_insert(struct vec *self, index_t offset, const struct slice *slice) {
   vec_reserve(self, vec_length(self) + slice_length(slice));
   array_insert(vec_inner(self), offset, slice);
 }
-void vec_remove(struct vec *self, const struct range *range) {
-  array_remove(vec_inner(self), range->begin, range_count(range));
+void vec_remove(struct vec *self, index_t offset, index_t length) {
+  array_remove(vec_inner(self), offset, length);
 }
 void vec_push(struct vec *self, const struct slice *slice) {
   vec_reserve(self, vec_length(self) + 1);
