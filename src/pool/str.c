@@ -35,12 +35,14 @@ static const char *pool_str_push(struct vec *self, const struct str *str) {
 }
 
 void pool_str_new(struct pool_str *self) {
+  pool_new(&self->p);
   vec_new(&self->pool, sizeof(struct pool));
   pool_str_pool_malloc(&self->pool);
   vec_new(&self->table, sizeof(const char *));
   vec_new(&self->big, sizeof(const char *));
 }
 void pool_str_delete(struct pool_str *self) {
+  pool_delete(&self->p);
   vec_map(&self->pool, pool_str_pool_free);
   vec_delete(&self->pool);
   vec_delete(&self->table);
@@ -48,6 +50,7 @@ void pool_str_delete(struct pool_str *self) {
   vec_delete(&self->big);
 }
 const char *pool_str_insert(struct pool_str *self, const struct str *str) {
+  struct buffer buf;
   const char *ptr;
   if (str_length(str) < pool_str_block_size / 4) {
     ptr = pool_str_push(&self->pool, str);
@@ -59,5 +62,6 @@ const char *pool_str_insert(struct pool_str *self, const struct str *str) {
     ptr = pool_str_big_malloc(str);
     vec_push(&self->big, &ptr);
   }
-  return ptr;
+  buffer_init(&buf, (void *)str_ptr(str), str_length(str));
+  return pool_insert(&self->p, &buf);
 }
