@@ -30,10 +30,11 @@ void buffer_free(struct buffer *self) {
   free(self->ptr);
   buffer_init(self, NULL, 0);
 }
-void buffer_memcpy(struct buffer *self, const struct buffer *buf) {
-  assert(self->size >= buf->size);
+void buffer_memcpy(struct buffer *self, size_t offset,
+                   const struct buffer *buf) {
+  assert(self->size >= offset + buf->size);
   if (self->ptr && buf->ptr) {
-    memcpy(self->ptr, buf->ptr, buf->size);
+    memcpy(self->ptr + offset, buf->ptr, buf->size);
   }
 }
 void buffer_slice(struct buffer *self, size_t offset, size_t size) {
