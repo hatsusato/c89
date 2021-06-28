@@ -10,10 +10,10 @@
 static void pool_small_free(void *self) {
   pool_block_free(self);
 }
-static void pool_small_push_block(struct vec *self) {
+static void pool_small_push_block(struct pool *self) {
   struct pool_block block;
   pool_block_malloc(&block);
-  vec_push(self, &block);
+  vec_push(&self->small, &block);
 }
 static const void *pool_small_push(struct pool *self,
                                    const struct buffer *buf) {
@@ -34,7 +34,7 @@ static const void *pool_big_push(struct pool *self, const struct buffer *src) {
 
 void pool_malloc(struct pool *self) {
   vec_new(&self->small, sizeof(struct pool_block));
-  pool_small_push_block(&self->small);
+  pool_small_push_block(self);
   vec_ptr_new(&self->big);
 }
 void pool_free(struct pool *self) {
@@ -48,7 +48,7 @@ const void *pool_insert(struct pool *self, const struct buffer *buf) {
   if (buffer_size(buf) < POOL_BLOCK_SIZE / 2) {
     ptr = pool_small_push(self, buf);
     if (!ptr) {
-      pool_small_push_block(&self->small);
+      pool_small_push_block(self);
       ptr = pool_small_push(self, buf);
     }
   } else {
