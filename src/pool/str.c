@@ -4,6 +4,11 @@
 #include "util/buffer.h"
 #include "vec/vec.h"
 
+static const char *pool_str_push(struct pool_str *self, const struct str *str) {
+  struct buffer buf;
+  buffer_init(&buf, (void *)str_ptr(str), str_length(str));
+  return pool_insert(&self->pool, &buf);
+}
 static void pool_str_table_insert(struct pool_str *self, const char *ptr,
                                   index_t len) {
   struct str str;
@@ -20,11 +25,7 @@ void pool_str_delete(struct pool_str *self) {
   vec_delete(&self->table);
 }
 const char *pool_str_insert(struct pool_str *self, const struct str *str) {
-  struct buffer buf;
-  const char *ptr = str_ptr(str);
-  index_t len = str_length(str);
-  buffer_init(&buf, (void *)ptr, len);
-  ptr = pool_insert(&self->pool, &buf);
-  pool_str_table_insert(self, ptr, len);
+  const char *ptr = pool_str_push(self, str);
+  pool_str_table_insert(self, ptr, str_length(str));
   return ptr;
 }
