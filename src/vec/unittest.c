@@ -122,6 +122,7 @@ void vec_unittest(void) {
   do {                                   \
     int i;                               \
     for (i = 0; i < count; i++) {        \
+      free(vec_ptr_top(vec));            \
       vec_ptr_pop(vec);                  \
     }                                    \
   } while (false)
