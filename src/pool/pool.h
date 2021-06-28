@@ -8,4 +8,7 @@ struct pool {
   size_t offset;
 };
 
+void pool_malloc(struct pool *, size_t);
+void pool_free(struct pool *);
+
 #endif /* INCLUDE_GUARD_FD4CDA16_28C2_418A_84F7_67EFEEE7B0B6 */
