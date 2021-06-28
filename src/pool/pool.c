@@ -15,12 +15,9 @@ static void pool_small_push_block(struct vec *self) {
   pool_block_malloc(&block);
   vec_push(self, &block);
 }
-static struct pool_block *pool_small_top(struct pool *self) {
-  return vec_at(&self->small, -1);
-}
 static const void *pool_small_push(struct pool *self,
                                    const struct buffer *buf) {
-  struct pool_block *block = pool_small_top(self);
+  struct pool_block *block = vec_at(&self->small, -1);
   return pool_block_insert(block, buf);
 }
 static void pool_big_free(void *self) {
