@@ -6,14 +6,11 @@
 #include "util/buffer.h"
 #include "vec.h"
 
-void vec_ptr_new(struct vec_ptr *self, void (*dtor)(void *)) {
+void vec_ptr_new(struct vec_ptr *self) {
   vec_new(&self->vec, sizeof(void *));
-  self->dtor = dtor;
 }
 void vec_ptr_delete(struct vec_ptr *self) {
-  vec_ptr_clear(self);
   vec_delete(&self->vec);
-  self->dtor = NULL;
 }
 index_t vec_ptr_capacity(struct vec_ptr *self) {
   return vec_capacity(&self->vec);
@@ -34,9 +31,6 @@ void vec_ptr_pop(struct vec_ptr *self) {
   vec_pop(&self->vec);
 }
 void vec_ptr_clear(struct vec_ptr *self) {
-  if (self->dtor) {
-    vec_ptr_map(self, self->dtor);
-  }
   vec_clear(&self->vec);
 }
 void vec_ptr_map(struct vec_ptr *self, void (*map)(void *)) {

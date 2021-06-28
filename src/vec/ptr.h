@@ -5,7 +5,7 @@
 
 struct vec_ptr;
 
-void vec_ptr_new(struct vec_ptr *, void (*)(void *));
+void vec_ptr_new(struct vec_ptr *);
 void vec_ptr_delete(struct vec_ptr *);
 index_t vec_ptr_capacity(struct vec_ptr *);
 index_t vec_ptr_length(struct vec_ptr *);

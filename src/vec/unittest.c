@@ -130,7 +130,7 @@ void vec_unittest(void) {
 void vec_ptr_unittest(void) {
   struct vec_ptr vec;
   {
-    vec_ptr_new(&vec, free);
+    vec_ptr_new(&vec);
     vec_ptr_unittest_check(&vec, 0, 8);
   }
   {
@@ -155,5 +155,6 @@ void vec_ptr_unittest(void) {
     vec_ptr_unittest_range(&vec, 0, 0, 500);
     vec_ptr_unittest_range(&vec, 500, 0, 500);
   }
+  vec_ptr_map(&vec, free);
   vec_ptr_delete(&vec);
 }
