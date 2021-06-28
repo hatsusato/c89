@@ -31,10 +31,8 @@ void vec_new(struct vec *self, align_t align) {
   enum { vec_initial_capacity = 8 };
   vec_malloc(self, align, vec_initial_capacity);
 }
-void vec_delete(struct vec *self, void (*dtor)(void *)) {
-  if (dtor) {
-    vec_map(self, dtor);
-  }
+void vec_delete(struct vec *self) {
+  vec_clear(self);
   vec_free(self);
 }
 void vec_reserve(struct vec *self, index_t len) {

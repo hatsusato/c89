@@ -93,7 +93,7 @@ void vec_unittest(void) {
     vec_unittest_check(&vec, 1000, 2048);
     vec_unittest_range(&vec, 0, 0, 1000);
   }
-  vec_delete(&vec, NULL);
+  vec_delete(&vec);
 }
 
 #define vec_ptr_unittest_check(vec, len, cap) \

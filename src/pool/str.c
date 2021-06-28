@@ -40,9 +40,11 @@ void pool_str_new(struct pool_str *self) {
   vec_new(&self->big, sizeof(const char *));
 }
 void pool_str_delete(struct pool_str *self) {
-  vec_delete(&self->pool, pool_str_pool_free);
-  vec_delete(&self->table, NULL);
-  vec_delete(&self->big, pool_str_big_free);
+  vec_map(&self->pool, pool_str_pool_free);
+  vec_delete(&self->pool);
+  vec_delete(&self->table);
+  vec_map(&self->big, pool_str_big_free);
+  vec_delete(&self->big);
 }
 const char *pool_str_insert(struct pool_str *self, const struct str *str) {
   const char *ptr;
