@@ -1,10 +1,10 @@
 #include "block.h"
 
-void pool_block_malloc(struct pool_block *self) {
+void pool_block_new(struct pool_block *self) {
   buffer_malloc(&self->buf, POOL_BLOCK_SIZE);
   self->offset = 0;
 }
-void pool_block_free(struct pool_block *self) {
+void pool_block_delete(struct pool_block *self) {
   buffer_free(&self->buf);
   self->offset = 0;
 }

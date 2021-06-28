@@ -8,11 +8,11 @@
 #include "vec/vec.h"
 
 static void pool_small_free(void *self) {
-  pool_block_free(self);
+  pool_block_delete(self);
 }
 static void pool_small_push_block(struct pool *self) {
   struct pool_block block;
-  pool_block_malloc(&block);
+  pool_block_new(&block);
   vec_push(&self->small, &block);
 }
 static const void *pool_small_push(struct pool *self,
@@ -32,12 +32,12 @@ static const void *pool_big_push(struct pool *self, const struct buffer *src) {
   return ptr;
 }
 
-void pool_malloc(struct pool *self) {
+void pool_new(struct pool *self) {
   vec_new(&self->small, sizeof(struct pool_block));
   pool_small_push_block(self);
   vec_ptr_new(&self->big);
 }
-void pool_free(struct pool *self) {
+void pool_delete(struct pool *self) {
   vec_map(&self->small, pool_small_free);
   vec_delete(&self->small);
   vec_ptr_map(&self->big, pool_big_free);

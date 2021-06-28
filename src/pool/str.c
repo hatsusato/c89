@@ -11,11 +11,11 @@
 enum { pool_str_block_size = 4096 };
 static void pool_str_pool_malloc(struct vec *self) {
   struct pool pool;
-  pool_malloc(&pool);
+  pool_new(&pool);
   vec_push(self, &pool);
 }
 static void pool_str_pool_free(void *self) {
-  pool_free(self);
+  pool_delete(self);
 }
 static const char *pool_str_big_malloc(const struct str *str) {
   index_t len = str_length(str);
