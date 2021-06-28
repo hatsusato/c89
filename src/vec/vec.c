@@ -33,10 +33,7 @@ void vec_new(struct vec *self, align_t align) {
 }
 void vec_delete(struct vec *self, void (*dtor)(void *)) {
   if (dtor) {
-    index_t index, len = vec_length(self);
-    for (index = 0; index < len; index++) {
-      dtor(vec_at(self, index));
-    }
+    vec_map(self, dtor);
   }
   vec_free(self);
 }
@@ -86,4 +83,11 @@ void vec_sort(struct vec *self, cmp_t cmp) {
 }
 void *vec_search(const struct vec *self, const void *key, cmp_t cmp) {
   return array_search(vec_inner(self), key, cmp);
+}
+void vec_map(struct vec *self, void (*map)(void *)) {
+  index_t index;
+  assert(map);
+  for (index = 0; index < vec_length(self); index++) {
+    map(vec_at(self, index));
+  }
 }
