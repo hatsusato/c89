@@ -8,6 +8,10 @@ void str_init(struct str *self, const char *str) {
   self->ptr = str;
   self->len = str ? strlen(str) : 0;
 }
+void str_set(struct str *self, const char *str) {
+  self->ptr = str;
+  self->len = str ? strlen(str) : 0;
+}
 void str_remove_prefix(struct str *self, index_t count) {
   if (0 <= count && count < self->len) {
     self->ptr += count;
