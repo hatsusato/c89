@@ -9,13 +9,29 @@
 static void pool_small_free(void *self) {
   pool_block_free(self);
 }
-static void pool_big_free(void *self) {
-  free(self);
-}
 static void pool_small_push_block(struct vec *self) {
   struct pool_block block;
   pool_block_malloc(&block);
   vec_push(self, &block);
+}
+static struct pool_block *pool_small_top(struct pool *self) {
+  return vec_at(&self->small, -1);
+}
+static const void *pool_small_push(struct pool *self,
+                                   const struct buffer *buf) {
+  struct pool_block *block = pool_small_top(self);
+  return pool_block_insert(block, buf);
+}
+static void pool_big_free(void *self) {
+  free(self);
+}
+static const void *pool_big_push(struct pool *self, const struct buffer *src) {
+  struct buffer dst;
+  size_t size = buffer_size(src);
+  void *ptr = buffer_malloc(&dst, size);
+  buffer_memcpy(&dst, 0, src);
+  vec_ptr_push(&self->big, ptr);
+  return ptr;
 }
 
 void pool_malloc(struct pool *self, size_t size) {
@@ -35,9 +51,14 @@ void pool_free(struct pool *self) {
 }
 const void *pool_insert(struct pool *self, const struct buffer *buf) {
   const void *ptr = NULL;
-  if (buffer_size(buf) + self->offset <= buffer_size(&self->buf)) {
-    ptr = buffer_at(&self->buf, self->offset);
-    buffer_memcpy(&self->buf, self->offset, buf);
+  if (buffer_size(buf) < POOL_BLOCK_SIZE / 2) {
+    ptr = pool_small_push(self, buf);
+    if (!ptr) {
+      pool_small_push_block(&self->small);
+      ptr = pool_small_push(self, buf);
+    }
+  } else {
+    ptr = pool_big_push(self, buf);
   }
   return ptr;
 }
