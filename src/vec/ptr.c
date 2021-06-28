@@ -28,6 +28,9 @@ index_t vec_ptr_length(struct vec_ptr *self) {
 void *vec_ptr_at(struct vec_ptr *self, index_t index) {
   return *(void **)vec_at(&self->vec, index);
 }
+void *vec_ptr_top(struct vec_ptr *self) {
+  return vec_at(&self->vec, -1);
+}
 void vec_ptr_push(struct vec_ptr *self, void *ptr) {
   vec_push(&self->vec, &ptr);
 }
