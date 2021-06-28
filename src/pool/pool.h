@@ -1,3 +1,11 @@
 #ifndef INCLUDE_GUARD_FD4CDA16_28C2_418A_84F7_67EFEEE7B0B6
 #define INCLUDE_GUARD_FD4CDA16_28C2_418A_84F7_67EFEEE7B0B6
+
+#include "util/buffer.h"
+
+struct pool {
+  struct buffer buf;
+  size_t offset;
+};
+
 #endif /* INCLUDE_GUARD_FD4CDA16_28C2_418A_84F7_67EFEEE7B0B6 */
