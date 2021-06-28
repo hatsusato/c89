@@ -13,6 +13,27 @@ static struct array *vec_inner(const struct vec *self) {
 static align_t vec_align(const struct vec *self) {
   return array_align(vec_inner(self));
 }
+static void vec_init(struct vec *self, align_t align) {
+  assert(align > 0);
+  array_init(vec_inner(self), align, NULL);
+  self->capacity = 0;
+}
+static void vec_malloc(struct vec *self, index_t len) {
+  struct buffer buf;
+  align_t align = vec_align(self);
+  assert(!slice_ptr(array_slice(vec_inner(self))));
+  assert(0 <= len);
+  array_init(vec_inner(self), align, buffer_malloc(&buf, align * len));
+  self->capacity = len;
+}
+static void vec_free(struct vec *self) {
+  struct buffer buf;
+  void *ptr = (void *)slice_ptr(array_slice(vec_inner(self)));
+  buffer_init(&buf, ptr, self->capacity);
+  buffer_free(&buf);
+  array_init(vec_inner(self), vec_align(self), NULL);
+  self->capacity = 0;
+}
 
 void vec_new(struct vec *self, align_t align) {
   enum { vec_initial_capacity = 8 };
@@ -27,27 +48,6 @@ void vec_delete(struct vec *self, void (*dtor)(void *)) {
     }
   }
   vec_free(self);
-}
-void vec_init(struct vec *self, align_t align) {
-  assert(align > 0);
-  array_init(vec_inner(self), align, NULL);
-  self->capacity = 0;
-}
-void vec_malloc(struct vec *self, index_t len) {
-  struct buffer buf;
-  align_t align = vec_align(self);
-  assert(!slice_ptr(array_slice(vec_inner(self))));
-  assert(0 <= len);
-  array_init(vec_inner(self), align, buffer_malloc(&buf, align * len));
-  self->capacity = len;
-}
-void vec_free(struct vec *self) {
-  struct buffer buf;
-  void *ptr = (void *)slice_ptr(array_slice(vec_inner(self)));
-  buffer_init(&buf, ptr, self->capacity);
-  buffer_free(&buf);
-  array_init(vec_inner(self), vec_align(self), NULL);
-  self->capacity = 0;
 }
 static void vec_assign(struct vec *dst, const struct vec *src, index_t len) {
   vec_init(dst, vec_align(src));
