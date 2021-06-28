@@ -5,12 +5,13 @@
 
 #include "pool.h"
 #include "str/str.h"
+#include "util/buffer.h"
 #include "vec/vec.h"
 
 enum { pool_str_block_size = 4096 };
 static void pool_str_pool_malloc(struct vec *self) {
   struct pool pool;
-  pool_malloc(&pool, pool_str_block_size);
+  pool_malloc(&pool);
   vec_push(self, &pool);
 }
 static void pool_str_pool_free(void *self) {

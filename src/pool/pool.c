@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "block.h"
+#include "util/buffer.h"
 #include "vec/ptr.h"
 #include "vec/vec.h"
 
@@ -34,16 +35,12 @@ static const void *pool_big_push(struct pool *self, const struct buffer *src) {
   return ptr;
 }
 
-void pool_malloc(struct pool *self, size_t size) {
-  buffer_malloc(&self->buf, size);
-  self->offset = 0;
+void pool_malloc(struct pool *self) {
   vec_new(&self->small, sizeof(struct pool_block));
   pool_small_push_block(&self->small);
   vec_ptr_new(&self->big);
 }
 void pool_free(struct pool *self) {
-  buffer_free(&self->buf);
-  self->offset = 0;
   vec_map(&self->small, pool_small_free);
   vec_delete(&self->small);
   vec_ptr_map(&self->big, pool_big_free);
