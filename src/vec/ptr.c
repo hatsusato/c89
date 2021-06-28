@@ -1,4 +1,4 @@
-#include "vec_ptr.h"
+#include "ptr.h"
 
 #include "type.h"
 #include "util/buffer.h"

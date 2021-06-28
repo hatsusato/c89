@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "ptr.h"
+#include "type.h"
 #include "util/buffer.h"
 #include "util/slice.h"
 #include "vec.h"
-#include "vec/type.h"
-#include "vec_ptr.h"
 
 #define vec_unittest_check(vec, len, cap) \
   do {                                    \
