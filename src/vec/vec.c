@@ -14,18 +14,6 @@ static align_t vec_align(const struct vec *self) {
   return array_align(vec_inner(self));
 }
 
-struct vec *vec_new(align_t align) {
-  struct buffer buf;
-  struct vec *self = BUFFER_MALLOC(&buf, struct vec);
-  vec_init(self, align);
-  return self;
-}
-void vec_delete(struct vec *self) {
-  struct buffer buf;
-  vec_free(self);
-  BUFFER_INIT(&buf, self);
-  buffer_free(&buf);
-}
 void vec_init(struct vec *self, align_t align) {
   assert(align > 0);
   array_init(vec_inner(self), align, NULL);
