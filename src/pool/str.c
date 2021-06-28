@@ -7,8 +7,8 @@
 #include "str/str.h"
 #include "vec/vec.h"
 
+enum { pool_str_block_size = 4096 };
 static void pool_str_new_pool_malloc(struct vec *self) {
-  enum { pool_str_block_size = 4096 };
   struct pool pool;
   pool_malloc(&pool, pool_str_block_size);
   vec_push(self, &pool);
@@ -45,10 +45,16 @@ void pool_str_delete(struct pool_str *self) {
   vec_delete(&self->big, pool_str_big_free);
 }
 const char *pool_str_insert(struct pool_str *self, const struct str *str) {
-  const char *ptr = pool_str_push(&self->pool, str);
-  if (!ptr) {
-    pool_str_new_pool_malloc(&self->pool);
+  const char *ptr;
+  if (str_length(str) < pool_str_block_size / 4) {
     ptr = pool_str_push(&self->pool, str);
+    if (!ptr) {
+      pool_str_new_pool_malloc(&self->pool);
+      ptr = pool_str_push(&self->pool, str);
+    }
+  } else {
+    ptr = pool_str_big_malloc(str);
+    vec_push(&self->big, &ptr);
   }
   return ptr;
 }
