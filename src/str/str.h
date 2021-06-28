@@ -8,7 +8,7 @@ struct str {
   index_t len;
 };
 
-void str_init(struct str *, const char *);
+void str_init(struct str *, const char *, index_t);
 void str_set(struct str *, const char *);
 void str_remove_prefix(struct str *, index_t);
 void str_remove_suffix(struct str *, index_t);
