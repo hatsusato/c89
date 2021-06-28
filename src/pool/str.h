@@ -13,6 +13,6 @@ struct pool_str {
 
 void pool_str_new(struct pool_str *);
 void pool_str_delete(struct pool_str *);
-const char *pool_str_insert(struct pool_str *, const struct str *);
+const struct str *pool_str_insert(struct pool_str *, const struct str *);
 
 #endif /* INCLUDE_GUARD_D300EE6C_9C63_45F4_9599_FB398D4BE800 */
