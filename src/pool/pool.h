@@ -2,10 +2,13 @@
 #define INCLUDE_GUARD_FD4CDA16_28C2_418A_84F7_67EFEEE7B0B6
 
 #include "util/buffer.h"
+#include "vec/type.h"
 
 struct pool {
   struct buffer buf;
   size_t offset;
+  struct vec small;
+  struct vec_ptr big;
 };
 
 void pool_malloc(struct pool *, size_t);
