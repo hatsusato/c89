@@ -40,16 +40,13 @@ void vec_delete(struct vec *self, void (*dtor)(void *)) {
   }
   vec_free(self);
 }
-static void vec_assign(struct vec *dst, const struct vec *src, index_t len) {
-  vec_malloc(dst, vec_align(src), len);
-  vec_insert(dst, 0, array_slice(vec_inner(src)));
-}
 void vec_reserve(struct vec *self, index_t len) {
   index_t cap = vec_capacity(self);
   assert(0 <= len);
   if (len > cap) {
     struct vec tmp;
-    vec_assign(&tmp, self, UTIL_MAX(len, 2 * cap));
+    vec_malloc(&tmp, vec_align(self), UTIL_MAX(len, 2 * cap));
+    vec_insert(&tmp, 0, array_slice(vec_inner(self)));
     UTIL_SWAP(struct vec, self, &tmp);
     vec_free(&tmp);
   }
