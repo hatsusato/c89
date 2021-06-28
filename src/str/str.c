@@ -14,6 +14,12 @@ void str_init(struct str *self, const char *str, index_t len) {
 void str_set(struct str *self, const char *str) {
   str_init(self, str, str ? strlen(str) : 0);
 }
+const char *str_ptr(const struct str *self) {
+  return self->ptr;
+}
+index_t str_length(const struct str *self) {
+  return self->len;
+}
 void str_remove_prefix(struct str *self, index_t count) {
   if (0 <= count && count < self->len) {
     self->ptr += count;
