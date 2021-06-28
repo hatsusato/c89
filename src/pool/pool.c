@@ -44,15 +44,14 @@ void pool_free(struct pool *self) {
   vec_ptr_delete(&self->big);
 }
 const void *pool_insert(struct pool *self, const struct buffer *buf) {
-  const void *ptr = NULL;
   if (buffer_size(buf) < POOL_BLOCK_SIZE / 2) {
-    ptr = pool_small_push(self, buf);
+    const void *ptr = pool_small_push(self, buf);
     if (!ptr) {
       pool_small_push_block(self);
       ptr = pool_small_push(self, buf);
     }
+    return ptr;
   } else {
-    ptr = pool_big_push(self, buf);
+    return pool_big_push(self, buf);
   }
-  return ptr;
 }
