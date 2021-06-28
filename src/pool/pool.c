@@ -12,14 +12,17 @@ static void pool_small_free(void *self) {
 static void pool_big_free(void *self) {
   free(self);
 }
+static void pool_small_push_block(struct vec *self) {
+  struct pool_block block;
+  pool_block_malloc(&block);
+  vec_push(self, &block);
+}
 
 void pool_malloc(struct pool *self, size_t size) {
-  struct pool_block block;
   buffer_malloc(&self->buf, size);
   self->offset = 0;
   vec_new(&self->small, sizeof(struct pool_block));
-  pool_block_malloc(&block);
-  vec_push(&self->small, &block);
+  pool_small_push_block(&self->small);
   vec_ptr_new(&self->big);
 }
 void pool_free(struct pool *self) {
