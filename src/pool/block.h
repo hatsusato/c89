@@ -3,6 +3,8 @@
 
 #include "util/buffer.h"
 
+#define POOL_BLOCK_SIZE (4096)
+
 struct pool_block {
   struct buffer buf;
   size_t offset;
