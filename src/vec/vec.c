@@ -14,6 +14,20 @@ static align_t vec_align(const struct vec *self) {
   return array_align(vec_inner(self));
 }
 
+void vec_new(struct vec *self, align_t align) {
+  enum { vec_initial_capacity = 8 };
+  vec_init(self, align);
+  vec_malloc(self, vec_initial_capacity);
+}
+void vec_delete(struct vec *self, void (*dtor)(void *)) {
+  if (dtor) {
+    index_t index, len = vec_length(self);
+    for (index = 0; index < len; index++) {
+      dtor(vec_at(self, index));
+    }
+  }
+  vec_free(self);
+}
 void vec_init(struct vec *self, align_t align) {
   assert(align > 0);
   array_init(vec_inner(self), align, NULL);

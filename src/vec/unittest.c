@@ -62,10 +62,8 @@
 
 void vec_unittest(void) {
   struct vec vec;
-  vec_init(&vec, sizeof(int));
-  vec_unittest_check(&vec, 0, 0);
   {
-    vec_reserve(&vec, 8);
+    vec_new(&vec, sizeof(int));
     vec_unittest_check(&vec, 0, 8);
   }
   {
@@ -95,7 +93,7 @@ void vec_unittest(void) {
     vec_unittest_check(&vec, 1000, 2048);
     vec_unittest_range(&vec, 0, 0, 1000);
   }
-  vec_free(&vec);
+  vec_delete(&vec, NULL);
 }
 
 #define vec_ptr_unittest_check(vec, len, cap) \

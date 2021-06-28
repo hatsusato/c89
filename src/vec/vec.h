@@ -6,6 +6,8 @@
 struct slice;
 struct vec;
 
+void vec_new(struct vec *, align_t);
+void vec_delete(struct vec *, void (*)(void *));
 void vec_init(struct vec *, align_t);
 void vec_malloc(struct vec *, index_t);
 void vec_free(struct vec *);
