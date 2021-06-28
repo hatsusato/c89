@@ -7,7 +7,7 @@
 struct str;
 
 struct pool_str {
-  struct pool p;
+  struct pool pool;
   struct vec table;
 };
 
