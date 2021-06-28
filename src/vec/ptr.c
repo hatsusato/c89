@@ -1,5 +1,7 @@
 #include "ptr.h"
 
+#include <assert.h>
+
 #include "type.h"
 #include "util/buffer.h"
 #include "vec.h"
@@ -43,4 +45,11 @@ void vec_ptr_clear(struct vec_ptr *self) {
     vec_ptr_destruct(self, vec_ptr_at(self, index));
   }
   vec_clear(&self->vec);
+}
+void vec_ptr_map(struct vec_ptr *self, void (*map)(void *)) {
+  index_t index;
+  assert(map);
+  for (index = 0; index < vec_ptr_length(self); index++) {
+    map(vec_ptr_at(self, index));
+  }
 }
