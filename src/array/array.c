@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "util/buffer.h"
+#include "util/slice.h"
+
 static void array_slide(struct array *self, index_t from, index_t to) {
   const void *src = array_at(self, from);
   void *dst = array_at(self, to);
@@ -12,14 +15,6 @@ static void array_slide(struct array *self, index_t from, index_t to) {
     memmove(dst, src, size);
   }
   slice_resize(&self->slice, to - from);
-}
-static void array_copy(struct array *self, index_t index,
-                       const struct slice *slice) {
-  const void *src = slice_at(slice, 0);
-  void *dst = array_at(self, index);
-  if (src && dst) {
-    memcpy(dst, src, slice_size(slice));
-  }
 }
 
 void array_init(struct array *self, align_t align, void *ptr) {
@@ -39,9 +34,13 @@ void *array_at(struct array *self, index_t index) {
 }
 void array_insert(struct array *self, index_t offset,
                   const struct slice *slice) {
+  struct buffer src, dst;
   assert(0 <= offset && offset <= array_length(self));
+  assert(array_align(self) == slice_align(slice));
   array_slide(self, offset, offset + slice_length(slice));
-  array_copy(self, offset, slice);
+  slice_buffer((struct slice *)slice, &src);
+  slice_buffer(&self->slice, &dst);
+  buffer_memcpy(&dst, offset * array_align(self), &src);
 }
 void array_remove(struct array *self, index_t offset, index_t length) {
   index_t from = offset + length, to = offset;
