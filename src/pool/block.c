@@ -11,13 +11,15 @@ void pool_block_delete(struct pool_block *self) {
   self->offset = 0;
 }
 const void *pool_block_insert(struct pool_block *self,
-                              const struct buffer *buf) {
+                              const struct buffer *src) {
+  struct buffer dst;
   const void *ptr = NULL;
-  size_t size = buffer_size(buf);
-  if (self->offset + size <= buffer_size(&self->buf)) {
-    buffer_memcpy(&self->buf, self->offset, buf);
-    ptr = buffer_at(&self->buf, self->offset);
-    self->offset += size;
+  size_t offset = self->offset;
+  box_buffer(&self->box, &dst);
+  if (buffer_size(src) + offset <= buffer_size(&dst)) {
+    buffer_memcpy(&dst, offset, src);
+    ptr = buffer_at(&dst, offset);
+    self->offset = offset + buffer_size(src);
   }
   return ptr;
 }
