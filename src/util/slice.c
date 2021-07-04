@@ -2,6 +2,8 @@
 
 #include <assert.h>
 
+#include "buffer.h"
+
 static bool_t slice_is_valid(const struct slice *self) {
   return (self->align > 0 && (self->ptr || self->len == 0) && self->len >= 0);
 }
@@ -16,6 +18,9 @@ void slice_init(struct slice *self, align_t align, const void *ptr,
 void slice_resize(struct slice *self, index_t count) {
   self->len += count;
   assert(slice_is_valid(self));
+}
+void slice_buffer(struct slice *self, struct buffer *buf) {
+  buffer_init(buf, (void *)slice_ptr(self), slice_size(self));
 }
 align_t slice_align(const struct slice *self) {
   return self->align;

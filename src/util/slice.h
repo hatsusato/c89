@@ -3,6 +3,7 @@
 
 #include "type.h"
 
+struct buffer;
 struct range;
 
 struct slice {
@@ -13,6 +14,7 @@ struct slice {
 
 void slice_init(struct slice *, align_t, const void *, index_t);
 void slice_resize(struct slice *, index_t);
+void slice_buffer(struct slice *, struct buffer *);
 align_t slice_align(const struct slice *);
 index_t slice_length(const struct slice *);
 size_t slice_size(const struct slice *);
