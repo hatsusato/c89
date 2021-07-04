@@ -24,12 +24,13 @@ static void pool_big_free(void *self) {
   free(self);
 }
 static const void *pool_big_push(struct pool *self, const struct buffer *src) {
+  struct box box;
   struct buffer dst;
-  size_t size = buffer_size(src);
-  void *ptr = buffer_malloc(&dst, size);
+  box_new(&box, buffer_size(src));
+  box_buffer(&box, &dst);
   buffer_memcpy(&dst, 0, src);
-  vec_ptr_push(&self->big, ptr);
-  return ptr;
+  vec_ptr_push(&self->big, box_ptr(&box));
+  return box_ptr(&box);
 }
 
 void pool_new(struct pool *self) {
