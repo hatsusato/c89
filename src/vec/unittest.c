@@ -6,7 +6,7 @@
 
 #include "ptr.h"
 #include "type.h"
-#include "util/buffer.h"
+#include "util/box.h"
 #include "util/slice.h"
 #include "vec.h"
 
@@ -41,19 +41,19 @@
       assert(*p == j);                              \
     }                                               \
   } while (false)
-#define vec_unittest_insert(vec, start, begin, end)             \
-  do {                                                          \
-    int i, count = end - begin, *p;                             \
-    struct buffer buf;                                          \
-    struct slice slice;                                         \
-    buffer_malloc(&buf, sizeof(int) * count);                   \
-    p = buffer_at(&buf, 0);                                     \
-    for (i = begin; i < end; i++, p++) {                        \
-      *p = i;                                                   \
-    }                                                           \
-    slice_init(&slice, sizeof(int), buffer_at(&buf, 0), count); \
-    vec_insert(vec, start, &slice);                             \
-    buffer_free(&buf);                                          \
+#define vec_unittest_insert(vec, start, begin, end)        \
+  do {                                                     \
+    int i, count = end - begin, *p;                        \
+    struct box box;                                        \
+    struct slice slice;                                    \
+    box_new(&box, sizeof(int) * count);                    \
+    p = box_ptr(&box);                                     \
+    for (i = begin; i < end; i++, p++) {                   \
+      *p = i;                                              \
+    }                                                      \
+    slice_init(&slice, sizeof(int), box_ptr(&box), count); \
+    vec_insert(vec, start, &slice);                        \
+    box_delete(&box);                                      \
   } while (false)
 #define vec_unittest_remove(vec, b, e) \
   do {                                 \
