@@ -11,3 +11,9 @@ void box_delete(struct box *box) {
   box->ptr = NULL;
   box->size = 0;
 }
+void *box_ptr(const struct box *box) {
+  return box->ptr;
+}
+size_t box_size(const struct box *box) {
+  return box->size;
+}
