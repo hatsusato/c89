@@ -3,7 +3,7 @@
 #include <assert.h>
 
 #include "array.h"
-#include "util/buffer.h"
+#include "util/box.h"
 #include "util/slice.h"
 
 #define array_unittest_range(array, index, begin, end) \
@@ -17,9 +17,10 @@
 
 void array_unittest(void) {
   struct array array;
-  struct buffer buf;
+  struct box box;
   int i;
-  array_init(&array, sizeof(int), buffer_malloc(&buf, 100 * sizeof(int)));
+  box_new(&box, sizeof(int) * 100);
+  array_init(&array, sizeof(int), box_ptr(&box));
   assert(array_align(&array) == sizeof(int));
   assert(array_length(&array) == 0);
   for (i = 0; i < 100; i++) {
@@ -31,5 +32,5 @@ void array_unittest(void) {
   array_unittest_range(array, 0, 0, 100);
   array_remove(&array, 0, 100);
   assert(array_length(&array) == 0);
-  buffer_free(&buf);
+  box_delete(&box);
 }
