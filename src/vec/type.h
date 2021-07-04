@@ -7,7 +7,6 @@
 struct vec {
   struct array array;
   struct box box;
-  index_t capacity;
 };
 
 struct vec_ptr {
