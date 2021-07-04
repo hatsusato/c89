@@ -3,6 +3,8 @@
 
 #include "util/type.h"
 
+struct buffer;
+
 struct box {
   void *ptr;
   size_t size;
@@ -10,6 +12,7 @@ struct box {
 
 void box_new(struct box *, size_t);
 void box_delete(struct box *);
+void box_buffer(struct box *, struct buffer *);
 void *box_ptr(const struct box *);
 size_t box_size(const struct box *);
 
