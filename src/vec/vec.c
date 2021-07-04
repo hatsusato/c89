@@ -1,7 +1,6 @@
 #include "vec.h"
 
 #include <assert.h>
-#include <stdlib.h>
 
 #include "type.h"
 #include "util/buffer.h"
@@ -17,12 +16,12 @@ static align_t vec_align(const struct vec *self) {
 static void vec_malloc(struct vec *self, align_t align, index_t len) {
   assert(align > 0);
   assert(0 <= len);
-  array_init(vec_inner(self), align, malloc(align * len));
+  box_new(&self->box, align * len);
+  array_init(vec_inner(self), align, box_ptr(&self->box));
   self->capacity = len;
 }
 static void vec_free(struct vec *self) {
-  void *ptr = (void *)slice_ptr(array_slice(vec_inner(self)));
-  free(ptr);
+  box_delete(&self->box);
   array_init(vec_inner(self), vec_align(self), NULL);
   self->capacity = 0;
 }
