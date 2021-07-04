@@ -2,10 +2,12 @@
 
 void pool_block_new(struct pool_block *self) {
   buffer_malloc(&self->buf, POOL_BLOCK_SIZE);
+  box_new(&self->box, POOL_BLOCK_SIZE);
   self->offset = 0;
 }
 void pool_block_delete(struct pool_block *self) {
   buffer_free(&self->buf);
+  box_delete(&self->box);
   self->offset = 0;
 }
 const void *pool_block_insert(struct pool_block *self,
