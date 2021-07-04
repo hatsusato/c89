@@ -8,6 +8,7 @@
 void unittest(void) {
   array_unittest();
   pool_unittest();
+  pool_str_unittest();
   str_unittest();
   vec_unittest();
   vec_ptr_unittest();
