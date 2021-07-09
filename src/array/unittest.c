@@ -17,10 +17,10 @@
 
 void array_unittest(void) {
   struct array array;
-  struct box box;
+  struct box *box;
   int i;
-  box_new(&box, sizeof(int) * 100);
-  array_init(&array, sizeof(int), box_ptr(&box));
+  box = box_new(sizeof(int), 1000);
+  array_init(&array, sizeof(int), box_ptr(box));
   assert(array_align(&array) == sizeof(int));
   assert(array_length(&array) == 0);
   for (i = 0; i < 100; i++) {
@@ -32,5 +32,5 @@ void array_unittest(void) {
   array_unittest_range(array, 0, 0, 100);
   array_remove(&array, 0, 100);
   assert(array_length(&array) == 0);
-  box_delete(&box);
+  box_delete(box);
 }
