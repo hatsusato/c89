@@ -10,11 +10,6 @@
 static void pool_small_free(void *self) {
   pool_block_delete(self);
 }
-static void pool_small_push_block(struct pool *self) {
-  struct pool_block block;
-  pool_block_new(&block);
-  vec_push(&self->small, &block);
-}
 static void pool_big_free(void *self) {
   free(self);
 }
@@ -30,7 +25,6 @@ static const void *pool_big_push(struct pool *self, const struct buffer *src) {
 
 void pool_new(struct pool *self) {
   vec_new(&self->small, sizeof(struct pool_block));
-  pool_small_push_block(self);
   vec_ptr_new(&self->big);
 }
 void pool_delete(struct pool *self) {
