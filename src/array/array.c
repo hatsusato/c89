@@ -2,20 +2,26 @@
 
 #include <assert.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "slice.h"
 #include "type.h"
 #include "util/buffer.h"
+#include "util/util.h"
 
-static void array_slide(struct array *self, index_t from, index_t to) {
-  const void *src = array_at(self, from);
-  void *dst = array_at(self, to);
-  if (src && dst) {
-    size_t size = (array_length(self) - from) * array_align(self);
-    memmove(dst, src, size);
+static void array_slide(struct array *self, index_t index, index_t count) {
+  void *ptr = array_at(self, 0);
+  if (ptr) {
+    struct buffer buf;
+    align_t align = array_align(self);
+    index_t len = array_length(self);
+    index_t max = len + UTIL_MAX(0, count);
+    size_t from = index * align;
+    size_t to = from + count * align;
+    size_t offset = (len - index) * align;
+    buffer_init(&buf, ptr, max * align);
+    buffer_slide(&buf, from, to, offset);
   }
-  slice_resize(&self->slice, to - from);
+  slice_resize(&self->slice, count);
 }
 
 void array_init(struct array *self, align_t align, void *ptr) {
@@ -38,15 +44,15 @@ void array_insert(struct array *self, index_t offset,
   struct buffer src, dst;
   assert(0 <= offset && offset <= array_length(self));
   assert(array_align(self) == slice_align(slice));
-  array_slide(self, offset, offset + slice_length(slice));
+  array_slide(self, offset, slice_length(slice));
   slice_buffer((struct slice *)slice, &src);
   slice_buffer(&self->slice, &dst);
   buffer_memcpy(&dst, offset * array_align(self), &src);
 }
 void array_remove(struct array *self, index_t offset, index_t length) {
-  index_t from = offset + length, to = offset;
-  assert(0 <= offset && 0 <= length && from <= array_length(self));
-  array_slide(self, from, to);
+  assert(0 <= offset && 0 <= length);
+  assert(offset + length <= array_length(self));
+  array_slide(self, offset + length, -length);
 }
 void array_sort(struct array *self, cmp_t cmp) {
   void *ptr = array_at(self, 0);
