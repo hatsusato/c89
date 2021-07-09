@@ -6,10 +6,10 @@
 #include "vec.h"
 
 void vec_ptr_new(struct vec_ptr *self) {
-  vec_new(&self->vec, sizeof(void *));
+  vec_init(&self->vec, sizeof(void *));
 }
 void vec_ptr_delete(struct vec_ptr *self) {
-  vec_delete(&self->vec);
+  vec_finish(&self->vec);
 }
 index_t vec_ptr_capacity(struct vec_ptr *self) {
   return vec_capacity(&self->vec);

@@ -29,11 +29,11 @@ static const char *pool_str_insert_pool(struct pool_str *self,
 
 void pool_str_new(struct pool_str *self) {
   pool_new(&self->pool);
-  vec_new(&self->table, sizeof(struct str));
+  vec_init(&self->table, sizeof(struct str));
 }
 void pool_str_delete(struct pool_str *self) {
   pool_delete(&self->pool);
-  vec_delete(&self->table);
+  vec_finish(&self->table);
 }
 const struct str *pool_str_insert(struct pool_str *self,
                                   const struct str *str) {

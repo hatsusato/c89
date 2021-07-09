@@ -57,7 +57,7 @@ void pool_str_unittest(void) {
     }
   }
   actual = &pool.table;
-  vec_new(&expect, sizeof(struct str));
+  vec_init(&expect, sizeof(struct str));
   assert(vec_length(actual) == 20);
   for (i = 0; i <= 10; i++) {
     struct str str;
@@ -75,6 +75,6 @@ void pool_str_unittest(void) {
     rhs = vec_at(&expect, i);
     assert(str_cmp(lhs, rhs) == 0);
   }
-  vec_delete(&expect);
+  vec_finish(&expect);
   pool_str_delete(&pool);
 }

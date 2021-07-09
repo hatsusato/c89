@@ -25,11 +25,11 @@ static void vec_free(struct vec *self) {
   array_init(vec_inner(self), vec_align(self), NULL);
 }
 
-void vec_new(struct vec *self, align_t align) {
+void vec_init(struct vec *self, align_t align) {
   enum { vec_initial_capacity = 8 };
   vec_malloc(self, align, vec_initial_capacity);
 }
-void vec_delete(struct vec *self) {
+void vec_finish(struct vec *self) {
   vec_clear(self);
   vec_free(self);
 }
