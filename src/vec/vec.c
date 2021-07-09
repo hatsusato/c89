@@ -2,6 +2,7 @@
 
 #include <assert.h>
 
+#include "array/array.h"
 #include "type.h"
 #include "util/box.h"
 #include "util/util.h"

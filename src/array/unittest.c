@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "array.h"
+#include "type.h"
 #include "util/box.h"
 #include "util/slice.h"
 

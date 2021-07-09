@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "type.h"
 #include "util/buffer.h"
 #include "util/slice.h"
 

@@ -5,6 +5,7 @@ target_sources(vec PRIVATE
   vec.c
   )
 target_link_libraries(vec PRIVATE
+  array
   options
   util
   )
