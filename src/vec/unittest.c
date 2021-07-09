@@ -41,19 +41,19 @@
       assert(*p == j);                              \
     }                                               \
   } while (false)
-#define vec_unittest_insert(vec, start, begin, end)            \
-  do {                                                         \
-    int i, count = end - begin, *p;                            \
-    struct box_data *box;                                      \
-    struct slice slice;                                        \
-    box = box_data_new(sizeof(int) * count);                   \
-    p = box_data_ptr(box);                                     \
-    for (i = begin; i < end; i++, p++) {                       \
-      *p = i;                                                  \
-    }                                                          \
-    slice_init(&slice, sizeof(int), box_data_ptr(box), count); \
-    vec_insert(vec, start, &slice);                            \
-    box_data_delete(box);                                      \
+#define vec_unittest_insert(vec, start, begin, end)       \
+  do {                                                    \
+    int i, count = end - begin, *p;                       \
+    struct box *box;                                      \
+    struct slice slice;                                   \
+    box = box_new(sizeof(int) * count);                   \
+    p = box_ptr(box);                                     \
+    for (i = begin; i < end; i++, p++) {                  \
+      *p = i;                                             \
+    }                                                     \
+    slice_init(&slice, sizeof(int), box_ptr(box), count); \
+    vec_insert(vec, start, &slice);                       \
+    box_delete(box);                                      \
   } while (false)
 #define vec_unittest_remove(vec, b, e) \
   do {                                 \

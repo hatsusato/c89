@@ -6,16 +6,16 @@
 #include "vec/ptr.h"
 
 static void pool_big_free(void *self) {
-  box_data_delete(self);
+  box_delete(self);
 }
 static const void *pool_big_push(struct pool *self, const struct buffer *src) {
-  struct box_data *box_data;
+  struct box *box;
   struct buffer dst;
-  box_data = box_data_new(buffer_size(src));
-  box_data_buffer(box_data, &dst);
+  box = box_new(buffer_size(src));
+  box_buffer(box, &dst);
   buffer_memcpy(&dst, 0, src);
-  vec_ptr_push(&self->big, box_data);
-  return box_data_ptr(box_data);
+  vec_ptr_push(&self->big, box);
+  return box_ptr(box);
 }
 
 void pool_new(struct pool *self) {

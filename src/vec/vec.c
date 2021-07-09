@@ -16,11 +16,11 @@ static align_t vec_align(const struct vec *self) {
 static void vec_malloc(struct vec *self, align_t align, index_t len) {
   assert(align > 0);
   assert(0 <= len);
-  self->box = box_data_new(align * len);
-  array_init(vec_inner(self), align, box_data_ptr(self->box));
+  self->box = box_new(align * len);
+  array_init(vec_inner(self), align, box_ptr(self->box));
 }
 static void vec_free(struct vec *self) {
-  box_data_delete(self->box);
+  box_delete(self->box);
   array_init(vec_inner(self), vec_align(self), NULL);
 }
 
@@ -44,7 +44,7 @@ void vec_reserve(struct vec *self, index_t len) {
   }
 }
 index_t vec_capacity(const struct vec *self) {
-  return box_data_size(self->box) / array_align(vec_inner(self));
+  return box_size(self->box) / array_align(vec_inner(self));
 }
 index_t vec_length(const struct vec *self) {
   return array_length(vec_inner(self));
