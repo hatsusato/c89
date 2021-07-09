@@ -5,10 +5,10 @@
 #include "type.h"
 #include "vec.h"
 
-void vec_ptr_new(struct vec_ptr *self) {
+void vec_ptr_init(struct vec_ptr *self) {
   vec_init(&self->vec, sizeof(void *));
 }
-void vec_ptr_delete(struct vec_ptr *self) {
+void vec_ptr_finish(struct vec_ptr *self) {
   vec_finish(&self->vec);
 }
 index_t vec_ptr_capacity(struct vec_ptr *self) {
