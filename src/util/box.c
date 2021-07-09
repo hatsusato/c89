@@ -36,6 +36,9 @@ struct box_data *box_data_new(size_t size) {
 void box_data_delete(struct box_data *box) {
   free(box);
 }
+void box_data_buffer(struct box_data *box, struct buffer *buf) {
+  buffer_init(buf, box_data_ptr(box), box_data_size(box));
+}
 void *box_data_ptr(const struct box_data *box) {
   const byte_t *ptr = box->data;
   return (void *)ptr;
