@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <string.h>
 
+#include "type.h"
 #include "util/util.h"
 
 void str_init(struct str *self, const char *str, index_t len) {

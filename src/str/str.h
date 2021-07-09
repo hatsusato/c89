@@ -3,10 +3,7 @@
 
 #include "util/type.h"
 
-struct str {
-  const char *ptr;
-  index_t len;
-};
+struct str;
 
 void str_init(struct str *, const char *, index_t);
 void str_set(struct str *, const char *);

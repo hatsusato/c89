@@ -1,0 +1,11 @@
+#ifndef INCLUDE_GUARD_904CCA77_8628_4134_B955_B65C43B52CC1
+#define INCLUDE_GUARD_904CCA77_8628_4134_B955_B65C43B52CC1
+
+#include "util/type.h"
+
+struct str {
+  const char *ptr;
+  index_t len;
+};
+
+#endif /* INCLUDE_GUARD_904CCA77_8628_4134_B955_B65C43B52CC1 */

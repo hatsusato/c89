@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "str.h"
+#include "type.h"
 
 #define str_unittest_eq(lhs, rhs)     \
   do {                                \
