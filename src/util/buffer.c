@@ -22,25 +22,11 @@ void *buffer_at(const struct buffer *self, size_t index) {
 size_t buffer_size(const struct buffer *self) {
   return self->size;
 }
-void *buffer_malloc(struct buffer *self, size_t size) {
-  buffer_init(self, malloc(size), size);
-  return self->ptr;
-}
-void buffer_free(struct buffer *self) {
-  free(self->ptr);
-  buffer_init(self, NULL, 0);
-}
-void buffer_memcpy(struct buffer *self, const struct buffer *buf) {
-  assert(self->size >= buf->size);
+void buffer_copy(struct buffer *self, size_t offset, const struct buffer *buf) {
+  assert(self->size >= offset + buf->size);
   if (self->ptr && buf->ptr) {
-    memcpy(self->ptr, buf->ptr, buf->size);
+    memcpy(self->ptr + offset, buf->ptr, buf->size);
   }
-}
-void buffer_slice(struct buffer *self, size_t offset, size_t size) {
-  assert(self->ptr);
-  assert(offset + size <= self->size);
-  self->ptr += offset;
-  self->size = size;
 }
 void buffer_slide(struct buffer *self, size_t src, size_t dst, size_t size) {
   assert(self->ptr);

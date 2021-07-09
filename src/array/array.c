@@ -2,51 +2,64 @@
 
 #include <assert.h>
 #include <stdlib.h>
-#include <string.h>
 
-static void array_slide(struct array *self, index_t from, index_t to) {
-  const void *src = array_at(self, from);
-  void *dst = array_at(self, to);
-  if (src && dst) {
-    size_t size = (array_length(self) - from) * array_align(self);
-    memmove(dst, src, size);
-  }
-  slice_resize(&self->slice, to - from);
+#include "slice.h"
+#include "type.h"
+#include "util/buffer.h"
+#include "util/util.h"
+
+static struct slice *array_inner(struct array *self) {
+  return &self->slice;
 }
-static void array_copy(struct array *self, index_t index,
-                       const struct slice *slice) {
-  const void *src = slice_at(slice, 0);
-  void *dst = array_at(self, index);
-  if (src && dst) {
-    memcpy(dst, src, slice_size(slice));
+static void slice_buffer(const struct slice *self, struct buffer *buf) {
+  size_t size = slice_length(self) * slice_align(self);
+  buffer_init(buf, (void *)slice_at(self, 0), size);
+}
+static align_t array_align(const struct array *self) {
+  return slice_align(array_slice(self));
+}
+static void array_slide(struct array *self, index_t index, index_t count) {
+  void *ptr = array_at(self, 0);
+  if (ptr) {
+    struct buffer buf;
+    align_t align = array_align(self);
+    index_t len = array_length(self);
+    index_t max = len + UTIL_MAX(0, count);
+    size_t from = index * align;
+    size_t to = from + count * align;
+    size_t offset = (len - index) * align;
+    buffer_init(&buf, ptr, max * align);
+    buffer_slide(&buf, from, to, offset);
   }
+  slice_resize(array_inner(self), count);
 }
 
 void array_init(struct array *self, align_t align, void *ptr) {
-  slice_init(&self->slice, align, ptr, 0);
+  slice_init(array_inner(self), align, ptr, 0);
 }
 const struct slice *array_slice(const struct array *self) {
   return &self->slice;
 }
-align_t array_align(const struct array *self) {
-  return slice_align(&self->slice);
-}
 index_t array_length(const struct array *self) {
-  return slice_length(&self->slice);
+  return slice_length(array_slice(self));
 }
 void *array_at(struct array *self, index_t index) {
-  return (void *)slice_at(&self->slice, index);
+  return (void *)slice_at(array_inner(self), index);
 }
 void array_insert(struct array *self, index_t offset,
                   const struct slice *slice) {
+  struct buffer src, dst;
   assert(0 <= offset && offset <= array_length(self));
-  array_slide(self, offset, offset + slice_length(slice));
-  array_copy(self, offset, slice);
+  assert(array_align(self) == slice_align(slice));
+  array_slide(self, offset, slice_length(slice));
+  slice_buffer(slice, &src);
+  slice_buffer(array_inner(self), &dst);
+  buffer_copy(&dst, offset * array_align(self), &src);
 }
 void array_remove(struct array *self, index_t offset, index_t length) {
-  index_t from = offset + length, to = offset;
-  assert(0 <= offset && 0 <= length && from <= array_length(self));
-  array_slide(self, from, to);
+  assert(0 <= offset && 0 <= length);
+  assert(offset + length <= array_length(self));
+  array_slide(self, offset + length, -length);
 }
 void array_sort(struct array *self, cmp_t cmp) {
   void *ptr = array_at(self, 0);

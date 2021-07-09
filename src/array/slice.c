@@ -2,7 +2,10 @@
 
 #include <assert.h>
 
-static bool_t slice_is_valid(const struct slice *self) {
+#include "type.h"
+#include "util/buffer.h"
+
+bool_t slice_is_valid(const struct slice *self) {
   return (self->align > 0 && (self->ptr || self->len == 0) && self->len >= 0);
 }
 
@@ -23,12 +26,6 @@ align_t slice_align(const struct slice *self) {
 index_t slice_length(const struct slice *self) {
   return self->len;
 }
-size_t slice_size(const struct slice *self) {
-  return self->len * self->align;
-}
-const void *slice_ptr(const struct slice *self) {
-  return self->ptr;
-}
 const void *slice_at(const struct slice *self, index_t index) {
   if (index < 0) {
     index += self->len;
@@ -42,6 +39,7 @@ const void *slice_at(const struct slice *self, index_t index) {
 }
 void slice_map(const struct slice *self, void (*map)(const void *)) {
   index_t index;
+  assert(map);
   for (index = 0; index < slice_length(self); index++) {
     map(slice_at(self, index));
   }

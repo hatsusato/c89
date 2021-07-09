@@ -15,18 +15,21 @@ add_library(unittest STATIC)
 target_sources(unittest PRIVATE
   unittest.c
   array/unittest.c
+  pool/unittest.c
   str/unittest.c
   vec/unittest.c
   )
 target_link_libraries(unittest PRIVATE
   array
   options
+  pool
   str
   util
   vec
   )
 
 add_subdirectory(array)
+add_subdirectory(pool)
 add_subdirectory(str)
 add_subdirectory(util)
 add_subdirectory(vec)

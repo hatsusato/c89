@@ -3,8 +3,10 @@
 #include <assert.h>
 
 #include "array.h"
-#include "util/buffer.h"
-#include "util/slice.h"
+#include "slice.h"
+#include "type.h"
+#include "util/box.h"
+#include "util/util.h"
 
 #define array_unittest_range(array, index, begin, end) \
   do {                                                 \
@@ -12,15 +14,17 @@
     for (i = index, j = begin; j < end; i++, j++) {    \
       int *p = array_at(&array, i);                    \
       assert(*p == j);                                 \
+      UTIL_UNUSED(p);                                  \
     }                                                  \
   } while (0)
 
 void array_unittest(void) {
   struct array array;
-  struct buffer buf;
+  struct box *box;
   int i;
-  array_init(&array, sizeof(int), buffer_malloc(&buf, 100 * sizeof(int)));
-  assert(array_align(&array) == sizeof(int));
+  box = box_new(sizeof(int), 1000);
+  array_init(&array, sizeof(int), box_ptr(box));
+  assert(slice_align(array_slice(&array)) == sizeof(int));
   assert(array_length(&array) == 0);
   for (i = 0; i < 100; i++) {
     struct slice slice;
@@ -31,5 +35,5 @@ void array_unittest(void) {
   array_unittest_range(array, 0, 0, 100);
   array_remove(&array, 0, 100);
   assert(array_length(&array) == 0);
-  buffer_free(&buf);
+  box_delete(box);
 }

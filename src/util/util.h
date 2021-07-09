@@ -3,6 +3,7 @@
 
 #include "type.h"
 
+#define UTIL_UNUSED(var) ((void)var)
 #define UTIL_MAX(lhs, rhs) (((lhs) < (rhs)) ? (rhs) : (lhs))
 #define UTIL_MIN(lhs, rhs) (((lhs) < (rhs)) ? (lhs) : (rhs))
 #define UTIL_SWAP(type, lhs, rhs)                                  \

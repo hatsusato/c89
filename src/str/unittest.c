@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "str.h"
+#include "type.h"
 
 #define str_unittest_eq(lhs, rhs)     \
   do {                                \
@@ -17,9 +18,9 @@
 
 void str_unittest(void) {
   struct str str, prefix, suffix;
-  str_init(&str, "0123456789");
-  str_init(&prefix, "01234");
-  str_init(&suffix, "56789");
+  str_set(&str, "0123456789");
+  str_set(&prefix, "01234");
+  str_set(&suffix, "56789");
   str_unittest_eq(str, str);
   str_unittest_lt(prefix, str);
   str_unittest_lt(str, suffix);

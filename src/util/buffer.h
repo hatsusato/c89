@@ -3,9 +3,6 @@
 
 #include "type.h"
 
-#define BUFFER_INIT(buf, ptr) buffer_init((buf), (ptr), sizeof(*(ptr)))
-#define BUFFER_MALLOC(buf, type) buffer_malloc((buf), sizeof(type))
-
 struct buffer {
   byte_t *ptr;
   size_t size;
@@ -14,10 +11,7 @@ struct buffer {
 void buffer_init(struct buffer *, void *, size_t);
 void *buffer_at(const struct buffer *, size_t);
 size_t buffer_size(const struct buffer *);
-void *buffer_malloc(struct buffer *, size_t);
-void buffer_free(struct buffer *);
-void buffer_memcpy(struct buffer *, const struct buffer *);
-void buffer_slice(struct buffer *, size_t, size_t);
+void buffer_copy(struct buffer *, size_t, const struct buffer *);
 void buffer_slide(struct buffer *, size_t, size_t, size_t);
 
 #endif /* INCLUDE_GUARD_2505370A_1954_47A8_BF38_6BC8B1F6BF30 */

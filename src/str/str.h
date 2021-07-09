@@ -3,12 +3,12 @@
 
 #include "util/type.h"
 
-struct str {
-  const char *ptr;
-  index_t len;
-};
+struct str;
 
-void str_init(struct str *, const char *);
+void str_init(struct str *, const char *, index_t);
+void str_set(struct str *, const char *);
+const char *str_ptr(const struct str *);
+index_t str_length(const struct str *);
 void str_remove_prefix(struct str *, index_t);
 void str_remove_suffix(struct str *, index_t);
 int str_cmp(const struct str *, const struct str *);
