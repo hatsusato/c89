@@ -12,9 +12,14 @@ const struct str *pool_str_search(const struct pool_str *self,
   return vec_search(&self->table, str, pool_str_cmp);
 }
 static const char *pool_str_push(struct pool_str *self, const struct str *str) {
-  struct buffer buf;
-  buffer_init(&buf, (void *)str_ptr(str), str_length(str));
-  return pool_insert(&self->pool, &buf);
+  index_t len = str_length(str);
+  struct box *box;
+  struct buffer src, dst;
+  box = box_new(1, len);
+  box_buffer(box, &dst);
+  buffer_init(&src, (void *)str_ptr(str), len);
+  buffer_memcpy(&dst, 0, &src);
+  return pool_insert_(&self->pool, box);
 }
 
 void pool_str_new(struct pool_str *self) {
