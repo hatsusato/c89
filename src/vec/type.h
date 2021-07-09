@@ -6,7 +6,7 @@
 
 struct vec {
   struct array array;
-  struct box_data *box_data;
+  struct box_data *box;
 };
 
 struct vec_ptr {
