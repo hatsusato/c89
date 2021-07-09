@@ -11,6 +11,10 @@
 static struct slice *array_inner(struct array *self) {
   return &self->slice;
 }
+static void slice_buffer(const struct slice *self, struct buffer *buf) {
+  size_t size = slice_length(self) * slice_align(self);
+  buffer_init(buf, (void *)slice_at(self, 0), size);
+}
 static void array_slide(struct array *self, index_t index, index_t count) {
   void *ptr = array_at(self, 0);
   if (ptr) {
@@ -48,8 +52,8 @@ void array_insert(struct array *self, index_t offset,
   assert(0 <= offset && offset <= array_length(self));
   assert(array_align(self) == slice_align(slice));
   array_slide(self, offset, slice_length(slice));
-  slice_buffer((struct slice *)slice, &src);
-  slice_buffer((struct slice *)array_slice(self), &dst);
+  slice_buffer(slice, &src);
+  slice_buffer(array_inner(self), &dst);
   buffer_copy(&dst, offset * array_align(self), &src);
 }
 void array_remove(struct array *self, index_t offset, index_t length) {

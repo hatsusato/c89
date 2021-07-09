@@ -20,10 +20,6 @@ void slice_resize(struct slice *self, index_t count) {
   self->len += count;
   assert(slice_is_valid(self));
 }
-void slice_buffer(struct slice *self, struct buffer *buf) {
-  size_t size = slice_length(self) * slice_align(self);
-  buffer_init(buf, (void *)self->ptr, size);
-}
 align_t slice_align(const struct slice *self) {
   return self->align;
 }
