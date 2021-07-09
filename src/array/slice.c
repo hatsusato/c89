@@ -2,6 +2,7 @@
 
 #include <assert.h>
 
+#include "type.h"
 #include "util/buffer.h"
 
 bool_t slice_is_valid(const struct slice *self) {

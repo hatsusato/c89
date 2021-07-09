@@ -4,12 +4,7 @@
 #include "util/type.h"
 
 struct buffer;
-
-struct slice {
-  align_t align;
-  const byte_t *ptr;
-  index_t len;
-};
+struct slice;
 
 void slice_init(struct slice *, align_t, const void *, index_t);
 void slice_resize(struct slice *, index_t);
