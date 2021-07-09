@@ -1,5 +1,6 @@
 #include "pool.h"
 
+#include "type.h"
 #include "util/box.h"
 #include "vec/ptr.h"
 

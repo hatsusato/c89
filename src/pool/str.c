@@ -1,6 +1,8 @@
 #include "str.h"
 
+#include "pool.h"
 #include "str/str.h"
+#include "type.h"
 #include "util/box.h"
 #include "util/buffer.h"
 #include "vec/vec.h"
