@@ -20,6 +20,5 @@ void vec_pop(struct vec *);
 void vec_clear(struct vec *);
 void vec_sort(struct vec *, cmp_t);
 void *vec_search(const struct vec *, const void *, cmp_t);
-void vec_map(struct vec *, void (*)(void *));
 
 #endif /* INCLUDE_GUARD_C9808F6F_7A34_4226_A18A_9B7E94B05A1D */
