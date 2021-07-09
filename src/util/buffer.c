@@ -29,12 +29,6 @@ void buffer_memcpy(struct buffer *self, size_t offset,
     memcpy(self->ptr + offset, buf->ptr, buf->size);
   }
 }
-void buffer_slice(struct buffer *self, size_t offset, size_t size) {
-  assert(self->ptr);
-  assert(offset + size <= self->size);
-  self->ptr += offset;
-  self->size = size;
-}
 void buffer_slide(struct buffer *self, size_t src, size_t dst, size_t size) {
   assert(self->ptr);
   assert(src + size <= self->size);
