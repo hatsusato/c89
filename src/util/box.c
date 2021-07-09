@@ -27,3 +27,12 @@ void *box_ptr(const struct box *box) {
 size_t box_size(const struct box *box) {
   return box->size;
 }
+
+struct box_data *box_data_new(size_t size) {
+  struct box_data *box = malloc(sizeof(size_t) + size);
+  box->size = size;
+  return box;
+}
+void box_data_delete(struct box_data *box) {
+  free(box);
+}
