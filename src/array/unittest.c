@@ -18,8 +18,10 @@
 void array_unittest(void) {
   struct array array;
   struct box box;
+  struct box_data *box_data;
   int i;
   box_new(&box, sizeof(int) * 100);
+  box_data = box_data_new(sizeof(int) * 1000);
   array_init(&array, sizeof(int), box_ptr(&box));
   assert(array_align(&array) == sizeof(int));
   assert(array_length(&array) == 0);
@@ -33,4 +35,5 @@ void array_unittest(void) {
   array_remove(&array, 0, 100);
   assert(array_length(&array) == 0);
   box_delete(&box);
+  box_data_delete(box_data);
 }
