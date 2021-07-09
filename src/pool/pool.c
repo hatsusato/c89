@@ -23,3 +23,7 @@ const void *pool_insert(struct pool *self, const struct buffer *src) {
   vec_ptr_push(&self->vec, box);
   return box_ptr(box);
 }
+const void *pool_insert_(struct pool *self, struct box *box) {
+  vec_ptr_push(&self->vec, box);
+  return box_ptr(box);
+}
