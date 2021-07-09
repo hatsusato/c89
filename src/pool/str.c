@@ -7,11 +7,12 @@
 static int pool_str_cmp(const void *lhs, const void *rhs) {
   return str_cmp(lhs, rhs);
 }
-const struct str *pool_str_search(const struct pool_str *self,
-                                  const struct str *str) {
+static const struct str *pool_str_search(const struct pool_str *self,
+                                         const struct str *str) {
   return vec_search(&self->table, str, pool_str_cmp);
 }
-static const char *pool_str_push(struct pool_str *self, const struct str *str) {
+static const char *pool_str_insert_pool(struct pool_str *self,
+                                        const struct str *str) {
   index_t len = str_length(str);
   struct box *box;
   struct buffer src, dst;
@@ -34,7 +35,7 @@ const struct str *pool_str_insert(struct pool_str *self,
                                   const struct str *str) {
   if (!pool_str_search(self, str)) {
     struct str buf;
-    const char *ptr = pool_str_push(self, str);
+    const char *ptr = pool_str_insert_pool(self, str);
     str_init(&buf, ptr, str_length(str));
     vec_push(&self->table, &buf);
     vec_sort(&self->table, pool_str_cmp);
