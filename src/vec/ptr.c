@@ -3,7 +3,6 @@
 #include <assert.h>
 
 #include "type.h"
-#include "util/buffer.h"
 #include "vec.h"
 
 void vec_ptr_new(struct vec_ptr *self) {

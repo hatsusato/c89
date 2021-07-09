@@ -5,4 +5,7 @@ target_sources(pool PRIVATE
   )
 target_link_libraries(pool PRIVATE
   options
+  str
+  util
+  vec
   )

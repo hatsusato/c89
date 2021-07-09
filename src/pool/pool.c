@@ -1,5 +1,6 @@
 #include "pool.h"
 
+#include "util/box.h"
 #include "vec/ptr.h"
 
 static void pool_free(void *self) {

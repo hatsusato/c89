@@ -3,8 +3,7 @@
 #include <assert.h>
 
 #include "type.h"
-#include "util/buffer.h"
-#include "util/slice.h"
+#include "util/box.h"
 #include "util/util.h"
 
 static struct array *vec_inner(const struct vec *self) {
