@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_5DE865CB_51C5_423B_9398_D7D94EF97355
 #define INCLUDE_GUARD_5DE865CB_51C5_423B_9398_D7D94EF97355
 
-#include "util/slice.h"
+#include "slice.h"
 
 struct array {
   struct slice slice;

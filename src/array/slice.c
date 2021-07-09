@@ -2,7 +2,7 @@
 
 #include <assert.h>
 
-#include "buffer.h"
+#include "util/buffer.h"
 
 bool_t slice_is_valid(const struct slice *self) {
   return (self->align > 0 && (self->ptr || self->len == 0) && self->len >= 0);

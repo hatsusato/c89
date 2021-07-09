@@ -4,10 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "array/slice.h"
 #include "ptr.h"
 #include "type.h"
 #include "util/box.h"
-#include "util/slice.h"
 #include "vec.h"
 
 #define vec_unittest_check(vec, len, cap) \

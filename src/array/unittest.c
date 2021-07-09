@@ -3,9 +3,9 @@
 #include <assert.h>
 
 #include "array.h"
+#include "slice.h"
 #include "type.h"
 #include "util/box.h"
-#include "util/slice.h"
 
 #define array_unittest_range(array, index, begin, end) \
   do {                                                 \
