@@ -6,6 +6,7 @@
 #include "slice.h"
 #include "type.h"
 #include "util/box.h"
+#include "util/util.h"
 
 #define array_unittest_range(array, index, begin, end) \
   do {                                                 \
@@ -13,6 +14,7 @@
     for (i = index, j = begin; j < end; i++, j++) {    \
       int *p = array_at(&array, i);                    \
       assert(*p == j);                                 \
+      UTIL_UNUSED(p);                                  \
     }                                                  \
   } while (0)
 
