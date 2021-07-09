@@ -4,7 +4,6 @@
 #include "type.h"
 
 struct buffer;
-struct range;
 
 struct slice {
   align_t align;
