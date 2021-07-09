@@ -19,7 +19,7 @@ static const char *pool_str_push(struct pool_str *self, const struct str *str) {
   box_buffer(box, &dst);
   buffer_init(&src, (void *)str_ptr(str), len);
   buffer_memcpy(&dst, 0, &src);
-  return pool_insert_(&self->pool, box);
+  return pool_insert(&self->pool, box);
 }
 
 void pool_str_new(struct pool_str *self) {
