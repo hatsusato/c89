@@ -35,12 +35,12 @@ void pool_unittest_check(const int *p, int len) {
 void pool_unittest(void) {
   struct pool pool;
   int i, j;
-  pool_new(&pool);
+  pool_init(&pool);
   for (i = 0, j = 1; i < 16; i++, j *= 2) {
     const int *p = pool_unittest_set(&pool, j);
     pool_unittest_check(p, i);
   }
-  pool_delete(&pool);
+  pool_finish(&pool);
 }
 
 void pool_str_unittest(void) {
