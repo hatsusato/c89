@@ -23,7 +23,7 @@ static const char *pool_str_insert_pool(struct pool_str *self,
   box = box_new(1, len);
   box_buffer(box, &dst);
   buffer_init(&src, (void *)str_ptr(str), len);
-  buffer_memcpy(&dst, 0, &src);
+  buffer_copy(&dst, 0, &src);
   return pool_insert(&self->pool, box);
 }
 

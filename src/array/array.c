@@ -47,7 +47,7 @@ void array_insert(struct array *self, index_t offset,
   array_slide(self, offset, slice_length(slice));
   slice_buffer((struct slice *)slice, &src);
   slice_buffer(&self->slice, &dst);
-  buffer_memcpy(&dst, offset * array_align(self), &src);
+  buffer_copy(&dst, offset * array_align(self), &src);
 }
 void array_remove(struct array *self, index_t offset, index_t length) {
   assert(0 <= offset && 0 <= length);
