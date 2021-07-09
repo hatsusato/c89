@@ -19,7 +19,7 @@ void array_unittest(void) {
   struct array array;
   struct box *box;
   int i;
-  box = box_new(sizeof(int) * 1000);
+  box = box_new(sizeof(int), 1000);
   array_init(&array, sizeof(int), box_ptr(box));
   assert(array_align(&array) == sizeof(int));
   assert(array_length(&array) == 0);

@@ -14,7 +14,7 @@ const int *pool_unittest_set(struct pool *pool, int len) {
   struct box *box;
   struct buffer buf;
   const int *p;
-  box = box_new(sizeof(int) * len);
+  box = box_new(sizeof(int), len);
   box_buffer(box, &buf);
   for (i = 0; i < len; i++) {
     int *p = buffer_at(&buf, sizeof(int) * i);

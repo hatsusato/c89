@@ -46,7 +46,7 @@
     int i, count = end - begin, *p;                       \
     struct box *box;                                      \
     struct slice slice;                                   \
-    box = box_new(sizeof(int) * count);                   \
+    box = box_new(sizeof(int), count);                    \
     p = box_ptr(box);                                     \
     for (i = begin; i < end; i++, p++) {                  \
       *p = i;                                             \

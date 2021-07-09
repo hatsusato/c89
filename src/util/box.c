@@ -9,7 +9,8 @@ struct box {
   byte_t data[1];
 };
 
-struct box *box_new(size_t size) {
+struct box *box_new(align_t align, index_t count) {
+  size_t size = align * count;
   struct box *box = malloc(sizeof(size_t) + size);
   box->size = size;
   return box;

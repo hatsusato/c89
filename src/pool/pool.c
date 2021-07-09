@@ -11,7 +11,7 @@ static void pool_big_free(void *self) {
 static const void *pool_big_push(struct pool *self, const struct buffer *src) {
   struct box *box;
   struct buffer dst;
-  box = box_new(buffer_size(src));
+  box = box_new(buffer_size(src), 1);
   box_buffer(box, &dst);
   buffer_memcpy(&dst, 0, src);
   vec_ptr_push(&self->big, box);

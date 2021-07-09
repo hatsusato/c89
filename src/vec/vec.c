@@ -16,7 +16,7 @@ static align_t vec_align(const struct vec *self) {
 static void vec_malloc(struct vec *self, align_t align, index_t len) {
   assert(align > 0);
   assert(0 <= len);
-  self->box = box_new(align * len);
+  self->box = box_new(align, len);
   array_init(vec_inner(self), align, box_ptr(self->box));
 }
 static void vec_free(struct vec *self) {

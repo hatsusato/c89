@@ -6,7 +6,7 @@
 struct box;
 struct buffer;
 
-struct box *box_new(size_t);
+struct box *box_new(align_t, index_t);
 void box_delete(struct box *);
 void box_buffer(struct box *, struct buffer *);
 void *box_ptr(const struct box *);
