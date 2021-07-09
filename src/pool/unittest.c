@@ -20,8 +20,7 @@ const int *pool_unittest_set(struct pool *pool, int len) {
     int *p = buffer_at(&buf, sizeof(int) * i);
     *p = i;
   }
-  p = pool_insert(pool, &buf);
-  box_delete(box);
+  p = pool_insert_(pool, box);
   return p;
 }
 void pool_unittest_check(const int *p, int len) {
