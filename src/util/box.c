@@ -4,6 +4,11 @@
 
 #include "buffer.h"
 
+struct box_data {
+  size_t size;
+  byte_t data[1];
+};
+
 void box_new(struct box *box, size_t size) {
   box->ptr = malloc(size);
   box->size = size;
