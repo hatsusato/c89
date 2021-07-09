@@ -17,10 +17,12 @@ static void vec_malloc(struct vec *self, align_t align, index_t len) {
   assert(align > 0);
   assert(0 <= len);
   box_new(&self->box, align * len);
+  self->box_data = box_data_new(align * len);
   array_init(vec_inner(self), align, box_ptr(&self->box));
 }
 static void vec_free(struct vec *self) {
   box_delete(&self->box);
+  box_data_delete(self->box_data);
   array_init(vec_inner(self), vec_align(self), NULL);
 }
 
