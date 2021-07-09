@@ -12,9 +12,11 @@
 const int *pool_unittest_set(struct pool *pool, int len) {
   int i;
   struct box box;
+  struct box_data *box_data;
   struct buffer buf;
   const int *p;
   box_new(&box, sizeof(int) * len);
+  box_data = box_data_new(sizeof(int) * len);
   box_buffer(&box, &buf);
   for (i = 0; i < len; i++) {
     int *p = buffer_at(&buf, sizeof(int) * i);
@@ -22,6 +24,7 @@ const int *pool_unittest_set(struct pool *pool, int len) {
   }
   p = pool_insert(pool, &buf);
   box_delete(&box);
+  box_data_delete(box_data);
   return p;
 }
 void pool_unittest_check(const int *p, int len) {
