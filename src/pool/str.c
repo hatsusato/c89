@@ -27,11 +27,11 @@ static const char *pool_str_insert_pool(struct pool_str *self,
   return pool_insert(&self->pool, box);
 }
 
-void pool_str_new(struct pool_str *self) {
+void pool_str_init(struct pool_str *self) {
   pool_init(&self->pool);
   vec_init(&self->table, sizeof(struct str));
 }
-void pool_str_delete(struct pool_str *self) {
+void pool_str_finish(struct pool_str *self) {
   pool_finish(&self->pool);
   vec_finish(&self->table);
 }

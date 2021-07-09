@@ -48,7 +48,7 @@ void pool_str_unittest(void) {
   struct vec expect, *actual;
   const char *ab = "ababababab";
   int i, j;
-  pool_str_new(&pool);
+  pool_str_init(&pool);
   for (i = 0; i < 6; i++) {
     struct str str;
     for (j = 0; j <= 10 - i; j++) {
@@ -76,5 +76,5 @@ void pool_str_unittest(void) {
     assert(str_cmp(lhs, rhs) == 0);
   }
   vec_finish(&expect);
-  pool_str_delete(&pool);
+  pool_str_finish(&pool);
 }
