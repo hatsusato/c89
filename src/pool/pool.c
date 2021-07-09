@@ -15,11 +15,6 @@ static void pool_small_push_block(struct pool *self) {
   pool_block_new(&block);
   vec_push(&self->small, &block);
 }
-static const void *pool_small_push(struct pool *self,
-                                   const struct buffer *buf) {
-  struct pool_block *block = vec_at(&self->small, -1);
-  return pool_block_insert(block, buf);
-}
 static void pool_big_free(void *self) {
   free(self);
 }
@@ -45,14 +40,5 @@ void pool_delete(struct pool *self) {
   vec_ptr_delete(&self->big);
 }
 const void *pool_insert(struct pool *self, const struct buffer *buf) {
-  if (buffer_size(buf) < POOL_BLOCK_SIZE / 2) {
-    const void *ptr = pool_small_push(self, buf);
-    if (!ptr) {
-      pool_small_push_block(self);
-      ptr = pool_small_push(self, buf);
-    }
-    return ptr;
-  } else {
-    return pool_big_push(self, buf);
-  }
+  return pool_big_push(self, buf);
 }
