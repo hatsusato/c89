@@ -22,16 +22,13 @@ void slice_resize(struct slice *self, index_t count) {
 }
 void slice_buffer(struct slice *self, struct buffer *buf) {
   size_t size = slice_length(self) * slice_align(self);
-  buffer_init(buf, (void *)slice_ptr(self), size);
+  buffer_init(buf, (void *)self->ptr, size);
 }
 align_t slice_align(const struct slice *self) {
   return self->align;
 }
 index_t slice_length(const struct slice *self) {
   return self->len;
-}
-const void *slice_ptr(const struct slice *self) {
-  return self->ptr;
 }
 const void *slice_at(const struct slice *self, index_t index) {
   if (index < 0) {

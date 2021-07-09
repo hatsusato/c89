@@ -11,7 +11,6 @@ void slice_resize(struct slice *, index_t);
 void slice_buffer(struct slice *, struct buffer *);
 align_t slice_align(const struct slice *);
 index_t slice_length(const struct slice *);
-const void *slice_ptr(const struct slice *);
 const void *slice_at(const struct slice *, index_t);
 void slice_map(const struct slice *, void (*)(const void *));
 
