@@ -6,7 +6,6 @@
 struct buffer;
 
 struct pool {
-  struct vec small;
   struct vec_ptr big;
 };
 
