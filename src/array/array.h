@@ -7,7 +7,6 @@ struct array;
 
 void array_init(struct array *, align_t, void *);
 const struct slice *array_slice(const struct array *);
-align_t array_align(const struct array *);
 index_t array_length(const struct array *);
 void *array_at(struct array *, index_t);
 void array_insert(struct array *, index_t, const struct slice *);

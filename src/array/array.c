@@ -15,6 +15,9 @@ static void slice_buffer(const struct slice *self, struct buffer *buf) {
   size_t size = slice_length(self) * slice_align(self);
   buffer_init(buf, (void *)slice_at(self, 0), size);
 }
+static align_t array_align(const struct array *self) {
+  return slice_align(array_slice(self));
+}
 static void array_slide(struct array *self, index_t index, index_t count) {
   void *ptr = array_at(self, 0);
   if (ptr) {
@@ -36,9 +39,6 @@ void array_init(struct array *self, align_t align, void *ptr) {
 }
 const struct slice *array_slice(const struct array *self) {
   return &self->slice;
-}
-align_t array_align(const struct array *self) {
-  return slice_align(array_slice(self));
 }
 index_t array_length(const struct array *self) {
   return slice_length(array_slice(self));

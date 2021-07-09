@@ -24,7 +24,7 @@ void array_unittest(void) {
   int i;
   box = box_new(sizeof(int), 1000);
   array_init(&array, sizeof(int), box_ptr(box));
-  assert(array_align(&array) == sizeof(int));
+  assert(slice_align(array_slice(&array)) == sizeof(int));
   assert(array_length(&array) == 0);
   for (i = 0; i < 100; i++) {
     struct slice slice;

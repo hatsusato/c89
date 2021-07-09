@@ -12,7 +12,7 @@ static struct array *vec_inner(const struct vec *self) {
   return (struct array *)&self->array;
 }
 static align_t vec_align(const struct vec *self) {
-  return array_align(vec_inner(self));
+  return slice_align(array_slice(vec_inner(self)));
 }
 static void vec_malloc(struct vec *self, align_t align, index_t len) {
   assert(align > 0);
@@ -45,7 +45,7 @@ void vec_reserve(struct vec *self, index_t len) {
   }
 }
 index_t vec_capacity(const struct vec *self) {
-  return box_size(self->box) / array_align(vec_inner(self));
+  return box_size(self->box) / vec_align(self);
 }
 index_t vec_length(const struct vec *self) {
   return array_length(vec_inner(self));
