@@ -3,8 +3,8 @@
 }
 
 %define api.pure full
-%define api.value.type {struct cell *}
-%param {yyscan_t yyscanner}
+%define api.value.type {const struct cell *}
+%param {yyscan_t yyscan}
 
 %code provides {
 #include "lexer.h"
