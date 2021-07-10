@@ -1,9 +1,10 @@
 %code requires {
 #include "yyscan_t.h"
+struct cell;
 }
 
 %define api.pure full
-%define api.value.type {void *}
+%define api.value.type {struct cell *}
 %param {yyscan_t yyscanner}
 
 %code provides {
