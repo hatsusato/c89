@@ -1,11 +1,13 @@
 #include "cell.h"
 
+#include <assert.h>
+
 #include "pool/pool.h"
 #include "type.h"
 #include "util/box.h"
 
-const struct cell *cell_new(struct pool *pool, const void *car,
-                            const void *cdr) {
+static const struct cell *cell_new(struct pool *pool, const void *car,
+                                   const void *cdr) {
   struct box *box = box_new(sizeof(struct cell), 1);
   struct cell *cell = pool_insert(pool, box);
   cell->car = car;
@@ -16,4 +18,9 @@ const struct cell *cell_new(struct pool *pool, const void *car,
 const struct cell *cell_nil(void) {
   static struct cell cell = {NULL, NULL};
   return &cell;
+}
+const struct cell *cell_new_cons(struct pool *pool, const struct cell *car,
+                                 const struct cell *cdr) {
+  assert(car && cdr);
+  return cell_new(pool, car, cdr);
 }
