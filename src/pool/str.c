@@ -34,8 +34,7 @@ void pool_str_init(struct pool_str *self, struct pool *pool) {
 void pool_str_finish(struct pool_str *self) {
   vec_finish(&self->table);
 }
-const struct str *pool_str_insert(struct pool_str *self,
-                                  const struct str *str) {
+const char *pool_str_insert(struct pool_str *self, const struct str *str) {
   if (!pool_str_search(self, str)) {
     struct str buf;
     const char *ptr = pool_str_insert_pool(self, str);
@@ -43,5 +42,5 @@ const struct str *pool_str_insert(struct pool_str *self,
     vec_push(&self->table, &buf);
     vec_sort(&self->table, pool_str_cmp);
   }
-  return pool_str_search(self, str);
+  return str_ptr(pool_str_search(self, str));
 }
