@@ -11,6 +11,7 @@ typedef void *yyscan_t;
 
 %code provides {
 #include "lexer.h"
+int yyscan_is_typedef(yyscan_t, const char *);
 void yyerror(yyscan_t, const char *);
 }
 
@@ -114,6 +115,11 @@ top: %empty {};
 
 %%
 
+int yyscan_is_typedef(yyscan_t yyscanner, const char *symbol) {
+  (void)yyscanner;
+  (void)symbol;
+  return 0;
+}
 void yyerror(yyscan_t yyscanner, const char *msg) {
   (void)yyscanner;
   (void)msg;

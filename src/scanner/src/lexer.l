@@ -67,6 +67,9 @@ directive               [#][^\n]*
 
 %%
 
+{directive}
+{space}
+
 "auto"      { return TOKEN_AUTO;     }
 "break"     { return TOKEN_BREAK;    }
 "case"      { return TOKEN_CASE;     }
@@ -147,5 +150,20 @@ directive               [#][^\n]*
 ":"     { return TOKEN_COLON;         }
 ";"     { return TOKEN_SEMICOLON;     }
 "..."   { return TOKEN_ELLIPSIS;      }
+
+{identifier} {
+  if (yyscan_is_typedef(yytext, yyscanner)) {
+    return TOKEN_TYPEDEF_IDENTIFIER;
+  } else {
+    return TOKEN_IDENTIFIER;
+  }
+}
+{floating-constant}     { return TOKEN_FLOATING_CONSTANT;  }
+{integer-constant}      { return TOKEN_INTEGER_CONSTANT;   }
+{character-constant}    { return TOKEN_CHARACTER_CONSTANT; }
+{string-literal}        { return TOKEN_STRING_LITERAL;     }
+. {
+  yyerror(yyscanner, "unknown token");
+}
 
 %%
