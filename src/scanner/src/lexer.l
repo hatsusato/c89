@@ -67,4 +67,85 @@ directive               [#][^\n]*
 
 %%
 
+"auto"      { return TOKEN_AUTO;     }
+"break"     { return TOKEN_BREAK;    }
+"case"      { return TOKEN_CASE;     }
+"char"      { return TOKEN_CHAR;     }
+"const"     { return TOKEN_CONST;    }
+"continue"  { return TOKEN_CONTINUE; }
+"default"   { return TOKEN_DEFAULT;  }
+"do"        { return TOKEN_DO;       }
+"double"    { return TOKEN_DOUBLE;   }
+"else"      { return TOKEN_ELSE;     }
+"enum"      { return TOKEN_ENUM;     }
+"extern"    { return TOKEN_EXTERN;   }
+"float"     { return TOKEN_FLOAT;    }
+"for"       { return TOKEN_FOR;      }
+"goto"      { return TOKEN_GOTO;     }
+"if"        { return TOKEN_IF;       }
+"int"       { return TOKEN_INT;      }
+"long"      { return TOKEN_LONG;     }
+"register"  { return TOKEN_REGISTER; }
+"return"    { return TOKEN_RETURN;   }
+"signed"    { return TOKEN_SIGNED;   }
+"sizeof"    { return TOKEN_SIZEOF;   }
+"short"     { return TOKEN_SHORT;    }
+"static"    { return TOKEN_STATIC;   }
+"struct"    { return TOKEN_STRUCT;   }
+"switch"    { return TOKEN_SWITCH;   }
+"typedef"   { return TOKEN_TYPEDEF;  }
+"union"     { return TOKEN_UNION;    }
+"unsigned"  { return TOKEN_UNSIGNED; }
+"void"      { return TOKEN_VOID;     }
+"volatile"  { return TOKEN_VOLATILE; }
+"while"     { return TOKEN_WHILE;    }
+
+"."     { return TOKEN_PERIOD;             }
+"->"    { return TOKEN_ARROW;              }
+"++"    { return TOKEN_INCREMENT;          }
+"--"    { return TOKEN_DECREMENT;          }
+"&"     { return TOKEN_AMPERSAND;          }
+"*"     { return TOKEN_ASTERISK;           }
+"+"     { return TOKEN_PLUS;               }
+"-"     { return TOKEN_MINUS;              }
+"~"     { return TOKEN_TILDE;              }
+"!"     { return TOKEN_EXCLAMATION;        }
+"/"     { return TOKEN_SLASH;              }
+"%"     { return TOKEN_PERCENT;            }
+"<<"    { return TOKEN_LEFT_SHIFT;         }
+">>"    { return TOKEN_RIGHT_SHIFT;        }
+"<"     { return TOKEN_LESS_THAN;          }
+">"     { return TOKEN_GREATER_THAN;       }
+"<="    { return TOKEN_LESS_EQUAL;         }
+">="    { return TOKEN_GREATER_EQUAL;      }
+"=="    { return TOKEN_EQUAL;              }
+"!="    { return TOKEN_NOT_EQUAL;          }
+"^"     { return TOKEN_CARET;              }
+"|"     { return TOKEN_BAR;                }
+"&&"    { return TOKEN_AND;                }
+"||"    { return TOKEN_OR;                 }
+"?"     { return TOKEN_QUESTION;           }
+"="     { return TOKEN_ASSIGN;             }
+"*="    { return TOKEN_ASTERISK_ASSIGN;    }
+"/="    { return TOKEN_SLASH_ASSIGN;       }
+"%="    { return TOKEN_PERCENT_ASSIGN;     }
+"+="    { return TOKEN_PLUS_ASSIGN;        }
+"-="    { return TOKEN_MINUS_ASSIGN;       }
+"<<="   { return TOKEN_LEFT_SHIFT_ASSIGN;  }
+">>="   { return TOKEN_RIGHT_SHIFT_ASSIGN; }
+"&="    { return TOKEN_AMPERSAND_ASSIGN;   }
+"^="    { return TOKEN_CARET_ASSIGN;       }
+"|="    { return TOKEN_BAR_ASSIGN;         }
+
+"["     { return TOKEN_LEFT_BRACKET;  }
+"]"     { return TOKEN_RIGHT_BRACKET; }
+"("     { return TOKEN_LEFT_PAREN;    }
+")"     { return TOKEN_RIGHT_PAREN;   }
+"{"     { return TOKEN_LEFT_BRACE;    }
+"}"     { return TOKEN_RIGHT_BRACE;   }
+","     { return TOKEN_COMMA;         }
+":"     { return TOKEN_COLON;         }
+";"     { return TOKEN_SEMICOLON;     }
+"..."   { return TOKEN_ELLIPSIS;      }
+
 %%
