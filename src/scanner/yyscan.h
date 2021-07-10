@@ -3,7 +3,11 @@
 
 #include "yyscan_t.h"
 
+#define YYSCAN_SYMBOL() yyscan_symbol(yyscan)
+#define YYSCAN_PUSH(xs, x) yyscan_push(yyscan, xs, x)
+#define YYSCAN_PUSH_SYMBOL(xs) YYSCAN_PUSH(xs, YYSCAN_SYMBOL())
 #define YYSCAN_TOKEN(token) yyscan_token(yyscan, #token)
+#define YYSCAN_TAG(token) YYSCAN_PUSH(yyscan_nil(), YYSCAN_TOKEN(token))
 
 void yyerror(yyscan_t, const char *);
 yyscan_t yyscan_new(struct scanner *);
