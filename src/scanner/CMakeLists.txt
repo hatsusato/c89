@@ -19,6 +19,7 @@ add_library(scanner STATIC)
 target_sources(scanner PRIVATE
   ${BISON_parser_OUTPUTS}
   ${FLEX_lexer_OUTPUTS}
+  scanner.c
   type.c
   yyscan.c
   )
