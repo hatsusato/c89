@@ -5,5 +5,6 @@ target_sources(cell PRIVATE
   )
 target_link_libraries(cell PRIVATE
   options
+  pool
   util
   )
