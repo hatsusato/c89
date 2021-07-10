@@ -4,17 +4,24 @@
 #include "parser.tab.h"
 #include "type.h"
 
-const struct cell *scanner_parse(void) {
+static yyscan_t scanner_init(struct scanner *self) {
   yyscan_t yyscan;
-  struct scanner scanner;
   if (yylex_init(&yyscan)) {
     return NULL;
   }
-  scanner.ast = cell_nil();
-  yyset_extra(&scanner, yyscan);
-  if (yyparse(yyscan)) {
-    scanner.ast = NULL;
+  self->ast = NULL;
+  yyset_extra(self, yyscan);
+  return yyscan;
+}
+
+const struct cell *scanner_parse(void) {
+  struct scanner scanner;
+  yyscan_t yyscan = scanner_init(&scanner);
+  if (yyscan) {
+    if (yyparse(yyscan)) {
+      scanner.ast = NULL;
+    }
+    yylex_destroy(yyscan);
   }
-  yylex_destroy(yyscan);
   return scanner.ast;
 }
