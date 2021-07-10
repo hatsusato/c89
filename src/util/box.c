@@ -1,5 +1,6 @@
 #include "box.h"
 
+#include <assert.h>
 #include <stdlib.h>
 
 #include "buffer.h"
@@ -24,6 +25,12 @@ void box_buffer(struct box *box, struct buffer *buf) {
 void *box_get(const struct box *box) {
   const byte_t *ptr = box->data;
   return (void *)ptr;
+}
+void box_release(void *ptr) {
+  byte_t *data = ptr;
+  struct box *box = (void *)(data - sizeof(size_t));
+  assert(box_get(box) == ptr);
+  box_delete(box);
 }
 size_t box_size(const struct box *box) {
   return box->size;
