@@ -1,9 +1,11 @@
 %{
+#define yyHEADER_H
+#include "parser.tab.h"
 %}
 
 %option noinput
 %option nounput
-/* %option bison-bridge */
+%option bison-bridge
 %option reentrant
 %option noyywrap
 %option never-interactive
