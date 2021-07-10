@@ -1,10 +1,10 @@
 #include "scanner.h"
 
-#include "parser.tab.h"
 #include "pool/str.h"
 #include "pool/type.h"
 #include "type.h"
 #include "util/box.h"
+#include "yyscan.h"
 
 static void scanner_init(struct scanner *self, struct pool *pool) {
   struct box *box = box_new(sizeof(struct pool_str), 1);
@@ -23,7 +23,7 @@ const struct cell *scanner_parse(struct pool *pool) {
   yyscan_t yyscan = yyscan_new(&scanner);
   if (yyscan) {
     scanner_init(&scanner, pool);
-    if (yyparse(yyscan)) {
+    if (yyscan_parse(yyscan)) {
       scanner.ast = NULL;
     }
     scanner_finish(&scanner);
