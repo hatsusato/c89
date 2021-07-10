@@ -28,23 +28,23 @@ const struct cell *cell_new_symbol(struct pool *pool, const char *symbol) {
   assert(symbol);
   return cell_new(pool, symbol, NULL);
 }
-bool_t cell_is_nil(const struct cell *cell) {
-  return !cell->car && !cell->cdr;
+bool_t cell_is_nil(const struct cell *self) {
+  return !self->car && !self->cdr;
 }
-bool_t cell_is_cons(const struct cell *cell) {
-  return cell->car && cell->cdr;
+bool_t cell_is_cons(const struct cell *self) {
+  return self->car && self->cdr;
 }
-bool_t cell_is_symbol(const struct cell *cell) {
-  return cell->car && !cell->cdr;
+bool_t cell_is_symbol(const struct cell *self) {
+  return self->car && !self->cdr;
 }
-const struct cell *cell_car(const struct cell *cell) {
-  return cell_is_cons(cell) ? cell->car : NULL;
+const struct cell *cell_car(const struct cell *self) {
+  return cell_is_cons(self) ? self->car : NULL;
 }
-const struct cell *cell_cdr(const struct cell *cell) {
-  return cell_is_cons(cell) ? cell->cdr : NULL;
+const struct cell *cell_cdr(const struct cell *self) {
+  return cell_is_cons(self) ? self->cdr : NULL;
 }
-const char *cell_symbol(const struct cell *cell) {
-  return cell_is_symbol(cell) ? cell->car : NULL;
+const char *cell_symbol(const struct cell *self) {
+  return cell_is_symbol(self) ? self->car : NULL;
 }
 void cell_set_car(const struct cell *self, const struct cell *car) {
   struct cell *cell = (struct cell *)self;
