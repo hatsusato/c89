@@ -7,6 +7,10 @@
 #include "type.h"
 #include "util/util.h"
 
+static struct pool *yyscan_pool(yyscan_t self) {
+  return yyget_extra(self)->pool;
+}
+
 void yyerror(yyscan_t yyscanner, const char *msg) {
   UTIL_UNUSED(yyscanner);
   fprintf(stderr, "%s\n", msg);
@@ -31,11 +35,9 @@ int yyscan_is_typedef(yyscan_t self, const char *symbol) {
   return 0;
 }
 const struct cell *yyscan_token(yyscan_t self, const char *token) {
-  struct scanner *scanner = yyget_extra(self);
-  return cell_new_symbol(scanner->pool, token);
+  return cell_new_symbol(yyscan_pool(self), token);
 }
 const struct cell *yyscan_pair(yyscan_t self, const struct cell *car,
                                const struct cell *cdr) {
-  struct scanner *scanner = yyget_extra(self);
-  return cell_new_cons(scanner->pool, car, cdr);
+  return cell_new_cons(yyscan_pool(self), car, cdr);
 }
