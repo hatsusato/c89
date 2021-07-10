@@ -271,7 +271,7 @@ ellipsis: "..." { $$ = yyscan_token(yyscan, "ellipsis"); }
 
 /* 6.1 Lexical elements */
 identifier.opt
-: %empty {}
+: %empty { $$ = yyscan_nil(); }
 | identifier
 ;
 identifier
@@ -322,7 +322,7 @@ postfix-expression.suffix
 | decrement {}
 ;
 argument-expression-list.opt
-: %empty {}
+: %empty { $$ = yyscan_nil(); }
 | argument-expression-list
 ;
 argument-expression-list
@@ -434,7 +434,7 @@ assignment-operator
 | bar-assign
 ;
 expression.opt
-: %empty {}
+: %empty { $$ = yyscan_nil(); }
 | expression
 ;
 expression
@@ -444,7 +444,7 @@ expression
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty {}
+: %empty { $$ = yyscan_nil(); }
 | constant-expression
 ;
 constant-expression
@@ -465,7 +465,7 @@ declaration-specifier
 | type-qualifier
 ;
 init-declarator-list.opt
-: %empty {}
+: %empty { $$ = yyscan_nil(); }
 | init-declarator-list
 ;
 init-declarator-list
@@ -545,7 +545,7 @@ type-qualifier
 | volatile
 ;
 declarator.opt
-: %empty {}
+: %empty { $$ = yyscan_nil(); }
 | declarator
 ;
 declarator
@@ -567,7 +567,7 @@ pointer
 | pointer asterisk type-qualifier-list.opt {}
 ;
 type-qualifier-list.opt
-: %empty {}
+: %empty { $$ = yyscan_nil(); }
 | type-qualifier-list
 ;
 type-qualifier-list
@@ -575,7 +575,7 @@ type-qualifier-list
 | type-qualifier-list type-qualifier {}
 ;
 parameter-type-list.opt
-: %empty {}
+: %empty { $$ = yyscan_nil(); }
 | parameter-type-list
 ;
 parameter-type-list
@@ -598,7 +598,7 @@ type-name
 : specifier-qualifier-list abstract-declarator.opt {}
 ;
 abstract-declarator.opt
-: %empty {}
+: %empty { $$ = yyscan_nil(); }
 | abstract-declarator
 ;
 abstract-declarator
@@ -646,7 +646,7 @@ compound-statement
 : left-brace declaration-list.opt statement-list.opt right-brace {}
 ;
 declaration-list.opt
-: %empty {}
+: %empty { $$ = yyscan_nil(); }
 | declaration-list
 ;
 declaration-list
@@ -654,7 +654,7 @@ declaration-list
 | declaration-list declaration {}
 ;
 statement-list.opt
-: %empty {}
+: %empty { $$ = yyscan_nil(); }
 | statement-list
 ;
 statement-list
