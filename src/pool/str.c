@@ -24,15 +24,14 @@ static const char *pool_str_insert_pool(struct pool_str *self,
   box_buffer(box, &dst);
   buffer_init(&src, (void *)str_ptr(str), len);
   buffer_copy(&dst, 0, &src);
-  return pool_insert(&self->pool, box);
+  return pool_insert(self->pool, box);
 }
 
-void pool_str_init(struct pool_str *self) {
-  pool_init(&self->pool);
+void pool_str_init(struct pool_str *self, struct pool *pool) {
+  self->pool = pool;
   vec_init(&self->table, sizeof(struct str));
 }
 void pool_str_finish(struct pool_str *self) {
-  pool_finish(&self->pool);
   vec_finish(&self->table);
 }
 const struct str *pool_str_insert(struct pool_str *self,

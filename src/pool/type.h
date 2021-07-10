@@ -8,7 +8,7 @@ struct pool {
 };
 
 struct pool_str {
-  struct pool pool;
+  struct pool *pool;
   struct vec table;
 };
 

@@ -44,19 +44,21 @@ void pool_unittest(void) {
 }
 
 void pool_str_unittest(void) {
-  struct pool_str pool;
+  struct pool pool;
+  struct pool_str spool;
   struct vec expect, *actual;
   const char *ab = "ababababab";
   int i, j;
-  pool_str_init(&pool);
+  pool_init(&pool);
+  pool_str_init(&spool, &pool);
   for (i = 0; i < 6; i++) {
     struct str str;
     for (j = 0; j <= 10 - i; j++) {
       str_init(&str, ab + i, j);
-      pool_str_insert(&pool, &str);
+      pool_str_insert(&spool, &str);
     }
   }
-  actual = &pool.table;
+  actual = &spool.table;
   vec_init(&expect, sizeof(struct str));
   assert(vec_length(actual) == 20);
   for (i = 0; i <= 10; i++) {
@@ -76,5 +78,6 @@ void pool_str_unittest(void) {
     assert(str_cmp(lhs, rhs) == 0);
   }
   vec_finish(&expect);
-  pool_str_finish(&pool);
+  pool_str_finish(&spool);
+  pool_finish(&pool);
 }
