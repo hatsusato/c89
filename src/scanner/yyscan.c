@@ -5,6 +5,8 @@
 #include "cell/cell.h"
 #include "parser.tab.h"
 #include "pool/str.h"
+#include "str/str.h"
+#include "str/type.h"
 #include "type.h"
 #include "util/util.h"
 
@@ -14,6 +16,12 @@ static struct pool *yyscan_pool(yyscan_t self) {
 static const char *yyscan_canonical_cstr(yyscan_t self, const char *str) {
   struct pool_str *table = yyget_extra(self)->table;
   return pool_str_insert(table, str);
+}
+static const char *yyscan_canonical_str(yyscan_t self) {
+  struct str str;
+  struct pool_str *table = yyget_extra(self)->table;
+  str_init(&str, yyget_text(self), yyget_leng(self));
+  return pool_str_canonicalize(table, &str);
 }
 
 void yyerror(yyscan_t yyscanner, const char *msg) {
@@ -41,6 +49,10 @@ int yyscan_is_typedef(yyscan_t self, const char *symbol) {
 }
 const struct cell *yyscan_nil(void) {
   return cell_nil();
+}
+const struct cell *yyscan_symbol(yyscan_t self) {
+  const char *str = yyscan_canonical_str(self);
+  return cell_new_symbol(yyscan_pool(self), str);
 }
 const struct cell *yyscan_token(yyscan_t self, const char *token) {
   const char *str = yyscan_canonical_cstr(self, token);
