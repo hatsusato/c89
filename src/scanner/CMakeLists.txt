@@ -22,6 +22,7 @@ target_sources(scanner PRIVATE
   )
 target_include_directories(scanner PUBLIC
   ${CMAKE_CURRENT_BINARY_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}
   )
 target_link_libraries(scanner PRIVATE
   options
