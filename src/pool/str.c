@@ -1,5 +1,7 @@
 #include "str.h"
 
+#include <string.h>
+
 #include "pool.h"
 #include "str/str.h"
 #include "str/type.h"
@@ -33,6 +35,15 @@ void pool_str_init(struct pool_str *self, struct pool *pool) {
 }
 void pool_str_finish(struct pool_str *self) {
   vec_finish(&self->table);
+}
+const char *pool_str_insert(struct pool_str *self, const char *str) {
+  struct str buf;
+  str_init(&buf, str, strlen(str));
+  if (!pool_str_search(self, &buf)) {
+    vec_push(&self->table, &buf);
+    vec_sort(&self->table, pool_str_cmp);
+  }
+  return str_ptr(pool_str_search(self, &buf));
 }
 const char *pool_str_canonicalize(struct pool_str *self,
                                   const struct str *str) {

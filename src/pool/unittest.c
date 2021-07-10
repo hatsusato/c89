@@ -51,6 +51,9 @@ void pool_str_unittest(void) {
   int i, j;
   pool_init(&pool);
   pool_str_init(&spool, &pool);
+  for (i = 0; i < 10; i++) {
+    pool_str_insert(&spool, ab + i);
+  }
   for (i = 0; i < 6; i++) {
     struct str str;
     for (j = 0; j <= 10 - i; j++) {
