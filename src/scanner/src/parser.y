@@ -275,29 +275,55 @@ identifier.opt
 | identifier
 ;
 identifier
-: TOKEN_IDENTIFIER {}
+: TOKEN_IDENTIFIER {
+  $$ = YYSCAN_TAG(identifier);
+  $$ = YYSCAN_PUSH_SYMBOL($$);
+}
 ;
 typedef-identifier
-: TOKEN_TYPEDEF_IDENTIFIER {}
+: TOKEN_TYPEDEF_IDENTIFIER {
+  $$ = YYSCAN_TAG(typedef-identifier);
+  $$ = YYSCAN_PUSH_SYMBOL($$);
+}
 ;
 floating-constant
-: TOKEN_FLOATING_CONSTANT {}
+: TOKEN_FLOATING_CONSTANT {
+  $$ = YYSCAN_TAG(floating-constant);
+  $$ = YYSCAN_PUSH_SYMBOL($$);
+}
 ;
 integer-constant
-: TOKEN_INTEGER_CONSTANT {}
+: TOKEN_INTEGER_CONSTANT {
+  $$ = YYSCAN_TAG(integer-constant);
+  $$ = YYSCAN_PUSH_SYMBOL($$);
+}
 ;
 enumeration-constant
-: TOKEN_IDENTIFIER {}
+: TOKEN_IDENTIFIER {
+  $$ = YYSCAN_TAG(enumeration-constant);
+  $$ = YYSCAN_PUSH_SYMBOL($$);
+}
 ;
 character-constant
-: TOKEN_CHARACTER_CONSTANT {}
+: TOKEN_CHARACTER_CONSTANT {
+  $$ = YYSCAN_TAG(character-constant);
+  $$ = YYSCAN_PUSH_SYMBOL($$);
+}
 ;
 string-literal
-: TOKEN_STRING_LITERAL {}
+: TOKEN_STRING_LITERAL {
+  $$ = YYSCAN_TAG(string-literal);
+  $$ = YYSCAN_PUSH_SYMBOL($$);
+}
 ;
 string-constant
-: string-literal {}
-| string-constant string-literal {}
+: string-literal {
+  $$ = YYSCAN_TAG(string-constant);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| string-constant string-literal {
+  $$ = YYSCAN_PUSH($1, $2);
+}
 ;
 
 /* 6.3 Expressions */
