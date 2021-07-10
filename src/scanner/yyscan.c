@@ -34,6 +34,9 @@ int yyscan_is_typedef(yyscan_t self, const char *symbol) {
   UTIL_UNUSED(symbol);
   return 0;
 }
+const struct cell *yyscan_nil(void) {
+  return cell_nil();
+}
 const struct cell *yyscan_token(yyscan_t self, const char *token) {
   return cell_new_symbol(yyscan_pool(self), token);
 }
