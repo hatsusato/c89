@@ -34,7 +34,8 @@ void pool_str_init(struct pool_str *self, struct pool *pool) {
 void pool_str_finish(struct pool_str *self) {
   vec_finish(&self->table);
 }
-const char *pool_str_insert(struct pool_str *self, const struct str *str) {
+const char *pool_str_canonicalize(struct pool_str *self,
+                                  const struct str *str) {
   if (!pool_str_search(self, str)) {
     struct str buf;
     const char *ptr = pool_str_insert_pool(self, str);

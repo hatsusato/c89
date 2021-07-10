@@ -55,7 +55,7 @@ void pool_str_unittest(void) {
     struct str str;
     for (j = 0; j <= 10 - i; j++) {
       str_init(&str, ab + i, j);
-      pool_str_insert(&spool, &str);
+      pool_str_canonicalize(&spool, &str);
     }
   }
   actual = &spool.table;
