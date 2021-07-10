@@ -51,11 +51,11 @@
     struct box *box;                                      \
     struct slice slice;                                   \
     box = box_new(sizeof(int), count);                    \
-    p = box_ptr(box);                                     \
+    p = box_get(box);                                     \
     for (i = begin; i < end; i++, p++) {                  \
       *p = i;                                             \
     }                                                     \
-    slice_init(&slice, sizeof(int), box_ptr(box), count); \
+    slice_init(&slice, sizeof(int), box_get(box), count); \
     vec_insert(vec, start, &slice);                       \
     box_delete(box);                                      \
   } while (false)
@@ -110,7 +110,7 @@ void vec_unittest(void) {
     int i, j;                                          \
     for (i = start, j = begin; j < end; i++, j++) {    \
       struct box *box = vec_ptr_at(vec, i);            \
-      int *p = box_ptr(box);                           \
+      int *p = box_get(box);                           \
       assert(*p == j);                                 \
       UTIL_UNUSED(p);                                  \
     }                                                  \
@@ -120,7 +120,7 @@ void vec_unittest(void) {
     int i;                                       \
     for (i = begin; i < end; i++) {              \
       struct box *box = box_new(sizeof(int), 1); \
-      int *p = box_ptr(box);                     \
+      int *p = box_get(box);                     \
       *p = i;                                    \
       vec_ptr_push(vec, box);                    \
     }                                            \

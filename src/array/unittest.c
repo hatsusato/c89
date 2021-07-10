@@ -23,7 +23,7 @@ void array_unittest(void) {
   struct box *box;
   int i;
   box = box_new(sizeof(int), 1000);
-  array_init(&array, sizeof(int), box_ptr(box));
+  array_init(&array, sizeof(int), box_get(box));
   assert(slice_align(array_slice(&array)) == sizeof(int));
   assert(array_length(&array) == 0);
   for (i = 0; i < 100; i++) {

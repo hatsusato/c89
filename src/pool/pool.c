@@ -17,5 +17,5 @@ void pool_finish(struct pool *self) {
 }
 void *pool_insert(struct pool *self, struct box *box) {
   vec_ptr_push(&self->vec, box);
-  return box_ptr(box);
+  return box_get(box);
 }

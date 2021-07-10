@@ -19,9 +19,9 @@ void box_delete(struct box *box) {
   free(box);
 }
 void box_buffer(struct box *box, struct buffer *buf) {
-  buffer_init(buf, box_ptr(box), box_size(box));
+  buffer_init(buf, box_get(box), box_size(box));
 }
-void *box_ptr(const struct box *box) {
+void *box_get(const struct box *box) {
   const byte_t *ptr = box->data;
   return (void *)ptr;
 }
