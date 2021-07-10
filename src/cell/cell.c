@@ -37,3 +37,12 @@ bool_t cell_is_cons(const struct cell *cell) {
 bool_t cell_is_symbol(const struct cell *cell) {
   return cell->car && !cell->cdr;
 }
+const struct cell *cell_car(const struct cell *cell) {
+  return cell_is_cons(cell) ? cell->car : NULL;
+}
+const struct cell *cell_cdr(const struct cell *cell) {
+  return cell_is_cons(cell) ? cell->cdr : NULL;
+}
+const char *cell_symbol(const struct cell *cell) {
+  return cell_is_symbol(cell) ? cell->car : NULL;
+}
