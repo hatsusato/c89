@@ -34,3 +34,8 @@ const struct cell *yyscan_token(yyscan_t self, const char *token) {
   struct scanner *scanner = yyget_extra(self);
   return cell_new_symbol(scanner->pool, token);
 }
+const struct cell *yyscan_pair(yyscan_t self, const struct cell *car,
+                               const struct cell *cdr) {
+  struct scanner *scanner = yyget_extra(self);
+  return cell_new_cons(scanner->pool, car, cdr);
+}
