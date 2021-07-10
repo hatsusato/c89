@@ -1,5 +1,6 @@
 #include "yyscan.h"
 
+#include <assert.h>
 #include <stdio.h>
 
 #include "cell/cell.h"
@@ -61,4 +62,20 @@ const struct cell *yyscan_token(yyscan_t self, const char *token) {
 const struct cell *yyscan_pair(yyscan_t self, const struct cell *car,
                                const struct cell *cdr) {
   return cell_new_cons(yyscan_pool(self), car, cdr);
+}
+const struct cell *yyscan_push(yyscan_t self, const struct cell *xs,
+                               const struct cell *x) {
+  const struct cell *cell = yyscan_pair(self, x, cell_nil());
+  if (cell_is_cons(xs)) {
+    const struct cell *it = xs;
+    while (cell_is_cons(cell_cdr(it))) {
+      it = cell_cdr(it);
+    }
+    assert(cell_is_nil(cell_cdr(it)));
+    cell_set_cdr(it, cell);
+    return xs;
+  } else {
+    assert(cell_is_nil(xs));
+    return cell;
+  }
 }
