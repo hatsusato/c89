@@ -24,3 +24,7 @@ const struct cell *cell_new_cons(struct pool *pool, const struct cell *car,
   assert(car && cdr);
   return cell_new(pool, car, cdr);
 }
+const struct cell *cell_new_symbol(struct pool *pool, const char *symbol) {
+  assert(symbol);
+  return cell_new(pool, symbol, NULL);
+}
