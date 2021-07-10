@@ -3,9 +3,11 @@
 
 struct cell;
 struct pool;
+struct pool_str;
 
 struct scanner {
   struct pool *pool;
+  struct pool_str *table;
   const struct cell *ast;
 };
 
