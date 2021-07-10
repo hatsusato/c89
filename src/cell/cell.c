@@ -46,3 +46,13 @@ const struct cell *cell_cdr(const struct cell *cell) {
 const char *cell_symbol(const struct cell *cell) {
   return cell_is_symbol(cell) ? cell->car : NULL;
 }
+void cell_set_car(const struct cell *self, const struct cell *car) {
+  struct cell *cell = (struct cell *)self;
+  assert(cell_is_cons(self));
+  cell->car = car;
+}
+void cell_set_cdr(const struct cell *self, const struct cell *cdr) {
+  struct cell *cell = (struct cell *)self;
+  assert(cell_is_cons(self));
+  cell->cdr = cdr;
+}
