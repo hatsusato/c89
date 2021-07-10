@@ -11,7 +11,7 @@
 %option never-interactive
 %option nodefault
 %option warn
-%option extra-type="void *"
+%option extra-type="struct scanner *"
 
 space                   [ \t\n\v\f]
 wide-prefix             [L]?

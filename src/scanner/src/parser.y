@@ -1,6 +1,5 @@
 %code requires {
 #include "yyscan_t.h"
-struct cell;
 }
 
 %define api.pure full
