@@ -28,3 +28,12 @@ const struct cell *cell_new_symbol(struct pool *pool, const char *symbol) {
   assert(symbol);
   return cell_new(pool, symbol, NULL);
 }
+bool_t cell_is_nil(const struct cell *cell) {
+  return !cell->car && !cell->cdr;
+}
+bool_t cell_is_cons(const struct cell *cell) {
+  return cell->car && cell->cdr;
+}
+bool_t cell_is_symbol(const struct cell *cell) {
+  return cell->car && !cell->cdr;
+}
