@@ -3,6 +3,8 @@
 
 #include "yyscan_t.h"
 
+#define YYSCAN_TOKEN(token) yyscan_token(yyscan, #token)
+
 void yyerror(yyscan_t, const char *);
 yyscan_t yyscan_new(struct scanner *);
 void yyscan_delete(yyscan_t);

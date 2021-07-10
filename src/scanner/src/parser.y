@@ -110,163 +110,163 @@
 
 %%
 
-auto: "auto" { $$ = yyscan_token(yyscan, "auto"); }
+auto: "auto" { $$ = YYSCAN_TOKEN(auto); }
 ;
-break: "break" { $$ = yyscan_token(yyscan, "break"); }
+break: "break" { $$ = YYSCAN_TOKEN(break); }
 ;
-case: "case" { $$ = yyscan_token(yyscan, "case"); }
+case: "case" { $$ = YYSCAN_TOKEN(case); }
 ;
-char: "char" { $$ = yyscan_token(yyscan, "char"); }
+char: "char" { $$ = YYSCAN_TOKEN(char); }
 ;
-const: "const" { $$ = yyscan_token(yyscan, "const"); }
+const: "const" { $$ = YYSCAN_TOKEN(const); }
 ;
-continue: "continue" { $$ = yyscan_token(yyscan, "continue"); }
+continue: "continue" { $$ = YYSCAN_TOKEN(continue); }
 ;
-default: "default" { $$ = yyscan_token(yyscan, "default"); }
+default: "default" { $$ = YYSCAN_TOKEN(default); }
 ;
-do: "do" { $$ = yyscan_token(yyscan, "do"); }
+do: "do" { $$ = YYSCAN_TOKEN(do); }
 ;
-double: "double" { $$ = yyscan_token(yyscan, "double"); }
+double: "double" { $$ = YYSCAN_TOKEN(double); }
 ;
-else: "else" { $$ = yyscan_token(yyscan, "else"); }
+else: "else" { $$ = YYSCAN_TOKEN(else); }
 ;
-enum: "enum" { $$ = yyscan_token(yyscan, "enum"); }
+enum: "enum" { $$ = YYSCAN_TOKEN(enum); }
 ;
-extern: "extern" { $$ = yyscan_token(yyscan, "extern"); }
+extern: "extern" { $$ = YYSCAN_TOKEN(extern); }
 ;
-float: "float" { $$ = yyscan_token(yyscan, "float"); }
+float: "float" { $$ = YYSCAN_TOKEN(float); }
 ;
-for: "for" { $$ = yyscan_token(yyscan, "for"); }
+for: "for" { $$ = YYSCAN_TOKEN(for); }
 ;
-goto: "goto" { $$ = yyscan_token(yyscan, "goto"); }
+goto: "goto" { $$ = YYSCAN_TOKEN(goto); }
 ;
-if: "if" { $$ = yyscan_token(yyscan, "if"); }
+if: "if" { $$ = YYSCAN_TOKEN(if); }
 ;
-int: "int" { $$ = yyscan_token(yyscan, "int"); }
+int: "int" { $$ = YYSCAN_TOKEN(int); }
 ;
-long: "long" { $$ = yyscan_token(yyscan, "long"); }
+long: "long" { $$ = YYSCAN_TOKEN(long); }
 ;
-register: "register" { $$ = yyscan_token(yyscan, "register"); }
+register: "register" { $$ = YYSCAN_TOKEN(register); }
 ;
-return: "return" { $$ = yyscan_token(yyscan, "return"); }
+return: "return" { $$ = YYSCAN_TOKEN(return); }
 ;
-short: "short" { $$ = yyscan_token(yyscan, "short"); }
+short: "short" { $$ = YYSCAN_TOKEN(short); }
 ;
-signed: "signed" { $$ = yyscan_token(yyscan, "signed"); }
+signed: "signed" { $$ = YYSCAN_TOKEN(signed); }
 ;
-sizeof: "sizeof" { $$ = yyscan_token(yyscan, "sizeof"); }
+sizeof: "sizeof" { $$ = YYSCAN_TOKEN(sizeof); }
 ;
-static: "static" { $$ = yyscan_token(yyscan, "static"); }
+static: "static" { $$ = YYSCAN_TOKEN(static); }
 ;
-struct: "struct" { $$ = yyscan_token(yyscan, "struct"); }
+struct: "struct" { $$ = YYSCAN_TOKEN(struct); }
 ;
-switch: "switch" { $$ = yyscan_token(yyscan, "switch"); }
+switch: "switch" { $$ = YYSCAN_TOKEN(switch); }
 ;
-typedef: "typedef" { $$ = yyscan_token(yyscan, "typedef"); }
+typedef: "typedef" { $$ = YYSCAN_TOKEN(typedef); }
 ;
-union: "union" { $$ = yyscan_token(yyscan, "union"); }
+union: "union" { $$ = YYSCAN_TOKEN(union); }
 ;
-unsigned: "unsigned" { $$ = yyscan_token(yyscan, "unsigned"); }
+unsigned: "unsigned" { $$ = YYSCAN_TOKEN(unsigned); }
 ;
-void: "void" { $$ = yyscan_token(yyscan, "void"); }
+void: "void" { $$ = YYSCAN_TOKEN(void); }
 ;
-volatile: "volatile" { $$ = yyscan_token(yyscan, "volatile"); }
+volatile: "volatile" { $$ = YYSCAN_TOKEN(volatile); }
 ;
-while: "while" { $$ = yyscan_token(yyscan, "while"); }
+while: "while" { $$ = YYSCAN_TOKEN(while); }
 ;
 
-period: "." { $$ = yyscan_token(yyscan, "period"); }
+period: "." { $$ = YYSCAN_TOKEN(period); }
 ;
-arrow: "->" { $$ = yyscan_token(yyscan, "arrow"); }
+arrow: "->" { $$ = YYSCAN_TOKEN(arrow); }
 ;
-increment: "++" { $$ = yyscan_token(yyscan, "increment"); }
+increment: "++" { $$ = YYSCAN_TOKEN(increment); }
 ;
-decrement: "--" { $$ = yyscan_token(yyscan, "decrement"); }
+decrement: "--" { $$ = YYSCAN_TOKEN(decrement); }
 ;
-ampersand: "&" { $$ = yyscan_token(yyscan, "ampersand"); }
+ampersand: "&" { $$ = YYSCAN_TOKEN(ampersand); }
 ;
-asterisk: "*" { $$ = yyscan_token(yyscan, "asterisk"); }
+asterisk: "*" { $$ = YYSCAN_TOKEN(asterisk); }
 ;
-plus: "+" { $$ = yyscan_token(yyscan, "plus"); }
+plus: "+" { $$ = YYSCAN_TOKEN(plus); }
 ;
-minus: "-" { $$ = yyscan_token(yyscan, "minus"); }
+minus: "-" { $$ = YYSCAN_TOKEN(minus); }
 ;
-tilde: "~" { $$ = yyscan_token(yyscan, "tilde"); }
+tilde: "~" { $$ = YYSCAN_TOKEN(tilde); }
 ;
-exclamation: "!" { $$ = yyscan_token(yyscan, "exclamation"); }
+exclamation: "!" { $$ = YYSCAN_TOKEN(exclamation); }
 ;
-slash: "/" { $$ = yyscan_token(yyscan, "slash"); }
+slash: "/" { $$ = YYSCAN_TOKEN(slash); }
 ;
-percent: "%" { $$ = yyscan_token(yyscan, "percent"); }
+percent: "%" { $$ = YYSCAN_TOKEN(percent); }
 ;
-left-shift: "<<" { $$ = yyscan_token(yyscan, "left-shift"); }
+left-shift: "<<" { $$ = YYSCAN_TOKEN(left-shift); }
 ;
-right-shift: ">>" { $$ = yyscan_token(yyscan, "right-shift"); }
+right-shift: ">>" { $$ = YYSCAN_TOKEN(right-shift); }
 ;
-less-than: "<" { $$ = yyscan_token(yyscan, "less-than"); }
+less-than: "<" { $$ = YYSCAN_TOKEN(less-than); }
 ;
-greater-than: ">" { $$ = yyscan_token(yyscan, "greater-than"); }
+greater-than: ">" { $$ = YYSCAN_TOKEN(greater-than); }
 ;
-less-equal: "<=" { $$ = yyscan_token(yyscan, "less-equal"); }
+less-equal: "<=" { $$ = YYSCAN_TOKEN(less-equal); }
 ;
-greater-equal: ">=" { $$ = yyscan_token(yyscan, "greater-equal"); }
+greater-equal: ">=" { $$ = YYSCAN_TOKEN(greater-equal); }
 ;
-equal: "==" { $$ = yyscan_token(yyscan, "equal"); }
+equal: "==" { $$ = YYSCAN_TOKEN(equal); }
 ;
-not-equal: "!=" { $$ = yyscan_token(yyscan, "not-equal"); }
+not-equal: "!=" { $$ = YYSCAN_TOKEN(not-equal); }
 ;
-caret: "^" { $$ = yyscan_token(yyscan, "caret"); }
+caret: "^" { $$ = YYSCAN_TOKEN(caret); }
 ;
-bar: "|" { $$ = yyscan_token(yyscan, "bar"); }
+bar: "|" { $$ = YYSCAN_TOKEN(bar); }
 ;
-and: "&&" { $$ = yyscan_token(yyscan, "and"); }
+and: "&&" { $$ = YYSCAN_TOKEN(and); }
 ;
-or: "||" { $$ = yyscan_token(yyscan, "or"); }
+or: "||" { $$ = YYSCAN_TOKEN(or); }
 ;
-question: "?" { $$ = yyscan_token(yyscan, "question"); }
+question: "?" { $$ = YYSCAN_TOKEN(question); }
 ;
-assign: "=" { $$ = yyscan_token(yyscan, "assign"); }
+assign: "=" { $$ = YYSCAN_TOKEN(assign); }
 ;
-asterisk-assign: "*=" { $$ = yyscan_token(yyscan, "asterisk-assign"); }
+asterisk-assign: "*=" { $$ = YYSCAN_TOKEN(asterisk-assign); }
 ;
-slash-assign: "/=" { $$ = yyscan_token(yyscan, "slash-assign"); }
+slash-assign: "/=" { $$ = YYSCAN_TOKEN(slash-assign); }
 ;
-percent-assign: "%=" { $$ = yyscan_token(yyscan, "percent-assign"); }
+percent-assign: "%=" { $$ = YYSCAN_TOKEN(percent-assign); }
 ;
-plus-assign: "+=" { $$ = yyscan_token(yyscan, "plus-assign"); }
+plus-assign: "+=" { $$ = YYSCAN_TOKEN(plus-assign); }
 ;
-minus-assign: "-=" { $$ = yyscan_token(yyscan, "minus-assign"); }
+minus-assign: "-=" { $$ = YYSCAN_TOKEN(minus-assign); }
 ;
-left-shift-assign: "<<=" { $$ = yyscan_token(yyscan, "left-shift-assign"); }
+left-shift-assign: "<<=" { $$ = YYSCAN_TOKEN(left-shift-assign); }
 ;
-right-shift-assign: ">>=" { $$ = yyscan_token(yyscan, "right-shift-assign"); }
+right-shift-assign: ">>=" { $$ = YYSCAN_TOKEN(right-shift-assign); }
 ;
-ampersand-assign: "&=" { $$ = yyscan_token(yyscan, "ampersand-assign"); }
+ampersand-assign: "&=" { $$ = YYSCAN_TOKEN(ampersand-assign); }
 ;
-caret-assign: "^=" { $$ = yyscan_token(yyscan, "caret-assign"); }
+caret-assign: "^=" { $$ = YYSCAN_TOKEN(caret-assign); }
 ;
-bar-assign: "|=" { $$ = yyscan_token(yyscan, "bar-assign"); }
+bar-assign: "|=" { $$ = YYSCAN_TOKEN(bar-assign); }
 ;
 
-left-bracket: "[" { $$ = yyscan_token(yyscan, "left-bracket"); }
+left-bracket: "[" { $$ = YYSCAN_TOKEN(left-bracket); }
 ;
-right-bracket: "]" { $$ = yyscan_token(yyscan, "right-bracket"); }
+right-bracket: "]" { $$ = YYSCAN_TOKEN(right-bracket); }
 ;
-left-paren: "(" { $$ = yyscan_token(yyscan, "left-paren"); }
+left-paren: "(" { $$ = YYSCAN_TOKEN(left-paren); }
 ;
-right-paren: ")" { $$ = yyscan_token(yyscan, "right-paren"); }
+right-paren: ")" { $$ = YYSCAN_TOKEN(right-paren); }
 ;
-left-brace: "{" { $$ = yyscan_token(yyscan, "left-brace"); }
+left-brace: "{" { $$ = YYSCAN_TOKEN(left-brace); }
 ;
-right-brace: "}" { $$ = yyscan_token(yyscan, "right-brace"); }
+right-brace: "}" { $$ = YYSCAN_TOKEN(right-brace); }
 ;
-comma: "," { $$ = yyscan_token(yyscan, "comma"); }
+comma: "," { $$ = YYSCAN_TOKEN(comma); }
 ;
-colon: ":" { $$ = yyscan_token(yyscan, "colon"); }
+colon: ":" { $$ = YYSCAN_TOKEN(colon); }
 ;
-semicolon: ";" { $$ = yyscan_token(yyscan, "semicolon"); }
+semicolon: ";" { $$ = YYSCAN_TOKEN(semicolon); }
 ;
-ellipsis: "..." { $$ = yyscan_token(yyscan, "ellipsis"); }
+ellipsis: "..." { $$ = YYSCAN_TOKEN(ellipsis); }
 ;
 
 /* 6.1 Lexical elements */
