@@ -29,6 +29,7 @@ target_link_libraries(unittest PRIVATE
   )
 
 add_subdirectory(array)
+add_subdirectory(cell)
 add_subdirectory(pool)
 add_subdirectory(scanner)
 add_subdirectory(str)
