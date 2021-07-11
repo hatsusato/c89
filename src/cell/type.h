@@ -2,7 +2,8 @@
 #define INCLUDE_GUARD_973F8446_963B_4832_B66D_D002FE861696
 
 struct cell {
-  const void *car, *cdr;
+  const void *car;
+  const struct cell *cdr;
 };
 
 #endif /* INCLUDE_GUARD_973F8446_963B_4832_B66D_D002FE861696 */
