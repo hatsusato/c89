@@ -65,17 +65,5 @@ const struct cell *yyscan_pair(yyscan_t self, const struct cell *car,
 }
 const struct cell *yyscan_push(yyscan_t self, const struct cell *xs,
                                const struct cell *x) {
-  const struct cell *cell = yyscan_pair(self, x, cell_nil());
-  if (cell_is_cons(xs)) {
-    const struct cell *it = xs;
-    while (cell_is_cons(cell_cdr(it))) {
-      it = cell_cdr(it);
-    }
-    assert(cell_is_nil(cell_cdr(it)));
-    cell_set_cdr(it, cell);
-    return xs;
-  } else {
-    assert(cell_is_nil(xs));
-    return cell;
-  }
+  return cell_push(yyscan_pool(self), xs, x);
 }
