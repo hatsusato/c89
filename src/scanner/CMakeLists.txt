@@ -22,6 +22,7 @@ target_sources(scanner PRIVATE
   scanner.c
   type.c
   yyscan.c
+  yyscan_t.c
   )
 target_include_directories(scanner PUBLIC
   ${CMAKE_CURRENT_BINARY_DIR}
