@@ -6,6 +6,8 @@
 typedef void *yyscan_t;
 #endif
 
+#define YYSCAN_PARAM yyscan
+
 struct cell;
 struct scanner;
 

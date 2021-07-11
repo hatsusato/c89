@@ -4,7 +4,7 @@
 
 %define api.pure full
 %define api.value.type {const struct cell *}
-%param {yyscan_t yyscan}
+%param {yyscan_t YYSCAN_PARAM}
 
 %code provides {
 #include "lexer.h"
