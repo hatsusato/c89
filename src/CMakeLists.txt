@@ -15,12 +15,14 @@ add_library(unittest STATIC)
 target_sources(unittest PRIVATE
   unittest.c
   array/unittest.c
+  cell/unittest.c
   pool/unittest.c
   str/unittest.c
   vec/unittest.c
   )
 target_link_libraries(unittest PRIVATE
   array
+  cell
   options
   pool
   str
