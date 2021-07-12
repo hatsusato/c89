@@ -31,14 +31,16 @@ void yyerror(yyscan_t yyscanner, const char *msg) {
 }
 yyscan_t yyscan_new(struct scanner *scanner) {
   yyscan_t self;
-  if (yylex_init(&self)) {
-    return NULL;
+  if (yylex_init(&self) == 0) {
+    yyset_extra(scanner, self);
+    return self;
   }
-  yyset_extra(scanner, self);
-  return self;
+  return NULL;
 }
 void yyscan_delete(yyscan_t self) {
-  yylex_destroy(self);
+  if (self) {
+    yylex_destroy(self);
+  }
 }
 int yyscan_parse(yyscan_t self) {
   return yyparse(self);
