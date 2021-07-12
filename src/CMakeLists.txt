@@ -5,6 +5,7 @@ target_sources(main PRIVATE
 target_link_libraries(main PRIVATE
   options
   pool
+  printer
   scanner
   util
   $<$<CONFIG:Debug>:unittest>

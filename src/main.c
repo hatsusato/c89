@@ -1,4 +1,9 @@
+#include <stdio.h>
+
+#include "cell/cell.h"
 #include "pool/pool.h"
+#include "printer/printer.h"
+#include "printer/type.h"
 #include "scanner/scanner.h"
 #include "unittest.h"
 #include "util/util.h"
@@ -18,7 +23,14 @@ int main(int argc, char *argv[]) {
     unittest();
   } else {
     struct pool *pool = pool_new();
-    scanner_parse(pool);
+    struct printer printer;
+    const struct cell *cell = scanner_parse(pool);
+    if (cell) {
+      printer_init(&printer, stdout);
+      cell_print(cell, &printer);
+    } else {
+      fprintf(stderr, "ERROR: failed to parse");
+    }
     pool_delete(pool);
   }
   return 0;
