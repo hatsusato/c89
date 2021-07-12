@@ -35,3 +35,10 @@ void printer_newline(struct printer *self) {
   }
   self->newline = true;
 }
+void printer_indent(struct printer *self, index_t indent) {
+  if (indent == 0) {
+    self->indent = indent;
+  } else {
+    self->indent += indent;
+  }
+}
