@@ -4,6 +4,9 @@ target_sources(main PRIVATE
   )
 target_link_libraries(main PRIVATE
   options
+  pool
+  scanner
+  util
   $<$<CONFIG:Debug>:unittest>
   )
 set_target_properties(main PROPERTIES
