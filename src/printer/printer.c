@@ -6,18 +6,11 @@
 #include "type.h"
 
 static void printer_shift(struct printer *self) {
-  if (self->newline && self->fp) {
+  if (self->newline) {
     index_t i;
     for (i = 0; i < self->indent; i++) {
       fputc(' ', self->fp);
     }
-  }
-  self->newline = false;
-}
-static void printer_vfprintf(struct printer *self, const char *format,
-                             va_list args) {
-  if (self->fp) {
-    vfprintf(self->fp, format, args);
   }
 }
 
@@ -27,11 +20,14 @@ void printer_init(struct printer *self, void *fp) {
   self->newline = false;
 }
 void printer_print(struct printer *self, const char *format, ...) {
-  va_list args;
-  va_start(args, format);
-  printer_shift(self);
-  printer_vfprintf(self, format, args);
-  va_end(args);
+  if (self->fp) {
+    va_list args;
+    va_start(args, format);
+    printer_shift(self);
+    vfprintf(self->fp, format, args);
+    va_end(args);
+  }
+  self->newline = false;
 }
 void printer_newline(struct printer *self) {
   if (self->fp) {
