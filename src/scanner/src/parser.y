@@ -328,12 +328,32 @@ string-constant
 
 /* 6.3 Expressions */
 primary-expression
-: identifier
-| floating-constant
-| integer-constant
-| character-constant
-| string-constant
-| left-paren expression right-paren {}
+: identifier {
+  $$ = YYSCAN_TAG(primary-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| floating-constant {
+  $$ = YYSCAN_TAG(primary-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| integer-constant {
+  $$ = YYSCAN_TAG(primary-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| character-constant {
+  $$ = YYSCAN_TAG(primary-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| string-constant {
+  $$ = YYSCAN_TAG(primary-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| left-paren expression right-paren {
+  $$ = YYSCAN_TAG(primary-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 postfix-expression
 : primary-expression
