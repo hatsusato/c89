@@ -33,24 +33,22 @@ void pool_unittest_check(const int *p, int len) {
 }
 
 void pool_unittest(void) {
-  struct pool pool;
+  struct pool *pool = pool_new();
   int i, j;
-  pool_init(&pool);
   for (i = 0, j = 1; i < 16; i++, j *= 2) {
-    const int *p = pool_unittest_set(&pool, j);
+    const int *p = pool_unittest_set(pool, j);
     pool_unittest_check(p, i);
   }
-  pool_finish(&pool);
+  pool_delete(pool);
 }
 
 void pool_str_unittest(void) {
-  struct pool pool;
+  struct pool *pool = pool_new();
   struct pool_str spool;
   struct vec expect, *actual;
   const char *ab = "ababababab";
   int i, j;
-  pool_init(&pool);
-  pool_str_init(&spool, &pool);
+  pool_str_init(&spool, pool);
   for (i = 0; i < 10; i++) {
     pool_str_insert(&spool, ab + i);
   }
@@ -82,5 +80,5 @@ void pool_str_unittest(void) {
   }
   vec_finish(&expect);
   pool_str_finish(&spool);
-  pool_finish(&pool);
+  pool_delete(pool);
 }
