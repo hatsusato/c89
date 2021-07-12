@@ -357,15 +357,42 @@ primary-expression
 ;
 postfix-expression
 : primary-expression
-| postfix-expression postfix-expression.suffix {}
-;
-postfix-expression.suffix
-: left-bracket expression right-bracket {}
-| left-paren argument-expression-list.opt right-paren {}
-| period identifier {}
-| arrow identifier {}
-| increment {}
-| decrement {}
+| postfix-expression left-bracket expression right-bracket {
+  $$ = YYSCAN_TAG(postfix-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
+| postfix-expression left-paren argument-expression-list.opt right-paren {
+  $$ = YYSCAN_TAG(postfix-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
+| postfix-expression period identifier {
+  $$ = YYSCAN_TAG(postfix-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
+| postfix-expression arrow identifier {
+  $$ = YYSCAN_TAG(postfix-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
+| postfix-expression increment {
+  $$ = YYSCAN_TAG(postfix-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
+| postfix-expression decrement {
+  $$ = YYSCAN_TAG(postfix-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
 ;
 argument-expression-list.opt
 : %empty { $$ = yyscan_nil(); }
