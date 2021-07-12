@@ -395,12 +395,19 @@ postfix-expression
 }
 ;
 argument-expression-list.opt
-: %empty { $$ = yyscan_nil(); }
+: %empty {
+  $$ = YYSCAN_TAG(argument-expression-list);
+}
 | argument-expression-list
 ;
 argument-expression-list
-: assignment-expression {}
-| argument-expression-list comma assignment-expression {}
+: assignment-expression {
+  $$ = YYSCAN_TAG(argument-expression-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| argument-expression-list comma assignment-expression {
+  $$ = YYSCAN_PUSH($1, $3);
+}
 ;
 unary-expression
 : postfix-expression
