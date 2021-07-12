@@ -33,3 +33,9 @@ void printer_print(struct printer *self, const char *format, ...) {
   printer_vfprintf(self, format, args);
   va_end(args);
 }
+void printer_newline(struct printer *self) {
+  if (self->fp) {
+    fputc('\n', self->fp);
+  }
+  self->newline = true;
+}
