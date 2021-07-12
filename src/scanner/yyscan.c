@@ -42,8 +42,10 @@ void yyscan_delete(yyscan_t self) {
     yylex_destroy(self);
   }
 }
-int yyscan_parse(yyscan_t self) {
-  return yyparse(self);
+void yyscan_parse(yyscan_t self) {
+  if (yyparse(self)) {
+    yyscan_set_ast(self, NULL);
+  }
 }
 int yyscan_is_typedef(yyscan_t self, const char *symbol) {
   UTIL_UNUSED(self);

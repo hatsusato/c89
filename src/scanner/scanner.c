@@ -23,9 +23,7 @@ const struct cell *scanner_parse(struct pool *pool) {
   yyscan_t yyscan = yyscan_new(&scanner);
   if (yyscan) {
     scanner_init(&scanner, pool);
-    if (yyscan_parse(yyscan)) {
-      scanner.ast = NULL;
-    }
+    yyscan_parse(yyscan);
     scanner_finish(&scanner);
   }
   yyscan_delete(yyscan);
