@@ -4,6 +4,8 @@
 struct box;
 struct pool;
 
+struct pool *pool_new(void);
+void pool_delete(struct pool *);
 void pool_init(struct pool *);
 void pool_finish(struct pool *);
 void *pool_insert(struct pool *, struct box *);
