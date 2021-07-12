@@ -271,7 +271,9 @@ ellipsis: "..." { $$ = YYSCAN_TOKEN(ellipsis); }
 
 /* 6.1 Lexical elements */
 identifier.opt
-: %empty { $$ = yyscan_nil(); }
+: %empty {
+  $$ = YYSCAN_TAG(identifier);
+}
 | identifier
 ;
 identifier
