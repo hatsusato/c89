@@ -50,6 +50,9 @@ int yyscan_is_typedef(yyscan_t self, const char *symbol) {
   UTIL_UNUSED(symbol);
   return 0;
 }
+void yyscan_set_ast(yyscan_t self, const struct cell *ast) {
+  yyget_extra(self)->ast = ast;
+}
 const struct cell *yyscan_nil(void) {
   return cell_nil();
 }

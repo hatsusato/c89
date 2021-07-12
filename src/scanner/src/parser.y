@@ -765,7 +765,7 @@ jump-statement
 
 /* 6.7 External definitions */
 top
-: translation-unit {}
+: translation-unit { yyscan_set_ast(yyscan, $1); }
 ;
 translation-unit
 : external-declaration {}
