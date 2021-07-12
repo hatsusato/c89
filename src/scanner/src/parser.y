@@ -413,11 +413,33 @@ argument-expression-list
 ;
 unary-expression
 : postfix-expression
-| increment unary-expression {}
-| decrement unary-expression {}
-| unary-operator cast-expression {}
-| sizeof unary-expression {}
-| sizeof left-paren type-name right-paren {}
+| increment unary-expression {
+  $$ = YYSCAN_TAG(unary-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
+| decrement unary-expression {
+  $$ = YYSCAN_TAG(unary-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
+| unary-operator cast-expression {
+  $$ = YYSCAN_TAG(unary-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
+| sizeof unary-expression {
+  $$ = YYSCAN_TAG(unary-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
+| sizeof left-paren type-name right-paren {
+  $$ = YYSCAN_TAG(unary-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
 ;
 unary-operator
 : ampersand
