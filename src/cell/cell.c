@@ -47,6 +47,12 @@ bool_t cell_is_cons(const struct cell *self) {
 bool_t cell_is_symbol(const struct cell *self) {
   return self->car && !self->cdr;
 }
+bool_t cell_is_list(const struct cell *self) {
+  while (cell_is_cons(self)) {
+    self = cell_cdr(self);
+  }
+  return cell_is_nil(self);
+}
 const struct cell *cell_car(const struct cell *self) {
   return cell_is_cons(self) ? self->car : NULL;
 }
