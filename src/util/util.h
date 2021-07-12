@@ -13,6 +13,7 @@
                    buf_28321f6d_b6bb_4bf6_bcf2_b1744cfbc621);      \
   } while (false)
 
-void util_swap_impl(size_t, void*, void*, void*);
+void util_swap_impl(size_t, void *, void *, void *);
+bool_t util_streq(const char *, const char *);
 
 #endif /* INCLUDE_GUARD_9F0D8DB1_8A8A_4615_9EB1_EF81E4748100 */

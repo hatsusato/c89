@@ -1,10 +1,10 @@
 #include "unittest.h"
 
 #include <assert.h>
-#include <string.h>
 
 #include "cell.h"
 #include "pool/pool.h"
+#include "util/util.h"
 
 void cell_unittest(void) {
   const char *a = "aaaaa";
@@ -20,7 +20,7 @@ void cell_unittest(void) {
     const char *symbol;
     assert(cell_is_symbol(car));
     symbol = cell_symbol(car);
-    assert(strcmp(a + i, symbol) == 0);
+    assert(util_streq(a + i, symbol));
     i++;
   }
   assert(cell_is_nil(cell));
