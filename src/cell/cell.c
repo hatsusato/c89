@@ -73,25 +73,28 @@ void cell_set_cdr(const struct cell *self, const struct cell *cdr) {
   assert(cell_is_cons(self));
   cell->cdr = cdr;
 }
-void cell_print(const struct cell *self, struct printer *printer) {
+static void cell_print_rec(const struct cell *self, struct printer *printer) {
   if (cell_is_cons(self)) {
-    bool_t first;
     printer_print(printer, "(");
     printer_indent(printer, 1);
-    for (first = true; cell_is_cons(self);
-         first = false, self = cell_cdr(self)) {
-      if (!first) {
-        printer_newline(printer);
-      }
-      cell_print(cell_car(self), printer);
+    cell_print_rec(cell_car(self), printer);
+    self = cell_cdr(self);
+    while (cell_is_cons(self)) {
+      printer_newline(printer);
+      cell_print_rec(cell_car(self), printer);
+      self = cell_cdr(self);
     }
     if (cell_is_symbol(self)) {
       printer_print(printer, " . ");
-      cell_print(self, printer);
+      cell_print_rec(self, printer);
     }
     printer_indent(printer, -1);
     printer_print(printer, ")");
   } else if (cell_is_symbol(self)) {
     printer_print(printer, "%s", cell_symbol(self));
   }
+}
+void cell_print(const struct cell *self, struct printer *printer) {
+  cell_print_rec(self, printer);
+  printer_newline(printer);
 }
