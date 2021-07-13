@@ -19,13 +19,16 @@ static const struct str *pool_str_search(const struct pool_str *self,
 }
 static const char *pool_str_insert_pool(struct pool_str *self,
                                         const struct str *str) {
+  static char zero = '\0';
   index_t len = str_length(str);
   struct box *box;
   struct buffer src, dst;
-  box = box_new(1, len);
+  box = box_new(1, len + 1);
   box_buffer(box, &dst);
   buffer_init(&src, (void *)str_ptr(str), len);
   buffer_copy(&dst, 0, &src);
+  buffer_init(&src, &zero, 1);
+  buffer_copy(&dst, len, &src);
   return pool_insert(self->pool, box);
 }
 
