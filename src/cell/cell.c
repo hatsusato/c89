@@ -3,7 +3,6 @@
 #include <assert.h>
 
 #include "pool/pool.h"
-#include "printer/printer.h"
 #include "type.h"
 #include "util/box.h"
 
@@ -72,29 +71,4 @@ void cell_set_cdr(const struct cell *self, const struct cell *cdr) {
   struct cell *cell = (struct cell *)self;
   assert(cell_is_cons(self));
   cell->cdr = cdr;
-}
-static void cell_print_rec(const struct cell *self, struct printer *printer) {
-  if (cell_is_cons(self)) {
-    printer_print(printer, "(");
-    printer_indent(printer, 1);
-    cell_print_rec(cell_car(self), printer);
-    self = cell_cdr(self);
-    while (cell_is_cons(self)) {
-      printer_newline(printer);
-      cell_print_rec(cell_car(self), printer);
-      self = cell_cdr(self);
-    }
-    if (cell_is_symbol(self)) {
-      printer_print(printer, " . ");
-      cell_print_rec(self, printer);
-    }
-    printer_indent(printer, -1);
-    printer_print(printer, ")");
-  } else if (cell_is_symbol(self)) {
-    printer_print(printer, "%s", cell_symbol(self));
-  }
-}
-void cell_print(const struct cell *self, struct printer *printer) {
-  cell_print_rec(self, printer);
-  printer_newline(printer);
 }

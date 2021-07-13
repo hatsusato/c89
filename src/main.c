@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "cell/cell.h"
+#include "cell/print.h"
 #include "pool/pool.h"
 #include "printer/printer.h"
 #include "printer/type.h"
