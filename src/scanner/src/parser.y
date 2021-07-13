@@ -451,7 +451,13 @@ unary-operator
 ;
 cast-expression
 : unary-expression
-| left-paren type-name right-paren cast-expression {}
+| left-paren type-name right-paren cast-expression {
+  $$ = YYSCAN_TAG(cast-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
 ;
 multiplicative-expression
 : cast-expression
