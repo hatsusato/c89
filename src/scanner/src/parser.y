@@ -793,19 +793,38 @@ jump-statement
 
 /* 6.7 External definitions */
 top
-: translation-unit { yyscan_set_ast(yyscan, $1); }
+: translation-unit { yyscan_set_ast(YYSCAN_PARAM, $1); }
 ;
 translation-unit
-: external-declaration {}
-| translation-unit external-declaration {}
+: external-declaration {
+  $$ = YYSCAN_TAG(translation-unit);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| translation-unit external-declaration {
+  $$ = YYSCAN_PUSH($1, $2);
+}
 ;
 external-declaration
 : function-definition
-| declaration {}
+| declaration {
+  $$ = YYSCAN_TAG(external-declaration);
+  $$ = YYSCAN_PUSH($$, $1);
+}
 ;
 function-definition
-: declarator declaration-list.opt compound-statement {}
-| declaration-specifiers declarator declaration-list.opt compound-statement {}
+: declarator declaration-list.opt compound-statement {
+  $$ = YYSCAN_TAG(function-definition);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
+| declaration-specifiers declarator declaration-list.opt compound-statement {
+  $$ = YYSCAN_TAG(function-definition);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
 ;
 
 %%
