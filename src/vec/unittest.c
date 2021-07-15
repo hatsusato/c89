@@ -4,6 +4,7 @@
 
 #include "array/slice.h"
 #include "ptr.h"
+#include "ptr_type.h"
 #include "type.h"
 #include "util/box.h"
 #include "util/util.h"

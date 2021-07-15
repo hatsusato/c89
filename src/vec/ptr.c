@@ -2,7 +2,7 @@
 
 #include <assert.h>
 
-#include "type.h"
+#include "ptr_type.h"
 #include "vec.h"
 
 void vec_ptr_init(struct vec_ptr *self) {
