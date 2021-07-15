@@ -43,3 +43,9 @@ void set_insert(struct set *self, const void *ptr) {
   vec_push(&self->vec, box_get(self->dummy));
   vec_sort(&self->vec, set_cmp);
 }
+const void *set_search(struct set *self, const void *key) {
+  const struct set_elem *found;
+  set_set_dummy(self, key);
+  found = vec_search(&self->vec, box_get(self->dummy), set_cmp);
+  return found->elem;
+}
