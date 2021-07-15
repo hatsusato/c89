@@ -452,7 +452,12 @@ cast-expression
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression multiplicative-operator cast-expression {}
+| multiplicative-expression multiplicative-operator cast-expression {
+  $$ = YYSCAN_TAG(multiplicative-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 multiplicative-operator
 : asterisk
@@ -461,7 +466,12 @@ multiplicative-operator
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression additive-operator multiplicative-expression {}
+| additive-expression additive-operator multiplicative-expression {
+  $$ = YYSCAN_TAG(additive-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 additive-operator
 : plus
@@ -469,7 +479,12 @@ additive-operator
 ;
 shift-expression
 : additive-expression
-| shift-expression shift-operator additive-expression {}
+| shift-expression shift-operator additive-expression {
+  $$ = YYSCAN_TAG(shift-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 shift-operator
 : left-shift
@@ -477,7 +492,12 @@ shift-operator
 ;
 relational-expression
 : shift-expression
-| relational-expression relational-operator shift-expression {}
+| relational-expression relational-operator shift-expression {
+  $$ = YYSCAN_TAG(relational-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 relational-operator
 : less-than
@@ -487,7 +507,12 @@ relational-operator
 ;
 equality-expression
 : relational-expression
-| equality-expression equality-operator relational-expression {}
+| equality-expression equality-operator relational-expression {
+  $$ = YYSCAN_TAG(equality-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 equality-operator
 : equal
@@ -495,31 +520,68 @@ equality-operator
 ;
 and-expression
 : equality-expression
-| and-expression ampersand equality-expression {}
+| and-expression ampersand equality-expression {
+  $$ = YYSCAN_TAG(and-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 exclusive-or-expression
 : and-expression
-| exclusive-or-expression caret and-expression {}
+| exclusive-or-expression caret and-expression {
+  $$ = YYSCAN_TAG(exclusive-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 inclusive-or-expression
 : exclusive-or-expression
-| inclusive-or-expression bar exclusive-or-expression {}
+| inclusive-or-expression bar exclusive-or-expression {
+  $$ = YYSCAN_TAG(inclusive-or-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 logical-and-expression
 : inclusive-or-expression
-| logical-and-expression and inclusive-or-expression {}
+| logical-and-expression and inclusive-or-expression {
+  $$ = YYSCAN_TAG(logical-and-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 logical-or-expression
 : logical-and-expression
-| logical-or-expression or logical-and-expression {}
+| logical-or-expression or logical-and-expression {
+  $$ = YYSCAN_TAG(logical-or-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 conditional-expression
 : logical-or-expression
-| logical-or-expression question expression colon conditional-expression {}
+| logical-or-expression question expression colon conditional-expression {
+  $$ = YYSCAN_TAG(conditional-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_PUSH($$, $5);
+}
 ;
 assignment-expression
 : conditional-expression
-| unary-expression assignment-operator assignment-expression {}
+| unary-expression assignment-operator assignment-expression {
+  $$ = YYSCAN_TAG(assignment-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 assignment-operator
 : assign
@@ -535,21 +597,33 @@ assignment-operator
 | bar-assign
 ;
 expression.opt
-: %empty { $$ = yyscan_nil(); }
+: %empty {
+  $$ = YYSCAN_TAG(expression);
+}
 | expression
 ;
 expression
-: assignment-expression
-| expression comma assignment-expression {}
+: assignment-expression {
+  $$ = YYSCAN_TAG(expression);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| expression comma assignment-expression {
+  $$ = YYSCAN_PUSH($1, $3);
+}
 ;
 
 /* 6.4 Constant expressions */
 constant-expression.opt
-: %empty { $$ = yyscan_nil(); }
+: %empty {
+  $$ = YYSCAN_TAG(constant-expression);
+}
 | constant-expression
 ;
 constant-expression
-: conditional-expression {}
+: conditional-expression {
+  $$ = YYSCAN_TAG(constant-expression);
+  $$ = YYSCAN_PUSH($$, $1);
+}
 ;
 
 /* 6.5 Declarations */
