@@ -12,12 +12,12 @@ struct set_elem {
   byte_t elem[1];
 };
 
-int set_cmp(const void *lhs, const void *rhs) {
+static int set_cmp(const void *lhs, const void *rhs) {
   const struct set_elem *l = lhs, *r = rhs;
   assert(l->cmp == r->cmp);
   return l->cmp(&l->elem, &r->elem);
 }
-void set_set_dummy(struct set *self, const void *ptr) {
+static void set_set_dummy(struct set *self, const void *ptr) {
   struct buffer src, dst;
   size_t size = box_size(self->dummy);
   buffer_init(&src, (void *)ptr, size - sizeof(cmp_t));
@@ -37,4 +37,9 @@ void set_init(struct set *self, align_t align, cmp_t cmp) {
 void set_finish(struct set *self) {
   vec_finish(&self->vec);
   box_delete(self->dummy);
+}
+void set_insert(struct set *self, const void *ptr) {
+  set_set_dummy(self, ptr);
+  vec_push(&self->vec, box_get(self->dummy));
+  vec_sort(&self->vec, set_cmp);
 }
