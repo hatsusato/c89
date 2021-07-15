@@ -740,55 +740,181 @@ initializer-list
 
 /* 6.6 Statements */
 statement
-: labeled-statement
-| compound-statement
-| expression-statement
-| selection-statement
-| iteration-statement
-| jump-statement
+: labeled-statement {
+  $$ = YYSCAN_TAG(statement);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| compound-statement {
+  $$ = YYSCAN_TAG(statement);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| expression-statement {
+  $$ = YYSCAN_TAG(statement);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| selection-statement {
+  $$ = YYSCAN_TAG(statement);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| iteration-statement {
+  $$ = YYSCAN_TAG(statement);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| jump-statement {
+  $$ = YYSCAN_TAG(statement);
+  $$ = YYSCAN_PUSH($$, $1);
+}
 ;
 labeled-statement
-: identifier colon statement {}
-| case constant-expression colon statement {}
-| default colon statement {}
+: identifier colon statement {
+  $$ = YYSCAN_TAG(labeled-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
+| case constant-expression colon statement {
+  $$ = YYSCAN_TAG(labeled-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
+| default colon statement {
+  $$ = YYSCAN_TAG(labeled-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 compound-statement
-: left-brace declaration-list.opt statement-list.opt right-brace {}
+: left-brace declaration-list.opt statement-list.opt right-brace {
+  $$ = YYSCAN_TAG(compound-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
 ;
 declaration-list.opt
-: %empty { $$ = yyscan_nil(); }
+: %empty {
+  $$ = YYSCAN_TAG(declaration-list);
+}
 | declaration-list
 ;
 declaration-list
-: declaration {}
-| declaration-list declaration {}
+: declaration {
+  $$ = YYSCAN_TAG(declaration-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| declaration-list declaration {
+  $$ = YYSCAN_PUSH($1, $2);
+}
 ;
 statement-list.opt
-: %empty { $$ = yyscan_nil(); }
+: %empty {
+  $$ = YYSCAN_TAG(statement-list);
+}
 | statement-list
 ;
 statement-list
-: statement {}
-| statement-list statement {}
+: statement {
+  $$ = YYSCAN_TAG(statement-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| statement-list statement {
+  $$ = YYSCAN_PUSH($1, $2);
+}
 ;
 expression-statement
-: expression.opt semicolon {}
+: expression.opt semicolon {
+  $$ = YYSCAN_TAG(expression-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
 ;
 selection-statement
-: if left-paren expression right-paren statement %prec THEN {}
-| if left-paren expression right-paren statement else statement {}
-| switch left-paren expression right-paren statement {}
+: if left-paren expression right-paren statement %prec THEN {
+  $$ = YYSCAN_TAG(selection-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_PUSH($$, $5);
+}
+| if left-paren expression right-paren statement else statement {
+  $$ = YYSCAN_TAG(selection-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_PUSH($$, $5);
+  $$ = YYSCAN_PUSH($$, $6);
+  $$ = YYSCAN_PUSH($$, $7);
+}
+| switch left-paren expression right-paren statement {
+  $$ = YYSCAN_TAG(selection-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_PUSH($$, $5);
+}
 ;
 iteration-statement
-: while left-paren expression right-paren statement {}
-| do statement while left-paren expression right-paren semicolon {}
-| for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {}
+: while left-paren expression right-paren statement {
+  $$ = YYSCAN_TAG(iteration-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_PUSH($$, $5);
+}
+| do statement while left-paren expression right-paren semicolon {
+  $$ = YYSCAN_TAG(iteration-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_PUSH($$, $5);
+  $$ = YYSCAN_PUSH($$, $6);
+  $$ = YYSCAN_PUSH($$, $7);
+}
+| for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {
+  $$ = YYSCAN_TAG(iteration-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_PUSH($$, $5);
+  $$ = YYSCAN_PUSH($$, $6);
+  $$ = YYSCAN_PUSH($$, $7);
+  $$ = YYSCAN_PUSH($$, $8);
+  $$ = YYSCAN_PUSH($$, $9);
+}
 ;
 jump-statement
-: goto identifier semicolon {}
-| continue semicolon {}
-| break semicolon {}
-| return expression.opt semicolon {}
+: goto identifier semicolon {
+  $$ = YYSCAN_TAG(jump-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
+| continue semicolon {
+  $$ = YYSCAN_TAG(jump-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
+| break semicolon {
+  $$ = YYSCAN_TAG(jump-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
+| return expression.opt semicolon {
+  $$ = YYSCAN_TAG(jump-statement);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 
 /* 6.7 External definitions */
