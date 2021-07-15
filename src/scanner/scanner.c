@@ -1,7 +1,7 @@
 #include "scanner.h"
 
 #include "pool/str.h"
-#include "pool/type.h"
+#include "pool/str_type.h"
 #include "type.h"
 #include "util/box.h"
 #include "yyscan.h"
