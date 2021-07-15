@@ -563,11 +563,21 @@ constant-expression
 
 /* 6.5 Declarations */
 declaration
-: declaration-specifiers init-declarator-list.opt semicolon {}
+: declaration-specifiers init-declarator-list.opt semicolon {
+  $$ = YYSCAN_TAG(declaration);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 declaration-specifiers
-: declaration-specifier {}
-| declaration-specifiers declaration-specifier {}
+: declaration-specifier {
+  $$ = YYSCAN_TAG(declaration-specifiers);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| declaration-specifiers declaration-specifier {
+  $$ = YYSCAN_PUSH($1, $2);
+}
 ;
 declaration-specifier
 : storage-class-specifier
@@ -575,167 +585,451 @@ declaration-specifier
 | type-qualifier
 ;
 init-declarator-list.opt
-: %empty { $$ = yyscan_nil(); }
+: %empty {
+  $$ = YYSCAN_TAG(init-declarator-list);
+}
 | init-declarator-list
 ;
 init-declarator-list
-: init-declarator {}
-| init-declarator-list comma init-declarator {}
+: init-declarator {
+  $$ = YYSCAN_TAG(init-declarator-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| init-declarator-list comma init-declarator {
+  $$ = YYSCAN_PUSH($1, $3);
+}
 ;
 init-declarator
-: declarator {}
-| declarator assign initializer {}
+: declarator {
+  $$ = YYSCAN_TAG(init-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| declarator assign initializer {
+  $$ = YYSCAN_TAG(init-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 storage-class-specifier
-: typedef
-| extern
-| static
-| auto
-| register
+: typedef {
+  $$ = YYSCAN_TAG(storage-class-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| extern {
+  $$ = YYSCAN_TAG(storage-class-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| static {
+  $$ = YYSCAN_TAG(storage-class-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| auto {
+  $$ = YYSCAN_TAG(storage-class-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| register {
+  $$ = YYSCAN_TAG(storage-class-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
 ;
 type-specifier
-: void
-| char
-| short
-| int
-| long
-| float
-| double
-| signed
-| unsigned
-| struct-or-union-specifier
-| enum-specifier
-| typedef-name
+: void {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| char {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| short {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| int {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| long {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| float {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| double {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| signed {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| unsigned {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| struct-or-union-specifier {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| enum-specifier {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| typedef-name {
+  $$ = YYSCAN_TAG(type-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
 ;
 struct-or-union-specifier
-: struct-or-union identifier.opt left-brace struct-declaration-list right-brace {}
-| struct-or-union identifier {}
+: struct-or-union identifier.opt left-brace struct-declaration-list right-brace {
+  $$ = YYSCAN_TAG(struct-or-union-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_PUSH($$, $5);
+}
+| struct-or-union identifier {
+  $$ = YYSCAN_TAG(struct-or-union-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
 ;
 struct-or-union
-: struct
-| union
+: struct {
+  $$ = YYSCAN_TAG(struct-or-union);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| union {
+  $$ = YYSCAN_TAG(struct-or-union);
+  $$ = YYSCAN_PUSH($$, $1);
+}
 ;
 struct-declaration-list
-: struct-declaration {}
-| struct-declaration-list struct-declaration {}
+: struct-declaration {
+  $$ = YYSCAN_TAG(struct-declaration-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| struct-declaration-list struct-declaration {
+  $$ = YYSCAN_PUSH($1, $2);
+}
 ;
 struct-declaration
-: specifier-qualifier-list struct-declarator-list semicolon {}
+: specifier-qualifier-list struct-declarator-list semicolon {
+  $$ = YYSCAN_TAG(struct-declaration);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 specifier-qualifier-list
-: specifier-qualifier {}
-| specifier-qualifier-list specifier-qualifier {}
+: specifier-qualifier {
+  $$ = YYSCAN_TAG(specifier-qualifier-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| specifier-qualifier-list specifier-qualifier {
+  $$ = YYSCAN_PUSH($1, $2);
+}
 ;
 specifier-qualifier
 : type-specifier
 | type-qualifier
 ;
 struct-declarator-list
-: struct-declarator {}
-| struct-declarator-list comma struct-declarator {}
+: struct-declarator {
+  $$ = YYSCAN_TAG(struct-declarator-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| struct-declarator-list comma struct-declarator {
+  $$ = YYSCAN_PUSH($1, $3);
+}
 ;
 struct-declarator
-: declarator {}
-| declarator.opt colon constant-expression {}
+: declarator {
+  $$ = YYSCAN_TAG(struct-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| declarator.opt colon constant-expression {
+  $$ = YYSCAN_TAG(struct-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 enum-specifier
-: enum identifier.opt left-brace enumerator-list right-brace {}
-| enum identifier {}
+: enum identifier.opt left-brace enumerator-list right-brace {
+  $$ = YYSCAN_TAG(enum-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_PUSH($$, $5);
+}
+| enum identifier {
+  $$ = YYSCAN_TAG(enum-specifier);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
 ;
 enumerator-list
-: enumerator {}
-| enumerator-list comma enumerator {}
+: enumerator {
+  $$ = YYSCAN_TAG(enumerator-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| enumerator-list comma enumerator {
+  $$ = YYSCAN_PUSH($1, $3);
+}
 ;
 enumerator
-: enumeration-constant {}
-| enumeration-constant assign constant-expression {}
+: enumeration-constant {
+  $$ = YYSCAN_TAG(enumerator);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| enumeration-constant assign constant-expression {
+  $$ = YYSCAN_TAG(enumerator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 type-qualifier
-: const
-| volatile
+: const {
+  $$ = YYSCAN_TAG(type-qualifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| volatile {
+  $$ = YYSCAN_TAG(type-qualifier);
+  $$ = YYSCAN_PUSH($$, $1);
+}
 ;
 declarator.opt
-: %empty { $$ = yyscan_nil(); }
+: %empty {
+  $$ = YYSCAN_TAG(declarator);
+}
 | declarator
 ;
 declarator
-: direct-declarator {}
-| pointer direct-declarator {}
+: direct-declarator {
+  $$ = YYSCAN_TAG(declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| pointer direct-declarator {
+  $$ = YYSCAN_TAG(declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
 ;
 direct-declarator
-: identifier {}
-| left-paren declarator right-paren {}
-| direct-declarator direct-declarator.suffix {}
-;
-direct-declarator.suffix
-: left-bracket constant-expression.opt right-bracket {}
-| left-paren parameter-type-list.opt right-paren {}
-| left-paren identifier-list right-paren {}
+: identifier {
+  $$ = YYSCAN_TAG(direct-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| left-paren declarator right-paren {
+  $$ = YYSCAN_TAG(direct-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
+| direct-declarator left-bracket constant-expression.opt right-bracket {
+  $$ = YYSCAN_TAG(direct-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
+| direct-declarator left-paren parameter-type-list right-paren {
+  $$ = YYSCAN_TAG(direct-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
+| direct-declarator left-paren identifier-list.opt right-paren {
+  $$ = YYSCAN_TAG(direct-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
 ;
 pointer
-: asterisk type-qualifier-list.opt {}
-| pointer asterisk type-qualifier-list.opt {}
+: asterisk type-qualifier-list.opt {
+  $$ = YYSCAN_TAG(pointer);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
+| pointer asterisk type-qualifier-list.opt {
+  $$ = YYSCAN_TAG(pointer);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 type-qualifier-list.opt
-: %empty { $$ = yyscan_nil(); }
+: %empty {
+  $$ = YYSCAN_TAG(type-qualifier-list);
+}
 | type-qualifier-list
 ;
 type-qualifier-list
-: type-qualifier {}
-| type-qualifier-list type-qualifier {}
+: type-qualifier {
+  $$ = YYSCAN_TAG(type-qualifier-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| type-qualifier-list type-qualifier {
+  $$ = YYSCAN_PUSH($1, $2);
+}
 ;
 parameter-type-list.opt
-: %empty { $$ = yyscan_nil(); }
+: %empty {
+  $$ = YYSCAN_TAG(parameter-type-list);
+}
 | parameter-type-list
 ;
 parameter-type-list
-: parameter-list
-| parameter-list comma ellipsis {}
+: parameter-list {
+  $$ = YYSCAN_TAG(parameter-type-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| parameter-list comma ellipsis {
+  $$ = YYSCAN_TAG(parameter-type-list);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $3);
+}
 ;
 parameter-list
-: parameter-declaration {}
-| parameter-list comma parameter-declaration {}
+: parameter-declaration {
+  $$ = YYSCAN_TAG(parameter-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| parameter-list comma parameter-declaration {
+  $$ = YYSCAN_PUSH($1, $3);
+}
 ;
 parameter-declaration
-: declaration-specifiers declarator {}
-| declaration-specifiers abstract-declarator.opt {}
+: declaration-specifiers declarator {
+  $$ = YYSCAN_TAG(parameter-declaration);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
+| declaration-specifiers abstract-declarator.opt {
+  $$ = YYSCAN_TAG(parameter-declaration);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
+;
+identifier-list.opt
+: %empty {
+  $$ = YYSCAN_TAG(identifier-list);
+}
+| identifier-list
 ;
 identifier-list
-: identifier {}
-| identifier-list comma identifier {}
+: identifier {
+  $$ = YYSCAN_TAG(identifier-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| identifier-list comma identifier {
+  $$ = YYSCAN_PUSH($1, $3);
+}
 ;
 type-name
-: specifier-qualifier-list abstract-declarator.opt {}
+: specifier-qualifier-list abstract-declarator.opt {
+  $$ = YYSCAN_TAG(type-name);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
 ;
 abstract-declarator.opt
-: %empty { $$ = yyscan_nil(); }
+: %empty {
+  $$ = YYSCAN_TAG(abstract-declarator);
+}
 | abstract-declarator
 ;
 abstract-declarator
-: pointer {}
-| direct-abstract-declarator {}
-| pointer direct-abstract-declarator {}
+: pointer {
+  $$ = YYSCAN_TAG(abstract-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| direct-abstract-declarator {
+  $$ = YYSCAN_TAG(abstract-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| pointer direct-abstract-declarator {
+  $$ = YYSCAN_TAG(abstract-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+}
 ;
 direct-abstract-declarator
-: left-paren abstract-declarator right-paren {}
-| direct-abstract-declarator.suffix
-| direct-abstract-declarator direct-abstract-declarator.suffix {}
-;
-direct-abstract-declarator.suffix
-: left-bracket constant-expression.opt right-bracket {}
-| left-paren parameter-type-list.opt right-paren {}
+: left-paren abstract-declarator right-paren {
+  $$ = YYSCAN_TAG(direct-abstract-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
+| left-bracket constant-expression.opt right-bracket {
+  $$ = YYSCAN_TAG(direct-abstract-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
+| direct-abstract-declarator left-bracket constant-expression.opt right-bracket {
+  $$ = YYSCAN_TAG(direct-abstract-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
+| left-paren parameter-type-list.opt right-paren {
+  $$ = YYSCAN_TAG(direct-abstract-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
+| direct-abstract-declarator left-paren parameter-type-list.opt right-paren {
+  $$ = YYSCAN_TAG(direct-abstract-declarator);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_PUSH($$, $4);
+}
 ;
 typedef-name
-: typedef-identifier {}
+: typedef-identifier {
+  $$ = YYSCAN_TAG(typedef-name);
+  $$ = YYSCAN_PUSH($$, $1);
+}
 ;
 initializer
-: assignment-expression
-| left-brace initializer-list right-brace {}
-| left-brace initializer-list comma right-brace {}
+: assignment-expression {
+  $$ = YYSCAN_TAG(initializer);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| left-brace initializer-list right-brace {
+  $$ = YYSCAN_TAG(initializer);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $3);
+}
+| left-brace initializer-list comma right-brace {
+  $$ = YYSCAN_TAG(initializer);
+  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_PUSH($$, $4);
+}
 ;
 initializer-list
-: initializer {}
-| initializer-list comma initializer {}
+: initializer {
+  $$ = YYSCAN_TAG(initializer-list);
+  $$ = YYSCAN_PUSH($$, $1);
+}
+| initializer-list comma initializer {
+  $$ = YYSCAN_PUSH($1, $3);
+}
 ;
 
 /* 6.6 Statements */
