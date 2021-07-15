@@ -11,6 +11,12 @@ struct set_elem {
   byte_t elem[1];
 };
 
+int set_cmp(const void *lhs, const void *rhs) {
+  const struct set_elem *l = lhs, *r = rhs;
+  assert(l->cmp == r->cmp);
+  return l->cmp(&l->elem, &r->elem);
+}
+
 void set_init(struct set *self, align_t align, cmp_t cmp) {
   size_t size = sizeof(cmp_t) + align;
   struct set_elem *elem;
