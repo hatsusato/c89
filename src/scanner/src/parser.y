@@ -318,15 +318,6 @@ string-literal
   $$ = YYSCAN_PUSH_SYMBOL($$);
 }
 ;
-string-constant
-: string-literal {
-  $$ = YYSCAN_TAG(string-constant);
-  $$ = YYSCAN_PUSH($$, $1);
-}
-| string-constant string-literal {
-  $$ = YYSCAN_PUSH($1, $2);
-}
-;
 
 /* 6.3 Expressions */
 primary-expression
@@ -346,7 +337,7 @@ primary-expression
   $$ = YYSCAN_TAG(primary-expression);
   $$ = YYSCAN_PUSH($$, $1);
 }
-| string-constant {
+| string-literal {
   $$ = YYSCAN_TAG(primary-expression);
   $$ = YYSCAN_PUSH($$, $1);
 }
