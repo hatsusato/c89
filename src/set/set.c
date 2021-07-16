@@ -24,6 +24,9 @@ static void set_set_dummy(struct set *self, const void *ptr) {
   box_buffer(self->dummy, &dst);
   buffer_copy(&dst, sizeof(cmp_t), &src);
 }
+static const void *set_get_dummy(struct set *self) {
+  return box_get(self->dummy);
+}
 
 void set_init(struct set *self, align_t align, cmp_t cmp) {
   size_t size = sizeof(cmp_t) + align;
@@ -40,12 +43,12 @@ void set_finish(struct set *self) {
 }
 void set_insert(struct set *self, const void *ptr) {
   set_set_dummy(self, ptr);
-  vec_push(&self->vec, box_get(self->dummy));
+  vec_push(&self->vec, set_get_dummy(self));
   vec_sort(&self->vec, set_cmp);
 }
 const void *set_search(struct set *self, const void *key) {
   const struct set_elem *found;
   set_set_dummy(self, key);
-  found = vec_search(&self->vec, box_get(self->dummy), set_cmp);
+  found = vec_search(&self->vec, set_get_dummy(self), set_cmp);
   return found->elem;
 }
