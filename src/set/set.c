@@ -15,14 +15,15 @@ struct set_elem {
 static int set_cmp(const void *lhs, const void *rhs) {
   const struct set_elem *l = lhs, *r = rhs;
   assert(l->cmp == r->cmp);
-  return l->cmp(&l->elem, &r->elem);
+  return l->cmp(l->elem, r->elem);
 }
 static void set_set_dummy(struct set *self, const void *ptr) {
   struct buffer src, dst;
-  size_t size = box_size(self->dummy);
-  buffer_init(&src, (void *)ptr, size - sizeof(cmp_t));
+  size_t offset = sizeof(cmp_t);
+  size_t size = box_size(self->dummy) - offset;
+  buffer_init(&src, (void *)ptr, size);
   box_buffer(self->dummy, &dst);
-  buffer_copy(&dst, sizeof(cmp_t), &src);
+  buffer_copy(&dst, offset, &src);
 }
 static const void *set_get_dummy(struct set *self) {
   return box_get(self->dummy);
