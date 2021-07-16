@@ -43,13 +43,15 @@ void set_finish(struct set *self) {
   box_delete(self->dummy);
 }
 void set_insert(struct set *self, const void *ptr) {
-  set_set_dummy(self, ptr);
-  vec_push(&self->vec, set_get_dummy(self));
-  vec_sort(&self->vec, set_cmp);
+  if (!set_search(self, ptr)) {
+    set_set_dummy(self, ptr);
+    vec_push(&self->vec, set_get_dummy(self));
+    vec_sort(&self->vec, set_cmp);
+  }
 }
 const void *set_search(struct set *self, const void *key) {
   const struct set_elem *found;
   set_set_dummy(self, key);
   found = vec_search(&self->vec, set_get_dummy(self), set_cmp);
-  return found->elem;
+  return found ? found->elem : NULL;
 }
