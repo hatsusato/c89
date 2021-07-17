@@ -6,6 +6,7 @@
 #include "str.h"
 #include "str/str.h"
 #include "str/type.h"
+#include "str_type.h"
 #include "type.h"
 #include "util/box.h"
 #include "util/buffer.h"
