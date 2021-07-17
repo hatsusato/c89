@@ -19,11 +19,9 @@ static int set_cmp(const void *lhs, const void *rhs) {
 }
 static void set_set_dummy(struct set *self, const void *ptr) {
   struct buffer src, dst;
-  size_t offset = sizeof(cmp_t);
-  size_t size = box_size(self->dummy) - offset;
-  buffer_init(&src, (void *)ptr, size);
+  buffer_init(&src, (void *)ptr, self->align);
   box_buffer(self->dummy, &dst);
-  buffer_copy(&dst, offset, &src);
+  buffer_copy(&dst, sizeof(cmp_t), &src);
 }
 static const void *set_get_dummy(struct set *self) {
   return box_get(self->dummy);
@@ -34,6 +32,7 @@ void set_init(struct set *self, align_t align, cmp_t cmp) {
   struct set_elem *elem;
   assert(cmp);
   vec_init(&self->vec, size);
+  self->align = align;
   self->dummy = box_new(size, 1);
   elem = box_get(self->dummy);
   elem->cmp = cmp;

@@ -7,6 +7,7 @@ struct box;
 
 struct set {
   struct vec vec;
+  align_t align;
   struct box *dummy;
 };
 
