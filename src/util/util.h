@@ -13,6 +13,8 @@
                    buf_28321f6d_b6bb_4bf6_bcf2_b1744cfbc621);      \
   } while (false)
 
+void *util_malloc(align_t, index_t);
+void util_free(const void *);
 void util_swap_impl(size_t, void *, void *, void *);
 bool_t util_streq(const char *, const char *);
 
