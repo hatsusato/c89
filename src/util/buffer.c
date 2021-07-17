@@ -28,6 +28,13 @@ void buffer_copy(struct buffer *self, size_t offset, const struct buffer *buf) {
     memcpy(self->ptr + offset, buf->ptr, buf->size);
   }
 }
+void buffer_copy2(struct buffer *self, size_t offset, const void *ptr,
+                  size_t size) {
+  assert(self->size >= offset + size);
+  if (self->ptr && ptr && size > 0) {
+    memcpy(self->ptr + offset, ptr, size);
+  }
+}
 void buffer_slide(struct buffer *self, size_t src, size_t dst, size_t size) {
   assert(self->ptr);
   assert(src + size <= self->size);
