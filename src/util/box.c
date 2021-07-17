@@ -7,12 +7,13 @@
 
 struct box {
   size_t size;
-  byte_t data[1];
+  const void *ptr;
+  const byte_t data[1];
 };
 
 struct box *box_new(align_t align, index_t count) {
   size_t size = align * count;
-  struct box *box = malloc(sizeof(size_t) + size);
+  struct box *box = malloc(sizeof(size_t) + sizeof(const void *) + size);
   box->size = size;
   return box;
 }
@@ -28,7 +29,7 @@ void *box_get(const struct box *box) {
 }
 void box_release(void *ptr) {
   byte_t *data = ptr;
-  struct box *box = (void *)(data - sizeof(size_t));
+  struct box *box = (void *)(data - sizeof(size_t) - sizeof(const void *));
   assert(box_get(box) == ptr);
   box_delete(box);
 }
