@@ -27,3 +27,7 @@ struct str *str_new(const struct str_view *view) {
   str_init(self, str_view_ptr(view));
   return self;
 }
+void str_delete(struct str *self) {
+  util_free(self->ptr);
+  util_free(self);
+}
