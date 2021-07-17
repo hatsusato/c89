@@ -31,3 +31,9 @@ void str_delete(struct str *self) {
   util_free(self->ptr);
   util_free(self);
 }
+const char *str_ptr(const struct str *self) {
+  return self->ptr;
+}
+index_t str_len(const struct str *self) {
+  return self->len;
+}
