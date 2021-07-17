@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "buffer.h"
+#include "util/util.h"
 
 struct box {
   size_t size;
@@ -11,6 +12,13 @@ struct box {
   const byte_t data[1];
 };
 
+void box_init(struct box *self, align_t align, index_t count) {
+  self->size = count * align;
+  self->ptr = util_malloc(align, count);
+}
+void box_finish(struct box *self) {
+  util_free(self->ptr);
+}
 struct box *box_new(align_t align, index_t count) {
   size_t size = align * count;
   struct box *box = malloc(sizeof(size_t) + sizeof(const void *) + size);

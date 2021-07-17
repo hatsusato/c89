@@ -6,6 +6,8 @@
 struct box;
 struct buffer;
 
+void box_init(struct box *, align_t, index_t);
+void box_finish(struct box *);
 struct box *box_new(align_t, index_t);
 void box_delete(struct box *);
 void box_buffer(struct box *, struct buffer *);
