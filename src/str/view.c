@@ -1,10 +1,10 @@
-#include "str.h"
+#include "view.h"
 
 #include <assert.h>
 #include <string.h>
 
-#include "type.h"
 #include "util/util.h"
+#include "view_type.h"
 
 void str_view_init(struct str_view *self, const char *str, index_t len) {
   assert(0 <= len);

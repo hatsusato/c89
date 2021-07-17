@@ -2,8 +2,8 @@
 
 #include <assert.h>
 
-#include "str.h"
-#include "type.h"
+#include "view.h"
+#include "view_type.h"
 
 #define str_view_unittest_eq(lhs, rhs)     \
   do {                                     \

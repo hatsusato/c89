@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "pool.h"
-#include "str/str.h"
-#include "str/type.h"
+#include "str/view.h"
+#include "str/view_type.h"
 #include "str_type.h"
 #include "util/box.h"
 #include "util/buffer.h"
