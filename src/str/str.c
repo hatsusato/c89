@@ -14,8 +14,8 @@ static void str_init(struct str *self, const char *ptr) {
   struct buffer buf;
   index_t len = self->len;
   buffer_init(&buf, self->ptr, len + 1);
-  buffer_copy2(&buf, 0, ptr, len);
-  buffer_copy2(&buf, len, &zero, 1);
+  buffer_copy(&buf, 0, ptr, len);
+  buffer_copy(&buf, len, &zero, 1);
 }
 
 struct str *str_new(const struct str_view *view) {

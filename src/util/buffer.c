@@ -22,14 +22,8 @@ void *buffer_at(const struct buffer *self, size_t index) {
 size_t buffer_size(const struct buffer *self) {
   return self->size;
 }
-void buffer_copy(struct buffer *self, size_t offset, const struct buffer *buf) {
-  assert(self->size >= offset + buf->size);
-  if (self->ptr && buf->ptr) {
-    memcpy(self->ptr + offset, buf->ptr, buf->size);
-  }
-}
-void buffer_copy2(struct buffer *self, size_t offset, const void *ptr,
-                  size_t size) {
+void buffer_copy(struct buffer *self, size_t offset, const void *ptr,
+                 size_t size) {
   assert(self->size >= offset + size);
   if (self->ptr && ptr && size > 0) {
     memcpy(self->ptr + offset, ptr, size);

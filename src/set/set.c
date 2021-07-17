@@ -20,7 +20,7 @@ static int set_cmp(const void *lhs, const void *rhs) {
 static void set_set_dummy(struct set *self, const void *ptr) {
   struct buffer buf;
   box_buffer(self->dummy, &buf);
-  buffer_copy2(&buf, sizeof(cmp_t), ptr, self->align);
+  buffer_copy(&buf, sizeof(cmp_t), ptr, self->align);
 }
 static const void *set_get_dummy(struct set *self) {
   return box_get(self->dummy);
