@@ -7,6 +7,7 @@ struct box;
 
 struct vec {
   struct array array;
+  size_t size;
   struct box *box;
 };
 
