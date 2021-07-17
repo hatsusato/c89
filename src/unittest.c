@@ -13,7 +13,7 @@ void unittest(void) {
   pool_unittest();
   pool_str_unittest();
   set_unittest();
-  str_unittest();
+  str_view_unittest();
   vec_unittest();
   vec_ptr_unittest();
 }

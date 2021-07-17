@@ -11,21 +11,21 @@
 #include "vec/vec.h"
 
 static int pool_str_cmp(const void *lhs, const void *rhs) {
-  return str_cmp(lhs, rhs);
+  return str_view_cmp(lhs, rhs);
 }
-static const struct str *pool_str_search(const struct pool_str *self,
-                                         const struct str *str) {
+static const struct str_view *pool_str_search(const struct pool_str *self,
+                                              const struct str_view *str) {
   return vec_search(&self->table, str, pool_str_cmp);
 }
 static const char *pool_str_insert_pool(struct pool_str *self,
-                                        const struct str *str) {
+                                        const struct str_view *str) {
   static char zero = '\0';
-  index_t len = str_length(str);
+  index_t len = str_view_length(str);
   struct box *box;
   struct buffer src, dst;
   box = box_new(1, len + 1);
   box_buffer(box, &dst);
-  buffer_init(&src, (void *)str_ptr(str), len);
+  buffer_init(&src, (void *)str_view_ptr(str), len);
   buffer_copy(&dst, 0, &src);
   buffer_init(&src, &zero, 1);
   buffer_copy(&dst, len, &src);
@@ -34,28 +34,28 @@ static const char *pool_str_insert_pool(struct pool_str *self,
 
 void pool_str_init(struct pool_str *self, struct pool *pool) {
   self->pool = pool;
-  vec_init(&self->table, sizeof(struct str));
+  vec_init(&self->table, sizeof(struct str_view));
 }
 void pool_str_finish(struct pool_str *self) {
   vec_finish(&self->table);
 }
 const char *pool_str_insert(struct pool_str *self, const char *str) {
-  struct str buf;
-  str_init(&buf, str, strlen(str));
+  struct str_view buf;
+  str_view_init(&buf, str, strlen(str));
   if (!pool_str_search(self, &buf)) {
     vec_push(&self->table, &buf);
     vec_sort(&self->table, pool_str_cmp);
   }
-  return str_ptr(pool_str_search(self, &buf));
+  return str_view_ptr(pool_str_search(self, &buf));
 }
 const char *pool_str_canonicalize(struct pool_str *self,
-                                  const struct str *str) {
+                                  const struct str_view *str) {
   if (!pool_str_search(self, str)) {
-    struct str buf;
+    struct str_view buf;
     const char *ptr = pool_str_insert_pool(self, str);
-    str_init(&buf, ptr, str_length(str));
+    str_view_init(&buf, ptr, str_view_length(str));
     vec_push(&self->table, &buf);
     vec_sort(&self->table, pool_str_cmp);
   }
-  return str_ptr(pool_str_search(self, str));
+  return str_view_ptr(pool_str_search(self, str));
 }

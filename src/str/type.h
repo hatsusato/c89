@@ -3,7 +3,7 @@
 
 #include "util/type.h"
 
-struct str {
+struct str_view {
   const char *ptr;
   index_t len;
 };

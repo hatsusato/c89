@@ -54,30 +54,30 @@ void pool_str_unittest(void) {
     pool_str_insert(&spool, ab + i);
   }
   for (i = 0; i < 6; i++) {
-    struct str str;
+    struct str_view str;
     for (j = 0; j <= 10 - i; j++) {
-      str_init(&str, ab + i, j);
+      str_view_init(&str, ab + i, j);
       pool_str_canonicalize(&spool, &str);
     }
   }
   actual = &spool.table;
-  vec_init(&expect, sizeof(struct str));
+  vec_init(&expect, sizeof(struct str_view));
   assert(vec_length(actual) == 20);
   for (i = 0; i <= 10; i++) {
-    struct str str;
-    str_init(&str, ab, i);
+    struct str_view str;
+    str_view_init(&str, ab, i);
     vec_push(&expect, &str);
   }
   for (i = 0; i < 9; i++) {
-    struct str str;
-    str_init(&str, ab + 1, i + 1);
+    struct str_view str;
+    str_view_init(&str, ab + 1, i + 1);
     vec_push(&expect, &str);
   }
   for (i = 0; i < 20; i++) {
-    struct str *lhs, *rhs;
+    struct str_view *lhs, *rhs;
     lhs = vec_at(actual, i);
     rhs = vec_at(&expect, i);
-    assert(str_cmp(lhs, rhs) == 0);
+    assert(str_view_cmp(lhs, rhs) == 0);
   }
   vec_finish(&expect);
   pool_str_finish(&spool);

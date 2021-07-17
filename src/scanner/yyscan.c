@@ -19,9 +19,9 @@ static const char *yyscan_canonical_cstr(yyscan_t self, const char *str) {
   return pool_str_insert(table, str);
 }
 static const char *yyscan_canonical_str(yyscan_t self) {
-  struct str str;
+  struct str_view str;
   struct pool_str *table = yyget_extra(self)->table;
-  str_init(&str, yyget_text(self), yyget_leng(self));
+  str_view_init(&str, yyget_text(self), yyget_leng(self));
   return pool_str_canonicalize(table, &str);
 }
 
