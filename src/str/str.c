@@ -13,10 +13,10 @@ static void str_init(struct str *self, const char *ptr) {
   static const char zero = '\0';
   struct buffer src, dst;
   index_t len = self->len;
-  buffer_init(&dst, (void *)self->ptr, len + 1);
-  buffer_init(&src, (void *)ptr, len);
+  buffer_init(&dst, self->ptr, len + 1);
+  buffer_init(&src, ptr, len);
   buffer_copy(&dst, 0, &src);
-  buffer_init(&src, (void *)&zero, 1);
+  buffer_init(&src, &zero, 1);
   buffer_copy(&dst, len, &src);
 }
 

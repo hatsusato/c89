@@ -8,7 +8,7 @@ struct buffer {
   size_t size;
 };
 
-void buffer_init(struct buffer *, void *, size_t);
+void buffer_init(struct buffer *, const void *, size_t);
 void *buffer_at(const struct buffer *, size_t);
 size_t buffer_size(const struct buffer *);
 void buffer_copy(struct buffer *, size_t, const struct buffer *);

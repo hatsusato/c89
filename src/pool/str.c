@@ -25,7 +25,7 @@ static const char *pool_str_insert_pool(struct pool_str *self,
   struct buffer src, dst;
   box = box_new(1, len + 1);
   box_buffer(box, &dst);
-  buffer_init(&src, (void *)str_view_ptr(str), len);
+  buffer_init(&src, str_view_ptr(str), len);
   buffer_copy(&dst, 0, &src);
   buffer_init(&src, &zero, 1);
   buffer_copy(&dst, len, &src);

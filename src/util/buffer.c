@@ -6,9 +6,9 @@
 
 #include "util.h"
 
-void buffer_init(struct buffer *self, void *ptr, size_t size) {
+void buffer_init(struct buffer *self, const void *ptr, size_t size) {
   assert(ptr || size == 0);
-  self->ptr = ptr;
+  self->ptr = (void *)ptr;
   self->size = size;
 }
 void *buffer_at(const struct buffer *self, size_t index) {

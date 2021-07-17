@@ -19,7 +19,7 @@ static int set_cmp(const void *lhs, const void *rhs) {
 }
 static void set_set_dummy(struct set *self, const void *ptr) {
   struct buffer src, dst;
-  buffer_init(&src, (void *)ptr, self->align);
+  buffer_init(&src, ptr, self->align);
   box_buffer(self->dummy, &dst);
   buffer_copy(&dst, sizeof(cmp_t), &src);
 }

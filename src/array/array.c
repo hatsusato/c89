@@ -13,7 +13,7 @@ static struct slice *array_inner(struct array *self) {
 }
 static void slice_buffer(const struct slice *self, struct buffer *buf) {
   size_t size = slice_length(self) * slice_align(self);
-  buffer_init(buf, (void *)slice_at(self, 0), size);
+  buffer_init(buf, slice_at(self, 0), size);
 }
 static align_t array_align(const struct array *self) {
   return slice_align(array_slice(self));
