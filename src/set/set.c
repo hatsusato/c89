@@ -18,10 +18,9 @@ static int set_cmp(const void *lhs, const void *rhs) {
   return l->cmp(l->elem, r->elem);
 }
 static void set_set_dummy(struct set *self, const void *ptr) {
-  struct buffer src, dst;
-  buffer_init(&src, ptr, self->align);
-  box_buffer(self->dummy, &dst);
-  buffer_copy(&dst, sizeof(cmp_t), &src);
+  struct buffer buf;
+  box_buffer(self->dummy, &buf);
+  buffer_copy2(&buf, sizeof(cmp_t), ptr, self->align);
 }
 static const void *set_get_dummy(struct set *self) {
   return box_get(self->dummy);

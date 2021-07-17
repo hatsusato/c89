@@ -11,13 +11,11 @@ struct str {
 
 static void str_init(struct str *self, const char *ptr) {
   static const char zero = '\0';
-  struct buffer src, dst;
+  struct buffer buf;
   index_t len = self->len;
-  buffer_init(&dst, self->ptr, len + 1);
-  buffer_init(&src, ptr, len);
-  buffer_copy(&dst, 0, &src);
-  buffer_init(&src, &zero, 1);
-  buffer_copy(&dst, len, &src);
+  buffer_init(&buf, self->ptr, len + 1);
+  buffer_copy2(&buf, 0, ptr, len);
+  buffer_copy2(&buf, len, &zero, 1);
 }
 
 struct str *str_new(const struct str_view *view) {

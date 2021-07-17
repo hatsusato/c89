@@ -22,13 +22,11 @@ static const char *pool_str_insert_pool(struct pool_str *self,
   static char zero = '\0';
   index_t len = str_view_length(str);
   struct box *box;
-  struct buffer src, dst;
+  struct buffer buf;
   box = box_new(1, len + 1);
-  box_buffer(box, &dst);
-  buffer_init(&src, str_view_ptr(str), len);
-  buffer_copy(&dst, 0, &src);
-  buffer_init(&src, &zero, 1);
-  buffer_copy(&dst, len, &src);
+  box_buffer(box, &buf);
+  buffer_copy2(&buf, 0, str_view_ptr(str), len);
+  buffer_copy2(&buf, len, &zero, 1);
   return pool_insert(self->pool, box);
 }
 
