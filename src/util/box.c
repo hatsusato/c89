@@ -3,14 +3,9 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#include "box_type.h"
 #include "buffer.h"
-#include "util/util.h"
-
-struct box {
-  size_t size;
-  const void *ptr;
-  const byte_t data[1];
-};
+#include "util.h"
 
 void box_init(struct box *self, align_t align, index_t count) {
   self->size = count * align;
