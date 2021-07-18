@@ -12,6 +12,7 @@ struct box *box_new(align_t, index_t);
 void box_delete(struct box *);
 void box_buffer(struct box *, struct buffer *);
 void *box_get(const struct box *);
+void *box_ptr(const struct box *);
 void box_release(void *);
 size_t box_size(const struct box *);
 

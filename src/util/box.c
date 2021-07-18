@@ -30,6 +30,9 @@ void *box_get(const struct box *box) {
   const byte_t *ptr = box->data;
   return (void *)ptr;
 }
+void *box_ptr(const struct box *self) {
+  return (void *)self->ptr;
+}
 void box_release(void *ptr) {
   byte_t *data = ptr;
   struct box *box = (void *)(data - sizeof(size_t) - sizeof(const void *));
