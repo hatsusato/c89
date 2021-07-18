@@ -110,27 +110,25 @@ void vec_unittest(void) {
   do {                                                 \
     int i, j;                                          \
     for (i = start, j = begin; j < end; i++, j++) {    \
-      struct box *box = vec_ptr_at(vec, i);            \
-      int *p = box_get(box);                           \
+      int *p = vec_ptr_at(vec, i);                     \
       assert(*p == j);                                 \
       UTIL_UNUSED(p);                                  \
     }                                                  \
   } while (false)
-#define vec_ptr_unittest_push(vec, begin, end)   \
-  do {                                           \
-    int i;                                       \
-    for (i = begin; i < end; i++) {              \
-      struct box *box = box_new(sizeof(int), 1); \
-      int *p = box_get(box);                     \
-      *p = i;                                    \
-      vec_ptr_push(vec, box);                    \
-    }                                            \
+#define vec_ptr_unittest_push(vec, begin, end) \
+  do {                                         \
+    int i;                                     \
+    for (i = begin; i < end; i++) {            \
+      int *p = util_malloc(sizeof(int), 1);    \
+      *p = i;                                  \
+      vec_ptr_push(vec, p);                    \
+    }                                          \
   } while (false)
 #define vec_ptr_unittest_pop(vec, count) \
   do {                                   \
     int i;                               \
     for (i = 0; i < count; i++) {        \
-      box_delete(vec_ptr_top(vec));      \
+      util_free(vec_ptr_top(vec));       \
       vec_ptr_pop(vec);                  \
     }                                    \
   } while (false)
@@ -163,6 +161,6 @@ void vec_ptr_unittest(void) {
     vec_ptr_unittest_range(&vec, 0, 0, 500);
     vec_ptr_unittest_range(&vec, 500, 0, 500);
   }
-  vec_ptr_map(&vec, (void (*)(void *))box_delete);
+  vec_ptr_map(&vec, (void (*)(void *))util_free);
   vec_ptr_finish(&vec);
 }
