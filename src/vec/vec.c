@@ -17,7 +17,6 @@ static align_t vec_align(const struct vec *self) {
 static void vec_malloc(struct vec *self, align_t align, index_t len) {
   assert(align > 0);
   assert(0 <= len);
-  self->size = len * align;
   box_init(&self->box, align, len);
   array_init(vec_inner(self), align, box_ptr(&self->box));
 }
@@ -46,7 +45,7 @@ void vec_reserve(struct vec *self, index_t len) {
   }
 }
 index_t vec_capacity(const struct vec *self) {
-  return self->size / vec_align(self);
+  return box_size(&self->box) / vec_align(self);
 }
 index_t vec_length(const struct vec *self) {
   return array_length(vec_inner(self));
