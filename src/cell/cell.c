@@ -7,7 +7,7 @@
 
 static const struct cell *cell_new(struct pool *pool, const void *car,
                                    const void *cdr) {
-  struct cell *cell = pool_insert2(pool, sizeof(struct cell));
+  struct cell *cell = pool_insert(pool, sizeof(struct cell), 1);
   cell->car = car;
   cell->cdr = cdr;
   return cell;

@@ -21,7 +21,7 @@ static const char *pool_str_insert_pool(struct pool_str *self,
                                         const struct str_view *str) {
   static char zero = '\0';
   index_t len = str_view_length(str);
-  void *ptr = pool_insert2(self->pool, len + 1);
+  void *ptr = pool_insert(self->pool, 1, len + 1);
   struct buffer buf;
   buffer_init(&buf, ptr, len + 1);
   buffer_copy(&buf, 0, str_view_ptr(str), len);

@@ -14,7 +14,7 @@
 
 const int *pool_unittest_set(struct pool *pool, int len) {
   int i;
-  int *p = pool_insert2(pool, sizeof(int) * len);
+  int *p = pool_insert(pool, sizeof(int), len);
   for (i = 0; i < len; i++) {
     p[i] = i;
   }
