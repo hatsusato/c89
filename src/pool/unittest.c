@@ -14,16 +14,10 @@
 
 const int *pool_unittest_set(struct pool *pool, int len) {
   int i;
-  struct box *box;
-  struct buffer buf;
-  const int *p;
-  box = box_new(sizeof(int), len);
-  box_buffer(box, &buf);
+  int *p = pool_insert2(pool, sizeof(int) * len);
   for (i = 0; i < len; i++) {
-    int *p = buffer_at(&buf, sizeof(int) * i);
-    *p = i;
+    p[i] = i;
   }
-  p = pool_insert(pool, box);
   return p;
 }
 void pool_unittest_check(const int *p, int len) {
