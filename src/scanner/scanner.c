@@ -3,19 +3,18 @@
 #include "pool/str.h"
 #include "pool/str_type.h"
 #include "type.h"
-#include "util/box.h"
+#include "util/util.h"
 #include "yyscan.h"
 
 static void scanner_init(struct scanner *self, struct pool *pool) {
-  struct box *box = box_new(sizeof(struct pool_str), 1);
   self->pool = pool;
-  self->table = box_get(box);
+  self->table = util_malloc(sizeof(struct pool_str), 1);
   pool_str_init(self->table, pool);
   self->ast = NULL;
 }
 static void scanner_finish(struct scanner *self) {
   pool_str_finish(self->table);
-  box_release(self->table);
+  util_free(self->table);
 }
 
 const struct cell *scanner_parse(struct pool *pool) {
