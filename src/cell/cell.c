@@ -4,12 +4,10 @@
 
 #include "pool/pool.h"
 #include "type.h"
-#include "util/box.h"
 
 static const struct cell *cell_new(struct pool *pool, const void *car,
                                    const void *cdr) {
-  struct box *box = box_new(sizeof(struct cell), 1);
-  struct cell *cell = pool_insert(pool, box);
+  struct cell *cell = pool_insert2(pool, sizeof(struct cell));
   cell->car = car;
   cell->cdr = cdr;
   return cell;
