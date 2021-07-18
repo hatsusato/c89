@@ -28,10 +28,6 @@ void pool_delete(struct pool *self) {
   vec_ptr_finish(&self->vec);
   util_free(self);
 }
-void *pool_insert(struct pool *self, struct box *box) {
-  vec_ptr_push(&self->vec, box);
-  return box_get(box);
-}
 void *pool_insert2(struct pool *self, size_t size) {
   struct box box;
   box_init(&box, size, 1);
