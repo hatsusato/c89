@@ -5,7 +5,6 @@
 #include "array.h"
 #include "slice.h"
 #include "type.h"
-#include "util/box.h"
 #include "util/util.h"
 
 #define array_unittest_range(array, index, begin, end) \
@@ -20,10 +19,9 @@
 
 void array_unittest(void) {
   struct array array;
-  struct box *box;
+  int *p = util_malloc(sizeof(int), 1000);
   int i;
-  box = box_new(sizeof(int), 1000);
-  array_init(&array, sizeof(int), box_get(box));
+  array_init(&array, sizeof(int), p);
   assert(slice_align(array_slice(&array)) == sizeof(int));
   assert(array_length(&array) == 0);
   for (i = 0; i < 100; i++) {
@@ -35,5 +33,5 @@ void array_unittest(void) {
   array_unittest_range(array, 0, 0, 100);
   array_remove(&array, 0, 100);
   assert(array_length(&array) == 0);
-  box_delete(box);
+  util_free(p);
 }
