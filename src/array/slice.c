@@ -37,10 +37,10 @@ const void *slice_at(const struct slice *self, index_t index) {
     return NULL;
   }
 }
-void slice_map(const struct slice *self, void (*map)(const void *)) {
+void slice_map(const struct slice *self, void (*map)(void *)) {
   index_t index;
   assert(map);
   for (index = 0; index < slice_length(self); index++) {
-    map(slice_at(self, index));
+    map((void *)slice_at(self, index));
   }
 }

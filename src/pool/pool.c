@@ -7,8 +7,8 @@
 #include "util/util.h"
 #include "vec/vec.h"
 
-static void pool_finish(const void *self) {
-  box_finish((void *)self);
+static void pool_finish(void *self) {
+  box_finish(self);
 }
 
 struct pool *pool_new(void) {

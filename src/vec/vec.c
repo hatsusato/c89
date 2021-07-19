@@ -80,3 +80,6 @@ void vec_sort(struct vec *self, cmp_t cmp) {
 void *vec_search(const struct vec *self, const void *key, cmp_t cmp) {
   return array_search(vec_inner(self), key, cmp);
 }
+void vec_map(struct vec *self, void (*map)(void *)) {
+  slice_map(vec_slice(self), map);
+}
