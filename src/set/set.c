@@ -36,19 +36,14 @@ static int set_elem_cmp(const void *lhs, const void *rhs) {
 
 void set_init(struct set *self, align_t align, cmp_t cmp) {
   size_t size = sizeof(struct set_elem) + align;
-  struct set_elem *elem;
   assert(cmp);
   vec_init(&self->vec, size);
   self->cmp = cmp;
   self->align = align;
-  self->dummy = box_new(size, 1);
-  elem = box_get(self->dummy);
-  elem->cmp = cmp;
 }
 void set_finish(struct set *self) {
   vec_map(&self->vec, set_elem_finish);
   vec_finish(&self->vec);
-  box_delete(self->dummy);
 }
 void set_insert(struct set *self, const void *ptr) {
   if (!set_search(self, ptr)) {
