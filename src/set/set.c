@@ -3,7 +3,6 @@
 #include <assert.h>
 
 #include "type.h"
-#include "util/box.h"
 #include "util/buffer.h"
 #include "util/util.h"
 #include "vec/vec.h"
@@ -11,7 +10,6 @@
 struct set_elem {
   cmp_t cmp;
   const void *ptr;
-  byte_t elem[1];
 };
 
 static void set_elem_init(struct set_elem *self, struct set *set,
@@ -31,15 +29,13 @@ static int set_elem_cmp(const void *lhs, const void *rhs) {
   const struct set_elem *l = lhs, *r = rhs;
   assert(l->cmp == r->cmp);
   return l->cmp(l->ptr, r->ptr);
-  ;
 }
 
 void set_init(struct set *self, align_t align, cmp_t cmp) {
-  size_t size = sizeof(struct set_elem) + align;
   assert(cmp);
-  vec_init(&self->vec, size);
-  self->cmp = cmp;
+  vec_init(&self->vec, sizeof(struct set_elem));
   self->align = align;
+  self->cmp = cmp;
 }
 void set_finish(struct set *self) {
   vec_map(&self->vec, set_elem_finish);
