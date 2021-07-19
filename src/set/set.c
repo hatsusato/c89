@@ -9,6 +9,7 @@
 
 struct set_elem {
   cmp_t cmp;
+  void *ptr;
   byte_t elem[1];
 };
 
@@ -20,14 +21,14 @@ static int set_cmp(const void *lhs, const void *rhs) {
 static void set_set_dummy(struct set *self, const void *ptr) {
   struct buffer buf;
   box_buffer(self->dummy, &buf);
-  buffer_copy(&buf, sizeof(cmp_t), ptr, self->align);
+  buffer_copy(&buf, sizeof(cmp_t) + sizeof(void *), ptr, self->align);
 }
 static const void *set_get_dummy(struct set *self) {
   return box_get(self->dummy);
 }
 
 void set_init(struct set *self, align_t align, cmp_t cmp) {
-  size_t size = sizeof(cmp_t) + align;
+  size_t size = sizeof(struct set_elem) + align;
   struct set_elem *elem;
   assert(cmp);
   vec_init(&self->vec, size);
