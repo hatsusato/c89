@@ -32,6 +32,7 @@ void set_init(struct set *self, align_t align, cmp_t cmp) {
   struct set_elem *elem;
   assert(cmp);
   vec_init(&self->vec, size);
+  self->cmp = cmp;
   self->align = align;
   self->dummy = box_new(size, 1);
   elem = box_get(self->dummy);
