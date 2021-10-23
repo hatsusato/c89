@@ -19,12 +19,6 @@ static const char *yyscan_canonical_cstr(yyscan_t self, const char *str) {
   struct pool_str *table = yyget_extra(self)->table;
   return pool_str_insert(table, str);
 }
-static const char *yyscan_canonical_str(yyscan_t self) {
-  struct str_view str;
-  struct pool_str *table = yyget_extra(self)->table;
-  str_view_init(&str, yyget_text(self), yyget_leng(self));
-  return pool_str_canonicalize(table, &str);
-}
 
 void yyerror(yyscan_t yyscanner, const char *msg) {
   UTIL_UNUSED(yyscanner);
@@ -60,8 +54,9 @@ const struct cell *yyscan_nil(void) {
   return cell_nil();
 }
 const struct cell *yyscan_symbol(yyscan_t self) {
-  const char *str = yyscan_canonical_str(self);
-  return cell_factory_symbol(yyscan_factory(self), str);
+  const char *text = yyget_text(self);
+  assert(text[yyget_leng(self)] == 0);
+  return cell_factory_symbol(yyscan_factory(self), text);
 }
 const struct cell *yyscan_token(yyscan_t self, const char *token) {
   const char *str = yyscan_canonical_cstr(self, token);
