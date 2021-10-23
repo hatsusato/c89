@@ -1,11 +1,13 @@
 #include "factory.h"
 
+#include <assert.h>
+
 #include "pool/any.h"
 #include "type.h"
 #include "util/util.h"
 
-const struct cell *cell_factory_make(struct cell_factory *self, const void *car,
-                                     const void *cdr) {
+static const struct cell *cell_factory_make(struct cell_factory *self,
+                                            const void *car, const void *cdr) {
   struct cell *cons = pool_any_alloc(self->pool, sizeof(struct cell));
   cons->car = car;
   cons->cdr = cdr;
@@ -21,4 +23,10 @@ struct cell_factory *cell_factory_new(struct pool_any *pool,
 }
 void cell_factory_delete(struct cell_factory *self) {
   util_free(self);
+}
+const struct cell *cell_factory_cons(struct cell_factory *self,
+                                     const struct cell *car,
+                                     const struct cell *cdr) {
+  assert(car && cdr);
+  return cell_factory_make(self, car, cdr);
 }
