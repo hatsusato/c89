@@ -6,9 +6,6 @@
 #include "cell/cell.h"
 #include "cell/factory.h"
 #include "parser.tab.h"
-#include "pool/str.h"
-#include "str/view.h"
-#include "str/view_type.h"
 #include "type.h"
 #include "util/util.h"
 

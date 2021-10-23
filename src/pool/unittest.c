@@ -4,14 +4,6 @@
 
 #include "any.h"
 #include "pool.h"
-#include "str.h"
-#include "str/view.h"
-#include "str/view_type.h"
-#include "str_type.h"
-#include "type.h"
-#include "util/box.h"
-#include "util/buffer.h"
-#include "vec/vec.h"
 
 const int *pool_unittest_set(struct pool *pool, int len) {
   int i;
