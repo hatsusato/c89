@@ -20,3 +20,9 @@ int util_strcmp(const char *lhs, const char *rhs) {
 bool_t util_streq(const char *lhs, const char *rhs) {
   return strcmp(lhs, rhs) == 0;
 }
+const char *util_strdup(const char *src) {
+  index_t count = 1 + strlen(src);
+  char *dst = util_malloc(1, count);
+  strncpy(dst, src, count);
+  return dst;
+}
