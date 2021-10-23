@@ -6,5 +6,6 @@ struct set_symbol;
 struct set_symbol *set_symbol_new(void);
 void set_symbol_delete(struct set_symbol *);
 const char *set_symbol_find(struct set_symbol *, const char *);
+const char *set_symbol_insert(struct set_symbol *, const char *);
 
 #endif /* INCLUDE_GUARD_AF5DEE63_3A1E_44DE_B166_B15DCBB95A37 */
