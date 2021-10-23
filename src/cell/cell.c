@@ -2,29 +2,11 @@
 
 #include <assert.h>
 
-#include "pool/pool.h"
 #include "type.h"
-
-static const struct cell *cell_new(struct pool *pool, const void *car,
-                                   const void *cdr) {
-  struct cell *cell = pool_insert(pool, sizeof(struct cell), 1);
-  cell->car = car;
-  cell->cdr = cdr;
-  return cell;
-}
 
 const struct cell *cell_nil(void) {
   static struct cell cell = {NULL, NULL};
   return &cell;
-}
-const struct cell *cell_new_cons(struct pool *pool, const struct cell *car,
-                                 const struct cell *cdr) {
-  assert(car && cdr);
-  return cell_new(pool, car, cdr);
-}
-const struct cell *cell_new_symbol(struct pool *pool, const char *symbol) {
-  assert(symbol);
-  return cell_new(pool, symbol, NULL);
 }
 bool_t cell_is_nil(const struct cell *self) {
   return !self->car && !self->cdr;
