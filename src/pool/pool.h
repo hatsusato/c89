@@ -3,10 +3,10 @@
 
 #include "util/type.h"
 
-struct pool_any;
+struct pool;
 
-struct pool_any *pool_any_new(void);
-void pool_any_delete(struct pool_any *);
-void *pool_any_alloc(struct pool_any *, size_t);
+struct pool *pool_new(void);
+void pool_delete(struct pool *);
+void *pool_alloc(struct pool *, size_t);
 
 #endif /* INCLUDE_GUARD_76DFC357_C3ED_4072_88BC_20349BB0834A */

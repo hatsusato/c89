@@ -3,7 +3,7 @@
 
 #include "vec/ptr_type.h"
 
-struct pool_any {
+struct pool {
   struct vec_ptr pool;
 };
 

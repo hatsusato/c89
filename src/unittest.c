@@ -10,7 +10,7 @@
 void unittest(void) {
   array_unittest();
   cell_unittest();
-  pool_any_unittest();
+  pool_unittest();
   set_unittest();
   str_view_unittest();
   vec_unittest();

@@ -5,8 +5,7 @@
 #include "util/util.h"
 #include "yyscan.h"
 
-const struct cell *scanner_parse(struct pool_any *any,
-                                 struct set_symbol *symbols) {
+const struct cell *scanner_parse(struct pool *any, struct set_symbol *symbols) {
   struct scanner scanner = {NULL, NULL};
   yyscan_t yyscan = yyscan_new(&scanner);
   if (yyscan) {
