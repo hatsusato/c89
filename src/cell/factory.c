@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "pool/any.h"
+#include "set/symbol.h"
 #include "type.h"
 #include "util/util.h"
 
@@ -29,4 +30,10 @@ const struct cell *cell_factory_cons(struct cell_factory *self,
                                      const struct cell *cdr) {
   assert(car && cdr);
   return cell_factory_make(self, car, cdr);
+}
+const struct cell *cell_factory_symbol(struct cell_factory *self,
+                                       const char *symbol) {
+  assert(symbol);
+  symbol = set_symbol_insert(self->set, symbol);
+  return cell_factory_make(self, symbol, NULL);
 }
