@@ -5,13 +5,11 @@
 #include "cell.h"
 #include "cell/factory.h"
 #include "pool/any.h"
-#include "pool/pool.h"
 #include "set/symbol.h"
 #include "util/util.h"
 
 void cell_unittest(void) {
   const char *a = "aaaaa";
-  struct pool *pool = pool_new();
   struct pool_any *any = pool_any_new();
   struct set_symbol *symbols = set_symbol_new();
   struct cell_factory *factory = cell_factory_new(any, symbols);
@@ -34,5 +32,4 @@ void cell_unittest(void) {
   cell_factory_delete(factory);
   set_symbol_delete(symbols);
   pool_any_delete(any);
-  pool_delete(pool);
 }
