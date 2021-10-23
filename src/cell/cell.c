@@ -26,16 +26,6 @@ const struct cell *cell_new_symbol(struct pool *pool, const char *symbol) {
   assert(symbol);
   return cell_new(pool, symbol, NULL);
 }
-const struct cell *cell_push(struct pool *pool, const struct cell *list,
-                             const struct cell *elem) {
-  const struct cell *const *it = &list;
-  while (cell_is_cons(*it)) {
-    it = &(*it)->cdr;
-  }
-  assert(cell_is_nil(*it));
-  *(const struct cell **)it = cell_new_cons(pool, elem, cell_nil());
-  return list;
-}
 bool_t cell_is_nil(const struct cell *self) {
   return !self->car && !self->cdr;
 }

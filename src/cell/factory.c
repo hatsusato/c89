@@ -15,17 +15,6 @@ static const struct cell *cell_factory_make(struct cell_factory *self,
   cons->cdr = cdr;
   return cons;
 }
-const struct cell *cell_factory_push(struct cell_factory *self,
-                                     const struct cell *list,
-                                     const struct cell *elem) {
-  const struct cell *const *it = &list;
-  while (cell_is_cons(*it)) {
-    it = &(*it)->cdr;
-  }
-  assert(cell_is_nil(*it));
-  *(const struct cell **)it = cell_factory_make(self, elem, cell_nil());
-  return list;
-}
 
 struct cell_factory *cell_factory_new(struct pool_any *pool,
                                       struct set_symbol *set) {
@@ -48,6 +37,17 @@ const struct cell *cell_factory_symbol(struct cell_factory *self,
   assert(symbol);
   symbol = set_symbol_insert(self->set, symbol);
   return cell_factory_make(self, symbol, NULL);
+}
+const struct cell *cell_factory_push(struct cell_factory *self,
+                                     const struct cell *list,
+                                     const struct cell *elem) {
+  const struct cell *const *it = &list;
+  while (cell_is_cons(*it)) {
+    it = &(*it)->cdr;
+  }
+  assert(cell_is_nil(*it));
+  *(const struct cell **)it = cell_factory_make(self, elem, cell_nil());
+  return list;
 }
 const struct cell *cell_factory_list(struct cell_factory *self, index_t count,
                                      va_list args) {
