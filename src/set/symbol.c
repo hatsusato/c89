@@ -7,8 +7,7 @@
 #include "vec/ptr_type.h"
 
 static int set_symbol_cmp(const void *lhs, const void *rhs) {
-  const char *const *pl = lhs, *const *pr = rhs;
-  return util_strcmp(*pl, *pr);
+  return util_strcmp(lhs, rhs);
 }
 
 struct set_symbol *set_symbol_new(void) {
