@@ -15,10 +15,6 @@
 static struct cell_factory *yyscan_factory(yyscan_t self) {
   return yyget_extra(self)->factory;
 }
-static const char *yyscan_canonical_cstr(yyscan_t self, const char *str) {
-  struct pool_str *table = yyget_extra(self)->table;
-  return pool_str_insert(table, str);
-}
 
 void yyerror(yyscan_t yyscanner, const char *msg) {
   UTIL_UNUSED(yyscanner);
@@ -59,8 +55,7 @@ const struct cell *yyscan_symbol(yyscan_t self) {
   return cell_factory_symbol(yyscan_factory(self), text);
 }
 const struct cell *yyscan_token(yyscan_t self, const char *token) {
-  const char *str = yyscan_canonical_cstr(self, token);
-  return cell_factory_symbol(yyscan_factory(self), str);
+  return cell_factory_symbol(yyscan_factory(self), token);
 }
 const struct cell *yyscan_pair(yyscan_t self, const struct cell *car,
                                const struct cell *cdr) {
