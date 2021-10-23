@@ -1,8 +1,14 @@
 #include "symbol.h"
 
+#include "array/array.h"
 #include "type.h"
 #include "util/util.h"
 #include "vec/ptr.h"
+
+static int set_symbol_cmp(const void *lhs, const void *rhs) {
+  const char *const *pl = lhs, *const *pr = rhs;
+  return util_strcmp(*pl, *pr);
+}
 
 struct set_symbol *set_symbol_new(void) {
   struct set_symbol *self = util_malloc(sizeof(struct set_symbol), 1);
@@ -17,4 +23,9 @@ void set_symbol_delete(struct set_symbol *self) {
   }
   vec_ptr_finish(self->vec);
   util_free(self);
+}
+const char *set_symbol_find(struct set_symbol *self, const char *symbol) {
+  struct array *array = vec_ptr_get_array(self->vec);
+  const char *const *found = array_search(array, symbol, set_symbol_cmp);
+  return found ? *found : NULL;
 }
