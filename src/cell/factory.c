@@ -15,9 +15,9 @@ static const struct cell *cell_factory_make(struct cell_factory *self,
   cons->cdr = cdr;
   return cons;
 }
-static const struct cell *cell_factory_push(struct cell_factory *self,
-                                            const struct cell *list,
-                                            const struct cell *elem) {
+const struct cell *cell_factory_push(struct cell_factory *self,
+                                     const struct cell *list,
+                                     const struct cell *elem) {
   const struct cell *const *it = &list;
   while (cell_is_cons(*it)) {
     it = &(*it)->cdr;

@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "cell/cell.h"
+#include "cell/factory.h"
 #include "parser.tab.h"
 #include "pool/str.h"
 #include "str/view.h"
@@ -13,6 +14,9 @@
 
 static struct pool *yyscan_pool(yyscan_t self) {
   return yyget_extra(self)->pool;
+}
+static struct cell_factory *yyscan_factory(yyscan_t self) {
+  return yyget_extra(self)->factory;
 }
 static const char *yyscan_canonical_cstr(yyscan_t self, const char *str) {
   struct pool_str *table = yyget_extra(self)->table;
@@ -72,5 +76,5 @@ const struct cell *yyscan_pair(yyscan_t self, const struct cell *car,
 }
 const struct cell *yyscan_push(yyscan_t self, const struct cell *xs,
                                const struct cell *x) {
-  return cell_push(yyscan_pool(self), xs, x);
+  return cell_factory_push(yyscan_factory(self), xs, x);
 }

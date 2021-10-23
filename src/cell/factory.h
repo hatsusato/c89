@@ -9,6 +9,8 @@ struct cell_factory;
 struct pool_any;
 struct set_symbol;
 
+const struct cell *cell_factory_push(struct cell_factory *, const struct cell *,
+                                     const struct cell *);
 struct cell_factory *cell_factory_new(struct pool_any *, struct set_symbol *);
 void cell_factory_delete(struct cell_factory *);
 const struct cell *cell_factory_cons(struct cell_factory *, const struct cell *,
