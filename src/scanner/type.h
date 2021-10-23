@@ -4,12 +4,10 @@
 struct cell;
 struct cell_factory;
 struct pool;
-struct pool_str;
 
 struct scanner {
   struct cell_factory *factory;
   struct pool *pool;
-  struct pool_str *table;
   const struct cell *ast;
 };
 
