@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "cell/print.h"
-#include "pool/any.h"
+#include "pool/pool.h"
 #include "printer/printer.h"
 #include "printer/type.h"
 #include "scanner/scanner.h"

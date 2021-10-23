@@ -3,7 +3,7 @@
 #include <assert.h>
 
 #include "cell.h"
-#include "pool/any.h"
+#include "pool/pool.h"
 #include "set/symbol.h"
 #include "type.h"
 #include "util/util.h"
