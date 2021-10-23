@@ -15,6 +15,7 @@ void pool_any_delete(struct pool_any *self) {
     void *elem = vec_ptr_at(&self->pool, i);
     util_free(elem);
   }
+  vec_ptr_finish(&self->pool);
   util_free(self);
 }
 void *pool_any_alloc(struct pool_any *self, size_t size) {
