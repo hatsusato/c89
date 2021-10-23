@@ -12,9 +12,6 @@
 #include "type.h"
 #include "util/util.h"
 
-static struct pool *yyscan_pool(yyscan_t self) {
-  return yyget_extra(self)->pool;
-}
 static struct cell_factory *yyscan_factory(yyscan_t self) {
   return yyget_extra(self)->factory;
 }
@@ -64,15 +61,15 @@ const struct cell *yyscan_nil(void) {
 }
 const struct cell *yyscan_symbol(yyscan_t self) {
   const char *str = yyscan_canonical_str(self);
-  return cell_new_symbol(yyscan_pool(self), str);
+  return cell_factory_symbol(yyscan_factory(self), str);
 }
 const struct cell *yyscan_token(yyscan_t self, const char *token) {
   const char *str = yyscan_canonical_cstr(self, token);
-  return cell_new_symbol(yyscan_pool(self), str);
+  return cell_factory_symbol(yyscan_factory(self), str);
 }
 const struct cell *yyscan_pair(yyscan_t self, const struct cell *car,
                                const struct cell *cdr) {
-  return cell_new_cons(yyscan_pool(self), car, cdr);
+  return cell_factory_cons(yyscan_factory(self), car, cdr);
 }
 const struct cell *yyscan_push(yyscan_t self, const struct cell *xs,
                                const struct cell *x) {
