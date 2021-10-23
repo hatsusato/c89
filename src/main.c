@@ -2,7 +2,6 @@
 
 #include "cell/print.h"
 #include "pool/any.h"
-#include "pool/pool.h"
 #include "printer/printer.h"
 #include "printer/type.h"
 #include "scanner/scanner.h"
@@ -24,11 +23,10 @@ int main(int argc, char *argv[]) {
   if (is_unittest(argc, argv)) {
     unittest();
   } else {
-    struct pool *pool = pool_new();
     struct pool_any *any = pool_any_new();
     struct set_symbol *symbols = set_symbol_new();
     struct printer printer;
-    const struct cell *cell = scanner_parse(pool, any, symbols);
+    const struct cell *cell = scanner_parse(any, symbols);
     if (cell) {
       printer_init(&printer, stdout);
       cell_print(cell, &printer);
@@ -37,7 +35,6 @@ int main(int argc, char *argv[]) {
     }
     set_symbol_delete(symbols);
     pool_any_delete(any);
-    pool_delete(pool);
   }
   return 0;
 }

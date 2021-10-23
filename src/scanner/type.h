@@ -3,11 +3,9 @@
 
 struct cell;
 struct cell_factory;
-struct pool;
 
 struct scanner {
   struct cell_factory *factory;
-  struct pool *pool;
   const struct cell *ast;
 };
 
