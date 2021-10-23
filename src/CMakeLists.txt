@@ -7,6 +7,7 @@ target_link_libraries(main PRIVATE
   pool
   printer
   scanner
+  set
   util
   $<$<CONFIG:Debug>:unittest>
   )
