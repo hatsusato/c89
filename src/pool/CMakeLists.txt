@@ -1,5 +1,6 @@
 add_library(pool STATIC)
 target_sources(pool PRIVATE
+  any.c
   pool.c
   str.c
   str_type.c
