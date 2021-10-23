@@ -14,6 +14,9 @@ void util_swap_impl(size_t size, void *lhs, void *rhs, void *buf) {
   memcpy(lhs, rhs, size);
   memcpy(rhs, buf, size);
 }
+int util_strcmp(const char *lhs, const char *rhs) {
+  return strcmp(lhs, rhs);
+}
 bool_t util_streq(const char *lhs, const char *rhs) {
   return strcmp(lhs, rhs) == 0;
 }
