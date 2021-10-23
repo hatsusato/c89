@@ -15,9 +15,9 @@ static const struct cell *cell_factory_make(struct cell_factory *self,
   cons->cdr = cdr;
   return cons;
 }
-const struct cell *cell_factory_push(struct cell_factory *self,
-                                     const struct cell *list,
-                                     const struct cell *elem) {
+static const struct cell *cell_factory_push(struct cell_factory *self,
+                                            const struct cell *list,
+                                            const struct cell *elem) {
   const struct cell *const *it = &list;
   while (cell_is_cons(*it)) {
     it = &(*it)->cdr;
@@ -48,4 +48,14 @@ const struct cell *cell_factory_symbol(struct cell_factory *self,
   assert(symbol);
   symbol = set_symbol_insert(self->set, symbol);
   return cell_factory_make(self, symbol, NULL);
+}
+const struct cell *cell_factory_list(struct cell_factory *self, index_t count,
+                                     va_list args) {
+  const struct cell *list = cell_nil();
+  index_t i;
+  for (i = 0; i < count; i++) {
+    const struct cell *elem = va_arg(args, const struct cell *);
+    list = cell_factory_push(self, list, elem);
+  }
+  return list;
 }
