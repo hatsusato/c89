@@ -2,6 +2,7 @@
 
 #include <assert.h>
 
+#include "cell.h"
 #include "pool/any.h"
 #include "set/symbol.h"
 #include "type.h"
@@ -13,6 +14,17 @@ static const struct cell *cell_factory_make(struct cell_factory *self,
   cons->car = car;
   cons->cdr = cdr;
   return cons;
+}
+const struct cell *cell_factory_push(struct cell_factory *self,
+                                     const struct cell *list,
+                                     const struct cell *elem) {
+  const struct cell *const *it = &list;
+  while (cell_is_cons(*it)) {
+    it = &(*it)->cdr;
+  }
+  assert(cell_is_nil(*it));
+  *(const struct cell **)it = cell_factory_make(self, elem, cell_nil());
+  return list;
 }
 
 struct cell_factory *cell_factory_new(struct pool_any *pool,
