@@ -7,7 +7,8 @@
 #include "vec/ptr_type.h"
 
 static int set_symbol_cmp(const void *lhs, const void *rhs) {
-  return util_strcmp(lhs, rhs);
+  const char *const *l = lhs, *const *r = rhs;
+  return util_strcmp(*l, *r);
 }
 
 struct set_symbol *set_symbol_new(void) {
@@ -28,7 +29,7 @@ void set_symbol_delete(struct set_symbol *self) {
 }
 const char *set_symbol_find(struct set_symbol *self, const char *symbol) {
   struct array *array = vec_ptr_get_array(self->vec);
-  const char *const *found = array_search(array, symbol, set_symbol_cmp);
+  const char *const *found = array_search(array, &symbol, set_symbol_cmp);
   return found ? *found : NULL;
 }
 const char *set_symbol_insert(struct set_symbol *self, const char *symbol) {
