@@ -5,7 +5,7 @@
 #include "cell.h"
 #include "cell/factory.h"
 #include "pool/pool.h"
-#include "set/symbol.h"
+#include "set/set.h"
 #include "util/util.h"
 
 void cell_unittest(void) {

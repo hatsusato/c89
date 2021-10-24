@@ -1,4 +1,4 @@
-#include "symbol.h"
+#include "set.h"
 
 #include "array/array.h"
 #include "type.h"

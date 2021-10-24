@@ -4,7 +4,7 @@
 
 #include "cell.h"
 #include "pool/pool.h"
-#include "set/symbol.h"
+#include "set/set.h"
 #include "type.h"
 #include "util/util.h"
 

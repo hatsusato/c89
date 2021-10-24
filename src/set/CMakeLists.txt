@@ -1,6 +1,6 @@
 add_library(set STATIC)
 target_sources(set PRIVATE
-  symbol.c
+  set.c
   type.c
   )
 target_link_libraries(set PRIVATE

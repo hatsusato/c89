@@ -2,7 +2,7 @@
 
 #include <assert.h>
 
-#include "symbol.h"
+#include "set.h"
 #include "type.h"
 #include "vec/ptr.h"
 

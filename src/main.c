@@ -5,7 +5,7 @@
 #include "printer/printer.h"
 #include "printer/type.h"
 #include "scanner/scanner.h"
-#include "set/symbol.h"
+#include "set/set.h"
 #include "unittest.h"
 #include "util/util.h"
 
