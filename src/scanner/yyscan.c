@@ -4,25 +4,13 @@
 #include <stdio.h>
 
 #include "cell/cell.h"
+#include "cell/factory.h"
 #include "parser.tab.h"
-#include "pool/str.h"
-#include "str/view.h"
-#include "str/view_type.h"
 #include "type.h"
 #include "util/util.h"
 
-static struct pool *yyscan_pool(yyscan_t self) {
-  return yyget_extra(self)->pool;
-}
-static const char *yyscan_canonical_cstr(yyscan_t self, const char *str) {
-  struct pool_str *table = yyget_extra(self)->table;
-  return pool_str_insert(table, str);
-}
-static const char *yyscan_canonical_str(yyscan_t self) {
-  struct str_view str;
-  struct pool_str *table = yyget_extra(self)->table;
-  str_view_init(&str, yyget_text(self), yyget_leng(self));
-  return pool_str_canonicalize(table, &str);
+static struct cell_factory *yyscan_factory(yyscan_t self) {
+  return yyget_extra(self)->factory;
 }
 
 void yyerror(yyscan_t yyscanner, const char *msg) {
@@ -59,18 +47,18 @@ const struct cell *yyscan_nil(void) {
   return cell_nil();
 }
 const struct cell *yyscan_symbol(yyscan_t self) {
-  const char *str = yyscan_canonical_str(self);
-  return cell_new_symbol(yyscan_pool(self), str);
+  const char *text = yyget_text(self);
+  assert(text[yyget_leng(self)] == 0);
+  return cell_factory_symbol(yyscan_factory(self), text);
 }
 const struct cell *yyscan_token(yyscan_t self, const char *token) {
-  const char *str = yyscan_canonical_cstr(self, token);
-  return cell_new_symbol(yyscan_pool(self), str);
+  return cell_factory_symbol(yyscan_factory(self), token);
 }
 const struct cell *yyscan_pair(yyscan_t self, const struct cell *car,
                                const struct cell *cdr) {
-  return cell_new_cons(yyscan_pool(self), car, cdr);
+  return cell_factory_cons(yyscan_factory(self), car, cdr);
 }
 const struct cell *yyscan_push(yyscan_t self, const struct cell *xs,
                                const struct cell *x) {
-  return cell_push(yyscan_pool(self), xs, x);
+  return cell_factory_push(yyscan_factory(self), xs, x);
 }

@@ -1,59 +1,42 @@
 #include "set.h"
 
-#include <assert.h>
-
+#include "array/array.h"
 #include "type.h"
-#include "util/buffer.h"
 #include "util/util.h"
-#include "vec/vec.h"
+#include "vec/ptr.h"
+#include "vec/ptr_type.h"
 
-struct set_elem {
-  cmp_t cmp;
-  const void *ptr;
-};
-
-static void set_elem_init(struct set_elem *self, struct set *set,
-                          const void *ptr) {
-  struct buffer buf;
-  align_t align = set->align;
-  self->cmp = set->cmp;
-  self->ptr = util_malloc(align, 1);
-  buffer_init(&buf, self->ptr, align);
-  buffer_copy(&buf, 0, ptr, align);
-}
-static void set_elem_finish(void *ptr) {
-  struct set_elem *self = ptr;
-  util_free(self->ptr);
-}
-static int set_elem_cmp(const void *lhs, const void *rhs) {
-  const struct set_elem *l = lhs, *r = rhs;
-  assert(l->cmp == r->cmp);
-  return l->cmp(l->ptr, r->ptr);
+static int set_cmp(const void *lhs, const void *rhs) {
+  const char *const *l = lhs, *const *r = rhs;
+  return util_strcmp(*l, *r);
 }
 
-void set_init(struct set *self, align_t align, cmp_t cmp) {
-  assert(cmp);
-  vec_init(&self->vec, sizeof(struct set_elem));
-  self->align = align;
-  self->cmp = cmp;
+struct set *set_new(void) {
+  struct set *self = util_malloc(sizeof(struct set), 1);
+  self->vec = util_malloc(sizeof(struct vec_ptr), 1);
+  vec_ptr_init(self->vec);
+  return self;
 }
-void set_finish(struct set *self) {
-  vec_map(&self->vec, set_elem_finish);
-  vec_finish(&self->vec);
-}
-void set_insert(struct set *self, const void *ptr) {
-  if (!set_search(self, ptr)) {
-    struct set_elem elem;
-    set_elem_init(&elem, self, ptr);
-    vec_push(&self->vec, &elem);
-    vec_sort(&self->vec, set_elem_cmp);
+void set_delete(struct set *self) {
+  index_t i, length = vec_ptr_length(self->vec);
+  for (i = 0; i < length; i++) {
+    const char *symbol = vec_ptr_at(self->vec, i);
+    util_free(symbol);
   }
+  vec_ptr_finish(self->vec);
+  util_free(self->vec);
+  util_free(self);
 }
-const void *set_search(struct set *self, const void *key) {
-  struct set_elem elem;
-  const struct set_elem *found;
-  elem.cmp = self->cmp;
-  elem.ptr = key;
-  found = vec_search(&self->vec, &elem, set_elem_cmp);
-  return found ? found->ptr : NULL;
+const char *set_find(struct set *self, const char *symbol) {
+  return vec_ptr_search(self->vec, symbol, set_cmp);
+}
+const char *set_insert(struct set *self, const char *symbol) {
+  const char *found = set_find(self, symbol);
+  if (!found) {
+    const char *dup = util_strdup(symbol);
+    vec_ptr_push(self->vec, (void *)dup);
+    vec_ptr_sort(self->vec, set_cmp);
+    found = dup;
+  }
+  return found;
 }

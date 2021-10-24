@@ -2,9 +2,7 @@
 
 set -eu
 
-quiet=
-
-filter-make() {
+filter() {
   if [[ $quiet ]]; then
     cat - >/dev/null
   else
@@ -12,20 +10,15 @@ filter-make() {
   fi
 }
 memcheck() {
-  local out grep
-  if [[ $quiet ]]; then
-    grep=(grep -e exit)
-  else
-    grep=(grep -e '.*')
-  fi
-  (
-    exec {out}>&1
-    valgrind --tool=memcheck --log-fd=$out ./build/main.out "$@"
-  ) | "${grep[@]}"
+  valgrind --tool=memcheck --leak-check=full --log-fd=2 ./build/main.out "$@" | filter
+}
+main() {
+  local quiet=
+  [[ ${1-} == -q ]] && quiet=on
+  cd "${BASH_SOURCE%/*}"
+  make -j --no-print-directory -C build | filter
+  memcheck --unittest
+  memcheck <test/01.c
 }
 
-[[  ${1-} == -q  ]] && quiet=on
-cd "${BASH_SOURCE%/*}"
-make -j --no-print-directory -C build | filter-make
-memcheck --unittest
-memcheck <test/01.c
+main "$@"

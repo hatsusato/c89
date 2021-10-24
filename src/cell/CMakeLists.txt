@@ -1,6 +1,7 @@
 add_library(cell STATIC)
 target_sources(cell PRIVATE
   cell.c
+  factory.c
   print.c
   type.c
   )

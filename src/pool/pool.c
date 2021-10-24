@@ -1,29 +1,25 @@
 #include "pool.h"
 
-#include "array/slice.h"
 #include "type.h"
-#include "util/box.h"
-#include "util/box_type.h"
 #include "util/util.h"
-#include "vec/vec.h"
-
-static void pool_finish(void *self) {
-  box_finish(self);
-}
+#include "vec/ptr.h"
 
 struct pool *pool_new(void) {
   struct pool *self = util_malloc(sizeof(struct pool), 1);
-  vec_init(&self->pool, sizeof(struct box));
+  vec_ptr_init(&self->pool);
   return self;
 }
 void pool_delete(struct pool *self) {
-  slice_map(vec_slice(&self->pool), pool_finish);
-  vec_finish(&self->pool);
+  index_t i, length = vec_ptr_length(&self->pool);
+  for (i = 0; i < length; i++) {
+    void *elem = vec_ptr_at(&self->pool, i);
+    util_free(elem);
+  }
+  vec_ptr_finish(&self->pool);
   util_free(self);
 }
-void *pool_insert(struct pool *self, align_t align, index_t count) {
-  struct box box;
-  box_init(&box, align, count);
-  vec_push(&self->pool, &box);
-  return box_ptr(&box);
+void *pool_alloc(struct pool *self, size_t size) {
+  void *ptr = util_malloc(size, 1);
+  vec_ptr_push(&self->pool, ptr);
+  return ptr;
 }

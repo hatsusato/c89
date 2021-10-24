@@ -12,6 +12,7 @@ void vec_reserve(struct vec *, index_t);
 index_t vec_capacity(const struct vec *);
 index_t vec_length(const struct vec *);
 const struct slice *vec_slice(const struct vec *);
+struct array *vec_get_array(struct vec *);
 void *vec_at(struct vec *, index_t);
 void vec_insert(struct vec *, index_t, const struct slice *);
 void vec_remove(struct vec *, index_t, index_t);

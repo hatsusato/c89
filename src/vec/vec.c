@@ -53,6 +53,9 @@ index_t vec_length(const struct vec *self) {
 const struct slice *vec_slice(const struct vec *self) {
   return array_slice(vec_inner(self));
 }
+struct array *vec_get_array(struct vec *self) {
+  return &self->array;
+}
 void *vec_at(struct vec *self, index_t index) {
   return array_at(vec_inner(self), index);
 }

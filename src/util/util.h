@@ -16,6 +16,8 @@
 void *util_malloc(align_t, index_t);
 void util_free(const void *);
 void util_swap_impl(size_t, void *, void *, void *);
+int util_strcmp(const char *, const char *);
 bool_t util_streq(const char *, const char *);
+const char *util_strdup(const char *);
 
 #endif /* INCLUDE_GUARD_9F0D8DB1_8A8A_4615_9EB1_EF81E4748100 */

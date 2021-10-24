@@ -1,13 +1,11 @@
-#ifndef INCLUDE_GUARD_9B4B925D_F58D_4277_B9FC_F12C65EFFC66
-#define INCLUDE_GUARD_9B4B925D_F58D_4277_B9FC_F12C65EFFC66
-
-#include "util/type.h"
+#ifndef INCLUDE_GUARD_AF5DEE63_3A1E_44DE_B166_B15DCBB95A37
+#define INCLUDE_GUARD_AF5DEE63_3A1E_44DE_B166_B15DCBB95A37
 
 struct set;
 
-void set_init(struct set *, align_t, cmp_t);
-void set_finish(struct set *);
-void set_insert(struct set *, const void *);
-const void *set_search(struct set *, const void *);
+struct set *set_new(void);
+void set_delete(struct set *);
+const char *set_find(struct set *, const char *);
+const char *set_insert(struct set *, const char *);
 
-#endif /* INCLUDE_GUARD_9B4B925D_F58D_4277_B9FC_F12C65EFFC66 */
+#endif /* INCLUDE_GUARD_AF5DEE63_3A1E_44DE_B166_B15DCBB95A37 */
