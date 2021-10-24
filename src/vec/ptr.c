@@ -6,6 +6,24 @@
 #include "util/util.h"
 #include "vec.h"
 
+static index_t capacity_ceil(index_t cap) {
+  enum { initial_capacity = 8 };
+  index_t ceil = initial_capacity;
+  while (ceil < cap) {
+    ceil *= 2;
+  }
+  return ceil;
+}
+static void vec_ptr_expand(struct vec_ptr *self, index_t count) {
+  struct vec_array tmp;
+  assert(self->array.count <= count);
+  vec_array_init(&tmp, self->array.align);
+  vec_array_alloc(&tmp, count);
+  vec_array_insert(&tmp, self->array.ptr, self->array.count);
+  UTIL_SWAP(struct vec_array, &tmp, &self->array);
+  vec_array_free(&tmp);
+}
+
 struct vec_ptr *vec_ptr_new(void) {
   struct vec_ptr *self = util_malloc(sizeof(struct vec_ptr), 1);
   vec_init(&self->vec, sizeof(void *));
@@ -15,6 +33,12 @@ struct vec_ptr *vec_ptr_new(void) {
 void vec_ptr_delete(struct vec_ptr *self) {
   vec_finish(&self->vec);
   util_free(self);
+}
+void vec_ptr_reserve(struct vec_ptr *self, index_t count) {
+  vec_reserve(&self->vec, count);
+  if (vec_ptr_capacity(self) < count) {
+    vec_ptr_expand(self, capacity_ceil(count));
+  }
 }
 index_t vec_ptr_capacity(struct vec_ptr *self) {
   return vec_capacity(&self->vec);
