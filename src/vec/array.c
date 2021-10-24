@@ -33,9 +33,11 @@ void *vec_array_at(struct vec_array *self, index_t index) {
   return self->ptr + self->align * index;
 }
 void vec_array_insert(struct vec_array *self, const void *ptr, index_t count) {
-  assert(self->ptr && ptr);
-  memcpy(self->ptr + self->align * self->count, ptr, self->align * count);
-  self->count += count;
+  if (0 < count) {
+    assert(self->ptr && ptr);
+    memcpy(self->ptr + self->align * self->count, ptr, self->align * count);
+    self->count += count;
+  }
 }
 void vec_array_remove(struct vec_array *self, index_t count) {
   assert(count <= self->count);
