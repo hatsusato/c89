@@ -2,6 +2,7 @@
 
 #include <assert.h>
 
+#include "array/array.h"
 #include "ptr_type.h"
 #include "vec.h"
 
@@ -41,4 +42,9 @@ void vec_ptr_map(struct vec_ptr *self, void (*map)(void *)) {
   for (index = 0; index < vec_ptr_length(self); index++) {
     map(vec_ptr_at(self, index));
   }
+}
+const void *vec_ptr_search(struct vec_ptr *self, const void *key, cmp_t cmp) {
+  struct array *array = vec_ptr_get_array(self);
+  void **found = array_search(array, &key, cmp);
+  return found ? *found : NULL;
 }

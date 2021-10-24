@@ -28,9 +28,7 @@ void set_symbol_delete(struct set_symbol *self) {
   util_free(self);
 }
 const char *set_symbol_find(struct set_symbol *self, const char *symbol) {
-  struct array *array = vec_ptr_get_array(self->vec);
-  const char *const *found = array_search(array, &symbol, set_symbol_cmp);
-  return found ? *found : NULL;
+  return vec_ptr_search(self->vec, symbol, set_symbol_cmp);
 }
 const char *set_symbol_insert(struct set_symbol *self, const char *symbol) {
   const char *found = set_symbol_find(self, symbol);
