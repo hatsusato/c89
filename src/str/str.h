@@ -1,16 +1,14 @@
-#ifndef INCLUDE_GUARD_D25BBF12_114D_4DCE_BC2A_1ADD984F469C
-#define INCLUDE_GUARD_D25BBF12_114D_4DCE_BC2A_1ADD984F469C
+#ifndef INCLUDE_GUARD_C6FD6DD6_BA8B_48CA_8964_FF358D6F9282
+#define INCLUDE_GUARD_C6FD6DD6_BA8B_48CA_8964_FF358D6F9282
 
 #include "util/type.h"
 
 struct str;
+struct str_view;
 
-void str_init(struct str *, const char *, index_t);
-void str_set(struct str *, const char *);
+struct str *str_new(const struct str_view *);
+void str_delete(struct str *);
 const char *str_ptr(const struct str *);
-index_t str_length(const struct str *);
-void str_remove_prefix(struct str *, index_t);
-void str_remove_suffix(struct str *, index_t);
-int str_cmp(const struct str *, const struct str *);
+index_t str_len(const struct str *);
 
-#endif /* INCLUDE_GUARD_D25BBF12_114D_4DCE_BC2A_1ADD984F469C */
+#endif /* INCLUDE_GUARD_C6FD6DD6_BA8B_48CA_8964_FF358D6F9282 */

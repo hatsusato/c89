@@ -1,6 +1,5 @@
 #include "array.h"
 
-#include <assert.h>
 #include <stdlib.h>
 
 #include "slice.h"
@@ -13,7 +12,7 @@ static struct slice *array_inner(struct array *self) {
 }
 static void slice_buffer(const struct slice *self, struct buffer *buf) {
   size_t size = slice_length(self) * slice_align(self);
-  buffer_init(buf, (void *)slice_at(self, 0), size);
+  buffer_init(buf, slice_at(self, 0), size);
 }
 static align_t array_align(const struct array *self) {
   return slice_align(array_slice(self));
@@ -54,7 +53,8 @@ void array_insert(struct array *self, index_t offset,
   array_slide(self, offset, slice_length(slice));
   slice_buffer(slice, &src);
   slice_buffer(array_inner(self), &dst);
-  buffer_copy(&dst, offset * array_align(self), &src);
+  buffer_copy(&dst, offset * array_align(self), slice_at(slice, 0),
+              slice_length(slice) * slice_align(slice));
 }
 void array_remove(struct array *self, index_t offset, index_t length) {
   assert(0 <= offset && 0 <= length);

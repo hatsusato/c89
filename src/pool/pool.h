@@ -1,11 +1,12 @@
-#ifndef INCLUDE_GUARD_FD4CDA16_28C2_418A_84F7_67EFEEE7B0B6
-#define INCLUDE_GUARD_FD4CDA16_28C2_418A_84F7_67EFEEE7B0B6
+#ifndef INCLUDE_GUARD_76DFC357_C3ED_4072_88BC_20349BB0834A
+#define INCLUDE_GUARD_76DFC357_C3ED_4072_88BC_20349BB0834A
 
-struct box;
+#include "util/type.h"
+
 struct pool;
 
-void pool_init(struct pool *);
-void pool_finish(struct pool *);
-const void *pool_insert(struct pool *, struct box *);
+struct pool *pool_new(void);
+void pool_delete(struct pool *);
+void *pool_alloc(struct pool *, size_t);
 
-#endif /* INCLUDE_GUARD_FD4CDA16_28C2_418A_84F7_67EFEEE7B0B6 */
+#endif /* INCLUDE_GUARD_76DFC357_C3ED_4072_88BC_20349BB0834A */

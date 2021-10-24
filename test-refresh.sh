@@ -2,5 +2,23 @@
 
 set -eu
 
-make -j --no-print-directory -C build
-valgrind ./build/main.out
+filter() {
+  if [[ $quiet ]]; then
+    cat - >/dev/null
+  else
+    cat -
+  fi
+}
+memcheck() {
+  valgrind --tool=memcheck --leak-check=full --log-fd=2 ./build/main.out "$@" | filter
+}
+main() {
+  local quiet=
+  [[ ${1-} == -q ]] && quiet=on
+  cd "${BASH_SOURCE%/*}"
+  make -j --no-print-directory -C build | filter
+  memcheck --unittest
+  memcheck <test/01.c
+}
+
+main "$@"

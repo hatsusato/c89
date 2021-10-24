@@ -1,7 +1,5 @@
 #include "vec.h"
 
-#include <assert.h>
-
 #include "array/array.h"
 #include "array/slice.h"
 #include "type.h"
@@ -17,12 +15,12 @@ static align_t vec_align(const struct vec *self) {
 static void vec_malloc(struct vec *self, align_t align, index_t len) {
   assert(align > 0);
   assert(0 <= len);
-  self->box = box_new(align, len);
-  array_init(vec_inner(self), align, box_ptr(self->box));
+  box_init(&self->box, align, len);
+  array_init(vec_inner(self), align, box_ptr(&self->box));
 }
 static void vec_free(struct vec *self) {
-  box_delete(self->box);
   array_init(vec_inner(self), vec_align(self), NULL);
+  box_finish(&self->box);
 }
 
 void vec_init(struct vec *self, align_t align) {
@@ -45,13 +43,16 @@ void vec_reserve(struct vec *self, index_t len) {
   }
 }
 index_t vec_capacity(const struct vec *self) {
-  return box_size(self->box) / vec_align(self);
+  return box_size(&self->box) / vec_align(self);
 }
 index_t vec_length(const struct vec *self) {
   return array_length(vec_inner(self));
 }
 const struct slice *vec_slice(const struct vec *self) {
   return array_slice(vec_inner(self));
+}
+struct array *vec_get_array(struct vec *self) {
+  return &self->array;
 }
 void *vec_at(struct vec *self, index_t index) {
   return array_at(vec_inner(self), index);
@@ -79,4 +80,7 @@ void vec_sort(struct vec *self, cmp_t cmp) {
 }
 void *vec_search(const struct vec *self, const void *key, cmp_t cmp) {
   return array_search(vec_inner(self), key, cmp);
+}
+void vec_map(struct vec *self, void (*map)(void *)) {
+  slice_map(vec_slice(self), map);
 }
