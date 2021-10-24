@@ -6,6 +6,12 @@
 
 struct box;
 
+struct vec_array {
+  byte_t *ptr;
+  align_t align;
+  index_t count;
+};
+
 struct vec {
   struct array array;
   struct box box;
