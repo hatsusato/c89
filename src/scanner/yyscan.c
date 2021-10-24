@@ -1,7 +1,6 @@
 #include "yyscan.h"
 
 #include <assert.h>
-#include <stdio.h>
 
 #include "cell/cell.h"
 #include "cell/factory.h"
@@ -15,7 +14,7 @@ static struct cell_factory *yyscan_factory(yyscan_t self) {
 
 void yyerror(yyscan_t yyscanner, const char *msg) {
   UTIL_UNUSED(yyscanner);
-  fprintf(stderr, "%s\n", msg);
+  util_error(msg);
 }
 yyscan_t yyscan_new(struct scanner *scanner) {
   yyscan_t self;

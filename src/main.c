@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
       printer_init(&printer, stdout);
       cell_print(cell, &printer);
     } else {
-      fprintf(stderr, "ERROR: failed to parse");
+      util_error("ERROR: failed to parse");
     }
     set_delete(symbols);
     pool_delete(any);
