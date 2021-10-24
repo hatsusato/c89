@@ -28,7 +28,8 @@ void vec_array_set(struct vec_array *self, void *ptr, index_t count) {
   self->count = count;
 }
 void *vec_array_at(struct vec_array *self, index_t index) {
-  assert(self->ptr && 0 <= index && index < self->count);
+  assert(self->ptr && -self->count <= index && index < self->count);
+  index += index < 0 ? self->count : 0;
   return self->ptr + self->align * index;
 }
 void vec_array_insert(struct vec_array *self, const void *ptr, index_t count) {
