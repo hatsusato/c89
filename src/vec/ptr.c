@@ -1,5 +1,6 @@
 #include "ptr.h"
 
+#include "array.h"
 #include "array/array.h"
 #include "type.h"
 #include "util/util.h"
@@ -8,6 +9,7 @@
 struct vec_ptr *vec_ptr_new(void) {
   struct vec_ptr *self = util_malloc(sizeof(struct vec_ptr), 1);
   vec_init(&self->vec, sizeof(void *));
+  vec_array_init(&self->array, sizeof(void *));
   return self;
 }
 void vec_ptr_delete(struct vec_ptr *self) {
