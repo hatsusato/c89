@@ -11,6 +11,5 @@ void unittest(void) {
   cell_unittest();
   pool_unittest();
   set_unittest();
-  vec_unittest();
   vec_ptr_unittest();
 }
