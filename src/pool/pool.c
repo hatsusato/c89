@@ -2,7 +2,7 @@
 
 #include "type.h"
 #include "util/util.h"
-#include "vec/ptr.h"
+#include "vec/vec.h"
 
 struct pool *pool_new(void) {
   struct pool *self = util_malloc(sizeof(struct pool), 1);

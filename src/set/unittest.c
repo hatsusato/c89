@@ -3,7 +3,7 @@
 #include "set.h"
 #include "type.h"
 #include "util/util.h"
-#include "vec/ptr.h"
+#include "vec/vec.h"
 
 void set_unittest(void) {
   struct set *set = set_new();

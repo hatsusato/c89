@@ -1,7 +1,7 @@
 #include "unittest.h"
 
-#include "ptr.h"
 #include "util/util.h"
+#include "vec.h"
 
 #define vec_unittest_check(vec, len, cap) \
   do {                                    \
