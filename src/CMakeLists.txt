@@ -34,6 +34,7 @@ target_link_libraries(unittest PRIVATE
   )
 
 add_subdirectory(cell)
+add_subdirectory(dict)
 add_subdirectory(pool)
 add_subdirectory(printer)
 add_subdirectory(scanner)
