@@ -5,11 +5,11 @@
 #include "util/util.h"
 #include "yyscan.h"
 
-const struct cell *scanner_parse(struct pool *any, struct set *symbols) {
+const struct cell *scanner_parse(struct pool *pool, struct set *symbols) {
   struct scanner scanner = {NULL, NULL};
   yyscan_t yyscan = yyscan_new(&scanner);
   if (yyscan) {
-    scanner.factory = cell_factory_new(any, symbols);
+    scanner.factory = cell_factory_new(pool, symbols);
     yyscan_parse(yyscan);
     cell_factory_delete(scanner.factory);
   }

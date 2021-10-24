@@ -23,10 +23,10 @@ int main(int argc, char *argv[]) {
   if (is_unittest(argc, argv)) {
     unittest();
   } else {
-    struct pool *any = pool_new();
+    struct pool *pool = pool_new();
     struct set *symbols = set_new();
     struct printer printer;
-    const struct cell *cell = scanner_parse(any, symbols);
+    const struct cell *cell = scanner_parse(pool, symbols);
     if (cell) {
       printer_init(&printer, stdout);
       cell_print(cell, &printer);
@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
       util_error("ERROR: failed to parse");
     }
     set_delete(symbols);
-    pool_delete(any);
+    pool_delete(pool);
   }
   return 0;
 }

@@ -8,9 +8,9 @@
 
 void cell_unittest(void) {
   const char *a = "aaaaa";
-  struct pool *any = pool_new();
+  struct pool *pool = pool_new();
   struct set *symbols = set_new();
-  struct cell_factory *factory = cell_factory_new(any, symbols);
+  struct cell_factory *factory = cell_factory_new(pool, symbols);
   const struct cell *cell;
   int i;
   cell = cell_nil();
@@ -29,5 +29,5 @@ void cell_unittest(void) {
   assert(cell_is_nil(cell));
   cell_factory_delete(factory);
   set_delete(symbols);
-  pool_delete(any);
+  pool_delete(pool);
 }
