@@ -4,7 +4,6 @@
 #include "type.h"
 #include "util/util.h"
 #include "vec/ptr.h"
-#include "vec/ptr_type.h"
 
 static int set_cmp(const void *lhs, const void *rhs) {
   const char *const *l = lhs, *const *r = rhs;

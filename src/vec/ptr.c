@@ -1,7 +1,7 @@
 #include "ptr.h"
 
 #include "array/array.h"
-#include "ptr_type.h"
+#include "type.h"
 #include "util/util.h"
 #include "vec.h"
 
