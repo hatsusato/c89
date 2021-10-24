@@ -13,8 +13,7 @@ static int set_cmp(const void *lhs, const void *rhs) {
 
 struct set *set_new(void) {
   struct set *self = util_malloc(sizeof(struct set), 1);
-  self->vec = util_malloc(sizeof(struct vec_ptr), 1);
-  vec_ptr_init(self->vec);
+  self->vec = vec_ptr_new();
   return self;
 }
 void set_delete(struct set *self) {
@@ -23,8 +22,7 @@ void set_delete(struct set *self) {
     const char *symbol = vec_ptr_at(self->vec, i);
     util_free(symbol);
   }
-  vec_ptr_finish(self->vec);
-  util_free(self->vec);
+  vec_ptr_delete(self->vec);
   util_free(self);
 }
 const char *set_find(struct set *self, const char *symbol) {

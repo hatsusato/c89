@@ -132,33 +132,32 @@ void vec_unittest(void) {
   } while (false)
 
 void vec_ptr_unittest(void) {
-  struct vec_ptr vec;
+  struct vec_ptr *vec = vec_ptr_new();
   {
-    vec_ptr_init(&vec);
-    vec_ptr_unittest_check(&vec, 0, 8);
+    vec_ptr_unittest_check(vec, 0, 8);
   }
   {
-    vec_ptr_unittest_push(&vec, 0, 1000);
-    vec_ptr_unittest_check(&vec, 1000, 1024);
-    vec_ptr_unittest_range(&vec, 0, 0, 1000);
+    vec_ptr_unittest_push(vec, 0, 1000);
+    vec_ptr_unittest_check(vec, 1000, 1024);
+    vec_ptr_unittest_range(vec, 0, 0, 1000);
   }
   {
-    vec_ptr_unittest_pop(&vec, 500);
-    vec_ptr_unittest_check(&vec, 500, 1024);
-    vec_ptr_unittest_range(&vec, 0, 0, 500);
+    vec_ptr_unittest_pop(vec, 500);
+    vec_ptr_unittest_check(vec, 500, 1024);
+    vec_ptr_unittest_range(vec, 0, 0, 500);
   }
   {
-    vec_ptr_unittest_push(&vec, 0, 1000);
-    vec_ptr_unittest_check(&vec, 1500, 2048);
-    vec_ptr_unittest_range(&vec, 0, 0, 500);
-    vec_ptr_unittest_range(&vec, 500, 0, 1000);
+    vec_ptr_unittest_push(vec, 0, 1000);
+    vec_ptr_unittest_check(vec, 1500, 2048);
+    vec_ptr_unittest_range(vec, 0, 0, 500);
+    vec_ptr_unittest_range(vec, 500, 0, 1000);
   }
   {
-    vec_ptr_unittest_pop(&vec, 500);
-    vec_ptr_unittest_check(&vec, 1000, 2048);
-    vec_ptr_unittest_range(&vec, 0, 0, 500);
-    vec_ptr_unittest_range(&vec, 500, 0, 500);
+    vec_ptr_unittest_pop(vec, 500);
+    vec_ptr_unittest_check(vec, 1000, 2048);
+    vec_ptr_unittest_range(vec, 0, 0, 500);
+    vec_ptr_unittest_range(vec, 500, 0, 500);
   }
-  vec_ptr_map(&vec, (void (*)(void *))util_free);
-  vec_ptr_finish(&vec);
+  vec_ptr_map(vec, (void (*)(void *))util_free);
+  vec_ptr_delete(vec);
 }
