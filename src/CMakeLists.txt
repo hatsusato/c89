@@ -33,7 +33,6 @@ target_link_libraries(unittest PRIVATE
   vec
   )
 
-add_subdirectory(array)
 add_subdirectory(cell)
 add_subdirectory(pool)
 add_subdirectory(printer)
