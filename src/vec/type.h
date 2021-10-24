@@ -18,7 +18,6 @@ struct vec {
 };
 
 struct vec_ptr {
-  struct vec vec;
   struct vec_array array;
   index_t capacity;
 };
