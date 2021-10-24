@@ -9,7 +9,6 @@ struct vec_ptr *vec_ptr_new(void);
 void vec_ptr_delete(struct vec_ptr *);
 index_t vec_ptr_capacity(struct vec_ptr *);
 index_t vec_ptr_length(struct vec_ptr *);
-struct array *vec_ptr_get_array(struct vec_ptr *);
 void *vec_ptr_at(struct vec_ptr *, index_t);
 void *vec_ptr_top(struct vec_ptr *);
 void vec_ptr_push(struct vec_ptr *, void *);

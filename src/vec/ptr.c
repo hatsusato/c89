@@ -48,9 +48,6 @@ index_t vec_ptr_capacity(struct vec_ptr *self) {
 index_t vec_ptr_length(struct vec_ptr *self) {
   return self->array.count;
 }
-struct array *vec_ptr_get_array(struct vec_ptr *self) {
-  return vec_get_array(&self->vec);
-}
 void *vec_ptr_at(struct vec_ptr *self, index_t index) {
   return *(void **)vec_array_at(&self->array, index);
 }
@@ -78,12 +75,12 @@ void vec_ptr_map(struct vec_ptr *self, void (*map)(void *)) {
   }
 }
 void vec_ptr_sort(struct vec_ptr *self, cmp_t cmp) {
-  struct array *array = vec_ptr_get_array(self);
+  struct array *array = vec_get_array(&self->vec);
   array_sort(array, cmp);
   vec_array_sort(&self->array, cmp);
 }
 const void *vec_ptr_search(struct vec_ptr *self, const void *key, cmp_t cmp) {
-  struct array *array = vec_ptr_get_array(self);
+  struct array *array = vec_get_array(&self->vec);
   void **found = array_search(array, &key, cmp);
   found = vec_array_search(&self->array, &key, cmp);
   return found ? *found : NULL;
