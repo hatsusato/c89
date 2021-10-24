@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     unittest();
   } else {
     struct pool *any = pool_new();
-    struct set_symbol *symbols = set_symbol_new();
+    struct set *symbols = set_new();
     struct printer printer;
     const struct cell *cell = scanner_parse(any, symbols);
     if (cell) {
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     } else {
       fprintf(stderr, "ERROR: failed to parse");
     }
-    set_symbol_delete(symbols);
+    set_delete(symbols);
     pool_delete(any);
   }
   return 0;

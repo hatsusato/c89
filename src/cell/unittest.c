@@ -11,7 +11,7 @@
 void cell_unittest(void) {
   const char *a = "aaaaa";
   struct pool *any = pool_new();
-  struct set_symbol *symbols = set_symbol_new();
+  struct set *symbols = set_new();
   struct cell_factory *factory = cell_factory_new(any, symbols);
   const struct cell *cell;
   int i;
@@ -30,6 +30,6 @@ void cell_unittest(void) {
   }
   assert(cell_is_nil(cell));
   cell_factory_delete(factory);
-  set_symbol_delete(symbols);
+  set_delete(symbols);
   pool_delete(any);
 }

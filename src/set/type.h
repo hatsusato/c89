@@ -3,7 +3,7 @@
 
 struct vec_ptr;
 
-struct set_symbol {
+struct set {
   struct vec_ptr *vec;
 };
 

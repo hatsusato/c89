@@ -16,8 +16,7 @@ static const struct cell *cell_factory_make(struct cell_factory *self,
   return cons;
 }
 
-struct cell_factory *cell_factory_new(struct pool *pool,
-                                      struct set_symbol *set) {
+struct cell_factory *cell_factory_new(struct pool *pool, struct set *set) {
   struct cell_factory *self = util_malloc(sizeof(struct cell_factory), 1);
   self->pool = pool;
   self->set = set;
@@ -35,7 +34,7 @@ const struct cell *cell_factory_cons(struct cell_factory *self,
 const struct cell *cell_factory_symbol(struct cell_factory *self,
                                        const char *symbol) {
   assert(symbol);
-  symbol = set_symbol_insert(self->set, symbol);
+  symbol = set_insert(self->set, symbol);
   return cell_factory_make(self, symbol, NULL);
 }
 const struct cell *cell_factory_push(struct cell_factory *self,
