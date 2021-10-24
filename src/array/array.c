@@ -1,6 +1,5 @@
 #include "array.h"
 
-#include <assert.h>
 #include <stdlib.h>
 
 #include "slice.h"

@@ -1,7 +1,5 @@
 #include "factory.h"
 
-#include <assert.h>
-
 #include "cell.h"
 #include "pool/pool.h"
 #include "set/set.h"

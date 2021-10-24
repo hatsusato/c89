@@ -1,9 +1,8 @@
 #include "ptr.h"
 
-#include <assert.h>
-
 #include "array/array.h"
 #include "ptr_type.h"
+#include "util/util.h"
 #include "vec.h"
 
 void vec_ptr_init(struct vec_ptr *self) {

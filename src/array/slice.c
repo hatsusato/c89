@@ -1,9 +1,8 @@
 #include "slice.h"
 
-#include <assert.h>
-
 #include "type.h"
 #include "util/buffer.h"
+#include "util/util.h"
 
 bool_t slice_is_valid(const struct slice *self) {
   return (self->align > 0 && (self->ptr || self->len == 0) && self->len >= 0);

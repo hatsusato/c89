@@ -1,8 +1,7 @@
 #include "unittest.h"
 
-#include <assert.h>
-
 #include "pool.h"
+#include "util/util.h"
 
 const int *pool_unittest_set(struct pool *pool, int len) {
   int i;

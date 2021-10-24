@@ -1,6 +1,8 @@
 #ifndef INCLUDE_GUARD_9F0D8DB1_8A8A_4615_9EB1_EF81E4748100
 #define INCLUDE_GUARD_9F0D8DB1_8A8A_4615_9EB1_EF81E4748100
 
+#include <assert.h>
+
 #include "type.h"
 
 #define UTIL_UNUSED(var) ((void)var)

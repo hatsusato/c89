@@ -1,7 +1,5 @@
 #include "unittest.h"
 
-#include <assert.h>
-
 #include "cell.h"
 #include "cell/factory.h"
 #include "pool/pool.h"

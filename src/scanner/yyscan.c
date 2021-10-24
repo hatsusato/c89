@@ -1,7 +1,5 @@
 #include "yyscan.h"
 
-#include <assert.h>
-
 #include "cell/cell.h"
 #include "cell/factory.h"
 #include "parser.tab.h"

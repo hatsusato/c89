@@ -1,7 +1,5 @@
 #include "unittest.h"
 
-#include <assert.h>
-
 #include "array.h"
 #include "slice.h"
 #include "type.h"

@@ -1,7 +1,6 @@
 #include "unittest.h"
 
-#include <assert.h>
-
+#include "util/util.h"
 #include "view.h"
 #include "view_type.h"
 

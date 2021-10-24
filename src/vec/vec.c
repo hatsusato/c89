@@ -1,7 +1,5 @@
 #include "vec.h"
 
-#include <assert.h>
-
 #include "array/array.h"
 #include "array/slice.h"
 #include "type.h"

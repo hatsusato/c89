@@ -1,8 +1,7 @@
 #include "cell.h"
 
-#include <assert.h>
-
 #include "type.h"
+#include "util/util.h"
 
 const struct cell *cell_nil(void) {
   static struct cell cell = {NULL, NULL};

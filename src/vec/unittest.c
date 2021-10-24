@@ -1,7 +1,5 @@
 #include "unittest.h"
 
-#include <assert.h>
-
 #include "array/slice.h"
 #include "ptr.h"
 #include "ptr_type.h"

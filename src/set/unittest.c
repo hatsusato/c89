@@ -1,9 +1,8 @@
 #include "unittest.h"
 
-#include <assert.h>
-
 #include "set.h"
 #include "type.h"
+#include "util/util.h"
 #include "vec/ptr.h"
 
 void set_unittest(void) {

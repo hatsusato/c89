@@ -1,6 +1,5 @@
 #include "view.h"
 
-#include <assert.h>
 #include <string.h>
 
 #include "util/util.h"
