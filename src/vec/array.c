@@ -14,3 +14,7 @@ void vec_array_set(struct vec_array *self, void *ptr, index_t count) {
   self->ptr = ptr;
   self->count = count;
 }
+void *vec_array_at(struct vec_array *self, index_t index) {
+  assert(self->ptr && 0 <= index && index < self->count);
+  return self->ptr + self->align * index;
+}
