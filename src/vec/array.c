@@ -25,3 +25,9 @@ void vec_array_sort(struct vec_array *self, cmp_t cmp) {
     qsort(self->ptr, self->count, self->align, cmp);
   }
 }
+void *vec_array_search(struct vec_array *self, const void *key, cmp_t cmp) {
+  if (self->ptr) {
+    return bsearch(key, self->ptr, self->count, self->align, cmp);
+  }
+  return NULL;
+}
