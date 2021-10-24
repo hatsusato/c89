@@ -62,3 +62,11 @@ const struct cell *yyscan_push(yyscan_t self, const struct cell *xs,
                                const struct cell *x) {
   return cell_factory_push(yyscan_factory(self), xs, x);
 }
+const struct cell *yyscan_list(yyscan_t self, int count, ...) {
+  const struct cell *list;
+  va_list args;
+  va_start(args, count);
+  list = cell_factory_list(yyscan_factory(self), count, args);
+  va_end(args);
+  return list;
+}
