@@ -4,7 +4,6 @@
 #include "cell/unittest.h"
 #include "pool/unittest.h"
 #include "set/unittest.h"
-#include "str/unittest.h"
 #include "vec/unittest.h"
 
 void unittest(void) {
@@ -12,7 +11,6 @@ void unittest(void) {
   cell_unittest();
   pool_unittest();
   set_unittest();
-  str_view_unittest();
   vec_unittest();
   vec_ptr_unittest();
 }

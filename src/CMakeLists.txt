@@ -23,7 +23,6 @@ target_sources(unittest PRIVATE
   cell/unittest.c
   pool/unittest.c
   set/unittest.c
-  str/unittest.c
   vec/unittest.c
   )
 target_link_libraries(unittest PRIVATE
