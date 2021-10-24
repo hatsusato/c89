@@ -1,6 +1,5 @@
 #include "set.h"
 
-#include "array/array.h"
 #include "type.h"
 #include "util/util.h"
 #include "vec/vec.h"

@@ -1,6 +1,6 @@
 #include "slice.h"
 
-#include "type.h"
+#include "slice_type.h"
 #include "util/buffer.h"
 #include "util/util.h"
 
