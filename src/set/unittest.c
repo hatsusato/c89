@@ -15,7 +15,7 @@ void set_unittest(void) {
   for (i = 0; i < 8; i++) {
     set_insert(set, a + i);
   }
-  assert(vec_ptr_length(set->vec) == 8);
+  assert(vec_length(set->vec) == 8);
   for (i = 0; i < 8; i++) {
     assert(set_find(set, a + i));
   }

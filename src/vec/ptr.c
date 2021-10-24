@@ -12,7 +12,7 @@ static index_t capacity_ceil(index_t cap) {
   }
   return ceil;
 }
-static void vec_ptr_expand(struct vec_ptr *self) {
+static void vec_expand(struct vec *self) {
   struct vec_array tmp;
   vec_array_init(&tmp, self->array.align);
   vec_array_alloc(&tmp, self->capacity);
@@ -21,56 +21,56 @@ static void vec_ptr_expand(struct vec_ptr *self) {
   vec_array_free(&tmp);
 }
 
-struct vec_ptr *vec_ptr_new(void) {
-  struct vec_ptr *self = util_malloc(sizeof(struct vec_ptr), 1);
+struct vec *vec_new(void) {
+  struct vec *self = util_malloc(sizeof(struct vec), 1);
   vec_array_init(&self->array, sizeof(void *));
   self->capacity = 0;
   return self;
 }
-void vec_ptr_delete(struct vec_ptr *self) {
+void vec_delete(struct vec *self) {
   vec_array_free(&self->array);
   util_free(self);
 }
-void vec_ptr_reserve(struct vec_ptr *self, index_t count) {
+void vec_reserve(struct vec *self, index_t count) {
   if (self->capacity < count) {
     self->capacity = capacity_ceil(count);
-    vec_ptr_expand(self);
+    vec_expand(self);
   }
 }
-index_t vec_ptr_capacity(struct vec_ptr *self) {
+index_t vec_capacity(struct vec *self) {
   return self->capacity;
 }
-index_t vec_ptr_length(struct vec_ptr *self) {
+index_t vec_length(struct vec *self) {
   return self->array.count;
 }
-void *vec_ptr_at(struct vec_ptr *self, index_t index) {
+void *vec_at(struct vec *self, index_t index) {
   return *(void **)vec_array_at(&self->array, index);
 }
-void *vec_ptr_top(struct vec_ptr *self) {
-  return vec_ptr_at(self, -1);
+void *vec_top(struct vec *self) {
+  return vec_at(self, -1);
 }
-void vec_ptr_push(struct vec_ptr *self, void *ptr) {
-  vec_ptr_reserve(self, self->array.count + 1);
+void vec_push(struct vec *self, void *ptr) {
+  vec_reserve(self, self->array.count + 1);
   vec_array_insert(&self->array, &ptr, 1);
 }
-void vec_ptr_pop(struct vec_ptr *self) {
+void vec_pop(struct vec *self) {
   vec_array_remove(&self->array, 1);
 }
-void vec_ptr_clear(struct vec_ptr *self) {
+void vec_clear(struct vec *self) {
   vec_array_remove(&self->array, self->array.count);
 }
-void vec_ptr_sort(struct vec_ptr *self, cmp_t cmp) {
+void vec_sort(struct vec *self, cmp_t cmp) {
   vec_array_sort(&self->array, cmp);
 }
-const void *vec_ptr_search(struct vec_ptr *self, const void *key, cmp_t cmp) {
+const void *vec_search(struct vec *self, const void *key, cmp_t cmp) {
   void **found = vec_array_search(&self->array, &key, cmp);
   return found ? *found : NULL;
 }
 
-void vec_ptr_map(struct vec_ptr *self, map_t map) {
+void vec_map(struct vec *self, map_t map) {
   index_t index;
   assert(map);
-  for (index = 0; index < vec_ptr_length(self); index++) {
-    map(vec_ptr_at(self, index));
+  for (index = 0; index < vec_length(self); index++) {
+    map(vec_at(self, index));
   }
 }

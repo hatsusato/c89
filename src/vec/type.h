@@ -9,7 +9,7 @@ struct vec_array {
   index_t count;
 };
 
-struct vec_ptr {
+struct vec {
   struct vec_array array;
   index_t capacity;
 };

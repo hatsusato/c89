@@ -12,27 +12,27 @@ static int set_cmp(const void *lhs, const void *rhs) {
 
 struct set *set_new(void) {
   struct set *self = util_malloc(sizeof(struct set), 1);
-  self->vec = vec_ptr_new();
+  self->vec = vec_new();
   return self;
 }
 void set_delete(struct set *self) {
-  index_t i, length = vec_ptr_length(self->vec);
+  index_t i, length = vec_length(self->vec);
   for (i = 0; i < length; i++) {
-    const char *symbol = vec_ptr_at(self->vec, i);
+    const char *symbol = vec_at(self->vec, i);
     util_free(symbol);
   }
-  vec_ptr_delete(self->vec);
+  vec_delete(self->vec);
   util_free(self);
 }
 const char *set_find(struct set *self, const char *symbol) {
-  return vec_ptr_search(self->vec, symbol, set_cmp);
+  return vec_search(self->vec, symbol, set_cmp);
 }
 const char *set_insert(struct set *self, const char *symbol) {
   const char *found = set_find(self, symbol);
   if (!found) {
     const char *dup = util_strdup(symbol);
-    vec_ptr_push(self->vec, (void *)dup);
-    vec_ptr_sort(self->vec, set_cmp);
+    vec_push(self->vec, (void *)dup);
+    vec_sort(self->vec, set_cmp);
     found = dup;
   }
   return found;
