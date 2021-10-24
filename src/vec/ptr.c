@@ -14,11 +14,10 @@ static index_t capacity_ceil(index_t cap) {
   }
   return ceil;
 }
-static void vec_ptr_expand(struct vec_ptr *self, index_t count) {
+static void vec_ptr_expand(struct vec_ptr *self) {
   struct vec_array tmp;
-  assert(self->array.count <= count);
   vec_array_init(&tmp, self->array.align);
-  vec_array_alloc(&tmp, count);
+  vec_array_alloc(&tmp, self->capacity);
   vec_array_insert(&tmp, self->array.ptr, self->array.count);
   UTIL_SWAP(struct vec_array, &tmp, &self->array);
   vec_array_free(&tmp);
@@ -28,6 +27,7 @@ struct vec_ptr *vec_ptr_new(void) {
   struct vec_ptr *self = util_malloc(sizeof(struct vec_ptr), 1);
   vec_init(&self->vec, sizeof(void *));
   vec_array_init(&self->array, sizeof(void *));
+  self->capacity = 0;
   return self;
 }
 void vec_ptr_delete(struct vec_ptr *self) {
@@ -36,8 +36,9 @@ void vec_ptr_delete(struct vec_ptr *self) {
 }
 void vec_ptr_reserve(struct vec_ptr *self, index_t count) {
   vec_reserve(&self->vec, count);
-  if (vec_ptr_capacity(self) < count) {
-    vec_ptr_expand(self, capacity_ceil(count));
+  if (self->capacity < count) {
+    self->capacity = capacity_ceil(count);
+    vec_ptr_expand(self);
   }
 }
 index_t vec_ptr_capacity(struct vec_ptr *self) {

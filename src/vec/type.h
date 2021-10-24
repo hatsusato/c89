@@ -20,6 +20,7 @@ struct vec {
 struct vec_ptr {
   struct vec vec;
   struct vec_array array;
+  index_t capacity;
 };
 
 #endif /* INCLUDE_GUARD_05A3735D_C33C_4CD4_AF36_3968DD09F48F */
