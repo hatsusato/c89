@@ -33,10 +33,9 @@ const char *set_symbol_find(struct set_symbol *self, const char *symbol) {
 const char *set_symbol_insert(struct set_symbol *self, const char *symbol) {
   const char *found = set_symbol_find(self, symbol);
   if (!found) {
-    struct array *array = vec_ptr_get_array(self->vec);
     const char *dup = util_strdup(symbol);
     vec_ptr_push(self->vec, (void *)dup);
-    array_sort(array, set_symbol_cmp);
+    vec_ptr_sort(self->vec, set_symbol_cmp);
     found = dup;
   }
   return found;

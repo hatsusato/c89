@@ -43,6 +43,10 @@ void vec_ptr_map(struct vec_ptr *self, void (*map)(void *)) {
     map(vec_ptr_at(self, index));
   }
 }
+void vec_ptr_sort(struct vec_ptr *self, cmp_t cmp) {
+  struct array *array = vec_ptr_get_array(self);
+  array_sort(array, cmp);
+}
 const void *vec_ptr_search(struct vec_ptr *self, const void *key, cmp_t cmp) {
   struct array *array = vec_ptr_get_array(self);
   void **found = array_search(array, &key, cmp);
