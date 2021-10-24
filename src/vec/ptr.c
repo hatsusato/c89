@@ -59,17 +59,18 @@ void vec_ptr_pop(struct vec_ptr *self) {
 void vec_ptr_clear(struct vec_ptr *self) {
   vec_array_remove(&self->array, self->array.count);
 }
-void vec_ptr_map(struct vec_ptr *self, void (*map)(void *)) {
-  index_t index;
-  assert(map);
-  for (index = 0; index < vec_ptr_length(self); index++) {
-    map(vec_ptr_at(self, index));
-  }
-}
 void vec_ptr_sort(struct vec_ptr *self, cmp_t cmp) {
   vec_array_sort(&self->array, cmp);
 }
 const void *vec_ptr_search(struct vec_ptr *self, const void *key, cmp_t cmp) {
   void **found = vec_array_search(&self->array, &key, cmp);
   return found ? *found : NULL;
+}
+
+void vec_ptr_map(struct vec_ptr *self, map_t map) {
+  index_t index;
+  assert(map);
+  for (index = 0; index < vec_ptr_length(self); index++) {
+    map(vec_ptr_at(self, index));
+  }
 }
