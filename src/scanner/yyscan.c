@@ -32,7 +32,7 @@ void yyscan_delete(yyscan_t self) {
 }
 void yyscan_parse(yyscan_t self) {
   if (yyparse(self)) {
-    yyscan_set_ast(self, NULL);
+    yyscan_set_ast(self, cell_nil());
   }
 }
 int yyscan_is_typedef(yyscan_t self, const char *symbol) {
@@ -43,9 +43,6 @@ int yyscan_is_typedef(yyscan_t self, const char *symbol) {
 void yyscan_set_ast(yyscan_t self, const struct cell *ast) {
   yyget_extra(self)->ast = ast;
 }
-const struct cell *yyscan_nil(void) {
-  return cell_nil();
-}
 const struct cell *yyscan_symbol(yyscan_t self) {
   const char *text = yyget_text(self);
   assert(text[yyget_leng(self)] == 0);
@@ -53,10 +50,6 @@ const struct cell *yyscan_symbol(yyscan_t self) {
 }
 const struct cell *yyscan_token(yyscan_t self, const char *token) {
   return cell_factory_symbol(yyscan_factory(self), token);
-}
-const struct cell *yyscan_pair(yyscan_t self, const struct cell *car,
-                               const struct cell *cdr) {
-  return cell_factory_cons(yyscan_factory(self), car, cdr);
 }
 const struct cell *yyscan_push(yyscan_t self, const struct cell *xs,
                                const struct cell *x) {
