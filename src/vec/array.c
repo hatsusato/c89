@@ -12,6 +12,16 @@ void vec_array_init(struct vec_array *self, align_t align) {
   self->align = align;
   self->count = 0;
 }
+void vec_array_alloc(struct vec_array *self, index_t count) {
+  assert(!self->ptr && self->count == 0);
+  self->ptr = util_malloc(self->align, count);
+  self->count = 0;
+}
+void vec_array_free(struct vec_array *self) {
+  util_free(self->ptr);
+  self->ptr = NULL;
+  self->count = 0;
+}
 void vec_array_set(struct vec_array *self, void *ptr, index_t count) {
   assert(count == (ptr ? count : 0));
   self->ptr = ptr;
