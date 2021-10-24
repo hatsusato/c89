@@ -5,19 +5,13 @@
 #include "util/util.h"
 #include "vec.h"
 
-void vec_ptr_init(struct vec_ptr *self) {
-  vec_init(&self->vec, sizeof(void *));
-}
-void vec_ptr_finish(struct vec_ptr *self) {
-  vec_finish(&self->vec);
-}
 struct vec_ptr *vec_ptr_new(void) {
   struct vec_ptr *self = util_malloc(sizeof(struct vec_ptr), 1);
-  vec_ptr_init(self);
+  vec_init(&self->vec, sizeof(void *));
   return self;
 }
 void vec_ptr_delete(struct vec_ptr *self) {
-  vec_ptr_finish(self);
+  vec_finish(&self->vec);
   util_free(self);
 }
 index_t vec_ptr_capacity(struct vec_ptr *self) {
