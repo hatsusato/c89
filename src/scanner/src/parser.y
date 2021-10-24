@@ -272,164 +272,145 @@ ellipsis: "..." { $$ = YYSCAN_TOKEN(ellipsis); }
 /* 6.1 Lexical elements */
 identifier.opt
 : %empty {
-  $$ = YYSCAN_TAG(identifier);
+  $$ = YYSCAN_TOKEN(identifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | identifier
 ;
 identifier
 : TOKEN_IDENTIFIER {
-  $$ = YYSCAN_TAG(identifier);
-  $$ = YYSCAN_PUSH_SYMBOL($$);
+  $$ = YYSCAN_TOKEN(identifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
 }
 ;
 typedef-identifier
 : TOKEN_TYPEDEF_IDENTIFIER {
-  $$ = YYSCAN_TAG(typedef-identifier);
-  $$ = YYSCAN_PUSH_SYMBOL($$);
+  $$ = YYSCAN_TOKEN(typedef-identifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
 }
 ;
 floating-constant
 : TOKEN_FLOATING_CONSTANT {
-  $$ = YYSCAN_TAG(floating-constant);
-  $$ = YYSCAN_PUSH_SYMBOL($$);
+  $$ = YYSCAN_TOKEN(floating-constant);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
 }
 ;
 integer-constant
 : TOKEN_INTEGER_CONSTANT {
-  $$ = YYSCAN_TAG(integer-constant);
-  $$ = YYSCAN_PUSH_SYMBOL($$);
+  $$ = YYSCAN_TOKEN(integer-constant);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
 }
 ;
 enumeration-constant
 : TOKEN_IDENTIFIER {
-  $$ = YYSCAN_TAG(enumeration-constant);
-  $$ = YYSCAN_PUSH_SYMBOL($$);
+  $$ = YYSCAN_TOKEN(enumeration-constant);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
 }
 ;
 character-constant
 : TOKEN_CHARACTER_CONSTANT {
-  $$ = YYSCAN_TAG(character-constant);
-  $$ = YYSCAN_PUSH_SYMBOL($$);
+  $$ = YYSCAN_TOKEN(character-constant);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
 }
 ;
 string-literal
 : TOKEN_STRING_LITERAL {
-  $$ = YYSCAN_TAG(string-literal);
-  $$ = YYSCAN_PUSH_SYMBOL($$);
+  $$ = YYSCAN_TOKEN(string-literal);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
 }
 ;
 
 /* 6.3 Expressions */
 primary-expression
 : identifier {
-  $$ = YYSCAN_TAG(primary-expression);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | floating-constant {
-  $$ = YYSCAN_TAG(primary-expression);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | integer-constant {
-  $$ = YYSCAN_TAG(primary-expression);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | character-constant {
-  $$ = YYSCAN_TAG(primary-expression);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | string-literal {
-  $$ = YYSCAN_TAG(primary-expression);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | left-paren expression right-paren {
-  $$ = YYSCAN_TAG(primary-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 postfix-expression
 : primary-expression
 | postfix-expression left-bracket expression right-bracket {
-  $$ = YYSCAN_TAG(postfix-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | postfix-expression left-paren argument-expression-list.opt right-paren {
-  $$ = YYSCAN_TAG(postfix-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | postfix-expression period identifier {
-  $$ = YYSCAN_TAG(postfix-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | postfix-expression arrow identifier {
-  $$ = YYSCAN_TAG(postfix-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | postfix-expression increment {
-  $$ = YYSCAN_TAG(postfix-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | postfix-expression decrement {
-  $$ = YYSCAN_TAG(postfix-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 argument-expression-list.opt
 : %empty {
-  $$ = YYSCAN_TAG(argument-expression-list);
+  $$ = YYSCAN_TOKEN(argument-expression-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | argument-expression-list
 ;
 argument-expression-list
 : assignment-expression {
-  $$ = YYSCAN_TAG(argument-expression-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(argument-expression-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | argument-expression-list comma assignment-expression {
-  $$ = YYSCAN_PUSH($1, $3);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
 }
 ;
 unary-expression
 : postfix-expression
 | increment unary-expression {
-  $$ = YYSCAN_TAG(unary-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(unary-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | decrement unary-expression {
-  $$ = YYSCAN_TAG(unary-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(unary-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | unary-operator cast-expression {
-  $$ = YYSCAN_TAG(unary-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(unary-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | sizeof unary-expression {
-  $$ = YYSCAN_TAG(unary-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(unary-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | sizeof left-paren type-name right-paren {
-  $$ = YYSCAN_TAG(unary-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(unary-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 unary-operator
@@ -443,20 +424,15 @@ unary-operator
 cast-expression
 : unary-expression
 | left-paren type-name right-paren cast-expression {
-  $$ = YYSCAN_TAG(cast-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(cast-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 multiplicative-expression
 : cast-expression
 | multiplicative-expression multiplicative-operator cast-expression {
-  $$ = YYSCAN_TAG(multiplicative-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(multiplicative-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 multiplicative-operator
@@ -467,10 +443,8 @@ multiplicative-operator
 additive-expression
 : multiplicative-expression
 | additive-expression additive-operator multiplicative-expression {
-  $$ = YYSCAN_TAG(additive-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(additive-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 additive-operator
@@ -480,10 +454,8 @@ additive-operator
 shift-expression
 : additive-expression
 | shift-expression shift-operator additive-expression {
-  $$ = YYSCAN_TAG(shift-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(shift-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 shift-operator
@@ -493,10 +465,8 @@ shift-operator
 relational-expression
 : shift-expression
 | relational-expression relational-operator shift-expression {
-  $$ = YYSCAN_TAG(relational-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(relational-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 relational-operator
@@ -508,10 +478,8 @@ relational-operator
 equality-expression
 : relational-expression
 | equality-expression equality-operator relational-expression {
-  $$ = YYSCAN_TAG(equality-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(equality-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 equality-operator
@@ -521,66 +489,50 @@ equality-operator
 and-expression
 : equality-expression
 | and-expression ampersand equality-expression {
-  $$ = YYSCAN_TAG(and-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(and-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 exclusive-or-expression
 : and-expression
 | exclusive-or-expression caret and-expression {
-  $$ = YYSCAN_TAG(exclusive-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(exclusive-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 inclusive-or-expression
 : exclusive-or-expression
 | inclusive-or-expression bar exclusive-or-expression {
-  $$ = YYSCAN_TAG(inclusive-or-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(inclusive-or-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 logical-and-expression
 : inclusive-or-expression
 | logical-and-expression and inclusive-or-expression {
-  $$ = YYSCAN_TAG(logical-and-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(logical-and-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 logical-or-expression
 : logical-and-expression
 | logical-or-expression or logical-and-expression {
-  $$ = YYSCAN_TAG(logical-or-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(logical-or-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 conditional-expression
 : logical-or-expression
 | logical-or-expression question expression colon conditional-expression {
-  $$ = YYSCAN_TAG(conditional-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
-  $$ = YYSCAN_PUSH($$, $5);
+  $$ = YYSCAN_TOKEN(conditional-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 ;
 assignment-expression
 : conditional-expression
 | unary-expression assignment-operator assignment-expression {
-  $$ = YYSCAN_TAG(assignment-expression);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(assignment-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 assignment-operator
@@ -598,50 +550,50 @@ assignment-operator
 ;
 expression.opt
 : %empty {
-  $$ = YYSCAN_TAG(expression);
+  $$ = YYSCAN_TOKEN(expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | expression
 ;
 expression
 : assignment-expression {
-  $$ = YYSCAN_TAG(expression);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | expression comma assignment-expression {
-  $$ = YYSCAN_PUSH($1, $3);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
 }
 ;
 
 /* 6.4 Constant expressions */
 constant-expression.opt
 : %empty {
-  $$ = YYSCAN_TAG(constant-expression);
+  $$ = YYSCAN_TOKEN(constant-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | constant-expression
 ;
 constant-expression
 : conditional-expression {
-  $$ = YYSCAN_TAG(constant-expression);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(constant-expression);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 
 /* 6.5 Declarations */
 declaration
 : declaration-specifiers init-declarator-list.opt semicolon {
-  $$ = YYSCAN_TAG(declaration);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(declaration);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 declaration-specifiers
 : declaration-specifier {
-  $$ = YYSCAN_TAG(declaration-specifiers);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(declaration-specifiers);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | declaration-specifiers declaration-specifier {
-  $$ = YYSCAN_PUSH($1, $2);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
 }
 ;
 declaration-specifier
@@ -651,152 +603,144 @@ declaration-specifier
 ;
 init-declarator-list.opt
 : %empty {
-  $$ = YYSCAN_TAG(init-declarator-list);
+  $$ = YYSCAN_TOKEN(init-declarator-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | init-declarator-list
 ;
 init-declarator-list
 : init-declarator {
-  $$ = YYSCAN_TAG(init-declarator-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(init-declarator-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | init-declarator-list comma init-declarator {
-  $$ = YYSCAN_PUSH($1, $3);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
 }
 ;
 init-declarator
 : declarator {
-  $$ = YYSCAN_TAG(init-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(init-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | declarator assign initializer {
-  $$ = YYSCAN_TAG(init-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(init-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 storage-class-specifier
 : typedef {
-  $$ = YYSCAN_TAG(storage-class-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(storage-class-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | extern {
-  $$ = YYSCAN_TAG(storage-class-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(storage-class-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | static {
-  $$ = YYSCAN_TAG(storage-class-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(storage-class-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | auto {
-  $$ = YYSCAN_TAG(storage-class-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(storage-class-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | register {
-  $$ = YYSCAN_TAG(storage-class-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(storage-class-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 type-specifier
 : void {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | char {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | short {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | int {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | long {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | float {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | double {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | signed {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | unsigned {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | struct-or-union-specifier {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | enum-specifier {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | typedef-name {
-  $$ = YYSCAN_TAG(type-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 struct-or-union-specifier
 : struct-or-union identifier.opt left-brace struct-declaration-list right-brace {
-  $$ = YYSCAN_TAG(struct-or-union-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
-  $$ = YYSCAN_PUSH($$, $5);
+  $$ = YYSCAN_TOKEN(struct-or-union-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 | struct-or-union identifier {
-  $$ = YYSCAN_TAG(struct-or-union-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(struct-or-union-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 struct-or-union
 : struct {
-  $$ = YYSCAN_TAG(struct-or-union);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(struct-or-union);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | union {
-  $$ = YYSCAN_TAG(struct-or-union);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(struct-or-union);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 struct-declaration-list
 : struct-declaration {
-  $$ = YYSCAN_TAG(struct-declaration-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(struct-declaration-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | struct-declaration-list struct-declaration {
-  $$ = YYSCAN_PUSH($1, $2);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
 }
 ;
 struct-declaration
 : specifier-qualifier-list struct-declarator-list semicolon {
-  $$ = YYSCAN_TAG(struct-declaration);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(struct-declaration);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 specifier-qualifier-list
 : specifier-qualifier {
-  $$ = YYSCAN_TAG(specifier-qualifier-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(specifier-qualifier-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | specifier-qualifier-list specifier-qualifier {
-  $$ = YYSCAN_PUSH($1, $2);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
 }
 ;
 specifier-qualifier
@@ -805,474 +749,387 @@ specifier-qualifier
 ;
 struct-declarator-list
 : struct-declarator {
-  $$ = YYSCAN_TAG(struct-declarator-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(struct-declarator-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | struct-declarator-list comma struct-declarator {
-  $$ = YYSCAN_PUSH($1, $3);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
 }
 ;
 struct-declarator
 : declarator {
-  $$ = YYSCAN_TAG(struct-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(struct-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | declarator.opt colon constant-expression {
-  $$ = YYSCAN_TAG(struct-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(struct-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 enum-specifier
 : enum identifier.opt left-brace enumerator-list right-brace {
-  $$ = YYSCAN_TAG(enum-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
-  $$ = YYSCAN_PUSH($$, $5);
+  $$ = YYSCAN_TOKEN(enum-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 | enum identifier {
-  $$ = YYSCAN_TAG(enum-specifier);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(enum-specifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 enumerator-list
 : enumerator {
-  $$ = YYSCAN_TAG(enumerator-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(enumerator-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | enumerator-list comma enumerator {
-  $$ = YYSCAN_PUSH($1, $3);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
 }
 ;
 enumerator
 : enumeration-constant {
-  $$ = YYSCAN_TAG(enumerator);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(enumerator);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | enumeration-constant assign constant-expression {
-  $$ = YYSCAN_TAG(enumerator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(enumerator);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 type-qualifier
 : const {
-  $$ = YYSCAN_TAG(type-qualifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-qualifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | volatile {
-  $$ = YYSCAN_TAG(type-qualifier);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-qualifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 declarator.opt
 : %empty {
-  $$ = YYSCAN_TAG(declarator);
+  $$ = YYSCAN_TOKEN(declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | declarator
 ;
 declarator
 : direct-declarator {
-  $$ = YYSCAN_TAG(declarator);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | pointer direct-declarator {
-  $$ = YYSCAN_TAG(declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 direct-declarator
 : identifier {
-  $$ = YYSCAN_TAG(direct-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(direct-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | left-paren declarator right-paren {
-  $$ = YYSCAN_TAG(direct-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(direct-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | direct-declarator left-bracket constant-expression.opt right-bracket {
-  $$ = YYSCAN_TAG(direct-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(direct-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | direct-declarator left-paren parameter-type-list right-paren {
-  $$ = YYSCAN_TAG(direct-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(direct-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | direct-declarator left-paren identifier-list.opt right-paren {
-  $$ = YYSCAN_TAG(direct-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(direct-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 pointer
 : asterisk type-qualifier-list.opt {
-  $$ = YYSCAN_TAG(pointer);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(pointer);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | pointer asterisk type-qualifier-list.opt {
-  $$ = YYSCAN_TAG(pointer);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(pointer);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 type-qualifier-list.opt
 : %empty {
-  $$ = YYSCAN_TAG(type-qualifier-list);
+  $$ = YYSCAN_TOKEN(type-qualifier-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | type-qualifier-list
 ;
 type-qualifier-list
 : type-qualifier {
-  $$ = YYSCAN_TAG(type-qualifier-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(type-qualifier-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | type-qualifier-list type-qualifier {
-  $$ = YYSCAN_PUSH($1, $2);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
 }
 ;
 parameter-type-list.opt
 : %empty {
-  $$ = YYSCAN_TAG(parameter-type-list);
+  $$ = YYSCAN_TOKEN(parameter-type-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | parameter-type-list
 ;
 parameter-type-list
 : parameter-list {
-  $$ = YYSCAN_TAG(parameter-type-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(parameter-type-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | parameter-list comma ellipsis {
-  $$ = YYSCAN_TAG(parameter-type-list);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(parameter-type-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 parameter-list
 : parameter-declaration {
-  $$ = YYSCAN_TAG(parameter-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(parameter-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | parameter-list comma parameter-declaration {
-  $$ = YYSCAN_PUSH($1, $3);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
 }
 ;
 parameter-declaration
 : declaration-specifiers declarator {
-  $$ = YYSCAN_TAG(parameter-declaration);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(parameter-declaration);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | declaration-specifiers abstract-declarator.opt {
-  $$ = YYSCAN_TAG(parameter-declaration);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(parameter-declaration);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 identifier-list.opt
 : %empty {
-  $$ = YYSCAN_TAG(identifier-list);
+  $$ = YYSCAN_TOKEN(identifier-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | identifier-list
 ;
 identifier-list
 : identifier {
-  $$ = YYSCAN_TAG(identifier-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(identifier-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | identifier-list comma identifier {
-  $$ = YYSCAN_PUSH($1, $3);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
 }
 ;
 type-name
 : specifier-qualifier-list abstract-declarator.opt {
-  $$ = YYSCAN_TAG(type-name);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(type-name);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 abstract-declarator.opt
 : %empty {
-  $$ = YYSCAN_TAG(abstract-declarator);
+  $$ = YYSCAN_TOKEN(abstract-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | abstract-declarator
 ;
 abstract-declarator
 : pointer {
-  $$ = YYSCAN_TAG(abstract-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(abstract-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | direct-abstract-declarator {
-  $$ = YYSCAN_TAG(abstract-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(abstract-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | pointer direct-abstract-declarator {
-  $$ = YYSCAN_TAG(abstract-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(abstract-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 direct-abstract-declarator
 : left-paren abstract-declarator right-paren {
-  $$ = YYSCAN_TAG(direct-abstract-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(direct-abstract-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | left-bracket constant-expression.opt right-bracket {
-  $$ = YYSCAN_TAG(direct-abstract-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(direct-abstract-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | direct-abstract-declarator left-bracket constant-expression.opt right-bracket {
-  $$ = YYSCAN_TAG(direct-abstract-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(direct-abstract-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | left-paren parameter-type-list.opt right-paren {
-  $$ = YYSCAN_TAG(direct-abstract-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(direct-abstract-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | direct-abstract-declarator left-paren parameter-type-list.opt right-paren {
-  $$ = YYSCAN_TAG(direct-abstract-declarator);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(direct-abstract-declarator);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 typedef-name
 : typedef-identifier {
-  $$ = YYSCAN_TAG(typedef-name);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(typedef-name);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 initializer
 : assignment-expression {
-  $$ = YYSCAN_TAG(initializer);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(initializer);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | left-brace initializer-list right-brace {
-  $$ = YYSCAN_TAG(initializer);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(initializer);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | left-brace initializer-list comma right-brace {
-  $$ = YYSCAN_TAG(initializer);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(initializer);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 initializer-list
 : initializer {
-  $$ = YYSCAN_TAG(initializer-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(initializer-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | initializer-list comma initializer {
-  $$ = YYSCAN_PUSH($1, $3);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
 }
 ;
 
 /* 6.6 Statements */
 statement
 : labeled-statement {
-  $$ = YYSCAN_TAG(statement);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | compound-statement {
-  $$ = YYSCAN_TAG(statement);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | expression-statement {
-  $$ = YYSCAN_TAG(statement);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | selection-statement {
-  $$ = YYSCAN_TAG(statement);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | iteration-statement {
-  $$ = YYSCAN_TAG(statement);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | jump-statement {
-  $$ = YYSCAN_TAG(statement);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 labeled-statement
 : identifier colon statement {
-  $$ = YYSCAN_TAG(labeled-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(labeled-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | case constant-expression colon statement {
-  $$ = YYSCAN_TAG(labeled-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(labeled-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | default colon statement {
-  $$ = YYSCAN_TAG(labeled-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(labeled-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 compound-statement
 : left-brace declaration-list.opt statement-list.opt right-brace {
-  $$ = YYSCAN_TAG(compound-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(compound-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 declaration-list.opt
 : %empty {
-  $$ = YYSCAN_TAG(declaration-list);
+  $$ = YYSCAN_TOKEN(declaration-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | declaration-list
 ;
 declaration-list
 : declaration {
-  $$ = YYSCAN_TAG(declaration-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(declaration-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | declaration-list declaration {
-  $$ = YYSCAN_PUSH($1, $2);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
 }
 ;
 statement-list.opt
 : %empty {
-  $$ = YYSCAN_TAG(statement-list);
+  $$ = YYSCAN_TOKEN(statement-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | statement-list
 ;
 statement-list
 : statement {
-  $$ = YYSCAN_TAG(statement-list);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(statement-list);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | statement-list statement {
-  $$ = YYSCAN_PUSH($1, $2);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
 }
 ;
 expression-statement
 : expression.opt semicolon {
-  $$ = YYSCAN_TAG(expression-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(expression-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 selection-statement
 : if left-paren expression right-paren statement %prec THEN {
-  $$ = YYSCAN_TAG(selection-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
-  $$ = YYSCAN_PUSH($$, $5);
+  $$ = YYSCAN_TOKEN(selection-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 | if left-paren expression right-paren statement else statement {
-  $$ = YYSCAN_TAG(selection-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
-  $$ = YYSCAN_PUSH($$, $5);
-  $$ = YYSCAN_PUSH($$, $6);
-  $$ = YYSCAN_PUSH($$, $7);
+  $$ = YYSCAN_TOKEN(selection-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 8, $$, $1, $2, $3, $4, $5, $6, $7);
 }
 | switch left-paren expression right-paren statement {
-  $$ = YYSCAN_TAG(selection-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
-  $$ = YYSCAN_PUSH($$, $5);
+  $$ = YYSCAN_TOKEN(selection-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 ;
 iteration-statement
 : while left-paren expression right-paren statement {
-  $$ = YYSCAN_TAG(iteration-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
-  $$ = YYSCAN_PUSH($$, $5);
+  $$ = YYSCAN_TOKEN(iteration-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 | do statement while left-paren expression right-paren semicolon {
-  $$ = YYSCAN_TAG(iteration-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
-  $$ = YYSCAN_PUSH($$, $5);
-  $$ = YYSCAN_PUSH($$, $6);
-  $$ = YYSCAN_PUSH($$, $7);
+  $$ = YYSCAN_TOKEN(iteration-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 8, $$, $1, $2, $3, $4, $5, $6, $7);
 }
 | for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {
-  $$ = YYSCAN_TAG(iteration-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
-  $$ = YYSCAN_PUSH($$, $5);
-  $$ = YYSCAN_PUSH($$, $6);
-  $$ = YYSCAN_PUSH($$, $7);
-  $$ = YYSCAN_PUSH($$, $8);
-  $$ = YYSCAN_PUSH($$, $9);
+  $$ = YYSCAN_TOKEN(iteration-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 10, $$, $1, $2, $3, $4, $5, $6, $7, $8, $9);
 }
 ;
 jump-statement
 : goto identifier semicolon {
-  $$ = YYSCAN_TAG(jump-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(jump-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | continue semicolon {
-  $$ = YYSCAN_TAG(jump-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(jump-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | break semicolon {
-  $$ = YYSCAN_TAG(jump-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
+  $$ = YYSCAN_TOKEN(jump-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | return expression.opt semicolon {
-  $$ = YYSCAN_TAG(jump-statement);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(jump-statement);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 
@@ -1282,33 +1139,28 @@ top
 ;
 translation-unit
 : external-declaration {
-  $$ = YYSCAN_TAG(translation-unit);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(translation-unit);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | translation-unit external-declaration {
-  $$ = YYSCAN_PUSH($1, $2);
+  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
 }
 ;
 external-declaration
 : function-definition
 | declaration {
-  $$ = YYSCAN_TAG(external-declaration);
-  $$ = YYSCAN_PUSH($$, $1);
+  $$ = YYSCAN_TOKEN(external-declaration);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 function-definition
 : declarator declaration-list.opt compound-statement {
-  $$ = YYSCAN_TAG(function-definition);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
+  $$ = YYSCAN_TOKEN(function-definition);
+  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | declaration-specifiers declarator declaration-list.opt compound-statement {
-  $$ = YYSCAN_TAG(function-definition);
-  $$ = YYSCAN_PUSH($$, $1);
-  $$ = YYSCAN_PUSH($$, $2);
-  $$ = YYSCAN_PUSH($$, $3);
-  $$ = YYSCAN_PUSH($$, $4);
+  $$ = YYSCAN_TOKEN(function-definition);
+  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 
