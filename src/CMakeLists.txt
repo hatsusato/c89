@@ -31,7 +31,6 @@ target_link_libraries(unittest PRIVATE
   options
   pool
   set
-  str
   util
   vec
   )
@@ -42,6 +41,5 @@ add_subdirectory(pool)
 add_subdirectory(printer)
 add_subdirectory(scanner)
 add_subdirectory(set)
-add_subdirectory(str)
 add_subdirectory(util)
 add_subdirectory(vec)
