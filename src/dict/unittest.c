@@ -6,8 +6,8 @@
 void dict_unittest(void) {
   struct dict *dict = dict_new();
   int i, count = 10;
-  char(*key)[2] = util_malloc(sizeof(char[2]), count);
-  int *val = util_malloc(sizeof(int), count);
+  char(*key)[2] = util_malloc_array(sizeof(char[2]), count);
+  int *val = util_malloc_array(sizeof(int), count);
   for (i = 0; i < count; i++) {
     key[i][0] = 'a' + (i * 100) % 26;
     key[i][1] = '\0';

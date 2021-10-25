@@ -16,6 +16,7 @@
   } while (false)
 
 void *util_malloc(align_t, index_t);
+void *util_malloc_array(align_t, index_t);
 void util_free(void *);
 void util_swap_impl(size_t, void *, void *, void *);
 int util_strcmp(const char *, const char *);

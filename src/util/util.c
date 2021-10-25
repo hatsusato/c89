@@ -7,6 +7,9 @@
 void *util_malloc(align_t align, index_t index) {
   return malloc(index * align);
 }
+void *util_malloc_array(align_t align, index_t count) {
+  return malloc(align * count);
+}
 void util_free(void *ptr) {
   free(ptr);
 }
@@ -23,7 +26,7 @@ bool_t util_streq(const char *lhs, const char *rhs) {
 }
 const char *util_strdup(const char *src) {
   index_t count = 1 + strlen(src);
-  char *dst = util_malloc(1, count);
+  char *dst = util_malloc_array(1, count);
   strncpy(dst, src, count);
   return dst;
 }
