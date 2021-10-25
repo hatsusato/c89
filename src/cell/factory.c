@@ -3,6 +3,7 @@
 #include "cell.h"
 #include "pool/pool.h"
 #include "set/set.h"
+#include "tag.h"
 #include "type.h"
 #include "util/util.h"
 
@@ -33,7 +34,7 @@ const struct cell *cell_factory_symbol(struct cell_factory *self,
                                        const char *symbol) {
   assert(symbol);
   symbol = set_insert(self->set, symbol);
-  return cell_factory_make(self, symbol, NULL);
+  return cell_factory_make(self, symbol, cell_tag_symbol());
 }
 const struct cell *cell_factory_push(struct cell_factory *self,
                                      const struct cell *list,

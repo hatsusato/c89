@@ -1,5 +1,6 @@
 #include "cell.h"
 
+#include "tag.h"
 #include "type.h"
 #include "util/util.h"
 
@@ -12,13 +13,13 @@ const struct cell *cell_nil(void) {
   return &cell;
 }
 bool_t cell_is_nil(const struct cell *self) {
-  return !self->car && !self->cdr;
+  return self == cell_nil();
 }
 bool_t cell_is_cons(const struct cell *self) {
   return !cell_is_atom(self);
 }
 bool_t cell_is_symbol(const struct cell *self) {
-  return self->car && !self->cdr;
+  return self->cdr == cell_tag_symbol();
 }
 bool_t cell_is_list(const struct cell *self) {
   while (cell_is_cons(self)) {
