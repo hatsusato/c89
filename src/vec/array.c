@@ -22,6 +22,14 @@ void vec_array_free(struct vec_array *self) {
   self->ptr = NULL;
   self->count = 0;
 }
+void vec_array_resize(struct vec_array *self, index_t count) {
+  struct vec_array tmp;
+  vec_array_init(&tmp, self->align);
+  vec_array_alloc(&tmp, count);
+  vec_array_insert(&tmp, self->ptr, UTIL_MIN(self->count, count));
+  UTIL_SWAP(struct vec_array, &tmp, self);
+  vec_array_free(&tmp);
+}
 void vec_array_set(struct vec_array *self, void *ptr, index_t count) {
   assert(count == (ptr ? count : 0));
   self->ptr = ptr;
