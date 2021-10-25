@@ -15,11 +15,7 @@ struct set *set_new(void) {
   return self;
 }
 void set_delete(struct set *self) {
-  index_t i, length = vec_length(self->vec);
-  for (i = 0; i < length; i++) {
-    const char *symbol = vec_at(self->vec, i);
-    util_free((void *)symbol);
-  }
+  vec_map(self->vec, util_free);
   vec_delete(self->vec);
   util_free(self);
 }

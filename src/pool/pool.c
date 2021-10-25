@@ -10,11 +10,7 @@ struct pool *pool_new(void) {
   return self;
 }
 void pool_delete(struct pool *self) {
-  index_t i, length = vec_length(self->pool);
-  for (i = 0; i < length; i++) {
-    void *elem = vec_at(self->pool, i);
-    util_free(elem);
-  }
+  vec_map(self->pool, util_free);
   vec_delete(self->pool);
   util_free(self);
 }
