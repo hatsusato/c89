@@ -1,5 +1,7 @@
 #include "print.h"
 
+#include <stdio.h>
+
 #include "cell.h"
 #include "printer/printer.h"
 
@@ -25,7 +27,9 @@ static void cell_print_rec(const struct cell *self, struct printer *printer) {
   }
 }
 
-void cell_print(const struct cell *self, struct printer *printer) {
+void cell_print(const struct cell *self) {
+  struct printer *printer = printer_new(stdout);
   cell_print_rec(self, printer);
   printer_newline(printer);
+  printer_delete(printer);
 }

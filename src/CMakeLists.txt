@@ -3,9 +3,9 @@ target_sources(main PRIVATE
   main.c
   )
 target_link_libraries(main PRIVATE
+  cell
   options
   pool
-  printer
   scanner
   set
   util
