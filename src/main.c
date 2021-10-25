@@ -3,7 +3,6 @@
 #include "cell/print.h"
 #include "pool/pool.h"
 #include "printer/printer.h"
-#include "printer/type.h"
 #include "scanner/scanner.h"
 #include "set/set.h"
 #include "unittest.h"
@@ -25,11 +24,11 @@ int main(int argc, char *argv[]) {
   } else {
     struct pool *pool = pool_new();
     struct set *symbols = set_new();
-    struct printer printer;
     const struct cell *cell = scanner_parse(pool, symbols);
     if (cell) {
-      printer_init(&printer, stdout);
-      cell_print(cell, &printer);
+      struct printer *printer = printer_new(stdout);
+      cell_print(cell, printer);
+      printer_delete(printer);
     } else {
       util_error("ERROR: failed to parse");
     }

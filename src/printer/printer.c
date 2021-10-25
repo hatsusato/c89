@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "type.h"
+#include "util/util.h"
 
 static void printer_shift(struct printer *self) {
   if (self->newline) {
@@ -18,6 +19,16 @@ void printer_init(struct printer *self, void *fp) {
   self->fp = fp;
   self->indent = 0;
   self->newline = false;
+}
+struct printer *printer_new(void *fp) {
+  struct printer *self = util_malloc(sizeof(struct printer), 1);
+  self->fp = fp;
+  self->indent = 0;
+  self->newline = false;
+  return self;
+}
+void printer_delete(struct printer *self) {
+  util_free(self);
 }
 void printer_print(struct printer *self, const char *format, ...) {
   if (self->fp) {
