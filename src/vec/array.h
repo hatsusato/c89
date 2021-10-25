@@ -6,7 +6,6 @@
 struct vec_array;
 
 void vec_array_init(struct vec_array *, align_t);
-void vec_array_alloc(struct vec_array *, index_t);
 void vec_array_free(struct vec_array *);
 void vec_array_resize(struct vec_array *, index_t);
 void vec_array_set(struct vec_array *, void *, index_t);
