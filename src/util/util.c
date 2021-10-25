@@ -7,8 +7,8 @@
 void *util_malloc(align_t align, index_t index) {
   return malloc(index * align);
 }
-void util_free(const void *ptr) {
-  free((void *)ptr);
+void util_free(void *ptr) {
+  free(ptr);
 }
 void util_swap_impl(size_t size, void *lhs, void *rhs, void *buf) {
   memcpy(buf, lhs, size);

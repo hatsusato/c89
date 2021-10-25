@@ -18,7 +18,7 @@ void set_delete(struct set *self) {
   index_t i, length = vec_length(self->vec);
   for (i = 0; i < length; i++) {
     const char *symbol = vec_at(self->vec, i);
-    util_free(symbol);
+    util_free((void *)symbol);
   }
   vec_delete(self->vec);
   util_free(self);

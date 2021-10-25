@@ -9,9 +9,6 @@ struct dict_entry {
   void *val;
 };
 
-static void dict_entry_free(void *entry) {
-  util_free(entry);
-}
 static int dict_cmp(const void *lhs, const void *rhs) {
   const struct dict_entry *const *l = lhs, *const *r = rhs;
   return util_strcmp((*l)->key, (*r)->key);
@@ -28,7 +25,7 @@ struct dict *dict_new(void) {
   return self;
 }
 void dict_delete(struct dict *self) {
-  vec_map(self->vec, dict_entry_free);
+  vec_map(self->vec, util_free);
   vec_delete(self->vec);
   util_free(self);
 }
