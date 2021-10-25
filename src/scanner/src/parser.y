@@ -110,280 +110,280 @@
 
 %%
 
-auto: "auto" { $$ = YYSCAN_TOKEN(auto); }
+auto: "auto" { $$ = YYSCAN_SYMBOL(auto); }
 ;
-break: "break" { $$ = YYSCAN_TOKEN(break); }
+break: "break" { $$ = YYSCAN_SYMBOL(break); }
 ;
-case: "case" { $$ = YYSCAN_TOKEN(case); }
+case: "case" { $$ = YYSCAN_SYMBOL(case); }
 ;
-char: "char" { $$ = YYSCAN_TOKEN(char); }
+char: "char" { $$ = YYSCAN_SYMBOL(char); }
 ;
-const: "const" { $$ = YYSCAN_TOKEN(const); }
+const: "const" { $$ = YYSCAN_SYMBOL(const); }
 ;
-continue: "continue" { $$ = YYSCAN_TOKEN(continue); }
+continue: "continue" { $$ = YYSCAN_SYMBOL(continue); }
 ;
-default: "default" { $$ = YYSCAN_TOKEN(default); }
+default: "default" { $$ = YYSCAN_SYMBOL(default); }
 ;
-do: "do" { $$ = YYSCAN_TOKEN(do); }
+do: "do" { $$ = YYSCAN_SYMBOL(do); }
 ;
-double: "double" { $$ = YYSCAN_TOKEN(double); }
+double: "double" { $$ = YYSCAN_SYMBOL(double); }
 ;
-else: "else" { $$ = YYSCAN_TOKEN(else); }
+else: "else" { $$ = YYSCAN_SYMBOL(else); }
 ;
-enum: "enum" { $$ = YYSCAN_TOKEN(enum); }
+enum: "enum" { $$ = YYSCAN_SYMBOL(enum); }
 ;
-extern: "extern" { $$ = YYSCAN_TOKEN(extern); }
+extern: "extern" { $$ = YYSCAN_SYMBOL(extern); }
 ;
-float: "float" { $$ = YYSCAN_TOKEN(float); }
+float: "float" { $$ = YYSCAN_SYMBOL(float); }
 ;
-for: "for" { $$ = YYSCAN_TOKEN(for); }
+for: "for" { $$ = YYSCAN_SYMBOL(for); }
 ;
-goto: "goto" { $$ = YYSCAN_TOKEN(goto); }
+goto: "goto" { $$ = YYSCAN_SYMBOL(goto); }
 ;
-if: "if" { $$ = YYSCAN_TOKEN(if); }
+if: "if" { $$ = YYSCAN_SYMBOL(if); }
 ;
-int: "int" { $$ = YYSCAN_TOKEN(int); }
+int: "int" { $$ = YYSCAN_SYMBOL(int); }
 ;
-long: "long" { $$ = YYSCAN_TOKEN(long); }
+long: "long" { $$ = YYSCAN_SYMBOL(long); }
 ;
-register: "register" { $$ = YYSCAN_TOKEN(register); }
+register: "register" { $$ = YYSCAN_SYMBOL(register); }
 ;
-return: "return" { $$ = YYSCAN_TOKEN(return); }
+return: "return" { $$ = YYSCAN_SYMBOL(return); }
 ;
-short: "short" { $$ = YYSCAN_TOKEN(short); }
+short: "short" { $$ = YYSCAN_SYMBOL(short); }
 ;
-signed: "signed" { $$ = YYSCAN_TOKEN(signed); }
+signed: "signed" { $$ = YYSCAN_SYMBOL(signed); }
 ;
-sizeof: "sizeof" { $$ = YYSCAN_TOKEN(sizeof); }
+sizeof: "sizeof" { $$ = YYSCAN_SYMBOL(sizeof); }
 ;
-static: "static" { $$ = YYSCAN_TOKEN(static); }
+static: "static" { $$ = YYSCAN_SYMBOL(static); }
 ;
-struct: "struct" { $$ = YYSCAN_TOKEN(struct); }
+struct: "struct" { $$ = YYSCAN_SYMBOL(struct); }
 ;
-switch: "switch" { $$ = YYSCAN_TOKEN(switch); }
+switch: "switch" { $$ = YYSCAN_SYMBOL(switch); }
 ;
-typedef: "typedef" { $$ = YYSCAN_TOKEN(typedef); }
+typedef: "typedef" { $$ = YYSCAN_SYMBOL(typedef); }
 ;
-union: "union" { $$ = YYSCAN_TOKEN(union); }
+union: "union" { $$ = YYSCAN_SYMBOL(union); }
 ;
-unsigned: "unsigned" { $$ = YYSCAN_TOKEN(unsigned); }
+unsigned: "unsigned" { $$ = YYSCAN_SYMBOL(unsigned); }
 ;
-void: "void" { $$ = YYSCAN_TOKEN(void); }
+void: "void" { $$ = YYSCAN_SYMBOL(void); }
 ;
-volatile: "volatile" { $$ = YYSCAN_TOKEN(volatile); }
+volatile: "volatile" { $$ = YYSCAN_SYMBOL(volatile); }
 ;
-while: "while" { $$ = YYSCAN_TOKEN(while); }
+while: "while" { $$ = YYSCAN_SYMBOL(while); }
 ;
 
-period: "." { $$ = YYSCAN_TOKEN(period); }
+period: "." { $$ = YYSCAN_SYMBOL(period); }
 ;
-arrow: "->" { $$ = YYSCAN_TOKEN(arrow); }
+arrow: "->" { $$ = YYSCAN_SYMBOL(arrow); }
 ;
-increment: "++" { $$ = YYSCAN_TOKEN(increment); }
+increment: "++" { $$ = YYSCAN_SYMBOL(increment); }
 ;
-decrement: "--" { $$ = YYSCAN_TOKEN(decrement); }
+decrement: "--" { $$ = YYSCAN_SYMBOL(decrement); }
 ;
-ampersand: "&" { $$ = YYSCAN_TOKEN(ampersand); }
+ampersand: "&" { $$ = YYSCAN_SYMBOL(ampersand); }
 ;
-asterisk: "*" { $$ = YYSCAN_TOKEN(asterisk); }
+asterisk: "*" { $$ = YYSCAN_SYMBOL(asterisk); }
 ;
-plus: "+" { $$ = YYSCAN_TOKEN(plus); }
+plus: "+" { $$ = YYSCAN_SYMBOL(plus); }
 ;
-minus: "-" { $$ = YYSCAN_TOKEN(minus); }
+minus: "-" { $$ = YYSCAN_SYMBOL(minus); }
 ;
-tilde: "~" { $$ = YYSCAN_TOKEN(tilde); }
+tilde: "~" { $$ = YYSCAN_SYMBOL(tilde); }
 ;
-exclamation: "!" { $$ = YYSCAN_TOKEN(exclamation); }
+exclamation: "!" { $$ = YYSCAN_SYMBOL(exclamation); }
 ;
-slash: "/" { $$ = YYSCAN_TOKEN(slash); }
+slash: "/" { $$ = YYSCAN_SYMBOL(slash); }
 ;
-percent: "%" { $$ = YYSCAN_TOKEN(percent); }
+percent: "%" { $$ = YYSCAN_SYMBOL(percent); }
 ;
-left-shift: "<<" { $$ = YYSCAN_TOKEN(left-shift); }
+left-shift: "<<" { $$ = YYSCAN_SYMBOL(left-shift); }
 ;
-right-shift: ">>" { $$ = YYSCAN_TOKEN(right-shift); }
+right-shift: ">>" { $$ = YYSCAN_SYMBOL(right-shift); }
 ;
-less-than: "<" { $$ = YYSCAN_TOKEN(less-than); }
+less-than: "<" { $$ = YYSCAN_SYMBOL(less-than); }
 ;
-greater-than: ">" { $$ = YYSCAN_TOKEN(greater-than); }
+greater-than: ">" { $$ = YYSCAN_SYMBOL(greater-than); }
 ;
-less-equal: "<=" { $$ = YYSCAN_TOKEN(less-equal); }
+less-equal: "<=" { $$ = YYSCAN_SYMBOL(less-equal); }
 ;
-greater-equal: ">=" { $$ = YYSCAN_TOKEN(greater-equal); }
+greater-equal: ">=" { $$ = YYSCAN_SYMBOL(greater-equal); }
 ;
-equal: "==" { $$ = YYSCAN_TOKEN(equal); }
+equal: "==" { $$ = YYSCAN_SYMBOL(equal); }
 ;
-not-equal: "!=" { $$ = YYSCAN_TOKEN(not-equal); }
+not-equal: "!=" { $$ = YYSCAN_SYMBOL(not-equal); }
 ;
-caret: "^" { $$ = YYSCAN_TOKEN(caret); }
+caret: "^" { $$ = YYSCAN_SYMBOL(caret); }
 ;
-bar: "|" { $$ = YYSCAN_TOKEN(bar); }
+bar: "|" { $$ = YYSCAN_SYMBOL(bar); }
 ;
-and: "&&" { $$ = YYSCAN_TOKEN(and); }
+and: "&&" { $$ = YYSCAN_SYMBOL(and); }
 ;
-or: "||" { $$ = YYSCAN_TOKEN(or); }
+or: "||" { $$ = YYSCAN_SYMBOL(or); }
 ;
-question: "?" { $$ = YYSCAN_TOKEN(question); }
+question: "?" { $$ = YYSCAN_SYMBOL(question); }
 ;
-assign: "=" { $$ = YYSCAN_TOKEN(assign); }
+assign: "=" { $$ = YYSCAN_SYMBOL(assign); }
 ;
-asterisk-assign: "*=" { $$ = YYSCAN_TOKEN(asterisk-assign); }
+asterisk-assign: "*=" { $$ = YYSCAN_SYMBOL(asterisk-assign); }
 ;
-slash-assign: "/=" { $$ = YYSCAN_TOKEN(slash-assign); }
+slash-assign: "/=" { $$ = YYSCAN_SYMBOL(slash-assign); }
 ;
-percent-assign: "%=" { $$ = YYSCAN_TOKEN(percent-assign); }
+percent-assign: "%=" { $$ = YYSCAN_SYMBOL(percent-assign); }
 ;
-plus-assign: "+=" { $$ = YYSCAN_TOKEN(plus-assign); }
+plus-assign: "+=" { $$ = YYSCAN_SYMBOL(plus-assign); }
 ;
-minus-assign: "-=" { $$ = YYSCAN_TOKEN(minus-assign); }
+minus-assign: "-=" { $$ = YYSCAN_SYMBOL(minus-assign); }
 ;
-left-shift-assign: "<<=" { $$ = YYSCAN_TOKEN(left-shift-assign); }
+left-shift-assign: "<<=" { $$ = YYSCAN_SYMBOL(left-shift-assign); }
 ;
-right-shift-assign: ">>=" { $$ = YYSCAN_TOKEN(right-shift-assign); }
+right-shift-assign: ">>=" { $$ = YYSCAN_SYMBOL(right-shift-assign); }
 ;
-ampersand-assign: "&=" { $$ = YYSCAN_TOKEN(ampersand-assign); }
+ampersand-assign: "&=" { $$ = YYSCAN_SYMBOL(ampersand-assign); }
 ;
-caret-assign: "^=" { $$ = YYSCAN_TOKEN(caret-assign); }
+caret-assign: "^=" { $$ = YYSCAN_SYMBOL(caret-assign); }
 ;
-bar-assign: "|=" { $$ = YYSCAN_TOKEN(bar-assign); }
+bar-assign: "|=" { $$ = YYSCAN_SYMBOL(bar-assign); }
 ;
 
-left-bracket: "[" { $$ = YYSCAN_TOKEN(left-bracket); }
+left-bracket: "[" { $$ = YYSCAN_SYMBOL(left-bracket); }
 ;
-right-bracket: "]" { $$ = YYSCAN_TOKEN(right-bracket); }
+right-bracket: "]" { $$ = YYSCAN_SYMBOL(right-bracket); }
 ;
-left-paren: "(" { $$ = YYSCAN_TOKEN(left-paren); }
+left-paren: "(" { $$ = YYSCAN_SYMBOL(left-paren); }
 ;
-right-paren: ")" { $$ = YYSCAN_TOKEN(right-paren); }
+right-paren: ")" { $$ = YYSCAN_SYMBOL(right-paren); }
 ;
-left-brace: "{" { $$ = YYSCAN_TOKEN(left-brace); }
+left-brace: "{" { $$ = YYSCAN_SYMBOL(left-brace); }
 ;
-right-brace: "}" { $$ = YYSCAN_TOKEN(right-brace); }
+right-brace: "}" { $$ = YYSCAN_SYMBOL(right-brace); }
 ;
-comma: "," { $$ = YYSCAN_TOKEN(comma); }
+comma: "," { $$ = YYSCAN_SYMBOL(comma); }
 ;
-colon: ":" { $$ = YYSCAN_TOKEN(colon); }
+colon: ":" { $$ = YYSCAN_SYMBOL(colon); }
 ;
-semicolon: ";" { $$ = YYSCAN_TOKEN(semicolon); }
+semicolon: ";" { $$ = YYSCAN_SYMBOL(semicolon); }
 ;
-ellipsis: "..." { $$ = YYSCAN_TOKEN(ellipsis); }
+ellipsis: "..." { $$ = YYSCAN_SYMBOL(ellipsis); }
 ;
 
 /* 6.1 Lexical elements */
 identifier.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(identifier);
+  $$ = YYSCAN_SYMBOL(identifier);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | identifier
 ;
 identifier
 : TOKEN_IDENTIFIER {
-  $$ = YYSCAN_TOKEN(identifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
+  $$ = YYSCAN_SYMBOL(identifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
 }
 ;
 typedef-identifier
 : TOKEN_TYPEDEF_IDENTIFIER {
-  $$ = YYSCAN_TOKEN(typedef-identifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
+  $$ = YYSCAN_SYMBOL(typedef-identifier);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
 }
 ;
 floating-constant
 : TOKEN_FLOATING_CONSTANT {
-  $$ = YYSCAN_TOKEN(floating-constant);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
+  $$ = YYSCAN_SYMBOL(floating-constant);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
 }
 ;
 integer-constant
 : TOKEN_INTEGER_CONSTANT {
-  $$ = YYSCAN_TOKEN(integer-constant);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
+  $$ = YYSCAN_SYMBOL(integer-constant);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
 }
 ;
 enumeration-constant
 : TOKEN_IDENTIFIER {
-  $$ = YYSCAN_TOKEN(enumeration-constant);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
+  $$ = YYSCAN_SYMBOL(enumeration-constant);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
 }
 ;
 character-constant
 : TOKEN_CHARACTER_CONSTANT {
-  $$ = YYSCAN_TOKEN(character-constant);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
+  $$ = YYSCAN_SYMBOL(character-constant);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
 }
 ;
 string-literal
 : TOKEN_STRING_LITERAL {
-  $$ = YYSCAN_TOKEN(string-literal);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_SYMBOL());
+  $$ = YYSCAN_SYMBOL(string-literal);
+  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
 }
 ;
 
 /* 6.3 Expressions */
 primary-expression
 : identifier {
-  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = YYSCAN_SYMBOL(primary-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | floating-constant {
-  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = YYSCAN_SYMBOL(primary-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | integer-constant {
-  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = YYSCAN_SYMBOL(primary-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | character-constant {
-  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = YYSCAN_SYMBOL(primary-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | string-literal {
-  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = YYSCAN_SYMBOL(primary-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | left-paren expression right-paren {
-  $$ = YYSCAN_TOKEN(primary-expression);
+  $$ = YYSCAN_SYMBOL(primary-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 postfix-expression
 : primary-expression
 | postfix-expression left-bracket expression right-bracket {
-  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = YYSCAN_SYMBOL(postfix-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | postfix-expression left-paren argument-expression-list.opt right-paren {
-  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = YYSCAN_SYMBOL(postfix-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | postfix-expression period identifier {
-  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = YYSCAN_SYMBOL(postfix-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | postfix-expression arrow identifier {
-  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = YYSCAN_SYMBOL(postfix-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | postfix-expression increment {
-  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = YYSCAN_SYMBOL(postfix-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | postfix-expression decrement {
-  $$ = YYSCAN_TOKEN(postfix-expression);
+  $$ = YYSCAN_SYMBOL(postfix-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 argument-expression-list.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(argument-expression-list);
+  $$ = YYSCAN_SYMBOL(argument-expression-list);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | argument-expression-list
 ;
 argument-expression-list
 : assignment-expression {
-  $$ = YYSCAN_TOKEN(argument-expression-list);
+  $$ = YYSCAN_SYMBOL(argument-expression-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | argument-expression-list comma assignment-expression {
@@ -393,23 +393,23 @@ argument-expression-list
 unary-expression
 : postfix-expression
 | increment unary-expression {
-  $$ = YYSCAN_TOKEN(unary-expression);
+  $$ = YYSCAN_SYMBOL(unary-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | decrement unary-expression {
-  $$ = YYSCAN_TOKEN(unary-expression);
+  $$ = YYSCAN_SYMBOL(unary-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | unary-operator cast-expression {
-  $$ = YYSCAN_TOKEN(unary-expression);
+  $$ = YYSCAN_SYMBOL(unary-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | sizeof unary-expression {
-  $$ = YYSCAN_TOKEN(unary-expression);
+  $$ = YYSCAN_SYMBOL(unary-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | sizeof left-paren type-name right-paren {
-  $$ = YYSCAN_TOKEN(unary-expression);
+  $$ = YYSCAN_SYMBOL(unary-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
@@ -424,14 +424,14 @@ unary-operator
 cast-expression
 : unary-expression
 | left-paren type-name right-paren cast-expression {
-  $$ = YYSCAN_TOKEN(cast-expression);
+  $$ = YYSCAN_SYMBOL(cast-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 multiplicative-expression
 : cast-expression
 | multiplicative-expression multiplicative-operator cast-expression {
-  $$ = YYSCAN_TOKEN(multiplicative-expression);
+  $$ = YYSCAN_SYMBOL(multiplicative-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
@@ -443,7 +443,7 @@ multiplicative-operator
 additive-expression
 : multiplicative-expression
 | additive-expression additive-operator multiplicative-expression {
-  $$ = YYSCAN_TOKEN(additive-expression);
+  $$ = YYSCAN_SYMBOL(additive-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
@@ -454,7 +454,7 @@ additive-operator
 shift-expression
 : additive-expression
 | shift-expression shift-operator additive-expression {
-  $$ = YYSCAN_TOKEN(shift-expression);
+  $$ = YYSCAN_SYMBOL(shift-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
@@ -465,7 +465,7 @@ shift-operator
 relational-expression
 : shift-expression
 | relational-expression relational-operator shift-expression {
-  $$ = YYSCAN_TOKEN(relational-expression);
+  $$ = YYSCAN_SYMBOL(relational-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
@@ -478,7 +478,7 @@ relational-operator
 equality-expression
 : relational-expression
 | equality-expression equality-operator relational-expression {
-  $$ = YYSCAN_TOKEN(equality-expression);
+  $$ = YYSCAN_SYMBOL(equality-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
@@ -489,49 +489,49 @@ equality-operator
 and-expression
 : equality-expression
 | and-expression ampersand equality-expression {
-  $$ = YYSCAN_TOKEN(and-expression);
+  $$ = YYSCAN_SYMBOL(and-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 exclusive-or-expression
 : and-expression
 | exclusive-or-expression caret and-expression {
-  $$ = YYSCAN_TOKEN(exclusive-expression);
+  $$ = YYSCAN_SYMBOL(exclusive-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 inclusive-or-expression
 : exclusive-or-expression
 | inclusive-or-expression bar exclusive-or-expression {
-  $$ = YYSCAN_TOKEN(inclusive-or-expression);
+  $$ = YYSCAN_SYMBOL(inclusive-or-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 logical-and-expression
 : inclusive-or-expression
 | logical-and-expression and inclusive-or-expression {
-  $$ = YYSCAN_TOKEN(logical-and-expression);
+  $$ = YYSCAN_SYMBOL(logical-and-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 logical-or-expression
 : logical-and-expression
 | logical-or-expression or logical-and-expression {
-  $$ = YYSCAN_TOKEN(logical-or-expression);
+  $$ = YYSCAN_SYMBOL(logical-or-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 conditional-expression
 : logical-or-expression
 | logical-or-expression question expression colon conditional-expression {
-  $$ = YYSCAN_TOKEN(conditional-expression);
+  $$ = YYSCAN_SYMBOL(conditional-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 ;
 assignment-expression
 : conditional-expression
 | unary-expression assignment-operator assignment-expression {
-  $$ = YYSCAN_TOKEN(assignment-expression);
+  $$ = YYSCAN_SYMBOL(assignment-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
@@ -550,14 +550,14 @@ assignment-operator
 ;
 expression.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(expression);
+  $$ = YYSCAN_SYMBOL(expression);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | expression
 ;
 expression
 : assignment-expression {
-  $$ = YYSCAN_TOKEN(expression);
+  $$ = YYSCAN_SYMBOL(expression);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | expression comma assignment-expression {
@@ -568,14 +568,14 @@ expression
 /* 6.4 Constant expressions */
 constant-expression.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(constant-expression);
+  $$ = YYSCAN_SYMBOL(constant-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | constant-expression
 ;
 constant-expression
 : conditional-expression {
-  $$ = YYSCAN_TOKEN(constant-expression);
+  $$ = YYSCAN_SYMBOL(constant-expression);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
@@ -583,13 +583,13 @@ constant-expression
 /* 6.5 Declarations */
 declaration
 : declaration-specifiers init-declarator-list.opt semicolon {
-  $$ = YYSCAN_TOKEN(declaration);
+  $$ = YYSCAN_SYMBOL(declaration);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 declaration-specifiers
 : declaration-specifier {
-  $$ = YYSCAN_TOKEN(declaration-specifiers);
+  $$ = YYSCAN_SYMBOL(declaration-specifiers);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | declaration-specifiers declaration-specifier {
@@ -603,14 +603,14 @@ declaration-specifier
 ;
 init-declarator-list.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(init-declarator-list);
+  $$ = YYSCAN_SYMBOL(init-declarator-list);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | init-declarator-list
 ;
 init-declarator-list
 : init-declarator {
-  $$ = YYSCAN_TOKEN(init-declarator-list);
+  $$ = YYSCAN_SYMBOL(init-declarator-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | init-declarator-list comma init-declarator {
@@ -619,109 +619,109 @@ init-declarator-list
 ;
 init-declarator
 : declarator {
-  $$ = YYSCAN_TOKEN(init-declarator);
+  $$ = YYSCAN_SYMBOL(init-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | declarator assign initializer {
-  $$ = YYSCAN_TOKEN(init-declarator);
+  $$ = YYSCAN_SYMBOL(init-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 storage-class-specifier
 : typedef {
-  $$ = YYSCAN_TOKEN(storage-class-specifier);
+  $$ = YYSCAN_SYMBOL(storage-class-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | extern {
-  $$ = YYSCAN_TOKEN(storage-class-specifier);
+  $$ = YYSCAN_SYMBOL(storage-class-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | static {
-  $$ = YYSCAN_TOKEN(storage-class-specifier);
+  $$ = YYSCAN_SYMBOL(storage-class-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | auto {
-  $$ = YYSCAN_TOKEN(storage-class-specifier);
+  $$ = YYSCAN_SYMBOL(storage-class-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | register {
-  $$ = YYSCAN_TOKEN(storage-class-specifier);
+  $$ = YYSCAN_SYMBOL(storage-class-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 type-specifier
 : void {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | char {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | short {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | int {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | long {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | float {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | double {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | signed {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | unsigned {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | struct-or-union-specifier {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | enum-specifier {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | typedef-name {
-  $$ = YYSCAN_TOKEN(type-specifier);
+  $$ = YYSCAN_SYMBOL(type-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 struct-or-union-specifier
 : struct-or-union identifier.opt left-brace struct-declaration-list right-brace {
-  $$ = YYSCAN_TOKEN(struct-or-union-specifier);
+  $$ = YYSCAN_SYMBOL(struct-or-union-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 | struct-or-union identifier {
-  $$ = YYSCAN_TOKEN(struct-or-union-specifier);
+  $$ = YYSCAN_SYMBOL(struct-or-union-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 struct-or-union
 : struct {
-  $$ = YYSCAN_TOKEN(struct-or-union);
+  $$ = YYSCAN_SYMBOL(struct-or-union);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | union {
-  $$ = YYSCAN_TOKEN(struct-or-union);
+  $$ = YYSCAN_SYMBOL(struct-or-union);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 struct-declaration-list
 : struct-declaration {
-  $$ = YYSCAN_TOKEN(struct-declaration-list);
+  $$ = YYSCAN_SYMBOL(struct-declaration-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | struct-declaration-list struct-declaration {
@@ -730,13 +730,13 @@ struct-declaration-list
 ;
 struct-declaration
 : specifier-qualifier-list struct-declarator-list semicolon {
-  $$ = YYSCAN_TOKEN(struct-declaration);
+  $$ = YYSCAN_SYMBOL(struct-declaration);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 specifier-qualifier-list
 : specifier-qualifier {
-  $$ = YYSCAN_TOKEN(specifier-qualifier-list);
+  $$ = YYSCAN_SYMBOL(specifier-qualifier-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | specifier-qualifier-list specifier-qualifier {
@@ -749,7 +749,7 @@ specifier-qualifier
 ;
 struct-declarator-list
 : struct-declarator {
-  $$ = YYSCAN_TOKEN(struct-declarator-list);
+  $$ = YYSCAN_SYMBOL(struct-declarator-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | struct-declarator-list comma struct-declarator {
@@ -758,27 +758,27 @@ struct-declarator-list
 ;
 struct-declarator
 : declarator {
-  $$ = YYSCAN_TOKEN(struct-declarator);
+  $$ = YYSCAN_SYMBOL(struct-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | declarator.opt colon constant-expression {
-  $$ = YYSCAN_TOKEN(struct-declarator);
+  $$ = YYSCAN_SYMBOL(struct-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 enum-specifier
 : enum identifier.opt left-brace enumerator-list right-brace {
-  $$ = YYSCAN_TOKEN(enum-specifier);
+  $$ = YYSCAN_SYMBOL(enum-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 | enum identifier {
-  $$ = YYSCAN_TOKEN(enum-specifier);
+  $$ = YYSCAN_SYMBOL(enum-specifier);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 enumerator-list
 : enumerator {
-  $$ = YYSCAN_TOKEN(enumerator-list);
+  $$ = YYSCAN_SYMBOL(enumerator-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | enumerator-list comma enumerator {
@@ -787,83 +787,83 @@ enumerator-list
 ;
 enumerator
 : enumeration-constant {
-  $$ = YYSCAN_TOKEN(enumerator);
+  $$ = YYSCAN_SYMBOL(enumerator);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | enumeration-constant assign constant-expression {
-  $$ = YYSCAN_TOKEN(enumerator);
+  $$ = YYSCAN_SYMBOL(enumerator);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 type-qualifier
 : const {
-  $$ = YYSCAN_TOKEN(type-qualifier);
+  $$ = YYSCAN_SYMBOL(type-qualifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | volatile {
-  $$ = YYSCAN_TOKEN(type-qualifier);
+  $$ = YYSCAN_SYMBOL(type-qualifier);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 declarator.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(declarator);
+  $$ = YYSCAN_SYMBOL(declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | declarator
 ;
 declarator
 : direct-declarator {
-  $$ = YYSCAN_TOKEN(declarator);
+  $$ = YYSCAN_SYMBOL(declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | pointer direct-declarator {
-  $$ = YYSCAN_TOKEN(declarator);
+  $$ = YYSCAN_SYMBOL(declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 direct-declarator
 : identifier {
-  $$ = YYSCAN_TOKEN(direct-declarator);
+  $$ = YYSCAN_SYMBOL(direct-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | left-paren declarator right-paren {
-  $$ = YYSCAN_TOKEN(direct-declarator);
+  $$ = YYSCAN_SYMBOL(direct-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | direct-declarator left-bracket constant-expression.opt right-bracket {
-  $$ = YYSCAN_TOKEN(direct-declarator);
+  $$ = YYSCAN_SYMBOL(direct-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | direct-declarator left-paren parameter-type-list right-paren {
-  $$ = YYSCAN_TOKEN(direct-declarator);
+  $$ = YYSCAN_SYMBOL(direct-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | direct-declarator left-paren identifier-list.opt right-paren {
-  $$ = YYSCAN_TOKEN(direct-declarator);
+  $$ = YYSCAN_SYMBOL(direct-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 pointer
 : asterisk type-qualifier-list.opt {
-  $$ = YYSCAN_TOKEN(pointer);
+  $$ = YYSCAN_SYMBOL(pointer);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | pointer asterisk type-qualifier-list.opt {
-  $$ = YYSCAN_TOKEN(pointer);
+  $$ = YYSCAN_SYMBOL(pointer);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 type-qualifier-list.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(type-qualifier-list);
+  $$ = YYSCAN_SYMBOL(type-qualifier-list);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | type-qualifier-list
 ;
 type-qualifier-list
 : type-qualifier {
-  $$ = YYSCAN_TOKEN(type-qualifier-list);
+  $$ = YYSCAN_SYMBOL(type-qualifier-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | type-qualifier-list type-qualifier {
@@ -872,24 +872,24 @@ type-qualifier-list
 ;
 parameter-type-list.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(parameter-type-list);
+  $$ = YYSCAN_SYMBOL(parameter-type-list);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | parameter-type-list
 ;
 parameter-type-list
 : parameter-list {
-  $$ = YYSCAN_TOKEN(parameter-type-list);
+  $$ = YYSCAN_SYMBOL(parameter-type-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | parameter-list comma ellipsis {
-  $$ = YYSCAN_TOKEN(parameter-type-list);
+  $$ = YYSCAN_SYMBOL(parameter-type-list);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 parameter-list
 : parameter-declaration {
-  $$ = YYSCAN_TOKEN(parameter-list);
+  $$ = YYSCAN_SYMBOL(parameter-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | parameter-list comma parameter-declaration {
@@ -898,24 +898,24 @@ parameter-list
 ;
 parameter-declaration
 : declaration-specifiers declarator {
-  $$ = YYSCAN_TOKEN(parameter-declaration);
+  $$ = YYSCAN_SYMBOL(parameter-declaration);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | declaration-specifiers abstract-declarator.opt {
-  $$ = YYSCAN_TOKEN(parameter-declaration);
+  $$ = YYSCAN_SYMBOL(parameter-declaration);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 identifier-list.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(identifier-list);
+  $$ = YYSCAN_SYMBOL(identifier-list);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | identifier-list
 ;
 identifier-list
 : identifier {
-  $$ = YYSCAN_TOKEN(identifier-list);
+  $$ = YYSCAN_SYMBOL(identifier-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | identifier-list comma identifier {
@@ -924,76 +924,76 @@ identifier-list
 ;
 type-name
 : specifier-qualifier-list abstract-declarator.opt {
-  $$ = YYSCAN_TOKEN(type-name);
+  $$ = YYSCAN_SYMBOL(type-name);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 abstract-declarator.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(abstract-declarator);
+  $$ = YYSCAN_SYMBOL(abstract-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | abstract-declarator
 ;
 abstract-declarator
 : pointer {
-  $$ = YYSCAN_TOKEN(abstract-declarator);
+  $$ = YYSCAN_SYMBOL(abstract-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | direct-abstract-declarator {
-  $$ = YYSCAN_TOKEN(abstract-declarator);
+  $$ = YYSCAN_SYMBOL(abstract-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | pointer direct-abstract-declarator {
-  $$ = YYSCAN_TOKEN(abstract-declarator);
+  $$ = YYSCAN_SYMBOL(abstract-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 direct-abstract-declarator
 : left-paren abstract-declarator right-paren {
-  $$ = YYSCAN_TOKEN(direct-abstract-declarator);
+  $$ = YYSCAN_SYMBOL(direct-abstract-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | left-bracket constant-expression.opt right-bracket {
-  $$ = YYSCAN_TOKEN(direct-abstract-declarator);
+  $$ = YYSCAN_SYMBOL(direct-abstract-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | direct-abstract-declarator left-bracket constant-expression.opt right-bracket {
-  $$ = YYSCAN_TOKEN(direct-abstract-declarator);
+  $$ = YYSCAN_SYMBOL(direct-abstract-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | left-paren parameter-type-list.opt right-paren {
-  $$ = YYSCAN_TOKEN(direct-abstract-declarator);
+  $$ = YYSCAN_SYMBOL(direct-abstract-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | direct-abstract-declarator left-paren parameter-type-list.opt right-paren {
-  $$ = YYSCAN_TOKEN(direct-abstract-declarator);
+  $$ = YYSCAN_SYMBOL(direct-abstract-declarator);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 typedef-name
 : typedef-identifier {
-  $$ = YYSCAN_TOKEN(typedef-name);
+  $$ = YYSCAN_SYMBOL(typedef-name);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 initializer
 : assignment-expression {
-  $$ = YYSCAN_TOKEN(initializer);
+  $$ = YYSCAN_SYMBOL(initializer);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | left-brace initializer-list right-brace {
-  $$ = YYSCAN_TOKEN(initializer);
+  $$ = YYSCAN_SYMBOL(initializer);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | left-brace initializer-list comma right-brace {
-  $$ = YYSCAN_TOKEN(initializer);
+  $$ = YYSCAN_SYMBOL(initializer);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 initializer-list
 : initializer {
-  $$ = YYSCAN_TOKEN(initializer-list);
+  $$ = YYSCAN_SYMBOL(initializer-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | initializer-list comma initializer {
@@ -1004,60 +1004,60 @@ initializer-list
 /* 6.6 Statements */
 statement
 : labeled-statement {
-  $$ = YYSCAN_TOKEN(statement);
+  $$ = YYSCAN_SYMBOL(statement);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | compound-statement {
-  $$ = YYSCAN_TOKEN(statement);
+  $$ = YYSCAN_SYMBOL(statement);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | expression-statement {
-  $$ = YYSCAN_TOKEN(statement);
+  $$ = YYSCAN_SYMBOL(statement);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | selection-statement {
-  $$ = YYSCAN_TOKEN(statement);
+  $$ = YYSCAN_SYMBOL(statement);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | iteration-statement {
-  $$ = YYSCAN_TOKEN(statement);
+  $$ = YYSCAN_SYMBOL(statement);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | jump-statement {
-  $$ = YYSCAN_TOKEN(statement);
+  $$ = YYSCAN_SYMBOL(statement);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 labeled-statement
 : identifier colon statement {
-  $$ = YYSCAN_TOKEN(labeled-statement);
+  $$ = YYSCAN_SYMBOL(labeled-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | case constant-expression colon statement {
-  $$ = YYSCAN_TOKEN(labeled-statement);
+  $$ = YYSCAN_SYMBOL(labeled-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 | default colon statement {
-  $$ = YYSCAN_TOKEN(labeled-statement);
+  $$ = YYSCAN_SYMBOL(labeled-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
 compound-statement
 : left-brace declaration-list.opt statement-list.opt right-brace {
-  $$ = YYSCAN_TOKEN(compound-statement);
+  $$ = YYSCAN_SYMBOL(compound-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;
 declaration-list.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(declaration-list);
+  $$ = YYSCAN_SYMBOL(declaration-list);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | declaration-list
 ;
 declaration-list
 : declaration {
-  $$ = YYSCAN_TOKEN(declaration-list);
+  $$ = YYSCAN_SYMBOL(declaration-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | declaration-list declaration {
@@ -1066,14 +1066,14 @@ declaration-list
 ;
 statement-list.opt
 : %empty {
-  $$ = YYSCAN_TOKEN(statement-list);
+  $$ = YYSCAN_SYMBOL(statement-list);
   $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
 }
 | statement-list
 ;
 statement-list
 : statement {
-  $$ = YYSCAN_TOKEN(statement-list);
+  $$ = YYSCAN_SYMBOL(statement-list);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | statement-list statement {
@@ -1082,53 +1082,53 @@ statement-list
 ;
 expression-statement
 : expression.opt semicolon {
-  $$ = YYSCAN_TOKEN(expression-statement);
+  $$ = YYSCAN_SYMBOL(expression-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 ;
 selection-statement
 : if left-paren expression right-paren statement %prec THEN {
-  $$ = YYSCAN_TOKEN(selection-statement);
+  $$ = YYSCAN_SYMBOL(selection-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 | if left-paren expression right-paren statement else statement {
-  $$ = YYSCAN_TOKEN(selection-statement);
+  $$ = YYSCAN_SYMBOL(selection-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 8, $$, $1, $2, $3, $4, $5, $6, $7);
 }
 | switch left-paren expression right-paren statement {
-  $$ = YYSCAN_TOKEN(selection-statement);
+  $$ = YYSCAN_SYMBOL(selection-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 ;
 iteration-statement
 : while left-paren expression right-paren statement {
-  $$ = YYSCAN_TOKEN(iteration-statement);
+  $$ = YYSCAN_SYMBOL(iteration-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
 }
 | do statement while left-paren expression right-paren semicolon {
-  $$ = YYSCAN_TOKEN(iteration-statement);
+  $$ = YYSCAN_SYMBOL(iteration-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 8, $$, $1, $2, $3, $4, $5, $6, $7);
 }
 | for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {
-  $$ = YYSCAN_TOKEN(iteration-statement);
+  $$ = YYSCAN_SYMBOL(iteration-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 10, $$, $1, $2, $3, $4, $5, $6, $7, $8, $9);
 }
 ;
 jump-statement
 : goto identifier semicolon {
-  $$ = YYSCAN_TOKEN(jump-statement);
+  $$ = YYSCAN_SYMBOL(jump-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | continue semicolon {
-  $$ = YYSCAN_TOKEN(jump-statement);
+  $$ = YYSCAN_SYMBOL(jump-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | break semicolon {
-  $$ = YYSCAN_TOKEN(jump-statement);
+  $$ = YYSCAN_SYMBOL(jump-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
 }
 | return expression.opt semicolon {
-  $$ = YYSCAN_TOKEN(jump-statement);
+  $$ = YYSCAN_SYMBOL(jump-statement);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 ;
@@ -1139,7 +1139,7 @@ top
 ;
 translation-unit
 : external-declaration {
-  $$ = YYSCAN_TOKEN(translation-unit);
+  $$ = YYSCAN_SYMBOL(translation-unit);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 | translation-unit external-declaration {
@@ -1149,17 +1149,17 @@ translation-unit
 external-declaration
 : function-definition
 | declaration {
-  $$ = YYSCAN_TOKEN(external-declaration);
+  $$ = YYSCAN_SYMBOL(external-declaration);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }
 ;
 function-definition
 : declarator declaration-list.opt compound-statement {
-  $$ = YYSCAN_TOKEN(function-definition);
+  $$ = YYSCAN_SYMBOL(function-definition);
   $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
 }
 | declaration-specifiers declarator declaration-list.opt compound-statement {
-  $$ = YYSCAN_TOKEN(function-definition);
+  $$ = YYSCAN_SYMBOL(function-definition);
   $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
 }
 ;

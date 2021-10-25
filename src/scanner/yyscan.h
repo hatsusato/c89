@@ -3,8 +3,8 @@
 
 #include "yyscan_t.h"
 
-#define YYSCAN_SYMBOL() yyscan_symbol(YYSCAN_PARAM)
-#define YYSCAN_TOKEN(token) yyscan_token(YYSCAN_PARAM, #token)
+#define YYSCAN_TOKEN() yyscan_symbol(YYSCAN_PARAM)
+#define YYSCAN_SYMBOL(token) yyscan_token(YYSCAN_PARAM, #token)
 
 void yyerror(yyscan_t, const char *);
 yyscan_t yyscan_new(struct scanner *);
