@@ -3,6 +3,10 @@
 #include "type.h"
 #include "util/util.h"
 
+static bool_t cell_is_atom(const struct cell *self) {
+  return cell_is_nil(self) || cell_is_symbol(self);
+}
+
 const struct cell *cell_nil(void) {
   static struct cell cell = {NULL, NULL};
   return &cell;
@@ -11,7 +15,7 @@ bool_t cell_is_nil(const struct cell *self) {
   return !self->car && !self->cdr;
 }
 bool_t cell_is_cons(const struct cell *self) {
-  return self->car && self->cdr;
+  return !cell_is_atom(self);
 }
 bool_t cell_is_symbol(const struct cell *self) {
   return self->car && !self->cdr;
