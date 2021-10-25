@@ -40,13 +40,13 @@ int yyscan_is_typedef(yyscan_t self, const char *symbol) {
 void yyscan_set_ast(yyscan_t self, const struct cell *ast) {
   yyget_extra(self)->ast = ast;
 }
-const struct cell *yyscan_symbol(yyscan_t self) {
+const struct cell *yyscan_token(yyscan_t self) {
   const char *text = yyget_text(self);
   assert(text[yyget_leng(self)] == 0);
-  return cell_factory_symbol(yyscan_factory(self), text);
+  return yyscan_symbol(self, text);
 }
-const struct cell *yyscan_token(yyscan_t self, const char *token) {
-  return cell_factory_symbol(yyscan_factory(self), token);
+const struct cell *yyscan_symbol(yyscan_t self, const char *symbol) {
+  return cell_factory_symbol(yyscan_factory(self), symbol);
 }
 const struct cell *yyscan_push(yyscan_t self, const struct cell *xs,
                                const struct cell *x) {
