@@ -1,14 +1,7 @@
 #include "unittest.h"
 
 #include "dict.h"
-#include "type.h"
 #include "util/util.h"
-#include "vec/vec.h"
-
-struct dict_entry {
-  const char *key;
-  void *val;
-};
 
 void dict_unittest(void) {
   struct dict *dict = dict_new();
@@ -22,10 +15,10 @@ void dict_unittest(void) {
     dict_insert(dict, key[i], val + i);
   }
   for (i = 0; i < count; i++) {
-    struct dict_entry *entry = vec_at(dict->vec, i);
-    assert(util_streq(entry->key, key[i]));
-    assert(*(int *)entry->val == i * 100);
+    int *val = dict_find(dict, key[i]);
+    assert(val && *val == i * 100);
   }
+  assert(!dict_find(dict, "abc"));
   util_free(val);
   util_free(key);
   dict_delete(dict);

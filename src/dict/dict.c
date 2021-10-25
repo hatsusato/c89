@@ -12,6 +12,10 @@ struct dict_entry {
 static void dict_entry_free(void *entry) {
   util_free(entry);
 }
+static int dict_cmp(const void *lhs, const void *rhs) {
+  const struct dict_entry *const *l = lhs, *const *r = rhs;
+  return util_strcmp((*l)->key, (*r)->key);
+}
 
 struct dict *dict_new(void) {
   struct dict *self = util_malloc(sizeof(struct dict), 1);
@@ -28,4 +32,12 @@ void dict_insert(struct dict *self, const char *key, void *val) {
   entry->key = key;
   entry->val = val;
   vec_push(self->vec, entry);
+  vec_sort(self->vec, dict_cmp);
+}
+void *dict_find(struct dict *self, const char *key) {
+  struct dict_entry entry = {NULL, NULL};
+  const struct dict_entry *found;
+  entry.key = key;
+  found = vec_search(self->vec, &entry, dict_cmp);
+  return found ? found->val : NULL;
 }
