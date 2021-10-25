@@ -10,7 +10,7 @@ static int set_cmp(const void *lhs, const void *rhs) {
 }
 
 struct set *set_new(void) {
-  struct set *self = util_malloc(sizeof(struct set), 1);
+  struct set *self = util_malloc(sizeof(struct set));
   self->vec = vec_new();
   return self;
 }

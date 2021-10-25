@@ -17,14 +17,14 @@
       UTIL_UNUSED(p);                               \
     }                                               \
   } while (false)
-#define vec_unittest_push(vec, begin, end)  \
-  do {                                      \
-    int i;                                  \
-    for (i = begin; i < end; i++) {         \
-      int *p = util_malloc(sizeof(int), 1); \
-      *p = i;                               \
-      vec_push(vec, p);                     \
-    }                                       \
+#define vec_unittest_push(vec, begin, end) \
+  do {                                     \
+    int i;                                 \
+    for (i = begin; i < end; i++) {        \
+      int *p = util_malloc(sizeof(int));   \
+      *p = i;                              \
+      vec_push(vec, p);                    \
+    }                                      \
   } while (false)
 #define vec_unittest_pop(vec, count) \
   do {                               \

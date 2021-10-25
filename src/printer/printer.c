@@ -16,7 +16,7 @@ static void printer_shift(struct printer *self) {
 }
 
 struct printer *printer_new(void *fp) {
-  struct printer *self = util_malloc(sizeof(struct printer), 1);
+  struct printer *self = util_malloc(sizeof(struct printer));
   self->fp = fp;
   self->indent = 0;
   self->newline = false;

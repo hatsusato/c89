@@ -16,7 +16,7 @@ static const struct cell *cell_factory_make(struct cell_factory *self,
 }
 
 struct cell_factory *cell_factory_new(struct pool *pool, struct set *set) {
-  struct cell_factory *self = util_malloc(sizeof(struct cell_factory), 1);
+  struct cell_factory *self = util_malloc(sizeof(struct cell_factory));
   self->pool = pool;
   self->set = set;
   return self;

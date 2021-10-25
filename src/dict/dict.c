@@ -20,7 +20,7 @@ static struct dict_entry *dict_search(struct dict *self, const char *key) {
 }
 
 struct dict *dict_new(void) {
-  struct dict *self = util_malloc(sizeof(struct dict), 1);
+  struct dict *self = util_malloc(sizeof(struct dict));
   self->vec = vec_new();
   return self;
 }
@@ -34,7 +34,7 @@ void dict_insert(struct dict *self, const char *key, void *val) {
   if (entry) {
     entry->val = val;
   } else {
-    entry = util_malloc(sizeof(struct dict_entry), 1);
+    entry = util_malloc(sizeof(struct dict_entry));
     entry->key = key;
     entry->val = val;
     vec_push(self->vec, entry);

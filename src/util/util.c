@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-void *util_malloc(align_t align, index_t index) {
-  return malloc(index * align);
+void *util_malloc(align_t align) {
+  return malloc(align);
 }
 void *util_malloc_array(align_t align, index_t count) {
   return malloc(align * count);

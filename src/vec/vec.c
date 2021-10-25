@@ -22,7 +22,7 @@ static void vec_expand(struct vec *self) {
 }
 
 struct vec *vec_new(void) {
-  struct vec *self = util_malloc(sizeof(struct vec), 1);
+  struct vec *self = util_malloc(sizeof(struct vec));
   vec_array_init(&self->array, sizeof(void *));
   self->capacity = 0;
   return self;
