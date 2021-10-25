@@ -35,6 +35,7 @@ target_link_libraries(unittest PRIVATE
   vec
   )
 
+add_subdirectory(array)
 add_subdirectory(cell)
 add_subdirectory(dict)
 add_subdirectory(pool)
