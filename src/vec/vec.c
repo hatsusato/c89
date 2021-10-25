@@ -20,7 +20,7 @@ struct vec *vec_new(void) {
   return self;
 }
 void vec_delete(struct vec *self) {
-  vec_array_free(&self->array);
+  vec_array_finish(&self->array);
   util_free(self);
 }
 void vec_reserve(struct vec *self, index_t count) {

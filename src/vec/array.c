@@ -12,7 +12,7 @@ void vec_array_init(struct vec_array *self, align_t align) {
   self->align = align;
   self->count = 0;
 }
-void vec_array_free(struct vec_array *self) {
+void vec_array_finish(struct vec_array *self) {
   util_free(self->ptr);
   self->ptr = NULL;
   self->count = 0;
@@ -23,7 +23,7 @@ void vec_array_resize(struct vec_array *self, index_t count) {
   tmp.ptr = util_malloc_array(self->align, count);
   vec_array_insert(&tmp, self->ptr, UTIL_MIN(self->count, count));
   UTIL_SWAP(struct vec_array, &tmp, self);
-  vec_array_free(&tmp);
+  vec_array_finish(&tmp);
 }
 void vec_array_set(struct vec_array *self, void *ptr, index_t count) {
   assert(count == (ptr ? count : 0));
