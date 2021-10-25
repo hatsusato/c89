@@ -3,6 +3,7 @@ target_sources(cell PRIVATE
   cell.c
   factory.c
   print.c
+  tag.c
   type.c
   )
 target_link_libraries(cell PRIVATE
