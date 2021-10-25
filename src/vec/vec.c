@@ -1,6 +1,6 @@
 #include "vec.h"
 
-#include "array.h"
+#include "array/array.h"
 #include "type.h"
 #include "util/util.h"
 

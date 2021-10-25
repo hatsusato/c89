@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "array/type.h"
+#include "type.h"
 #include "util/util.h"
 
 void vec_array_init(struct vec_array *self, align_t align) {

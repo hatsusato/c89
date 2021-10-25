@@ -1,6 +1,5 @@
 add_library(vec STATIC)
 target_sources(vec PRIVATE
-  array.c
   type.c
   vec.c
   )
