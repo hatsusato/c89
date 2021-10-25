@@ -20,12 +20,14 @@ add_library(unittest STATIC)
 target_sources(unittest PRIVATE
   unittest.c
   cell/unittest.c
+  dict/unittest.c
   pool/unittest.c
   set/unittest.c
   vec/unittest.c
   )
 target_link_libraries(unittest PRIVATE
   cell
+  dict
   options
   pool
   set
@@ -34,6 +36,7 @@ target_link_libraries(unittest PRIVATE
   )
 
 add_subdirectory(cell)
+add_subdirectory(dict)
 add_subdirectory(pool)
 add_subdirectory(printer)
 add_subdirectory(scanner)
