@@ -5,7 +5,7 @@
 #include "util/type.h"
 
 struct vec {
-  struct vec_array array;
+  struct array array;
   index_t capacity;
 };
 

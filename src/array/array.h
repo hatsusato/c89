@@ -3,16 +3,16 @@
 
 #include "util/type.h"
 
-struct vec_array;
+struct array;
 
-void vec_array_init(struct vec_array *, align_t);
-void vec_array_finish(struct vec_array *);
-void vec_array_resize(struct vec_array *, index_t);
-void vec_array_set(struct vec_array *, void *, index_t);
-void *vec_array_at(struct vec_array *, index_t);
-void vec_array_insert(struct vec_array *, const void *, index_t);
-void vec_array_remove(struct vec_array *, index_t);
-void vec_array_sort(struct vec_array *, cmp_t);
-void *vec_array_search(struct vec_array *, const void *, cmp_t);
+void array_init(struct array *, align_t);
+void array_finish(struct array *);
+void array_resize(struct array *, index_t);
+void array_set(struct array *, void *, index_t);
+void *array_at(struct array *, index_t);
+void array_insert(struct array *, const void *, index_t);
+void array_remove(struct array *, index_t);
+void array_sort(struct array *, cmp_t);
+void *array_search(struct array *, const void *, cmp_t);
 
 #endif /* INCLUDE_GUARD_C229D27C_DE8E_4AE2_A417_79D5A6C324D7 */

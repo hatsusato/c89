@@ -6,52 +6,52 @@
 #include "type.h"
 #include "util/util.h"
 
-void vec_array_init(struct vec_array *self, align_t align) {
+void array_init(struct array *self, align_t align) {
   assert(0 < align);
   self->ptr = NULL;
   self->align = align;
   self->count = 0;
 }
-void vec_array_finish(struct vec_array *self) {
+void array_finish(struct array *self) {
   util_free(self->ptr);
   self->ptr = NULL;
   self->count = 0;
 }
-void vec_array_resize(struct vec_array *self, index_t count) {
-  struct vec_array tmp;
-  vec_array_init(&tmp, self->align);
+void array_resize(struct array *self, index_t count) {
+  struct array tmp;
+  array_init(&tmp, self->align);
   tmp.ptr = util_malloc_array(self->align, count);
-  vec_array_insert(&tmp, self->ptr, UTIL_MIN(self->count, count));
-  UTIL_SWAP(struct vec_array, &tmp, self);
-  vec_array_finish(&tmp);
+  array_insert(&tmp, self->ptr, UTIL_MIN(self->count, count));
+  UTIL_SWAP(struct array, &tmp, self);
+  array_finish(&tmp);
 }
-void vec_array_set(struct vec_array *self, void *ptr, index_t count) {
+void array_set(struct array *self, void *ptr, index_t count) {
   assert(count == (ptr ? count : 0));
   self->ptr = ptr;
   self->count = count;
 }
-void *vec_array_at(struct vec_array *self, index_t index) {
+void *array_at(struct array *self, index_t index) {
   assert(self->ptr && -self->count <= index && index < self->count);
   index += index < 0 ? self->count : 0;
   return self->ptr + self->align * index;
 }
-void vec_array_insert(struct vec_array *self, const void *ptr, index_t count) {
+void array_insert(struct array *self, const void *ptr, index_t count) {
   if (0 < count) {
     assert(self->ptr && ptr);
     memcpy(self->ptr + self->align * self->count, ptr, self->align * count);
     self->count += count;
   }
 }
-void vec_array_remove(struct vec_array *self, index_t count) {
+void array_remove(struct array *self, index_t count) {
   assert(count <= self->count);
   self->count -= count;
 }
-void vec_array_sort(struct vec_array *self, cmp_t cmp) {
+void array_sort(struct array *self, cmp_t cmp) {
   if (self->ptr) {
     qsort(self->ptr, self->count, self->align, cmp);
   }
 }
-void *vec_array_search(struct vec_array *self, const void *key, cmp_t cmp) {
+void *array_search(struct array *self, const void *key, cmp_t cmp) {
   if (self->ptr) {
     return bsearch(key, self->ptr, self->count, self->align, cmp);
   }

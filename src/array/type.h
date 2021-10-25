@@ -3,7 +3,7 @@
 
 #include "util/type.h"
 
-struct vec_array {
+struct array {
   byte_t *ptr;
   align_t align;
   index_t count;
