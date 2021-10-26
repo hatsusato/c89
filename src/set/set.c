@@ -1,35 +1,35 @@
 #include "set.h"
 
-#include "utility/utility.h"
-#include "vector/vector.h"
+#include "type.h"
+#include "util/util.h"
+#include "vec/type.h"
+#include "vec/vec.h"
 
-struct struct_Set {
-  Vector *vec;
-  VectorCmp cmp;
-};
-
-static int set_cmp_default(const ConstGeneric *lhs, const ConstGeneric *rhs) {
-  return utility_strcmp(*lhs, *rhs);
+static int set_cmp(const void *lhs, const void *rhs) {
+  const struct vec_entry *l = lhs, *r = rhs;
+  return util_strcmp(l->ptr, r->ptr);
 }
 
-Set *set_new(VectorDestructor dtor, VectorCmp cmp) {
-  Set *set = UTILITY_MALLOC(Set);
-  set->vec = vector_new(dtor);
-  set->cmp = cmp ? cmp : set_cmp_default;
-  return set;
+struct set *set_new(void) {
+  struct set *self = util_malloc(sizeof(struct set));
+  self->vec = vec_new();
+  return self;
 }
-void set_delete(Set *set) {
-  vector_delete(set->vec);
-  UTILITY_FREE(set);
+void set_delete(struct set *self) {
+  vec_map(self->vec, util_free);
+  vec_delete(self->vec);
+  util_free(self);
 }
-void set_clear(Set *set) {
-  vector_clear(set->vec);
+const char *set_find(struct set *self, const char *symbol) {
+  return vec_search(self->vec, symbol, set_cmp);
 }
-void set_insert(Set *set, ConstGeneric elem) {
-  UTILITY_ASSERT(elem != NULL);
-  vector_push(set->vec, (Generic)elem);
-  vector_sort(set->vec, set->cmp);
-}
-ConstGeneric set_find(const Set *set, ConstGeneric key) {
-  return vector_search(set->vec, key, set->cmp);
+const char *set_insert(struct set *self, const char *symbol) {
+  const char *found = set_find(self, symbol);
+  if (!found) {
+    const char *dup = util_strdup(symbol);
+    vec_push(self->vec, (void *)dup);
+    vec_sort(self->vec, set_cmp);
+    found = dup;
+  }
+  return found;
 }

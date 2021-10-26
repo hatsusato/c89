@@ -1,13 +1,14 @@
-#ifndef INCLUDE_GUARD_DBC01AAE_EE94_4490_B009_30C1CDA3E9FF
-#define INCLUDE_GUARD_DBC01AAE_EE94_4490_B009_30C1CDA3E9FF
+#ifndef INCLUDE_GUARD_BF8EE8FD_9DC0_4D83_BCEE_4E488C1C49F3
+#define INCLUDE_GUARD_BF8EE8FD_9DC0_4D83_BCEE_4E488C1C49F3
 
-#include "printer/typedef.h"
-#include "utility/types.h"
+#include "util/type.h"
 
-Printer *printer_new(PrinterFile);
-void printer_delete(Printer *);
-void printer_print(Printer *, const char *, ...);
-void printer_indent(Printer *, int);
-void printer_newline(Printer *);
+struct printer;
 
-#endif /* INCLUDE_GUARD_DBC01AAE_EE94_4490_B009_30C1CDA3E9FF */
+struct printer *printer_new(void *);
+void printer_delete(struct printer *);
+void printer_print(struct printer *, const char *, ...);
+void printer_newline(struct printer *);
+void printer_indent(struct printer *, index_t);
+
+#endif /* INCLUDE_GUARD_BF8EE8FD_9DC0_4D83_BCEE_4E488C1C49F3 */

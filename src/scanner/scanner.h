@@ -1,13 +1,10 @@
-#ifndef INCLUDE_GUARD_29982745_2BB0_454B_9528_9FABEC206FF9
-#define INCLUDE_GUARD_29982745_2BB0_454B_9528_9FABEC206FF9
+#ifndef INCLUDE_GUARD_A6B027B6_CC3A_495C_994F_1210000639A6
+#define INCLUDE_GUARD_A6B027B6_CC3A_495C_994F_1210000639A6
 
-#include "utility/types.h"
+struct cell;
+struct pool;
+struct set;
 
-Scanner *scanner_new(Ast *);
-void scanner_delete(Scanner *);
-const char *scanner_symbol(Scanner *, const char *, Size);
-Bool scanner_exists(Scanner *, const char *);
-void scanner_register(Scanner *, const char *);
-void scanner_finish(Scanner *, Sexp *);
+const struct cell *scanner_parse(struct pool *, struct set *);
 
-#endif /* INCLUDE_GUARD_29982745_2BB0_454B_9528_9FABEC206FF9 */
+#endif /* INCLUDE_GUARD_A6B027B6_CC3A_495C_994F_1210000639A6 */

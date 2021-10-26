@@ -1,21 +1,14 @@
-#include <stdio.h>
+#include "cell/print.h"
+#include "pool/pool.h"
+#include "scanner/scanner.h"
+#include "set/set.h"
+#include "unittest.h"
+#include "util/util.h"
 
-#include "ast/ast.h"
-#include "builder/builder.h"
-#include "ir/module.h"
-#include "printer/printer.h"
-#include "scanner/parse.h"
-#include "utility/utility.h"
-
-static void build(Module *module, Ast *ast) {
-  Builder *builder = builder_new(module);
-  builder_ast(builder, ast_get(ast));
-  builder_delete(builder);
-}
-static Bool is_debug(int argc, char *argv[]) {
-  int i;
-  for (i = 1; i < argc; ++i) {
-    if (utility_strcmp(argv[i], "--debug") == 0) {
+bool_t is_unittest(int argc, char *argv[]) {
+  index_t i;
+  for (i = 1; i < argc; i++) {
+    if (util_streq(argv[i], "--unittest")) {
       return true;
     }
   }
@@ -23,23 +16,19 @@ static Bool is_debug(int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-  Ast *ast = ast_new();
-  int ret = scanner_parse(ast);
-  if (0 == ret) {
-    Printer *printer = printer_new(stdout);
-    if (is_debug(argc, argv)) {
-      ast_print(ast, printer);
-      ast_convert(ast);
-      ast_print(ast, printer);
+  if (is_unittest(argc, argv)) {
+    unittest();
+  } else {
+    struct pool *pool = pool_new();
+    struct set *symbols = set_new();
+    const struct cell *cell = scanner_parse(pool, symbols);
+    if (cell) {
+      cell_print(cell);
     } else {
-      Module *module = module_new();
-      ast_convert(ast);
-      build(module, ast);
-      module_pretty(module, printer);
-      module_delete(module);
+      util_error("ERROR: failed to parse");
     }
-    printer_delete(printer);
+    set_delete(symbols);
+    pool_delete(pool);
   }
-  ast_delete(ast);
-  return ret;
+  return 0;
 }
