@@ -6,11 +6,13 @@
 
 static cell_visitor_t cell_visit_match(const struct cell *car,
                                        const struct dict *visitors) {
-  void *visitor = NULL;
+  cell_visitor_t visitor = NULL;
   if (cell_is_symbol(car)) {
-    visitor = dict_find((struct dict *)visitors, cell_symbol(car));
+    struct cell_visitor_wrapper *wrapper =
+        dict_find((struct dict *)visitors, cell_symbol(car));
+    visitor = wrapper ? wrapper->func : NULL;
   }
-  return (cell_visitor_t)visitor;
+  return visitor;
 }
 
 void cell_visit(const struct cell *it, const struct dict *visitors,

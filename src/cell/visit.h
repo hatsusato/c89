@@ -4,6 +4,9 @@
 struct cell;
 struct dict;
 typedef void (*cell_visitor_t)(const struct cell *, void *);
+struct cell_visitor_wrapper {
+  cell_visitor_t func;
+};
 
 void cell_visit(const struct cell *, const struct dict *, void *);
 
