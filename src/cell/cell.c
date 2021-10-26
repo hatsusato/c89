@@ -36,6 +36,9 @@ const struct cell *cell_cdr(const struct cell *self) {
 const char *cell_symbol(const struct cell *self) {
   return cell_is_symbol(self) ? self->car : NULL;
 }
+const char *cell_tag(const struct cell *self) {
+  return cell_is_cons(self) ? cell_symbol(cell_car(self)) : NULL;
+}
 void cell_set_car(const struct cell *self, const struct cell *car) {
   struct cell *cell = (struct cell *)self;
   assert(cell_is_cons(self));

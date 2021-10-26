@@ -13,6 +13,7 @@ bool_t cell_is_list(const struct cell *);
 const struct cell *cell_car(const struct cell *);
 const struct cell *cell_cdr(const struct cell *);
 const char *cell_symbol(const struct cell *);
+const char *cell_tag(const struct cell *);
 void cell_set_car(const struct cell *, const struct cell *);
 void cell_set_cdr(const struct cell *, const struct cell *);
 
