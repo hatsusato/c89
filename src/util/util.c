@@ -1,5 +1,6 @@
 #include "util.h"
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,9 +31,19 @@ const char *util_strdup(const char *src) {
   strncpy(dst, src, count);
   return dst;
 }
-void util_print(const char *msg) {
-  printf("%s\n", msg);
+void util_print(const char *format, ...) {
+  FILE *fp = stdout;
+  va_list args;
+  va_start(args, format);
+  vfprintf(fp, format, args);
+  va_end(args);
+  fprintf(fp, "\n");
 }
-void util_error(const char *msg) {
-  fprintf(stderr, "%s\n", msg);
+void util_error(const char *format, ...) {
+  FILE *fp = stderr;
+  va_list args;
+  va_start(args, format);
+  vfprintf(fp, format, args);
+  va_end(args);
+  fprintf(fp, "\n");
 }

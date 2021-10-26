@@ -12,7 +12,7 @@ static struct cell_factory *yyscan_factory(yyscan_t self) {
 
 void yyerror(yyscan_t yyscanner, const char *msg) {
   UTIL_UNUSED(yyscanner);
-  util_error(msg);
+  util_error("%s", msg);
 }
 yyscan_t yyscan_new(struct scanner *scanner) {
   yyscan_t self;
