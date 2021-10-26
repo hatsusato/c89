@@ -15,7 +15,7 @@ void vec_push(struct vec *, void *);
 void vec_pop(struct vec *);
 void vec_clear(struct vec *);
 void vec_sort(struct vec *, cmp_t);
-const void *vec_search(struct vec *, const void *, cmp_t);
+void *vec_search(struct vec *, const void *, cmp_t);
 
 void vec_map(struct vec *, map_t);
 

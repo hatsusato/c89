@@ -4,7 +4,7 @@
 #include "type.h"
 #include "util/util.h"
 
-static index_t capacity_ceil(index_t cap) {
+static index_t vec_capacity_ceil(index_t cap) {
   enum { initial_capacity = 8 };
   index_t ceil = initial_capacity;
   while (ceil < cap) {
@@ -15,7 +15,7 @@ static index_t capacity_ceil(index_t cap) {
 
 struct vec *vec_new(void) {
   struct vec *self = util_malloc(sizeof(struct vec));
-  array_init(&self->array, sizeof(void *));
+  array_init(&self->array, sizeof(struct vec_entry));
   self->capacity = 0;
   return self;
 }
@@ -25,7 +25,7 @@ void vec_delete(struct vec *self) {
 }
 void vec_reserve(struct vec *self, index_t count) {
   if (self->capacity < count) {
-    self->capacity = capacity_ceil(count);
+    self->capacity = vec_capacity_ceil(count);
     array_resize(&self->array, self->capacity);
   }
 }
@@ -36,14 +36,17 @@ index_t vec_length(struct vec *self) {
   return self->array.count;
 }
 void *vec_at(struct vec *self, index_t index) {
-  return *(void **)array_at(&self->array, index);
+  struct vec_entry *entry = array_at(&self->array, index);
+  return entry->ptr;
 }
 void *vec_top(struct vec *self) {
   return vec_at(self, -1);
 }
 void vec_push(struct vec *self, void *ptr) {
+  struct vec_entry entry;
   vec_reserve(self, self->array.count + 1);
-  array_insert(&self->array, &ptr, 1);
+  entry.ptr = ptr;
+  array_insert(&self->array, &entry, 1);
 }
 void vec_pop(struct vec *self) {
   array_remove(&self->array, 1);
@@ -54,9 +57,11 @@ void vec_clear(struct vec *self) {
 void vec_sort(struct vec *self, cmp_t cmp) {
   array_sort(&self->array, cmp);
 }
-const void *vec_search(struct vec *self, const void *key, cmp_t cmp) {
-  void **found = array_search(&self->array, &key, cmp);
-  return found ? *found : NULL;
+void *vec_search(struct vec *self, const void *key, cmp_t cmp) {
+  struct vec_entry entry, *found;
+  entry.ptr = (void *)key;
+  found = array_search(&self->array, &entry, cmp);
+  return found ? found->ptr : NULL;
 }
 
 void vec_map(struct vec *self, map_t map) {

@@ -2,11 +2,12 @@
 
 #include "type.h"
 #include "util/util.h"
+#include "vec/type.h"
 #include "vec/vec.h"
 
 static int set_cmp(const void *lhs, const void *rhs) {
-  const char *const *l = lhs, *const *r = rhs;
-  return util_strcmp(*l, *r);
+  const struct vec_entry *l = lhs, *r = rhs;
+  return util_strcmp(l->ptr, r->ptr);
 }
 
 struct set *set_new(void) {

@@ -2,6 +2,7 @@
 
 #include "type.h"
 #include "util/util.h"
+#include "vec/type.h"
 #include "vec/vec.h"
 
 struct dict_entry {
@@ -10,13 +11,14 @@ struct dict_entry {
 };
 
 static int dict_cmp(const void *lhs, const void *rhs) {
-  const struct dict_entry *const *l = lhs, *const *r = rhs;
-  return util_strcmp((*l)->key, (*r)->key);
+  const struct vec_entry *vl = lhs, *vr = rhs;
+  const struct dict_entry *dl = vl->ptr, *dr = vr->ptr;
+  return util_strcmp(dl->key, dr->key);
 }
 static struct dict_entry *dict_search(struct dict *self, const char *key) {
   struct dict_entry entry = {NULL, NULL};
   entry.key = key;
-  return (void *)vec_search(self->vec, &entry, dict_cmp);
+  return vec_search(self->vec, &entry, dict_cmp);
 }
 
 struct dict *dict_new(void) {

@@ -4,6 +4,10 @@
 #include "array/type.h"
 #include "util/type.h"
 
+struct vec_entry {
+  void *ptr;
+};
+
 struct vec {
   struct array array;
   index_t capacity;
