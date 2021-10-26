@@ -5,6 +5,7 @@ target_sources(cell PRIVATE
   print.c
   tag.c
   type.c
+  visit.c
   )
 target_link_libraries(cell PRIVATE
   options
