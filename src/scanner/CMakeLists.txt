@@ -32,5 +32,6 @@ target_link_libraries(scanner PRIVATE
   cell
   options
   pool
+  set
   util
   )
