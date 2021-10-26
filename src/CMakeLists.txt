@@ -19,6 +19,7 @@ set_target_properties(main PROPERTIES
 add_library(unittest STATIC)
 target_sources(unittest PRIVATE
   unittest.c
+  array/unittest.c
   cell/unittest.c
   dict/unittest.c
   pool/unittest.c
@@ -26,6 +27,7 @@ target_sources(unittest PRIVATE
   vec/unittest.c
   )
 target_link_libraries(unittest PRIVATE
+  array
   cell
   dict
   options
