@@ -2,28 +2,18 @@
 
 #include "cell.h"
 #include "dict/dict.h"
-#include "util/util.h"
 
-static cell_visitor_t cell_visitor_match(const struct cell *car,
-                                         const struct dict *visitors) {
-  cell_visitor_t visitor = NULL;
-  if (cell_is_symbol(car)) {
-    struct cell_visitor_wrapper *wrapper =
-        dict_find((struct dict *)visitors, cell_symbol(car));
-    visitor = wrapper ? wrapper->func : NULL;
-  }
-  return visitor;
-}
-
-void cell_visitor(const struct cell *it, const struct dict *visitors,
+void cell_visitor(const struct cell *self, const struct dict *visitors,
                   void *extra) {
-  if (cell_is_list(it)) {
-    cell_visitor_t visitor = cell_visitor_match(cell_car(it), visitors);
-    if (visitor) {
-      visitor(it, extra);
-    } else {
-      for (; cell_is_cons(it); it = cell_cdr(it)) {
-        cell_visitor(cell_car(it), visitors, extra);
+  for (; cell_is_cons(self); self = cell_cdr(self)) {
+    const struct cell *car = cell_car(self);
+    if (cell_is_cons(car)) {
+      cell_visitor(car, visitors, extra);
+    } else if (cell_is_symbol(car)) {
+      struct cell_visitor_wrapper *wrapper =
+          dict_find((struct dict *)visitors, cell_symbol(car));
+      if (wrapper) {
+        wrapper->func(self, extra);
       }
     }
   }
