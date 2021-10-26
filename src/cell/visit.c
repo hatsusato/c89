@@ -4,8 +4,8 @@
 #include "dict/dict.h"
 #include "util/util.h"
 
-static cell_visitor_t cell_visit_match(const struct cell *car,
-                                       const struct dict *visitors) {
+static cell_visitor_t cell_visitor_match(const struct cell *car,
+                                         const struct dict *visitors) {
   cell_visitor_t visitor = NULL;
   if (cell_is_symbol(car)) {
     struct cell_visitor_wrapper *wrapper =
@@ -15,15 +15,15 @@ static cell_visitor_t cell_visit_match(const struct cell *car,
   return visitor;
 }
 
-void cell_visit(const struct cell *it, const struct dict *visitors,
-                void *extra) {
+void cell_visitor(const struct cell *it, const struct dict *visitors,
+                  void *extra) {
   if (cell_is_list(it)) {
-    cell_visitor_t visitor = cell_visit_match(cell_car(it), visitors);
+    cell_visitor_t visitor = cell_visitor_match(cell_car(it), visitors);
     if (visitor) {
       visitor(it, extra);
     } else {
       for (; cell_is_cons(it); it = cell_cdr(it)) {
-        cell_visit(cell_car(it), visitors, extra);
+        cell_visitor(cell_car(it), visitors, extra);
       }
     }
   }
