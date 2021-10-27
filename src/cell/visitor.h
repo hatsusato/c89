@@ -9,5 +9,6 @@ struct cell_visitor_wrapper {
 };
 
 void cell_visitor(const struct cell *, const struct dict *, void *);
+void cell_visitor_noop(const struct cell *, void *);
 
 #endif /* INCLUDE_GUARD_1EE525F3_DB92_4F96_8208_3D730F3BA78F */

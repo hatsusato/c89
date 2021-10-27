@@ -2,6 +2,7 @@
 
 #include "cell.h"
 #include "dict/dict.h"
+#include "util/util.h"
 
 void cell_visitor(const struct cell *self, const struct dict *visitors,
                   void *extra) {
@@ -17,4 +18,8 @@ void cell_visitor(const struct cell *self, const struct dict *visitors,
       }
     }
   }
+}
+void cell_visitor_noop(const struct cell *self, void *extra) {
+  UTIL_UNUSED(self);
+  UTIL_UNUSED(extra);
 }
