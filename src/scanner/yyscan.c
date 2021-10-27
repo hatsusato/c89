@@ -5,6 +5,7 @@
 #include "parser.tab.h"
 #include "set/set.h"
 #include "type.h"
+#include "typedef.h"
 #include "util/util.h"
 
 static struct cell_factory *yyscan_factory(yyscan_t self) {
@@ -36,6 +37,11 @@ void yyscan_parse(yyscan_t self) {
 int yyscan_is_typedef(yyscan_t self, const char *symbol) {
   const char *found = set_find(yyget_extra(self)->typedefs, symbol);
   return found ? 1 : 0;
+}
+void yyscan_register_typedef(yyscan_t self, const struct cell *decl) {
+  if (typedef_contains(decl)) {
+    typedef_register(decl, yyget_extra(self)->typedefs);
+  }
 }
 void yyscan_set_ast(yyscan_t self, const struct cell *ast) {
   yyget_extra(self)->ast = ast;

@@ -11,6 +11,7 @@ yyscan_t yyscan_new(struct scanner *);
 void yyscan_delete(yyscan_t);
 void yyscan_parse(yyscan_t);
 int yyscan_is_typedef(yyscan_t, const char *);
+void yyscan_register_typedef(yyscan_t, const struct cell *);
 void yyscan_set_ast(yyscan_t, const struct cell *);
 const struct cell *yyscan_token(yyscan_t);
 const struct cell *yyscan_symbol(yyscan_t, const char *);
