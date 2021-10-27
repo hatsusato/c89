@@ -1149,6 +1149,7 @@ translation-unit
 external-declaration
 : function-definition
 | declaration {
+  yyscan_register_typedef(YYSCAN_PARAM, $1);
   $$ = YYSCAN_SYMBOL(external-declaration);
   $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
 }

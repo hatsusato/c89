@@ -21,6 +21,7 @@ target_sources(scanner PRIVATE
   ${FLEX_lexer_OUTPUTS}
   scanner.c
   type.c
+  typedef.c
   yyscan.c
   yyscan_t.c
   )
@@ -32,5 +33,6 @@ target_link_libraries(scanner PRIVATE
   cell
   options
   pool
+  set
   util
   )

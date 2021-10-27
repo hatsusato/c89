@@ -152,7 +152,7 @@ directive               [#][^\n]*
 "..."   { return TOKEN_ELLIPSIS;      }
 
 {identifier} {
-  if (yyscan_is_typedef(yytext, yyscanner)) {
+  if (yyscan_is_typedef(yyscanner, yytext)) {
     return TOKEN_TYPEDEF_IDENTIFIER;
   } else {
     return TOKEN_IDENTIFIER;

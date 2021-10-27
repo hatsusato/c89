@@ -36,6 +36,26 @@ const struct cell *cell_cdr(const struct cell *self) {
 const char *cell_symbol(const struct cell *self) {
   return cell_is_symbol(self) ? self->car : NULL;
 }
+const char *cell_tag(const struct cell *self) {
+  return cell_is_cons(self) ? cell_symbol(cell_car(self)) : NULL;
+}
+const struct cell *cell_at(const struct cell *self, index_t index) {
+  assert(0 <= index);
+  for (; cell_is_cons(self); self = cell_cdr(self)) {
+    if (index == 0) {
+      return cell_car(self);
+    }
+    index--;
+  }
+  return NULL;
+}
+index_t cell_length(const struct cell *self) {
+  index_t length = 0;
+  for (; cell_is_cons(self); self = cell_cdr(self)) {
+    length++;
+  }
+  return length;
+}
 void cell_set_car(const struct cell *self, const struct cell *car) {
   struct cell *cell = (struct cell *)self;
   assert(cell_is_cons(self));

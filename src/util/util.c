@@ -23,7 +23,7 @@ int util_strcmp(const char *lhs, const char *rhs) {
   return strcmp(lhs, rhs);
 }
 bool_t util_streq(const char *lhs, const char *rhs) {
-  return strcmp(lhs, rhs) == 0;
+  return lhs && rhs && strcmp(lhs, rhs) == 0;
 }
 const char *util_strdup(const char *src) {
   index_t count = 1 + strlen(src);
