@@ -3,6 +3,7 @@
 #include "cell/cell.h"
 #include "cell/factory.h"
 #include "parser.tab.h"
+#include "set/set.h"
 #include "type.h"
 #include "util/util.h"
 
@@ -33,9 +34,8 @@ void yyscan_parse(yyscan_t self) {
   }
 }
 int yyscan_is_typedef(yyscan_t self, const char *symbol) {
-  UTIL_UNUSED(self);
-  UTIL_UNUSED(symbol);
-  return 0;
+  const char *found = set_find(yyget_extra(self)->typedefs, symbol);
+  return found ? 1 : 0;
 }
 void yyscan_set_ast(yyscan_t self, const struct cell *ast) {
   yyget_extra(self)->ast = ast;
