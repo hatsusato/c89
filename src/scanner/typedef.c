@@ -2,7 +2,6 @@
 
 #include "cell/cell.h"
 #include "cell/visitor.h"
-#include "dict/dict.h"
 #include "set/set.h"
 #include "util/util.h"
 
@@ -22,18 +21,16 @@ static bool_t typedef_insert_set(const struct cell *cell, void *extra) {
 
 bool_t typedef_contains(const struct cell *decl) {
   bool_t contains = false;
-  struct dict *visitors = dict_new();
-  struct cell_visitor_wrapper wrapper = {typedef_set_bool};
-  dict_insert(visitors, "typedef", &wrapper);
-  cell_visitor(cell_at(decl, 1), visitors, &contains);
-  dict_delete(visitors);
+  struct cell_visitor *visitor = cell_visitor_new(&contains);
+  cell_visitor_insert(visitor, "typedef", typedef_set_bool);
+  cell_visitor_visit(visitor, cell_at(decl, 1));
+  cell_visitor_delete(visitor);
   return contains;
 }
 /* TODO: more precise algorithm to find declarator identifier */
 void typedef_register(const struct cell *decl, struct set *set) {
-  struct dict *visitors = dict_new();
-  struct cell_visitor_wrapper wrapper = {typedef_insert_set};
-  dict_insert(visitors, "identifier", &wrapper);
-  cell_visitor(cell_at(decl, 2), visitors, set);
-  dict_delete(visitors);
+  struct cell_visitor *visitor = cell_visitor_new(set);
+  cell_visitor_insert(visitor, "typedef", typedef_insert_set);
+  cell_visitor_visit(visitor, cell_at(decl, 2));
+  cell_visitor_delete(visitor);
 }
