@@ -4,8 +4,12 @@
 #include "util/type.h"
 
 struct json;
-struct json_pair;
 struct json_vec;
+
+struct json_pair {
+  const char *key;
+  struct json *val;
+};
 
 struct json_vec *json_vec_new(void);
 void json_vec_delete(struct json_vec *);
