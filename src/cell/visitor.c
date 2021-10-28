@@ -16,12 +16,6 @@ static cell_visitor_t cell_visitor_find(struct cell_visitor *self,
   return NULL;
 }
 
-bool_t cell_visitor_noop(const struct cell *self, void *extra) {
-  UTIL_UNUSED(self);
-  UTIL_UNUSED(extra);
-  return true;
-}
-
 struct cell_visitor *cell_visitor_new(void *extra) {
   struct cell_visitor *self = util_malloc(sizeof(struct cell_visitor));
   self->wrappers = pool_new();
@@ -46,7 +40,7 @@ void cell_visitor_visit(struct cell_visitor *self, const struct cell *cell) {
     const struct cell *car = cell_car(cell);
     cell_visitor_t func = cell_visitor_find(self, car);
     if (func) {
-      func(cell, self->extra);
+      func(self, cell);
       return;
     } else {
       cell_visitor_visit(self, car);
@@ -55,4 +49,8 @@ void cell_visitor_visit(struct cell_visitor *self, const struct cell *cell) {
 }
 void *cell_visitor_extra(struct cell_visitor *self) {
   return self->extra;
+}
+void cell_visitor_noop(struct cell_visitor *self, const struct cell *cell) {
+  UTIL_UNUSED(self);
+  UTIL_UNUSED(cell);
 }

@@ -5,18 +5,18 @@
 #include "set/set.h"
 #include "util/util.h"
 
-static bool_t typedef_set_bool(const struct cell *cell, void *extra) {
-  bool_t *flag = extra;
+static void typedef_set_bool(struct cell_visitor *self,
+                             const struct cell *cell) {
+  bool_t *flag = cell_visitor_extra(self);
   *flag = true;
   UTIL_UNUSED(cell);
-  return true;
 }
-static bool_t typedef_insert_set(const struct cell *cell, void *extra) {
-  struct set *set = extra;
+static void typedef_insert_set(struct cell_visitor *self,
+                               const struct cell *cell) {
+  struct set *set = cell_visitor_extra(self);
   cell = cell_at(cell, 1);
   assert(cell && cell_is_symbol(cell));
   set_insert(set, cell_symbol(cell));
-  return true;
 }
 
 bool_t typedef_contains(const struct cell *decl) {
