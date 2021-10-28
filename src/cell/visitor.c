@@ -45,3 +45,10 @@ void cell_visitor_delete(struct cell_visitor *self) {
   pool_delete(self->wrappers);
   util_free(self);
 }
+void cell_visitor_insert(struct cell_visitor *self, const char *symbol,
+                         cell_visitor_t visitor) {
+  struct cell_visitor_wrapper *wrapper =
+      pool_alloc(self->wrappers, sizeof(struct cell_visitor_wrapper));
+  wrapper->func = visitor;
+  dict_insert(self->visitors, symbol, wrapper);
+}
