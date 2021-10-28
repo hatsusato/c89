@@ -15,3 +15,6 @@ void json_arr_delete(struct json *self) {
   json_vec_delete(self->vec);
   util_free(self);
 }
+void json_arr_insert(struct json *self, struct json *json) {
+  json_vec_push(self->vec, NULL, json);
+}

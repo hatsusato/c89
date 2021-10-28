@@ -5,5 +5,6 @@ struct json;
 
 struct json *json_arr_new(void);
 void json_arr_delete(struct json *);
+void json_arr_insert(struct json *, struct json *);
 
 #endif /* INCLUDE_GUARD_BDF9C1AF_53CF_4D1F_8A03_23E511410297 */
