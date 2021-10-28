@@ -22,7 +22,8 @@ struct json_pair {
 };
 
 struct json_vec {
-  struct json_array array;
+  struct json_pair *base;
+  index_t count;
   index_t capacity;
 };
 

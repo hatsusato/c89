@@ -19,33 +19,33 @@ static index_t json_vec_capacity_ceil(index_t capacity) {
 static void json_vec_insert(struct json_vec *self, struct json_pair *base,
                             index_t count) {
   if (0 < count) {
-    assert(self->array.base && base);
-    memcpy(self->array.base + align * self->array.count, base, align * count);
-    self->array.count += count;
+    assert(self->base && base);
+    memcpy(self->base + align * self->count, base, align * count);
+    self->count += count;
   }
 }
 static void json_vec_resize(struct json_vec *self, index_t capacity) {
-  struct json_vec tmp = {{NULL, 0}, 0};
-  assert(self->array.count < capacity);
-  tmp.array.base = util_malloc_array(align, capacity);
-  json_vec_insert(&tmp, self->array.base, self->array.count);
+  struct json_vec tmp = {NULL, 0, 0};
+  assert(self->count < capacity);
+  tmp.base = util_malloc_array(align, capacity);
+  json_vec_insert(&tmp, self->base, self->count);
   UTIL_SWAP(struct json_vec, self, &tmp);
-  util_free(self->array.base);
+  util_free(self->base);
 }
 
 struct json_vec *json_vec_new(void) {
   struct json_vec *self = util_malloc(sizeof(struct json_vec));
-  self->array.base = NULL;
-  self->array.count = self->capacity = 0;
+  self->base = NULL;
+  self->count = self->capacity = 0;
   return self;
 }
 void json_vec_delete(struct json_vec *self) {
-  util_free(self->array.base);
+  util_free(self->base);
   util_free(self);
 }
 void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
   struct json_pair pair;
-  index_t capacity = self->array.count + 1;
+  index_t capacity = self->count + 1;
   if (self->capacity < capacity) {
     self->capacity = json_vec_capacity_ceil(capacity);
     json_vec_resize(self, self->capacity);
@@ -55,14 +55,14 @@ void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
   json_vec_insert(self, &pair, 1);
 }
 void json_vec_sort(struct json_vec *self, cmp_t cmp) {
-  if (self->array.base) {
-    qsort(self->array.base, self->array.count, align, cmp);
+  if (self->base) {
+    qsort(self->base, self->count, align, cmp);
   }
 }
 struct json_pair *json_vec_search(struct json_vec *self, struct json_pair *key,
                                   cmp_t cmp) {
-  if (self->array.base) {
-    return bsearch(key, self->array.base, self->array.count, align, cmp);
+  if (self->base) {
+    return bsearch(key, self->base, self->count, align, cmp);
   }
   return NULL;
 }
