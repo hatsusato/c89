@@ -1,6 +1,7 @@
 #include "vec.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "array.h"
 #include "type.h"
@@ -21,6 +22,14 @@ static void json_vec_reserve(struct json_vec *self, index_t capacity) {
     json_array_resize(&self->array, self->capacity);
   }
 }
+static void json_vec_insert(struct json_vec *self, struct json_pair *base,
+                            index_t count) {
+  if (0 < count) {
+    assert(self->array.base && base);
+    memcpy(self->array.base + align * self->array.count, base, align * count);
+    self->array.count += count;
+  }
+}
 
 struct json_vec *json_vec_new(void) {
   struct json_vec *self = util_malloc(sizeof(struct json_vec));
@@ -37,7 +46,7 @@ void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
   pair.key = key;
   pair.val = val;
   json_vec_reserve(self, self->array.count + 1);
-  json_array_insert(&self->array, &pair, 1);
+  json_vec_insert(self, &pair, 1);
 }
 void json_vec_sort(struct json_vec *self, cmp_t cmp) {
   if (self->array.base) {
