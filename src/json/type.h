@@ -3,7 +3,10 @@
 
 #include "util/type.h"
 
-struct json;
+struct json {
+  const char *key;
+  void *val;
+};
 
 struct json_array {
   struct json *base;
