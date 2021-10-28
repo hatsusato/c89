@@ -6,9 +6,9 @@
 #include "type.h"
 #include "util/util.h"
 
-static const align_t align = sizeof(struct json);
+static const align_t align = sizeof(struct json_pair);
 
-void json_array_insert(struct json_array *self, const struct json *base,
+void json_array_insert(struct json_array *self, struct json_pair *base,
                        index_t count) {
   if (0 < count) {
     assert(self->base && base);
@@ -28,8 +28,8 @@ void json_array_sort(struct json_array *self, cmp_t cmp) {
     qsort(self->base, self->count, align, cmp);
   }
 }
-struct json *json_array_search(struct json_array *self, const struct json *key,
-                               cmp_t cmp) {
+struct json_pair *json_array_search(struct json_array *self,
+                                    struct json_pair *key, cmp_t cmp) {
   if (self->base) {
     return bsearch(key, self->base, self->count, align, cmp);
   }

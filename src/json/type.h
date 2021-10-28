@@ -3,6 +3,7 @@
 
 #include "util/type.h"
 
+struct json_pair;
 struct json_vec;
 
 struct json {
@@ -11,8 +12,13 @@ struct json {
 };
 
 struct json_array {
-  struct json *base;
+  struct json_pair *base;
   index_t count;
+};
+
+struct json_pair {
+  const char *key;
+  struct json *val;
 };
 
 struct json_vec {
