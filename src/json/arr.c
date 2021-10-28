@@ -18,3 +18,7 @@ void json_arr_delete(struct json *self) {
 void json_arr_insert(struct json *self, struct json *json) {
   json_vec_push(self->vec, NULL, json);
 }
+struct json *json_arr_at(struct json *self, index_t index) {
+  struct json_pair *pair = json_vec_at(self->vec, index);
+  return pair ? pair->val : NULL;
+}
