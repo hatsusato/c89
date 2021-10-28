@@ -14,3 +14,11 @@ void json_array_insert(struct json_array *self, const struct json *base,
     self->count += count;
   }
 }
+void json_array_resize(struct json_array *self, index_t count) {
+  static const align_t align = sizeof(struct json);
+  struct json_array tmp = {NULL, 0};
+  tmp.base = util_malloc_array(align, count);
+  json_array_insert(&tmp, self->base, UTIL_MIN(self->count, count));
+  UTIL_SWAP(struct json_array, self, &tmp);
+  util_free(tmp.base);
+}
