@@ -28,3 +28,10 @@ void json_array_sort(struct json_array *self, cmp_t cmp) {
     qsort(self->base, self->count, align, cmp);
   }
 }
+struct json *json_array_search(struct json_array *self, const struct json *key,
+                               cmp_t cmp) {
+  if (self->base) {
+    return bsearch(key, self->base, self->count, align, cmp);
+  }
+  return NULL;
+}
