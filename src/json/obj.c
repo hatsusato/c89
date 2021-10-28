@@ -11,6 +11,7 @@ static int json_obj_cmp(const void *lhs, const void *rhs) {
 
 struct json *json_obj_new(void) {
   struct json *self = util_malloc(sizeof(struct json));
+  self->tag = JSON_TAG_OBJ;
   self->str = NULL;
   self->vec = json_vec_new();
   return self;

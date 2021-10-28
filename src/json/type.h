@@ -6,7 +6,10 @@
 struct json_pair;
 struct json_vec;
 
+enum json_tag { JSON_TAG_NULL, JSON_TAG_STR, JSON_TAG_ARR, JSON_TAG_OBJ };
+
 struct json {
+  enum json_tag tag;
   const char *str;
   struct json_vec *vec;
 };
