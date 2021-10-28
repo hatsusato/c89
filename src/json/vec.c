@@ -12,7 +12,7 @@ static index_t json_vec_capacity_ceil(index_t capacity) {
   }
   return ceil;
 }
-void json_vec_reserve(struct json_vec *self, index_t capacity) {
+static void json_vec_reserve(struct json_vec *self, index_t capacity) {
   if (self->capacity < capacity) {
     self->capacity = json_vec_capacity_ceil(capacity);
     json_array_resize(&self->array, self->capacity);
@@ -28,4 +28,11 @@ struct json_vec *json_vec_new(void) {
 void json_vec_delete(struct json_vec *self) {
   util_free(self->array.base);
   util_free(self);
+}
+void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
+  struct json_pair pair;
+  pair.key = key;
+  pair.val = val;
+  json_vec_reserve(self, self->array.count + 1);
+  json_array_insert(&self->array, &pair, 1);
 }
