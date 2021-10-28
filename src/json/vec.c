@@ -6,6 +6,7 @@
 #include "type.h"
 #include "util/util.h"
 
+static const align_t align = sizeof(struct json_pair);
 static index_t json_vec_capacity_ceil(index_t capacity) {
   enum { initial_capacity = 8 };
   index_t ceil = initial_capacity;
@@ -40,6 +41,13 @@ void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
 }
 void json_vec_sort(struct json_vec *self, cmp_t cmp) {
   if (self->array.base) {
-    qsort(self->array.base, self->array.count, sizeof(struct json_pair), cmp);
+    qsort(self->array.base, self->array.count, align, cmp);
   }
+}
+struct json_pair *json_vec_search(struct json_vec *self, struct json_pair *key,
+                                  cmp_t cmp) {
+  if (self->array.base) {
+    return bsearch(key, self->array.base, self->array.count, align, cmp);
+  }
+  return NULL;
 }
