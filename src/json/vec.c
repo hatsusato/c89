@@ -53,6 +53,10 @@ void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
   pair.val = val;
   json_vec_insert(self, &pair, 1);
 }
+struct json_pair *json_vec_at(struct json_vec *self, index_t index) {
+  index += index < 0 ? self->count : 0;
+  return (0 <= index && index < self->count) ? self->base + index : NULL;
+}
 void json_vec_sort(struct json_vec *self, cmp_t cmp) {
   if (self->base) {
     qsort(self->base, self->count, align, cmp);
