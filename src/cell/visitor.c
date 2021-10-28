@@ -6,6 +6,10 @@
 #include "type.h"
 #include "util/util.h"
 
+struct cell_visitor_wrapper {
+  cell_visitor_t func;
+};
+
 static cell_visitor_t cell_visitor_find(struct cell_visitor *self,
                                         const struct cell *car) {
   if (cell_is_symbol(car)) {
