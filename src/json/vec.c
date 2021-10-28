@@ -30,6 +30,14 @@ static void json_vec_insert(struct json_vec *self, struct json_pair *base,
     self->array.count += count;
   }
 }
+void json_vec_resize(struct json_vec *self, index_t capacity) {
+  struct json_vec tmp = {{NULL, 0}, 0};
+  assert(self->array.count < capacity);
+  tmp.array.base = util_malloc_array(align, capacity);
+  json_vec_insert(&tmp, self->array.base, self->array.count);
+  UTIL_SWAP(struct json_vec, self, &tmp);
+  util_free(self->array.base);
+}
 
 struct json_vec *json_vec_new(void) {
   struct json_vec *self = util_malloc(sizeof(struct json_vec));
