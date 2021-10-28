@@ -5,13 +5,11 @@
 
 struct cell;
 struct cell_visitor;
-struct dict;
 typedef bool_t (*cell_visitor_t)(const struct cell *, void *);
 struct cell_visitor_wrapper {
   cell_visitor_t func;
 };
 
-void cell_visitor(const struct cell *, const struct dict *, void *);
 bool_t cell_visitor_noop(const struct cell *, void *);
 
 struct cell_visitor *cell_visitor_new(void *);
