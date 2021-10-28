@@ -1,5 +1,6 @@
 #include "factory.h"
 
+#include "json.h"
 #include "pool/pool.h"
 #include "type.h"
 #include "util/util.h"
@@ -22,9 +23,8 @@ void json_factory_delete(struct json_factory *self) {
   util_free(self);
 }
 struct json *json_factory_null(struct json_factory *self) {
-  static struct json null = {JSON_TAG_NULL, NULL, NULL};
   UTIL_UNUSED(self);
-  return &null;
+  return json_null();
 }
 struct json *json_factory_str(struct json_factory *self, const char *str) {
   struct json *json = json_factory_alloc(self, JSON_TAG_STR);
