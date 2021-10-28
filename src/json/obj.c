@@ -28,3 +28,7 @@ void json_obj_insert(struct json *self, const char *key, struct json *val) {
     json_vec_sort(self->vec, json_obj_cmp);
   }
 }
+struct json *json_obj_at(struct json *self, const char *key) {
+  struct json_pair *pair = json_vec_search(self->vec, key, NULL, json_obj_cmp);
+  return pair ? pair->val : NULL;
+}
