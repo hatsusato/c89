@@ -1,0 +1,7 @@
+#ifndef INCLUDE_GUARD_1A3501D5_6CCC_4A43_9369_088AA3991F18
+#define INCLUDE_GUARD_1A3501D5_6CCC_4A43_9369_088AA3991F18
+
+struct json *json_obj_new(void);
+void json_obj_delete(struct json *);
+
+#endif /* INCLUDE_GUARD_1A3501D5_6CCC_4A43_9369_088AA3991F18 */

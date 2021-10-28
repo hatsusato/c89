@@ -6,8 +6,8 @@
 struct json_vec;
 
 struct json {
-  const char *key;
-  struct json_vec *val;
+  const char *str;
+  struct json_vec *vec;
 };
 
 struct json_pair {

@@ -1,5 +1,6 @@
 add_library(json STATIC)
 target_sources(json PRIVATE
+  obj.c
   type.c
   vec.c
   )
