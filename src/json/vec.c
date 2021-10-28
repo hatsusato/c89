@@ -1,5 +1,7 @@
 #include "vec.h"
 
+#include <stdlib.h>
+
 #include "array.h"
 #include "type.h"
 #include "util/util.h"
@@ -35,4 +37,9 @@ void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
   pair.val = val;
   json_vec_reserve(self, self->array.count + 1);
   json_array_insert(&self->array, &pair, 1);
+}
+void json_vec_sort(struct json_vec *self, cmp_t cmp) {
+  if (self->array.base) {
+    qsort(self->array.base, self->array.count, sizeof(struct json_pair), cmp);
+  }
 }
