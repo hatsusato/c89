@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "array.h"
 #include "type.h"
 #include "util/util.h"
 
