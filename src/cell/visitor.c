@@ -53,3 +53,6 @@ void cell_visitor_visit(struct cell_visitor *self, const struct cell *cell) {
     }
   }
 }
+void *cell_visitor_extra(struct cell_visitor *self) {
+  return self->extra;
+}
