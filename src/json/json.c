@@ -46,22 +46,25 @@ void json_arr_set(struct json *self, index_t key, struct json *val) {
   struct json_pair *pair;
   assert(self->tag == JSON_TAG_ARR);
   pair = json_vec_at(self->vec, key);
-  assert(pair);
+  assert(pair && val);
   pair->val = val;
 }
 void json_arr_push(struct json *self, struct json *val) {
   assert(self->tag == JSON_TAG_ARR);
+  assert(val);
   json_vec_push(self->vec, NULL, val);
 }
 struct json *json_obj_get(struct json *self, const char *key) {
   struct json_pair *pair;
   assert(self->tag == JSON_TAG_OBJ);
+  assert(key);
   pair = json_vec_find(self->vec, key);
   return pair ? pair->val : NULL;
 }
 void json_obj_set(struct json *self, const char *key, struct json *val) {
   struct json_pair *pair;
   assert(self->tag == JSON_TAG_OBJ);
+  assert(key && val);
   pair = json_vec_find(self->vec, key);
   if (pair) {
     pair->val = val;
