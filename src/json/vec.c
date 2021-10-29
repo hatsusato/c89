@@ -31,6 +31,10 @@ static void json_vec_resize(struct json_vec *self, index_t capacity) {
   UTIL_SWAP(struct json_vec, self, &tmp);
   util_free(self->base);
 }
+static int json_vec_cmp(const void *lhs, const void *rhs) {
+  const struct json_pair *l = lhs, *r = rhs;
+  return util_strcmp(l->key, r->key);
+}
 
 struct json_vec *json_vec_new(void) {
   struct json_vec *self = util_malloc(sizeof(struct json_vec));
@@ -57,18 +61,18 @@ struct json_pair *json_vec_at(struct json_vec *self, index_t index) {
   index += index < 0 ? self->count : 0;
   return (0 <= index && index < self->count) ? self->base + index : NULL;
 }
-void json_vec_sort(struct json_vec *self, cmp_t cmp) {
+void json_vec_sort(struct json_vec *self) {
   if (self->base) {
-    qsort(self->base, self->count, align, cmp);
+    qsort(self->base, self->count, align, json_vec_cmp);
   }
 }
 struct json_pair *json_vec_search(struct json_vec *self, const char *key,
-                                  struct json *val, cmp_t cmp) {
+                                  struct json *val) {
   if (self->base) {
     struct json_pair pair;
     pair.key = key;
     pair.val = val;
-    return bsearch(&pair, self->base, self->count, align, cmp);
+    return bsearch(&pair, self->base, self->count, align, json_vec_cmp);
   }
   return NULL;
 }
