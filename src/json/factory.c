@@ -22,12 +22,9 @@ struct json_factory *json_factory_new(struct pool *pool) {
 void json_factory_delete(struct json_factory *self) {
   util_free(self);
 }
-struct json *json_factory_null(struct json_factory *self) {
-  UTIL_UNUSED(self);
-  return json_null();
-}
 struct json *json_factory_str(struct json_factory *self, const char *str) {
   struct json *json = json_factory_alloc(self, JSON_TAG_STR);
+  assert(str);
   json->str = str;
   return json;
 }
