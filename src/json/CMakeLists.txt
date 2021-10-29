@@ -3,7 +3,6 @@ target_sources(json PRIVATE
   arr.c
   factory.c
   json.c
-  obj.c
   type.c
   vec.c
   )
