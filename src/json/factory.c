@@ -13,18 +13,18 @@ static struct json *json_factory_alloc(struct json_factory *self,
   json->tag = tag;
   json->str = NULL;
   json->vec = NULL;
-  json_vec_push(self->vec, NULL, json);
+  json_vec_push(self->pool, NULL, json);
   return json;
 }
 
 struct json_factory *json_factory_new(void) {
   struct json_factory *self = util_malloc(sizeof(struct json_factory));
-  self->vec = json_vec_new();
+  self->pool = json_vec_new();
   return self;
 }
 void json_factory_delete(struct json_factory *self) {
-  json_vec_map(self->vec, json_factory_free);
-  json_vec_delete(self->vec);
+  json_vec_map(self->pool, json_factory_free);
+  json_vec_delete(self->pool);
   util_free(self);
 }
 struct json *json_factory_str(struct json_factory *self, const char *str) {

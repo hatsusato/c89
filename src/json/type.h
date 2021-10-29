@@ -15,7 +15,7 @@ struct json {
 };
 
 struct json_factory {
-  struct json_vec *vec;
+  struct json_vec *pool;
 };
 
 struct json_vec {
