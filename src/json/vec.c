@@ -14,11 +14,6 @@ static index_t json_vec_capacity_ceil(index_t capacity) {
   }
   return ceil;
 }
-static void json_vec_insert(struct json_vec *self, struct json_pair *base,
-                            index_t count) {
-  util_memcpy(self->base + self->count, base, count, align);
-  self->count += count;
-}
 static void json_vec_reserve(struct json_vec *self, index_t capacity) {
   if (self->capacity < capacity) {
     struct json_vec tmp;
@@ -52,10 +47,11 @@ index_t json_vec_count(struct json_vec *self) {
 }
 void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
   struct json_pair pair;
-  json_vec_reserve(self, self->count + 1);
   pair.key = key;
   pair.val = val;
-  json_vec_insert(self, &pair, 1);
+  json_vec_reserve(self, self->count + 1);
+  util_memcpy(self->base + self->count, &pair, 1, align);
+  self->count++;
 }
 struct json_pair *json_vec_at(struct json_vec *self, index_t index) {
   index += index < 0 ? self->count : 0;
