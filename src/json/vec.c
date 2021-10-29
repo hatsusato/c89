@@ -84,3 +84,9 @@ struct json_pair *json_vec_find(struct json_vec *self, const char *key) {
   }
   return NULL;
 }
+void json_vec_map(struct json_vec *self, json_map_t map) {
+  index_t i;
+  for (i = 0; i < self->count; i++) {
+    map(self->base + i);
+  }
+}
