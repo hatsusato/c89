@@ -3,6 +3,7 @@ target_sources(json PRIVATE
   factory.c
   json.c
   type.c
+  unittest.c
   vec.c
   )
 target_link_libraries(json PRIVATE
