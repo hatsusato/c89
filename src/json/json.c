@@ -72,3 +72,17 @@ void json_obj_set(struct json *self, const char *key, struct json *val) {
     json_vec_push(self->vec, key, val);
   }
 }
+const char *json_obj_key(struct json *self, index_t index) {
+  struct json_pair *pair;
+  assert(self->tag == JSON_TAG_OBJ);
+  pair = json_vec_at(self->vec, index);
+  assert(pair);
+  return pair->key;
+}
+struct json *json_obj_val(struct json *self, index_t index) {
+  struct json_pair *pair;
+  assert(self->tag == JSON_TAG_OBJ);
+  pair = json_vec_at(self->vec, index);
+  assert(pair);
+  return pair->val;
+}

@@ -4,7 +4,6 @@
 #include "printer/printer.h"
 #include "type.h"
 #include "util/util.h"
-#include "vec.h"
 
 static void json_print_rec(struct json *json, struct printer *printer);
 static void json_print_null(struct json *json, struct printer *printer) {
@@ -35,10 +34,6 @@ static void json_print_arr(struct json *json, struct printer *printer) {
   }
   printer_print(printer, "]");
 }
-static void json_print_pair(struct json_pair *pair, struct printer *printer) {
-  printer_print(printer, "\"%s\": ", pair->key);
-  json_print(pair->val, printer);
-}
 static void json_print_obj(struct json *json, struct printer *printer) {
   index_t i, count;
   assert(json->tag == JSON_TAG_OBJ);
@@ -47,11 +42,13 @@ static void json_print_obj(struct json *json, struct printer *printer) {
   if (0 < count) {
     printer_indent(printer, 2);
     printer_newline(printer);
-    json_print_pair(json_vec_at(json->vec, 0), printer);
+    printer_print(printer, "\"%s\": ", json_obj_key(json, 0));
+    json_print_rec(json_obj_val(json, 0), printer);
     for (i = 1; i < count; i++) {
       printer_print(printer, ",");
       printer_newline(printer);
-      json_print_pair(json_vec_at(json->vec, i), printer);
+      printer_print(printer, "\"%s\": ", json_obj_key(json, i));
+      json_print_rec(json_obj_val(json, i), printer);
     }
     printer_indent(printer, -2);
     printer_newline(printer);
