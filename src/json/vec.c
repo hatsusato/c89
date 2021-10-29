@@ -19,16 +19,18 @@ static void json_vec_insert(struct json_vec *self, struct json_pair *base,
   util_memcpy(self->base + self->count, base, count, align);
   self->count += count;
 }
-static void json_vec_resize(struct json_vec *self, index_t capacity) {
-  struct json_vec tmp = {NULL, 0, 0};
-  capacity = json_vec_capacity_ceil(capacity);
-  tmp.base = util_malloc_array(align, capacity);
-  tmp.count = self->count;
-  tmp.capacity = capacity;
-  assert(self->count <= tmp.capacity);
-  util_memcpy(tmp.base, self->base, self->count, align);
-  UTIL_SWAP(struct json_vec, self, &tmp);
-  util_free(tmp.base);
+static void json_vec_reserve(struct json_vec *self, index_t capacity) {
+  if (self->capacity < capacity) {
+    struct json_vec tmp;
+    capacity = json_vec_capacity_ceil(capacity);
+    tmp.base = util_malloc_array(align, capacity);
+    tmp.count = self->count;
+    tmp.capacity = capacity;
+    assert(self->count <= tmp.capacity);
+    util_memcpy(tmp.base, self->base, self->count, align);
+    UTIL_SWAP(struct json_vec, self, &tmp);
+    util_free(tmp.base);
+  }
 }
 static int json_vec_cmp(const void *lhs, const void *rhs) {
   const struct json_pair *l = lhs, *r = rhs;
@@ -50,10 +52,7 @@ index_t json_vec_count(struct json_vec *self) {
 }
 void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
   struct json_pair pair;
-  index_t capacity = self->count + 1;
-  if (self->capacity < capacity) {
-    json_vec_resize(self, json_vec_capacity_ceil(capacity));
-  }
+  json_vec_reserve(self, self->count + 1);
   pair.key = key;
   pair.val = val;
   json_vec_insert(self, &pair, 1);
