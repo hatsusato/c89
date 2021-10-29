@@ -8,6 +8,18 @@ struct json *json_null(void) {
   static struct json null = {JSON_TAG_NULL, NULL, NULL};
   return &null;
 }
+bool_t json_is_null(struct json *self) {
+  return self->tag == JSON_TAG_NULL;
+}
+bool_t json_is_str(struct json *self) {
+  return self->tag == JSON_TAG_STR;
+}
+bool_t json_is_arr(struct json *self) {
+  return self->tag == JSON_TAG_ARR;
+}
+bool_t json_is_obj(struct json *self) {
+  return self->tag == JSON_TAG_OBJ;
+}
 const char *json_str_get(struct json *self) {
   assert(self->tag == JSON_TAG_STR);
   return self->str;
