@@ -20,6 +20,18 @@ bool_t json_is_arr(struct json *self) {
 bool_t json_is_obj(struct json *self) {
   return self->tag == JSON_TAG_OBJ;
 }
+index_t json_count(struct json *self) {
+  switch (self->tag) {
+  case JSON_TAG_NULL:
+    return 0;
+  case JSON_TAG_ARR:
+    /* FALLTHROUGH */
+  case JSON_TAG_OBJ:
+    return json_vec_count(self->vec);
+  default:
+    return 1;
+  }
+}
 const char *json_str_get(struct json *self) {
   assert(self->tag == JSON_TAG_STR);
   return self->str;

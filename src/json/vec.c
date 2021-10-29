@@ -46,6 +46,9 @@ void json_vec_delete(struct json_vec *self) {
   util_free(self->base);
   util_free(self);
 }
+index_t json_vec_count(struct json_vec *self) {
+  return self->count;
+}
 void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
   struct json_pair pair;
   index_t capacity = self->count + 1;

@@ -10,6 +10,7 @@ bool_t json_is_null(struct json *);
 bool_t json_is_str(struct json *);
 bool_t json_is_arr(struct json *);
 bool_t json_is_obj(struct json *);
+index_t json_count(struct json *);
 const char *json_str_get(struct json *);
 struct json *json_arr_get(struct json *, index_t);
 void json_arr_set(struct json *, index_t, struct json *);
