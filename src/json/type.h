@@ -5,7 +5,6 @@
 
 struct json_pair;
 struct json_vec;
-struct pool;
 
 enum json_tag { JSON_TAG_NULL, JSON_TAG_STR, JSON_TAG_ARR, JSON_TAG_OBJ };
 
@@ -16,7 +15,6 @@ struct json {
 };
 
 struct json_factory {
-  struct pool *pool;
   struct json_vec *vec;
 };
 

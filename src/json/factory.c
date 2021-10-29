@@ -1,7 +1,5 @@
 #include "factory.h"
 
-#include "json.h"
-#include "pool/pool.h"
 #include "type.h"
 #include "util/util.h"
 #include "vec.h"
@@ -9,18 +7,18 @@
 static void json_factory_free(struct json_pair *json) {
   util_free(json->val);
 }
-struct json *json_factory_alloc(struct json_factory *self, enum json_tag tag) {
-  struct json *json = pool_alloc(self->pool, sizeof(struct json));
-  json_vec_push(self->vec, NULL, json);
+static struct json *json_factory_alloc(struct json_factory *self,
+                                       enum json_tag tag) {
+  struct json *json = util_malloc(sizeof(struct json));
   json->tag = tag;
   json->str = NULL;
   json->vec = NULL;
+  json_vec_push(self->vec, NULL, json);
   return json;
 }
 
-struct json_factory *json_factory_new(struct pool *pool) {
+struct json_factory *json_factory_new(void) {
   struct json_factory *self = util_malloc(sizeof(struct json_factory));
-  self->pool = pool;
   self->vec = json_vec_new();
   return self;
 }
