@@ -4,8 +4,12 @@
 #include "util/util.h"
 #include "vec.h"
 
-static void json_factory_free(struct json_pair *json) {
-  util_free(json->val);
+static void json_factory_free(struct json_pair *pair) {
+  struct json *json = pair->val;
+  if (json && json->vec) {
+    json_vec_delete(json->vec);
+  }
+  util_free(json);
 }
 static struct json *json_factory_alloc(struct json_factory *self,
                                        enum json_tag tag) {
