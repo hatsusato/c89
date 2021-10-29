@@ -17,6 +17,7 @@ struct json {
 
 struct json_factory {
   struct pool *pool;
+  struct json_vec *vec;
 };
 
 struct json_vec {
