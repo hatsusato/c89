@@ -19,7 +19,7 @@ static void json_vec_insert(struct json_vec *self, struct json_pair *base,
                             index_t count) {
   if (0 < count) {
     assert(self->base && base);
-    memcpy(self->base + align * self->count, base, align * count);
+    memcpy(self->base + self->count, base, align * count);
     self->count += count;
   }
 }
@@ -29,7 +29,7 @@ static void json_vec_resize(struct json_vec *self, index_t capacity) {
   tmp.base = util_malloc_array(align, capacity);
   json_vec_insert(&tmp, self->base, self->count);
   UTIL_SWAP(struct json_vec, self, &tmp);
-  util_free(self->base);
+  util_free(tmp.base);
 }
 static int json_vec_cmp(const void *lhs, const void *rhs) {
   const struct json_pair *l = lhs, *r = rhs;
@@ -81,7 +81,7 @@ struct json_pair *json_vec_find(struct json_vec *self, const char *key) {
   index_t i;
   for (i = 0; i < self->count; i++) {
     struct json_pair *pair = self->base + i;
-    if (util_strcmp(key, pair->key)) {
+    if (util_streq(key, pair->key)) {
       return pair;
     }
   }
