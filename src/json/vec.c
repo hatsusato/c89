@@ -72,3 +72,13 @@ struct json_pair *json_vec_search(struct json_vec *self, const char *key,
   }
   return NULL;
 }
+struct json_pair *json_vec_find(struct json_vec *self, const char *key) {
+  index_t i;
+  for (i = 0; i < self->count; i++) {
+    struct json_pair *pair = self->base + i;
+    if (util_strcmp(key, pair->key)) {
+      return pair;
+    }
+  }
+  return NULL;
+}
