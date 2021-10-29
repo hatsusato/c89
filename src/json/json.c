@@ -8,6 +8,10 @@ struct json *json_null(void) {
   static struct json null = {JSON_TAG_NULL, NULL, NULL};
   return &null;
 }
+const char *json_str_get(struct json *self) {
+  assert(self->tag == JSON_TAG_STR);
+  return self->str;
+}
 struct json *json_arr_get(struct json *self, index_t key) {
   struct json_pair *pair;
   assert(self->tag == JSON_TAG_ARR);

@@ -6,6 +6,7 @@
 struct json;
 
 struct json *json_null(void);
+const char *json_str_get(struct json *);
 struct json *json_arr_get(struct json *, index_t);
 void json_arr_set(struct json *, index_t, struct json *);
 void json_arr_push(struct json *, struct json *);
