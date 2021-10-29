@@ -1,7 +1,6 @@
 #include "vec.h"
 
 #include <stdlib.h>
-#include <string.h>
 
 #include "type.h"
 #include "util/util.h"
@@ -17,11 +16,8 @@ static index_t json_vec_capacity_ceil(index_t capacity) {
 }
 static void json_vec_insert(struct json_vec *self, struct json_pair *base,
                             index_t count) {
-  if (0 < count) {
-    assert(self->base && base);
-    memcpy(self->base + self->count, base, align * count);
-    self->count += count;
-  }
+  util_memcpy(self->base + self->count, base, count, align);
+  self->count += count;
 }
 static void json_vec_resize(struct json_vec *self, index_t capacity) {
   struct json_vec tmp = {NULL, 0, 0};

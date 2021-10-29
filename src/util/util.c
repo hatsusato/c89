@@ -19,6 +19,12 @@ void util_swap_impl(size_t size, void *lhs, void *rhs, void *buf) {
   memcpy(lhs, rhs, size);
   memcpy(rhs, buf, size);
 }
+void util_memcpy(void *dst, const void *src, index_t count, align_t align) {
+  assert(dst);
+  if (src && 0 < count) {
+    memcpy(dst, src, align * count);
+  }
+}
 int util_strcmp(const char *lhs, const char *rhs) {
   return strcmp(lhs, rhs);
 }
