@@ -66,12 +66,10 @@ void json_vec_sort(struct json_vec *self) {
     qsort(self->base, self->count, align, json_vec_cmp);
   }
 }
-struct json_pair *json_vec_search(struct json_vec *self, const char *key,
-                                  struct json *val) {
+struct json_pair *json_vec_search(struct json_vec *self, const char *key) {
   if (self->base) {
-    struct json_pair pair;
+    struct json_pair pair = {NULL, NULL};
     pair.key = key;
-    pair.val = val;
     return bsearch(&pair, self->base, self->count, align, json_vec_cmp);
   }
   return NULL;
