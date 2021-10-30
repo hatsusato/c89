@@ -20,5 +20,7 @@ const struct cell *yyscan_push(yyscan_t, const struct cell *,
 const struct cell *yyscan_list(yyscan_t, int, ...);
 
 struct json *yyscan_json_null(void);
+struct json *yyscan_json_token(yyscan_t);
+struct json *yyscan_json_symbol(yyscan_t, const char *);
 
 #endif /* INCLUDE_GUARD_9CD5F173_4C3F_436C_9085_C797766F802E */

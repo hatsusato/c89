@@ -2,6 +2,7 @@
 
 #include "cell/cell.h"
 #include "cell/factory.h"
+#include "json/factory.h"
 #include "json/json.h"
 #include "parser.tab.h"
 #include "set/set.h"
@@ -70,4 +71,13 @@ const struct cell *yyscan_list(yyscan_t self, int count, ...) {
 
 struct json *yyscan_json_null(void) {
   return json_null();
+}
+struct json *yyscan_json_token(yyscan_t self) {
+  const char *text = yyget_text(self);
+  assert(text[yyget_leng(self)] == 0);
+  return yyscan_json_symbol(self, text);
+}
+struct json *yyscan_json_symbol(yyscan_t self, const char *symbol) {
+  symbol = set_insert(yyget_extra(self)->symbols, symbol);
+  return json_factory_str(yyget_extra(self)->jfactory, symbol);
 }
