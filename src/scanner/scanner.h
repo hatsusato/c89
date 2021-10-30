@@ -13,7 +13,7 @@ YYSCAN_TYPE scanner_json_str(YYSCAN_EXTRA, const char *);
 YYSCAN_TYPE scanner_json_arr(YYSCAN_EXTRA);
 YYSCAN_TYPE scanner_json_obj(YYSCAN_EXTRA);
 YYSCAN_TYPE scanner_json_push(YYSCAN_TYPE, YYSCAN_TYPE);
-void scanner_json_set(YYSCAN_TYPE, const char *, YYSCAN_TYPE);
+YYSCAN_TYPE scanner_json_set(YYSCAN_TYPE, const char *, YYSCAN_TYPE);
 YYSCAN_TYPE scanner_json_binop(YYSCAN_EXTRA, YYSCAN_TYPE, YYSCAN_TYPE,
                                YYSCAN_TYPE);
 YYSCAN_TYPE scanner_get_top(YYSCAN_EXTRA);

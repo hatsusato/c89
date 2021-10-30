@@ -40,8 +40,10 @@ YYSCAN_TYPE scanner_json_push(YYSCAN_TYPE arr, YYSCAN_TYPE val) {
   json_arr_push(arr, val);
   return arr;
 }
-void scanner_json_set(YYSCAN_TYPE self, const char *key, YYSCAN_TYPE val) {
-  json_obj_set(self, key, val);
+YYSCAN_TYPE scanner_json_set(YYSCAN_TYPE obj, const char *key,
+                             YYSCAN_TYPE val) {
+  json_obj_set(obj, key, val);
+  return obj;
 }
 YYSCAN_TYPE scanner_json_binop(YYSCAN_EXTRA self, YYSCAN_TYPE lhs,
                                YYSCAN_TYPE op, YYSCAN_TYPE rhs) {
