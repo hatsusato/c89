@@ -2,6 +2,7 @@
 
 #include "cell/cell.h"
 #include "cell/factory.h"
+#include "json/json.h"
 #include "parser.tab.h"
 #include "set/set.h"
 #include "type.h"
@@ -65,4 +66,8 @@ const struct cell *yyscan_list(yyscan_t self, int count, ...) {
   list = cell_factory_list(yyscan_factory(self), count, args);
   va_end(args);
   return list;
+}
+
+struct json *yyscan_json_null(void) {
+  return json_null();
 }

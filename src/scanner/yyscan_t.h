@@ -9,6 +9,7 @@ typedef void *yyscan_t;
 #define YYSCAN_PARAM yyscan
 
 struct cell;
+struct json;
 struct scanner;
 
 #endif /* INCLUDE_GUARD_E5AA65C0_BF23_4C1E_9D38_85ECF9D3A5DF */
