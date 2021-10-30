@@ -80,3 +80,17 @@ int scanner_contains_typedef(YYSCAN_TYPE decl) {
   json_visitor_visit(&visitor, json);
   return ret;
 }
+static struct json *scanner_visitor_set_insert(struct json_visitor *visitor,
+                                               struct json *json) {
+  if (json_is_str(json)) {
+    set_insert(visitor->extra, json_str_get(json));
+  }
+  return json;
+}
+void scanner_collect_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
+  struct json *json = json_obj_get(decl, SYMBOL_INIT_DECLARATOR_LIST);
+  struct json_visitor visitor = {scanner_visitor_set_insert, SYMBOL_IDENTIFIER,
+                                 NULL, NULL};
+  visitor.extra = self->typedefs;
+  json_visitor_visit(&visitor, json);
+}
