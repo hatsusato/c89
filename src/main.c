@@ -25,9 +25,8 @@ int main(int argc, char *argv[]) {
     unittest();
   } else {
     struct json_factory *factory = json_factory_new();
-    struct pool *pool = pool_new();
     struct set *symbols = set_new();
-    struct json *json = scanner_parse(factory, pool, symbols);
+    struct json *json = scanner_parse(factory, symbols);
     if (json_is_null(json)) {
       util_error("ERROR: failed to parse");
     } else {
@@ -36,7 +35,6 @@ int main(int argc, char *argv[]) {
       printer_delete(printer);
     }
     set_delete(symbols);
-    pool_delete(pool);
     json_factory_delete(factory);
   }
   return 0;
