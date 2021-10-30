@@ -5,7 +5,6 @@
 #include "yyscan_t.h"
 
 #define YYSCAN_TOKEN() yyscan_json_token(YYSCAN_PARAM)
-#define YYSCAN_SYMBOL(symbol) yyscan_json_symbol(YYSCAN_PARAM, #symbol)
 #define YYSCAN_STR(symbol) scanner_json_str(yyget_extra(YYSCAN_PARAM), #symbol)
 #define YYSCAN_ARR() scanner_json_arr(yyget_extra(YYSCAN_PARAM))
 #define YYSCAN_OBJ() scanner_json_obj(yyget_extra(YYSCAN_PARAM))

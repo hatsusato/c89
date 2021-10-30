@@ -110,163 +110,163 @@
 
 %%
 
-auto: "auto" { $$ = YYSCAN_SYMBOL(auto); }
+auto: "auto" { $$ = YYSCAN_STR(auto); }
 ;
-break: "break" { $$ = YYSCAN_SYMBOL(break); }
+break: "break" { $$ = YYSCAN_STR(break); }
 ;
-case: "case" { $$ = YYSCAN_SYMBOL(case); }
+case: "case" { $$ = YYSCAN_STR(case); }
 ;
-char: "char" { $$ = YYSCAN_SYMBOL(char); }
+char: "char" { $$ = YYSCAN_STR(char); }
 ;
-const: "const" { $$ = YYSCAN_SYMBOL(const); }
+const: "const" { $$ = YYSCAN_STR(const); }
 ;
-continue: "continue" { $$ = YYSCAN_SYMBOL(continue); }
+continue: "continue" { $$ = YYSCAN_STR(continue); }
 ;
-default: "default" { $$ = YYSCAN_SYMBOL(default); }
+default: "default" { $$ = YYSCAN_STR(default); }
 ;
-do: "do" { $$ = YYSCAN_SYMBOL(do); }
+do: "do" { $$ = YYSCAN_STR(do); }
 ;
-double: "double" { $$ = YYSCAN_SYMBOL(double); }
+double: "double" { $$ = YYSCAN_STR(double); }
 ;
-else: "else" { $$ = YYSCAN_SYMBOL(else); }
+else: "else" { $$ = YYSCAN_STR(else); }
 ;
-enum: "enum" { $$ = YYSCAN_SYMBOL(enum); }
+enum: "enum" { $$ = YYSCAN_STR(enum); }
 ;
-extern: "extern" { $$ = YYSCAN_SYMBOL(extern); }
+extern: "extern" { $$ = YYSCAN_STR(extern); }
 ;
-float: "float" { $$ = YYSCAN_SYMBOL(float); }
+float: "float" { $$ = YYSCAN_STR(float); }
 ;
-for: "for" { $$ = YYSCAN_SYMBOL(for); }
+for: "for" { $$ = YYSCAN_STR(for); }
 ;
-goto: "goto" { $$ = YYSCAN_SYMBOL(goto); }
+goto: "goto" { $$ = YYSCAN_STR(goto); }
 ;
-if: "if" { $$ = YYSCAN_SYMBOL(if); }
+if: "if" { $$ = YYSCAN_STR(if); }
 ;
-int: "int" { $$ = YYSCAN_SYMBOL(int); }
+int: "int" { $$ = YYSCAN_STR(int); }
 ;
-long: "long" { $$ = YYSCAN_SYMBOL(long); }
+long: "long" { $$ = YYSCAN_STR(long); }
 ;
-register: "register" { $$ = YYSCAN_SYMBOL(register); }
+register: "register" { $$ = YYSCAN_STR(register); }
 ;
-return: "return" { $$ = YYSCAN_SYMBOL(return); }
+return: "return" { $$ = YYSCAN_STR(return); }
 ;
-short: "short" { $$ = YYSCAN_SYMBOL(short); }
+short: "short" { $$ = YYSCAN_STR(short); }
 ;
-signed: "signed" { $$ = YYSCAN_SYMBOL(signed); }
+signed: "signed" { $$ = YYSCAN_STR(signed); }
 ;
-sizeof: "sizeof" { $$ = YYSCAN_SYMBOL(sizeof); }
+sizeof: "sizeof" { $$ = YYSCAN_STR(sizeof); }
 ;
-static: "static" { $$ = YYSCAN_SYMBOL(static); }
+static: "static" { $$ = YYSCAN_STR(static); }
 ;
-struct: "struct" { $$ = YYSCAN_SYMBOL(struct); }
+struct: "struct" { $$ = YYSCAN_STR(struct); }
 ;
-switch: "switch" { $$ = YYSCAN_SYMBOL(switch); }
+switch: "switch" { $$ = YYSCAN_STR(switch); }
 ;
-typedef: "typedef" { $$ = YYSCAN_SYMBOL(typedef); }
+typedef: "typedef" { $$ = YYSCAN_STR(typedef); }
 ;
-union: "union" { $$ = YYSCAN_SYMBOL(union); }
+union: "union" { $$ = YYSCAN_STR(union); }
 ;
-unsigned: "unsigned" { $$ = YYSCAN_SYMBOL(unsigned); }
+unsigned: "unsigned" { $$ = YYSCAN_STR(unsigned); }
 ;
-void: "void" { $$ = YYSCAN_SYMBOL(void); }
+void: "void" { $$ = YYSCAN_STR(void); }
 ;
-volatile: "volatile" { $$ = YYSCAN_SYMBOL(volatile); }
+volatile: "volatile" { $$ = YYSCAN_STR(volatile); }
 ;
-while: "while" { $$ = YYSCAN_SYMBOL(while); }
+while: "while" { $$ = YYSCAN_STR(while); }
 ;
 
-period: "." { $$ = YYSCAN_SYMBOL(period); }
+period: "." { $$ = YYSCAN_STR(period); }
 ;
-arrow: "->" { $$ = YYSCAN_SYMBOL(arrow); }
+arrow: "->" { $$ = YYSCAN_STR(arrow); }
 ;
-increment: "++" { $$ = YYSCAN_SYMBOL(increment); }
+increment: "++" { $$ = YYSCAN_STR(increment); }
 ;
-decrement: "--" { $$ = YYSCAN_SYMBOL(decrement); }
+decrement: "--" { $$ = YYSCAN_STR(decrement); }
 ;
-ampersand: "&" { $$ = YYSCAN_SYMBOL(ampersand); }
+ampersand: "&" { $$ = YYSCAN_STR(ampersand); }
 ;
-asterisk: "*" { $$ = YYSCAN_SYMBOL(asterisk); }
+asterisk: "*" { $$ = YYSCAN_STR(asterisk); }
 ;
-plus: "+" { $$ = YYSCAN_SYMBOL(plus); }
+plus: "+" { $$ = YYSCAN_STR(plus); }
 ;
-minus: "-" { $$ = YYSCAN_SYMBOL(minus); }
+minus: "-" { $$ = YYSCAN_STR(minus); }
 ;
-tilde: "~" { $$ = YYSCAN_SYMBOL(tilde); }
+tilde: "~" { $$ = YYSCAN_STR(tilde); }
 ;
-exclamation: "!" { $$ = YYSCAN_SYMBOL(exclamation); }
+exclamation: "!" { $$ = YYSCAN_STR(exclamation); }
 ;
-slash: "/" { $$ = YYSCAN_SYMBOL(slash); }
+slash: "/" { $$ = YYSCAN_STR(slash); }
 ;
-percent: "%" { $$ = YYSCAN_SYMBOL(percent); }
+percent: "%" { $$ = YYSCAN_STR(percent); }
 ;
-left-shift: "<<" { $$ = YYSCAN_SYMBOL(left-shift); }
+left-shift: "<<" { $$ = YYSCAN_STR(left-shift); }
 ;
-right-shift: ">>" { $$ = YYSCAN_SYMBOL(right-shift); }
+right-shift: ">>" { $$ = YYSCAN_STR(right-shift); }
 ;
-less-than: "<" { $$ = YYSCAN_SYMBOL(less-than); }
+less-than: "<" { $$ = YYSCAN_STR(less-than); }
 ;
-greater-than: ">" { $$ = YYSCAN_SYMBOL(greater-than); }
+greater-than: ">" { $$ = YYSCAN_STR(greater-than); }
 ;
-less-equal: "<=" { $$ = YYSCAN_SYMBOL(less-equal); }
+less-equal: "<=" { $$ = YYSCAN_STR(less-equal); }
 ;
-greater-equal: ">=" { $$ = YYSCAN_SYMBOL(greater-equal); }
+greater-equal: ">=" { $$ = YYSCAN_STR(greater-equal); }
 ;
-equal: "==" { $$ = YYSCAN_SYMBOL(equal); }
+equal: "==" { $$ = YYSCAN_STR(equal); }
 ;
-not-equal: "!=" { $$ = YYSCAN_SYMBOL(not-equal); }
+not-equal: "!=" { $$ = YYSCAN_STR(not-equal); }
 ;
-caret: "^" { $$ = YYSCAN_SYMBOL(caret); }
+caret: "^" { $$ = YYSCAN_STR(caret); }
 ;
-bar: "|" { $$ = YYSCAN_SYMBOL(bar); }
+bar: "|" { $$ = YYSCAN_STR(bar); }
 ;
-and: "&&" { $$ = YYSCAN_SYMBOL(and); }
+and: "&&" { $$ = YYSCAN_STR(and); }
 ;
-or: "||" { $$ = YYSCAN_SYMBOL(or); }
+or: "||" { $$ = YYSCAN_STR(or); }
 ;
-question: "?" { $$ = YYSCAN_SYMBOL(question); }
+question: "?" { $$ = YYSCAN_STR(question); }
 ;
-assign: "=" { $$ = YYSCAN_SYMBOL(assign); }
+assign: "=" { $$ = YYSCAN_STR(assign); }
 ;
-asterisk-assign: "*=" { $$ = YYSCAN_SYMBOL(asterisk-assign); }
+asterisk-assign: "*=" { $$ = YYSCAN_STR(asterisk-assign); }
 ;
-slash-assign: "/=" { $$ = YYSCAN_SYMBOL(slash-assign); }
+slash-assign: "/=" { $$ = YYSCAN_STR(slash-assign); }
 ;
-percent-assign: "%=" { $$ = YYSCAN_SYMBOL(percent-assign); }
+percent-assign: "%=" { $$ = YYSCAN_STR(percent-assign); }
 ;
-plus-assign: "+=" { $$ = YYSCAN_SYMBOL(plus-assign); }
+plus-assign: "+=" { $$ = YYSCAN_STR(plus-assign); }
 ;
-minus-assign: "-=" { $$ = YYSCAN_SYMBOL(minus-assign); }
+minus-assign: "-=" { $$ = YYSCAN_STR(minus-assign); }
 ;
-left-shift-assign: "<<=" { $$ = YYSCAN_SYMBOL(left-shift-assign); }
+left-shift-assign: "<<=" { $$ = YYSCAN_STR(left-shift-assign); }
 ;
-right-shift-assign: ">>=" { $$ = YYSCAN_SYMBOL(right-shift-assign); }
+right-shift-assign: ">>=" { $$ = YYSCAN_STR(right-shift-assign); }
 ;
-ampersand-assign: "&=" { $$ = YYSCAN_SYMBOL(ampersand-assign); }
+ampersand-assign: "&=" { $$ = YYSCAN_STR(ampersand-assign); }
 ;
-caret-assign: "^=" { $$ = YYSCAN_SYMBOL(caret-assign); }
+caret-assign: "^=" { $$ = YYSCAN_STR(caret-assign); }
 ;
-bar-assign: "|=" { $$ = YYSCAN_SYMBOL(bar-assign); }
+bar-assign: "|=" { $$ = YYSCAN_STR(bar-assign); }
 ;
 
-left-bracket: "[" { $$ = YYSCAN_SYMBOL(left-bracket); }
+left-bracket: "[" { $$ = YYSCAN_STR(left-bracket); }
 ;
-right-bracket: "]" { $$ = YYSCAN_SYMBOL(right-bracket); }
+right-bracket: "]" { $$ = YYSCAN_STR(right-bracket); }
 ;
-left-paren: "(" { $$ = YYSCAN_SYMBOL(left-paren); }
+left-paren: "(" { $$ = YYSCAN_STR(left-paren); }
 ;
-right-paren: ")" { $$ = YYSCAN_SYMBOL(right-paren); }
+right-paren: ")" { $$ = YYSCAN_STR(right-paren); }
 ;
-left-brace: "{" { $$ = YYSCAN_SYMBOL(left-brace); }
+left-brace: "{" { $$ = YYSCAN_STR(left-brace); }
 ;
-right-brace: "}" { $$ = YYSCAN_SYMBOL(right-brace); }
+right-brace: "}" { $$ = YYSCAN_STR(right-brace); }
 ;
-comma: "," { $$ = YYSCAN_SYMBOL(comma); }
+comma: "," { $$ = YYSCAN_STR(comma); }
 ;
-colon: ":" { $$ = YYSCAN_SYMBOL(colon); }
+colon: ":" { $$ = YYSCAN_STR(colon); }
 ;
-semicolon: ";" { $$ = YYSCAN_SYMBOL(semicolon); }
+semicolon: ";" { $$ = YYSCAN_STR(semicolon); }
 ;
-ellipsis: "..." { $$ = YYSCAN_SYMBOL(ellipsis); }
+ellipsis: "..." { $$ = YYSCAN_STR(ellipsis); }
 ;
 
 /* 6.1 Lexical elements */
