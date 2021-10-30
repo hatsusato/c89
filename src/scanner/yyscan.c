@@ -38,23 +38,3 @@ YYSCAN_TYPE yyscan_json_token(yyscan_t self) {
   assert(text[yyget_leng(self)] == 0);
   return scanner_json_token(yyget_extra(self), text);
 }
-YYSCAN_TYPE yyscan_json_symbol(yyscan_t self, const char *symbol) {
-  symbol = set_insert(yyget_extra(self)->symbols, symbol);
-  return json_factory_str(yyget_extra(self)->jfactory, symbol);
-}
-YYSCAN_TYPE yyscan_json_arr(yyscan_t self) {
-  return json_factory_arr(yyget_extra(self)->jfactory);
-}
-YYSCAN_TYPE yyscan_json_push(YYSCAN_TYPE json, YYSCAN_TYPE val) {
-  json_arr_push(json, val);
-  return json;
-}
-YYSCAN_TYPE yyscan_json_obj(yyscan_t self) {
-  return json_factory_obj(yyget_extra(self)->jfactory);
-}
-void yyscan_json_insert(YYSCAN_TYPE json, const char *key, YYSCAN_TYPE val) {
-  json_obj_set(json, key, val);
-}
-void yyscan_set_top(yyscan_t self, YYSCAN_TYPE top) {
-  yyget_extra(self)->top = top;
-}
