@@ -5,6 +5,7 @@ target_sources(json PRIVATE
   printer.c
   type.c
   unittest.c
+  visitor.c
   vec.c
   )
 target_link_libraries(json PRIVATE
