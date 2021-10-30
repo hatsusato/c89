@@ -14,4 +14,6 @@ struct json_visitor {
   struct json_factory *factory;
 };
 
+void json_visitor_visit(struct json_visitor *, struct json *);
+
 #endif /* INCLUDE_GUARD_BAC01668_22C9_47DA_ACA9_033FC7005651 */
