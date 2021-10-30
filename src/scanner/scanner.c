@@ -38,6 +38,9 @@ YYSCAN_TYPE scanner_json_push(YYSCAN_TYPE arr, YYSCAN_TYPE val) {
 void scanner_json_set(YYSCAN_TYPE self, const char *key, YYSCAN_TYPE val) {
   json_obj_set(self, key, val);
 }
+YYSCAN_TYPE scanner_get_top(YYSCAN_EXTRA self) {
+  return self->top;
+}
 void scanner_set_top(YYSCAN_EXTRA self, YYSCAN_TYPE top) {
   self->top = top;
 }

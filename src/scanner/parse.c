@@ -13,7 +13,7 @@ struct json *scanner_parse(struct json_factory *factory, struct set *symbols) {
     yyscan_parse(yyscan);
   }
   yyscan_delete(yyscan);
-  top = scanner->top;
+  top = scanner_get_top(scanner);
   yyscan_delete(scanner);
   return top;
 }
