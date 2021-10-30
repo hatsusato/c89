@@ -573,8 +573,8 @@ expression
 | expression comma assignment-expression {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, expression, $1);
-  YYSCAN_SET($$, comma, $1);
-  YYSCAN_SET($$, assignment-expression, $1);
+  YYSCAN_SET($$, comma, $2);
+  YYSCAN_SET($$, assignment-expression, $3);
 }
 ;
 
