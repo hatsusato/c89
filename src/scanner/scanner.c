@@ -41,3 +41,7 @@ void scanner_json_set(YYSCAN_TYPE self, const char *key, YYSCAN_TYPE val) {
 void scanner_set_top(YYSCAN_EXTRA self, YYSCAN_TYPE top) {
   self->top = top;
 }
+int scanner_is_typedef(YYSCAN_EXTRA self, const char *symbol) {
+  const char *found = set_find(self->typedefs, symbol);
+  return found ? 1 : 0;
+}

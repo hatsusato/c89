@@ -29,8 +29,7 @@ void yyscan_parse(yyscan_t self) {
   yyparse(self);
 }
 int yyscan_is_typedef(yyscan_t self, const char *symbol) {
-  const char *found = set_find(yyget_extra(self)->typedefs, symbol);
-  return found ? 1 : 0;
+  return scanner_is_typedef(yyget_extra(self), symbol);
 }
 
 YYSCAN_TYPE yyscan_json_token(yyscan_t self) {
