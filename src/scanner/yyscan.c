@@ -81,3 +81,9 @@ struct json *yyscan_json_symbol(yyscan_t self, const char *symbol) {
   symbol = set_insert(yyget_extra(self)->symbols, symbol);
   return json_factory_str(yyget_extra(self)->jfactory, symbol);
 }
+struct json *yyscan_json_obj(yyscan_t self) {
+  return json_factory_obj(yyget_extra(self)->jfactory);
+}
+void yyscan_json_insert(struct json *json, const char *key, struct json *val) {
+  json_obj_set(json, key, val);
+}
