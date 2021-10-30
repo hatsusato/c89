@@ -10,7 +10,6 @@ typedef void *yyscan_t;
 #define YYSCAN_TYPE struct json *
 #define YYSCAN_EXTRA struct scanner *
 
-struct cell;
 struct json;
 struct scanner;
 
