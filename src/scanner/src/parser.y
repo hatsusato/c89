@@ -457,10 +457,7 @@ multiplicative-expression
   YYSCAN_SET($$, cast-expression, $1);
 }
 | multiplicative-expression multiplicative-operator cast-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, multiplicative-expression, $1);
-  YYSCAN_SET($$, multiplicative-operator, $2);
-  YYSCAN_SET($$, cast-expression, $3);
+  $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 multiplicative-operator
@@ -474,10 +471,7 @@ additive-expression
   YYSCAN_SET($$, multiplicative-expression, $1);
 }
 | additive-expression additive-operator multiplicative-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, additive-expression, $1);
-  YYSCAN_SET($$, additive-operator, $2);
-  YYSCAN_SET($$, multiplicative-expression, $3);
+  $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 additive-operator
@@ -490,10 +484,7 @@ shift-expression
   YYSCAN_SET($$, additive-expression, $1);
 }
 | shift-expression shift-operator additive-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, shift-expression, $1);
-  YYSCAN_SET($$, shift-operator, $2);
-  YYSCAN_SET($$, additive-expression, $3);
+  $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 shift-operator
@@ -506,6 +497,7 @@ relational-expression
   YYSCAN_SET($$, shift-expression, $1);
 }
 | relational-expression relational-operator shift-expression {
+  $$ = YYSCAN_BINOP($1, $2, $3);
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, relational-expression, $1);
   YYSCAN_SET($$, relational-operator, $2);
@@ -524,10 +516,7 @@ equality-expression
   YYSCAN_SET($$, relational-expression, $1);
 }
 | equality-expression equality-operator relational-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, equality-expression, $1);
-  YYSCAN_SET($$, equality-operator, $2);
-  YYSCAN_SET($$, relational-expression, $3);
+  $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 equality-operator
@@ -540,10 +529,7 @@ and-expression
   YYSCAN_SET($$, equality-expression, $1);
 }
 | and-expression ampersand equality-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, and-expression, $1);
-  YYSCAN_SET($$, ampersand, $2);
-  YYSCAN_SET($$, equality-expression, $3);
+  $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 exclusive-or-expression
@@ -552,10 +538,7 @@ exclusive-or-expression
   YYSCAN_SET($$, and-expression, $1);
 }
 | exclusive-or-expression caret and-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, exclusive-or-expression, $1);
-  YYSCAN_SET($$, caret, $2);
-  YYSCAN_SET($$, and-expression, $3);
+  $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 inclusive-or-expression
@@ -564,10 +547,7 @@ inclusive-or-expression
   YYSCAN_SET($$, exclusive-or-expression, $1);
 }
 | inclusive-or-expression bar exclusive-or-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, inclusive-or-expression, $1);
-  YYSCAN_SET($$, bar, $2);
-  YYSCAN_SET($$, exclusive-or-expression, $3);
+  $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 logical-and-expression
@@ -576,10 +556,7 @@ logical-and-expression
   YYSCAN_SET($$, inclusive-or-expression, $1);
 }
 | logical-and-expression and inclusive-or-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, logical-and-expression, $1);
-  YYSCAN_SET($$, and, $2);
-  YYSCAN_SET($$, inclusive-or-expression, $3);
+  $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 logical-or-expression
@@ -588,10 +565,7 @@ logical-or-expression
   YYSCAN_SET($$, logical-and-expression, $1);
 }
 | logical-or-expression or logical-and-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, logical-or-expression, $1);
-  YYSCAN_SET($$, or, $2);
-  YYSCAN_SET($$, inclusive-and-expression, $3);
+  $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 conditional-expression
@@ -614,10 +588,7 @@ assignment-expression
   YYSCAN_SET($$, conditional-expression, $1);
 }
 | unary-expression assignment-operator assignment-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, unary-expression, $1);
-  YYSCAN_SET($$, assignment-operator, $2);
-  YYSCAN_SET($$, assignment-expression, $3);
+  $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 assignment-operator
