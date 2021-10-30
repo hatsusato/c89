@@ -1293,7 +1293,7 @@ external-declaration
 | declaration {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, SYMBOL_DECLARATION, $1);
-  /* yyscan_register_typedef(YYSCAN_PARAM, $1); */
+  YYSCAN_REGISTER($1);
 }
 ;
 function-definition
