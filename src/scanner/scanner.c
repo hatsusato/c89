@@ -6,18 +6,17 @@
 #include "util/util.h"
 
 struct scanner {
-  struct set *typedefs;
-  struct set *symbols;
   struct json_factory *factory;
   YYSCAN_TYPE top;
+  struct set *tokens, *typedefs;
 };
 
 YYSCAN_EXTRA scanner_new(struct json_factory *factory, struct set *symbols) {
   YYSCAN_EXTRA self = util_malloc(sizeof(struct scanner));
-  self->typedefs = set_new();
-  self->symbols = symbols;
   self->factory = factory;
   self->top = json_null();
+  self->typedefs = set_new();
+  self->tokens = symbols;
   return self;
 }
 void scanner_delete(YYSCAN_EXTRA self) {
@@ -25,7 +24,7 @@ void scanner_delete(YYSCAN_EXTRA self) {
   util_free(self);
 }
 YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA self, const char *token) {
-  token = set_insert(self->symbols, token);
+  token = set_insert(self->tokens, token);
   return json_factory_str(self->factory, token);
 }
 YYSCAN_TYPE scanner_json_str(YYSCAN_EXTRA self, const char *symbol) {
