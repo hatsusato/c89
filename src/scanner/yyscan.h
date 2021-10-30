@@ -22,6 +22,8 @@ const struct cell *yyscan_list(yyscan_t, int, ...);
 struct json *yyscan_json_null(void);
 struct json *yyscan_json_token(yyscan_t);
 struct json *yyscan_json_symbol(yyscan_t, const char *);
+struct json *yyscan_json_arr(yyscan_t);
+struct json *yyscan_json_push(struct json *, struct json *);
 struct json *yyscan_json_obj(yyscan_t);
 void yyscan_json_insert(struct json *, const char *, struct json *);
 
