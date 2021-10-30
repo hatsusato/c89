@@ -5,7 +5,7 @@
 #include "json/printer.h"
 #include "pool/pool.h"
 #include "printer/printer.h"
-#include "scanner/scanner.h"
+#include "scanner/parse.h"
 #include "set/set.h"
 #include "unittest.h"
 #include "util/util.h"
