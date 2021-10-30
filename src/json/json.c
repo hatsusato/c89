@@ -1,5 +1,9 @@
 #include "json.h"
 
+#include <stdio.h>
+
+#include "printer.h"
+#include "printer/printer.h"
 #include "type.h"
 #include "util/util.h"
 #include "vec.h"
@@ -85,4 +89,10 @@ struct json *json_obj_val(struct json *self, index_t index) {
   pair = json_vec_at(self->vec, index);
   assert(pair);
   return pair->val;
+}
+void json_print(struct json *self) {
+  struct printer *printer = printer_new(stdout);
+  json_printer_print(self, printer);
+  printer_newline(printer);
+  printer_delete(printer);
 }

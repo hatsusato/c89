@@ -9,5 +9,6 @@ target_sources(json PRIVATE
   )
 target_link_libraries(json PRIVATE
   options
+  printer
   util
   )

@@ -19,5 +19,6 @@ struct json *json_obj_get(struct json *, const char *);
 void json_obj_set(struct json *, const char *, struct json *);
 const char *json_obj_key(struct json *, index_t);
 struct json *json_obj_val(struct json *, index_t);
+void json_print(struct json *);
 
 #endif /* INCLUDE_GUARD_5E299705_D2B2_4EFA_AD2B_575DB876526E */

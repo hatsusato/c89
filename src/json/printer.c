@@ -73,7 +73,3 @@ void json_printer_print(struct json *json, struct printer *printer) {
     break;
   }
 }
-void json_print(struct json *json, struct printer *printer) {
-  json_printer_print(json, printer);
-  printer_newline(printer);
-}

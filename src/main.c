@@ -2,9 +2,7 @@
 
 #include "json/factory.h"
 #include "json/json.h"
-#include "json/printer.h"
 #include "pool/pool.h"
-#include "printer/printer.h"
 #include "scanner/parse.h"
 #include "set/set.h"
 #include "unittest.h"
@@ -30,9 +28,7 @@ int main(int argc, char *argv[]) {
     if (json_is_null(json)) {
       util_error("ERROR: failed to parse");
     } else {
-      struct printer *printer = printer_new(stdout);
-      json_print(json, printer);
-      printer_delete(printer);
+      json_print(json);
     }
     set_delete(symbols);
     json_factory_delete(factory);
