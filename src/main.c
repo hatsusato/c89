@@ -1,4 +1,5 @@
 #include "cell/print.h"
+#include "json/factory.h"
 #include "pool/pool.h"
 #include "scanner/scanner.h"
 #include "set/set.h"
@@ -19,9 +20,10 @@ int main(int argc, char *argv[]) {
   if (is_unittest(argc, argv)) {
     unittest();
   } else {
+    struct json_factory *factory = json_factory_new();
     struct pool *pool = pool_new();
     struct set *symbols = set_new();
-    const struct cell *cell = scanner_parse(pool, symbols);
+    const struct cell *cell = scanner_parse(factory, pool, symbols);
     if (cell) {
       cell_print(cell);
     } else {
@@ -29,6 +31,7 @@ int main(int argc, char *argv[]) {
     }
     set_delete(symbols);
     pool_delete(pool);
+    json_factory_delete(factory);
   }
   return 0;
 }

@@ -6,23 +6,25 @@
 #include "util/util.h"
 #include "yyscan.h"
 
-static void scanner_init(struct scanner *self, struct pool *pool,
-                         struct set *symbols) {
+static void scanner_init(struct scanner *self, struct json_factory *factory,
+                         struct pool *pool, struct set *symbols) {
   self->factory = cell_factory_new(pool, symbols);
   self->ast = NULL;
   self->typedefs = set_new();
   self->symbols = symbols;
+  self->jfactory = factory;
 }
 static void scanner_finish(struct scanner *self) {
   set_delete(self->typedefs);
   cell_factory_delete(self->factory);
 }
 
-const struct cell *scanner_parse(struct pool *pool, struct set *symbols) {
-  struct scanner scanner = {NULL, NULL, NULL, NULL};
+const struct cell *scanner_parse(struct json_factory *factory,
+                                 struct pool *pool, struct set *symbols) {
+  struct scanner scanner = {NULL, NULL, NULL, NULL, NULL};
   yyscan_t yyscan = yyscan_new(&scanner);
   if (yyscan) {
-    scanner_init(&scanner, pool, symbols);
+    scanner_init(&scanner, factory, pool, symbols);
     yyscan_parse(yyscan);
     scanner_finish(&scanner);
   }

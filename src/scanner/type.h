@@ -3,6 +3,7 @@
 
 struct cell;
 struct cell_factory;
+struct json_factory;
 struct set;
 
 struct scanner {
@@ -10,6 +11,7 @@ struct scanner {
   const struct cell *ast;
   struct set *typedefs;
   struct set *symbols;
+  struct json_factory *jfactory;
 };
 
 #endif /* INCLUDE_GUARD_0EF6CD70_0EFD_47E7_8494_CAD9D7637AB6 */
