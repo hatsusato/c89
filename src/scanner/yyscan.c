@@ -36,7 +36,7 @@ int yyscan_is_typedef(yyscan_t self, const char *symbol) {
 YYSCAN_TYPE yyscan_json_token(yyscan_t self) {
   const char *text = yyget_text(self);
   assert(text[yyget_leng(self)] == 0);
-  return yyscan_json_symbol(self, text);
+  return scanner_json_token(yyget_extra(self), text);
 }
 YYSCAN_TYPE yyscan_json_symbol(yyscan_t self, const char *symbol) {
   symbol = set_insert(yyget_extra(self)->symbols, symbol);

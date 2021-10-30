@@ -18,6 +18,10 @@ void scanner_delete(YYSCAN_EXTRA self) {
   set_delete(self->typedefs);
   util_free(self);
 }
+YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA self, const char *token) {
+  token = set_insert(self->symbols, token);
+  return json_factory_str(self->jfactory, token);
+}
 YYSCAN_TYPE scanner_json_str(YYSCAN_EXTRA self, const char *symbol) {
   return json_factory_str(self->jfactory, symbol);
 }

@@ -8,6 +8,7 @@ struct set;
 
 YYSCAN_EXTRA scanner_new(struct json_factory *, struct set *);
 void scanner_delete(YYSCAN_EXTRA);
+YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA, const char *);
 YYSCAN_TYPE scanner_json_str(YYSCAN_EXTRA, const char *);
 YYSCAN_TYPE scanner_json_arr(YYSCAN_EXTRA);
 YYSCAN_TYPE scanner_json_obj(YYSCAN_EXTRA);
