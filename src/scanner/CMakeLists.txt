@@ -30,7 +30,6 @@ target_include_directories(scanner PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   )
 target_link_libraries(scanner PRIVATE
-  cell
   options
   pool
   set

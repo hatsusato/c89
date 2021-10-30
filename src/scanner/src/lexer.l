@@ -11,7 +11,7 @@
 %option never-interactive
 %option nodefault
 %option warn
-%option extra-type="struct scanner *"
+%option extra-type="YYSCAN_EXTRA"
 
 space                   [ \t\n\v\f]
 wide-prefix             [L]?

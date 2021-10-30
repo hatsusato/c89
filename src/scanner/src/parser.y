@@ -3,7 +3,7 @@
 }
 
 %define api.pure full
-%define api.value.type {const struct cell *}
+%define api.value.type {YYSCAN_TYPE}
 %param {yyscan_t YYSCAN_PARAM}
 
 %code provides {
@@ -272,145 +272,162 @@ ellipsis: "..." { $$ = YYSCAN_SYMBOL(ellipsis); }
 /* 6.1 Lexical elements */
 identifier.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(identifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_OBJ();
 }
 | identifier
 ;
 identifier
 : TOKEN_IDENTIFIER {
-  $$ = YYSCAN_SYMBOL(identifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
+  $$ = YYSCAN_TOKEN();
 }
 ;
 typedef-identifier
 : TOKEN_TYPEDEF_IDENTIFIER {
-  $$ = YYSCAN_SYMBOL(typedef-identifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
+  $$ = YYSCAN_TOKEN();
 }
 ;
 floating-constant
 : TOKEN_FLOATING_CONSTANT {
-  $$ = YYSCAN_SYMBOL(floating-constant);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
+  $$ = YYSCAN_TOKEN();
 }
 ;
 integer-constant
 : TOKEN_INTEGER_CONSTANT {
-  $$ = YYSCAN_SYMBOL(integer-constant);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
+  $$ = YYSCAN_TOKEN();
 }
 ;
 enumeration-constant
 : TOKEN_IDENTIFIER {
-  $$ = YYSCAN_SYMBOL(enumeration-constant);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
+  $$ = YYSCAN_TOKEN();
 }
 ;
 character-constant
 : TOKEN_CHARACTER_CONSTANT {
-  $$ = YYSCAN_SYMBOL(character-constant);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
+  $$ = YYSCAN_TOKEN();
 }
 ;
 string-literal
 : TOKEN_STRING_LITERAL {
-  $$ = YYSCAN_SYMBOL(string-literal);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, YYSCAN_TOKEN());
+  $$ = YYSCAN_TOKEN();
 }
 ;
 
 /* 6.3 Expressions */
 primary-expression
 : identifier {
-  $$ = YYSCAN_SYMBOL(primary-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, identifier, $1);
 }
 | floating-constant {
-  $$ = YYSCAN_SYMBOL(primary-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, floating-constant, $1);
 }
 | integer-constant {
-  $$ = YYSCAN_SYMBOL(primary-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, integer-constant, $1);
 }
 | character-constant {
-  $$ = YYSCAN_SYMBOL(primary-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, character-constant, $1);
 }
 | string-literal {
-  $$ = YYSCAN_SYMBOL(primary-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, string-literal, $1);
 }
 | left-paren expression right-paren {
-  $$ = YYSCAN_SYMBOL(primary-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, left-paren, $1);
+  YYSCAN_SET($$, expression, $2);
+  YYSCAN_SET($$, right-paren, $3);
 }
 ;
 postfix-expression
-: primary-expression
+: primary-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, primary-expression, $1);
+}
 | postfix-expression left-bracket expression right-bracket {
-  $$ = YYSCAN_SYMBOL(postfix-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, postfix-expression, $1);
+  YYSCAN_SET($$, left-bracket, $2);
+  YYSCAN_SET($$, expression, $3);
+  YYSCAN_SET($$, right-bracket, $4);
 }
 | postfix-expression left-paren argument-expression-list.opt right-paren {
-  $$ = YYSCAN_SYMBOL(postfix-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, postfix-expression, $1);
+  YYSCAN_SET($$, left-paren, $2);
+  YYSCAN_SET($$, argument-expression-list, $3);
+  YYSCAN_SET($$, right-paren, $4);
 }
 | postfix-expression period identifier {
-  $$ = YYSCAN_SYMBOL(postfix-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, postfix-expression, $1);
+  YYSCAN_SET($$, period, $2);
+  YYSCAN_SET($$, identifier, $3);
 }
 | postfix-expression arrow identifier {
-  $$ = YYSCAN_SYMBOL(postfix-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, postfix-expression, $1);
+  YYSCAN_SET($$, arrow, $2);
+  YYSCAN_SET($$, identifier, $3);
 }
 | postfix-expression increment {
-  $$ = YYSCAN_SYMBOL(postfix-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, postfix-expression, $1);
+  YYSCAN_SET($$, increment, $2);
 }
 | postfix-expression decrement {
-  $$ = YYSCAN_SYMBOL(postfix-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, postfix-expression, $1);
+  YYSCAN_SET($$, decrement, $2);
 }
 ;
 argument-expression-list.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(argument-expression-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_ARR();
 }
 | argument-expression-list
 ;
 argument-expression-list
 : assignment-expression {
-  $$ = YYSCAN_SYMBOL(argument-expression-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | argument-expression-list comma assignment-expression {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
+  $$ = YYSCAN_PUSH($1, $2);
 }
 ;
 unary-expression
-: postfix-expression
+: postfix-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, postfix-expression, $1);
+}
 | increment unary-expression {
-  $$ = YYSCAN_SYMBOL(unary-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, increment, $1);
+  YYSCAN_SET($$, unary-expression, $2);
 }
 | decrement unary-expression {
-  $$ = YYSCAN_SYMBOL(unary-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, decrement, $1);
+  YYSCAN_SET($$, unary-expression, $2);
 }
 | unary-operator cast-expression {
-  $$ = YYSCAN_SYMBOL(unary-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, unary-operator, $1);
+  YYSCAN_SET($$, cast-expression, $2);
 }
 | sizeof unary-expression {
-  $$ = YYSCAN_SYMBOL(unary-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, sizeof, $1);
+  YYSCAN_SET($$, unary-expression, $2);
 }
 | sizeof left-paren type-name right-paren {
-  $$ = YYSCAN_SYMBOL(unary-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, sizeof, $1);
+  YYSCAN_SET($$, left-paren, $2);
+  YYSCAN_SET($$, type-name, $3);
+  YYSCAN_SET($$, right-paren, $4);
 }
 ;
 unary-operator
@@ -422,17 +439,28 @@ unary-operator
 | exclamation
 ;
 cast-expression
-: unary-expression
+: unary-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, unary-expression, $1);
+}
 | left-paren type-name right-paren cast-expression {
-  $$ = YYSCAN_SYMBOL(cast-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, left-paren, $1);
+  YYSCAN_SET($$, type-name, $2);
+  YYSCAN_SET($$, right-paren, $3);
+  YYSCAN_SET($$, cast-expression, $4);
 }
 ;
 multiplicative-expression
-: cast-expression
+: cast-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, cast-expression, $1);
+}
 | multiplicative-expression multiplicative-operator cast-expression {
-  $$ = YYSCAN_SYMBOL(multiplicative-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, multiplicative-expression, $1);
+  YYSCAN_SET($$, multiplicative-operator, $2);
+  YYSCAN_SET($$, cast-expression, $3);
 }
 ;
 multiplicative-operator
@@ -441,10 +469,15 @@ multiplicative-operator
 | percent
 ;
 additive-expression
-: multiplicative-expression
+: multiplicative-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, multiplicative-expression, $1);
+}
 | additive-expression additive-operator multiplicative-expression {
-  $$ = YYSCAN_SYMBOL(additive-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, additive-expression, $1);
+  YYSCAN_SET($$, additive-operator, $2);
+  YYSCAN_SET($$, multiplicative-expression, $3);
 }
 ;
 additive-operator
@@ -452,10 +485,15 @@ additive-operator
 | minus
 ;
 shift-expression
-: additive-expression
+: additive-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, additive-expression, $1);
+}
 | shift-expression shift-operator additive-expression {
-  $$ = YYSCAN_SYMBOL(shift-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, shift-expression, $1);
+  YYSCAN_SET($$, shift-operator, $2);
+  YYSCAN_SET($$, additive-expression, $3);
 }
 ;
 shift-operator
@@ -463,10 +501,15 @@ shift-operator
 | right-shift
 ;
 relational-expression
-: shift-expression
+: shift-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, shift-expression, $1);
+}
 | relational-expression relational-operator shift-expression {
-  $$ = YYSCAN_SYMBOL(relational-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, relational-expression, $1);
+  YYSCAN_SET($$, relational-operator, $2);
+  YYSCAN_SET($$, shift-expression, $3);
 }
 ;
 relational-operator
@@ -476,10 +519,15 @@ relational-operator
 | greater-equal
 ;
 equality-expression
-: relational-expression
+: relational-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, relational-expression, $1);
+}
 | equality-expression equality-operator relational-expression {
-  $$ = YYSCAN_SYMBOL(equality-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, equality-expression, $1);
+  YYSCAN_SET($$, equality-operator, $2);
+  YYSCAN_SET($$, relational-expression, $3);
 }
 ;
 equality-operator
@@ -487,52 +535,89 @@ equality-operator
 | not-equal
 ;
 and-expression
-: equality-expression
+: equality-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, equality-expression, $1);
+}
 | and-expression ampersand equality-expression {
-  $$ = YYSCAN_SYMBOL(and-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, and-expression, $1);
+  YYSCAN_SET($$, ampersand, $2);
+  YYSCAN_SET($$, equality-expression, $3);
 }
 ;
 exclusive-or-expression
-: and-expression
+: and-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, and-expression, $1);
+}
 | exclusive-or-expression caret and-expression {
-  $$ = YYSCAN_SYMBOL(exclusive-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, exclusive-or-expression, $1);
+  YYSCAN_SET($$, caret, $2);
+  YYSCAN_SET($$, and-expression, $3);
 }
 ;
 inclusive-or-expression
-: exclusive-or-expression
+: exclusive-or-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, exclusive-or-expression, $1);
+}
 | inclusive-or-expression bar exclusive-or-expression {
-  $$ = YYSCAN_SYMBOL(inclusive-or-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, inclusive-or-expression, $1);
+  YYSCAN_SET($$, bar, $2);
+  YYSCAN_SET($$, exclusive-or-expression, $3);
 }
 ;
 logical-and-expression
-: inclusive-or-expression
+: inclusive-or-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, inclusive-or-expression, $1);
+}
 | logical-and-expression and inclusive-or-expression {
-  $$ = YYSCAN_SYMBOL(logical-and-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, logical-and-expression, $1);
+  YYSCAN_SET($$, and, $2);
+  YYSCAN_SET($$, inclusive-or-expression, $3);
 }
 ;
 logical-or-expression
-: logical-and-expression
+: logical-and-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, logical-and-expression, $1);
+}
 | logical-or-expression or logical-and-expression {
-  $$ = YYSCAN_SYMBOL(logical-or-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, logical-or-expression, $1);
+  YYSCAN_SET($$, or, $2);
+  YYSCAN_SET($$, inclusive-and-expression, $3);
 }
 ;
 conditional-expression
-: logical-or-expression
+: logical-or-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, logical-or-expression, $1);
+}
 | logical-or-expression question expression colon conditional-expression {
-  $$ = YYSCAN_SYMBOL(conditional-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, logical-or-expression, $1);
+  YYSCAN_SET($$, question, $2);
+  YYSCAN_SET($$, expression, $3);
+  YYSCAN_SET($$, colon, $4);
+  YYSCAN_SET($$, conditional-expression, $5);
 }
 ;
 assignment-expression
-: conditional-expression
+: conditional-expression {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, conditional-expression, $1);
+}
 | unary-expression assignment-operator assignment-expression {
-  $$ = YYSCAN_SYMBOL(assignment-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, unary-expression, $1);
+  YYSCAN_SET($$, assignment-operator, $2);
+  YYSCAN_SET($$, assignment-expression, $3);
 }
 ;
 assignment-operator
@@ -550,618 +635,732 @@ assignment-operator
 ;
 expression.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_OBJ();
 }
 | expression
 ;
 expression
 : assignment-expression {
-  $$ = YYSCAN_SYMBOL(expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, assignment-expression, $1);
 }
 | expression comma assignment-expression {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, expression, $1);
+  YYSCAN_SET($$, comma, $1);
+  YYSCAN_SET($$, assignment-expression, $1);
 }
 ;
 
 /* 6.4 Constant expressions */
 constant-expression.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(constant-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_OBJ();
 }
 | constant-expression
 ;
 constant-expression
 : conditional-expression {
-  $$ = YYSCAN_SYMBOL(constant-expression);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, conditional-expression, $1);
 }
 ;
 
 /* 6.5 Declarations */
 declaration
 : declaration-specifiers init-declarator-list.opt semicolon {
-  $$ = YYSCAN_SYMBOL(declaration);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, declaration-specifiers, $1);
+  YYSCAN_SET($$, init-declarator-list, $2);
+  YYSCAN_SET($$, semicolon, $3);
 }
 ;
 declaration-specifiers
 : declaration-specifier {
-  $$ = YYSCAN_SYMBOL(declaration-specifiers);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | declaration-specifiers declaration-specifier {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
+  $$ = YYSCAN_PUSH($1, $2);
 }
 ;
 declaration-specifier
-: storage-class-specifier
-| type-specifier
-| type-qualifier
+: storage-class-specifier {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, storage-class-specifier, $1);
+}
+| type-specifier {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, type-specifier, $1);
+}
+| type-qualifier {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, type-qualifier, $1);
+}
 ;
 init-declarator-list.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(init-declarator-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_ARR();
 }
 | init-declarator-list
 ;
 init-declarator-list
 : init-declarator {
-  $$ = YYSCAN_SYMBOL(init-declarator-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | init-declarator-list comma init-declarator {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
+  $$ = YYSCAN_PUSH($1, $3);
 }
 ;
 init-declarator
 : declarator {
-  $$ = YYSCAN_SYMBOL(init-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, declarator, $1);
 }
 | declarator assign initializer {
-  $$ = YYSCAN_SYMBOL(init-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, declarator, $1);
+  YYSCAN_SET($$, assign, $2);
+  YYSCAN_SET($$, initializer, $3);
 }
 ;
 storage-class-specifier
 : typedef {
-  $$ = YYSCAN_SYMBOL(storage-class-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, typedef, $1);
 }
 | extern {
-  $$ = YYSCAN_SYMBOL(storage-class-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, extern, $1);
 }
 | static {
-  $$ = YYSCAN_SYMBOL(storage-class-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, static, $1);
 }
 | auto {
-  $$ = YYSCAN_SYMBOL(storage-class-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, auto, $1);
 }
 | register {
-  $$ = YYSCAN_SYMBOL(storage-class-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, register, $1);
 }
 ;
 type-specifier
 : void {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, void, $1);
 }
 | char {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, char, $1);
 }
 | short {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, short, $1);
 }
 | int {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, int, $1);
 }
 | long {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, long, $1);
 }
 | float {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, float, $1);
 }
 | double {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, double, $1);
 }
 | signed {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, signed, $1);
 }
 | unsigned {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, unsigned, $1);
 }
 | struct-or-union-specifier {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, struct-or-union-specifier, $1);
 }
 | enum-specifier {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, enum-specifier, $1);
 }
 | typedef-name {
-  $$ = YYSCAN_SYMBOL(type-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, typedef-name, $1);
 }
 ;
 struct-or-union-specifier
 : struct-or-union identifier.opt left-brace struct-declaration-list right-brace {
-  $$ = YYSCAN_SYMBOL(struct-or-union-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, struct-or-union, $1);
+  YYSCAN_SET($$, identifier, $2);
+  YYSCAN_SET($$, left-brace, $3);
+  YYSCAN_SET($$, struct-declaration-list, $4);
+  YYSCAN_SET($$, right-brace, $5);
 }
 | struct-or-union identifier {
-  $$ = YYSCAN_SYMBOL(struct-or-union-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, struct-or-union, $1);
+  YYSCAN_SET($$, identifier, $2);
 }
 ;
 struct-or-union
 : struct {
-  $$ = YYSCAN_SYMBOL(struct-or-union);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, struct, $1);
 }
 | union {
-  $$ = YYSCAN_SYMBOL(struct-or-union);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, union, $1);
 }
 ;
 struct-declaration-list
 : struct-declaration {
-  $$ = YYSCAN_SYMBOL(struct-declaration-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | struct-declaration-list struct-declaration {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
+  $$ = YYSCAN_PUSH($1, $2);
 }
 ;
 struct-declaration
 : specifier-qualifier-list struct-declarator-list semicolon {
-  $$ = YYSCAN_SYMBOL(struct-declaration);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, specifier-qualifier-list, $1);
+  YYSCAN_SET($$, struct-declarator-list, $2);
+  YYSCAN_SET($$, semicolon, $3);
 }
 ;
 specifier-qualifier-list
 : specifier-qualifier {
-  $$ = YYSCAN_SYMBOL(specifier-qualifier-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | specifier-qualifier-list specifier-qualifier {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
+  $$ = YYSCAN_PUSH($1, $2);
 }
 ;
 specifier-qualifier
-: type-specifier
-| type-qualifier
+: type-specifier {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, type-specifier, $1);
+}
+| type-qualifier {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, type-qualifier, $1);
+}
 ;
 struct-declarator-list
 : struct-declarator {
-  $$ = YYSCAN_SYMBOL(struct-declarator-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | struct-declarator-list comma struct-declarator {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
+  $$ = YYSCAN_PUSH($1, $3);
 }
 ;
 struct-declarator
 : declarator {
-  $$ = YYSCAN_SYMBOL(struct-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, declarator, $1);
 }
 | declarator.opt colon constant-expression {
-  $$ = YYSCAN_SYMBOL(struct-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, declarator, $1);
+  YYSCAN_SET($$, colon, $2);
+  YYSCAN_SET($$, constant-expression, $3);
 }
 ;
 enum-specifier
 : enum identifier.opt left-brace enumerator-list right-brace {
-  $$ = YYSCAN_SYMBOL(enum-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, enum, $1);
+  YYSCAN_SET($$, identifier, $2);
+  YYSCAN_SET($$, left-brace, $3);
+  YYSCAN_SET($$, enumerator-list, $4);
+  YYSCAN_SET($$, right-brace, $5);
 }
 | enum identifier {
-  $$ = YYSCAN_SYMBOL(enum-specifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, enum, $1);
+  YYSCAN_SET($$, identifier, $2);
 }
 ;
 enumerator-list
 : enumerator {
-  $$ = YYSCAN_SYMBOL(enumerator-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | enumerator-list comma enumerator {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
+  $$ = YYSCAN_PUSH($1, $3);
 }
 ;
 enumerator
 : enumeration-constant {
-  $$ = YYSCAN_SYMBOL(enumerator);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, enumeration-constant, $1);
 }
 | enumeration-constant assign constant-expression {
-  $$ = YYSCAN_SYMBOL(enumerator);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, enumeration-constant, $1);
+  YYSCAN_SET($$, assign, $2);
+  YYSCAN_SET($$, constant-expression, $3);
 }
 ;
 type-qualifier
 : const {
-  $$ = YYSCAN_SYMBOL(type-qualifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, const, $1);
 }
 | volatile {
-  $$ = YYSCAN_SYMBOL(type-qualifier);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, volatile, $1);
 }
 ;
 declarator.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_OBJ();
 }
 | declarator
 ;
 declarator
 : direct-declarator {
-  $$ = YYSCAN_SYMBOL(declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, direct-declarator, $1);
 }
 | pointer direct-declarator {
-  $$ = YYSCAN_SYMBOL(declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, pointer, $1);
+  YYSCAN_SET($$, direct-declarator, $2);
 }
 ;
 direct-declarator
 : identifier {
-  $$ = YYSCAN_SYMBOL(direct-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, identifier, $1);
 }
 | left-paren declarator right-paren {
-  $$ = YYSCAN_SYMBOL(direct-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, left-paren, $1);
+  YYSCAN_SET($$, declarator, $2);
+  YYSCAN_SET($$, right-paren, $3);
 }
 | direct-declarator left-bracket constant-expression.opt right-bracket {
-  $$ = YYSCAN_SYMBOL(direct-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, direct-declarator, $1);
+  YYSCAN_SET($$, left-bracket, $2);
+  YYSCAN_SET($$, constant-expression, $3);
+  YYSCAN_SET($$, right-bracket, $4);
 }
 | direct-declarator left-paren parameter-type-list right-paren {
-  $$ = YYSCAN_SYMBOL(direct-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, direct-declarator, $1);
+  YYSCAN_SET($$, left-paren, $2);
+  YYSCAN_SET($$, parameter-type-list, $3);
+  YYSCAN_SET($$, right-paren, $4);
 }
 | direct-declarator left-paren identifier-list.opt right-paren {
-  $$ = YYSCAN_SYMBOL(direct-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, direct-declarator, $1);
+  YYSCAN_SET($$, left-paren, $2);
+  YYSCAN_SET($$, identifier-list, $3);
+  YYSCAN_SET($$, right-paren, $4);
 }
 ;
 pointer
 : asterisk type-qualifier-list.opt {
-  $$ = YYSCAN_SYMBOL(pointer);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, asterisk, $1);
+  YYSCAN_SET($$, type-qualifier-list, $2);
 }
 | pointer asterisk type-qualifier-list.opt {
-  $$ = YYSCAN_SYMBOL(pointer);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, pointer, $1);
+  YYSCAN_SET($$, asterisk, $2);
+  YYSCAN_SET($$, type-qualifier-list, $3);
 }
 ;
 type-qualifier-list.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(type-qualifier-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_ARR();
 }
 | type-qualifier-list
 ;
 type-qualifier-list
 : type-qualifier {
-  $$ = YYSCAN_SYMBOL(type-qualifier-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | type-qualifier-list type-qualifier {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
+  $$ = YYSCAN_PUSH($1, $2);
 }
 ;
 parameter-type-list.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(parameter-type-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_OBJ();
 }
 | parameter-type-list
 ;
 parameter-type-list
 : parameter-list {
-  $$ = YYSCAN_SYMBOL(parameter-type-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, parameter-list, $1);
 }
 | parameter-list comma ellipsis {
-  $$ = YYSCAN_SYMBOL(parameter-type-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, parameter-list, $1);
+  YYSCAN_SET($$, comma, $2);
+  YYSCAN_SET($$, ellipsis, $3);
 }
 ;
 parameter-list
 : parameter-declaration {
-  $$ = YYSCAN_SYMBOL(parameter-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | parameter-list comma parameter-declaration {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
+  $$ = YYSCAN_PUSH($1, $3);
 }
 ;
 parameter-declaration
 : declaration-specifiers declarator {
-  $$ = YYSCAN_SYMBOL(parameter-declaration);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, declaration-specifiers, $1);
+  YYSCAN_SET($$, declarator, $2);
 }
 | declaration-specifiers abstract-declarator.opt {
-  $$ = YYSCAN_SYMBOL(parameter-declaration);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, declaration-specifiers, $1);
+  YYSCAN_SET($$, abstract-declarator, $2);
 }
 ;
 identifier-list.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(identifier-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_ARR();
 }
 | identifier-list
 ;
 identifier-list
 : identifier {
-  $$ = YYSCAN_SYMBOL(identifier-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | identifier-list comma identifier {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
+  $$ = YYSCAN_PUSH($1, $3);
 }
 ;
 type-name
 : specifier-qualifier-list abstract-declarator.opt {
-  $$ = YYSCAN_SYMBOL(type-name);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, specifier-qualifier-list, $1);
+  YYSCAN_SET($$, abstract-declarator, $2);
 }
 ;
 abstract-declarator.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(abstract-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_OBJ();
 }
 | abstract-declarator
 ;
 abstract-declarator
 : pointer {
-  $$ = YYSCAN_SYMBOL(abstract-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, pointer, $1);
 }
 | direct-abstract-declarator {
-  $$ = YYSCAN_SYMBOL(abstract-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, direct-abstract-declarator, $1);
 }
 | pointer direct-abstract-declarator {
-  $$ = YYSCAN_SYMBOL(abstract-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, pointer, $1);
+  YYSCAN_SET($$, direct-abstract-declarator, $2);
 }
 ;
 direct-abstract-declarator
 : left-paren abstract-declarator right-paren {
-  $$ = YYSCAN_SYMBOL(direct-abstract-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, left-paren, $1);
+  YYSCAN_SET($$, abstract-declarator, $2);
+  YYSCAN_SET($$, right-paren, $3);
 }
 | left-bracket constant-expression.opt right-bracket {
-  $$ = YYSCAN_SYMBOL(direct-abstract-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, left-bracket, $1);
+  YYSCAN_SET($$, constant-expression, $2);
+  YYSCAN_SET($$, right-bracket, $3);
 }
 | direct-abstract-declarator left-bracket constant-expression.opt right-bracket {
-  $$ = YYSCAN_SYMBOL(direct-abstract-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, direct-abstract-declarator, $1);
+  YYSCAN_SET($$, left-bracket, $2);
+  YYSCAN_SET($$, constant-expression, $3);
+  YYSCAN_SET($$, right-bracket, $4);
 }
 | left-paren parameter-type-list.opt right-paren {
-  $$ = YYSCAN_SYMBOL(direct-abstract-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, left-paren, $1);
+  YYSCAN_SET($$, parameter-type-list, $2);
+  YYSCAN_SET($$, right-paren, $3);
 }
 | direct-abstract-declarator left-paren parameter-type-list.opt right-paren {
-  $$ = YYSCAN_SYMBOL(direct-abstract-declarator);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, direct-abstract-declarator, $1);
+  YYSCAN_SET($$, left-paren, $2);
+  YYSCAN_SET($$, parameter-type-list, $3);
+  YYSCAN_SET($$, right-paren, $4);
 }
 ;
 typedef-name
 : typedef-identifier {
-  $$ = YYSCAN_SYMBOL(typedef-name);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, typedef-identifier, $1);
 }
 ;
 initializer
 : assignment-expression {
-  $$ = YYSCAN_SYMBOL(initializer);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, assignment-expression, $1);
 }
 | left-brace initializer-list right-brace {
-  $$ = YYSCAN_SYMBOL(initializer);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, left-brace, $1);
+  YYSCAN_SET($$, initializer-list, $2);
+  YYSCAN_SET($$, right-brace, $3);
 }
 | left-brace initializer-list comma right-brace {
-  $$ = YYSCAN_SYMBOL(initializer);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, left-brace, $1);
+  YYSCAN_SET($$, initializer-list, $2);
+  YYSCAN_SET($$, comma, $3);
+  YYSCAN_SET($$, right-brace, $4);
 }
 ;
 initializer-list
 : initializer {
-  $$ = YYSCAN_SYMBOL(initializer-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | initializer-list comma initializer {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $3);
+  $$ = YYSCAN_PUSH($1, $3);
 }
 ;
 
 /* 6.6 Statements */
 statement
 : labeled-statement {
-  $$ = YYSCAN_SYMBOL(statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, labeled-statement, $1);
 }
 | compound-statement {
-  $$ = YYSCAN_SYMBOL(statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, compound-statement, $1);
 }
 | expression-statement {
-  $$ = YYSCAN_SYMBOL(statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, expression-statement, $1);
 }
 | selection-statement {
-  $$ = YYSCAN_SYMBOL(statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, selection-statement, $1);
 }
 | iteration-statement {
-  $$ = YYSCAN_SYMBOL(statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, iteration-statement, $1);
 }
 | jump-statement {
-  $$ = YYSCAN_SYMBOL(statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, jump-statement, $1);
 }
 ;
 labeled-statement
 : identifier colon statement {
-  $$ = YYSCAN_SYMBOL(labeled-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, identifier, $1);
+  YYSCAN_SET($$, colon, $2);
+  YYSCAN_SET($$, statement, $3);
 }
 | case constant-expression colon statement {
-  $$ = YYSCAN_SYMBOL(labeled-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, case, $1);
+  YYSCAN_SET($$, constant-expression, $2);
+  YYSCAN_SET($$, colon, $3);
+  YYSCAN_SET($$, statement, $4);
 }
 | default colon statement {
-  $$ = YYSCAN_SYMBOL(labeled-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, default, $1);
+  YYSCAN_SET($$, colon, $2);
+  YYSCAN_SET($$, statement, $3);
 }
 ;
 compound-statement
 : left-brace declaration-list.opt statement-list.opt right-brace {
-  $$ = YYSCAN_SYMBOL(compound-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, left-brace, $1);
+  YYSCAN_SET($$, declaration-list, $2);
+  YYSCAN_SET($$, statement-list, $3);
+  YYSCAN_SET($$, right-brace, $4);
 }
 ;
 declaration-list.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(declaration-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_ARR();
 }
 | declaration-list
 ;
 declaration-list
 : declaration {
-  $$ = YYSCAN_SYMBOL(declaration-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | declaration-list declaration {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
+  $$ = YYSCAN_PUSH($1, $2);
 }
 ;
 statement-list.opt
 : %empty {
-  $$ = YYSCAN_SYMBOL(statement-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 1, $$);
+  $$ = YYSCAN_ARR();
 }
 | statement-list
 ;
 statement-list
 : statement {
-  $$ = YYSCAN_SYMBOL(statement-list);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | statement-list statement {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
+  $$ = YYSCAN_PUSH($1, $2);
 }
 ;
 expression-statement
 : expression.opt semicolon {
-  $$ = YYSCAN_SYMBOL(expression-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, expression, $1);
+  YYSCAN_SET($$, semicolon, $2);
 }
 ;
 selection-statement
 : if left-paren expression right-paren statement %prec THEN {
-  $$ = YYSCAN_SYMBOL(selection-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, if, $1);
+  YYSCAN_SET($$, left-paren, $2);
+  YYSCAN_SET($$, expression, $3);
+  YYSCAN_SET($$, right-paren, $4);
+  YYSCAN_SET($$, statement, $5);
 }
 | if left-paren expression right-paren statement else statement {
-  $$ = YYSCAN_SYMBOL(selection-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 8, $$, $1, $2, $3, $4, $5, $6, $7);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, if, $1);
+  YYSCAN_SET($$, left-paren, $2);
+  YYSCAN_SET($$, expression, $3);
+  YYSCAN_SET($$, right-paren, $4);
+  YYSCAN_SET($$, statement, $5);
+  YYSCAN_SET($$, else, $6);
+  YYSCAN_SET($$, statement, $7);
 }
 | switch left-paren expression right-paren statement {
-  $$ = YYSCAN_SYMBOL(selection-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, switch, $1);
+  YYSCAN_SET($$, left-paren, $2);
+  YYSCAN_SET($$, expression, $3);
+  YYSCAN_SET($$, right-paren, $4);
+  YYSCAN_SET($$, statement, $5);
 }
 ;
 iteration-statement
 : while left-paren expression right-paren statement {
-  $$ = YYSCAN_SYMBOL(iteration-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 6, $$, $1, $2, $3, $4, $5);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, while, $1);
+  YYSCAN_SET($$, left-paren, $2);
+  YYSCAN_SET($$, expression, $3);
+  YYSCAN_SET($$, right-paren, $4);
+  YYSCAN_SET($$, statement, $5);
 }
 | do statement while left-paren expression right-paren semicolon {
-  $$ = YYSCAN_SYMBOL(iteration-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 8, $$, $1, $2, $3, $4, $5, $6, $7);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, do, $1);
+  YYSCAN_SET($$, statement, $2);
+  YYSCAN_SET($$, while, $3);
+  YYSCAN_SET($$, left-paren, $4);
+  YYSCAN_SET($$, expression, $5);
+  YYSCAN_SET($$, right-paren, $6);
+  YYSCAN_SET($$, semicolon, $7);
 }
 | for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {
-  $$ = YYSCAN_SYMBOL(iteration-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 10, $$, $1, $2, $3, $4, $5, $6, $7, $8, $9);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, for, $1);
+  YYSCAN_SET($$, left-paren, $2);
+  YYSCAN_SET($$, expression, $3);
+  YYSCAN_SET($$, semicolon, $4);
+  YYSCAN_SET($$, expression, $5);
+  YYSCAN_SET($$, semicolon, $6);
+  YYSCAN_SET($$, expression, $7);
+  YYSCAN_SET($$, right-paren, $8);
+  YYSCAN_SET($$, statement, $9);
 }
 ;
 jump-statement
 : goto identifier semicolon {
-  $$ = YYSCAN_SYMBOL(jump-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, goto, $1);
+  YYSCAN_SET($$, identifier, $2);
+  YYSCAN_SET($$, semicolon, $3);
 }
 | continue semicolon {
-  $$ = YYSCAN_SYMBOL(jump-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, continue, $1);
+  YYSCAN_SET($$, semicolon, $2);
 }
 | break semicolon {
-  $$ = YYSCAN_SYMBOL(jump-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 3, $$, $1, $2);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, break, $1);
+  YYSCAN_SET($$, semicolon, $2);
 }
 | return expression.opt semicolon {
-  $$ = YYSCAN_SYMBOL(jump-statement);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, return, $1);
+  YYSCAN_SET($$, expression, $2);
+  YYSCAN_SET($$, semicolon, $3);
 }
 ;
 
 /* 6.7 External definitions */
 top
-: translation-unit { yyscan_set_ast(YYSCAN_PARAM, $1); }
+: translation-unit {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, translation-unit, $1);
+  YYSCAN_SET_TOP($$);
+}
 ;
 translation-unit
 : external-declaration {
-  $$ = YYSCAN_SYMBOL(translation-unit);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | translation-unit external-declaration {
-  $$ = yyscan_push(YYSCAN_PARAM, $1, $2);
+  $$ = YYSCAN_PUSH($1, $2);
 }
 ;
 external-declaration
-: function-definition
+: function-definition {
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, function-definition, $1);
+}
 | declaration {
-  yyscan_register_typedef(YYSCAN_PARAM, $1);
-  $$ = YYSCAN_SYMBOL(external-declaration);
-  $$ = yyscan_list(YYSCAN_PARAM, 2, $$, $1);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, declaration, $1);
+  /* yyscan_register_typedef(YYSCAN_PARAM, $1); */
 }
 ;
 function-definition
 : declarator declaration-list.opt compound-statement {
-  $$ = YYSCAN_SYMBOL(function-definition);
-  $$ = yyscan_list(YYSCAN_PARAM, 4, $$, $1, $2, $3);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, declarator, $1);
+  YYSCAN_SET($$, declaration-list, $2);
+  YYSCAN_SET($$, compound-statement, $3);
 }
 | declaration-specifiers declarator declaration-list.opt compound-statement {
-  $$ = YYSCAN_SYMBOL(function-definition);
-  $$ = yyscan_list(YYSCAN_PARAM, 5, $$, $1, $2, $3, $4);
+  $$ = YYSCAN_OBJ();
+  YYSCAN_SET($$, declaration-specifiers, $1);
+  YYSCAN_SET($$, declarator, $2);
+  YYSCAN_SET($$, declaration-list, $3);
+  YYSCAN_SET($$, compound-statement, $4);
 }
 ;
 
