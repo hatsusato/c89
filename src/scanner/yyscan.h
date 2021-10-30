@@ -24,12 +24,12 @@ const struct cell *yyscan_push(yyscan_t, const struct cell *,
                                const struct cell *);
 const struct cell *yyscan_list(yyscan_t, int, ...);
 
-struct json *yyscan_json_token(yyscan_t);
-struct json *yyscan_json_symbol(yyscan_t, const char *);
-struct json *yyscan_json_arr(yyscan_t);
-struct json *yyscan_json_push(struct json *, struct json *);
-struct json *yyscan_json_obj(yyscan_t);
-void yyscan_json_insert(struct json *, const char *, struct json *);
-void yyscan_set_top(yyscan_t, struct json *);
+YYSCAN_TYPE yyscan_json_token(yyscan_t);
+YYSCAN_TYPE yyscan_json_symbol(yyscan_t, const char *);
+YYSCAN_TYPE yyscan_json_arr(yyscan_t);
+YYSCAN_TYPE yyscan_json_push(YYSCAN_TYPE, YYSCAN_TYPE);
+YYSCAN_TYPE yyscan_json_obj(yyscan_t);
+void yyscan_json_insert(YYSCAN_TYPE, const char *, YYSCAN_TYPE);
+void yyscan_set_top(yyscan_t, YYSCAN_TYPE);
 
 #endif /* INCLUDE_GUARD_9CD5F173_4C3F_436C_9085_C797766F802E */

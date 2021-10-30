@@ -3,7 +3,7 @@
 }
 
 %define api.pure full
-%define api.value.type {struct json *}
+%define api.value.type {YYSCAN_TYPE}
 %param {yyscan_t YYSCAN_PARAM}
 
 %code provides {
