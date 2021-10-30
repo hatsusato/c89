@@ -1,6 +1,7 @@
 #include "scanner.h"
 
 #include "cell/factory.h"
+#include "json/json.h"
 #include "set/set.h"
 #include "type.h"
 #include "util/util.h"
@@ -13,6 +14,7 @@ static void scanner_init(struct scanner *self, struct json_factory *factory,
   self->typedefs = set_new();
   self->symbols = symbols;
   self->jfactory = factory;
+  self->top = json_null();
 }
 static void scanner_finish(struct scanner *self) {
   set_delete(self->typedefs);
@@ -21,7 +23,7 @@ static void scanner_finish(struct scanner *self) {
 
 const struct cell *scanner_parse(struct json_factory *factory,
                                  struct pool *pool, struct set *symbols) {
-  struct scanner scanner = {NULL, NULL, NULL, NULL, NULL};
+  struct scanner scanner = {NULL, NULL, NULL, NULL, NULL, NULL};
   yyscan_t yyscan = yyscan_new(&scanner);
   if (yyscan) {
     scanner_init(&scanner, factory, pool, symbols);

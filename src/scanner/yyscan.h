@@ -26,5 +26,6 @@ struct json *yyscan_json_arr(yyscan_t);
 struct json *yyscan_json_push(struct json *, struct json *);
 struct json *yyscan_json_obj(yyscan_t);
 void yyscan_json_insert(struct json *, const char *, struct json *);
+void yyscan_set_top(yyscan_t, struct json *);
 
 #endif /* INCLUDE_GUARD_9CD5F173_4C3F_436C_9085_C797766F802E */

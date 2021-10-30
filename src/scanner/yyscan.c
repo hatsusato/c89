@@ -94,3 +94,6 @@ struct json *yyscan_json_obj(yyscan_t self) {
 void yyscan_json_insert(struct json *json, const char *key, struct json *val) {
   json_obj_set(json, key, val);
 }
+void yyscan_set_top(yyscan_t self, struct json *top) {
+  yyget_extra(self)->top = top;
+}
