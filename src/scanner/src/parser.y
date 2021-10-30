@@ -8,6 +8,7 @@
 
 %code provides {
 #include "lexer.h"
+#include "symbol.h"
 #include "yyscan.h"
 }
 
@@ -110,163 +111,163 @@
 
 %%
 
-auto: "auto" { $$ = YYSCAN_STR(auto); }
+auto: "auto" { $$ = YYSCAN_STR(SYMBOL_AUTO); }
 ;
-break: "break" { $$ = YYSCAN_STR(break); }
+break: "break" { $$ = YYSCAN_STR(SYMBOL_BREAK); }
 ;
-case: "case" { $$ = YYSCAN_STR(case); }
+case: "case" { $$ = YYSCAN_STR(SYMBOL_CASE); }
 ;
-char: "char" { $$ = YYSCAN_STR(char); }
+char: "char" { $$ = YYSCAN_STR(SYMBOL_CHAR); }
 ;
-const: "const" { $$ = YYSCAN_STR(const); }
+const: "const" { $$ = YYSCAN_STR(SYMBOL_CONST); }
 ;
-continue: "continue" { $$ = YYSCAN_STR(continue); }
+continue: "continue" { $$ = YYSCAN_STR(SYMBOL_CONTINUE); }
 ;
-default: "default" { $$ = YYSCAN_STR(default); }
+default: "default" { $$ = YYSCAN_STR(SYMBOL_DEFAULT); }
 ;
-do: "do" { $$ = YYSCAN_STR(do); }
+do: "do" { $$ = YYSCAN_STR(SYMBOL_DO); }
 ;
-double: "double" { $$ = YYSCAN_STR(double); }
+double: "double" { $$ = YYSCAN_STR(SYMBOL_DOUBLE); }
 ;
-else: "else" { $$ = YYSCAN_STR(else); }
+else: "else" { $$ = YYSCAN_STR(SYMBOL_ELSE); }
 ;
-enum: "enum" { $$ = YYSCAN_STR(enum); }
+enum: "enum" { $$ = YYSCAN_STR(SYMBOL_ENUM); }
 ;
-extern: "extern" { $$ = YYSCAN_STR(extern); }
+extern: "extern" { $$ = YYSCAN_STR(SYMBOL_EXTERN); }
 ;
-float: "float" { $$ = YYSCAN_STR(float); }
+float: "float" { $$ = YYSCAN_STR(SYMBOL_FLOAT); }
 ;
-for: "for" { $$ = YYSCAN_STR(for); }
+for: "for" { $$ = YYSCAN_STR(SYMBOL_FOR); }
 ;
-goto: "goto" { $$ = YYSCAN_STR(goto); }
+goto: "goto" { $$ = YYSCAN_STR(SYMBOL_GOTO); }
 ;
-if: "if" { $$ = YYSCAN_STR(if); }
+if: "if" { $$ = YYSCAN_STR(SYMBOL_IF); }
 ;
-int: "int" { $$ = YYSCAN_STR(int); }
+int: "int" { $$ = YYSCAN_STR(SYMBOL_INT); }
 ;
-long: "long" { $$ = YYSCAN_STR(long); }
+long: "long" { $$ = YYSCAN_STR(SYMBOL_LONG); }
 ;
-register: "register" { $$ = YYSCAN_STR(register); }
+register: "register" { $$ = YYSCAN_STR(SYMBOL_REGISTER); }
 ;
-return: "return" { $$ = YYSCAN_STR(return); }
+return: "return" { $$ = YYSCAN_STR(SYMBOL_RETURN); }
 ;
-short: "short" { $$ = YYSCAN_STR(short); }
+short: "short" { $$ = YYSCAN_STR(SYMBOL_SHORT); }
 ;
-signed: "signed" { $$ = YYSCAN_STR(signed); }
+signed: "signed" { $$ = YYSCAN_STR(SYMBOL_SIGNED); }
 ;
-sizeof: "sizeof" { $$ = YYSCAN_STR(sizeof); }
+sizeof: "sizeof" { $$ = YYSCAN_STR(SYMBOL_SIZEOF); }
 ;
-static: "static" { $$ = YYSCAN_STR(static); }
+static: "static" { $$ = YYSCAN_STR(SYMBOL_STATIC); }
 ;
-struct: "struct" { $$ = YYSCAN_STR(struct); }
+struct: "struct" { $$ = YYSCAN_STR(SYMBOL_STRUCT); }
 ;
-switch: "switch" { $$ = YYSCAN_STR(switch); }
+switch: "switch" { $$ = YYSCAN_STR(SYMBOL_SWITCH); }
 ;
-typedef: "typedef" { $$ = YYSCAN_STR(typedef); }
+typedef: "typedef" { $$ = YYSCAN_STR(SYMBOL_TYPEDEF); }
 ;
-union: "union" { $$ = YYSCAN_STR(union); }
+union: "union" { $$ = YYSCAN_STR(SYMBOL_UNION); }
 ;
-unsigned: "unsigned" { $$ = YYSCAN_STR(unsigned); }
+unsigned: "unsigned" { $$ = YYSCAN_STR(SYMBOL_UNSIGNED); }
 ;
-void: "void" { $$ = YYSCAN_STR(void); }
+void: "void" { $$ = YYSCAN_STR(SYMBOL_VOID); }
 ;
-volatile: "volatile" { $$ = YYSCAN_STR(volatile); }
+volatile: "volatile" { $$ = YYSCAN_STR(SYMBOL_VOLATILE); }
 ;
-while: "while" { $$ = YYSCAN_STR(while); }
+while: "while" { $$ = YYSCAN_STR(SYMBOL_WHILE); }
 ;
 
-period: "." { $$ = YYSCAN_STR(period); }
+period: "." { $$ = YYSCAN_STR(SYMBOL_PERIOD); }
 ;
-arrow: "->" { $$ = YYSCAN_STR(arrow); }
+arrow: "->" { $$ = YYSCAN_STR(SYMBOL_ARROW); }
 ;
-increment: "++" { $$ = YYSCAN_STR(increment); }
+increment: "++" { $$ = YYSCAN_STR(SYMBOL_INCREMENT); }
 ;
-decrement: "--" { $$ = YYSCAN_STR(decrement); }
+decrement: "--" { $$ = YYSCAN_STR(SYMBOL_DECREMENT); }
 ;
-ampersand: "&" { $$ = YYSCAN_STR(ampersand); }
+ampersand: "&" { $$ = YYSCAN_STR(SYMBOL_AMPERSAND); }
 ;
-asterisk: "*" { $$ = YYSCAN_STR(asterisk); }
+asterisk: "*" { $$ = YYSCAN_STR(SYMBOL_ASTERISK); }
 ;
-plus: "+" { $$ = YYSCAN_STR(plus); }
+plus: "+" { $$ = YYSCAN_STR(SYMBOL_PLUS); }
 ;
-minus: "-" { $$ = YYSCAN_STR(minus); }
+minus: "-" { $$ = YYSCAN_STR(SYMBOL_MINUS); }
 ;
-tilde: "~" { $$ = YYSCAN_STR(tilde); }
+tilde: "~" { $$ = YYSCAN_STR(SYMBOL_TILDE); }
 ;
-exclamation: "!" { $$ = YYSCAN_STR(exclamation); }
+exclamation: "!" { $$ = YYSCAN_STR(SYMBOL_EXCLAMATION); }
 ;
-slash: "/" { $$ = YYSCAN_STR(slash); }
+slash: "/" { $$ = YYSCAN_STR(SYMBOL_SLASH); }
 ;
-percent: "%" { $$ = YYSCAN_STR(percent); }
+percent: "%" { $$ = YYSCAN_STR(SYMBOL_PERCENT); }
 ;
-left-shift: "<<" { $$ = YYSCAN_STR(left-shift); }
+left-shift: "<<" { $$ = YYSCAN_STR(SYMBOL_LEFT_SHIFT); }
 ;
-right-shift: ">>" { $$ = YYSCAN_STR(right-shift); }
+right-shift: ">>" { $$ = YYSCAN_STR(SYMBOL_RIGHT_SHIFT); }
 ;
-less-than: "<" { $$ = YYSCAN_STR(less-than); }
+less-than: "<" { $$ = YYSCAN_STR(SYMBOL_LESS_THAN); }
 ;
-greater-than: ">" { $$ = YYSCAN_STR(greater-than); }
+greater-than: ">" { $$ = YYSCAN_STR(SYMBOL_GREATER_THAN); }
 ;
-less-equal: "<=" { $$ = YYSCAN_STR(less-equal); }
+less-equal: "<=" { $$ = YYSCAN_STR(SYMBOL_LESS_EQUAL); }
 ;
-greater-equal: ">=" { $$ = YYSCAN_STR(greater-equal); }
+greater-equal: ">=" { $$ = YYSCAN_STR(SYMBOL_GREATER_EQUAL); }
 ;
-equal: "==" { $$ = YYSCAN_STR(equal); }
+equal: "==" { $$ = YYSCAN_STR(SYMBOL_EQUAL); }
 ;
-not-equal: "!=" { $$ = YYSCAN_STR(not-equal); }
+not-equal: "!=" { $$ = YYSCAN_STR(SYMBOL_NOT_EQUAL); }
 ;
-caret: "^" { $$ = YYSCAN_STR(caret); }
+caret: "^" { $$ = YYSCAN_STR(SYMBOL_CARET); }
 ;
-bar: "|" { $$ = YYSCAN_STR(bar); }
+bar: "|" { $$ = YYSCAN_STR(SYMBOL_BAR); }
 ;
-and: "&&" { $$ = YYSCAN_STR(and); }
+and: "&&" { $$ = YYSCAN_STR(SYMBOL_AND); }
 ;
-or: "||" { $$ = YYSCAN_STR(or); }
+or: "||" { $$ = YYSCAN_STR(SYMBOL_OR); }
 ;
-question: "?" { $$ = YYSCAN_STR(question); }
+question: "?" { $$ = YYSCAN_STR(SYMBOL_QUESTION); }
 ;
-assign: "=" { $$ = YYSCAN_STR(assign); }
+assign: "=" { $$ = YYSCAN_STR(SYMBOL_ASSIGN); }
 ;
-asterisk-assign: "*=" { $$ = YYSCAN_STR(asterisk-assign); }
+asterisk-assign: "*=" { $$ = YYSCAN_STR(SYMBOL_ASTERISK_ASSIGN); }
 ;
-slash-assign: "/=" { $$ = YYSCAN_STR(slash-assign); }
+slash-assign: "/=" { $$ = YYSCAN_STR(SYMBOL_SLASH_ASSIGN); }
 ;
-percent-assign: "%=" { $$ = YYSCAN_STR(percent-assign); }
+percent-assign: "%=" { $$ = YYSCAN_STR(SYMBOL_PERCENT_ASSIGN); }
 ;
-plus-assign: "+=" { $$ = YYSCAN_STR(plus-assign); }
+plus-assign: "+=" { $$ = YYSCAN_STR(SYMBOL_PLUS_ASSIGN); }
 ;
-minus-assign: "-=" { $$ = YYSCAN_STR(minus-assign); }
+minus-assign: "-=" { $$ = YYSCAN_STR(SYMBOL_MINUS_ASSIGN); }
 ;
-left-shift-assign: "<<=" { $$ = YYSCAN_STR(left-shift-assign); }
+left-shift-assign: "<<=" { $$ = YYSCAN_STR(SYMBOL_LEFT_SHIFT_ASSIGN); }
 ;
-right-shift-assign: ">>=" { $$ = YYSCAN_STR(right-shift-assign); }
+right-shift-assign: ">>=" { $$ = YYSCAN_STR(SYMBOL_RIGHT_SHIFT_ASSIGN); }
 ;
-ampersand-assign: "&=" { $$ = YYSCAN_STR(ampersand-assign); }
+ampersand-assign: "&=" { $$ = YYSCAN_STR(SYMBOL_AMPERSAND_ASSIGN); }
 ;
-caret-assign: "^=" { $$ = YYSCAN_STR(caret-assign); }
+caret-assign: "^=" { $$ = YYSCAN_STR(SYMBOL_CARET_ASSIGN); }
 ;
-bar-assign: "|=" { $$ = YYSCAN_STR(bar-assign); }
+bar-assign: "|=" { $$ = YYSCAN_STR(SYMBOL_BAR_ASSIGN); }
 ;
 
-left-bracket: "[" { $$ = YYSCAN_STR(left-bracket); }
+left-bracket: "[" { $$ = YYSCAN_STR(SYMBOL_LEFT_BRACKET); }
 ;
-right-bracket: "]" { $$ = YYSCAN_STR(right-bracket); }
+right-bracket: "]" { $$ = YYSCAN_STR(SYMBOL_RIGHT_BRACKET); }
 ;
-left-paren: "(" { $$ = YYSCAN_STR(left-paren); }
+left-paren: "(" { $$ = YYSCAN_STR(SYMBOL_LEFT_PAREN); }
 ;
-right-paren: ")" { $$ = YYSCAN_STR(right-paren); }
+right-paren: ")" { $$ = YYSCAN_STR(SYMBOL_RIGHT_PAREN); }
 ;
-left-brace: "{" { $$ = YYSCAN_STR(left-brace); }
+left-brace: "{" { $$ = YYSCAN_STR(SYMBOL_LEFT_BRACE); }
 ;
-right-brace: "}" { $$ = YYSCAN_STR(right-brace); }
+right-brace: "}" { $$ = YYSCAN_STR(SYMBOL_RIGHT_BRACE); }
 ;
-comma: "," { $$ = YYSCAN_STR(comma); }
+comma: "," { $$ = YYSCAN_STR(SYMBOL_COMMA); }
 ;
-colon: ":" { $$ = YYSCAN_STR(colon); }
+colon: ":" { $$ = YYSCAN_STR(SYMBOL_COLON); }
 ;
-semicolon: ";" { $$ = YYSCAN_STR(semicolon); }
+semicolon: ";" { $$ = YYSCAN_STR(SYMBOL_SEMICOLON); }
 ;
-ellipsis: "..." { $$ = YYSCAN_STR(ellipsis); }
+ellipsis: "..." { $$ = YYSCAN_STR(SYMBOL_ELLIPSIS); }
 ;
 
 /* 6.1 Lexical elements */
@@ -316,80 +317,80 @@ string-literal
 primary-expression
 : identifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, identifier, $1);
-  $$ = YYSCAN_TAG(primary-expression, $$);
+  YYSCAN_SET($$, SYMBOL_IDENTIFIER, $1);
+  $$ = YYSCAN_TAG(SYMBOL_PRIMARY_EXPRESSION, $$);
 }
 | floating-constant {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, floating-constant, $1);
-  $$ = YYSCAN_TAG(primary-expression, $$);
+  YYSCAN_SET($$, SYMBOL_FLOATING_CONSTANT, $1);
+  $$ = YYSCAN_TAG(SYMBOL_PRIMARY_EXPRESSION, $$);
 }
 | integer-constant {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, integer-constant, $1);
-  $$ = YYSCAN_TAG(primary-expression, $$);
+  YYSCAN_SET($$, SYMBOL_INTEGER_CONSTANT, $1);
+  $$ = YYSCAN_TAG(SYMBOL_PRIMARY_EXPRESSION, $$);
 }
 | character-constant {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, character-constant, $1);
-  $$ = YYSCAN_TAG(primary-expression, $$);
+  YYSCAN_SET($$, SYMBOL_CHARACTER_CONSTANT, $1);
+  $$ = YYSCAN_TAG(SYMBOL_PRIMARY_EXPRESSION, $$);
 }
 | string-literal {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, string-literal, $1);
-  $$ = YYSCAN_TAG(primary-expression, $$);
+  YYSCAN_SET($$, SYMBOL_STRING_LITERAL, $1);
+  $$ = YYSCAN_TAG(SYMBOL_PRIMARY_EXPRESSION, $$);
 }
 | left-paren expression right-paren {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, left-paren, $1);
-  YYSCAN_SET($$, expression, $2);
-  YYSCAN_SET($$, right-paren, $3);
-  $$ = YYSCAN_TAG(primary-expression, $$);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $1);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $2);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $3);
+  $$ = YYSCAN_TAG(SYMBOL_PRIMARY_EXPRESSION, $$);
 }
 ;
 postfix-expression
 : primary-expression
 | postfix-expression left-bracket expression right-bracket {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, postfix-expression, $1);
-  YYSCAN_SET($$, left-bracket, $2);
-  YYSCAN_SET($$, expression, $3);
-  YYSCAN_SET($$, right-bracket, $4);
-  $$ = YYSCAN_TAG(postfix-expression, $$);
+  YYSCAN_SET($$, SYMBOL_POSTFIX_EXPRESSION, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_BRACKET, $2);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_BRACKET, $4);
+  $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
 }
 | postfix-expression left-paren argument-expression-list.opt right-paren {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, postfix-expression, $1);
-  YYSCAN_SET($$, left-paren, $2);
-  YYSCAN_SET($$, argument-expression-list, $3);
-  YYSCAN_SET($$, right-paren, $4);
-  $$ = YYSCAN_TAG(postfix-expression, $$);
+  YYSCAN_SET($$, SYMBOL_POSTFIX_EXPRESSION, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $2);
+  YYSCAN_SET($$, SYMBOL_ARGUMENT_EXPRESSION_LIST, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $4);
+  $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
 }
 | postfix-expression period identifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, postfix-expression, $1);
-  YYSCAN_SET($$, period, $2);
-  YYSCAN_SET($$, identifier, $3);
-  $$ = YYSCAN_TAG(postfix-expression, $$);
+  YYSCAN_SET($$, SYMBOL_POSTFIX_EXPRESSION, $1);
+  YYSCAN_SET($$, SYMBOL_PERIOD, $2);
+  YYSCAN_SET($$, SYMBOL_IDENTIFIER, $3);
+  $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
 }
 | postfix-expression arrow identifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, postfix-expression, $1);
-  YYSCAN_SET($$, arrow, $2);
-  YYSCAN_SET($$, identifier, $3);
-  $$ = YYSCAN_TAG(postfix-expression, $$);
+  YYSCAN_SET($$, SYMBOL_POSTFIX_EXPRESSION, $1);
+  YYSCAN_SET($$, SYMBOL_ARROW, $2);
+  YYSCAN_SET($$, SYMBOL_IDENTIFIER, $3);
+  $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
 }
 | postfix-expression increment {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, postfix-expression, $1);
-  YYSCAN_SET($$, increment, $2);
-  $$ = YYSCAN_TAG(postfix-expression, $$);
+  YYSCAN_SET($$, SYMBOL_POSTFIX_EXPRESSION, $1);
+  YYSCAN_SET($$, SYMBOL_INCREMENT, $2);
+  $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
 }
 | postfix-expression decrement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, postfix-expression, $1);
-  YYSCAN_SET($$, decrement, $2);
-  $$ = YYSCAN_TAG(postfix-expression, $$);
+  YYSCAN_SET($$, SYMBOL_POSTFIX_EXPRESSION, $1);
+  YYSCAN_SET($$, SYMBOL_DECREMENT, $2);
+  $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
 }
 ;
 argument-expression-list.opt
@@ -410,35 +411,35 @@ unary-expression
 : postfix-expression
 | increment unary-expression {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, increment, $1);
-  YYSCAN_SET($$, unary-expression, $2);
-  $$ = YYSCAN_TAG(unary-expression, $$);
+  YYSCAN_SET($$, SYMBOL_INCREMENT, $1);
+  YYSCAN_SET($$, SYMBOL_UNARY_EXPRESSION, $2);
+  $$ = YYSCAN_TAG(SYMBOL_UNARY_EXPRESSION, $$);
 }
 | decrement unary-expression {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, decrement, $1);
-  YYSCAN_SET($$, unary-expression, $2);
-  $$ = YYSCAN_TAG(unary-expression, $$);
+  YYSCAN_SET($$, SYMBOL_DECREMENT, $1);
+  YYSCAN_SET($$, SYMBOL_UNARY_EXPRESSION, $2);
+  $$ = YYSCAN_TAG(SYMBOL_UNARY_EXPRESSION, $$);
 }
 | unary-operator cast-expression {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, unary-operator, $1);
-  YYSCAN_SET($$, cast-expression, $2);
-  $$ = YYSCAN_TAG(unary-expression, $$);
+  YYSCAN_SET($$, SYMBOL_UNARY_OPERATOR, $1);
+  YYSCAN_SET($$, SYMBOL_CAST_EXPRESSION, $2);
+  $$ = YYSCAN_TAG(SYMBOL_UNARY_EXPRESSION, $$);
 }
 | sizeof unary-expression {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, sizeof, $1);
-  YYSCAN_SET($$, unary-expression, $2);
-  $$ = YYSCAN_TAG(unary-expression, $$);
+  YYSCAN_SET($$, SYMBOL_SIZEOF, $1);
+  YYSCAN_SET($$, SYMBOL_UNARY_EXPRESSION, $2);
+  $$ = YYSCAN_TAG(SYMBOL_UNARY_EXPRESSION, $$);
 }
 | sizeof left-paren type-name right-paren {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, sizeof, $1);
-  YYSCAN_SET($$, left-paren, $2);
-  YYSCAN_SET($$, type-name, $3);
-  YYSCAN_SET($$, right-paren, $4);
-  $$ = YYSCAN_TAG(unary-expression, $$);
+  YYSCAN_SET($$, SYMBOL_SIZEOF, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $2);
+  YYSCAN_SET($$, SYMBOL_TYPE_NAME, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $4);
+  $$ = YYSCAN_TAG(SYMBOL_UNARY_EXPRESSION, $$);
 }
 ;
 unary-operator
@@ -453,18 +454,18 @@ cast-expression
 : unary-expression
 | left-paren type-name right-paren cast-expression {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, left-paren, $1);
-  YYSCAN_SET($$, type-name, $2);
-  YYSCAN_SET($$, right-paren, $3);
-  YYSCAN_SET($$, cast-expression, $4);
-  $$ = YYSCAN_TAG(cast-expression, $$);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $1);
+  YYSCAN_SET($$, SYMBOL_TYPE_NAME, $2);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $3);
+  YYSCAN_SET($$, SYMBOL_CAST_EXPRESSION, $4);
+  $$ = YYSCAN_TAG(SYMBOL_CAST_EXPRESSION, $$);
 }
 ;
 multiplicative-expression
 : cast-expression
 | multiplicative-expression multiplicative-operator cast-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(multiplicative-expression, $$);
+  $$ = YYSCAN_TAG(SYMBOL_MULTIPLICATIVE_EXPRESSION, $$);
 }
 ;
 multiplicative-operator
@@ -476,7 +477,7 @@ additive-expression
 : multiplicative-expression
 | additive-expression additive-operator multiplicative-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(additive-expression, $$);
+  $$ = YYSCAN_TAG(SYMBOL_ADDITIVE_EXPRESSION, $$);
 }
 ;
 additive-operator
@@ -487,7 +488,7 @@ shift-expression
 : additive-expression
 | shift-expression shift-operator additive-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(shift-expression, $$);
+  $$ = YYSCAN_TAG(SYMBOL_SHIFT_EXPRESSION, $$);
 }
 ;
 shift-operator
@@ -499,10 +500,10 @@ relational-expression
 | relational-expression relational-operator shift-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, relational-expression, $1);
-  YYSCAN_SET($$, relational-operator, $2);
-  YYSCAN_SET($$, shift-expression, $3);
-  $$ = YYSCAN_TAG(relational-expression, $$);
+  YYSCAN_SET($$, SYMBOL_RELATIONAL_EXPRESSION, $1);
+  YYSCAN_SET($$, SYMBOL_RELATIONAL_OPERATOR, $2);
+  YYSCAN_SET($$, SYMBOL_SHIFT_EXPRESSION, $3);
+  $$ = YYSCAN_TAG(SYMBOL_RELATIONAL_EXPRESSION, $$);
 }
 ;
 relational-operator
@@ -515,7 +516,7 @@ equality-expression
 : relational-expression
 | equality-expression equality-operator relational-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(equality-expression, $$);
+  $$ = YYSCAN_TAG(SYMBOL_EQUALITY_EXPRESSION, $$);
 }
 ;
 equality-operator
@@ -526,54 +527,54 @@ and-expression
 : equality-expression
 | and-expression ampersand equality-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(and-expression, $$);
+  $$ = YYSCAN_TAG(SYMBOL_AND_EXPRESSION, $$);
 }
 ;
 exclusive-or-expression
 : and-expression
 | exclusive-or-expression caret and-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(exclusive-or-expression, $$);
+  $$ = YYSCAN_TAG(SYMBOL_EXCLUSIVE_OR_EXPRESSION, $$);
 }
 ;
 inclusive-or-expression
 : exclusive-or-expression
 | inclusive-or-expression bar exclusive-or-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(inclusive-or-expression, $$);
+  $$ = YYSCAN_TAG(SYMBOL_INCLUSIVE_OR_EXPRESSION, $$);
 }
 ;
 logical-and-expression
 : inclusive-or-expression
 | logical-and-expression and inclusive-or-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(inclusive-and-expression, $$);
+  $$ = YYSCAN_TAG(SYMBOL_LOGICAL_AND_EXPRESSION, $$);
 }
 ;
 logical-or-expression
 : logical-and-expression
 | logical-or-expression or logical-and-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(logical-or-expression, $$);
+  $$ = YYSCAN_TAG(SYMBOL_LOGICAL_OR_EXPRESSION, $$);
 }
 ;
 conditional-expression
 : logical-or-expression
 | logical-or-expression question expression colon conditional-expression {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, logical-or-expression, $1);
-  YYSCAN_SET($$, question, $2);
-  YYSCAN_SET($$, expression, $3);
-  YYSCAN_SET($$, colon, $4);
-  YYSCAN_SET($$, conditional-expression, $5);
-  $$ = YYSCAN_TAG(conditional-expression, $$);
+  YYSCAN_SET($$, SYMBOL_LOGICAL_OR_EXPRESSION, $1);
+  YYSCAN_SET($$, SYMBOL_QUESTION, $2);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $3);
+  YYSCAN_SET($$, SYMBOL_COLON, $4);
+  YYSCAN_SET($$, SYMBOL_CONDITIONAL_EXPRESSION, $5);
+  $$ = YYSCAN_TAG(SYMBOL_CONDITIONAL_EXPRESSION, $$);
 }
 ;
 assignment-expression
 : conditional-expression
 | unary-expression assignment-operator assignment-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(assignment-expression, $$);
+  $$ = YYSCAN_TAG(SYMBOL_ASSIGNMENT_EXPRESSION, $$);
 }
 ;
 assignment-operator
@@ -617,9 +618,9 @@ constant-expression
 declaration
 : declaration-specifiers init-declarator-list.opt semicolon {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, declaration-specifiers, $1);
-  YYSCAN_SET($$, init-declarator-list, $2);
-  YYSCAN_SET($$, semicolon, $3);
+  YYSCAN_SET($$, SYMBOL_DECLARATION_SPECIFIERS, $1);
+  YYSCAN_SET($$, SYMBOL_INIT_DECLARATOR_LIST, $2);
+  YYSCAN_SET($$, SYMBOL_SEMICOLON, $3);
 }
 ;
 declaration-specifiers
@@ -633,15 +634,15 @@ declaration-specifiers
 declaration-specifier
 : storage-class-specifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, storage-class-specifier, $1);
+  YYSCAN_SET($$, SYMBOL_STORAGE_CLASS_SPECIFIER, $1);
 }
 | type-specifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, type-specifier, $1);
+  YYSCAN_SET($$, SYMBOL_TYPE_SPECIFIER, $1);
 }
 | type-qualifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, type-qualifier, $1);
+  YYSCAN_SET($$, SYMBOL_TYPE_QUALIFIER, $1);
 }
 ;
 init-declarator-list.opt
@@ -661,110 +662,110 @@ init-declarator-list
 init-declarator
 : declarator {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, declarator, $1);
+  YYSCAN_SET($$, SYMBOL_DECLARATOR, $1);
 }
 | declarator assign initializer {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, declarator, $1);
-  YYSCAN_SET($$, assign, $2);
-  YYSCAN_SET($$, initializer, $3);
+  YYSCAN_SET($$, SYMBOL_DECLARATOR, $1);
+  YYSCAN_SET($$, SYMBOL_ASSIGN, $2);
+  YYSCAN_SET($$, SYMBOL_INITIALIZER, $3);
 }
 ;
 storage-class-specifier
 : typedef {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, typedef, $1);
+  YYSCAN_SET($$, SYMBOL_TYPEDEF, $1);
 }
 | extern {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, extern, $1);
+  YYSCAN_SET($$, SYMBOL_EXTERN, $1);
 }
 | static {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, static, $1);
+  YYSCAN_SET($$, SYMBOL_STATIC, $1);
 }
 | auto {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, auto, $1);
+  YYSCAN_SET($$, SYMBOL_AUTO, $1);
 }
 | register {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, register, $1);
+  YYSCAN_SET($$, SYMBOL_REGISTER, $1);
 }
 ;
 type-specifier
 : void {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, void, $1);
+  YYSCAN_SET($$, SYMBOL_VOID, $1);
 }
 | char {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, char, $1);
+  YYSCAN_SET($$, SYMBOL_CHAR, $1);
 }
 | short {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, short, $1);
+  YYSCAN_SET($$, SYMBOL_SHORT, $1);
 }
 | int {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, int, $1);
+  YYSCAN_SET($$, SYMBOL_INT, $1);
 }
 | long {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, long, $1);
+  YYSCAN_SET($$, SYMBOL_LONG, $1);
 }
 | float {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, float, $1);
+  YYSCAN_SET($$, SYMBOL_FLOAT, $1);
 }
 | double {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, double, $1);
+  YYSCAN_SET($$, SYMBOL_DOUBLE, $1);
 }
 | signed {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, signed, $1);
+  YYSCAN_SET($$, SYMBOL_SIGNED, $1);
 }
 | unsigned {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, unsigned, $1);
+  YYSCAN_SET($$, SYMBOL_UNSIGNED, $1);
 }
 | struct-or-union-specifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, struct-or-union-specifier, $1);
+  YYSCAN_SET($$, SYMBOL_STRUCT_OR_UNION_SPECIFIER, $1);
 }
 | enum-specifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, enum-specifier, $1);
+  YYSCAN_SET($$, SYMBOL_ENUM_SPECIFIER, $1);
 }
 | typedef-name {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, typedef-name, $1);
+  YYSCAN_SET($$, SYMBOL_TYPEDEF_NAME, $1);
 }
 ;
 struct-or-union-specifier
 : struct-or-union identifier.opt left-brace struct-declaration-list right-brace {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, struct-or-union, $1);
-  YYSCAN_SET($$, identifier, $2);
-  YYSCAN_SET($$, left-brace, $3);
-  YYSCAN_SET($$, struct-declaration-list, $4);
-  YYSCAN_SET($$, right-brace, $5);
+  YYSCAN_SET($$, SYMBOL_STRUCT_OR_UNION, $1);
+  YYSCAN_SET($$, SYMBOL_IDENTIFIER, $2);
+  YYSCAN_SET($$, SYMBOL_LEFT_BRACE, $3);
+  YYSCAN_SET($$, SYMBOL_STRUCT_DECLARATION_LIST, $4);
+  YYSCAN_SET($$, SYMBOL_RIGHT_BRACE, $5);
 }
 | struct-or-union identifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, struct-or-union, $1);
-  YYSCAN_SET($$, identifier, $2);
+  YYSCAN_SET($$, SYMBOL_STRUCT_OR_UNION, $1);
+  YYSCAN_SET($$, SYMBOL_IDENTIFIER, $2);
 }
 ;
 struct-or-union
 : struct {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, struct, $1);
+  YYSCAN_SET($$, SYMBOL_STRUCT, $1);
 }
 | union {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, union, $1);
+  YYSCAN_SET($$, SYMBOL_UNION, $1);
 }
 ;
 struct-declaration-list
@@ -778,9 +779,9 @@ struct-declaration-list
 struct-declaration
 : specifier-qualifier-list struct-declarator-list semicolon {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, specifier-qualifier-list, $1);
-  YYSCAN_SET($$, struct-declarator-list, $2);
-  YYSCAN_SET($$, semicolon, $3);
+  YYSCAN_SET($$, SYMBOL_SPECIFIER_QUALIFIER_LIST, $1);
+  YYSCAN_SET($$, SYMBOL_STRUCT_DECLARATOR_LIST, $2);
+  YYSCAN_SET($$, SYMBOL_SEMICOLON, $3);
 }
 ;
 specifier-qualifier-list
@@ -794,11 +795,11 @@ specifier-qualifier-list
 specifier-qualifier
 : type-specifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, type-specifier, $1);
+  YYSCAN_SET($$, SYMBOL_TYPE_SPECIFIER, $1);
 }
 | type-qualifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, type-qualifier, $1);
+  YYSCAN_SET($$, SYMBOL_TYPE_QUALIFIER, $1);
 }
 ;
 struct-declarator-list
@@ -812,28 +813,28 @@ struct-declarator-list
 struct-declarator
 : declarator {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, declarator, $1);
+  YYSCAN_SET($$, SYMBOL_DECLARATOR, $1);
 }
 | declarator.opt colon constant-expression {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, declarator, $1);
-  YYSCAN_SET($$, colon, $2);
-  YYSCAN_SET($$, constant-expression, $3);
+  YYSCAN_SET($$, SYMBOL_DECLARATOR, $1);
+  YYSCAN_SET($$, SYMBOL_COLON, $2);
+  YYSCAN_SET($$, SYMBOL_CONSTANT_EXPRESSION, $3);
 }
 ;
 enum-specifier
 : enum identifier.opt left-brace enumerator-list right-brace {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, enum, $1);
-  YYSCAN_SET($$, identifier, $2);
-  YYSCAN_SET($$, left-brace, $3);
-  YYSCAN_SET($$, enumerator-list, $4);
-  YYSCAN_SET($$, right-brace, $5);
+  YYSCAN_SET($$, SYMBOL_ENUM, $1);
+  YYSCAN_SET($$, SYMBOL_IDENTIFIER, $2);
+  YYSCAN_SET($$, SYMBOL_LEFT_BRACE, $3);
+  YYSCAN_SET($$, SYMBOL_ENUMERATOR_LIST, $4);
+  YYSCAN_SET($$, SYMBOL_RIGHT_BRACE, $5);
 }
 | enum identifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, enum, $1);
-  YYSCAN_SET($$, identifier, $2);
+  YYSCAN_SET($$, SYMBOL_ENUM, $1);
+  YYSCAN_SET($$, SYMBOL_IDENTIFIER, $2);
 }
 ;
 enumerator-list
@@ -847,23 +848,23 @@ enumerator-list
 enumerator
 : enumeration-constant {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, enumeration-constant, $1);
+  YYSCAN_SET($$, SYMBOL_ENUMERATION_CONSTANT, $1);
 }
 | enumeration-constant assign constant-expression {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, enumeration-constant, $1);
-  YYSCAN_SET($$, assign, $2);
-  YYSCAN_SET($$, constant-expression, $3);
+  YYSCAN_SET($$, SYMBOL_ENUMERATION_CONSTANT, $1);
+  YYSCAN_SET($$, SYMBOL_ASSIGN, $2);
+  YYSCAN_SET($$, SYMBOL_CONSTANT_EXPRESSION, $3);
 }
 ;
 type-qualifier
 : const {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, const, $1);
+  YYSCAN_SET($$, SYMBOL_CONST, $1);
 }
 | volatile {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, volatile, $1);
+  YYSCAN_SET($$, SYMBOL_VOLATILE, $1);
 }
 ;
 declarator.opt
@@ -875,58 +876,58 @@ declarator.opt
 declarator
 : direct-declarator {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, direct-declarator, $1);
+  YYSCAN_SET($$, SYMBOL_DIRECT_DECLARATOR, $1);
 }
 | pointer direct-declarator {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, pointer, $1);
-  YYSCAN_SET($$, direct-declarator, $2);
+  YYSCAN_SET($$, SYMBOL_POINTER, $1);
+  YYSCAN_SET($$, SYMBOL_DIRECT_DECLARATOR, $2);
 }
 ;
 direct-declarator
 : identifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, identifier, $1);
+  YYSCAN_SET($$, SYMBOL_IDENTIFIER, $1);
 }
 | left-paren declarator right-paren {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, left-paren, $1);
-  YYSCAN_SET($$, declarator, $2);
-  YYSCAN_SET($$, right-paren, $3);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $1);
+  YYSCAN_SET($$, SYMBOL_DECLARATOR, $2);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $3);
 }
 | direct-declarator left-bracket constant-expression.opt right-bracket {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, direct-declarator, $1);
-  YYSCAN_SET($$, left-bracket, $2);
-  YYSCAN_SET($$, constant-expression, $3);
-  YYSCAN_SET($$, right-bracket, $4);
+  YYSCAN_SET($$, SYMBOL_DIRECT_DECLARATOR, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_BRACKET, $2);
+  YYSCAN_SET($$, SYMBOL_CONSTANT_EXPRESSION, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_BRACKET, $4);
 }
 | direct-declarator left-paren parameter-type-list right-paren {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, direct-declarator, $1);
-  YYSCAN_SET($$, left-paren, $2);
-  YYSCAN_SET($$, parameter-type-list, $3);
-  YYSCAN_SET($$, right-paren, $4);
+  YYSCAN_SET($$, SYMBOL_DIRECT_DECLARATOR, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $2);
+  YYSCAN_SET($$, SYMBOL_PARAMETER_TYPE_LIST, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $4);
 }
 | direct-declarator left-paren identifier-list.opt right-paren {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, direct-declarator, $1);
-  YYSCAN_SET($$, left-paren, $2);
-  YYSCAN_SET($$, identifier-list, $3);
-  YYSCAN_SET($$, right-paren, $4);
+  YYSCAN_SET($$, SYMBOL_DIRECT_DECLARATOR, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $2);
+  YYSCAN_SET($$, SYMBOL_IDENTIFIER_LIST, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $4);
 }
 ;
 pointer
 : asterisk type-qualifier-list.opt {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, asterisk, $1);
-  YYSCAN_SET($$, type-qualifier-list, $2);
+  YYSCAN_SET($$, SYMBOL_ASTERISK, $1);
+  YYSCAN_SET($$, SYMBOL_TYPE_QUALIFIER_LIST, $2);
 }
 | pointer asterisk type-qualifier-list.opt {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, pointer, $1);
-  YYSCAN_SET($$, asterisk, $2);
-  YYSCAN_SET($$, type-qualifier-list, $3);
+  YYSCAN_SET($$, SYMBOL_POINTER, $1);
+  YYSCAN_SET($$, SYMBOL_ASTERISK, $2);
+  YYSCAN_SET($$, SYMBOL_TYPE_QUALIFIER_LIST, $3);
 }
 ;
 type-qualifier-list.opt
@@ -952,13 +953,13 @@ parameter-type-list.opt
 parameter-type-list
 : parameter-list {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, parameter-list, $1);
+  YYSCAN_SET($$, SYMBOL_PARAMETER_LIST, $1);
 }
 | parameter-list comma ellipsis {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, parameter-list, $1);
-  YYSCAN_SET($$, comma, $2);
-  YYSCAN_SET($$, ellipsis, $3);
+  YYSCAN_SET($$, SYMBOL_PARAMETER_LIST, $1);
+  YYSCAN_SET($$, SYMBOL_COMMA, $2);
+  YYSCAN_SET($$, SYMBOL_ELLIPSIS, $3);
 }
 ;
 parameter-list
@@ -972,13 +973,13 @@ parameter-list
 parameter-declaration
 : declaration-specifiers declarator {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, declaration-specifiers, $1);
-  YYSCAN_SET($$, declarator, $2);
+  YYSCAN_SET($$, SYMBOL_DECLARATION_SPECIFIERS, $1);
+  YYSCAN_SET($$, SYMBOL_DECLARATOR, $2);
 }
 | declaration-specifiers abstract-declarator.opt {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, declaration-specifiers, $1);
-  YYSCAN_SET($$, abstract-declarator, $2);
+  YYSCAN_SET($$, SYMBOL_DECLARATION_SPECIFIERS, $1);
+  YYSCAN_SET($$, SYMBOL_ABSTRACT_DECLARATOR, $2);
 }
 ;
 identifier-list.opt
@@ -998,8 +999,8 @@ identifier-list
 type-name
 : specifier-qualifier-list abstract-declarator.opt {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, specifier-qualifier-list, $1);
-  YYSCAN_SET($$, abstract-declarator, $2);
+  YYSCAN_SET($$, SYMBOL_SPECIFIER_QUALIFIER_LIST, $1);
+  YYSCAN_SET($$, SYMBOL_ABSTRACT_DECLARATOR, $2);
 }
 ;
 abstract-declarator.opt
@@ -1011,75 +1012,75 @@ abstract-declarator.opt
 abstract-declarator
 : pointer {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, pointer, $1);
+  YYSCAN_SET($$, SYMBOL_POINTER, $1);
 }
 | direct-abstract-declarator {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, direct-abstract-declarator, $1);
+  YYSCAN_SET($$, SYMBOL_DIRECT_ABSTRACT_DECLARATOR, $1);
 }
 | pointer direct-abstract-declarator {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, pointer, $1);
-  YYSCAN_SET($$, direct-abstract-declarator, $2);
+  YYSCAN_SET($$, SYMBOL_POINTER, $1);
+  YYSCAN_SET($$, SYMBOL_DIRECT_ABSTRACT_DECLARATOR, $2);
 }
 ;
 direct-abstract-declarator
 : left-paren abstract-declarator right-paren {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, left-paren, $1);
-  YYSCAN_SET($$, abstract-declarator, $2);
-  YYSCAN_SET($$, right-paren, $3);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $1);
+  YYSCAN_SET($$, SYMBOL_ABSTRACT_DECLARATOR, $2);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $3);
 }
 | left-bracket constant-expression.opt right-bracket {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, left-bracket, $1);
-  YYSCAN_SET($$, constant-expression, $2);
-  YYSCAN_SET($$, right-bracket, $3);
+  YYSCAN_SET($$, SYMBOL_LEFT_BRACKET, $1);
+  YYSCAN_SET($$, SYMBOL_CONSTANT_EXPRESSION, $2);
+  YYSCAN_SET($$, SYMBOL_RIGHT_BRACKET, $3);
 }
 | direct-abstract-declarator left-bracket constant-expression.opt right-bracket {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, direct-abstract-declarator, $1);
-  YYSCAN_SET($$, left-bracket, $2);
-  YYSCAN_SET($$, constant-expression, $3);
-  YYSCAN_SET($$, right-bracket, $4);
+  YYSCAN_SET($$, SYMBOL_DIRECT_ABSTRACT_DECLARATOR, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_BRACKET, $2);
+  YYSCAN_SET($$, SYMBOL_CONSTANT_EXPRESSION, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_BRACKET, $4);
 }
 | left-paren parameter-type-list.opt right-paren {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, left-paren, $1);
-  YYSCAN_SET($$, parameter-type-list, $2);
-  YYSCAN_SET($$, right-paren, $3);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $1);
+  YYSCAN_SET($$, SYMBOL_PARAMETER_TYPE_LIST, $2);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $3);
 }
 | direct-abstract-declarator left-paren parameter-type-list.opt right-paren {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, direct-abstract-declarator, $1);
-  YYSCAN_SET($$, left-paren, $2);
-  YYSCAN_SET($$, parameter-type-list, $3);
-  YYSCAN_SET($$, right-paren, $4);
+  YYSCAN_SET($$, SYMBOL_DIRECT_ABSTRACT_DECLARATOR, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $2);
+  YYSCAN_SET($$, SYMBOL_PARAMETER_TYPE_LIST, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $4);
 }
 ;
 typedef-name
 : typedef-identifier {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, typedef-identifier, $1);
+  YYSCAN_SET($$, SYMBOL_TYPEDEF_IDENTIFIER, $1);
 }
 ;
 initializer
 : assignment-expression {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, assignment-expression, $1);
+  YYSCAN_SET($$, SYMBOL_ASSIGNMENT_EXPRESSION, $1);
 }
 | left-brace initializer-list right-brace {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, left-brace, $1);
-  YYSCAN_SET($$, initializer-list, $2);
-  YYSCAN_SET($$, right-brace, $3);
+  YYSCAN_SET($$, SYMBOL_LEFT_BRACE, $1);
+  YYSCAN_SET($$, SYMBOL_INITIALIZER_LIST, $2);
+  YYSCAN_SET($$, SYMBOL_RIGHT_BRACE, $3);
 }
 | left-brace initializer-list comma right-brace {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, left-brace, $1);
-  YYSCAN_SET($$, initializer-list, $2);
-  YYSCAN_SET($$, comma, $3);
-  YYSCAN_SET($$, right-brace, $4);
+  YYSCAN_SET($$, SYMBOL_LEFT_BRACE, $1);
+  YYSCAN_SET($$, SYMBOL_INITIALIZER_LIST, $2);
+  YYSCAN_SET($$, SYMBOL_COMMA, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_BRACE, $4);
 }
 ;
 initializer-list
@@ -1095,57 +1096,57 @@ initializer-list
 statement
 : labeled-statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, labeled-statement, $1);
+  YYSCAN_SET($$, SYMBOL_LABELED_STATEMENT, $1);
 }
 | compound-statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, compound-statement, $1);
+  YYSCAN_SET($$, SYMBOL_COMPOUND_STATEMENT, $1);
 }
 | expression-statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, expression-statement, $1);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION_STATEMENT, $1);
 }
 | selection-statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, selection-statement, $1);
+  YYSCAN_SET($$, SYMBOL_SELECTION_STATEMENT, $1);
 }
 | iteration-statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, iteration-statement, $1);
+  YYSCAN_SET($$, SYMBOL_ITERATION_STATEMENT, $1);
 }
 | jump-statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, jump-statement, $1);
+  YYSCAN_SET($$, SYMBOL_JUMP_STATEMENT, $1);
 }
 ;
 labeled-statement
 : identifier colon statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, identifier, $1);
-  YYSCAN_SET($$, colon, $2);
-  YYSCAN_SET($$, statement, $3);
+  YYSCAN_SET($$, SYMBOL_IDENTIFIER, $1);
+  YYSCAN_SET($$, SYMBOL_COLON, $2);
+  YYSCAN_SET($$, SYMBOL_STATEMENT, $3);
 }
 | case constant-expression colon statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, case, $1);
-  YYSCAN_SET($$, constant-expression, $2);
-  YYSCAN_SET($$, colon, $3);
-  YYSCAN_SET($$, statement, $4);
+  YYSCAN_SET($$, SYMBOL_CASE, $1);
+  YYSCAN_SET($$, SYMBOL_CONSTANT_EXPRESSION, $2);
+  YYSCAN_SET($$, SYMBOL_COLON, $3);
+  YYSCAN_SET($$, SYMBOL_STATEMENT, $4);
 }
 | default colon statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, default, $1);
-  YYSCAN_SET($$, colon, $2);
-  YYSCAN_SET($$, statement, $3);
+  YYSCAN_SET($$, SYMBOL_DEFAULT, $1);
+  YYSCAN_SET($$, SYMBOL_COLON, $2);
+  YYSCAN_SET($$, SYMBOL_STATEMENT, $3);
 }
 ;
 compound-statement
 : left-brace declaration-list.opt statement-list.opt right-brace {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, left-brace, $1);
-  YYSCAN_SET($$, declaration-list, $2);
-  YYSCAN_SET($$, statement-list, $3);
-  YYSCAN_SET($$, right-brace, $4);
+  YYSCAN_SET($$, SYMBOL_LEFT_BRACE, $1);
+  YYSCAN_SET($$, SYMBOL_DECLARATION_LIST, $2);
+  YYSCAN_SET($$, SYMBOL_STATEMENT_LIST, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_BRACE, $4);
 }
 ;
 declaration-list.opt
@@ -1179,92 +1180,92 @@ statement-list
 expression-statement
 : expression.opt semicolon {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, expression, $1);
-  YYSCAN_SET($$, semicolon, $2);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $1);
+  YYSCAN_SET($$, SYMBOL_SEMICOLON, $2);
 }
 ;
 selection-statement
 : if left-paren expression right-paren statement %prec THEN {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, if, $1);
-  YYSCAN_SET($$, left-paren, $2);
-  YYSCAN_SET($$, expression, $3);
-  YYSCAN_SET($$, right-paren, $4);
-  YYSCAN_SET($$, statement, $5);
+  YYSCAN_SET($$, SYMBOL_IF, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $2);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $4);
+  YYSCAN_SET($$, SYMBOL_STATEMENT, $5);
 }
 | if left-paren expression right-paren statement else statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, if, $1);
-  YYSCAN_SET($$, left-paren, $2);
-  YYSCAN_SET($$, expression, $3);
-  YYSCAN_SET($$, right-paren, $4);
-  YYSCAN_SET($$, statement, $5);
-  YYSCAN_SET($$, else, $6);
-  YYSCAN_SET($$, statement, $7);
+  YYSCAN_SET($$, SYMBOL_IF, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $2);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $4);
+  YYSCAN_SET($$, SYMBOL_STATEMENT, $5);
+  YYSCAN_SET($$, SYMBOL_ELSE, $6);
+  YYSCAN_SET($$, SYMBOL_STATEMENT, $7);
 }
 | switch left-paren expression right-paren statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, switch, $1);
-  YYSCAN_SET($$, left-paren, $2);
-  YYSCAN_SET($$, expression, $3);
-  YYSCAN_SET($$, right-paren, $4);
-  YYSCAN_SET($$, statement, $5);
+  YYSCAN_SET($$, SYMBOL_SWITCH, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $2);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $4);
+  YYSCAN_SET($$, SYMBOL_STATEMENT, $5);
 }
 ;
 iteration-statement
 : while left-paren expression right-paren statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, while, $1);
-  YYSCAN_SET($$, left-paren, $2);
-  YYSCAN_SET($$, expression, $3);
-  YYSCAN_SET($$, right-paren, $4);
-  YYSCAN_SET($$, statement, $5);
+  YYSCAN_SET($$, SYMBOL_WHILE, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $2);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $3);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $4);
+  YYSCAN_SET($$, SYMBOL_STATEMENT, $5);
 }
 | do statement while left-paren expression right-paren semicolon {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, do, $1);
-  YYSCAN_SET($$, statement, $2);
-  YYSCAN_SET($$, while, $3);
-  YYSCAN_SET($$, left-paren, $4);
-  YYSCAN_SET($$, expression, $5);
-  YYSCAN_SET($$, right-paren, $6);
-  YYSCAN_SET($$, semicolon, $7);
+  YYSCAN_SET($$, SYMBOL_DO, $1);
+  YYSCAN_SET($$, SYMBOL_STATEMENT, $2);
+  YYSCAN_SET($$, SYMBOL_WHILE, $3);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $4);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $5);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $6);
+  YYSCAN_SET($$, SYMBOL_SEMICOLON, $7);
 }
 | for left-paren expression.opt semicolon expression.opt semicolon expression.opt right-paren statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, for, $1);
-  YYSCAN_SET($$, left-paren, $2);
-  YYSCAN_SET($$, expression, $3);
-  YYSCAN_SET($$, semicolon, $4);
-  YYSCAN_SET($$, expression, $5);
-  YYSCAN_SET($$, semicolon, $6);
-  YYSCAN_SET($$, expression, $7);
-  YYSCAN_SET($$, right-paren, $8);
-  YYSCAN_SET($$, statement, $9);
+  YYSCAN_SET($$, SYMBOL_FOR, $1);
+  YYSCAN_SET($$, SYMBOL_LEFT_PAREN, $2);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $3);
+  YYSCAN_SET($$, SYMBOL_SEMICOLON, $4);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $5);
+  YYSCAN_SET($$, SYMBOL_SEMICOLON, $6);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $7);
+  YYSCAN_SET($$, SYMBOL_RIGHT_PAREN, $8);
+  YYSCAN_SET($$, SYMBOL_STATEMENT, $9);
 }
 ;
 jump-statement
 : goto identifier semicolon {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, goto, $1);
-  YYSCAN_SET($$, identifier, $2);
-  YYSCAN_SET($$, semicolon, $3);
+  YYSCAN_SET($$, SYMBOL_GOTO, $1);
+  YYSCAN_SET($$, SYMBOL_IDENTIFIER, $2);
+  YYSCAN_SET($$, SYMBOL_SEMICOLON, $3);
 }
 | continue semicolon {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, continue, $1);
-  YYSCAN_SET($$, semicolon, $2);
+  YYSCAN_SET($$, SYMBOL_CONTINUE, $1);
+  YYSCAN_SET($$, SYMBOL_SEMICOLON, $2);
 }
 | break semicolon {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, break, $1);
-  YYSCAN_SET($$, semicolon, $2);
+  YYSCAN_SET($$, SYMBOL_BREAK, $1);
+  YYSCAN_SET($$, SYMBOL_SEMICOLON, $2);
 }
 | return expression.opt semicolon {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, return, $1);
-  YYSCAN_SET($$, expression, $2);
-  YYSCAN_SET($$, semicolon, $3);
+  YYSCAN_SET($$, SYMBOL_RETURN, $1);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $2);
+  YYSCAN_SET($$, SYMBOL_SEMICOLON, $3);
 }
 ;
 
@@ -1272,7 +1273,7 @@ jump-statement
 top
 : translation-unit {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, translation-unit, $1);
+  YYSCAN_SET($$, SYMBOL_TRANSLATION_UNIT, $1);
   YYSCAN_SET_TOP($$);
 }
 ;
@@ -1287,27 +1288,27 @@ translation-unit
 external-declaration
 : function-definition {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, function-definition, $1);
+  YYSCAN_SET($$, SYMBOL_FUNCTION_DEFINITION, $1);
 }
 | declaration {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, declaration, $1);
+  YYSCAN_SET($$, SYMBOL_DECLARATION, $1);
   /* yyscan_register_typedef(YYSCAN_PARAM, $1); */
 }
 ;
 function-definition
 : declarator declaration-list.opt compound-statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, declarator, $1);
-  YYSCAN_SET($$, declaration-list, $2);
-  YYSCAN_SET($$, compound-statement, $3);
+  YYSCAN_SET($$, SYMBOL_DECLARATOR, $1);
+  YYSCAN_SET($$, SYMBOL_DECLARATION_LIST, $2);
+  YYSCAN_SET($$, SYMBOL_COMPOUND_STATEMENT, $3);
 }
 | declaration-specifiers declarator declaration-list.opt compound-statement {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, declaration-specifiers, $1);
-  YYSCAN_SET($$, declarator, $2);
-  YYSCAN_SET($$, declaration-list, $3);
-  YYSCAN_SET($$, compound-statement, $4);
+  YYSCAN_SET($$, SYMBOL_DECLARATION_SPECIFIERS, $1);
+  YYSCAN_SET($$, SYMBOL_DECLARATOR, $2);
+  YYSCAN_SET($$, SYMBOL_DECLARATION_LIST, $3);
+  YYSCAN_SET($$, SYMBOL_COMPOUND_STATEMENT, $4);
 }
 ;
 

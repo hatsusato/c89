@@ -5,11 +5,11 @@
 #include "yyscan_t.h"
 
 #define YYSCAN_TOKEN() yyscan_json_token(YYSCAN_PARAM)
-#define YYSCAN_STR(symbol) scanner_json_str(yyget_extra(YYSCAN_PARAM), #symbol)
+#define YYSCAN_STR(symbol) scanner_json_str(yyget_extra(YYSCAN_PARAM), symbol)
 #define YYSCAN_ARR() scanner_json_arr(yyget_extra(YYSCAN_PARAM))
 #define YYSCAN_OBJ() scanner_json_obj(yyget_extra(YYSCAN_PARAM))
 #define YYSCAN_PUSH(arr, val) scanner_json_push(arr, val)
-#define YYSCAN_SET(obj, key, val) scanner_json_set(obj, #key, val)
+#define YYSCAN_SET(obj, key, val) scanner_json_set(obj, key, val)
 #define YYSCAN_TAG(key, val) YYSCAN_SET(YYSCAN_OBJ(), key, val)
 #define YYSCAN_BINOP(lhs, op, rhs) \
   scanner_json_binop(yyget_extra(YYSCAN_PARAM), lhs, op, rhs)
