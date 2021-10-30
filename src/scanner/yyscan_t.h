@@ -6,7 +6,7 @@
 typedef void *yyscan_t;
 #endif
 
-#define YYSCAN_PARAM yyscan
+#define YYSCAN_PARAM yyscanner
 
 struct cell;
 struct json;
