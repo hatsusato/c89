@@ -1,11 +1,6 @@
 #include "yyscan.h"
 
-#include "json/factory.h"
-#include "json/json.h"
 #include "parser.tab.h"
-#include "set/set.h"
-#include "type.h"
-#include "typedef.h"
 #include "util/util.h"
 
 void yyerror(yyscan_t yyscanner, const char *msg) {
@@ -31,7 +26,6 @@ void yyscan_parse(yyscan_t self) {
 int yyscan_is_typedef(yyscan_t self, const char *symbol) {
   return scanner_is_typedef(yyget_extra(self), symbol);
 }
-
 YYSCAN_TYPE yyscan_json_token(yyscan_t self) {
   const char *text = yyget_text(self);
   assert(text[yyget_leng(self)] == 0);

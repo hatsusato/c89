@@ -21,7 +21,6 @@ target_sources(scanner PRIVATE
   ${FLEX_lexer_OUTPUTS}
   parse.c
   scanner.c
-  type.c
   typedef.c
   yyscan.c
   yyscan_t.c

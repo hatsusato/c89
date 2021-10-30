@@ -1,8 +1,6 @@
 #include "parse.h"
 
 #include "scanner.h"
-#include "type.h"
-#include "util/type.h"
 #include "yyscan.h"
 
 struct json *scanner_parse(struct json_factory *factory, struct set *symbols) {

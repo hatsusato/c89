@@ -17,7 +17,6 @@ yyscan_t yyscan_new(YYSCAN_EXTRA);
 void yyscan_delete(yyscan_t);
 void yyscan_parse(yyscan_t);
 int yyscan_is_typedef(yyscan_t, const char *);
-
 YYSCAN_TYPE yyscan_json_token(yyscan_t);
 
 #endif /* INCLUDE_GUARD_9CD5F173_4C3F_436C_9085_C797766F802E */
