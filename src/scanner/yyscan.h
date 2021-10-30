@@ -10,6 +10,7 @@
 #define YYSCAN_OBJ() scanner_json_obj(yyget_extra(YYSCAN_PARAM))
 #define YYSCAN_PUSH(arr, val) scanner_json_push(arr, val)
 #define YYSCAN_SET(obj, key, val) scanner_json_set(obj, #key, val)
+#define YYSCAN_TAG(key, val) YYSCAN_SET(YYSCAN_OBJ(), key, val)
 #define YYSCAN_BINOP(lhs, op, rhs) \
   scanner_json_binop(yyget_extra(YYSCAN_PARAM), lhs, op, rhs)
 #define YYSCAN_SET_TOP(top) scanner_set_top(yyget_extra(YYSCAN_PARAM), top)

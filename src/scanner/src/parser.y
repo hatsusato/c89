@@ -317,28 +317,34 @@ primary-expression
 : identifier {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, identifier, $1);
+  $$ = YYSCAN_TAG(primary-expression, $$);
 }
 | floating-constant {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, floating-constant, $1);
+  $$ = YYSCAN_TAG(primary-expression, $$);
 }
 | integer-constant {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, integer-constant, $1);
+  $$ = YYSCAN_TAG(primary-expression, $$);
 }
 | character-constant {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, character-constant, $1);
+  $$ = YYSCAN_TAG(primary-expression, $$);
 }
 | string-literal {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, string-literal, $1);
+  $$ = YYSCAN_TAG(primary-expression, $$);
 }
 | left-paren expression right-paren {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, left-paren, $1);
   YYSCAN_SET($$, expression, $2);
   YYSCAN_SET($$, right-paren, $3);
+  $$ = YYSCAN_TAG(primary-expression, $$);
 }
 ;
 postfix-expression
@@ -349,6 +355,7 @@ postfix-expression
   YYSCAN_SET($$, left-bracket, $2);
   YYSCAN_SET($$, expression, $3);
   YYSCAN_SET($$, right-bracket, $4);
+  $$ = YYSCAN_TAG(postfix-expression, $$);
 }
 | postfix-expression left-paren argument-expression-list.opt right-paren {
   $$ = YYSCAN_OBJ();
@@ -356,28 +363,33 @@ postfix-expression
   YYSCAN_SET($$, left-paren, $2);
   YYSCAN_SET($$, argument-expression-list, $3);
   YYSCAN_SET($$, right-paren, $4);
+  $$ = YYSCAN_TAG(postfix-expression, $$);
 }
 | postfix-expression period identifier {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, postfix-expression, $1);
   YYSCAN_SET($$, period, $2);
   YYSCAN_SET($$, identifier, $3);
+  $$ = YYSCAN_TAG(postfix-expression, $$);
 }
 | postfix-expression arrow identifier {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, postfix-expression, $1);
   YYSCAN_SET($$, arrow, $2);
   YYSCAN_SET($$, identifier, $3);
+  $$ = YYSCAN_TAG(postfix-expression, $$);
 }
 | postfix-expression increment {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, postfix-expression, $1);
   YYSCAN_SET($$, increment, $2);
+  $$ = YYSCAN_TAG(postfix-expression, $$);
 }
 | postfix-expression decrement {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, postfix-expression, $1);
   YYSCAN_SET($$, decrement, $2);
+  $$ = YYSCAN_TAG(postfix-expression, $$);
 }
 ;
 argument-expression-list.opt
@@ -400,21 +412,25 @@ unary-expression
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, increment, $1);
   YYSCAN_SET($$, unary-expression, $2);
+  $$ = YYSCAN_TAG(unary-expression, $$);
 }
 | decrement unary-expression {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, decrement, $1);
   YYSCAN_SET($$, unary-expression, $2);
+  $$ = YYSCAN_TAG(unary-expression, $$);
 }
 | unary-operator cast-expression {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, unary-operator, $1);
   YYSCAN_SET($$, cast-expression, $2);
+  $$ = YYSCAN_TAG(unary-expression, $$);
 }
 | sizeof unary-expression {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, sizeof, $1);
   YYSCAN_SET($$, unary-expression, $2);
+  $$ = YYSCAN_TAG(unary-expression, $$);
 }
 | sizeof left-paren type-name right-paren {
   $$ = YYSCAN_OBJ();
@@ -422,6 +438,7 @@ unary-expression
   YYSCAN_SET($$, left-paren, $2);
   YYSCAN_SET($$, type-name, $3);
   YYSCAN_SET($$, right-paren, $4);
+  $$ = YYSCAN_TAG(unary-expression, $$);
 }
 ;
 unary-operator
@@ -440,12 +457,14 @@ cast-expression
   YYSCAN_SET($$, type-name, $2);
   YYSCAN_SET($$, right-paren, $3);
   YYSCAN_SET($$, cast-expression, $4);
+  $$ = YYSCAN_TAG(cast-expression, $$);
 }
 ;
 multiplicative-expression
 : cast-expression
 | multiplicative-expression multiplicative-operator cast-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
+  $$ = YYSCAN_TAG(multiplicative-expression, $$);
 }
 ;
 multiplicative-operator
@@ -457,6 +476,7 @@ additive-expression
 : multiplicative-expression
 | additive-expression additive-operator multiplicative-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
+  $$ = YYSCAN_TAG(additive-expression, $$);
 }
 ;
 additive-operator
@@ -467,6 +487,7 @@ shift-expression
 : additive-expression
 | shift-expression shift-operator additive-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
+  $$ = YYSCAN_TAG(shift-expression, $$);
 }
 ;
 shift-operator
@@ -481,6 +502,7 @@ relational-expression
   YYSCAN_SET($$, relational-expression, $1);
   YYSCAN_SET($$, relational-operator, $2);
   YYSCAN_SET($$, shift-expression, $3);
+  $$ = YYSCAN_TAG(relational-expression, $$);
 }
 ;
 relational-operator
@@ -493,6 +515,7 @@ equality-expression
 : relational-expression
 | equality-expression equality-operator relational-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
+  $$ = YYSCAN_TAG(equality-expression, $$);
 }
 ;
 equality-operator
@@ -503,30 +526,35 @@ and-expression
 : equality-expression
 | and-expression ampersand equality-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
+  $$ = YYSCAN_TAG(and-expression, $$);
 }
 ;
 exclusive-or-expression
 : and-expression
 | exclusive-or-expression caret and-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
+  $$ = YYSCAN_TAG(exclusive-or-expression, $$);
 }
 ;
 inclusive-or-expression
 : exclusive-or-expression
 | inclusive-or-expression bar exclusive-or-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
+  $$ = YYSCAN_TAG(inclusive-or-expression, $$);
 }
 ;
 logical-and-expression
 : inclusive-or-expression
 | logical-and-expression and inclusive-or-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
+  $$ = YYSCAN_TAG(inclusive-and-expression, $$);
 }
 ;
 logical-or-expression
 : logical-and-expression
 | logical-or-expression or logical-and-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
+  $$ = YYSCAN_TAG(logical-or-expression, $$);
 }
 ;
 conditional-expression
@@ -538,12 +566,14 @@ conditional-expression
   YYSCAN_SET($$, expression, $3);
   YYSCAN_SET($$, colon, $4);
   YYSCAN_SET($$, conditional-expression, $5);
+  $$ = YYSCAN_TAG(conditional-expression, $$);
 }
 ;
 assignment-expression
 : conditional-expression
 | unary-expression assignment-operator assignment-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
+  $$ = YYSCAN_TAG(assignment-expression, $$);
 }
 ;
 assignment-operator
@@ -566,15 +596,9 @@ expression.opt
 | expression
 ;
 expression
-: assignment-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, assignment-expression, $1);
-}
+: assignment-expression
 | expression comma assignment-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, expression, $1);
-  YYSCAN_SET($$, comma, $2);
-  YYSCAN_SET($$, assignment-expression, $3);
+  $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 
@@ -586,10 +610,7 @@ constant-expression.opt
 | constant-expression
 ;
 constant-expression
-: conditional-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, conditional-expression, $1);
-}
+: conditional-expression
 ;
 
 /* 6.5 Declarations */
