@@ -12,7 +12,7 @@ void yyerror(yyscan_t yyscanner, const char *msg) {
   UTIL_UNUSED(yyscanner);
   util_error("%s", msg);
 }
-yyscan_t yyscan_new(struct scanner *scanner) {
+yyscan_t yyscan_new(YYSCAN_EXTRA scanner) {
   yyscan_t self;
   if (yylex_init(&self) == 0) {
     yyset_extra(scanner, self);

@@ -12,7 +12,7 @@
 #define YYSCAN_SET_TOP(top) yyscan_set_top(YYSCAN_PARAM, top)
 
 void yyerror(yyscan_t, const char *);
-yyscan_t yyscan_new(struct scanner *);
+yyscan_t yyscan_new(YYSCAN_EXTRA);
 void yyscan_delete(yyscan_t);
 void yyscan_parse(yyscan_t);
 int yyscan_is_typedef(yyscan_t, const char *);

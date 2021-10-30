@@ -7,7 +7,7 @@
 #include "util/util.h"
 #include "yyscan.h"
 
-static void scanner_init(struct scanner *self, struct json_factory *factory,
+static void scanner_init(YYSCAN_EXTRA self, struct json_factory *factory,
                          struct pool *pool, struct set *symbols) {
   self->factory = cell_factory_new(pool, symbols);
   self->ast = NULL;
@@ -16,7 +16,7 @@ static void scanner_init(struct scanner *self, struct json_factory *factory,
   self->jfactory = factory;
   self->top = json_null();
 }
-static void scanner_finish(struct scanner *self) {
+static void scanner_finish(YYSCAN_EXTRA self) {
   set_delete(self->typedefs);
   cell_factory_delete(self->factory);
 }
