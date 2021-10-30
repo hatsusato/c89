@@ -4,12 +4,8 @@
 #include "yyscan_t.h"
 
 struct json_factory;
-struct pool;
 struct set;
 
-void scanner_init(YYSCAN_EXTRA, struct json_factory *, struct pool *,
-                  struct set *);
-void scanner_finish(YYSCAN_EXTRA);
 YYSCAN_EXTRA scanner_new(struct json_factory *, struct set *);
 void scanner_delete(YYSCAN_EXTRA);
 
