@@ -3,7 +3,6 @@
 
 #include "yyscan_t.h"
 
-#define YYSCAN_NULL() yyscan_json_null()
 #define YYSCAN_TOKEN() yyscan_json_token(YYSCAN_PARAM)
 #define YYSCAN_SYMBOL(symbol) yyscan_json_symbol(YYSCAN_PARAM, #symbol)
 #define YYSCAN_ARR() yyscan_json_arr(YYSCAN_PARAM)
@@ -25,7 +24,6 @@ const struct cell *yyscan_push(yyscan_t, const struct cell *,
                                const struct cell *);
 const struct cell *yyscan_list(yyscan_t, int, ...);
 
-struct json *yyscan_json_null(void);
 struct json *yyscan_json_token(yyscan_t);
 struct json *yyscan_json_symbol(yyscan_t, const char *);
 struct json *yyscan_json_arr(yyscan_t);

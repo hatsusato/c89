@@ -272,7 +272,7 @@ ellipsis: "..." { $$ = YYSCAN_SYMBOL(ellipsis); }
 /* 6.1 Lexical elements */
 identifier.opt
 : %empty {
-  $$ = YYSCAN_NULL();
+  $$ = YYSCAN_OBJ();
 }
 | identifier
 ;

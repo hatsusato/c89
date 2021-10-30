@@ -69,9 +69,6 @@ const struct cell *yyscan_list(yyscan_t self, int count, ...) {
   return list;
 }
 
-struct json *yyscan_json_null(void) {
-  return json_null();
-}
 struct json *yyscan_json_token(yyscan_t self) {
   const char *text = yyget_text(self);
   assert(text[yyget_leng(self)] == 0);
