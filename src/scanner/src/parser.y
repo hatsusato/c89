@@ -342,10 +342,7 @@ primary-expression
 }
 ;
 postfix-expression
-: primary-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, primary-expression, $1);
-}
+: primary-expression
 | postfix-expression left-bracket expression right-bracket {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, postfix-expression, $1);
@@ -398,10 +395,7 @@ argument-expression-list
 }
 ;
 unary-expression
-: postfix-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, postfix-expression, $1);
-}
+: postfix-expression
 | increment unary-expression {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, increment, $1);
@@ -439,10 +433,7 @@ unary-operator
 | exclamation
 ;
 cast-expression
-: unary-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, unary-expression, $1);
-}
+: unary-expression
 | left-paren type-name right-paren cast-expression {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, left-paren, $1);
@@ -452,10 +443,7 @@ cast-expression
 }
 ;
 multiplicative-expression
-: cast-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, cast-expression, $1);
-}
+: cast-expression
 | multiplicative-expression multiplicative-operator cast-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
 }
@@ -466,10 +454,7 @@ multiplicative-operator
 | percent
 ;
 additive-expression
-: multiplicative-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, multiplicative-expression, $1);
-}
+: multiplicative-expression
 | additive-expression additive-operator multiplicative-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
 }
@@ -479,10 +464,7 @@ additive-operator
 | minus
 ;
 shift-expression
-: additive-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, additive-expression, $1);
-}
+: additive-expression
 | shift-expression shift-operator additive-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
 }
@@ -492,10 +474,7 @@ shift-operator
 | right-shift
 ;
 relational-expression
-: shift-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, shift-expression, $1);
-}
+: shift-expression
 | relational-expression relational-operator shift-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
   $$ = YYSCAN_OBJ();
@@ -511,10 +490,7 @@ relational-operator
 | greater-equal
 ;
 equality-expression
-: relational-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, relational-expression, $1);
-}
+: relational-expression
 | equality-expression equality-operator relational-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
 }
@@ -524,55 +500,37 @@ equality-operator
 | not-equal
 ;
 and-expression
-: equality-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, equality-expression, $1);
-}
+: equality-expression
 | and-expression ampersand equality-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 exclusive-or-expression
-: and-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, and-expression, $1);
-}
+: and-expression
 | exclusive-or-expression caret and-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 inclusive-or-expression
-: exclusive-or-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, exclusive-or-expression, $1);
-}
+: exclusive-or-expression
 | inclusive-or-expression bar exclusive-or-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 logical-and-expression
-: inclusive-or-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, inclusive-or-expression, $1);
-}
+: inclusive-or-expression
 | logical-and-expression and inclusive-or-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 logical-or-expression
-: logical-and-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, logical-and-expression, $1);
-}
+: logical-and-expression
 | logical-or-expression or logical-and-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
 }
 ;
 conditional-expression
-: logical-or-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, logical-or-expression, $1);
-}
+: logical-or-expression
 | logical-or-expression question expression colon conditional-expression {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, logical-or-expression, $1);
@@ -583,10 +541,7 @@ conditional-expression
 }
 ;
 assignment-expression
-: conditional-expression {
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, conditional-expression, $1);
-}
+: conditional-expression
 | unary-expression assignment-operator assignment-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
 }
