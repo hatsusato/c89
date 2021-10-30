@@ -2,7 +2,9 @@
 
 #include "json/factory.h"
 #include "json/json.h"
+#include "json/visitor.h"
 #include "set/set.h"
+#include "symbol.h"
 #include "util/util.h"
 
 struct scanner {
@@ -62,4 +64,19 @@ void scanner_set_top(YYSCAN_EXTRA self, YYSCAN_TYPE top) {
 int scanner_is_typedef(YYSCAN_EXTRA self, const char *symbol) {
   const char *found = set_find(self->typedefs, symbol);
   return found ? 1 : 0;
+}
+static struct json *scanner_visitor_flag_set(struct json_visitor *visitor,
+                                             struct json *json) {
+  int *ret = visitor->extra;
+  *ret = 1;
+  return json;
+}
+int scanner_contains_typedef(YYSCAN_TYPE decl) {
+  struct json *json = json_obj_get(decl, SYMBOL_DECLARATION_SPECIFIERS);
+  struct json_visitor visitor = {scanner_visitor_flag_set, SYMBOL_TYPEDEF, NULL,
+                                 NULL};
+  int ret = 0;
+  visitor.extra = &ret;
+  json_visitor_visit(&visitor, json);
+  return ret;
 }
