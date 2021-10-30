@@ -26,9 +26,7 @@ void yyscan_delete(yyscan_t self) {
   }
 }
 void yyscan_parse(yyscan_t self) {
-  if (yyparse(self)) {
-    yyscan_set_top(self, json_null());
-  }
+  yyparse(self);
 }
 int yyscan_is_typedef(yyscan_t self, const char *symbol) {
   const char *found = set_find(yyget_extra(self)->typedefs, symbol);
