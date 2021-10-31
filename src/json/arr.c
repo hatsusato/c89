@@ -16,3 +16,10 @@ void json_arr_delete(struct json_arr *self) {
   json_vec_delete(self->vec);
   util_free(self);
 }
+struct json *json_arr_at(struct json_arr *self, index_t index) {
+  struct json_pair *pair = json_vec_at(self->vec, index);
+  return pair->val;
+}
+void json_arr_push(struct json_arr *self, struct json *val) {
+  json_vec_push(self->vec, NULL, val);
+}
