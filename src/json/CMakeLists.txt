@@ -4,6 +4,7 @@ target_sources(json PRIVATE
   factory.c
   json.c
   obj.c
+  pair.c
   printer.c
   str.c
   type.c

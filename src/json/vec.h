@@ -4,12 +4,9 @@
 #include "util/type.h"
 
 struct json;
+struct json_pair;
 struct json_vec;
 
-struct json_pair {
-  const char *key;
-  struct json *val;
-};
 struct json_map {
   index_t index;
   const char *key;

@@ -1,6 +1,7 @@
 #include "visitor.h"
 
 #include "json.h"
+#include "pair.h"
 #include "type.h"
 #include "util/util.h"
 #include "vec.h"
