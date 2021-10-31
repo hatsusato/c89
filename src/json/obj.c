@@ -17,6 +17,9 @@ void json_obj_delete(struct json_obj *self) {
   json_vec_delete(self->vec);
   util_free(self);
 }
+index_t json_obj_count(struct json_obj *self) {
+  return json_vec_count(self->vec);
+}
 void json_obj_insert(struct json_obj *self, const char *key, struct json *val) {
   struct json_pair *pair = json_vec_find(self->vec, key);
   if (pair) {

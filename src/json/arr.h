@@ -8,6 +8,7 @@ struct json_arr;
 
 struct json_arr *json_arr_new(void);
 void json_arr_delete(struct json_arr *);
+index_t json_arr_count(struct json_arr *);
 struct json *json_arr_at(struct json_arr *, index_t);
 void json_arr_push(struct json_arr *, struct json *);
 

@@ -17,6 +17,9 @@ void json_arr_delete(struct json_arr *self) {
   json_vec_delete(self->vec);
   util_free(self);
 }
+index_t json_arr_count(struct json_arr *self) {
+  return json_vec_count(self->vec);
+}
 struct json *json_arr_at(struct json_arr *self, index_t index) {
   struct json_pair *pair = json_vec_at(self->vec, index);
   return pair ? pair->val : json_null();
