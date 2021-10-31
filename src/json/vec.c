@@ -3,14 +3,29 @@
 #include <stdlib.h>
 
 #include "map.h"
-#include "pair.h"
 #include "type.h"
 #include "util/util.h"
+
+struct json_pair {
+  const char *key;
+  struct json *val;
+};
 
 struct json_vec {
   struct json_pair *base;
   index_t count, capacity;
 };
+
+const char *json_pair_key(struct json_pair *self) {
+  return self->key;
+}
+struct json *json_pair_val(struct json_pair *self) {
+  return self->val;
+}
+void json_pair_set(struct json_pair *self, const char *key, struct json *val) {
+  self->key = key;
+  self->val = val;
+}
 
 static const align_t align = sizeof(struct json_pair);
 static index_t json_vec_capacity_ceil(index_t capacity) {

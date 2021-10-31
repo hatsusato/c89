@@ -1,7 +1,6 @@
 #include "arr.h"
 
 #include "json.h"
-#include "pair.h"
 #include "util/util.h"
 #include "vec.h"
 

@@ -5,7 +5,6 @@ target_sources(json PRIVATE
   json.c
   map.c
   obj.c
-  pair.c
   printer.c
   str.c
   type.c
