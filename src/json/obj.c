@@ -24,14 +24,14 @@ index_t json_obj_count(struct json_obj *self) {
 void json_obj_insert(struct json_obj *self, const char *key, struct json *val) {
   struct json_pair *pair = json_vec_find(self->vec, key);
   if (pair) {
-    pair->val = val;
+    json_pair_set(pair, key, val);
   } else {
     json_vec_push(self->vec, key, val);
   }
 }
 struct json *json_obj_get(struct json_obj *self, const char *key) {
   struct json_pair *pair = json_vec_find(self->vec, key);
-  return pair ? pair->val : json_null();
+  return pair ? json_pair_val(pair) : json_null();
 }
 bool_t json_obj_has(struct json_obj *self, const char *key) {
   struct json_pair *pair = json_vec_find(self->vec, key);

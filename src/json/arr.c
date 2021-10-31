@@ -23,7 +23,7 @@ index_t json_arr_count(struct json_arr *self) {
 }
 struct json *json_arr_at(struct json_arr *self, index_t index) {
   struct json_pair *pair = json_vec_at(self->vec, index);
-  return pair ? pair->val : json_null();
+  return pair ? json_pair_val(pair) : json_null();
 }
 void json_arr_push(struct json_arr *self, struct json *val) {
   json_vec_push(self->vec, NULL, val);
