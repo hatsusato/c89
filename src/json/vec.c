@@ -7,6 +7,11 @@
 #include "type.h"
 #include "util/util.h"
 
+struct json_vec {
+  struct json_pair *base;
+  index_t count, capacity;
+};
+
 static const align_t align = sizeof(struct json_pair);
 static index_t json_vec_capacity_ceil(index_t capacity) {
   enum { initial_capacity = 8 };
