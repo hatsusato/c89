@@ -2,6 +2,7 @@
 
 #include "json/factory.h"
 #include "json/json.h"
+#include "json/str.h"
 #include "json/visitor.h"
 #include "set/set.h"
 #include "symbol.h"
@@ -83,7 +84,8 @@ int scanner_contains_typedef(YYSCAN_TYPE decl) {
 static struct json *scanner_visitor_set_insert(struct json_visitor *visitor,
                                                struct json *json) {
   if (json_is_str(json)) {
-    set_insert(visitor->extra, json_json_str_get(json));
+    struct json_str *str = json_as_str(json);
+    set_insert(visitor->extra, json_str_get(str));
   }
   return json;
 }

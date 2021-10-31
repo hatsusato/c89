@@ -2,6 +2,7 @@
 
 #include "json.h"
 #include "printer/printer.h"
+#include "str.h"
 #include "type.h"
 #include "util/util.h"
 #include "vec.h"
@@ -12,8 +13,9 @@ static void json_printer_null(struct json *json, struct printer *printer) {
   printer_print(printer, "null");
 }
 static void json_printer_str(struct json *json, struct printer *printer) {
-  assert(json->tag == JSON_TAG_STR);
-  printer_print(printer, "\"%s\"", json_json_str_get(json));
+  struct json_str *str = json_as_str(json);
+  assert(str);
+  printer_print(printer, "\"%s\"", json_str_get(str));
 }
 static void json_printer_arr_map(struct json_map *map) {
   struct printer *printer = map->extra;

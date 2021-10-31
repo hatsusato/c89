@@ -2,6 +2,7 @@
 
 #include "factory.h"
 #include "json.h"
+#include "str.h"
 #include "util/util.h"
 
 void json_arr_unittest(void) {
@@ -24,8 +25,9 @@ void json_arr_unittest(void) {
   }
   for (i = 0; i < count; i++) {
     struct json *elem = json_json_arr_get(arr, i);
-    assert(elem && json_is_str(elem));
-    assert(util_streq(json_json_str_get(elem), str[i]));
+    struct json_str *jstr = json_as_str(elem);
+    assert(jstr);
+    assert(util_streq(json_str_get(jstr), str[i]));
   }
   util_free(str);
   json_factory_delete(factory);
@@ -46,8 +48,9 @@ void json_obj_unittest(void) {
   }
   for (i = 0; i < count; i++) {
     struct json *val = json_json_obj_get(obj, key[i]);
-    assert(val && json_is_str(val));
-    assert(util_streq(json_json_str_get(val), key[i]));
+    struct json_str *jstr = json_as_str(val);
+    assert(jstr);
+    assert(util_streq(json_str_get(jstr), key[i]));
   }
   assert(!json_json_obj_get(obj, "0"));
   util_free(key);

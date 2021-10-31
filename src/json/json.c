@@ -37,9 +37,8 @@ index_t json_count(struct json *self) {
     return 1;
   }
 }
-const char *json_json_str_get(struct json *self) {
-  assert(self->tag == JSON_TAG_STR);
-  return json_str_get(self->str);
+struct json_str *json_as_str(struct json *self) {
+  return self->tag == JSON_TAG_STR ? self->str : NULL;
 }
 struct json *json_json_arr_get(struct json *self, index_t key) {
   struct json_pair *pair;
