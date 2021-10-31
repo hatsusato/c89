@@ -61,20 +61,6 @@ void json_json_obj_set(struct json *self, const char *key, struct json *val) {
     json_vec_push(self->vec, key, val);
   }
 }
-const char *json_json_obj_key(struct json *self, index_t index) {
-  struct json_pair *pair;
-  assert(self->tag == JSON_TAG_OBJ);
-  pair = json_vec_at(self->vec, index);
-  assert(pair);
-  return pair->key;
-}
-struct json *json_json_obj_val(struct json *self, index_t index) {
-  struct json_pair *pair;
-  assert(self->tag == JSON_TAG_OBJ);
-  pair = json_vec_at(self->vec, index);
-  assert(pair);
-  return pair->val;
-}
 void json_print(struct json *self) {
   struct printer *printer = printer_new(stdout);
   json_printer_print(self, printer);

@@ -17,8 +17,6 @@ struct json_str *json_as_str(struct json *);
 struct json_arr *json_as_arr(struct json *);
 struct json *json_json_obj_get(struct json *, const char *);
 void json_json_obj_set(struct json *, const char *, struct json *);
-const char *json_json_obj_key(struct json *, index_t);
-struct json *json_json_obj_val(struct json *, index_t);
 void json_print(struct json *);
 
 #include "json/arr.h"
