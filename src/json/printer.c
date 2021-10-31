@@ -5,13 +5,7 @@
 #include "printer/printer.h"
 #include "type.h"
 #include "util/util.h"
-#include "vec.h"
 
-static void json_printer_null(struct json *json, struct printer *printer) {
-  UTIL_UNUSED(json);
-  assert(json->tag == JSON_TAG_NULL);
-  printer_print(printer, "null");
-}
 static void json_printer_str(struct json_str *str, struct printer *printer) {
   printer_print(printer, "\"%s\"", json_str_get(str));
 }
@@ -66,7 +60,7 @@ static void json_printer_obj(struct json_obj *obj, struct printer *printer) {
 void json_printer_print(struct json *json, struct printer *printer) {
   switch (json->tag) {
   case JSON_TAG_NULL:
-    json_printer_null(json, printer);
+    printer_print(printer, "null");
     break;
   case JSON_TAG_STR:
     json_printer_str(json_as_str(json), printer);
