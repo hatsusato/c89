@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+#include "map.h"
 #include "pair.h"
 #include "type.h"
 #include "util/util.h"
@@ -81,15 +82,14 @@ struct json_pair *json_vec_find(struct json_vec *self, const char *key) {
   }
   return NULL;
 }
-void json_vec_map(struct json_vec *self, json_map_t map, void *extra) {
+void json_vec_map(struct json_vec *self, struct json_map *map) {
   index_t i;
+  struct json_map_extra extra;
   for (i = 0; i < self->count; i++) {
     struct json_pair *pair = self->base + i;
-    struct json_map data;
-    data.index = i;
-    data.key = pair->key;
-    data.val = pair->val;
-    data.extra = extra;
-    map(&data);
+    extra.index = i;
+    extra.key = pair->key;
+    extra.extra = map->extra;
+    map->map(pair->val, &extra);
   }
 }

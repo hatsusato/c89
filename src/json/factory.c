@@ -1,25 +1,23 @@
 #include "factory.h"
 
-#include "arr.h"
-#include "obj.h"
-#include "str.h"
+#include "json.h"
+#include "map.h"
 #include "type.h"
 #include "util/util.h"
 #include "vec.h"
 
-static void json_factory_free(struct json_map *map) {
-  struct json *json = map->val;
+static void json_factory_free(struct json *json, struct json_map_extra *extra) {
   if (json) {
     switch (json->tag) {
     case JSON_TAG_STR:
-      json_str_delete(json->str);
+      json_str_delete(json_as_str(json));
       break;
     case JSON_TAG_ARR:
-      json_arr_delete(json->arr);
+      json_arr_delete(json_as_arr(json));
       json_vec_delete(json->vec);
       break;
     case JSON_TAG_OBJ:
-      json_obj_delete(json->obj);
+      json_obj_delete(json_as_obj(json));
       json_vec_delete(json->vec);
       break;
     default:
@@ -27,6 +25,7 @@ static void json_factory_free(struct json_map *map) {
     }
   }
   util_free(json);
+  UTIL_UNUSED(extra);
 }
 static struct json *json_factory_alloc(struct json_factory *self,
                                        enum json_tag tag) {
@@ -45,7 +44,8 @@ struct json_factory *json_factory_new(void) {
   return self;
 }
 void json_factory_delete(struct json_factory *self) {
-  json_vec_map(self->pool, json_factory_free, NULL);
+  struct json_map map = {json_factory_free, NULL};
+  json_vec_map(self->pool, &map);
   json_vec_delete(self->pool);
   util_free(self);
 }

@@ -1,6 +1,7 @@
 #include "printer.h"
 
 #include "json.h"
+#include "map.h"
 #include "printer/printer.h"
 #include "type.h"
 #include "util/util.h"
@@ -21,42 +22,48 @@ static void json_printer_null(struct json *json, struct printer *printer) {
 static void json_printer_str(struct json_str *str, struct printer *printer) {
   printer_print(printer, "\"%s\"", json_str_get(str));
 }
-static void json_printer_arr_map(struct json_map *map) {
-  struct printer *printer = map->extra;
-  if (0 < map->index) {
+static void json_printer_arr_map(struct json *json,
+                                 struct json_map_extra *extra) {
+  struct printer *printer = extra->extra;
+  if (0 < extra->index) {
     printer_print(printer, ",");
   }
   printer_newline(printer);
-  json_printer_print(map->val, printer);
+  json_printer_print(json, printer);
 }
 static void json_printer_arr(struct json_arr *arr, struct printer *printer) {
   if (0 == json_arr_count(arr)) {
     printer_print(printer, "[]");
   } else {
+    struct json_map map = {json_printer_arr_map, NULL};
+    map.extra = printer;
     printer_print(printer, "[");
     printer_indent(printer, 2);
-    json_vec_map(arr->vec, json_printer_arr_map, printer);
+    json_vec_map(arr->vec, &map);
     printer_newline(printer);
     printer_indent(printer, -2);
     printer_print(printer, "]");
   }
 }
-static void json_printer_obj_map(struct json_map *map) {
-  struct printer *printer = map->extra;
-  if (0 < map->index) {
+static void json_printer_obj_map(struct json *json,
+                                 struct json_map_extra *extra) {
+  struct printer *printer = extra->extra;
+  if (0 < extra->index) {
     printer_print(printer, ",");
   }
   printer_newline(printer);
-  printer_print(printer, "\"%s\": ", map->key);
-  json_printer_print(map->val, printer);
+  printer_print(printer, "\"%s\": ", extra->key);
+  json_printer_print(json, printer);
 }
 static void json_printer_obj(struct json_obj *obj, struct printer *printer) {
   if (0 == json_obj_count(obj)) {
     printer_print(printer, "{}");
   } else {
+    struct json_map map = {json_printer_obj_map, NULL};
+    map.extra = printer;
     printer_print(printer, "{");
     printer_indent(printer, 2);
-    json_vec_map(obj->vec, json_printer_obj_map, printer);
+    json_vec_map(obj->vec, &map);
     printer_newline(printer);
     printer_indent(printer, -2);
     printer_print(printer, "}");

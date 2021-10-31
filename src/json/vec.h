@@ -1,10 +1,10 @@
 #ifndef INCLUDE_GUARD_28ECEBB7_B3F3_4129_987F_AA9D1F2203BF
 #define INCLUDE_GUARD_28ECEBB7_B3F3_4129_987F_AA9D1F2203BF
 
-#include "map.h"
 #include "util/type.h"
 
 struct json;
+struct json_map;
 struct json_pair;
 struct json_vec;
 
@@ -16,6 +16,6 @@ struct json_pair *json_vec_at(struct json_vec *, index_t);
 void json_vec_sort(struct json_vec *);
 struct json_pair *json_vec_search(struct json_vec *, const char *);
 struct json_pair *json_vec_find(struct json_vec *, const char *);
-void json_vec_map(struct json_vec *, json_map_t, void *);
+void json_vec_map(struct json_vec *, struct json_map *);
 
 #endif /* INCLUDE_GUARD_28ECEBB7_B3F3_4129_987F_AA9D1F2203BF */
