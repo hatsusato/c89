@@ -3,6 +3,7 @@ target_sources(json PRIVATE
   factory.c
   json.c
   printer.c
+  str.c
   type.c
   unittest.c
   visitor.c
