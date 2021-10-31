@@ -4,14 +4,8 @@
 #include "util/type.h"
 
 struct json;
-struct json_map_extra;
-typedef void (*json_map_t)(struct json *, struct json_map_extra *);
+typedef void (*json_map_t)(const char *, struct json *, void *);
 
-struct json_map_extra {
-  index_t index;
-  const char *key;
-  void *extra;
-};
 struct json_map {
   json_map_t map;
   void *extra;

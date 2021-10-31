@@ -14,16 +14,18 @@ struct json_printer_extra {
 static void json_printer_str(struct json_str *str, struct printer *printer) {
   printer_print(printer, "\"%s\"", json_str_get(str));
 }
-static void json_printer_arr_map(struct json *json,
-                                 struct json_map_extra *extra) {
-  struct json_printer_extra *printerx = extra->extra;
-  struct printer *printer = printerx->printer;
-  if (!printerx->first) {
+static void json_printer_arr_map(const char *key, struct json *val,
+                                 void *extra) {
+  struct json_printer_extra *tmp = extra;
+  struct printer *printer = tmp->printer;
+  bool_t *first = &tmp->first;
+  if (!*first) {
     printer_print(printer, ",");
-    printerx->first = false;
+    *first = false;
   }
   printer_newline(printer);
-  json_printer_print(json, printer);
+  json_printer_print(val, printer);
+  UTIL_UNUSED(key);
 }
 static void json_printer_arr(struct json_arr *arr, struct printer *printer) {
   if (0 == json_arr_count(arr)) {
@@ -41,17 +43,18 @@ static void json_printer_arr(struct json_arr *arr, struct printer *printer) {
     printer_print(printer, "]");
   }
 }
-static void json_printer_obj_map(struct json *json,
-                                 struct json_map_extra *extra) {
-  struct json_printer_extra *printerx = extra->extra;
-  struct printer *printer = printerx->printer;
-  if (!printerx->first) {
+static void json_printer_obj_map(const char *key, struct json *val,
+                                 void *extra) {
+  struct json_printer_extra *tmp = extra;
+  struct printer *printer = tmp->printer;
+  bool_t *first = &tmp->first;
+  if (!*first) {
     printer_print(printer, ",");
-    printerx->first = false;
+    *first = false;
   }
   printer_newline(printer);
-  printer_print(printer, "\"%s\": ", extra->key);
-  json_printer_print(json, printer);
+  printer_print(printer, "\"%s\": ", key);
+  json_printer_print(val, printer);
 }
 static void json_printer_obj(struct json_obj *obj, struct printer *printer) {
   if (0 == json_obj_count(obj)) {

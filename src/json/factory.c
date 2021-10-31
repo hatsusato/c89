@@ -6,25 +6,26 @@
 #include "util/util.h"
 #include "vec.h"
 
-static void json_factory_free(struct json *json, struct json_map_extra *extra) {
-  if (json) {
-    switch (json->tag) {
+static void json_factory_free(const char *key, struct json *val, void *extra) {
+  if (val) {
+    switch (val->tag) {
     case JSON_TAG_STR:
-      json_str_delete(json_as_str(json));
+      json_str_delete(json_as_str(val));
       break;
     case JSON_TAG_ARR:
-      json_arr_delete(json_as_arr(json));
-      json_vec_delete(json->vec);
+      json_arr_delete(json_as_arr(val));
+      json_vec_delete(val->vec);
       break;
     case JSON_TAG_OBJ:
-      json_obj_delete(json_as_obj(json));
-      json_vec_delete(json->vec);
+      json_obj_delete(json_as_obj(val));
+      json_vec_delete(val->vec);
       break;
     default:
       break;
     }
   }
-  util_free(json);
+  util_free(val);
+  UTIL_UNUSED(key);
   UTIL_UNUSED(extra);
 }
 static struct json *json_factory_alloc(struct json_factory *self,
