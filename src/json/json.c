@@ -36,36 +36,36 @@ index_t json_count(struct json *self) {
     return 1;
   }
 }
-const char *json_str_get(struct json *self) {
+const char *json_json_str_get(struct json *self) {
   assert(self->tag == JSON_TAG_STR);
   return self->str;
 }
-struct json *json_arr_get(struct json *self, index_t key) {
+struct json *json_json_arr_get(struct json *self, index_t key) {
   struct json_pair *pair;
   assert(self->tag == JSON_TAG_ARR);
   pair = json_vec_at(self->vec, key);
   return pair ? pair->val : NULL;
 }
-void json_arr_set(struct json *self, index_t key, struct json *val) {
+void json_json_arr_set(struct json *self, index_t key, struct json *val) {
   struct json_pair *pair;
   assert(self->tag == JSON_TAG_ARR);
   pair = json_vec_at(self->vec, key);
   assert(pair && val);
   pair->val = val;
 }
-void json_arr_push(struct json *self, struct json *val) {
+void json_json_arr_push(struct json *self, struct json *val) {
   assert(self->tag == JSON_TAG_ARR);
   assert(val);
   json_vec_push(self->vec, NULL, val);
 }
-struct json *json_obj_get(struct json *self, const char *key) {
+struct json *json_json_obj_get(struct json *self, const char *key) {
   struct json_pair *pair;
   assert(self->tag == JSON_TAG_OBJ);
   assert(key);
   pair = json_vec_find(self->vec, key);
   return pair ? pair->val : NULL;
 }
-void json_obj_set(struct json *self, const char *key, struct json *val) {
+void json_json_obj_set(struct json *self, const char *key, struct json *val) {
   struct json_pair *pair;
   assert(self->tag == JSON_TAG_OBJ);
   assert(key && val);
@@ -76,14 +76,14 @@ void json_obj_set(struct json *self, const char *key, struct json *val) {
     json_vec_push(self->vec, key, val);
   }
 }
-const char *json_obj_key(struct json *self, index_t index) {
+const char *json_json_obj_key(struct json *self, index_t index) {
   struct json_pair *pair;
   assert(self->tag == JSON_TAG_OBJ);
   pair = json_vec_at(self->vec, index);
   assert(pair);
   return pair->key;
 }
-struct json *json_obj_val(struct json *self, index_t index) {
+struct json *json_json_obj_val(struct json *self, index_t index) {
   struct json_pair *pair;
   assert(self->tag == JSON_TAG_OBJ);
   pair = json_vec_at(self->vec, index);

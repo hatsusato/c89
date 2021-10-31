@@ -39,12 +39,12 @@ YYSCAN_TYPE scanner_json_obj(YYSCAN_EXTRA self) {
   return json_factory_obj(self->factory);
 }
 YYSCAN_TYPE scanner_json_push(YYSCAN_TYPE arr, YYSCAN_TYPE val) {
-  json_arr_push(arr, val);
+  json_json_arr_push(arr, val);
   return arr;
 }
 YYSCAN_TYPE scanner_json_set(YYSCAN_TYPE obj, const char *key,
                              YYSCAN_TYPE val) {
-  json_obj_set(obj, key, val);
+  json_json_obj_set(obj, key, val);
   return obj;
 }
 YYSCAN_TYPE scanner_json_binop(YYSCAN_EXTRA self, YYSCAN_TYPE lhs,
@@ -72,7 +72,7 @@ static struct json *scanner_visitor_flag_set(struct json_visitor *visitor,
   return json;
 }
 int scanner_contains_typedef(YYSCAN_TYPE decl) {
-  struct json *json = json_obj_get(decl, SYMBOL_DECLARATION_SPECIFIERS);
+  struct json *json = json_json_obj_get(decl, SYMBOL_DECLARATION_SPECIFIERS);
   struct json_visitor visitor = {scanner_visitor_flag_set, SYMBOL_TYPEDEF, NULL,
                                  NULL};
   int ret = 0;
@@ -83,12 +83,12 @@ int scanner_contains_typedef(YYSCAN_TYPE decl) {
 static struct json *scanner_visitor_set_insert(struct json_visitor *visitor,
                                                struct json *json) {
   if (json_is_str(json)) {
-    set_insert(visitor->extra, json_str_get(json));
+    set_insert(visitor->extra, json_json_str_get(json));
   }
   return json;
 }
 void scanner_collect_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
-  struct json *json = json_obj_get(decl, SYMBOL_INIT_DECLARATOR_LIST);
+  struct json *json = json_json_obj_get(decl, SYMBOL_INIT_DECLARATOR_LIST);
   struct json_visitor visitor = {scanner_visitor_set_insert, SYMBOL_IDENTIFIER,
                                  NULL, NULL};
   visitor.extra = self->typedefs;

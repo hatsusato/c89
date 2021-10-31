@@ -14,7 +14,7 @@ struct json_str *json_str_new(const char *str) {
 void json_str_delete(struct json_str *self) {
   util_free(self);
 }
-const char *json_str_get(struct json_str *self) {
+const char *json_json_str_get(struct json_str *self) {
   return self->str;
 }
 void json_str_set(struct json_str *self, const char *str) {

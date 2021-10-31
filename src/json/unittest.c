@@ -13,19 +13,19 @@ void json_arr_unittest(void) {
     str[i][0] = 'a' + (i * 100) % 26;
     str[i][1] = 0;
   }
-  assert(!json_arr_get(arr, 0));
+  assert(!json_json_arr_get(arr, 0));
   for (i = 0; i < count; i++) {
     struct json *val = json_factory_arr(factory);
-    json_arr_push(arr, val);
+    json_json_arr_push(arr, val);
   }
   for (i = 0; i < count; i++) {
-    assert(json_arr_get(arr, i));
-    json_arr_set(arr, i, json_factory_str(factory, str[i]));
+    assert(json_json_arr_get(arr, i));
+    json_json_arr_set(arr, i, json_factory_str(factory, str[i]));
   }
   for (i = 0; i < count; i++) {
-    struct json *elem = json_arr_get(arr, i);
+    struct json *elem = json_json_arr_get(arr, i);
     assert(elem && json_is_str(elem));
-    assert(util_streq(json_str_get(elem), str[i]));
+    assert(util_streq(json_json_str_get(elem), str[i]));
   }
   util_free(str);
   json_factory_delete(factory);
@@ -42,14 +42,14 @@ void json_obj_unittest(void) {
   }
   for (i = 0; i < count; i++) {
     struct json *val = json_factory_str(factory, key[i]);
-    json_obj_set(obj, key[i], val);
+    json_json_obj_set(obj, key[i], val);
   }
   for (i = 0; i < count; i++) {
-    struct json *val = json_obj_get(obj, key[i]);
+    struct json *val = json_json_obj_get(obj, key[i]);
     assert(val && json_is_str(val));
-    assert(util_streq(json_str_get(val), key[i]));
+    assert(util_streq(json_json_str_get(val), key[i]));
   }
-  assert(!json_obj_get(obj, "0"));
+  assert(!json_json_obj_get(obj, "0"));
   util_free(key);
   json_factory_delete(factory);
 }
