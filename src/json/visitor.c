@@ -1,29 +1,36 @@
 #include "visitor.h"
 
 #include "json.h"
-#include "pair.h"
+#include "map.h"
 #include "type.h"
 #include "util/util.h"
-#include "vec.h"
+
+static void json_visitor_visit_obj(struct json *json,
+                                   struct json_map_extra *extra) {
+  struct json_visitor *visitor = extra->extra;
+  if (util_streq(visitor->key, extra->key)) {
+    visitor->visitor(visitor, json);
+  }
+  json_visitor_visit(visitor, json);
+}
+static void json_visitor_visit_arr(struct json *json,
+                                   struct json_map_extra *extra) {
+  struct json_visitor *visitor = extra->extra;
+  json_visitor_visit(visitor, json);
+}
 
 void json_visitor_visit(struct json_visitor *self, struct json *json) {
-  index_t i, count = json_count(json);
+  struct json_map map;
   switch (json->tag) {
   case JSON_TAG_OBJ:
-    for (i = 0; i < count; i++) {
-      struct json_pair *pair = json_vec_at(json->vec, i);
-      if (util_streq(self->key, pair->key)) {
-        pair->val = self->callback(self, pair->val);
-      } else {
-        json_visitor_visit(self, pair->val);
-      }
-    }
+    map.map = json_visitor_visit_obj;
+    map.extra = self;
+    json_obj_foreach(json_as_obj(json), &map);
     break;
   case JSON_TAG_ARR:
-    for (i = 0; i < count; i++) {
-      struct json_pair *pair = json_vec_at(json->vec, i);
-      json_visitor_visit(self, pair->val);
-    }
+    map.map = json_visitor_visit_arr;
+    map.extra = self;
+    json_arr_foreach(json_as_arr(json), &map);
     break;
   default:
     break;

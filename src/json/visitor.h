@@ -5,13 +5,14 @@ struct json;
 struct json_factory;
 struct json_visitor;
 
-typedef struct json *(*json_callback_t)(struct json_visitor *, struct json *);
+typedef void (*json_visitor_t)(struct json_visitor *, struct json *);
 
 struct json_visitor {
-  json_callback_t callback;
+  json_visitor_t visitor;
   const char *key;
-  void *extra;
   struct json_factory *factory;
+  struct json *result;
+  void *extra;
 };
 
 void json_visitor_visit(struct json_visitor *, struct json *);
