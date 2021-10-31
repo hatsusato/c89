@@ -1,6 +1,7 @@
 #include "factory.h"
 
 #include "arr.h"
+#include "obj.h"
 #include "str.h"
 #include "type.h"
 #include "util/util.h"
@@ -18,6 +19,7 @@ static void json_factory_free(struct json_map *map) {
       json_vec_delete(json->vec);
       break;
     case JSON_TAG_OBJ:
+      json_obj_delete(json->obj);
       json_vec_delete(json->vec);
       break;
     default:
@@ -61,6 +63,7 @@ struct json *json_factory_arr(struct json_factory *self) {
 }
 struct json *json_factory_obj(struct json_factory *self) {
   struct json *json = json_factory_alloc(self, JSON_TAG_OBJ);
+  json->obj = json_obj_new();
   json->vec = json_vec_new();
   return json;
 }

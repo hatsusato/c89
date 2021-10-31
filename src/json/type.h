@@ -5,6 +5,7 @@
 
 struct json_arr;
 struct json_pair;
+struct json_obj;
 struct json_str;
 struct json_vec;
 
@@ -14,6 +15,7 @@ struct json {
   enum json_tag tag;
   struct json_str *str;
   struct json_arr *arr;
+  struct json_obj *obj;
   struct json_vec *vec;
 };
 
