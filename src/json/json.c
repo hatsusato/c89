@@ -4,7 +4,6 @@
 
 #include "printer.h"
 #include "printer/printer.h"
-#include "str.h"
 #include "type.h"
 #include "util/util.h"
 #include "vec.h"
@@ -42,6 +41,9 @@ struct json_str *json_as_str(struct json *self) {
 }
 struct json_arr *json_as_arr(struct json *self) {
   return self->tag == JSON_TAG_ARR ? self->arr : NULL;
+}
+struct json_obj *json_as_obj(struct json *self) {
+  return self->tag == JSON_TAG_OBJ ? self->obj : NULL;
 }
 struct json *json_json_obj_get(struct json *self, const char *key) {
   struct json_pair *pair;
