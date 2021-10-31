@@ -4,8 +4,8 @@
 #include "util/util.h"
 #include "vec.h"
 
-static void json_factory_free(struct json_pair *pair) {
-  struct json *json = pair->val;
+static void json_factory_free(struct json_map *map) {
+  struct json *json = map->val;
   if (json && json->vec) {
     json_vec_delete(json->vec);
   }
@@ -27,7 +27,7 @@ struct json_factory *json_factory_new(void) {
   return self;
 }
 void json_factory_delete(struct json_factory *self) {
-  json_vec_map(self->pool, json_factory_free);
+  json_vec_map(self->pool, json_factory_free, NULL);
   json_vec_delete(self->pool);
   util_free(self);
 }
