@@ -6,6 +6,8 @@
 struct printer;
 
 struct printer *printer_new(void *);
+struct printer *printer_new_stdout(void);
+struct printer *printer_new_stderr(void);
 void printer_delete(struct printer *);
 void printer_print(struct printer *, const char *, ...);
 void printer_newline(struct printer *);

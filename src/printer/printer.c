@@ -22,6 +22,12 @@ struct printer *printer_new(void *fp) {
   self->newline = false;
   return self;
 }
+struct printer *printer_new_stdout(void) {
+  return printer_new(stdout);
+}
+struct printer *printer_new_stderr(void) {
+  return printer_new(stderr);
+}
 void printer_delete(struct printer *self) {
   util_free(self);
 }

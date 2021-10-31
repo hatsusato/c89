@@ -1,7 +1,5 @@
 #include "json.h"
 
-#include <stdio.h>
-
 #include "printer.h"
 #include "printer/printer.h"
 #include "type.h"
@@ -44,7 +42,7 @@ struct json_obj *json_as_obj(struct json *self) {
   return self->tag == JSON_TAG_OBJ ? self->obj : NULL;
 }
 void json_print(struct json *self) {
-  struct printer *printer = printer_new(stdout);
+  struct printer *printer = printer_new_stdout();
   json_printer_print(self, printer);
   printer_newline(printer);
   printer_delete(printer);
