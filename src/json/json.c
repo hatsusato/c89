@@ -10,7 +10,7 @@
 #include "vec.h"
 
 struct json *json_null(void) {
-  static struct json null = {JSON_TAG_NULL, NULL, NULL};
+  static struct json null = {JSON_TAG_NULL, NULL, NULL, NULL};
   return &null;
 }
 bool_t json_is_null(struct json *self) {
@@ -39,6 +39,9 @@ index_t json_count(struct json *self) {
 }
 struct json_str *json_as_str(struct json *self) {
   return self->tag == JSON_TAG_STR ? self->str : NULL;
+}
+struct json_arr *json_as_arr(struct json *self) {
+  return self->tag == JSON_TAG_ARR ? self->arr : NULL;
 }
 struct json *json_json_arr_get(struct json *self, index_t key) {
   struct json_pair *pair;

@@ -4,6 +4,8 @@
 #include "util/type.h"
 
 struct json;
+struct json_arr;
+struct json_str;
 
 struct json *json_null(void);
 bool_t json_is_null(struct json *);
@@ -12,6 +14,7 @@ bool_t json_is_arr(struct json *);
 bool_t json_is_obj(struct json *);
 index_t json_count(struct json *);
 struct json_str *json_as_str(struct json *);
+struct json_arr *json_as_arr(struct json *);
 struct json *json_json_arr_get(struct json *, index_t);
 void json_json_arr_set(struct json *, index_t, struct json *);
 void json_json_arr_push(struct json *, struct json *);

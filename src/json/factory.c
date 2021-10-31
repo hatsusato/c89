@@ -1,5 +1,6 @@
 #include "factory.h"
 
+#include "arr.h"
 #include "str.h"
 #include "type.h"
 #include "util/util.h"
@@ -13,7 +14,9 @@ static void json_factory_free(struct json_map *map) {
       json_str_delete(json->str);
       break;
     case JSON_TAG_ARR:
-      /* FALLTHROUGH */
+      json_arr_delete(json->arr);
+      json_vec_delete(json->vec);
+      break;
     case JSON_TAG_OBJ:
       json_vec_delete(json->vec);
       break;
@@ -28,6 +31,7 @@ static struct json *json_factory_alloc(struct json_factory *self,
   struct json *json = util_malloc(sizeof(struct json));
   json->tag = tag;
   json->str = NULL;
+  json->arr = NULL;
   json->vec = NULL;
   json_vec_push(self->pool, NULL, json);
   return json;
@@ -51,6 +55,7 @@ struct json *json_factory_str(struct json_factory *self, const char *str) {
 }
 struct json *json_factory_arr(struct json_factory *self) {
   struct json *json = json_factory_alloc(self, JSON_TAG_ARR);
+  json->arr = json_arr_new();
   json->vec = json_vec_new();
   return json;
 }

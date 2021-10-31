@@ -3,6 +3,7 @@
 
 #include "util/type.h"
 
+struct json_arr;
 struct json_pair;
 struct json_str;
 struct json_vec;
@@ -12,6 +13,7 @@ enum json_tag { JSON_TAG_NULL, JSON_TAG_STR, JSON_TAG_ARR, JSON_TAG_OBJ };
 struct json {
   enum json_tag tag;
   struct json_str *str;
+  struct json_arr *arr;
   struct json_vec *vec;
 };
 
