@@ -1,13 +1,25 @@
 #include "factory.h"
 
+#include "str.h"
 #include "type.h"
 #include "util/util.h"
 #include "vec.h"
 
 static void json_factory_free(struct json_map *map) {
   struct json *json = map->val;
-  if (json && json->vec) {
-    json_vec_delete(json->vec);
+  if (json) {
+    switch (json->tag) {
+    case JSON_TAG_STR:
+      json_str_delete(json->str);
+      break;
+    case JSON_TAG_ARR:
+      /* FALLTHROUGH */
+    case JSON_TAG_OBJ:
+      json_vec_delete(json->vec);
+      break;
+    default:
+      break;
+    }
   }
   util_free(json);
 }
@@ -34,7 +46,7 @@ void json_factory_delete(struct json_factory *self) {
 struct json *json_factory_str(struct json_factory *self, const char *str) {
   struct json *json = json_factory_alloc(self, JSON_TAG_STR);
   assert(str);
-  json->str = str;
+  json->str = json_str_new(str);
   return json;
 }
 struct json *json_factory_arr(struct json_factory *self) {

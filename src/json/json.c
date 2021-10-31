@@ -4,6 +4,7 @@
 
 #include "printer.h"
 #include "printer/printer.h"
+#include "str.h"
 #include "type.h"
 #include "util/util.h"
 #include "vec.h"
@@ -38,7 +39,7 @@ index_t json_count(struct json *self) {
 }
 const char *json_json_str_get(struct json *self) {
   assert(self->tag == JSON_TAG_STR);
-  return self->str;
+  return json_str_get(self->str);
 }
 struct json *json_json_arr_get(struct json *self, index_t key) {
   struct json_pair *pair;
