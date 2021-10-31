@@ -2,7 +2,6 @@
 
 #include "json/factory.h"
 #include "json/json.h"
-#include "json/str.h"
 #include "json/visitor.h"
 #include "set/set.h"
 #include "symbol.h"
@@ -40,7 +39,9 @@ YYSCAN_TYPE scanner_json_obj(YYSCAN_EXTRA self) {
   return json_factory_obj(self->factory);
 }
 YYSCAN_TYPE scanner_json_push(YYSCAN_TYPE arr, YYSCAN_TYPE val) {
-  json_json_arr_push(arr, val);
+  struct json_arr *jarr = json_as_arr(arr);
+  assert(jarr);
+  json_arr_push(jarr, val);
   return arr;
 }
 YYSCAN_TYPE scanner_json_set(YYSCAN_TYPE obj, const char *key,

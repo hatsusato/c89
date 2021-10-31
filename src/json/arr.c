@@ -1,5 +1,6 @@
 #include "arr.h"
 
+#include "json.h"
 #include "util/util.h"
 #include "vec.h"
 
@@ -18,7 +19,7 @@ void json_arr_delete(struct json_arr *self) {
 }
 struct json *json_arr_at(struct json_arr *self, index_t index) {
   struct json_pair *pair = json_vec_at(self->vec, index);
-  return pair->val;
+  return pair ? pair->val : json_null();
 }
 void json_arr_push(struct json_arr *self, struct json *val) {
   json_vec_push(self->vec, NULL, val);

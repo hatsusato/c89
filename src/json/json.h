@@ -24,4 +24,7 @@ const char *json_json_obj_key(struct json *, index_t);
 struct json *json_json_obj_val(struct json *, index_t);
 void json_print(struct json *);
 
+#include "json/arr.h"
+#include "json/str.h"
+
 #endif /* INCLUDE_GUARD_5E299705_D2B2_4EFA_AD2B_575DB876526E */

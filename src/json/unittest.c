@@ -2,29 +2,24 @@
 
 #include "factory.h"
 #include "json.h"
-#include "str.h"
 #include "util/util.h"
 
 void json_arr_unittest(void) {
   struct json_factory *factory = json_factory_new();
-  struct json *arr = json_factory_arr(factory);
+  struct json *json = json_factory_arr(factory);
+  struct json_arr *arr = json_as_arr(json);
   index_t i, count = 100;
   char(*str)[2] = util_malloc_array(sizeof(char[2]), count);
   for (i = 0; i < count; i++) {
     str[i][0] = 'a' + (i * 100) % 26;
     str[i][1] = 0;
   }
-  assert(!json_json_arr_get(arr, 0));
   for (i = 0; i < count; i++) {
-    struct json *val = json_factory_arr(factory);
-    json_json_arr_push(arr, val);
+    struct json *val = json_factory_str(factory, str[i]);
+    json_arr_push(arr, val);
   }
   for (i = 0; i < count; i++) {
-    assert(json_json_arr_get(arr, i));
-    json_json_arr_set(arr, i, json_factory_str(factory, str[i]));
-  }
-  for (i = 0; i < count; i++) {
-    struct json *elem = json_json_arr_get(arr, i);
+    struct json *elem = json_arr_at(arr, i);
     struct json_str *jstr = json_as_str(elem);
     assert(jstr);
     assert(util_streq(json_str_get(jstr), str[i]));
