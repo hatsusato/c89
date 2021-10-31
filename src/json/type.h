@@ -16,7 +16,6 @@ struct json {
   struct json_str *str;
   struct json_arr *arr;
   struct json_obj *obj;
-  struct json_vec *vec;
 };
 
 struct json_factory {

@@ -14,11 +14,9 @@ static void json_factory_free(const char *key, struct json *val, void *extra) {
       break;
     case JSON_TAG_ARR:
       json_arr_delete(json_as_arr(val));
-      json_vec_delete(val->vec);
       break;
     case JSON_TAG_OBJ:
       json_obj_delete(json_as_obj(val));
-      json_vec_delete(val->vec);
       break;
     default:
       break;
@@ -34,7 +32,6 @@ static struct json *json_factory_alloc(struct json_factory *self,
   json->tag = tag;
   json->str = NULL;
   json->arr = NULL;
-  json->vec = NULL;
   json_vec_push(self->pool, NULL, json);
   return json;
 }
@@ -59,12 +56,10 @@ struct json *json_factory_str(struct json_factory *self, const char *str) {
 struct json *json_factory_arr(struct json_factory *self) {
   struct json *json = json_factory_alloc(self, JSON_TAG_ARR);
   json->arr = json_arr_new();
-  json->vec = json_vec_new();
   return json;
 }
 struct json *json_factory_obj(struct json_factory *self) {
   struct json *json = json_factory_alloc(self, JSON_TAG_OBJ);
   json->obj = json_obj_new();
-  json->vec = json_vec_new();
   return json;
 }
