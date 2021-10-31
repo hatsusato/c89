@@ -3,12 +3,13 @@ target_sources(json PRIVATE
   arr.c
   factory.c
   json.c
+  obj.c
   printer.c
   str.c
   type.c
   unittest.c
-  visitor.c
   vec.c
+  visitor.c
   )
 target_link_libraries(json PRIVATE
   options
