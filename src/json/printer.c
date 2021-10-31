@@ -7,13 +7,6 @@
 #include "util/util.h"
 #include "vec.h"
 
-struct json_arr {
-  struct json_vec *vec;
-};
-struct json_obj {
-  struct json_vec *vec;
-};
-
 static void json_printer_null(struct json *json, struct printer *printer) {
   UTIL_UNUSED(json);
   assert(json->tag == JSON_TAG_NULL);
@@ -39,7 +32,7 @@ static void json_printer_arr(struct json_arr *arr, struct printer *printer) {
     map.extra = printer;
     printer_print(printer, "[");
     printer_indent(printer, 2);
-    json_vec_map(arr->vec, &map);
+    json_arr_foreach(arr, &map);
     printer_newline(printer);
     printer_indent(printer, -2);
     printer_print(printer, "]");
@@ -63,7 +56,7 @@ static void json_printer_obj(struct json_obj *obj, struct printer *printer) {
     map.extra = printer;
     printer_print(printer, "{");
     printer_indent(printer, 2);
-    json_vec_map(obj->vec, &map);
+    json_obj_foreach(obj, &map);
     printer_newline(printer);
     printer_indent(printer, -2);
     printer_print(printer, "}");

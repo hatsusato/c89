@@ -16,6 +16,6 @@ struct json_pair *json_vec_at(struct json_vec *, index_t);
 void json_vec_sort(struct json_vec *);
 struct json_pair *json_vec_search(struct json_vec *, const char *);
 struct json_pair *json_vec_find(struct json_vec *, const char *);
-void json_vec_map(struct json_vec *, struct json_map *);
+void json_vec_foreach(struct json_vec *, struct json_map *);
 
 #endif /* INCLUDE_GUARD_28ECEBB7_B3F3_4129_987F_AA9D1F2203BF */

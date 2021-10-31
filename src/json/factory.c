@@ -45,7 +45,7 @@ struct json_factory *json_factory_new(void) {
 }
 void json_factory_delete(struct json_factory *self) {
   struct json_map map = {json_factory_free, NULL};
-  json_vec_map(self->pool, &map);
+  json_vec_foreach(self->pool, &map);
   json_vec_delete(self->pool);
   util_free(self);
 }

@@ -28,3 +28,6 @@ struct json *json_arr_at(struct json_arr *self, index_t index) {
 void json_arr_push(struct json_arr *self, struct json *val) {
   json_vec_push(self->vec, NULL, val);
 }
+void json_arr_foreach(struct json_arr *self, struct json_map *map) {
+  json_vec_foreach(self->vec, map);
+}

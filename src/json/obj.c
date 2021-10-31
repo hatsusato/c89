@@ -37,3 +37,6 @@ bool_t json_obj_has(struct json_obj *self, const char *key) {
   struct json_pair *pair = json_vec_find(self->vec, key);
   return pair ? true : false;
 }
+void json_obj_foreach(struct json_obj *self, struct json_map *map) {
+  json_vec_foreach(self->vec, map);
+}
