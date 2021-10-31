@@ -5,7 +5,6 @@
 #include "printer.h"
 #include "printer/printer.h"
 #include "type.h"
-#include "vec.h"
 
 struct json *json_null(void) {
   static struct json null = {JSON_TAG_NULL, NULL, NULL, NULL, NULL};
@@ -28,9 +27,9 @@ index_t json_count(struct json *self) {
   case JSON_TAG_NULL:
     return 0;
   case JSON_TAG_ARR:
-    /* FALLTHROUGH */
+    return json_arr_count(json_as_arr(self));
   case JSON_TAG_OBJ:
-    return json_vec_count(self->vec);
+    return json_obj_count(json_as_obj(self));
   default:
     return 1;
   }
