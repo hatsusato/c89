@@ -22,3 +22,6 @@ void json_printer_print(struct json_printer *self, struct json *json) {
     break;
   }
 }
+void json_printer_newline(struct json_printer *self) {
+  printer_newline(self->printer);
+}

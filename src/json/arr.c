@@ -39,7 +39,7 @@ static void json_arr_print_map(const char *key, struct json *val, void *extra) {
     printer_print(printer->printer, ",");
     printer->first = false;
   }
-  printer_newline(printer->printer);
+  json_printer_newline(printer);
   json_printer_print(printer, val);
   UTIL_UNUSED(key);
 }
@@ -53,7 +53,7 @@ void json_arr_print(struct json_arr *self, struct json_printer *printer) {
     printer_print(printer->printer, "[");
     printer_indent(printer->printer, 2);
     json_arr_foreach(self, &map);
-    printer_newline(printer->printer);
+    json_printer_newline(printer);
     printer_indent(printer->printer, -2);
     printer_print(printer->printer, "]");
   }

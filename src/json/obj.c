@@ -48,7 +48,7 @@ static void json_obj_print_map(const char *key, struct json *val, void *extra) {
     printer_print(printer->printer, ",");
     printer->first = false;
   }
-  printer_newline(printer->printer);
+  json_printer_newline(printer);
   printer_print(printer->printer, "\"%s\": ", key);
   json_printer_print(printer, val);
 }
@@ -62,7 +62,7 @@ void json_obj_print(struct json_obj *obj, struct json_printer *printer) {
     printer_print(printer->printer, "{");
     printer_indent(printer->printer, 2);
     json_obj_foreach(obj, &map);
-    printer_newline(printer->printer);
+    json_printer_newline(printer);
     printer_indent(printer->printer, -2);
     printer_print(printer->printer, "}");
   }
