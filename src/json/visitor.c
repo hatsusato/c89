@@ -5,6 +5,14 @@
 #include "tag.h"
 #include "util/util.h"
 
+struct json_visitor {
+  json_visitor_t visitor;
+  const char *key;
+  struct json *result;
+  struct json_obj *parent;
+  void *extra;
+};
+
 static void json_visitor_recurse(struct json_visitor *, struct json *);
 static void json_visitor_visit_obj(const char *key, struct json *val,
                                    void *extra) {
