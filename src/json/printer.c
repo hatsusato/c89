@@ -39,3 +39,9 @@ void json_printer_comma(struct json_printer *self) {
   }
   self->first = false;
 }
+void json_printer_symbol(struct json_printer *self, const char *symbol) {
+  printer_print(self->printer, "\"%s\"", symbol);
+}
+void json_printer_str(struct json_printer *self, const char *str) {
+  printer_print(self->printer, "%s", str);
+}

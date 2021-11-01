@@ -1,9 +1,8 @@
 #include "obj.h"
 
-#include "json.h"
 #include "map.h"
+#include "null.h"
 #include "printer.h"
-#include "printer/printer.h"
 #include "util/util.h"
 #include "vec.h"
 
@@ -46,7 +45,8 @@ static void json_obj_print_map(const char *key, struct json *val, void *extra) {
   struct json_printer *printer = extra;
   json_printer_comma(printer);
   json_printer_newline(printer);
-  printer_print(printer->printer, "\"%s\": ", key);
+  json_printer_symbol(printer, key);
+  json_printer_str(printer, ": ");
   json_printer_print(printer, val);
 }
 void json_obj_print(struct json_obj *obj, struct json_printer *printer) {

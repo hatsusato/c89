@@ -1,7 +1,6 @@
 #include "str.h"
 
 #include "printer.h"
-#include "printer/printer.h"
 #include "util/util.h"
 
 struct json_str {
@@ -23,5 +22,5 @@ void json_str_set(struct json_str *self, const char *str) {
   self->str = str;
 }
 void json_str_print(struct json_str *self, struct json_printer *printer) {
-  printer_print(printer->printer, "\"%s\"", json_str_get(self));
+  json_printer_symbol(printer, json_str_get(self));
 }
