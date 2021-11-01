@@ -8,11 +8,13 @@
 
 struct json_obj {
   struct json_vec *vec;
+  bool_t sorted;
 };
 
 struct json_obj *json_obj_new(void) {
   struct json_obj *self = util_malloc(sizeof(struct json_obj));
   self->vec = json_vec_new();
+  self->sorted = false;
   return self;
 }
 void json_obj_delete(struct json_obj *self) {
@@ -28,6 +30,9 @@ void json_obj_insert(struct json_obj *self, const char *key, struct json *val) {
     json_pair_set(pair, key, val);
   } else {
     json_vec_push(self->vec, key, val);
+    if (self->sorted) {
+      json_vec_sort(self->vec);
+    }
   }
 }
 struct json *json_obj_get(struct json_obj *self, const char *key) {
@@ -39,7 +44,11 @@ bool_t json_obj_has(struct json_obj *self, const char *key) {
   return pair ? true : false;
 }
 struct json_pair *json_obj_find(struct json_obj *self, const char *key) {
-  return json_vec_find(self->vec, key);
+  if (self->sorted) {
+    return json_vec_search(self->vec, key);
+  } else {
+    return json_vec_find(self->vec, key);
+  }
 }
 void json_obj_foreach(struct json_obj *self, struct json_map *map) {
   json_vec_foreach(self->vec, map);
