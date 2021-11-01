@@ -1,6 +1,7 @@
 #include "factory.h"
 
 #include "json.h"
+#include "map.h"
 #include "util/util.h"
 #include "vec.h"
 

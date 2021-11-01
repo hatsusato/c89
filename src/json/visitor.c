@@ -1,6 +1,7 @@
 #include "visitor.h"
 
 #include "json.h"
+#include "map.h"
 #include "tag.h"
 #include "util/util.h"
 

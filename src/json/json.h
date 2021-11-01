@@ -8,13 +8,6 @@ struct json_arr;
 struct json_obj;
 struct json_str;
 
-typedef void (*json_map_t)(const char *, struct json *, void *);
-
-struct json_map {
-  json_map_t map;
-  void *extra;
-};
-
 struct json *json_new_str(const char *);
 struct json *json_new_arr(void);
 struct json *json_new_obj(void);
