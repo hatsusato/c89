@@ -85,8 +85,9 @@ void json_vec_sort(struct json_vec *self) {
 }
 struct json_pair *json_vec_search(struct json_vec *self, const char *key) {
   if (self->base) {
-    struct json_pair pair = {NULL, NULL};
+    struct json_pair pair;
     pair.key = key;
+    pair.val = json_null();
     return bsearch(&pair, self->base, self->count, align, json_vec_cmp);
   }
   return NULL;

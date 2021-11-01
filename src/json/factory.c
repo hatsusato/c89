@@ -33,6 +33,17 @@ void json_factory_delete(struct json_factory *self) {
   json_vec_delete(self->pool);
   util_free(self);
 }
+const char *json_factory_symbol(struct json_factory *self, const char *symbol) {
+  struct json_pair *pair = json_vec_search(self->symbol, symbol);
+  if (pair) {
+    return json_pair_key(pair);
+  } else {
+    const char *dup = util_strdup(symbol);
+    json_vec_push(self->symbol, dup, json_null());
+    json_vec_sort(self->symbol);
+    return dup;
+  }
+}
 struct json *json_factory_str(struct json_factory *self, const char *str) {
   struct json *json = json_new_str(str);
   assert(str);
