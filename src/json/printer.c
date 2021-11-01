@@ -4,6 +4,13 @@
 #include "printer/printer.h"
 #include "tag.h"
 
+void json_printer_print(struct json *json) {
+  struct json_printer self = {NULL, false};
+  self.printer = printer_new_stdout();
+  json_printer_recurse(&self, json);
+  json_printer_newline(&self);
+  printer_delete(self.printer);
+}
 void json_printer_recurse(struct json_printer *self, struct json *json) {
   switch (json_tag(json)) {
   case JSON_TAG_NULL:

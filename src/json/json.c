@@ -1,7 +1,6 @@
 #include "json.h"
 
 #include "printer.h"
-#include "printer/printer.h"
 #include "tag.h"
 #include "type.h"
 #include "util/util.h"
@@ -82,9 +81,5 @@ struct json_obj *json_as_obj(struct json *self) {
   return json_is_obj(self) ? self->obj : NULL;
 }
 void json_print(struct json *self) {
-  struct json_printer printer;
-  printer.printer = printer_new_stdout();
-  json_printer_recurse(&printer, self);
-  json_printer_newline(&printer);
-  printer_delete(printer.printer);
+  json_printer_print(self);
 }
