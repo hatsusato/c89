@@ -5,24 +5,30 @@
 #include "vec.h"
 
 struct json_factory {
-  struct json_vec *pool;
+  struct json_vec *pool, *symbol;
 };
 
 static void json_factory_free(const char *key, struct json *val, void *extra) {
-  if (val) {
+  if (extra) {
+    assert(val);
     json_delete(val);
+  } else {
+    assert(key);
+    util_free((void *)key);
   }
-  UTIL_UNUSED(key);
-  UTIL_UNUSED(extra);
 }
 
 struct json_factory *json_factory_new(void) {
   struct json_factory *self = util_malloc(sizeof(struct json_factory));
   self->pool = json_vec_new();
+  self->symbol = json_vec_new();
   return self;
 }
 void json_factory_delete(struct json_factory *self) {
   struct json_map map = {json_factory_free, NULL};
+  json_vec_foreach(self->symbol, &map);
+  json_vec_delete(self->symbol);
+  map.extra = &map;
   json_vec_foreach(self->pool, &map);
   json_vec_delete(self->pool);
   util_free(self);
