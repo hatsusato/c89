@@ -12,7 +12,7 @@ struct json_printer_extra {
 };
 struct json_printer {
   struct printer *printer;
-  void *extra;
+  bool_t first;
 };
 
 void json_printer_print(struct json_printer *, struct json *);

@@ -34,31 +34,27 @@ void json_arr_foreach(struct json_arr *self, struct json_map *map) {
   json_vec_foreach(self->vec, map);
 }
 static void json_arr_print_map(const char *key, struct json *val, void *extra) {
-  struct json_printer_extra *tmp = extra;
-  struct json_printer printer;
-  bool_t *first = &tmp->first;
-  printer.printer = tmp->printer;
-  if (!*first) {
-    printer_print(printer.printer, ",");
-    *first = false;
+  struct json_printer *printer = extra;
+  if (!printer->first) {
+    printer_print(printer->printer, ",");
+    printer->first = false;
   }
-  printer_newline(printer.printer);
-  json_printer_print(&printer, val);
+  printer_newline(printer->printer);
+  json_printer_print(printer, val);
   UTIL_UNUSED(key);
 }
-void json_arr_print(struct json_arr *self, struct printer *printer) {
+void json_arr_print(struct json_arr *self, struct json_printer *printer) {
   if (0 == json_arr_count(self)) {
-    printer_print(printer, "[]");
+    printer_print(printer->printer, "[]");
   } else {
-    struct json_printer_extra extra = {NULL, true};
     struct json_map map = {json_arr_print_map, NULL};
-    extra.printer = printer;
-    map.extra = &extra;
-    printer_print(printer, "[");
-    printer_indent(printer, 2);
+    map.extra = printer;
+    printer->first = true;
+    printer_print(printer->printer, "[");
+    printer_indent(printer->printer, 2);
     json_arr_foreach(self, &map);
-    printer_newline(printer);
-    printer_indent(printer, -2);
-    printer_print(printer, "]");
+    printer_newline(printer->printer);
+    printer_indent(printer->printer, -2);
+    printer_print(printer->printer, "]");
   }
 }
