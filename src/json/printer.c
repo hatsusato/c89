@@ -6,7 +6,7 @@
 void json_printer_print(struct json_printer *self, struct json *json) {
   switch (json_tag(json)) {
   case JSON_TAG_NULL:
-    json_null_print(self->printer);
+    json_null_print(self);
     break;
   case JSON_TAG_STR:
     json_str_print(json_as_str(json), self->printer);
