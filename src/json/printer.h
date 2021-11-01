@@ -5,12 +5,6 @@
 
 struct json;
 struct json_printer;
-struct printer;
-
-struct json_printer_extra {
-  struct printer *printer;
-  bool_t first;
-};
 
 void json_printer_print(struct json *);
 void json_printer_recurse(struct json_printer *, struct json *);
