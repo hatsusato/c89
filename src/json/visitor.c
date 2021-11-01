@@ -40,3 +40,11 @@ void json_visitor_recurse(struct json_visitor *self, struct json *json) {
     break;
   }
 }
+void json_visitor_visit(json_visitor_t visitor, const char *key,
+                        struct json *json, void *extra) {
+  struct json_visitor self = {NULL, NULL, NULL, NULL, NULL};
+  self.visitor = visitor;
+  self.key = key;
+  self.extra = extra;
+  json_visitor_recurse(&self, json);
+}
