@@ -5,6 +5,12 @@
 #include "type.h"
 #include "util/util.h"
 
+struct json *json_new_int(int num) {
+  struct json *self = util_malloc(sizeof(struct json));
+  self->tag = JSON_TAG_INT;
+  self->json = json_int_new(num);
+  return self;
+}
 struct json *json_new_str(const char *str) {
   struct json *self = util_malloc(sizeof(struct json));
   self->tag = JSON_TAG_STR;
@@ -27,6 +33,9 @@ void json_delete(struct json *self) {
   switch (json_tag(self)) {
   case JSON_TAG_NULL:
     return;
+  case JSON_TAG_INT:
+    json_int_delete(self->json);
+    break;
   case JSON_TAG_STR:
     json_str_delete(self->json);
     break;
