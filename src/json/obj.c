@@ -1,6 +1,8 @@
 #include "obj.h"
 
 #include "json.h"
+#include "printer.h"
+#include "printer/printer.h"
 #include "util/util.h"
 #include "vec.h"
 
@@ -38,4 +40,32 @@ bool_t json_obj_has(struct json_obj *self, const char *key) {
 }
 void json_obj_foreach(struct json_obj *self, struct json_map *map) {
   json_vec_foreach(self->vec, map);
+}
+static void json_obj_print_map(const char *key, struct json *val, void *extra) {
+  struct json_printer_extra *tmp = extra;
+  struct printer *printer = tmp->printer;
+  bool_t *first = &tmp->first;
+  if (!*first) {
+    printer_print(printer, ",");
+    *first = false;
+  }
+  printer_newline(printer);
+  printer_print(printer, "\"%s\": ", key);
+  json_printer_print(val, printer);
+}
+void json_obj_print(struct json_obj *obj, struct printer *printer) {
+  if (0 == json_obj_count(obj)) {
+    printer_print(printer, "{}");
+  } else {
+    struct json_printer_extra extra = {NULL, true};
+    struct json_map map = {json_obj_print_map, NULL};
+    extra.printer = printer;
+    map.extra = &extra;
+    printer_print(printer, "{");
+    printer_indent(printer, 2);
+    json_obj_foreach(obj, &map);
+    printer_newline(printer);
+    printer_indent(printer, -2);
+    printer_print(printer, "}");
+  }
 }
