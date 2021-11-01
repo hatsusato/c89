@@ -1,13 +1,12 @@
 #include "printer.h"
 
 #include "json.h"
-#include "printer/printer.h"
 #include "tag.h"
 
 void json_printer_print(struct json *json, struct printer *printer) {
   switch (json_tag(json)) {
   case JSON_TAG_NULL:
-    printer_print(printer, "null");
+    json_null_print(printer);
     break;
   case JSON_TAG_STR:
     json_str_print(json_as_str(json), printer);
