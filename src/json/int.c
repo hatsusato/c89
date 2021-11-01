@@ -14,3 +14,9 @@ struct json_int *json_int_new(int num) {
 void json_int_delete(struct json_int *self) {
   util_free(self);
 }
+int json_int_get(struct json_int *self) {
+  return self->num;
+}
+void json_int_set(struct json_int *self, int num) {
+  self->num = num;
+}
