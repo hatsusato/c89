@@ -38,16 +38,18 @@ YYSCAN_TYPE scanner_json_obj(YYSCAN_EXTRA self) {
   return json_factory_obj(self->factory);
 }
 YYSCAN_TYPE scanner_json_push(YYSCAN_TYPE json, YYSCAN_TYPE val) {
-  struct json_arr *arr = json_as_arr(json);
-  assert(arr);
-  json_arr_push(arr, val);
+  if (json_is_arr(json)) {
+    struct json_arr *arr = json_as_arr(json);
+    json_arr_push(arr, val);
+  }
   return json;
 }
 YYSCAN_TYPE scanner_json_set(YYSCAN_TYPE json, const char *key,
                              YYSCAN_TYPE val) {
-  struct json_obj *obj = json_as_obj(json);
-  assert(obj);
-  json_obj_insert(obj, key, val);
+  if (json_is_obj(json)) {
+    struct json_obj *obj = json_as_obj(json);
+    json_obj_insert(obj, key, val);
+  }
   return json;
 }
 YYSCAN_TYPE scanner_json_binop(YYSCAN_EXTRA self, YYSCAN_TYPE lhs,
