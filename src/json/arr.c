@@ -36,7 +36,7 @@ static void json_arr_print_map(const char *key, struct json *val, void *extra) {
   struct json_printer *printer = extra;
   json_printer_comma(printer);
   json_printer_newline(printer);
-  json_printer_print(printer, val);
+  json_printer_recurse(printer, val);
   UTIL_UNUSED(key);
 }
 void json_arr_print(struct json_arr *self, struct json_printer *printer) {

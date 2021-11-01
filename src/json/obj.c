@@ -47,7 +47,7 @@ static void json_obj_print_map(const char *key, struct json *val, void *extra) {
   json_printer_newline(printer);
   json_printer_symbol(printer, key);
   json_printer_str(printer, ": ");
-  json_printer_print(printer, val);
+  json_printer_recurse(printer, val);
 }
 void json_obj_print(struct json_obj *obj, struct json_printer *printer) {
   json_printer_open(printer, "{");
