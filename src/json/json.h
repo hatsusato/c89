@@ -16,6 +16,10 @@ struct json_map {
 };
 
 struct json *json_null(void);
+struct json *json_new_str(const char *);
+struct json *json_new_arr(void);
+struct json *json_new_obj(void);
+void json_delete(struct json *);
 bool_t json_is_null(struct json *);
 bool_t json_is_str(struct json *);
 bool_t json_is_arr(struct json *);

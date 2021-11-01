@@ -4,10 +4,53 @@
 #include "printer/printer.h"
 #include "tag.h"
 #include "type.h"
+#include "util/util.h"
 
 struct json *json_null(void) {
   static struct json null = {JSON_TAG_NULL, NULL, NULL, NULL};
   return &null;
+}
+struct json *json_new_str(const char *str) {
+  struct json *self = util_malloc(sizeof(struct json));
+  self->tag = JSON_TAG_STR;
+  self->str = json_str_new(str);
+  self->arr = NULL;
+  self->obj = NULL;
+  return self;
+}
+struct json *json_new_arr(void) {
+  struct json *self = util_malloc(sizeof(struct json));
+  self->tag = JSON_TAG_ARR;
+  self->str = NULL;
+  self->arr = json_arr_new();
+  self->obj = NULL;
+  return self;
+}
+struct json *json_new_obj(void) {
+  struct json *self = util_malloc(sizeof(struct json));
+  self->tag = JSON_TAG_OBJ;
+  self->str = NULL;
+  self->arr = NULL;
+  self->obj = json_obj_new();
+  return self;
+}
+void json_delete(struct json *self) {
+  switch (json_tag(self)) {
+  case JSON_TAG_NULL:
+    return;
+  case JSON_TAG_STR:
+    json_str_delete(self->str);
+    break;
+  case JSON_TAG_ARR:
+    json_arr_delete(self->arr);
+    break;
+  case JSON_TAG_OBJ:
+    json_obj_delete(self->obj);
+    break;
+  default:
+    break;
+  }
+  util_free(self);
 }
 bool_t json_is_null(struct json *self) {
   return json_tag(self) == JSON_TAG_NULL;
