@@ -5,6 +5,7 @@
 #include "tag.h"
 #include "util/util.h"
 
+static void json_visitor_recurse(struct json_visitor *, struct json *);
 static void json_visitor_visit_obj(const char *key, struct json *val,
                                    void *extra) {
   struct json_visitor *visitor = extra;
@@ -22,8 +23,7 @@ static void json_visitor_visit_arr(const char *key, struct json *val,
   json_visitor_recurse(extra, val);
   UTIL_UNUSED(key);
 }
-
-void json_visitor_recurse(struct json_visitor *self, struct json *json) {
+static void json_visitor_recurse(struct json_visitor *self, struct json *json) {
   struct json_map map;
   map.extra = self;
   switch (json_tag(json)) {
