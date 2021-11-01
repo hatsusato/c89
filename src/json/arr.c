@@ -44,17 +44,13 @@ static void json_arr_print_map(const char *key, struct json *val, void *extra) {
   UTIL_UNUSED(key);
 }
 void json_arr_print(struct json_arr *self, struct json_printer *printer) {
-  if (0 == json_arr_count(self)) {
-    printer_print(printer->printer, "[]");
-  } else {
+  json_printer_open(printer, "[");
+  if (0 < json_arr_count(self)) {
     struct json_map map = {json_arr_print_map, NULL};
     map.extra = printer;
     printer->first = true;
-    printer_print(printer->printer, "[");
-    printer_indent(printer->printer, 2);
     json_arr_foreach(self, &map);
     json_printer_newline(printer);
-    printer_indent(printer->printer, -2);
-    printer_print(printer->printer, "]");
   }
+  json_printer_close(printer, "]");
 }

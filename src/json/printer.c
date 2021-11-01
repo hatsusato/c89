@@ -25,3 +25,11 @@ void json_printer_print(struct json_printer *self, struct json *json) {
 void json_printer_newline(struct json_printer *self) {
   printer_newline(self->printer);
 }
+void json_printer_open(struct json_printer *self, const char *punct) {
+  printer_print(self->printer, "%s", punct);
+  printer_indent(self->printer, 2);
+}
+void json_printer_close(struct json_printer *self, const char *punct) {
+  printer_indent(self->printer, -2);
+  printer_print(self->printer, "%s", punct);
+}

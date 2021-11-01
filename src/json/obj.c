@@ -53,17 +53,13 @@ static void json_obj_print_map(const char *key, struct json *val, void *extra) {
   json_printer_print(printer, val);
 }
 void json_obj_print(struct json_obj *obj, struct json_printer *printer) {
-  if (0 == json_obj_count(obj)) {
-    printer_print(printer->printer, "{}");
-  } else {
+  json_printer_open(printer, "{");
+  if (0 < json_obj_count(obj)) {
     struct json_map map = {json_obj_print_map, NULL};
     map.extra = printer;
     printer->first = true;
-    printer_print(printer->printer, "{");
-    printer_indent(printer->printer, 2);
     json_obj_foreach(obj, &map);
     json_printer_newline(printer);
-    printer_indent(printer->printer, -2);
-    printer_print(printer->printer, "}");
   }
+  json_printer_close(printer, "}");
 }
