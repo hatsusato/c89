@@ -33,3 +33,9 @@ void json_printer_close(struct json_printer *self, const char *punct) {
   printer_indent(self->printer, -2);
   printer_print(self->printer, "%s", punct);
 }
+void json_printer_comma(struct json_printer *self) {
+  if (!self->first) {
+    printer_print(self->printer, ",");
+  }
+  self->first = false;
+}

@@ -19,5 +19,6 @@ void json_printer_print(struct json_printer *, struct json *);
 void json_printer_newline(struct json_printer *);
 void json_printer_open(struct json_printer *, const char *);
 void json_printer_close(struct json_printer *, const char *);
+void json_printer_comma(struct json_printer *);
 
 #endif /* INCLUDE_GUARD_D0DB261A_1139_4CC7_A9C5_00F0E9573E21 */

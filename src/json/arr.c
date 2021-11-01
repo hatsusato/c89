@@ -35,10 +35,7 @@ void json_arr_foreach(struct json_arr *self, struct json_map *map) {
 }
 static void json_arr_print_map(const char *key, struct json *val, void *extra) {
   struct json_printer *printer = extra;
-  if (!printer->first) {
-    printer_print(printer->printer, ",");
-    printer->first = false;
-  }
+  json_printer_comma(printer);
   json_printer_newline(printer);
   json_printer_print(printer, val);
   UTIL_UNUSED(key);
