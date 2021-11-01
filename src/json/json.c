@@ -8,28 +8,19 @@
 struct json *json_new_str(const char *str) {
   struct json *self = util_malloc(sizeof(struct json));
   self->tag = JSON_TAG_STR;
-  self->str = json_str_new(str);
-  self->arr = NULL;
-  self->obj = NULL;
-  self->json = self->str;
+  self->json = json_str_new(str);
   return self;
 }
 struct json *json_new_arr(void) {
   struct json *self = util_malloc(sizeof(struct json));
   self->tag = JSON_TAG_ARR;
-  self->str = NULL;
-  self->arr = json_arr_new();
-  self->obj = NULL;
-  self->json = self->arr;
+  self->json = json_arr_new();
   return self;
 }
 struct json *json_new_obj(void) {
   struct json *self = util_malloc(sizeof(struct json));
   self->tag = JSON_TAG_OBJ;
-  self->str = NULL;
-  self->arr = NULL;
-  self->obj = json_obj_new();
-  self->json = self->obj;
+  self->json = json_obj_new();
   return self;
 }
 void json_delete(struct json *self) {

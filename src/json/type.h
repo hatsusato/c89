@@ -3,15 +3,8 @@
 
 #include "tag.h"
 
-struct json_arr;
-struct json_obj;
-struct json_str;
-
 struct json {
   enum json_tag tag;
-  struct json_str *str;
-  struct json_arr *arr;
-  struct json_obj *obj;
   void *json;
 };
 

@@ -5,7 +5,7 @@
 #include "type.h"
 
 struct json *json_null(void) {
-  static struct json null = {JSON_TAG_NULL, NULL, NULL, NULL, NULL};
+  static struct json null = {JSON_TAG_NULL, NULL};
   return &null;
 }
 void json_null_print(struct json_printer *printer) {
