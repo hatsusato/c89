@@ -8,14 +8,15 @@ struct json_factory {
   struct json_vec *pool, *symbol;
 };
 
-static void json_factory_free(const char *key, struct json *val, void *extra) {
-  if (extra) {
-    assert(val);
-    json_delete(val);
-  } else {
-    assert(key);
-    util_free((void *)key);
-  }
+static void json_factory_free_pool(const char *key, struct json *val,
+                                   void *extra) {
+  assert(!key && val && !extra);
+  json_delete(val);
+}
+static void json_factory_free_symbol(const char *key, struct json *val,
+                                     void *extra) {
+  assert(key && json_is_null(val) && !extra);
+  util_free((void *)key);
 }
 
 struct json_factory *json_factory_new(void) {
@@ -25,11 +26,11 @@ struct json_factory *json_factory_new(void) {
   return self;
 }
 void json_factory_delete(struct json_factory *self) {
-  struct json_map map = {json_factory_free, NULL};
-  json_vec_foreach(self->symbol, &map);
+  struct json_map map_pool = {json_factory_free_pool, NULL};
+  struct json_map map_symbol = {json_factory_free_symbol, NULL};
+  json_vec_foreach(self->symbol, &map_symbol);
   json_vec_delete(self->symbol);
-  map.extra = &map;
-  json_vec_foreach(self->pool, &map);
+  json_vec_foreach(self->pool, &map_pool);
   json_vec_delete(self->pool);
   util_free(self);
 }
