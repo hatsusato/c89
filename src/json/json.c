@@ -2,6 +2,7 @@
 
 #include "printer.h"
 #include "printer/printer.h"
+#include "tag.h"
 #include "type.h"
 
 struct json *json_null(void) {
@@ -9,19 +10,19 @@ struct json *json_null(void) {
   return &null;
 }
 bool_t json_is_null(struct json *self) {
-  return self->tag == JSON_TAG_NULL;
+  return json_tag(self) == JSON_TAG_NULL;
 }
 bool_t json_is_str(struct json *self) {
-  return self->tag == JSON_TAG_STR;
+  return json_tag(self) == JSON_TAG_STR;
 }
 bool_t json_is_arr(struct json *self) {
-  return self->tag == JSON_TAG_ARR;
+  return json_tag(self) == JSON_TAG_ARR;
 }
 bool_t json_is_obj(struct json *self) {
-  return self->tag == JSON_TAG_OBJ;
+  return json_tag(self) == JSON_TAG_OBJ;
 }
 index_t json_count(struct json *self) {
-  switch (self->tag) {
+  switch (json_tag(self)) {
   case JSON_TAG_NULL:
     return 0;
   case JSON_TAG_ARR:
@@ -33,13 +34,13 @@ index_t json_count(struct json *self) {
   }
 }
 struct json_str *json_as_str(struct json *self) {
-  return self->tag == JSON_TAG_STR ? self->str : NULL;
+  return json_is_str(self) ? self->str : NULL;
 }
 struct json_arr *json_as_arr(struct json *self) {
-  return self->tag == JSON_TAG_ARR ? self->arr : NULL;
+  return json_is_arr(self) ? self->arr : NULL;
 }
 struct json_obj *json_as_obj(struct json *self) {
-  return self->tag == JSON_TAG_OBJ ? self->obj : NULL;
+  return json_is_obj(self) ? self->obj : NULL;
 }
 void json_print(struct json *self) {
   struct printer *printer = printer_new_stdout();

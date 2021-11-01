@@ -1,6 +1,7 @@
 #include "factory.h"
 
 #include "json.h"
+#include "tag.h"
 #include "type.h"
 #include "util/util.h"
 #include "vec.h"
@@ -11,7 +12,7 @@ struct json_factory {
 
 static void json_factory_free(const char *key, struct json *val, void *extra) {
   if (val) {
-    switch (val->tag) {
+    switch (json_tag(val)) {
     case JSON_TAG_STR:
       json_str_delete(json_as_str(val));
       break;

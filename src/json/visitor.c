@@ -1,7 +1,7 @@
 #include "visitor.h"
 
 #include "json.h"
-#include "type.h"
+#include "tag.h"
 #include "util/util.h"
 
 struct json_visitor_extra {
@@ -32,7 +32,7 @@ static void json_visitor_visit_arr(const char *key, struct json *val,
 void json_visitor_visit(struct json_visitor *self, struct json *json) {
   struct json_visitor_extra extra;
   struct json_map map;
-  switch (json->tag) {
+  switch (json_tag(json)) {
   case JSON_TAG_OBJ:
     extra.visitor = self;
     extra.parent = json_as_obj(json);

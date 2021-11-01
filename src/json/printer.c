@@ -2,7 +2,7 @@
 
 #include "json.h"
 #include "printer/printer.h"
-#include "type.h"
+#include "tag.h"
 #include "util/util.h"
 
 struct json_printer_extra {
@@ -73,7 +73,7 @@ static void json_printer_obj(struct json_obj *obj, struct printer *printer) {
 }
 
 void json_printer_print(struct json *json, struct printer *printer) {
-  switch (json->tag) {
+  switch (json_tag(json)) {
   case JSON_TAG_NULL:
     printer_print(printer, "null");
     break;
