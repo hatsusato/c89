@@ -53,6 +53,9 @@ void json_delete(struct json *self) {
 bool_t json_is_null(struct json *self) {
   return json_tag(self) == JSON_TAG_NULL;
 }
+bool_t json_is_int(struct json *self) {
+  return json_tag(self) == JSON_TAG_INT;
+}
 bool_t json_is_str(struct json *self) {
   return json_tag(self) == JSON_TAG_STR;
 }
@@ -73,6 +76,10 @@ index_t json_count(struct json *self) {
   default:
     return 1;
   }
+}
+struct json_int *json_as_int(struct json *self) {
+  assert(json_is_int(self));
+  return self->json;
 }
 struct json_str *json_as_str(struct json *self) {
   assert(json_is_str(self));
