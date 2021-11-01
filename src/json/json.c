@@ -82,8 +82,9 @@ struct json_obj *json_as_obj(struct json *self) {
   return json_is_obj(self) ? self->obj : NULL;
 }
 void json_print(struct json *self) {
-  struct printer *printer = printer_new_stdout();
-  json_printer_print(self, printer);
-  printer_newline(printer);
-  printer_delete(printer);
+  struct json_printer printer;
+  printer.printer = printer_new_stdout();
+  json_printer_print(&printer, self);
+  printer_newline(printer.printer);
+  printer_delete(printer.printer);
 }

@@ -44,15 +44,16 @@ void json_obj_foreach(struct json_obj *self, struct json_map *map) {
 }
 static void json_obj_print_map(const char *key, struct json *val, void *extra) {
   struct json_printer_extra *tmp = extra;
-  struct printer *printer = tmp->printer;
+  struct json_printer printer;
   bool_t *first = &tmp->first;
+  printer.printer = tmp->printer;
   if (!*first) {
-    printer_print(printer, ",");
+    printer_print(printer.printer, ",");
     *first = false;
   }
-  printer_newline(printer);
-  printer_print(printer, "\"%s\": ", key);
-  json_printer_print(val, printer);
+  printer_newline(printer.printer);
+  printer_print(printer.printer, "\"%s\": ", key);
+  json_printer_print(&printer, val);
 }
 void json_obj_print(struct json_obj *obj, struct printer *printer) {
   if (0 == json_obj_count(obj)) {

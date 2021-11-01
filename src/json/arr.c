@@ -35,14 +35,15 @@ void json_arr_foreach(struct json_arr *self, struct json_map *map) {
 }
 static void json_arr_print_map(const char *key, struct json *val, void *extra) {
   struct json_printer_extra *tmp = extra;
-  struct printer *printer = tmp->printer;
+  struct json_printer printer;
   bool_t *first = &tmp->first;
+  printer.printer = tmp->printer;
   if (!*first) {
-    printer_print(printer, ",");
+    printer_print(printer.printer, ",");
     *first = false;
   }
-  printer_newline(printer);
-  json_printer_print(val, printer);
+  printer_newline(printer.printer);
+  json_printer_print(&printer, val);
   UTIL_UNUSED(key);
 }
 void json_arr_print(struct json_arr *self, struct printer *printer) {
