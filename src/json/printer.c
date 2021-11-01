@@ -4,6 +4,11 @@
 #include "printer/printer.h"
 #include "tag.h"
 
+struct json_printer {
+  struct printer *printer;
+  bool_t first;
+};
+
 void json_printer_print(struct json *json) {
   struct json_printer self = {NULL, false};
   self.printer = printer_new_stdout();
@@ -28,6 +33,9 @@ void json_printer_recurse(struct json_printer *self, struct json *json) {
   default:
     break;
   }
+}
+void json_printer_init(struct json_printer *self) {
+  self->first = true;
 }
 void json_printer_newline(struct json_printer *self) {
   printer_newline(self->printer);

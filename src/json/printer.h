@@ -4,19 +4,17 @@
 #include "util/type.h"
 
 struct json;
+struct json_printer;
 struct printer;
 
 struct json_printer_extra {
   struct printer *printer;
   bool_t first;
 };
-struct json_printer {
-  struct printer *printer;
-  bool_t first;
-};
 
 void json_printer_print(struct json *);
 void json_printer_recurse(struct json_printer *, struct json *);
+void json_printer_init(struct json_printer *);
 void json_printer_newline(struct json_printer *);
 void json_printer_open(struct json_printer *, const char *);
 void json_printer_close(struct json_printer *, const char *);

@@ -54,7 +54,7 @@ void json_obj_print(struct json_obj *obj, struct json_printer *printer) {
   if (0 < json_obj_count(obj)) {
     struct json_map map = {json_obj_print_map, NULL};
     map.extra = printer;
-    printer->first = true;
+    json_printer_init(printer);
     json_obj_foreach(obj, &map);
     json_printer_newline(printer);
   }

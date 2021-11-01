@@ -44,7 +44,7 @@ void json_arr_print(struct json_arr *self, struct json_printer *printer) {
   if (0 < json_arr_count(self)) {
     struct json_map map = {json_arr_print_map, NULL};
     map.extra = printer;
-    printer->first = true;
+    json_printer_init(printer);
     json_arr_foreach(self, &map);
     json_printer_newline(printer);
   }
