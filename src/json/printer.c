@@ -10,9 +10,6 @@ struct json_printer_extra {
   bool_t first;
 };
 
-static void json_printer_str(struct json_str *str, struct printer *printer) {
-  printer_print(printer, "\"%s\"", json_str_get(str));
-}
 static void json_printer_arr_map(const char *key, struct json *val,
                                  void *extra) {
   struct json_printer_extra *tmp = extra;
@@ -78,7 +75,7 @@ void json_printer_print(struct json *json, struct printer *printer) {
     printer_print(printer, "null");
     break;
   case JSON_TAG_STR:
-    json_printer_str(json_as_str(json), printer);
+    json_str_print(json_as_str(json), printer);
     break;
   case JSON_TAG_ARR:
     json_printer_arr(json_as_arr(json), printer);
