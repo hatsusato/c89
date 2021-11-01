@@ -10,7 +10,7 @@ static void json_visitor_visit_obj(const char *key, struct json *val,
   struct json_visitor *visitor = extra;
   if (util_streq(visitor->key, key)) {
     visitor->result = NULL;
-    visitor->visitor(visitor, val);
+    visitor->visitor(val, visitor->extra);
     if (visitor->result) {
       json_obj_insert(visitor->parent, key, visitor->result);
     }

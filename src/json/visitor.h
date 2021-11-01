@@ -5,7 +5,7 @@ struct json;
 struct json_obj;
 struct json_visitor;
 
-typedef void (*json_visitor_t)(struct json_visitor *, struct json *);
+typedef void (*json_visitor_t)(struct json *, void *);
 
 struct json_visitor {
   json_visitor_t visitor;

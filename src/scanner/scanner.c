@@ -69,9 +69,8 @@ int scanner_is_typedef(YYSCAN_EXTRA self, const char *symbol) {
   const char *found = set_find(self->typedefs, symbol);
   return found ? 1 : 0;
 }
-static void scanner_visitor_flag_set(struct json_visitor *visitor,
-                                     struct json *json) {
-  bool_t *ret = visitor->extra;
+static void scanner_visitor_flag_set(struct json *json, void *extra) {
+  bool_t *ret = extra;
   *ret = true;
   UTIL_UNUSED(json);
 }
@@ -84,11 +83,10 @@ int scanner_contains_typedef(YYSCAN_TYPE decl) {
   }
   return ret;
 }
-static void scanner_visitor_set_insert(struct json_visitor *visitor,
-                                       struct json *json) {
+static void scanner_visitor_set_insert(struct json *json, void *extra) {
   if (json_is_str(json)) {
     struct json_str *str = json_as_str(json);
-    set_insert(visitor->extra, json_str_get(str));
+    set_insert(extra, json_str_get(str));
   }
 }
 void scanner_collect_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
