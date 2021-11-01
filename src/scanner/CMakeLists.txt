@@ -32,6 +32,5 @@ target_include_directories(scanner PUBLIC
 target_link_libraries(scanner PRIVATE
   json
   options
-  set
   util
   )
