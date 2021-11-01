@@ -3,6 +3,7 @@ target_sources(json PRIVATE
   arr.c
   factory.c
   json.c
+  null.c
   obj.c
   printer.c
   str.c

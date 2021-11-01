@@ -6,10 +6,6 @@
 #include "type.h"
 #include "util/util.h"
 
-struct json *json_null(void) {
-  static struct json null = {JSON_TAG_NULL, NULL, NULL, NULL};
-  return &null;
-}
 struct json *json_new_str(const char *str) {
   struct json *self = util_malloc(sizeof(struct json));
   self->tag = JSON_TAG_STR;

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "json.h"
+#include "null.h"
 #include "util/util.h"
 
 struct json_pair {

@@ -15,7 +15,6 @@ struct json_map {
   void *extra;
 };
 
-struct json *json_null(void);
 struct json *json_new_str(const char *);
 struct json *json_new_arr(void);
 struct json *json_new_obj(void);
@@ -31,6 +30,7 @@ struct json_obj *json_as_obj(struct json *);
 void json_print(struct json *);
 
 #include "json/arr.h"
+#include "json/null.h"
 #include "json/obj.h"
 #include "json/str.h"
 
