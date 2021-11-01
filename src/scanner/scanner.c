@@ -83,7 +83,7 @@ int scanner_contains_typedef(YYSCAN_TYPE decl) {
     struct json_visitor visitor = {
         scanner_visitor_flag_set, SYMBOL_TYPEDEF, NULL, NULL, NULL, NULL};
     visitor.extra = &ret;
-    json_visitor_visit(&visitor, json);
+    json_visitor_recurse(&visitor, json);
   }
   return ret;
 }
@@ -101,6 +101,6 @@ void scanner_collect_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
     struct json_visitor visitor = {
         scanner_visitor_set_insert, SYMBOL_IDENTIFIER, NULL, NULL, NULL, NULL};
     visitor.extra = self->typedefs;
-    json_visitor_visit(&visitor, json);
+    json_visitor_recurse(&visitor, json);
   }
 }

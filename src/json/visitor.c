@@ -15,15 +15,15 @@ static void json_visitor_visit_obj(const char *key, struct json *val,
       json_obj_insert(visitor->parent, key, visitor->result);
     }
   }
-  json_visitor_visit(visitor, val);
+  json_visitor_recurse(visitor, val);
 }
 static void json_visitor_visit_arr(const char *key, struct json *val,
                                    void *extra) {
-  json_visitor_visit(extra, val);
+  json_visitor_recurse(extra, val);
   UTIL_UNUSED(key);
 }
 
-void json_visitor_visit(struct json_visitor *self, struct json *json) {
+void json_visitor_recurse(struct json_visitor *self, struct json *json) {
   struct json_map map;
   map.extra = self;
   switch (json_tag(json)) {
