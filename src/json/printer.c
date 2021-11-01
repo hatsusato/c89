@@ -21,6 +21,9 @@ void json_printer_recurse(struct json_printer *self, struct json *json) {
   case JSON_TAG_NULL:
     json_null_print(self);
     break;
+  case JSON_TAG_INT:
+    json_int_print(json_as_int(json), self);
+    break;
   case JSON_TAG_STR:
     json_str_print(json_as_str(json), self);
     break;
