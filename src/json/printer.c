@@ -60,3 +60,6 @@ void json_printer_symbol(struct json_printer *self, const char *symbol) {
 void json_printer_str(struct json_printer *self, const char *str) {
   printer_print(self->printer, "%s", str);
 }
+void json_printer_int(struct json_printer *self, int num) {
+  printer_print(self->printer, "%d", num);
+}
