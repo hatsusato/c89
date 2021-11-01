@@ -6,8 +6,8 @@
 #include "vec.h"
 
 struct json_factory {
-  struct json_vec *symbol;
   struct json_arr *pool;
+  struct json_obj *symbol;
 };
 
 static void json_factory_free_pool(const char *key, struct json *val,
@@ -25,27 +25,27 @@ static void json_factory_free_symbol(const char *key, struct json *val,
 
 struct json_factory *json_factory_new(void) {
   struct json_factory *self = util_malloc(sizeof(struct json_factory));
-  self->symbol = json_vec_new();
   self->pool = json_arr_new();
+  self->symbol = json_obj_new();
+  json_obj_sort(self->symbol);
   return self;
 }
 void json_factory_delete(struct json_factory *self) {
   struct json_map map_pool = {json_factory_free_pool, NULL};
   struct json_map map_symbol = {json_factory_free_symbol, NULL};
+  json_obj_foreach(self->symbol, &map_symbol);
   json_arr_foreach(self->pool, &map_pool);
+  json_obj_delete(self->symbol);
   json_arr_delete(self->pool);
-  json_vec_foreach(self->symbol, &map_symbol);
-  json_vec_delete(self->symbol);
   util_free(self);
 }
 const char *json_factory_symbol(struct json_factory *self, const char *symbol) {
-  struct json_pair *pair = json_vec_search(self->symbol, symbol);
+  struct json_pair *pair = json_obj_find(self->symbol, symbol);
   if (pair) {
     return json_pair_key(pair);
   } else {
     const char *dup = util_strdup(symbol);
-    json_vec_push(self->symbol, dup, json_null());
-    json_vec_sort(self->symbol);
+    json_obj_insert(self->symbol, dup, json_null());
     return dup;
   }
 }
