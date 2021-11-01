@@ -12,6 +12,7 @@ struct json {
   struct json_str *str;
   struct json_arr *arr;
   struct json_obj *obj;
+  void *json;
 };
 
 #endif /* INCLUDE_GUARD_B6B56A7D_817F_4841_A842_6C0985520EBD */

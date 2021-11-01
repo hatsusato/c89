@@ -11,6 +11,7 @@ struct json *json_new_str(const char *str) {
   self->str = json_str_new(str);
   self->arr = NULL;
   self->obj = NULL;
+  self->json = self->str;
   return self;
 }
 struct json *json_new_arr(void) {
@@ -19,6 +20,7 @@ struct json *json_new_arr(void) {
   self->str = NULL;
   self->arr = json_arr_new();
   self->obj = NULL;
+  self->json = self->arr;
   return self;
 }
 struct json *json_new_obj(void) {
@@ -27,6 +29,7 @@ struct json *json_new_obj(void) {
   self->str = NULL;
   self->arr = NULL;
   self->obj = json_obj_new();
+  self->json = self->obj;
   return self;
 }
 void json_delete(struct json *self) {
@@ -34,13 +37,13 @@ void json_delete(struct json *self) {
   case JSON_TAG_NULL:
     return;
   case JSON_TAG_STR:
-    json_str_delete(self->str);
+    json_str_delete(self->json);
     break;
   case JSON_TAG_ARR:
-    json_arr_delete(self->arr);
+    json_arr_delete(self->json);
     break;
   case JSON_TAG_OBJ:
-    json_obj_delete(self->obj);
+    json_obj_delete(self->json);
     break;
   default:
     break;
@@ -72,13 +75,16 @@ index_t json_count(struct json *self) {
   }
 }
 struct json_str *json_as_str(struct json *self) {
-  return json_is_str(self) ? self->str : NULL;
+  assert(json_is_str(self));
+  return self->json;
 }
 struct json_arr *json_as_arr(struct json *self) {
-  return json_is_arr(self) ? self->arr : NULL;
+  assert(json_is_arr(self));
+  return self->json;
 }
 struct json_obj *json_as_obj(struct json *self) {
-  return json_is_obj(self) ? self->obj : NULL;
+  assert(json_is_obj(self));
+  return self->json;
 }
 void json_print(struct json *self) {
   json_printer_print(self);
