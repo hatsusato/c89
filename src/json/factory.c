@@ -5,6 +5,10 @@
 #include "util/util.h"
 #include "vec.h"
 
+struct json_factory {
+  struct json_vec *pool;
+};
+
 static void json_factory_free(const char *key, struct json *val, void *extra) {
   if (val) {
     switch (val->tag) {

@@ -17,8 +17,4 @@ struct json {
   struct json_obj *obj;
 };
 
-struct json_factory {
-  struct json_vec *pool;
-};
-
 #endif /* INCLUDE_GUARD_B6B56A7D_817F_4841_A842_6C0985520EBD */
