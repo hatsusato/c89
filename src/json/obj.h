@@ -16,6 +16,7 @@ void json_obj_insert(struct json_obj *, const char *, struct json *);
 struct json *json_obj_get(struct json_obj *, const char *);
 bool_t json_obj_has(struct json_obj *, const char *);
 struct json_pair *json_obj_find(struct json_obj *, const char *);
+void json_obj_sort(struct json_obj *);
 void json_obj_foreach(struct json_obj *, struct json_map *);
 void json_obj_print(struct json_obj *, struct json_printer *);
 

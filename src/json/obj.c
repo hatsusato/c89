@@ -50,6 +50,10 @@ struct json_pair *json_obj_find(struct json_obj *self, const char *key) {
     return json_vec_find(self->vec, key);
   }
 }
+void json_obj_sort(struct json_obj *self) {
+  self->sorted = true;
+  json_vec_sort(self->vec);
+}
 void json_obj_foreach(struct json_obj *self, struct json_map *map) {
   json_vec_foreach(self->vec, map);
 }
