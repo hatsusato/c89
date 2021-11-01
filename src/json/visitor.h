@@ -3,6 +3,7 @@
 
 struct json;
 struct json_factory;
+struct json_obj;
 struct json_visitor;
 
 typedef void (*json_visitor_t)(struct json_visitor *, struct json *);
@@ -12,6 +13,7 @@ struct json_visitor {
   const char *key;
   struct json_factory *factory;
   struct json *result;
+  struct json_obj *parent;
   void *extra;
 };
 
