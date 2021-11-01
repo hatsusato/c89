@@ -1,5 +1,6 @@
 #include "int.h"
 
+#include "printer.h"
 #include "util/util.h"
 
 struct json_int {
@@ -19,4 +20,7 @@ int json_int_get(struct json_int *self) {
 }
 void json_int_set(struct json_int *self, int num) {
   self->num = num;
+}
+void json_int_print(struct json_int *self, struct json_printer *printer) {
+  json_printer_int(printer, self->num);
 }
