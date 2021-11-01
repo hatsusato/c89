@@ -2,6 +2,7 @@ add_library(json STATIC)
 target_sources(json PRIVATE
   arr.c
   factory.c
+  int.c
   json.c
   map.c
   null.c
