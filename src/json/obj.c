@@ -43,31 +43,27 @@ void json_obj_foreach(struct json_obj *self, struct json_map *map) {
   json_vec_foreach(self->vec, map);
 }
 static void json_obj_print_map(const char *key, struct json *val, void *extra) {
-  struct json_printer_extra *tmp = extra;
-  struct json_printer printer;
-  bool_t *first = &tmp->first;
-  printer.printer = tmp->printer;
-  if (!*first) {
-    printer_print(printer.printer, ",");
-    *first = false;
+  struct json_printer *printer = extra;
+  if (!printer->first) {
+    printer_print(printer->printer, ",");
+    printer->first = false;
   }
-  printer_newline(printer.printer);
-  printer_print(printer.printer, "\"%s\": ", key);
-  json_printer_print(&printer, val);
+  printer_newline(printer->printer);
+  printer_print(printer->printer, "\"%s\": ", key);
+  json_printer_print(printer, val);
 }
-void json_obj_print(struct json_obj *obj, struct printer *printer) {
+void json_obj_print(struct json_obj *obj, struct json_printer *printer) {
   if (0 == json_obj_count(obj)) {
-    printer_print(printer, "{}");
+    printer_print(printer->printer, "{}");
   } else {
-    struct json_printer_extra extra = {NULL, true};
     struct json_map map = {json_obj_print_map, NULL};
-    extra.printer = printer;
-    map.extra = &extra;
-    printer_print(printer, "{");
-    printer_indent(printer, 2);
+    map.extra = printer;
+    printer->first = true;
+    printer_print(printer->printer, "{");
+    printer_indent(printer->printer, 2);
     json_obj_foreach(obj, &map);
-    printer_newline(printer);
-    printer_indent(printer, -2);
-    printer_print(printer, "}");
+    printer_newline(printer->printer);
+    printer_indent(printer->printer, -2);
+    printer_print(printer->printer, "}");
   }
 }

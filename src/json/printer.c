@@ -1,6 +1,7 @@
 #include "printer.h"
 
 #include "json.h"
+#include "printer/printer.h"
 #include "tag.h"
 
 void json_printer_print(struct json_printer *self, struct json *json) {
@@ -15,7 +16,7 @@ void json_printer_print(struct json_printer *self, struct json *json) {
     json_arr_print(json_as_arr(json), self);
     break;
   case JSON_TAG_OBJ:
-    json_obj_print(json_as_obj(json), self->printer);
+    json_obj_print(json_as_obj(json), self);
     break;
   default:
     break;
