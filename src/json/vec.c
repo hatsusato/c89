@@ -15,6 +15,10 @@ struct json_vec {
   index_t count, capacity;
 };
 
+static const char *json_wrap_key(const char *key) {
+  return key ? key : "";
+}
+
 const char *json_pair_key(struct json_pair *self) {
   return self->key;
 }
@@ -22,7 +26,7 @@ struct json *json_pair_val(struct json_pair *self) {
   return self->val;
 }
 void json_pair_set(struct json_pair *self, const char *key, struct json *val) {
-  self->key = key;
+  self->key = json_wrap_key(key);
   self->val = val;
 }
 
@@ -68,7 +72,7 @@ index_t json_vec_count(struct json_vec *self) {
 }
 void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
   struct json_pair pair;
-  pair.key = key;
+  pair.key = json_wrap_key(key);
   pair.val = val;
   json_vec_reserve(self, self->count + 1);
   util_memcpy(self->base + self->count, &pair, 1, align);
@@ -86,7 +90,7 @@ void json_vec_sort(struct json_vec *self) {
 struct json_pair *json_vec_search(struct json_vec *self, const char *key) {
   if (self->base) {
     struct json_pair pair;
-    pair.key = key;
+    pair.key = json_wrap_key(key);
     pair.val = json_null();
     return bsearch(&pair, self->base, self->count, align, json_vec_cmp);
   }
@@ -96,7 +100,7 @@ struct json_pair *json_vec_find(struct json_vec *self, const char *key) {
   index_t i;
   for (i = 0; i < self->count; i++) {
     struct json_pair *pair = self->base + i;
-    if (util_streq(key, pair->key)) {
+    if (util_streq(json_wrap_key(key), pair->key)) {
       return pair;
     }
   }

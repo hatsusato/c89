@@ -10,13 +10,15 @@ struct json_factory {
 
 static void json_factory_free_pool(const char *key, struct json *val,
                                    void *extra) {
-  assert(!key && val && !extra);
   json_delete(val);
+  UTIL_UNUSED(key);
+  UTIL_UNUSED(extra);
 }
 static void json_factory_free_symbol(const char *key, struct json *val,
                                      void *extra) {
-  assert(key && json_is_null(val) && !extra);
   util_free((void *)key);
+  UTIL_UNUSED(val);
+  UTIL_UNUSED(extra);
 }
 
 struct json_factory *json_factory_new(void) {
@@ -47,7 +49,6 @@ const char *json_factory_symbol(struct json_factory *self, const char *symbol) {
 }
 struct json *json_factory_str(struct json_factory *self, const char *str) {
   struct json *json = json_new_str(str);
-  assert(str);
   json_vec_push(self->pool, NULL, json);
   return json;
 }
