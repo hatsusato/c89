@@ -2,7 +2,6 @@
 
 #include "json.h"
 #include "map.h"
-#include "tag.h"
 #include "util/util.h"
 
 struct json_visitor {
@@ -32,20 +31,18 @@ static void json_visitor_visit_arr(const char *key, struct json *val,
   UTIL_UNUSED(key);
 }
 static void json_visitor_recurse(struct json_visitor *self, struct json *json) {
-  struct json_map map;
-  map.extra = self;
-  switch (json_tag(json)) {
-  case JSON_TAG_OBJ:
+  if (json_is_obj(json)) {
+    struct json_obj *obj = json_as_obj(json);
+    struct json_map map;
     map.map = json_visitor_visit_obj;
-    self->parent = json_as_obj(json);
-    json_obj_foreach(json_as_obj(json), &map);
-    break;
-  case JSON_TAG_ARR:
+    map.extra = self;
+    self->parent = obj;
+    json_obj_foreach(obj, &map);
+  } else if (json_is_arr(json)) {
+    struct json_map map;
     map.map = json_visitor_visit_arr;
+    map.extra = self;
     json_arr_foreach(json_as_arr(json), &map);
-    break;
-  default:
-    break;
   }
 }
 void json_visitor_visit(json_visitor_t visitor, const char *key,
