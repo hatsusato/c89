@@ -10,4 +10,6 @@ struct json_map {
   void *extra;
 };
 
+void json_map_apply(struct json_map *, const char *, struct json *);
+
 #endif /* INCLUDE_GUARD_B3786200_8182_4167_B88A_47D1C9AAB284 */

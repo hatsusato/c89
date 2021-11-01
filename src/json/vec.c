@@ -109,6 +109,6 @@ void json_vec_foreach(struct json_vec *self, struct json_map *map) {
   index_t i;
   struct json_pair *pair = self->base;
   for (i = 0; i < self->count; i++, pair++) {
-    map->map(json_pair_key(pair), json_pair_val(pair), map->extra);
+    json_map_apply(map, json_pair_key(pair), json_pair_val(pair));
   }
 }
