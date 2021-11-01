@@ -6,6 +6,7 @@ target_sources(json PRIVATE
   obj.c
   printer.c
   str.c
+  tag.c
   type.c
   unittest.c
   vec.c
