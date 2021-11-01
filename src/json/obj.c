@@ -23,7 +23,7 @@ index_t json_obj_count(struct json_obj *self) {
   return json_vec_count(self->vec);
 }
 void json_obj_insert(struct json_obj *self, const char *key, struct json *val) {
-  struct json_pair *pair = json_vec_find(self->vec, key);
+  struct json_pair *pair = json_obj_find(self, key);
   if (pair) {
     json_pair_set(pair, key, val);
   } else {
@@ -31,12 +31,15 @@ void json_obj_insert(struct json_obj *self, const char *key, struct json *val) {
   }
 }
 struct json *json_obj_get(struct json_obj *self, const char *key) {
-  struct json_pair *pair = json_vec_find(self->vec, key);
+  struct json_pair *pair = json_obj_find(self, key);
   return pair ? json_pair_val(pair) : json_null();
 }
 bool_t json_obj_has(struct json_obj *self, const char *key) {
-  struct json_pair *pair = json_vec_find(self->vec, key);
+  struct json_pair *pair = json_obj_find(self, key);
   return pair ? true : false;
+}
+struct json_pair *json_obj_find(struct json_obj *self, const char *key) {
+  return json_vec_find(self->vec, key);
 }
 void json_obj_foreach(struct json_obj *self, struct json_map *map) {
   json_vec_foreach(self->vec, map);
