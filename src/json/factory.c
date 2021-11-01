@@ -48,6 +48,11 @@ const char *json_factory_symbol(struct json_factory *self, const char *symbol) {
     return dup;
   }
 }
+struct json *json_factory_int(struct json_factory *self, int num) {
+  struct json *json = json_new_int(num);
+  json_vec_push(self->pool, NULL, json);
+  return json;
+}
 struct json *json_factory_str(struct json_factory *self, const char *str) {
   struct json *json = json_new_str(str);
   json_vec_push(self->pool, NULL, json);
