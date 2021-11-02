@@ -31,11 +31,6 @@ void yyscan_parse(YYSCAN_EXTRA scanner) {
 int yyscan_is_typedef(yyscan_t self, const char *symbol) {
   return scanner_is_typedef(yyget_extra(self), symbol);
 }
-void yyscan_register_typedef(yyscan_t self, YYSCAN_TYPE json) {
-  if (scanner_contains_typedef(json)) {
-    scanner_collect_typedef(yyget_extra(self), json);
-  }
-}
 YYSCAN_TYPE yyscan_json_token(yyscan_t self) {
   const char *text = yyget_text(self);
   assert(text[yyget_leng(self)] == 0);
