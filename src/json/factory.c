@@ -10,9 +10,9 @@ struct json_factory {
   struct json_arr *pool;
 };
 
-static void json_factory_free(struct json_obj *args) {
-  struct json *key = json_obj_get(args, "key");
-  struct json *val = json_obj_get(args, "val");
+static void json_factory_free(struct json *args) {
+  struct json *key = json_get(args, "key");
+  struct json *val = json_get(args, "val");
   if (json_is_str(key)) {
     struct json_str *str = json_as_str(key);
     util_free((void *)json_str_get(str));

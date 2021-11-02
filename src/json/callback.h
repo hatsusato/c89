@@ -3,9 +3,8 @@
 
 struct json;
 struct json_callback;
-struct json_obj;
 
-typedef void (*json_callback_t)(struct json_obj *);
+typedef void (*json_callback_t)(struct json *);
 
 struct json_callback *json_callback_new(json_callback_t);
 void json_callback_delete(struct json_callback *);
