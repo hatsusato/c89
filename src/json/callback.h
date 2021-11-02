@@ -1,0 +1,8 @@
+#ifndef INCLUDE_GUARD_15A786EB_987B_4284_9538_D41F3B730C9C
+#define INCLUDE_GUARD_15A786EB_987B_4284_9538_D41F3B730C9C
+
+struct json_obj;
+
+typedef void (*json_callback_t)(struct json_obj *);
+
+#endif /* INCLUDE_GUARD_15A786EB_987B_4284_9538_D41F3B730C9C */
