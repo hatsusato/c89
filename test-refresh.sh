@@ -19,6 +19,7 @@ main() {
   make -j --no-print-directory -C build | filter
   memcheck --unittest
   memcheck <test/01.c
+  diff <(./build/main.out <test/01.c) test/01.c.ast
 }
 
 main "$@"
