@@ -318,27 +318,22 @@ primary-expression
 : identifier {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, SYMBOL_IDENTIFIER, $1);
-  $$ = YYSCAN_TAG(SYMBOL_PRIMARY_EXPRESSION, $$);
 }
 | floating-constant {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, SYMBOL_FLOATING_CONSTANT, $1);
-  $$ = YYSCAN_TAG(SYMBOL_PRIMARY_EXPRESSION, $$);
 }
 | integer-constant {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, SYMBOL_INTEGER_CONSTANT, $1);
-  $$ = YYSCAN_TAG(SYMBOL_PRIMARY_EXPRESSION, $$);
 }
 | character-constant {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, SYMBOL_CHARACTER_CONSTANT, $1);
-  $$ = YYSCAN_TAG(SYMBOL_PRIMARY_EXPRESSION, $$);
 }
 | string-literal {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, SYMBOL_STRING_LITERAL, $1);
-  $$ = YYSCAN_TAG(SYMBOL_PRIMARY_EXPRESSION, $$);
 }
 | left-paren expression right-paren {
   $$ = YYSCAN_OBJ();
