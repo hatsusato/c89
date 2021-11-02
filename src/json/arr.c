@@ -32,7 +32,7 @@ void json_arr_push(struct json_arr *self, struct json *val) {
 void json_arr_foreach(struct json_arr *self, struct json_map *map) {
   json_vec_foreach(self->vec, map);
 }
-void json_arr_map(struct json_arr *self, struct json_callback *map) {
+void json_arr_map(struct json_arr *self, struct json_closure *map) {
   json_vec_map(self->vec, map);
 }
 static void json_arr_print_map(const char *key, struct json *val, void *extra) {

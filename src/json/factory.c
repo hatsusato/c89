@@ -1,6 +1,6 @@
 #include "factory.h"
 
-#include "callback.h"
+#include "closure.h"
 #include "json.h"
 #include "util/util.h"
 #include "vec.h"
@@ -28,16 +28,16 @@ struct json_factory *json_factory_new(void) {
   return self;
 }
 void json_factory_delete(struct json_factory *self) {
-  struct json_callback *map = json_callback_new(json_factory_free);
+  struct json_closure *map = json_closure_new(json_factory_free);
   struct json *key = json_new_str("");
   json_arr_map(self->pool, map);
-  json_callback_insert(map, "key", key);
+  json_closure_insert(map, "key", key);
   json_obj_map(self->symbol, map);
   json_arr_delete(self->pool);
   json_obj_delete(self->symbol);
   util_free(self);
   json_delete(key);
-  json_callback_delete(map);
+  json_closure_delete(map);
 }
 const char *json_factory_symbol(struct json_factory *self, const char *symbol) {
   struct json_pair *pair = json_obj_find(self->symbol, symbol);

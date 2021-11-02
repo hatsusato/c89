@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-#include "callback.h"
+#include "closure.h"
 #include "json.h"
 #include "map.h"
 #include "util/util.h"
@@ -113,11 +113,11 @@ void json_vec_foreach(struct json_vec *self, struct json_map *map) {
     json_map_apply(map, json_pair_key(pair), json_pair_val(pair));
   }
 }
-void json_vec_map(struct json_vec *self, struct json_callback *map) {
+void json_vec_map(struct json_vec *self, struct json_closure *map) {
   index_t i;
   struct json_pair *pair = self->base;
-  struct json *index = json_callback_get(map, "index");
-  struct json *key = json_callback_get(map, "key");
+  struct json *index = json_closure_get(map, "index");
+  struct json *key = json_closure_get(map, "key");
   for (i = 0; i < self->count; i++, pair++) {
     if (json_is_int(index)) {
       json_int_set(json_as_int(index), i);
@@ -125,7 +125,7 @@ void json_vec_map(struct json_vec *self, struct json_callback *map) {
     if (json_is_str(key)) {
       json_str_set(json_as_str(key), json_pair_key(pair));
     }
-    json_callback_insert(map, "val", json_pair_val(pair));
-    json_callback_apply(map);
+    json_closure_insert(map, "val", json_pair_val(pair));
+    json_closure_apply(map);
   }
 }
