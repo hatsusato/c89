@@ -5,13 +5,6 @@
 #include "type.h"
 #include "util/util.h"
 
-static struct json *json_alloc(enum json_tag tag, void *json) {
-  struct json *self = util_malloc(sizeof(struct json));
-  self->tag = tag;
-  self->json = json;
-  return self;
-}
-
 struct json *json_new_int(int num) {
   return json_alloc(JSON_TAG_INT, json_int_new(num));
 }
@@ -49,7 +42,7 @@ void json_delete(struct json *self) {
   default:
     break;
   }
-  util_free(self);
+  json_free(self);
 }
 bool_t json_is_null(struct json *self) {
   return json_tag(self) == JSON_TAG_NULL;
