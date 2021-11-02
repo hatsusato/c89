@@ -29,6 +29,8 @@ struct json_obj *json_as_obj(struct json *);
 struct json_any *json_as_any(struct json *);
 index_t json_count(struct json *);
 struct json *json_get(struct json *, const char *);
+const char *json_get_str(struct json *);
+void *json_get_any(struct json *);
 void json_print(struct json *);
 
 #include "json/any.h"

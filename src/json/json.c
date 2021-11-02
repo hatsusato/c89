@@ -97,6 +97,12 @@ index_t json_count(struct json *self) {
 struct json *json_get(struct json *self, const char *key) {
   return json_is_obj(self) ? json_obj_get(json_as_obj(self), key) : json_null();
 }
+const char *json_get_str(struct json *self) {
+  return json_is_str(self) ? json_str_get(json_as_str(self)) : NULL;
+}
+void *json_get_any(struct json *self) {
+  return json_is_any(self) ? json_any_get(json_as_any(self)) : NULL;
+}
 void json_print(struct json *self) {
   json_printer_print(self);
 }
