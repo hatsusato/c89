@@ -13,7 +13,8 @@
 #define YYSCAN_TAG(key, val) YYSCAN_SET(YYSCAN_OBJ(), key, val)
 #define YYSCAN_BINOP(lhs, op, rhs) \
   scanner_json_binop(yyget_extra(YYSCAN_PARAM), lhs, op, rhs)
-#define YYSCAN_REGISTER(decl) yyscan_register_typedef(YYSCAN_PARAM, decl)
+#define YYSCAN_REGISTER(decl) \
+  scanner_register_typedef(yyget_extra(YYSCAN_PARAM), decl)
 #define YYSCAN_SET_TOP(top) scanner_set_top(yyget_extra(YYSCAN_PARAM), top)
 
 void yyerror(yyscan_t, const char *);

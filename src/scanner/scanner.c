@@ -93,8 +93,8 @@ static void scanner_visitor_set_insert(struct json *json, void *extra) {
     json_obj_insert(json_as_obj(extra), json_str_get(str), json_null());
   }
 }
-void scanner_collect_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
-  if (json_is_obj(decl)) {
+void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
+  if (json_is_obj(decl) && scanner_contains_typedef(decl)) {
     struct json_obj *obj = json_as_obj(decl);
     struct json *json = json_obj_get(obj, SYMBOL_INIT_DECLARATOR_LIST);
     json_visitor_visit(scanner_visitor_set_insert, SYMBOL_IDENTIFIER, json,
