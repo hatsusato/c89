@@ -41,7 +41,7 @@ struct json *json_obj_get(struct json_obj *self, const char *key) {
 }
 bool_t json_obj_has(struct json_obj *self, const char *key) {
   struct json_pair *pair = json_obj_find(self, key);
-  return pair ? true : false;
+  return UTIL_BOOL(pair);
 }
 struct json_pair *json_obj_find(struct json_obj *self, const char *key) {
   if (self->sorted) {

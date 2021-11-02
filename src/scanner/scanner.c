@@ -84,7 +84,7 @@ int scanner_contains_typedef(YYSCAN_TYPE decl) {
     struct json *json = json_obj_get(obj, SYMBOL_DECLARATION_SPECIFIERS);
     struct json *extra = json_new_int(0);
     json_visitor_visit(scanner_visitor_flag_set, SYMBOL_TYPEDEF, json, extra);
-    ret = json_int_get(json_as_int(extra)) ? true : false;
+    ret = UTIL_BOOL(json_int_get(json_as_int(extra)));
     json_delete(extra);
   }
   return ret;

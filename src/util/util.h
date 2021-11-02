@@ -8,6 +8,7 @@
 #define UTIL_UNUSED(var) ((void)var)
 #define UTIL_MAX(lhs, rhs) (((lhs) < (rhs)) ? (rhs) : (lhs))
 #define UTIL_MIN(lhs, rhs) (((lhs) < (rhs)) ? (lhs) : (rhs))
+#define UTIL_BOOL(expr) ((expr) ? true : false)
 #define UTIL_SWAP(type, lhs, rhs)                                  \
   do {                                                             \
     byte_t buf_28321f6d_b6bb_4bf6_bcf2_b1744cfbc621[sizeof(type)]; \
