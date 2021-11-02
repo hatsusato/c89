@@ -1,5 +1,6 @@
 add_library(json STATIC)
 target_sources(json PRIVATE
+  any.c
   arr.c
   factory.c
   int.c
