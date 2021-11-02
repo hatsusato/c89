@@ -25,19 +25,19 @@ void json_delete(struct json *self) {
   case JSON_TAG_NULL:
     return;
   case JSON_TAG_INT:
-    json_int_delete(self->json);
+    json_int_delete(json_get(self));
     break;
   case JSON_TAG_STR:
-    json_str_delete(self->json);
+    json_str_delete(json_get(self));
     break;
   case JSON_TAG_ARR:
-    json_arr_delete(self->json);
+    json_arr_delete(json_get(self));
     break;
   case JSON_TAG_OBJ:
-    json_obj_delete(self->json);
+    json_obj_delete(json_get(self));
     break;
   case JSON_TAG_ANY:
-    json_any_delete(self->json);
+    json_any_delete(json_get(self));
     break;
   default:
     break;
@@ -76,23 +76,23 @@ index_t json_count(struct json *self) {
 }
 struct json_int *json_as_int(struct json *self) {
   assert(json_is_int(self));
-  return self->json;
+  return json_get(self);
 }
 struct json_str *json_as_str(struct json *self) {
   assert(json_is_str(self));
-  return self->json;
+  return json_get(self);
 }
 struct json_arr *json_as_arr(struct json *self) {
   assert(json_is_arr(self));
-  return self->json;
+  return json_get(self);
 }
 struct json_obj *json_as_obj(struct json *self) {
   assert(json_is_obj(self));
-  return self->json;
+  return json_get(self);
 }
 struct json_any *json_as_any(struct json *self) {
   assert(json_is_any(self));
-  return self->json;
+  return json_get(self);
 }
 void json_print(struct json *self) {
   json_printer_print(self);
