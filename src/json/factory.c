@@ -1,43 +1,43 @@
 #include "factory.h"
 
+#include "callback.h"
 #include "json.h"
-#include "map.h"
 #include "util/util.h"
 #include "vec.h"
 
 struct json_factory {
-  struct json_arr *pool;
   struct json_obj *symbol;
+  struct json_arr *pool;
 };
 
-static void json_factory_free_pool(const char *key, struct json *val,
-                                   void *extra) {
+static void json_factory_free(struct json_obj *args) {
+  struct json *key = json_obj_get(args, "key");
+  struct json *val = json_obj_get(args, "val");
+  if (json_is_str(key)) {
+    struct json_str *str = json_as_str(key);
+    util_free((void *)json_str_get(str));
+  }
   json_delete(val);
-  UTIL_UNUSED(key);
-  UTIL_UNUSED(extra);
-}
-static void json_factory_free_symbol(const char *key, struct json *val,
-                                     void *extra) {
-  util_free((void *)key);
-  UTIL_UNUSED(val);
-  UTIL_UNUSED(extra);
 }
 
 struct json_factory *json_factory_new(void) {
   struct json_factory *self = util_malloc(sizeof(struct json_factory));
-  self->pool = json_arr_new();
   self->symbol = json_obj_new();
+  self->pool = json_arr_new();
   json_obj_sort(self->symbol);
   return self;
 }
 void json_factory_delete(struct json_factory *self) {
-  struct json_map map_pool = {json_factory_free_pool, NULL};
-  struct json_map map_symbol = {json_factory_free_symbol, NULL};
-  json_obj_foreach(self->symbol, &map_symbol);
-  json_arr_foreach(self->pool, &map_pool);
-  json_obj_delete(self->symbol);
+  struct json_callback *map = json_callback_new(json_factory_free);
+  struct json *key = json_new_str("");
+  json_arr_map(self->pool, map);
+  json_callback_insert(map, "key", key);
+  json_obj_map(self->symbol, map);
   json_arr_delete(self->pool);
+  json_obj_delete(self->symbol);
   util_free(self);
+  json_delete(key);
+  json_callback_delete(map);
 }
 const char *json_factory_symbol(struct json_factory *self, const char *symbol) {
   struct json_pair *pair = json_obj_find(self->symbol, symbol);
