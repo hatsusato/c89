@@ -401,10 +401,12 @@ argument-expression-list.opt
 ;
 argument-expression-list
 : assignment-expression {
+  $1 = YYSCAN_TAG(SYMBOL_EXPRESSION, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | argument-expression-list comma assignment-expression {
-  $$ = YYSCAN_PUSH($1, $2);
+  $3 = YYSCAN_TAG(SYMBOL_EXPRESSION, $3);
+  $$ = YYSCAN_PUSH($1, $3);
 }
 ;
 unary-expression
@@ -653,9 +655,11 @@ init-declarator-list.opt
 ;
 init-declarator-list
 : init-declarator {
+  $1 = YYSCAN_TAG(SYMBOL_INIT_DECLARATOR, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | init-declarator-list comma init-declarator {
+  $3 = YYSCAN_TAG(SYMBOL_INIT_DECLARATOR, $3);
   $$ = YYSCAN_PUSH($1, $3);
 }
 ;
@@ -770,9 +774,11 @@ struct-or-union
 ;
 struct-declaration-list
 : struct-declaration {
+  $1 = YYSCAN_TAG(SYMBOL_STRUCT_DECLARATION, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | struct-declaration-list struct-declaration {
+  $2 = YYSCAN_TAG(SYMBOL_STRUCT_DECLARATION, $2);
   $$ = YYSCAN_PUSH($1, $2);
 }
 ;
@@ -786,9 +792,11 @@ struct-declaration
 ;
 specifier-qualifier-list
 : specifier-qualifier {
+  $1 = YYSCAN_TAG(SYMBOL_SPECIFIER_QUALIFIER, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | specifier-qualifier-list specifier-qualifier {
+  $2 = YYSCAN_TAG(SYMBOL_SPECIFIER_QUALIFIER, $2);
   $$ = YYSCAN_PUSH($1, $2);
 }
 ;
@@ -804,9 +812,11 @@ specifier-qualifier
 ;
 struct-declarator-list
 : struct-declarator {
+  $1 = YYSCAN_TAG(SYMBOL_STRUCT_DECLARATOR, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | struct-declarator-list comma struct-declarator {
+  $3 = YYSCAN_TAG(SYMBOL_STRUCT_DECLARATOR, $3);
   $$ = YYSCAN_PUSH($1, $3);
 }
 ;
@@ -839,9 +849,11 @@ enum-specifier
 ;
 enumerator-list
 : enumerator {
+  $1 = YYSCAN_TAG(SYMBOL_ENUMERATOR, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | enumerator-list comma enumerator {
+  $3 = YYSCAN_TAG(SYMBOL_ENUMERATOR, $3);
   $$ = YYSCAN_PUSH($1, $3);
 }
 ;
@@ -938,9 +950,11 @@ type-qualifier-list.opt
 ;
 type-qualifier-list
 : type-qualifier {
+  $1 = YYSCAN_TAG(SYMBOL_TYPE_QUALIFIER, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | type-qualifier-list type-qualifier {
+  $2 = YYSCAN_TAG(SYMBOL_TYPE_QUALIFIER, $2);
   $$ = YYSCAN_PUSH($1, $2);
 }
 ;
@@ -964,9 +978,11 @@ parameter-type-list
 ;
 parameter-list
 : parameter-declaration {
+  $1 = YYSCAN_TAG(SYMBOL_PARAMETER_DECLARATION, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | parameter-list comma parameter-declaration {
+  $3 = YYSCAN_TAG(SYMBOL_PARAMETER_DECLARATION, $3);
   $$ = YYSCAN_PUSH($1, $3);
 }
 ;
@@ -990,9 +1006,11 @@ identifier-list.opt
 ;
 identifier-list
 : identifier {
+  $1 = YYSCAN_TAG(SYMBOL_IDENTIFIER, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | identifier-list comma identifier {
+  $3 = YYSCAN_TAG(SYMBOL_IDENTIFIER, $3);
   $$ = YYSCAN_PUSH($1, $3);
 }
 ;
@@ -1067,7 +1085,7 @@ typedef-name
 initializer
 : assignment-expression {
   $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, SYMBOL_ASSIGNMENT_EXPRESSION, $1);
+  YYSCAN_SET($$, SYMBOL_EXPRESSION, $1);
 }
 | left-brace initializer-list right-brace {
   $$ = YYSCAN_OBJ();
@@ -1085,9 +1103,11 @@ initializer
 ;
 initializer-list
 : initializer {
+  $1 = YYSCAN_TAG(SYMBOL_INITIALIZER, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | initializer-list comma initializer {
+  $3 = YYSCAN_TAG(SYMBOL_INITIALIZER, $3);
   $$ = YYSCAN_PUSH($1, $3);
 }
 ;
@@ -1157,9 +1177,11 @@ declaration-list.opt
 ;
 declaration-list
 : declaration {
+  $1 = YYSCAN_TAG(SYMBOL_DECLARATION, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | declaration-list declaration {
+  $2 = YYSCAN_TAG(SYMBOL_DECLARATION, $2);
   $$ = YYSCAN_PUSH($1, $2);
 }
 ;
@@ -1171,9 +1193,11 @@ statement-list.opt
 ;
 statement-list
 : statement {
+  $1 = YYSCAN_TAG(SYMBOL_STATEMENT, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | statement-list statement {
+  $2 = YYSCAN_TAG(SYMBOL_STATEMENT, $2);
   $$ = YYSCAN_PUSH($1, $2);
 }
 ;
@@ -1279,9 +1303,11 @@ top
 ;
 translation-unit
 : external-declaration {
+  $1 = YYSCAN_TAG(SYMBOL_EXTERNAL_DECLARATION, $1);
   $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
 }
 | translation-unit external-declaration {
+  $2 = YYSCAN_TAG(SYMBOL_EXTERNAL_DECLARATION, $2);
   $$ = YYSCAN_PUSH($1, $2);
 }
 ;
