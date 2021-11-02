@@ -57,6 +57,9 @@ void json_obj_sort(struct json_obj *self) {
 void json_obj_foreach(struct json_obj *self, struct json_map *map) {
   json_vec_foreach(self->vec, map);
 }
+void json_obj_map(struct json_obj *self, struct json_callback *map) {
+  json_vec_map(self->vec, map);
+}
 static void json_obj_print_map(const char *key, struct json *val, void *extra) {
   struct json_printer *printer = extra;
   json_printer_comma(printer);
