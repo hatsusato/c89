@@ -12,12 +12,12 @@ enum json_tag {
 
 struct json {
   enum json_tag tag;
-  void *json;
+  void *data;
 };
 
 struct json *json_alloc(enum json_tag, void *);
 void json_free(struct json *);
-void *json_get(struct json *);
+void *json_data(struct json *);
 enum json_tag json_tag(struct json *);
 
 #endif /* INCLUDE_GUARD_B6B56A7D_817F_4841_A842_6C0985520EBD */
