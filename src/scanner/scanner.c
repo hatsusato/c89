@@ -3,25 +3,24 @@
 #include "json/factory.h"
 #include "json/json.h"
 #include "json/visitor.h"
-#include "set/set.h"
 #include "symbol.h"
 #include "util/util.h"
 
 struct scanner {
   struct json_factory *factory;
   YYSCAN_TYPE top;
-  struct set *typedefs;
+  struct json *typedefs;
 };
 
 YYSCAN_EXTRA scanner_new(struct json_factory *factory) {
   YYSCAN_EXTRA self = util_malloc(sizeof(struct scanner));
   self->factory = factory;
   self->top = json_null();
-  self->typedefs = set_new();
+  self->typedefs = json_new_obj();
   return self;
 }
 void scanner_delete(YYSCAN_EXTRA self) {
-  set_delete(self->typedefs);
+  json_delete(self->typedefs);
   util_free(self);
 }
 YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA self, const char *token) {
@@ -67,8 +66,7 @@ void scanner_set_top(YYSCAN_EXTRA self, YYSCAN_TYPE top) {
   self->top = top;
 }
 int scanner_is_typedef(YYSCAN_EXTRA self, const char *symbol) {
-  const char *found = set_find(self->typedefs, symbol);
-  return found ? 1 : 0;
+  return json_obj_has(json_as_obj(self->typedefs), symbol);
 }
 static void scanner_visitor_flag_set(struct json *json, void *extra) {
   struct json *num = extra;
@@ -92,7 +90,7 @@ int scanner_contains_typedef(YYSCAN_TYPE decl) {
 static void scanner_visitor_set_insert(struct json *json, void *extra) {
   if (json_is_str(json)) {
     struct json_str *str = json_as_str(json);
-    set_insert(extra, json_str_get(str));
+    json_obj_insert(json_as_obj(extra), json_str_get(str), json_null());
   }
 }
 void scanner_collect_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
