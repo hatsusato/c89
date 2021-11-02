@@ -29,6 +29,12 @@ struct json *json_new_obj(void) {
   self->json = json_obj_new();
   return self;
 }
+struct json *json_new_any(void *any) {
+  struct json *self = util_malloc(sizeof(struct json));
+  self->tag = JSON_TAG_ANY;
+  self->json = json_any_new(any);
+  return self;
+}
 void json_delete(struct json *self) {
   switch (json_tag(self)) {
   case JSON_TAG_NULL:
@@ -44,6 +50,9 @@ void json_delete(struct json *self) {
     break;
   case JSON_TAG_OBJ:
     json_obj_delete(self->json);
+    break;
+  case JSON_TAG_ANY:
+    json_any_delete(self->json);
     break;
   default:
     break;

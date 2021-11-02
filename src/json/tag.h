@@ -8,7 +8,8 @@ enum json_tag {
   JSON_TAG_INT,
   JSON_TAG_STR,
   JSON_TAG_ARR,
-  JSON_TAG_OBJ
+  JSON_TAG_OBJ,
+  JSON_TAG_ANY
 };
 
 enum json_tag json_tag(struct json *);
