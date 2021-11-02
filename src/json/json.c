@@ -5,35 +5,27 @@
 #include "type.h"
 #include "util/util.h"
 
-struct json *json_new_int(int num) {
+static struct json *json_alloc(enum json_tag tag, void *json) {
   struct json *self = util_malloc(sizeof(struct json));
-  self->tag = JSON_TAG_INT;
-  self->json = json_int_new(num);
+  self->tag = tag;
+  self->json = json;
   return self;
+}
+
+struct json *json_new_int(int num) {
+  return json_alloc(JSON_TAG_INT, json_int_new(num));
 }
 struct json *json_new_str(const char *str) {
-  struct json *self = util_malloc(sizeof(struct json));
-  self->tag = JSON_TAG_STR;
-  self->json = json_str_new(str);
-  return self;
+  return json_alloc(JSON_TAG_STR, json_str_new(str));
 }
 struct json *json_new_arr(void) {
-  struct json *self = util_malloc(sizeof(struct json));
-  self->tag = JSON_TAG_ARR;
-  self->json = json_arr_new();
-  return self;
+  return json_alloc(JSON_TAG_ARR, json_arr_new());
 }
 struct json *json_new_obj(void) {
-  struct json *self = util_malloc(sizeof(struct json));
-  self->tag = JSON_TAG_OBJ;
-  self->json = json_obj_new();
-  return self;
+  return json_alloc(JSON_TAG_OBJ, json_obj_new());
 }
 struct json *json_new_any(void *any) {
-  struct json *self = util_malloc(sizeof(struct json));
-  self->tag = JSON_TAG_ANY;
-  self->json = json_any_new(any);
-  return self;
+  return json_alloc(JSON_TAG_ANY, json_any_new(any));
 }
 void json_delete(struct json *self) {
   switch (json_tag(self)) {
