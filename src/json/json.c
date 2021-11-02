@@ -66,6 +66,9 @@ bool_t json_is_arr(struct json *self) {
 bool_t json_is_obj(struct json *self) {
   return json_tag(self) == JSON_TAG_OBJ;
 }
+bool_t json_is_any(struct json *self) {
+  return json_tag(self) == JSON_TAG_ANY;
+}
 index_t json_count(struct json *self) {
   switch (json_tag(self)) {
   case JSON_TAG_NULL:
@@ -92,6 +95,10 @@ struct json_arr *json_as_arr(struct json *self) {
 }
 struct json_obj *json_as_obj(struct json *self) {
   assert(json_is_obj(self));
+  return self->json;
+}
+struct json_any *json_as_any(struct json *self) {
+  assert(json_is_any(self));
   return self->json;
 }
 void json_print(struct json *self) {

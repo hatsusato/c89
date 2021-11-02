@@ -21,11 +21,13 @@ bool_t json_is_int(struct json *);
 bool_t json_is_str(struct json *);
 bool_t json_is_arr(struct json *);
 bool_t json_is_obj(struct json *);
+bool_t json_is_any(struct json *);
 index_t json_count(struct json *);
 struct json_int *json_as_int(struct json *);
 struct json_str *json_as_str(struct json *);
 struct json_arr *json_as_arr(struct json *);
 struct json_obj *json_as_obj(struct json *);
+struct json_any *json_as_any(struct json *);
 void json_print(struct json *);
 
 #include "json/any.h"
