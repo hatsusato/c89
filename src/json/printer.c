@@ -2,7 +2,7 @@
 
 #include "json.h"
 #include "printer/printer.h"
-#include "tag.h"
+#include "type.h"
 
 struct json_printer {
   struct printer *printer;

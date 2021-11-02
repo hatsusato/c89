@@ -1,7 +1,6 @@
 #include "json.h"
 
 #include "printer.h"
-#include "tag.h"
 #include "type.h"
 #include "util/util.h"
 

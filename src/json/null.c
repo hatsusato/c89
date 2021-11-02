@@ -1,7 +1,6 @@
 #include "null.h"
 
 #include "printer.h"
-#include "tag.h"
 #include "type.h"
 
 struct json *json_null(void) {
