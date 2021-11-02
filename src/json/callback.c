@@ -18,6 +18,9 @@ void json_callback_delete(struct json_callback *self) {
   json_obj_delete(self->args);
   util_free(self);
 }
+struct json *json_callback_get(struct json_callback *self, const char *key) {
+  return json_obj_get(self->args, key);
+}
 void json_callback_insert(struct json_callback *self, const char *key,
                           struct json *val) {
   json_obj_insert(self->args, key, val);

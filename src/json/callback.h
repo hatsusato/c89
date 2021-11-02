@@ -9,6 +9,7 @@ typedef void (*json_callback_t)(struct json_obj *);
 
 struct json_callback *json_callback_new(json_callback_t);
 void json_callback_delete(struct json_callback *);
+struct json *json_callback_get(struct json_callback *, const char *);
 void json_callback_insert(struct json_callback *, const char *, struct json *);
 void json_callback_apply(struct json_callback *);
 
