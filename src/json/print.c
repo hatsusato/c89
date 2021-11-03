@@ -80,7 +80,7 @@ void json_print_recurse(struct printer *self, struct json *json) {
     break;
   }
 }
-void json_print_print(struct json *json) {
+void json_print_stdout(struct json *json) {
   struct printer *printer = printer_new_stdout();
   json_print_recurse(printer, json);
   printer_newline(printer);

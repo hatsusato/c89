@@ -105,5 +105,5 @@ const char *json_get_str(struct json *self) {
   return json_is_str(self) ? json_str_get(json_as_str(self)) : NULL;
 }
 void json_print(struct json *self) {
-  json_print_print(self);
+  json_print_stdout(self);
 }
