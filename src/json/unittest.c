@@ -23,6 +23,7 @@ void json_arr_unittest(void) {
     struct json_str *jstr = json_as_str(elem);
     assert(jstr);
     assert(util_streq(json_str_get(jstr), str[i]));
+    UTIL_UNUSED(jstr);
   }
   util_free(str);
   json_factory_delete(factory);
@@ -47,6 +48,7 @@ void json_obj_unittest(void) {
     struct json_str *jstr = json_as_str(val);
     assert(jstr);
     assert(util_streq(json_str_get(jstr), key[i]));
+    UTIL_UNUSED(jstr);
   }
   assert(!json_obj_has(obj, "0"));
   util_free(key);

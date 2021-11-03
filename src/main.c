@@ -30,5 +30,7 @@ int main(int argc, char *argv[]) {
   do_unittest(argc, argv);
 #endif
   compile();
+  UTIL_UNUSED(argc);
+  UTIL_UNUSED(argv);
   return 0;
 }
