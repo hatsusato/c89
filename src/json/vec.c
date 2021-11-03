@@ -4,6 +4,7 @@
 
 #include "map.h"
 #include "null.h"
+#include "pair.h"
 #include "util/util.h"
 
 struct json_pair {
@@ -18,17 +19,6 @@ struct json_vec {
 
 static const char *json_wrap_key(const char *key) {
   return key ? key : "";
-}
-
-const char *json_pair_key(struct json_pair *self) {
-  return self->key;
-}
-struct json *json_pair_val(struct json_pair *self) {
-  return self->val;
-}
-void json_pair_set(struct json_pair *self, const char *key, struct json *val) {
-  self->key = json_wrap_key(key);
-  self->val = val;
 }
 
 static const align_t align = sizeof(struct json_pair);
@@ -55,7 +45,7 @@ static void json_vec_reserve(struct json_vec *self, index_t capacity) {
 }
 static int json_vec_cmp(const void *lhs, const void *rhs) {
   const struct json_pair *l = lhs, *r = rhs;
-  return util_strcmp(l->key, r->key);
+  return util_strcmp(json_pair_key(l), json_pair_key(r));
 }
 
 struct json_vec *json_vec_new(void) {

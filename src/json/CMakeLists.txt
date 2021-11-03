@@ -8,6 +8,7 @@ target_sources(json PRIVATE
   new.c
   null.c
   obj.c
+  pair.c
   print.c
   str.c
   tag.c

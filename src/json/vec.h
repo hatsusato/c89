@@ -8,10 +8,6 @@ struct json_map;
 struct json_pair;
 struct json_vec;
 
-const char *json_pair_key(struct json_pair *);
-struct json *json_pair_val(struct json_pair *);
-void json_pair_set(struct json_pair *, const char *, struct json *);
-
 struct json_vec *json_vec_new(void);
 void json_vec_delete(struct json_vec *);
 index_t json_vec_count(struct json_vec *);

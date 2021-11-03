@@ -2,6 +2,7 @@
 
 #include "json.h"
 #include "map.h"
+#include "pair.h"
 #include "util/util.h"
 #include "vec.h"
 
