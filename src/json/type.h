@@ -3,11 +3,11 @@
 
 enum json_tag {
   JSON_TAG_NULL,
+  JSON_TAG_ANY,
   JSON_TAG_INT,
   JSON_TAG_STR,
   JSON_TAG_ARR,
-  JSON_TAG_OBJ,
-  JSON_TAG_ANY
+  JSON_TAG_OBJ
 };
 
 struct json {

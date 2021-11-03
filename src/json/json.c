@@ -5,6 +5,9 @@
 #include "type.h"
 #include "util/util.h"
 
+struct json *json_new_any(void *any) {
+  return json_alloc(JSON_TAG_ANY, json_any_new(any));
+}
 struct json *json_new_int(int num) {
   return json_alloc(JSON_TAG_INT, json_int_new(num));
 }
@@ -17,14 +20,14 @@ struct json *json_new_arr(void) {
 struct json *json_new_obj(void) {
   return json_alloc(JSON_TAG_OBJ, json_obj_new());
 }
-struct json *json_new_any(void *any) {
-  return json_alloc(JSON_TAG_ANY, json_any_new(any));
-}
 void json_delete(struct json *self) {
   void *data = json_data(self);
   switch (json_tag(self)) {
   case JSON_TAG_NULL:
     return;
+  case JSON_TAG_ANY:
+    json_any_delete(data);
+    break;
   case JSON_TAG_INT:
     json_int_delete(data);
     break;
@@ -37,9 +40,6 @@ void json_delete(struct json *self) {
   case JSON_TAG_OBJ:
     json_obj_delete(data);
     break;
-  case JSON_TAG_ANY:
-    json_any_delete(data);
-    break;
   default:
     break;
   }
@@ -47,6 +47,9 @@ void json_delete(struct json *self) {
 }
 bool_t json_is_null(struct json *self) {
   return json_tag(self) == JSON_TAG_NULL;
+}
+bool_t json_is_any(struct json *self) {
+  return json_tag(self) == JSON_TAG_ANY;
 }
 bool_t json_is_int(struct json *self) {
   return json_tag(self) == JSON_TAG_INT;
@@ -60,8 +63,9 @@ bool_t json_is_arr(struct json *self) {
 bool_t json_is_obj(struct json *self) {
   return json_tag(self) == JSON_TAG_OBJ;
 }
-bool_t json_is_any(struct json *self) {
-  return json_tag(self) == JSON_TAG_ANY;
+struct json_any *json_as_any(struct json *self) {
+  assert(json_is_any(self));
+  return json_data(self);
 }
 struct json_int *json_as_int(struct json *self) {
   assert(json_is_int(self));
@@ -79,10 +83,6 @@ struct json_obj *json_as_obj(struct json *self) {
   assert(json_is_obj(self));
   return json_data(self);
 }
-struct json_any *json_as_any(struct json *self) {
-  assert(json_is_any(self));
-  return json_data(self);
-}
 index_t json_count(struct json *self) {
   switch (json_tag(self)) {
   case JSON_TAG_NULL:
@@ -98,11 +98,11 @@ index_t json_count(struct json *self) {
 struct json *json_get(struct json *self, const char *key) {
   return json_is_obj(self) ? json_obj_get(json_as_obj(self), key) : json_null();
 }
-const char *json_get_str(struct json *self) {
-  return json_is_str(self) ? json_str_get(json_as_str(self)) : NULL;
-}
 void *json_get_any(struct json *self) {
   return json_is_any(self) ? json_any_get(json_as_any(self)) : NULL;
+}
+const char *json_get_str(struct json *self) {
+  return json_is_str(self) ? json_str_get(json_as_str(self)) : NULL;
 }
 void json_print(struct json *self) {
   json_print_print(self);

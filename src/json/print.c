@@ -60,6 +60,9 @@ void json_print_recurse(struct printer *self, struct json *json) {
   case JSON_TAG_NULL:
     json_print_null(self);
     break;
+  case JSON_TAG_ANY:
+    printer_print(self, "<any>");
+    break;
   case JSON_TAG_INT:
     json_print_int(self, json_as_int(json));
     break;
@@ -71,9 +74,6 @@ void json_print_recurse(struct printer *self, struct json *json) {
     break;
   case JSON_TAG_OBJ:
     json_print_obj(self, json_as_obj(json));
-    break;
-  case JSON_TAG_ANY:
-    printer_print(self, "<any>");
     break;
   default:
     break;
