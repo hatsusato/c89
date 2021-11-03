@@ -9,6 +9,7 @@ target_sources(json PRIVATE
   map.c
   null.c
   obj.c
+  print.c
   printer.c
   str.c
   type.c

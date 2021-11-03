@@ -1,5 +1,6 @@
 #include "json.h"
 
+#include "print.h"
 #include "printer.h"
 #include "type.h"
 #include "util/util.h"
@@ -104,5 +105,5 @@ void *json_get_any(struct json *self) {
   return json_is_any(self) ? json_any_get(json_as_any(self)) : NULL;
 }
 void json_print(struct json *self) {
-  json_printer_print(self);
+  json_print_print(self);
 }
