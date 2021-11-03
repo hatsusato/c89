@@ -1,8 +1,18 @@
 #include "new.h"
 
 #include "json.h"
-#include "tag.h"
 #include "type.h"
+#include "util/util.h"
+
+static struct json *json_alloc(enum json_tag tag, void *data) {
+  struct json *self = util_malloc(sizeof(struct json));
+  self->tag = tag;
+  self->data = data;
+  return self;
+}
+static void json_free(struct json *self) {
+  util_free(self);
+}
 
 struct json *json_new_int(int num) {
   return json_alloc(JSON_TAG_INT, json_int_new(num));
