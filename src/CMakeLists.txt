@@ -19,14 +19,12 @@ target_sources(unittest PRIVATE
   unittest.c
   array/unittest.c
   json/unittest.c
-  set/unittest.c
   vec/unittest.c
   )
 target_link_libraries(unittest PRIVATE
   array
   json
   options
-  set
   util
   vec
   )
@@ -35,6 +33,5 @@ add_subdirectory(array)
 add_subdirectory(json)
 add_subdirectory(printer)
 add_subdirectory(scanner)
-add_subdirectory(set)
 add_subdirectory(util)
 add_subdirectory(vec)
