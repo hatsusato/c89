@@ -19,7 +19,6 @@ add_library(unittest STATIC)
 target_sources(unittest PRIVATE
   unittest.c
   array/unittest.c
-  cell/unittest.c
   dict/unittest.c
   json/unittest.c
   pool/unittest.c
@@ -28,7 +27,6 @@ target_sources(unittest PRIVATE
   )
 target_link_libraries(unittest PRIVATE
   array
-  cell
   dict
   json
   options
@@ -39,7 +37,6 @@ target_link_libraries(unittest PRIVATE
   )
 
 add_subdirectory(array)
-add_subdirectory(cell)
 add_subdirectory(dict)
 add_subdirectory(json)
 add_subdirectory(pool)
