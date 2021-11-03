@@ -93,13 +93,18 @@ static void scanner_collect_typedef(struct json_visitor *visitor,
 }
 void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
   struct json_visitor visitor;
-  bool_t found = false;
-  visitor.visitor = scanner_find_typedef;
-  visitor.extra = &found;
-  json_visitor_visit(&visitor, json_get(decl, SYMBOL_DECLARATION_SPECIFIERS));
-  if (found) {
-    visitor.visitor = scanner_collect_typedef;
-    visitor.extra = json_as_obj(self->typedefs);
-    json_visitor_visit(&visitor, json_get(decl, SYMBOL_INIT_DECLARATOR_LIST));
+  if (json_is_obj(decl)) {
+    struct json_obj *obj = json_as_obj(decl);
+    struct json *specs = json_obj_get(obj, SYMBOL_DECLARATION_SPECIFIERS);
+    bool_t found = false;
+    visitor.visitor = scanner_find_typedef;
+    visitor.extra = &found;
+    json_visitor_visit(&visitor, specs);
+    if (found) {
+      struct json *list = json_obj_get(obj, SYMBOL_INIT_DECLARATOR_LIST);
+      visitor.visitor = scanner_collect_typedef;
+      visitor.extra = json_as_obj(self->typedefs);
+      json_visitor_visit(&visitor, list);
+    }
   }
 }
