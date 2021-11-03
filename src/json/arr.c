@@ -2,7 +2,6 @@
 
 #include "map.h"
 #include "null.h"
-#include "printer.h"
 #include "util/util.h"
 #include "vec.h"
 
@@ -35,22 +34,4 @@ void json_arr_foreach(struct json_arr *self, struct json_map *map) {
 }
 void json_arr_map(struct json_arr *self, struct json_closure *map) {
   json_vec_map(self->vec, map);
-}
-static void json_arr_print_map(struct json_map *map) {
-  struct json_printer *printer = map->extra;
-  json_printer_comma(printer);
-  json_printer_newline(printer);
-  json_printer_recurse(printer, map->val);
-}
-void json_arr_print(struct json_arr *self, struct json_printer *printer) {
-  json_printer_open(printer, "[");
-  if (0 < json_arr_count(self)) {
-    struct json_map map;
-    map.map = json_arr_print_map;
-    map.extra = printer;
-    json_printer_init(printer);
-    json_arr_foreach(self, &map);
-    json_printer_newline(printer);
-  }
-  json_printer_close(printer, "]");
 }

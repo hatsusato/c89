@@ -1,12 +1,9 @@
 #include "null.h"
 
-#include "printer.h"
 #include "type.h"
+#include "util/type.h"
 
 struct json *json_null(void) {
   static struct json null = {JSON_TAG_NULL, NULL};
   return &null;
-}
-void json_null_print(struct json_printer *printer) {
-  json_printer_str(printer, "null");
 }

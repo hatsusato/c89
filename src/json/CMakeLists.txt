@@ -10,7 +10,6 @@ target_sources(json PRIVATE
   null.c
   obj.c
   print.c
-  printer.c
   str.c
   type.c
   unittest.c
