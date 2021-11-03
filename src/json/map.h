@@ -1,15 +1,19 @@
 #ifndef INCLUDE_GUARD_B3786200_8182_4167_B88A_47D1C9AAB284
 #define INCLUDE_GUARD_B3786200_8182_4167_B88A_47D1C9AAB284
 
-struct json;
+#include "util/type.h"
 
-typedef void (*json_map_t)(const char *, struct json *, void *);
+struct json;
+struct json_map;
+
+typedef void (*json_map_t)(struct json_map *);
 
 struct json_map {
   json_map_t map;
+  index_t index;
+  const char *key;
+  struct json *val;
   void *extra;
 };
-
-void json_map_apply(struct json_map *, const char *, struct json *);
 
 #endif /* INCLUDE_GUARD_B3786200_8182_4167_B88A_47D1C9AAB284 */

@@ -13,22 +13,19 @@ struct json_visitor {
 };
 
 static void json_visitor_recurse(struct json_visitor *, struct json *);
-static void json_visitor_visit_obj(const char *key, struct json *val,
-                                   void *extra) {
-  struct json_visitor *visitor = extra;
-  if (util_streq(visitor->key, key)) {
+static void json_visitor_visit_obj(struct json_map *map) {
+  struct json_visitor *visitor = map->extra;
+  if (util_streq(visitor->key, map->key)) {
     visitor->result = NULL;
-    visitor->visitor(val, visitor->extra);
+    visitor->visitor(map->val, visitor->extra);
     if (visitor->result) {
-      json_obj_insert(visitor->parent, key, visitor->result);
+      json_obj_insert(visitor->parent, map->key, visitor->result);
     }
   }
-  json_visitor_recurse(visitor, val);
+  json_visitor_recurse(visitor, map->val);
 }
-static void json_visitor_visit_arr(const char *key, struct json *val,
-                                   void *extra) {
-  json_visitor_recurse(extra, val);
-  UTIL_UNUSED(key);
+static void json_visitor_visit_arr(struct json_map *map) {
+  json_visitor_recurse(map->extra, map->val);
 }
 static void json_visitor_recurse(struct json_visitor *self, struct json *json) {
   if (json_is_obj(json)) {
