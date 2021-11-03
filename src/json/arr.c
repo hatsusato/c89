@@ -32,6 +32,3 @@ void json_arr_foreach(struct json_arr *self, struct json_map *map) {
   map->is_obj = false;
   json_vec_foreach(self->vec, map);
 }
-void json_arr_map(struct json_arr *self, struct json_closure *map) {
-  json_vec_map(self->vec, map);
-}

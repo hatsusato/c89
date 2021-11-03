@@ -57,6 +57,3 @@ void json_obj_foreach(struct json_obj *self, struct json_map *map) {
   map->is_obj = true;
   json_vec_foreach(self->vec, map);
 }
-void json_obj_map(struct json_obj *self, struct json_closure *map) {
-  json_vec_map(self->vec, map);
-}
