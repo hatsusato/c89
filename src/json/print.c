@@ -1,16 +1,17 @@
 #include "print.h"
 
-#include "closure.h"
 #include "json.h"
 #include "map.h"
 #include "printer/printer.h"
 #include "type.h"
-#include "util/util.h"
 
 void json_print_recurse(struct printer *self, struct json *);
 
 static void json_print_null(struct printer *self) {
   printer_print(self, "null");
+}
+static void json_print_any(struct printer *self) {
+  printer_print(self, "<any>");
 }
 static void json_print_int(struct printer *self, struct json_int *num) {
   printer_print(self, "%d", json_int_get(num));
@@ -61,7 +62,7 @@ void json_print_recurse(struct printer *self, struct json *json) {
     json_print_null(self);
     break;
   case JSON_TAG_ANY:
-    printer_print(self, "<any>");
+    json_print_any(self);
     break;
   case JSON_TAG_INT:
     json_print_int(self, json_as_int(json));
