@@ -3,8 +3,13 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "type.h"
 #include "util/util.h"
+
+struct printer {
+  FILE *fp;
+  index_t indent;
+  bool_t newline;
+};
 
 static void printer_shift(struct printer *self) {
   if (self->newline) {
