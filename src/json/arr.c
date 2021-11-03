@@ -15,8 +15,8 @@ struct json_arr *json_arr_new(void) {
   self->vec = json_vec_new();
   return self;
 }
-void json_arr_delete(struct json_arr *self) {
-  json_vec_delete(self->vec);
+void json_arr_del(struct json_arr *self) {
+  json_vec_del(self->vec);
   util_free(self);
 }
 index_t json_arr_count(struct json_arr *self) {

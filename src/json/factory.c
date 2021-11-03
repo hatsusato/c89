@@ -15,7 +15,7 @@ static void json_factory_free(struct json_map *map) {
   if (map->is_obj) {
     util_free((void *)map->key);
   } else {
-    json_delete(map->val);
+    json_del(map->val);
   }
 }
 
@@ -26,13 +26,13 @@ struct json_factory *json_factory_new(void) {
   json_obj_sort(self->symbol);
   return self;
 }
-void json_factory_delete(struct json_factory *self) {
+void json_factory_del(struct json_factory *self) {
   struct json_map map;
   map.map = json_factory_free;
   json_arr_foreach(self->pool, &map);
   json_obj_foreach(self->symbol, &map);
-  json_arr_delete(self->pool);
-  json_obj_delete(self->symbol);
+  json_arr_del(self->pool);
+  json_obj_del(self->symbol);
   util_free(self);
 }
 const char *json_factory_symbol(struct json_factory *self, const char *symbol) {

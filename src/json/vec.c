@@ -40,7 +40,7 @@ struct json_vec *json_vec_new(void) {
   self->count = self->capacity = 0;
   return self;
 }
-void json_vec_delete(struct json_vec *self) {
+void json_vec_del(struct json_vec *self) {
   json_pair_free(self->base);
   util_free(self);
 }

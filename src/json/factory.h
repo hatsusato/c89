@@ -5,7 +5,7 @@ struct json;
 struct json_factory;
 
 struct json_factory *json_factory_new(void);
-void json_factory_delete(struct json_factory *);
+void json_factory_del(struct json_factory *);
 const char *json_factory_symbol(struct json_factory *, const char *);
 struct json *json_factory_int(struct json_factory *, int);
 struct json *json_factory_str(struct json_factory *, const char *);

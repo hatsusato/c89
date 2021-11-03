@@ -4,7 +4,7 @@
 struct json_int;
 
 struct json_int *json_int_new(int);
-void json_int_delete(struct json_int *);
+void json_int_del(struct json_int *);
 int json_int_get(struct json_int *);
 void json_int_set(struct json_int *, int);
 

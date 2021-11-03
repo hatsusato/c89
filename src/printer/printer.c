@@ -33,7 +33,7 @@ struct printer *printer_new_stdout(void) {
 struct printer *printer_new_stderr(void) {
   return printer_new(stderr);
 }
-void printer_delete(struct printer *self) {
+void printer_del(struct printer *self) {
   util_free(self);
 }
 void printer_print(struct printer *self, const char *format, ...) {

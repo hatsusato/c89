@@ -19,8 +19,8 @@ YYSCAN_EXTRA scanner_new(struct json_factory *factory) {
   self->top = json_null();
   return self;
 }
-void scanner_delete(YYSCAN_EXTRA self) {
-  json_obj_delete(self->typedefs);
+void scanner_del(YYSCAN_EXTRA self) {
+  json_obj_del(self->typedefs);
   util_free(self);
 }
 YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA self, const char *token) {

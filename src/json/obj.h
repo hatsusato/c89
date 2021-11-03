@@ -9,7 +9,7 @@ struct json_obj;
 struct json_pair;
 
 struct json_obj *json_obj_new(void);
-void json_obj_delete(struct json_obj *);
+void json_obj_del(struct json_obj *);
 index_t json_obj_count(struct json_obj *);
 void json_obj_insert(struct json_obj *, const char *, struct json *);
 struct json *json_obj_get(struct json_obj *, const char *);

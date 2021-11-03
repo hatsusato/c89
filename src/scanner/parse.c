@@ -8,6 +8,6 @@ struct json *scanner_parse(struct json_factory *factory) {
   YYSCAN_EXTRA scanner = scanner_new(factory);
   yyscan_parse(scanner);
   top = scanner_get_top(scanner);
-  scanner_delete(scanner);
+  scanner_del(scanner);
   return top;
 }

@@ -26,7 +26,7 @@ void json_arr_unittest(void) {
     UTIL_UNUSED(jstr);
   }
   util_free(str);
-  json_factory_delete(factory);
+  json_factory_del(factory);
 }
 
 void json_obj_unittest(void) {
@@ -52,7 +52,7 @@ void json_obj_unittest(void) {
   }
   assert(!json_obj_has(obj, "0"));
   util_free(key);
-  json_factory_delete(factory);
+  json_factory_del(factory);
 }
 
 void json_unittest(void) {

@@ -6,7 +6,7 @@
 struct json_factory;
 
 YYSCAN_EXTRA scanner_new(struct json_factory *);
-void scanner_delete(YYSCAN_EXTRA);
+void scanner_del(YYSCAN_EXTRA);
 YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA, const char *);
 YYSCAN_TYPE scanner_json_str(YYSCAN_EXTRA, const char *);
 YYSCAN_TYPE scanner_json_arr(YYSCAN_EXTRA);

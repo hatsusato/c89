@@ -82,5 +82,5 @@ void json_print_stdout(struct json *json) {
   struct printer *printer = printer_new_stdout();
   json_print_json(printer, json);
   printer_newline(printer);
-  printer_delete(printer);
+  printer_del(printer);
 }

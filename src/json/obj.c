@@ -17,8 +17,8 @@ struct json_obj *json_obj_new(void) {
   self->sorted = false;
   return self;
 }
-void json_obj_delete(struct json_obj *self) {
-  json_vec_delete(self->vec);
+void json_obj_del(struct json_obj *self) {
+  json_vec_del(self->vec);
   util_free(self);
 }
 index_t json_obj_count(struct json_obj *self) {

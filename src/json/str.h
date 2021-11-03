@@ -4,7 +4,7 @@
 struct json_str;
 
 struct json_str *json_str_new(const char *);
-void json_str_delete(struct json_str *);
+void json_str_del(struct json_str *);
 const char *json_str_get(struct json_str *);
 void json_str_set(struct json_str *, const char *);
 

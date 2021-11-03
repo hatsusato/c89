@@ -21,7 +21,7 @@ void compile(void) {
   } else {
     json_print(json);
   }
-  json_factory_delete(factory);
+  json_factory_del(factory);
 }
 
 int main(int argc, char *argv[]) {

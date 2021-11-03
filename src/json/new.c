@@ -26,22 +26,22 @@ struct json *json_new_arr(void) {
 struct json *json_new_obj(void) {
   return json_alloc(JSON_TAG_OBJ, json_obj_new());
 }
-void json_delete(struct json *self) {
+void json_del(struct json *self) {
   void *data = json_data(self);
   switch (json_tag(self)) {
   case JSON_TAG_NULL:
     return;
   case JSON_TAG_INT:
-    json_int_delete(data);
+    json_int_del(data);
     break;
   case JSON_TAG_STR:
-    json_str_delete(data);
+    json_str_del(data);
     break;
   case JSON_TAG_ARR:
-    json_arr_delete(data);
+    json_arr_del(data);
     break;
   case JSON_TAG_OBJ:
-    json_obj_delete(data);
+    json_obj_del(data);
     break;
   default:
     break;

@@ -11,7 +11,7 @@ static yyscan_t yyscan_new(YYSCAN_EXTRA scanner) {
   }
   return NULL;
 }
-static void yyscan_delete(yyscan_t self) {
+static void yyscan_del(yyscan_t self) {
   if (self) {
     yylex_destroy(self);
   }
@@ -26,7 +26,7 @@ void yyscan_parse(YYSCAN_EXTRA scanner) {
   if (self) {
     yyparse(self);
   }
-  yyscan_delete(self);
+  yyscan_del(self);
 }
 int yyscan_is_typedef(yyscan_t self, const char *symbol) {
   return scanner_is_typedef(yyget_extra(self), symbol);
