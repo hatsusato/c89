@@ -18,14 +18,12 @@ add_library(unittest STATIC)
 target_sources(unittest PRIVATE
   unittest.c
   array/unittest.c
-  dict/unittest.c
   json/unittest.c
   set/unittest.c
   vec/unittest.c
   )
 target_link_libraries(unittest PRIVATE
   array
-  dict
   json
   options
   set
@@ -34,7 +32,6 @@ target_link_libraries(unittest PRIVATE
   )
 
 add_subdirectory(array)
-add_subdirectory(dict)
 add_subdirectory(json)
 add_subdirectory(printer)
 add_subdirectory(scanner)
