@@ -59,12 +59,13 @@ struct json_pair *json_vec_at(struct json_vec *self, index_t index) {
              : NULL;
 }
 void json_vec_sort(struct json_vec *self) {
-  if (self->base) {
+  if (1 < self->count) {
     json_pair_sort(self->base, self->count);
   }
 }
 struct json_pair *json_vec_search(struct json_vec *self, const char *key) {
-  return self->base ? json_pair_search(self->base, self->count, key) : NULL;
+  return 0 < self->count ? json_pair_search(self->base, self->count, key)
+                         : NULL;
 }
 struct json_pair *json_vec_find(struct json_vec *self, const char *key) {
   index_t i;
