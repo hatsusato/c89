@@ -82,27 +82,6 @@ struct json_obj *json_as_obj(struct json *self) {
   assert(json_is_obj(self));
   return json_data(self);
 }
-index_t json_count(struct json *self) {
-  switch (json_tag(self)) {
-  case JSON_TAG_NULL:
-    return 0;
-  case JSON_TAG_ARR:
-    return json_arr_count(json_as_arr(self));
-  case JSON_TAG_OBJ:
-    return json_obj_count(json_as_obj(self));
-  default:
-    return 1;
-  }
-}
-struct json *json_get(struct json *self, const char *key) {
-  return json_is_obj(self) ? json_obj_get(json_as_obj(self), key) : json_null();
-}
-void *json_get_any(struct json *self) {
-  return json_is_any(self) ? json_any_get(json_as_any(self)) : NULL;
-}
-const char *json_get_str(struct json *self) {
-  return json_is_str(self) ? json_str_get(json_as_str(self)) : NULL;
-}
 void json_print(struct json *self) {
   json_print_stdout(self);
 }
