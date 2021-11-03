@@ -30,5 +30,5 @@ void json_closure_insert(struct json_closure *self, const char *key,
   json_obj_insert(json_as_obj(self->args), key, val);
 }
 void json_closure_apply(struct json_closure *self) {
-  self->closure(self->args);
+  self->closure(self);
 }

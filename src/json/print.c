@@ -17,7 +17,8 @@ static void json_print_int(struct printer *self, struct json_int *num) {
 static void json_print_str(struct printer *self, struct json_str *str) {
   printer_print(self, "\"%s\"", json_str_get(str));
 }
-static void json_print_arr_map(struct json *args) {
+static void json_print_arr_map(struct json_closure *closure) {
+  struct json *args = json_closure_args(closure);
   struct json *printer = json_get(args, "printer");
   struct json *index = json_get(args, "index");
   struct json *val = json_get(args, "val");
@@ -47,7 +48,8 @@ static void json_print_arr(struct printer *self, struct json_arr *arr) {
   printer_indent(self, -2);
   printer_print(self, "]");
 }
-static void json_print_obj_map(struct json *args) {
+static void json_print_obj_map(struct json_closure *closure) {
+  struct json *args = json_closure_args(closure);
   struct json *printer = json_get(args, "printer");
   struct json *index = json_get(args, "index");
   struct json *key = json_get(args, "key");

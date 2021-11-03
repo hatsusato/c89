@@ -4,7 +4,7 @@
 struct json;
 struct json_closure;
 
-typedef void (*json_closure_t)(struct json *);
+typedef void (*json_closure_t)(struct json_closure *);
 
 struct json_closure *json_closure_new(json_closure_t);
 void json_closure_delete(struct json_closure *);
