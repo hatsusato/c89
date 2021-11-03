@@ -5,7 +5,6 @@ target_sources(main PRIVATE
 target_link_libraries(main PRIVATE
   json
   options
-  pool
   scanner
   util
   $<$<CONFIG:Debug>:unittest>
@@ -21,7 +20,6 @@ target_sources(unittest PRIVATE
   array/unittest.c
   dict/unittest.c
   json/unittest.c
-  pool/unittest.c
   set/unittest.c
   vec/unittest.c
   )
@@ -30,7 +28,6 @@ target_link_libraries(unittest PRIVATE
   dict
   json
   options
-  pool
   set
   util
   vec
@@ -39,7 +36,6 @@ target_link_libraries(unittest PRIVATE
 add_subdirectory(array)
 add_subdirectory(dict)
 add_subdirectory(json)
-add_subdirectory(pool)
 add_subdirectory(printer)
 add_subdirectory(scanner)
 add_subdirectory(set)

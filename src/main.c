@@ -1,8 +1,5 @@
-#include <stdio.h>
-
 #include "json/factory.h"
 #include "json/json.h"
-#include "pool/pool.h"
 #include "scanner/parse.h"
 #include "unittest.h"
 #include "util/util.h"
