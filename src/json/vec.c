@@ -27,7 +27,7 @@ static void json_vec_reserve(struct json_vec *self, index_t capacity) {
   if (self->capacity < capacity) {
     struct json_vec tmp;
     capacity = json_vec_capacity_ceil(capacity);
-    tmp.base = util_malloc_array(align, capacity);
+    tmp.base = json_pair_alloc(capacity);
     tmp.count = self->count;
     tmp.capacity = capacity;
     assert(self->count <= tmp.capacity);
@@ -44,7 +44,7 @@ struct json_vec *json_vec_new(void) {
   return self;
 }
 void json_vec_delete(struct json_vec *self) {
-  util_free(self->base);
+  json_pair_free(self->base);
   util_free(self);
 }
 index_t json_vec_count(struct json_vec *self) {

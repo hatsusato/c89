@@ -15,6 +15,13 @@ static int json_pair_cmp(const void *lhs, const void *rhs) {
   return util_strcmp(l->key, r->key);
 }
 
+struct json_pair *json_pair_alloc(index_t count) {
+  struct json_pair *self = util_malloc_array(sizeof(struct json_pair), count);
+  return self;
+}
+void json_pair_free(struct json_pair *self) {
+  util_free(self);
+}
 const char *json_pair_key(const struct json_pair *self) {
   return self->key;
 }

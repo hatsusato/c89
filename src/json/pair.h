@@ -6,6 +6,8 @@
 struct json;
 struct json_pair;
 
+struct json_pair *json_pair_alloc(index_t);
+void json_pair_free(struct json_pair *);
 const char *json_pair_key(const struct json_pair *);
 struct json *json_pair_val(const struct json_pair *);
 void json_pair_set(struct json_pair *, const char *, struct json *);
