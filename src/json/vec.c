@@ -17,17 +17,20 @@ static index_t json_vec_capacity_ceil(index_t capacity) {
   }
   return ceil;
 }
+static void json_vec_init(struct json_vec *self, const struct json_vec *other,
+                          index_t capacity) {
+  assert(other->count <= capacity);
+  self->base = json_pair_alloc(capacity);
+  self->count = other->count;
+  self->capacity = capacity;
+  json_pair_copy(self->base, other->base, other->count);
+}
 static void json_vec_reserve(struct json_vec *self, index_t capacity) {
   if (self->capacity < capacity) {
     struct json_vec tmp;
-    capacity = json_vec_capacity_ceil(capacity);
-    tmp.base = json_pair_alloc(capacity);
-    tmp.count = self->count;
-    tmp.capacity = capacity;
-    assert(self->count <= tmp.capacity);
-    json_pair_copy(tmp.base, self->base, self->count);
+    json_vec_init(&tmp, self, json_vec_capacity_ceil(capacity));
     UTIL_SWAP(struct json_vec, self, &tmp);
-    util_free(tmp.base);
+    json_pair_free(tmp.base);
   }
 }
 
