@@ -8,6 +8,7 @@ typedef void (*json_closure_t)(struct json *);
 
 struct json_closure *json_closure_new(json_closure_t);
 void json_closure_delete(struct json_closure *);
+struct json *json_closure_args(struct json_closure *);
 struct json *json_closure_get(struct json_closure *, const char *);
 void json_closure_insert(struct json_closure *, const char *, struct json *);
 void json_closure_apply(struct json_closure *);

@@ -18,6 +18,9 @@ void json_closure_delete(struct json_closure *self) {
   json_delete(self->args);
   util_free(self);
 }
+struct json *json_closure_args(struct json_closure *self) {
+  return self->args;
+}
 struct json *json_closure_get(struct json_closure *self, const char *key) {
   return json_get(self->args, key);
 }
