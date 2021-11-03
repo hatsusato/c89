@@ -4,9 +4,6 @@
 #include "type.h"
 #include "util/util.h"
 
-struct json *json_new_any(void *any) {
-  return json_alloc(JSON_TAG_ANY, json_any_new(any));
-}
 struct json *json_new_int(int num) {
   return json_alloc(JSON_TAG_INT, json_int_new(num));
 }
@@ -24,9 +21,6 @@ void json_delete(struct json *self) {
   switch (json_tag(self)) {
   case JSON_TAG_NULL:
     return;
-  case JSON_TAG_ANY:
-    json_any_delete(data);
-    break;
   case JSON_TAG_INT:
     json_int_delete(data);
     break;
@@ -47,9 +41,6 @@ void json_delete(struct json *self) {
 bool_t json_is_null(struct json *self) {
   return json_tag(self) == JSON_TAG_NULL;
 }
-bool_t json_is_any(struct json *self) {
-  return json_tag(self) == JSON_TAG_ANY;
-}
 bool_t json_is_int(struct json *self) {
   return json_tag(self) == JSON_TAG_INT;
 }
@@ -61,10 +52,6 @@ bool_t json_is_arr(struct json *self) {
 }
 bool_t json_is_obj(struct json *self) {
   return json_tag(self) == JSON_TAG_OBJ;
-}
-struct json_any *json_as_any(struct json *self) {
-  assert(json_is_any(self));
-  return json_data(self);
 }
 struct json_int *json_as_int(struct json *self) {
   assert(json_is_int(self));

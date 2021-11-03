@@ -3,7 +3,6 @@
 
 enum json_tag {
   JSON_TAG_NULL,
-  JSON_TAG_ANY,
   JSON_TAG_INT,
   JSON_TAG_STR,
   JSON_TAG_ARR,

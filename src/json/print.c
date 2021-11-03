@@ -10,9 +10,6 @@ void json_print_recurse(struct printer *self, struct json *);
 static void json_print_null(struct printer *self) {
   printer_print(self, "null");
 }
-static void json_print_any(struct printer *self) {
-  printer_print(self, "<any>");
-}
 static void json_print_int(struct printer *self, struct json_int *num) {
   printer_print(self, "%d", json_int_get(num));
 }
@@ -60,9 +57,6 @@ void json_print_recurse(struct printer *self, struct json *json) {
   switch (json_tag(json)) {
   case JSON_TAG_NULL:
     json_print_null(self);
-    break;
-  case JSON_TAG_ANY:
-    json_print_any(self);
     break;
   case JSON_TAG_INT:
     json_print_int(self, json_as_int(json));
