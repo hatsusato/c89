@@ -62,10 +62,8 @@ index_t json_vec_count(struct json_vec *self) {
   return self->count;
 }
 void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
-  struct json_pair pair;
-  json_pair_set(&pair, json_wrap_key(key), val);
   json_vec_reserve(self, self->count + 1);
-  util_memcpy(self->base + self->count, &pair, 1, align);
+  json_pair_set(self->base + self->count, json_wrap_key(key), val);
   self->count++;
 }
 struct json_pair *json_vec_at(struct json_vec *self, index_t index) {
