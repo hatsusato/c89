@@ -17,17 +17,14 @@ set_target_properties(main PROPERTIES
 add_library(unittest STATIC)
 target_sources(unittest PRIVATE
   unittest.c
-  array/unittest.c
   json/unittest.c
   )
 target_link_libraries(unittest PRIVATE
-  array
   json
   options
   util
   )
 
-add_subdirectory(array)
 add_subdirectory(json)
 add_subdirectory(printer)
 add_subdirectory(scanner)
