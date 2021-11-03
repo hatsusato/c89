@@ -5,6 +5,7 @@ target_sources(json PRIVATE
   int.c
   json.c
   map.c
+  new.c
   null.c
   obj.c
   print.c

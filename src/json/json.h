@@ -9,11 +9,6 @@ struct json_int;
 struct json_obj;
 struct json_str;
 
-struct json *json_new_int(int);
-struct json *json_new_str(const char *);
-struct json *json_new_arr(void);
-struct json *json_new_obj(void);
-void json_delete(struct json *);
 bool_t json_is_null(struct json *);
 bool_t json_is_int(struct json *);
 bool_t json_is_str(struct json *);
@@ -27,6 +22,7 @@ void json_print(struct json *);
 
 #include "json/arr.h"
 #include "json/int.h"
+#include "json/new.h"
 #include "json/null.h"
 #include "json/obj.h"
 #include "json/str.h"

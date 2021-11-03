@@ -11,6 +11,3 @@ struct json *json_alloc(enum json_tag tag, void *data) {
 void json_free(struct json *self) {
   util_free(self);
 }
-void *json_data(struct json *self) {
-  return self->data;
-}
