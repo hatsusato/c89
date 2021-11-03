@@ -1,7 +1,7 @@
 #include "factory.h"
 
-#include "closure.h"
 #include "json.h"
+#include "map.h"
 #include "util/util.h"
 #include "vec.h"
 
@@ -10,15 +10,12 @@ struct json_factory {
   struct json_arr *pool;
 };
 
-static void json_factory_free(struct json_closure *closure) {
-  struct json *args = json_closure_args(closure);
-  struct json *key = json_get(args, "key");
-  struct json *val = json_get(args, "val");
-  if (json_is_str(key)) {
-    struct json_str *str = json_as_str(key);
-    util_free((void *)json_str_get(str));
+static void json_factory_free(struct json_map *map) {
+  if (map->is_obj) {
+    util_free((void *)map->key);
+  } else {
+    json_delete(map->val);
   }
-  json_delete(val);
 }
 
 struct json_factory *json_factory_new(void) {
@@ -29,16 +26,13 @@ struct json_factory *json_factory_new(void) {
   return self;
 }
 void json_factory_delete(struct json_factory *self) {
-  struct json_closure *map = json_closure_new(json_factory_free);
-  struct json *key = json_new_str("");
-  json_arr_map(self->pool, map);
-  json_closure_insert(map, "key", key);
-  json_obj_map(self->symbol, map);
+  struct json_map map;
+  map.map = json_factory_free;
+  json_arr_foreach(self->pool, &map);
+  json_obj_foreach(self->symbol, &map);
   json_arr_delete(self->pool);
   json_obj_delete(self->symbol);
   util_free(self);
-  json_delete(key);
-  json_closure_delete(map);
 }
 const char *json_factory_symbol(struct json_factory *self, const char *symbol) {
   struct json_pair *pair = json_obj_find(self->symbol, symbol);
