@@ -1,3 +1,4 @@
+#include "convert/convert.h"
 #include "json/factory.h"
 #include "json/json.h"
 #include "scanner/parse.h"
@@ -16,6 +17,7 @@ bool_t is_unittest(int argc, char *argv[]) {
 void compile(void) {
   struct json_factory *factory = json_factory_new();
   struct json *json = scanner_parse(factory);
+  convert(factory, json);
   if (json_is_null(json)) {
     util_error("ERROR: failed to parse");
   } else {
