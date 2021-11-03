@@ -3,7 +3,7 @@
 #include "json.h"
 #include "map.h"
 #include "printer/printer.h"
-#include "type.h"
+#include "tag.h"
 
 void json_print_recurse(struct printer *self, struct json *);
 

@@ -14,6 +14,3 @@ void json_free(struct json *self) {
 void *json_data(struct json *self) {
   return self->data;
 }
-enum json_tag json_tag(struct json *self) {
-  return self->tag;
-}

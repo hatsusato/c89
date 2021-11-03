@@ -9,6 +9,7 @@ target_sources(json PRIVATE
   obj.c
   print.c
   str.c
+  tag.c
   type.c
   unittest.c
   vec.c
