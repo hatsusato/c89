@@ -4,15 +4,16 @@
 #include "unittest.h"
 #include "util/util.h"
 
-bool_t is_unittest(int argc, char *argv[]) {
+#ifndef NDEBUG
+void do_unittest(int argc, char *argv[]) {
   index_t i;
   for (i = 1; i < argc; i++) {
     if (util_streq(argv[i], "--unittest")) {
-      return true;
+      unittest();
     }
   }
-  return false;
 }
+#endif
 void compile(void) {
   struct json_factory *factory = json_factory_new();
   struct json *json = scanner_parse(factory);
@@ -25,10 +26,9 @@ void compile(void) {
 }
 
 int main(int argc, char *argv[]) {
-  if (is_unittest(argc, argv)) {
-    unittest();
-  } else {
-    compile();
-  }
+#ifndef NDEBUG
+  do_unittest(argc, argv);
+#endif
+  compile();
   return 0;
 }
