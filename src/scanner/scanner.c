@@ -8,19 +8,19 @@
 
 struct scanner {
   struct json_factory *factory;
+  struct json_obj *typedefs;
   YYSCAN_TYPE top;
-  struct json *typedefs;
 };
 
 YYSCAN_EXTRA scanner_new(struct json_factory *factory) {
   YYSCAN_EXTRA self = util_malloc(sizeof(struct scanner));
   self->factory = factory;
+  self->typedefs = json_obj_new();
   self->top = json_null();
-  self->typedefs = json_new_obj();
   return self;
 }
 void scanner_delete(YYSCAN_EXTRA self) {
-  json_delete(self->typedefs);
+  json_obj_delete(self->typedefs);
   util_free(self);
 }
 YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA self, const char *token) {
@@ -66,7 +66,7 @@ void scanner_set_top(YYSCAN_EXTRA self, YYSCAN_TYPE top) {
   self->top = top;
 }
 int scanner_is_typedef(YYSCAN_EXTRA self, const char *symbol) {
-  return json_obj_has(json_as_obj(self->typedefs), symbol);
+  return json_obj_has(self->typedefs, symbol);
 }
 static void scanner_find_typedef(struct json_visitor *visitor,
                                  struct json *json) {
@@ -103,7 +103,7 @@ void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
     if (found) {
       struct json *list = json_obj_get(obj, SYMBOL_INIT_DECLARATOR_LIST);
       visitor.visitor = scanner_collect_typedef;
-      visitor.extra = json_as_obj(self->typedefs);
+      visitor.extra = self->typedefs;
       json_visit(&visitor, list);
     }
   }
