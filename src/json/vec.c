@@ -14,7 +14,6 @@ struct json_vec {
   index_t count, capacity;
 };
 
-static const align_t align = sizeof(struct json_pair);
 static index_t json_vec_capacity_ceil(index_t capacity) {
   enum { initial_capacity = 8 };
   index_t ceil = initial_capacity;
@@ -31,7 +30,7 @@ static void json_vec_reserve(struct json_vec *self, index_t capacity) {
     tmp.count = self->count;
     tmp.capacity = capacity;
     assert(self->count <= tmp.capacity);
-    util_memcpy(tmp.base, self->base, self->count, align);
+    json_pair_copy(tmp.base, self->base, self->count);
     UTIL_SWAP(struct json_vec, self, &tmp);
     util_free(tmp.base);
   }

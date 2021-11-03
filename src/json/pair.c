@@ -23,6 +23,10 @@ struct json_pair *json_pair_alloc(index_t count) {
 void json_pair_free(struct json_pair *self) {
   util_free(self);
 }
+void json_pair_copy(struct json_pair *self, const struct json_pair *other,
+                    index_t count) {
+  util_memcpy(self, other, count, align);
+}
 const char *json_pair_key(const struct json_pair *self) {
   return self->key;
 }
