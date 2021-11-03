@@ -30,6 +30,7 @@ void json_arr_push(struct json_arr *self, struct json *val) {
   json_vec_push(self->vec, NULL, val);
 }
 void json_arr_foreach(struct json_arr *self, struct json_map *map) {
+  map->is_obj = false;
   json_vec_foreach(self->vec, map);
 }
 void json_arr_map(struct json_arr *self, struct json_closure *map) {
@@ -44,7 +45,8 @@ static void json_arr_print_map(struct json_map *map) {
 void json_arr_print(struct json_arr *self, struct json_printer *printer) {
   json_printer_open(printer, "[");
   if (0 < json_arr_count(self)) {
-    struct json_map map = {json_arr_print_map, 0, NULL, NULL, NULL};
+    struct json_map map;
+    map.map = json_arr_print_map;
     map.extra = printer;
     json_printer_init(printer);
     json_arr_foreach(self, &map);

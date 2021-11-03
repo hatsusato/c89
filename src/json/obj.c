@@ -55,6 +55,7 @@ void json_obj_sort(struct json_obj *self) {
   json_vec_sort(self->vec);
 }
 void json_obj_foreach(struct json_obj *self, struct json_map *map) {
+  map->is_obj = true;
   json_vec_foreach(self->vec, map);
 }
 void json_obj_map(struct json_obj *self, struct json_closure *map) {
@@ -71,7 +72,8 @@ static void json_obj_print_map(struct json_map *map) {
 void json_obj_print(struct json_obj *obj, struct json_printer *printer) {
   json_printer_open(printer, "{");
   if (0 < json_obj_count(obj)) {
-    struct json_map map = {json_obj_print_map, 0, NULL, NULL, NULL};
+    struct json_map map;
+    map.map = json_obj_print_map;
     map.extra = printer;
     json_printer_init(printer);
     json_obj_foreach(obj, &map);
