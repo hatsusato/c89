@@ -496,10 +496,6 @@ relational-expression
 : shift-expression
 | relational-expression relational-operator shift-expression {
   $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_OBJ();
-  YYSCAN_SET($$, SYMBOL_RELATIONAL_EXPRESSION, $1);
-  YYSCAN_SET($$, SYMBOL_RELATIONAL_OPERATOR, $2);
-  YYSCAN_SET($$, SYMBOL_SHIFT_EXPRESSION, $3);
   $$ = YYSCAN_TAG(SYMBOL_RELATIONAL_EXPRESSION, $$);
 }
 ;
