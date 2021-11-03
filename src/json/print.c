@@ -5,8 +5,7 @@
 #include "printer/printer.h"
 #include "tag.h"
 
-void json_print_recurse(struct printer *self, struct json *);
-
+static void json_print_json(struct printer *self, struct json *);
 static void json_print_null(struct printer *self) {
   printer_print(self, "null");
 }
@@ -25,7 +24,7 @@ static void json_print_map(struct json_map *map) {
   if (map->is_obj) {
     printer_print(self, "\"%s\": ", map->key);
   }
-  json_print_recurse(self, map->val);
+  json_print_json(self, map->val);
 }
 static void json_print_arr(struct printer *self, struct json_arr *arr) {
   printer_print(self, "[");
@@ -53,7 +52,7 @@ static void json_print_obj(struct printer *self, struct json_obj *obj) {
   printer_indent(self, -2);
   printer_print(self, "}");
 }
-void json_print_recurse(struct printer *self, struct json *json) {
+static void json_print_json(struct printer *self, struct json *json) {
   switch (json_tag(json)) {
   case JSON_TAG_NULL:
     json_print_null(self);
@@ -76,7 +75,7 @@ void json_print_recurse(struct printer *self, struct json *json) {
 }
 void json_print_stdout(struct json *json) {
   struct printer *printer = printer_new_stdout();
-  json_print_recurse(printer, json);
+  json_print_json(printer, json);
   printer_newline(printer);
   printer_delete(printer);
 }
