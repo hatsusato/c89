@@ -25,6 +25,9 @@ void json_pair_set(struct json_pair *self, const char *key, struct json *val) {
   self->key = key ? key : "";
   self->val = val;
 }
+void json_pair_sort(struct json_pair *self, index_t count) {
+  qsort(self, count, sizeof(struct json_pair), json_pair_cmp);
+}
 struct json_pair *json_pair_search(struct json_pair *self, index_t count,
                                    const char *key) {
   struct json_pair pair;

@@ -1,7 +1,5 @@
 #include "vec.h"
 
-#include <stdlib.h>
-
 #include "map.h"
 #include "pair.h"
 #include "util/util.h"
@@ -42,10 +40,6 @@ static void json_vec_reserve(struct json_vec *self, index_t capacity) {
     util_free(tmp.base);
   }
 }
-static int json_vec_cmp(const void *lhs, const void *rhs) {
-  const struct json_pair *l = lhs, *r = rhs;
-  return util_strcmp(json_pair_key(l), json_pair_key(r));
-}
 
 struct json_vec *json_vec_new(void) {
   struct json_vec *self = util_malloc(sizeof(struct json_vec));
@@ -71,7 +65,7 @@ struct json_pair *json_vec_at(struct json_vec *self, index_t index) {
 }
 void json_vec_sort(struct json_vec *self) {
   if (self->base) {
-    qsort(self->base, self->count, align, json_vec_cmp);
+    json_pair_sort(self->base, self->count);
   }
 }
 struct json_pair *json_vec_search(struct json_vec *self, const char *key) {
