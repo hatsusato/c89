@@ -99,12 +99,12 @@ void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
     bool_t found = false;
     visitor.visitor = scanner_find_typedef;
     visitor.extra = &found;
-    json_visitor_visit(&visitor, specs);
+    json_visit(&visitor, specs);
     if (found) {
       struct json *list = json_obj_get(obj, SYMBOL_INIT_DECLARATOR_LIST);
       visitor.visitor = scanner_collect_typedef;
       visitor.extra = json_as_obj(self->typedefs);
-      json_visitor_visit(&visitor, list);
+      json_visit(&visitor, list);
     }
   }
 }
