@@ -102,15 +102,10 @@
 #define SYMBOL_UNARY_OPERATOR "unary-operator"
 #define SYMBOL_CAST_EXPRESSION "cast-expression"
 #define SYMBOL_MULTIPLICATIVE_EXPRESSION "multiplicative-expression"
-#define SYMBOL_MULTIPLICATIVE_OPERATOR "multiplicative-operator"
 #define SYMBOL_ADDITIVE_EXPRESSION "additive-expression"
-#define SYMBOL_ADDITIVE_OPERATOR "additive-operator"
 #define SYMBOL_SHIFT_EXPRESSION "shift-expression"
-#define SYMBOL_SHIFT_OPERATOR "shift-operator"
 #define SYMBOL_RELATIONAL_EXPRESSION "relational-expression"
-#define SYMBOL_RELATIONAL_OPERATOR "relational-operator"
 #define SYMBOL_EQUALITY_EXPRESSION "equality-expression"
-#define SYMBOL_EQUALITY_OPERATOR "equality-operator"
 #define SYMBOL_AND_EXPRESSION "and-expression"
 #define SYMBOL_EXCLUSIVE_OR_EXPRESSION "exclusive-or-expression"
 #define SYMBOL_INCLUSIVE_OR_EXPRESSION "inclusive-or-expression"
@@ -118,7 +113,6 @@
 #define SYMBOL_LOGICAL_OR_EXPRESSION "logical-or-expression"
 #define SYMBOL_CONDITIONAL_EXPRESSION "conditional-expression"
 #define SYMBOL_ASSIGNMENT_EXPRESSION "assignment-expression"
-#define SYMBOL_ASSIGNMENT_OPERATOR "assignment-operator"
 #define SYMBOL_EXPRESSION "expression"
 
 /* 6.4 Constant expressions */
@@ -127,7 +121,6 @@
 /* 6.5 Declarations */
 #define SYMBOL_DECLARATION "declaration"
 #define SYMBOL_DECLARATION_SPECIFIERS "declaration-specifiers"
-#define SYMBOL_DECLARATION_SPECIFIER "declaration-specifier"
 #define SYMBOL_INIT_DECLARATOR_LIST "init-declarator-list"
 #define SYMBOL_INIT_DECLARATOR "init-declarator"
 #define SYMBOL_STORAGE_CLASS_SPECIFIER "storage-class-specifier"
