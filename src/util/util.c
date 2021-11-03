@@ -26,7 +26,7 @@ void util_memcpy(void *dst, const void *src, index_t count, align_t align) {
   }
 }
 int util_strcmp(const char *lhs, const char *rhs) {
-  return strcmp(lhs, rhs);
+  return strcmp(lhs ? lhs : "", rhs ? rhs : "");
 }
 bool_t util_streq(const char *lhs, const char *rhs) {
   return lhs && rhs && strcmp(lhs, rhs) == 0;

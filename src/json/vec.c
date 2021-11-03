@@ -71,7 +71,7 @@ struct json_pair *json_vec_find(struct json_vec *self, const char *key) {
   index_t i;
   for (i = 0; i < self->count; i++) {
     struct json_pair *pair = json_pair_at(self->base, i);
-    if (util_streq(key ? key : "", json_pair_key(pair))) {
+    if (util_streq(key, json_pair_key(pair))) {
       return pair;
     }
   }
