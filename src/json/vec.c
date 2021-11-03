@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #include "map.h"
-#include "null.h"
 #include "pair.h"
 #include "util/util.h"
 
@@ -76,12 +75,7 @@ void json_vec_sort(struct json_vec *self) {
   }
 }
 struct json_pair *json_vec_search(struct json_vec *self, const char *key) {
-  if (self->base) {
-    struct json_pair pair;
-    json_pair_set(&pair, json_wrap_key(key), json_null());
-    return bsearch(&pair, self->base, self->count, align, json_vec_cmp);
-  }
-  return NULL;
+  return self->base ? json_pair_search(self->base, self->count, key) : NULL;
 }
 struct json_pair *json_vec_find(struct json_vec *self, const char *key) {
   index_t i;
