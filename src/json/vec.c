@@ -4,11 +4,6 @@
 #include "pair.h"
 #include "util/util.h"
 
-struct json_pair {
-  const char *key;
-  struct json *val;
-};
-
 struct json_vec {
   struct json_pair *base;
   index_t count, capacity;
