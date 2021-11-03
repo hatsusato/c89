@@ -81,7 +81,7 @@ static void scanner_visitor_set_insert(struct json *json, void *extra) {
     json_obj_insert(json_as_obj(extra), json_str_get(str), json_null());
   }
 }
-void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
+void scanner_register_typedef_old(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
   if (json_is_obj(decl)) {
     struct json_obj *obj = json_as_obj(decl);
     struct json *declaration_specifiers =
@@ -96,5 +96,40 @@ void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
                          init_declarator_list, self->typedefs);
     }
     json_delete(extra);
+  }
+}
+static void scanner_find_typedef(struct json_visitor2 *visitor,
+                                 struct json *json) {
+  if (json_is_obj(json) && json_obj_has(json_as_obj(json), SYMBOL_TYPEDEF)) {
+    bool_t *found = visitor->extra;
+    *found = true;
+  }
+}
+static void scanner_collect_typedef(struct json_visitor2 *visitor,
+                                    struct json *json) {
+  if (json_is_obj(json)) {
+    struct json *direct =
+        json_obj_get(json_as_obj(json), SYMBOL_DIRECT_DECLARATOR);
+    if (json_is_obj(direct)) {
+      struct json *identifier =
+          json_obj_get(json_as_obj(direct), SYMBOL_IDENTIFIER);
+      if (json_is_str(identifier)) {
+        const char *symbol = json_str_get(json_as_str(identifier));
+        struct json_obj *typedefs = visitor->extra;
+        json_obj_insert(typedefs, symbol, json_null());
+      }
+    }
+  }
+}
+void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
+  struct json_visitor2 visitor;
+  bool_t found = false;
+  visitor.visitor = scanner_find_typedef;
+  visitor.extra = &found;
+  json_visitor2_visit(&visitor, json_get(decl, SYMBOL_DECLARATION_SPECIFIERS));
+  if (found) {
+    visitor.visitor = scanner_collect_typedef;
+    visitor.extra = json_as_obj(self->typedefs);
+    json_visitor2_visit(&visitor, json_get(decl, SYMBOL_INIT_DECLARATOR_LIST));
   }
 }
