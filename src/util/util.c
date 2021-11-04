@@ -32,9 +32,9 @@ bool_t util_streq(const char *lhs, const char *rhs) {
   return lhs && rhs && strcmp(lhs, rhs) == 0;
 }
 const char *util_strdup(const char *src) {
-  index_t count = 1 + strlen(src);
-  char *dst = util_malloc_array(count, 1);
-  strncpy(dst, src, count);
+  index_t count = strlen(src);
+  char *dst = util_malloc_array(count + 1, 1);
+  util_memcpy(dst, src, count + 1, 1);
   return dst;
 }
 void util_print(const char *format, ...) {
