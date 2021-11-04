@@ -9,24 +9,27 @@
 struct options {
   int argc;
   char **argv;
-  bool_t unittest;
+  bool_t unittest, debug;
 };
 
 static void options_parse(struct options *self) {
   index_t i;
   for (i = 1; i < self->argc; i++) {
-    if (util_streq(self->argv[i], "--unittest")) {
+    const char *opt = self->argv[i];
+    if (util_streq(opt, "--unittest")) {
       self->unittest = true;
+    } else if (util_streq(opt, "--debug")) {
+      self->debug = true;
     }
   }
 }
 void options_init(struct options *self, int argc, char *argv[]) {
   self->argc = argc;
   self->argv = argv;
-  self->unittest = false;
+  self->unittest = self->debug = false;
   options_parse(self);
 }
-void compile(void) {
+void compile(bool_t debug) {
   struct json_factory *factory = json_factory_new();
   struct json *json = scanner_parse(factory);
   if (json_is_null(json)) {
@@ -34,6 +37,9 @@ void compile(void) {
   } else {
     convert(factory, json);
     generate(json);
+    if (debug) {
+      json_print(json);
+    }
   }
   json_factory_del(factory);
 }
@@ -46,7 +52,7 @@ int main(int argc, char *argv[]) {
     unittest();
 #endif
   } else {
-    compile();
+    compile(opt.debug);
   }
   return 0;
 }
