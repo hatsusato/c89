@@ -21,6 +21,7 @@ struct json_obj *json_as_obj(struct json *);
 void json_print(struct json *);
 void json_set(struct json *, const char *, struct json *);
 bool_t json_has(struct json *, const char *);
+struct json *json_get(struct json *, const char *);
 
 #include "json/arr.h"
 #include "json/int.h"
