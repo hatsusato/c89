@@ -12,20 +12,19 @@ struct options {
   bool_t unittest;
 };
 
+static void options_parse(struct options *self) {
+  index_t i;
+  for (i = 1; i < self->argc; i++) {
+    if (util_streq(self->argv[i], "--unittest")) {
+      self->unittest = true;
+    }
+  }
+}
 void options_init(struct options *self, int argc, char *argv[]) {
   self->argc = argc;
   self->argv = argv;
   self->unittest = false;
-}
-
-bool_t is_unittest(int argc, char *argv[]) {
-  index_t i;
-  for (i = 1; i < argc; i++) {
-    if (util_streq(argv[i], "--unittest")) {
-      return true;
-    }
-  }
-  return false;
+  options_parse(self);
 }
 void compile(void) {
   struct json_factory *factory = json_factory_new();
@@ -42,7 +41,7 @@ void compile(void) {
 int main(int argc, char *argv[]) {
   struct options opt;
   options_init(&opt, argc, argv);
-  if (is_unittest(argc, argv)) {
+  if (opt.unittest) {
 #ifndef NDEBUG
     unittest();
 #endif
