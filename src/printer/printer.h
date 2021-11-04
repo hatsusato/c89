@@ -10,6 +10,7 @@ struct printer *printer_new_stdout(void);
 struct printer *printer_new_stderr(void);
 void printer_del(struct printer *);
 void printer_print(struct printer *, const char *, ...);
+void printer_quote(struct printer *, const char *);
 void printer_newline(struct printer *);
 void printer_open(struct printer *, const char *);
 void printer_close(struct printer *, const char *);

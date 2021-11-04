@@ -13,7 +13,7 @@ static void json_print_int(struct printer *self, struct json_int *num) {
   printer_print(self, "%d", json_int_get(num));
 }
 static void json_print_str(struct printer *self, struct json_str *str) {
-  printer_print(self, "\"%s\"", json_str_get(str));
+  printer_quote(self, json_str_get(str));
 }
 static void json_print_map(struct json_map *map) {
   struct printer *self = map->extra;
@@ -22,7 +22,8 @@ static void json_print_map(struct json_map *map) {
   }
   printer_newline(self);
   if (map->is_obj) {
-    printer_print(self, "\"%s\": ", map->key);
+    printer_quote(self, map->key);
+    printer_print(self, ": ");
   }
   json_print_json(self, map->val);
 }

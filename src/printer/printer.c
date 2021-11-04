@@ -46,6 +46,9 @@ void printer_print(struct printer *self, const char *format, ...) {
   }
   self->newline = false;
 }
+void printer_quote(struct printer *self, const char *symbol) {
+  printer_print(self, "\"%s\"", symbol);
+}
 void printer_newline(struct printer *self) {
   if (self->fp) {
     fputc('\n', self->fp);
