@@ -17,7 +17,7 @@
   } while (false)
 
 void *util_malloc(align_t);
-void *util_malloc_array(align_t, index_t);
+void *util_malloc_array(index_t, align_t);
 void util_free(void *);
 void util_swap_impl(size_t, void *, void *, void *);
 void util_memcpy(void *, const void *, index_t, align_t);

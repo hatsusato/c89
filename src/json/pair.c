@@ -17,7 +17,7 @@ static int json_pair_cmp(const void *lhs, const void *rhs) {
 static const align_t align = sizeof(struct json_pair);
 
 struct json_pair *json_pair_alloc(index_t count) {
-  struct json_pair *self = util_malloc_array(align, count);
+  struct json_pair *self = util_malloc_array(count, align);
   return self;
 }
 void json_pair_free(struct json_pair *self) {

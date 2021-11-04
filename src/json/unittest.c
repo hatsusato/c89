@@ -9,7 +9,7 @@ void json_arr_unittest(void) {
   struct json *json = json_factory_arr(factory);
   struct json_arr *arr = json_as_arr(json);
   index_t i, count = 100;
-  char(*str)[2] = util_malloc_array(sizeof(char[2]), count);
+  char(*str)[2] = util_malloc_array(count, sizeof(char[2]));
   for (i = 0; i < count; i++) {
     str[i][0] = 'a' + (i * 100) % 26;
     str[i][1] = 0;
@@ -34,7 +34,7 @@ void json_obj_unittest(void) {
   struct json *json = json_factory_obj(factory);
   struct json_obj *obj = json_as_obj(json);
   index_t i, count = 100;
-  char(*key)[2] = util_malloc_array(sizeof(char[2]), count);
+  char(*key)[2] = util_malloc_array(count, sizeof(char[2]));
   for (i = 0; i < count; i++) {
     key[i][0] = 'a' + (i * 100) % 26;
     key[i][1] = 0;
