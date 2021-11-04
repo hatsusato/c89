@@ -59,3 +59,11 @@ void printer_indent(struct printer *self, index_t indent) {
     self->indent += indent;
   }
 }
+void printer_open(struct printer *self, const char *symbol) {
+  printer_print(self, "%s", symbol);
+  printer_indent(self, 2);
+}
+void printer_close(struct printer *self, const char *symbol) {
+  printer_indent(self, -2);
+  printer_print(self, "%s", symbol);
+}

@@ -11,13 +11,11 @@ static void generate_function(struct json_map *map) {
   assert(json_is_str(name));
   printer_newline(printer);
   printer_print(printer, "define i32 @%s() ", json_get_str(name));
-  printer_print(printer, "{");
-  printer_indent(printer, 2);
+  printer_open(printer, "{");
   printer_newline(printer);
   printer_print(printer, "ret i32 0");
   printer_newline(printer);
-  printer_indent(printer, -2);
-  printer_print(printer, "}");
+  printer_close(printer, "}");
   printer_newline(printer);
 }
 void generate(struct json *json) {

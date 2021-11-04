@@ -5,15 +5,6 @@
 #include "printer/printer.h"
 #include "tag.h"
 
-static void json_print_open(struct printer *self, const char *symbol) {
-  printer_print(self, "%s", symbol);
-  printer_indent(self, 2);
-}
-static void json_print_close(struct printer *self, const char *symbol) {
-  printer_indent(self, -2);
-  printer_print(self, "%s", symbol);
-}
-
 static void json_print_json(struct printer *self, struct json *);
 static void json_print_null(struct printer *self) {
   printer_print(self, "null");
@@ -36,7 +27,7 @@ static void json_print_map(struct json_map *map) {
   json_print_json(self, map->val);
 }
 static void json_print_arr(struct printer *self, struct json_arr *arr) {
-  json_print_open(self, "[");
+  printer_open(self, "[");
   if (0 < json_arr_count(arr)) {
     struct json_map map;
     map.map = json_print_map;
@@ -44,10 +35,10 @@ static void json_print_arr(struct printer *self, struct json_arr *arr) {
     json_arr_foreach(arr, &map);
     printer_newline(self);
   }
-  json_print_close(self, "]");
+  printer_close(self, "]");
 }
 static void json_print_obj(struct printer *self, struct json_obj *obj) {
-  json_print_open(self, "{");
+  printer_open(self, "{");
   if (0 < json_obj_count(obj)) {
     struct json_map map;
     map.map = json_print_map;
@@ -55,7 +46,7 @@ static void json_print_obj(struct printer *self, struct json_obj *obj) {
     json_obj_foreach(obj, &map);
     printer_newline(self);
   }
-  json_print_close(self, "}");
+  printer_close(self, "}");
 }
 static void json_print_json(struct printer *self, struct json *json) {
   switch (json_tag(json)) {
