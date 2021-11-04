@@ -1,4 +1,5 @@
 #include "convert/convert.h"
+#include "generate/generate.h"
 #include "json/factory.h"
 #include "json/json.h"
 #include "scanner/parse.h"
@@ -21,7 +22,7 @@ void compile(void) {
     util_error("ERROR: failed to parse");
   } else {
     convert(factory, json);
-    json_print(json);
+    generate(json);
   }
   json_factory_del(factory);
 }
