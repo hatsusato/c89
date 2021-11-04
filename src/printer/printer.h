@@ -11,7 +11,6 @@ struct printer *printer_new_stderr(void);
 void printer_del(struct printer *);
 void printer_print(struct printer *, const char *, ...);
 void printer_newline(struct printer *);
-void printer_indent(struct printer *, index_t);
 void printer_open(struct printer *, const char *);
 void printer_close(struct printer *, const char *);
 

@@ -14,7 +14,7 @@ struct printer {
 static void printer_shift(struct printer *self) {
   if (self->newline) {
     index_t i;
-    for (i = 0; i < self->indent; i++) {
+    for (i = 0; i < 2 * self->indent; i++) {
       fputc(' ', self->fp);
     }
   }
@@ -52,18 +52,11 @@ void printer_newline(struct printer *self) {
   }
   self->newline = true;
 }
-void printer_indent(struct printer *self, index_t indent) {
-  if (indent == 0) {
-    self->indent = indent;
-  } else {
-    self->indent += indent;
-  }
-}
 void printer_open(struct printer *self, const char *symbol) {
   printer_print(self, "%s", symbol);
-  printer_indent(self, 2);
+  self->indent++;
 }
 void printer_close(struct printer *self, const char *symbol) {
-  printer_indent(self, -2);
+  self->indent--;
   printer_print(self, "%s", symbol);
 }
