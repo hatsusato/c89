@@ -6,6 +6,18 @@
 #include "unittest.h"
 #include "util/util.h"
 
+struct options {
+  int argc;
+  char **argv;
+  bool_t unittest;
+};
+
+void options_init(struct options *self, int argc, char *argv[]) {
+  self->argc = argc;
+  self->argv = argv;
+  self->unittest = false;
+}
+
 bool_t is_unittest(int argc, char *argv[]) {
   index_t i;
   for (i = 1; i < argc; i++) {
@@ -28,6 +40,8 @@ void compile(void) {
 }
 
 int main(int argc, char *argv[]) {
+  struct options opt;
+  options_init(&opt, argc, argv);
   if (is_unittest(argc, argv)) {
 #ifndef NDEBUG
     unittest();
