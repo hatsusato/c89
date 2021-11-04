@@ -3,61 +3,63 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "utility/utility.h"
+#include "util/util.h"
 
-struct struct_Printer {
+struct printer {
   FILE *fp;
-  int indent;
-  Bool newline;
+  index_t indent;
+  bool_t newline;
 };
 
-static void printer_fputc(Printer *printer, char c, int n) {
-  FILE *fp = printer->fp;
-  if (fp) {
-    int i;
-    for (i = 0; i < n; ++i) {
-      fputc(c, fp);
+static void printer_shift(struct printer *self) {
+  if (self->newline) {
+    index_t i;
+    for (i = 0; i < 2 * self->indent; i++) {
+      fputc(' ', self->fp);
     }
   }
 }
-static void printer_vfprintf(Printer *printer, const char *format,
-                             va_list args) {
-  FILE *fp = printer->fp;
-  if (fp) {
-    vfprintf(fp, format, args);
-  }
-}
-static void printer_print_indent(Printer *printer) {
-  if (printer->newline) {
-    printer_fputc(printer, ' ', printer->indent);
-  }
-  printer->newline = false;
-}
 
-Printer *printer_new(PrinterFile fp) {
-  Printer *printer = UTILITY_MALLOC(Printer);
-  printer->fp = fp;
-  printer->indent = 0;
-  printer->newline = true;
-  return printer;
+struct printer *printer_new(void *fp) {
+  struct printer *self = util_malloc(sizeof(struct printer));
+  self->fp = fp;
+  self->indent = 0;
+  self->newline = false;
+  return self;
 }
-void printer_delete(Printer *printer) {
-  UTILITY_FREE(printer);
+struct printer *printer_new_stdout(void) {
+  return printer_new(stdout);
 }
-void printer_print(Printer *printer, const char *format, ...) {
-  va_list args;
-  va_start(args, format);
-  UTILITY_ASSERT(printer);
-  printer_print_indent(printer);
-  printer_vfprintf(printer, format, args);
-  va_end(args);
+struct printer *printer_new_stderr(void) {
+  return printer_new(stderr);
 }
-void printer_indent(Printer *printer, int indent) {
-  UTILITY_ASSERT(printer);
-  printer->indent += indent;
+void printer_del(struct printer *self) {
+  util_free(self);
 }
-void printer_newline(Printer *printer) {
-  UTILITY_ASSERT(printer);
-  printer_fputc(printer, '\n', 1);
-  printer->newline = true;
+void printer_print(struct printer *self, const char *format, ...) {
+  if (self->fp) {
+    va_list args;
+    va_start(args, format);
+    printer_shift(self);
+    vfprintf(self->fp, format, args);
+    va_end(args);
+  }
+  self->newline = false;
+}
+void printer_quote(struct printer *self, const char *symbol) {
+  printer_print(self, "\"%s\"", symbol);
+}
+void printer_newline(struct printer *self) {
+  if (self->fp) {
+    fputc('\n', self->fp);
+  }
+  self->newline = true;
+}
+void printer_open(struct printer *self, const char *symbol) {
+  printer_print(self, "%s", symbol);
+  self->indent++;
+}
+void printer_close(struct printer *self, const char *symbol) {
+  self->indent--;
+  printer_print(self, "%s", symbol);
 }

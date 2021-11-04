@@ -23,7 +23,7 @@ EOF
 cpp() {
   local flags=(-x c -P -E -)
   flags+=(-Wall -Wextra -Werror -ansi -pedantic)
-  cat - "$1" <<EOF | clang "${flags[@]}"
+  cat - "$1" <<EOF | clang "${flags[@]}" | sed '/^$/d'
 #define __attribute__(x)
 #define __asm__(x)
 #define __extension__

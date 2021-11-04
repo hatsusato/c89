@@ -32,9 +32,9 @@ clean() {
 tests() {
   local f opts=(-name '*.c') x=excludes.txt
   if test -f "$x"; then
-    cat "$x" | while read -r f; do
+    while read -r f; do
       opts+=('!' -name "$f")
-    done
+    done <$x
   fi
   find "$TEST_DIR" "${opts[@]}" | sort
 }
@@ -86,7 +86,7 @@ verify() {
   fi
 }
 enabled() {
-  if test "${DISABLE_VALGRIND+defined}"; then
+  if [[ -v DISABLE_VALGRIND ]]; then
     return 1
   else
     which valgrind >/dev/null || return

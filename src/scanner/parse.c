@@ -1,11 +1,13 @@
 #include "parse.h"
 
-#include "scanner/parser/yyscan.h"
-#include "scanner/scanner.h"
+#include "scanner.h"
+#include "yyscan.h"
 
-int scanner_parse(Ast *ast) {
-  Scanner *scanner = scanner_new(ast);
-  int ret = yyscan_parse(scanner);
-  scanner_delete(scanner);
-  return ret;
+struct json *scanner_parse(struct json_factory *factory) {
+  struct json *top;
+  YYSCAN_EXTRA scanner = scanner_new(factory);
+  yyscan_parse(scanner);
+  top = scanner_get_top(scanner);
+  scanner_del(scanner);
+  return top;
 }

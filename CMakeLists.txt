@@ -21,6 +21,7 @@ target_compile_options(options INTERFACE
   -pedantic
   -Wall
   -Wextra
+  -Werror
   $<$<CONFIG:Debug>:-O0>
   )
 target_include_directories(options INTERFACE

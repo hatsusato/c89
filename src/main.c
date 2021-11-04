@@ -1,45 +1,58 @@
-#include <stdio.h>
-
-#include "ast/ast.h"
-#include "builder/builder.h"
-#include "ir/module.h"
-#include "printer/printer.h"
+#include "convert/convert.h"
+#include "generate/generate.h"
+#include "json/factory.h"
+#include "json/json.h"
 #include "scanner/parse.h"
-#include "utility/utility.h"
+#include "unittest.h"
+#include "util/util.h"
 
-static void build(Module *module, Ast *ast) {
-  Builder *builder = builder_new(module);
-  builder_ast(builder, ast_get(ast));
-  builder_delete(builder);
-}
-static Bool is_debug(int argc, char *argv[]) {
-  int i;
-  for (i = 1; i < argc; ++i) {
-    if (utility_strcmp(argv[i], "--debug") == 0) {
-      return true;
+struct options {
+  int argc;
+  char **argv;
+  bool_t unittest, debug;
+};
+
+static void options_parse(struct options *self) {
+  index_t i;
+  for (i = 1; i < self->argc; i++) {
+    const char *opt = self->argv[i];
+    if (util_streq(opt, "--unittest")) {
+      self->unittest = true;
+    } else if (util_streq(opt, "--debug")) {
+      self->debug = true;
     }
   }
-  return false;
+}
+void options_init(struct options *self, int argc, char *argv[]) {
+  self->argc = argc;
+  self->argv = argv;
+  self->unittest = self->debug = false;
+  options_parse(self);
+}
+void compile(bool_t debug) {
+  struct json_factory *factory = json_factory_new();
+  struct json *json = scanner_parse(factory);
+  if (json_is_null(json)) {
+    util_error("ERROR: failed to parse");
+  } else {
+    convert(factory, json);
+    generate(json);
+    if (debug) {
+      json_print(json);
+    }
+  }
+  json_factory_del(factory);
 }
 
 int main(int argc, char *argv[]) {
-  Ast *ast = ast_new();
-  int ret = scanner_parse(ast);
-  if (0 == ret) {
-    Printer *printer = printer_new(stdout);
-    if (is_debug(argc, argv)) {
-      ast_print(ast, printer);
-      ast_convert(ast);
-      ast_print(ast, printer);
-    } else {
-      Module *module = module_new();
-      ast_convert(ast);
-      build(module, ast);
-      module_pretty(module, printer);
-      module_delete(module);
-    }
-    printer_delete(printer);
+  struct options opt;
+  options_init(&opt, argc, argv);
+  if (opt.unittest) {
+#ifndef NDEBUG
+    unittest();
+#endif
+  } else {
+    compile(opt.debug);
   }
-  ast_delete(ast);
-  return ret;
+  return 0;
 }
