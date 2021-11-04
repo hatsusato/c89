@@ -86,7 +86,7 @@ verify() {
   fi
 }
 enabled() {
-  if test "${DISABLE_VALGRIND+defined}"; then
+  if [[ -v DISABLE_VALGRIND ]]; then
     return 1
   else
     which valgrind >/dev/null || return
