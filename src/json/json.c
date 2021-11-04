@@ -74,3 +74,6 @@ struct json *json_get(struct json *self, const char *key) {
   json_visit(&visitor, self);
   return extra.result;
 }
+const char *json_get_str(struct json *json) {
+  return json_is_str(json) ? json_str_get(json_as_str(json)) : NULL;
+}
