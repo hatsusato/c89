@@ -5,5 +5,6 @@ target_sources(generate PRIVATE
 target_link_libraries(generate PRIVATE
   json
   options
+  printer
   util
   )
