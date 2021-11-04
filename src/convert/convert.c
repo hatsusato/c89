@@ -1,11 +1,13 @@
 #include "convert.h"
 
+#include "json/factory.h"
 #include "json/json.h"
+#include "json/visitor.h"
 #include "scanner/symbol.h"
-#include "util/util.h"
 
-struct convert {
+struct convert_extra {
   struct json_factory *factory;
+  struct json_arr *module;
 };
 
 struct json *convert_get_identifier(struct json *json) {
@@ -17,7 +19,22 @@ struct json *convert_get_identifier(struct json *json) {
   }
   return json;
 }
+static void convert_visitor(struct json_visitor *visitor, struct json *json) {
+  if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
+    struct convert_extra *self = visitor->extra;
+    struct json *func = json_factory_obj(self->factory);
+    json_set(func, "name", convert_get_identifier(json));
+    json_arr_push(self->module, func);
+  }
+}
 void convert(struct json_factory *factory, struct json *json) {
-  UTIL_UNUSED(factory);
-  UTIL_UNUSED(json);
+  struct json_visitor visitor;
+  struct convert_extra extra;
+  struct json *module = json_factory_arr(factory);
+  visitor.visitor = convert_visitor;
+  visitor.extra = &extra;
+  extra.factory = factory;
+  extra.module = json_as_arr(module);
+  json_visit(&visitor, json);
+  json_set(json, "module", module);
 }
