@@ -2,6 +2,7 @@
 #include "generate/generate.h"
 #include "json/factory.h"
 #include "json/json.h"
+#include "json/util.h"
 #include "scanner/parse.h"
 #include "unittest.h"
 #include "util/util.h"

@@ -14,6 +14,7 @@ target_sources(json PRIVATE
   tag.c
   type.c
   unittest.c
+  util.c
   vec.c
   visitor.c
   )
