@@ -3,7 +3,7 @@
 #include "json/factory.h"
 #include "json/json.h"
 #include "json/visitor.h"
-#include "symbol.h"
+#include "util/symbol.h"
 #include "util/util.h"
 
 struct scanner {

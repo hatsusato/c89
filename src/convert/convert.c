@@ -3,7 +3,7 @@
 #include "json/factory.h"
 #include "json/json.h"
 #include "json/visitor.h"
-#include "scanner/symbol.h"
+#include "util/symbol.h"
 
 struct convert_extra {
   struct json_factory *factory;

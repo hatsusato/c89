@@ -8,7 +8,6 @@
 
 %code provides {
 #include "lexer.h"
-#include "symbol.h"
 #include "yyscan.h"
 }
 

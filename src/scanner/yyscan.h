@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_9CD5F173_4C3F_436C_9085_C797766F802E
 
 #include "scanner.h"
+#include "util/symbol.h"
 #include "yyscan_t.h"
 
 #define YYSCAN_TOKEN() yyscan_json_token(YYSCAN_PARAM)
