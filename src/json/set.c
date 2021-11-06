@@ -9,12 +9,17 @@ struct json_set {
   struct json_obj *set;
 };
 
+static void json_set_del_map(struct json_map *map) {
+  util_free((void *)json_map_key(map));
+}
+
 struct json_set *json_set_new(void) {
   struct json_set *self = util_malloc(sizeof(struct json_set));
   self->set = json_obj_new();
   return self;
 }
 void json_set_del(struct json_set *self) {
+  json_obj_foreach(self->set, json_set_del_map, NULL);
   json_obj_del(self->set);
   util_free(self);
 }
