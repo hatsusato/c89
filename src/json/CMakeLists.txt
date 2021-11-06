@@ -11,6 +11,7 @@ target_sources(json PRIVATE
   obj.c
   pair.c
   print.c
+  set.c
   str.c
   tag.c
   type.c
