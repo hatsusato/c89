@@ -15,6 +15,7 @@ YYSCAN_TYPE scanner_json_push(YYSCAN_TYPE, YYSCAN_TYPE);
 YYSCAN_TYPE scanner_json_set(YYSCAN_TYPE, const char *, YYSCAN_TYPE);
 YYSCAN_TYPE scanner_json_binop(YYSCAN_EXTRA, YYSCAN_TYPE, YYSCAN_TYPE,
                                YYSCAN_TYPE);
+YYSCAN_TYPE scanner_get_comma(YYSCAN_EXTRA);
 YYSCAN_TYPE scanner_get_top(YYSCAN_EXTRA);
 void scanner_set_top(YYSCAN_EXTRA, YYSCAN_TYPE);
 int scanner_is_typedef(YYSCAN_EXTRA, const char *);

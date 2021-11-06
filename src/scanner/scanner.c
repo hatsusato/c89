@@ -63,6 +63,9 @@ YYSCAN_TYPE scanner_json_binop(YYSCAN_EXTRA self, YYSCAN_TYPE lhs,
   scanner_json_set(expr, "rhs", rhs);
   return expr;
 }
+YYSCAN_TYPE scanner_get_comma(YYSCAN_EXTRA self) {
+  return self->comma;
+}
 YYSCAN_TYPE scanner_get_top(YYSCAN_EXTRA self) {
   return self->top;
 }
