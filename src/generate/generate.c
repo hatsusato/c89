@@ -27,11 +27,8 @@ static void generate_function(struct json_map *map) {
 void generate(struct json *json) {
   struct printer *printer = printer_new_stdout();
   struct json *module = json_get(json, "module");
-  struct json_map map;
   generate_header(printer);
-  map.map = generate_function;
-  map.extra = printer;
   assert(json_is_arr(module));
-  json_arr_foreach(json_as_arr(module), &map);
+  json_arr_foreach(json_as_arr(module), generate_function, printer);
   printer_del(printer);
 }

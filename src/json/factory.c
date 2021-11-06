@@ -26,11 +26,8 @@ struct json_factory *json_factory_new(void) {
   return self;
 }
 void json_factory_del(struct json_factory *self) {
-  struct json_map map;
-  map.map = json_factory_free_pool;
-  json_arr_foreach(self->pool, &map);
-  map.map = json_factory_free_symbol;
-  json_obj_foreach(self->symbol, &map);
+  json_arr_foreach(self->pool, json_factory_free_pool, NULL);
+  json_obj_foreach(self->symbol, json_factory_free_symbol, NULL);
   json_arr_del(self->pool);
   json_obj_del(self->symbol);
   util_free(self);
