@@ -2,6 +2,7 @@
 
 #include "json/factory.h"
 #include "json/json.h"
+#include "json/set.h"
 #include "json/util.h"
 #include "json/visitor.h"
 #include "util/symbol.h"
@@ -31,8 +32,7 @@ void scanner_del(YYSCAN_EXTRA self) {
   util_free(self);
 }
 YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA self, const char *token) {
-  token = json_factory_symbol(self->factory, token);
-  return json_factory_str(self->factory, token);
+  return json_new_str(json_set_insert(self->symbols, token));
 }
 YYSCAN_TYPE scanner_get_comma(YYSCAN_EXTRA self) {
   return self->comma;
