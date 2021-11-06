@@ -2,6 +2,7 @@
 
 #include "json/factory.h"
 #include "json/json.h"
+#include "json/util.h"
 #include "json/visitor.h"
 #include "util/symbol.h"
 #include "util/util.h"
@@ -68,14 +69,6 @@ void scanner_set_top(YYSCAN_EXTRA self, YYSCAN_TYPE top) {
 int scanner_is_typedef(YYSCAN_EXTRA self, const char *symbol) {
   return json_obj_has(self->typedefs, symbol);
 }
-static void scanner_find_typedef(struct json_visitor *visitor,
-                                 struct json *json) {
-  if (json_is_obj(json) && json_obj_has(json_as_obj(json), SYMBOL_TYPEDEF)) {
-    bool_t *found = json_visit_extra(visitor);
-    *found = true;
-  }
-  json_visit_foreach(visitor, json);
-}
 static void scanner_collect_typedef(struct json_visitor *visitor,
                                     struct json *json) {
   if (json_is_obj(json)) {
@@ -94,14 +87,9 @@ static void scanner_collect_typedef(struct json_visitor *visitor,
   json_visit_foreach(visitor, json);
 }
 void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
-  if (json_is_obj(decl)) {
-    struct json_obj *obj = json_as_obj(decl);
-    struct json *specs = json_obj_get(obj, SYMBOL_DECLARATION_SPECIFIERS);
-    bool_t found = false;
-    json_visit(scanner_find_typedef, &found, specs);
-    if (found) {
-      struct json *list = json_obj_get(obj, SYMBOL_INIT_DECLARATOR_LIST);
-      json_visit(scanner_collect_typedef, self->typedefs, list);
-    }
+  struct json *specs = json_get(decl, SYMBOL_DECLARATION_SPECIFIERS);
+  struct json *list = json_get(decl, SYMBOL_INIT_DECLARATOR_LIST);
+  if (!json_is_null(json_get(specs, SYMBOL_TYPEDEF))) {
+    json_visit(scanner_collect_typedef, self->typedefs, list);
   }
 }
