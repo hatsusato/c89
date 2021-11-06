@@ -71,20 +71,15 @@ int scanner_is_typedef(YYSCAN_EXTRA self, const char *symbol) {
 }
 static void scanner_collect_typedef(struct json_visitor *visitor,
                                     struct json *json) {
-  if (json_is_obj(json)) {
-    struct json *direct =
-        json_obj_get(json_as_obj(json), SYMBOL_DIRECT_DECLARATOR);
-    if (json_is_obj(direct)) {
-      struct json *identifier =
-          json_obj_get(json_as_obj(direct), SYMBOL_IDENTIFIER);
-      if (json_is_str(identifier)) {
-        const char *symbol = json_str_get(json_as_str(identifier));
-        struct json_obj *typedefs = json_visit_extra(visitor);
-        json_obj_insert(typedefs, symbol, json_null());
-      }
-    }
+  if (json_has(json, SYMBOL_DIRECT_DECLARATOR)) {
+    struct json_obj *typedefs = json_visit_extra(visitor);
+    struct json *identifier = json_get_identifier(json);
+    const char *symbol = json_get_str(identifier);
+    assert(symbol);
+    json_obj_insert(typedefs, symbol, json_null());
+  } else {
+    json_visit_foreach(visitor, json);
   }
-  json_visit_foreach(visitor, json);
 }
 void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
   struct json *specs = json_get(decl, SYMBOL_DECLARATION_SPECIFIERS);
