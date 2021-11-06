@@ -55,6 +55,5 @@ void json_obj_sort(struct json_obj *self) {
   json_vec_sort(self->vec);
 }
 void json_obj_foreach(struct json_obj *self, struct json_map *map) {
-  map->is_obj = true;
   json_vec_foreach(self->vec, map);
 }

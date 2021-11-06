@@ -11,14 +11,12 @@ typedef void (*json_map_t)(struct json_map *);
 struct json_map {
   json_map_t map;
   void *extra;
-  bool_t is_obj;
   index_t index;
   const char *key;
   struct json *val;
 };
 
 void *json_map_extra(struct json_map *);
-bool_t json_map_is_obj(struct json_map *);
 index_t json_map_index(struct json_map *);
 const char *json_map_key(struct json_map *);
 struct json *json_map_val(struct json_map *);

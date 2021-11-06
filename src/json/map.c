@@ -3,9 +3,6 @@
 void *json_map_extra(struct json_map *self) {
   return self->extra;
 }
-bool_t json_map_is_obj(struct json_map *self) {
-  return self->is_obj;
-}
 index_t json_map_index(struct json_map *self) {
   return self->index;
 }

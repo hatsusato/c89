@@ -30,6 +30,5 @@ void json_arr_push(struct json_arr *self, struct json *val) {
   json_vec_push(self->vec, NULL, val);
 }
 void json_arr_foreach(struct json_arr *self, struct json_map *map) {
-  map->is_obj = false;
   json_vec_foreach(self->vec, map);
 }
