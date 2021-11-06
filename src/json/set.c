@@ -16,6 +16,7 @@ static void json_set_del_map(struct json_map *map) {
 struct json_set *json_set_new(void) {
   struct json_set *self = util_malloc(sizeof(struct json_set));
   self->set = json_obj_new();
+  json_obj_sort(self->set);
   return self;
 }
 void json_set_del(struct json_set *self) {
