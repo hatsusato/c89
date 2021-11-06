@@ -1,6 +1,7 @@
 #include "vec.h"
 
 #include "map.h"
+#include "new.h"
 #include "pair.h"
 #include "tag.h"
 #include "util/util.h"
@@ -34,6 +35,9 @@ static void json_vec_reserve(struct json_vec *self, index_t capacity) {
     json_pair_free(tmp.base);
   }
 }
+static void json_vec_del_map(struct json_map *map) {
+  json_del(json_map_val(map));
+}
 
 struct json_vec *json_vec_new(void) {
   struct json_vec *self = util_malloc(sizeof(struct json_vec));
@@ -42,6 +46,7 @@ struct json_vec *json_vec_new(void) {
   return self;
 }
 void json_vec_del(struct json_vec *self) {
+  json_map_foreach(json_vec_del_map, NULL, self);
   json_pair_free(self->base);
   util_free(self);
 }
