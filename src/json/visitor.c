@@ -4,6 +4,11 @@
 #include "map.h"
 #include "tag.h"
 
+struct json_visitor {
+  json_visitor_t visitor;
+  void *extra;
+};
+
 void json_visit(json_visitor_t visitor, void *extra, struct json *json) {
   struct json_visitor self;
   self.visitor = visitor;
