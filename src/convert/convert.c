@@ -1,13 +1,11 @@
 #include "convert.h"
 
-#include "json/factory.h"
 #include "json/json.h"
 #include "json/util.h"
 #include "json/visitor.h"
 #include "util/symbol.h"
 
 struct convert_extra {
-  struct json_factory *factory;
   struct json_arr *module;
 };
 
