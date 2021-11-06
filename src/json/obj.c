@@ -3,6 +3,7 @@
 #include "map.h"
 #include "null.h"
 #include "pair.h"
+#include "tag.h"
 #include "util/util.h"
 #include "vec.h"
 
@@ -27,6 +28,8 @@ index_t json_obj_count(struct json_obj *self) {
 void json_obj_insert(struct json_obj *self, const char *key, struct json *val) {
   struct json_pair *pair = json_obj_find(self, key);
   if (pair) {
+    json_decrement(json_pair_val(pair));
+    json_increment(val);
     json_pair_set(pair, key, val);
   } else {
     json_vec_push(self->vec, key, val);
