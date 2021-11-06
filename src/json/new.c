@@ -8,6 +8,7 @@ static struct json *json_alloc(enum json_tag tag, void *data) {
   struct json *self = util_malloc(sizeof(struct json));
   self->tag = tag;
   self->data = data;
+  self->references = 1;
   return self;
 }
 static void json_free(struct json *self) {
