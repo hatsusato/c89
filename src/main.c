@@ -1,6 +1,5 @@
 #include "convert/convert.h"
 #include "generate/generate.h"
-#include "json/factory.h"
 #include "json/json.h"
 #include "json/set.h"
 #include "json/util.h"
@@ -32,9 +31,8 @@ void options_init(struct options *self, int argc, char *argv[]) {
   options_parse(self);
 }
 void compile(bool_t debug) {
-  struct json_factory *factory = json_factory_new();
   struct json_set *symbols = json_set_new();
-  struct json *json = scanner_parse(factory, symbols);
+  struct json *json = scanner_parse(symbols);
   if (json_is_null(json)) {
     util_error("ERROR: failed to parse");
   } else {
@@ -46,7 +44,6 @@ void compile(bool_t debug) {
   }
   json_del(json);
   json_set_del(symbols);
-  json_factory_del(factory);
 }
 
 int main(int argc, char *argv[]) {
