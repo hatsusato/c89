@@ -14,17 +14,16 @@ struct convert_extra {
 static void convert_visitor(struct json_visitor *visitor, struct json *json) {
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
     struct convert_extra *self = json_visit_extra(visitor);
-    struct json *func = json_factory_obj(self->factory);
+    struct json *func = json_new_obj();
     json_set(func, "name", json_get_identifier(json));
     json_arr_push(self->module, func);
     json_del(func);
   }
   json_visit_foreach(visitor, json);
 }
-void convert(struct json_factory *factory, struct json *json) {
+void convert(struct json *json) {
   struct convert_extra extra;
-  struct json *module = json_factory_arr(factory);
-  extra.factory = factory;
+  struct json *module = json_new_arr();
   extra.module = json_as_arr(module);
   json_visit(convert_visitor, &extra, json);
   json_set(json, "module", module);
