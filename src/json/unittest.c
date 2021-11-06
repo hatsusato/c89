@@ -1,12 +1,10 @@
 #include "unittest.h"
 
-#include "factory.h"
 #include "json.h"
 #include "util/util.h"
 
 void json_arr_unittest(void) {
-  struct json_factory *factory = json_factory_new();
-  struct json *json = json_factory_arr(factory);
+  struct json *json = json_new_arr();
   struct json_arr *arr = json_as_arr(json);
   index_t i, count = 100;
   char(*str)[2] = util_malloc_array(count, sizeof(char[2]));
@@ -15,8 +13,9 @@ void json_arr_unittest(void) {
     str[i][1] = 0;
   }
   for (i = 0; i < count; i++) {
-    struct json *val = json_factory_str(factory, str[i]);
+    struct json *val = json_new_str(str[i]);
     json_arr_push(arr, val);
+    json_del(val);
   }
   for (i = 0; i < count; i++) {
     struct json *elem = json_arr_at(arr, i);
@@ -26,12 +25,11 @@ void json_arr_unittest(void) {
     UTIL_UNUSED(jstr);
   }
   util_free(str);
-  json_factory_del(factory);
+  json_del(json);
 }
 
 void json_obj_unittest(void) {
-  struct json_factory *factory = json_factory_new();
-  struct json *json = json_factory_obj(factory);
+  struct json *json = json_new_obj();
   struct json_obj *obj = json_as_obj(json);
   index_t i, count = 100;
   char(*key)[2] = util_malloc_array(count, sizeof(char[2]));
@@ -40,8 +38,9 @@ void json_obj_unittest(void) {
     key[i][1] = 0;
   }
   for (i = 0; i < count; i++) {
-    struct json *val = json_factory_str(factory, key[i]);
+    struct json *val = json_new_str(key[i]);
     json_obj_insert(obj, key[i], val);
+    json_del(val);
   }
   for (i = 0; i < count; i++) {
     struct json *val = json_obj_get(obj, key[i]);
@@ -52,7 +51,7 @@ void json_obj_unittest(void) {
   }
   assert(!json_obj_has(obj, "0"));
   util_free(key);
-  json_factory_del(factory);
+  json_del(json);
 }
 
 void json_unittest(void) {
