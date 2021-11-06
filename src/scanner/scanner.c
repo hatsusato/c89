@@ -74,6 +74,7 @@ static void scanner_find_typedef(struct json_visitor *visitor,
     bool_t *found = visitor->extra;
     *found = true;
   }
+  json_visit_foreach(visitor, json);
 }
 static void scanner_collect_typedef(struct json_visitor *visitor,
                                     struct json *json) {
@@ -90,6 +91,7 @@ static void scanner_collect_typedef(struct json_visitor *visitor,
       }
     }
   }
+  json_visit_foreach(visitor, json);
 }
 void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
   struct json_visitor visitor;

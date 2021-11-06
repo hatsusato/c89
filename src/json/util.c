@@ -31,6 +31,7 @@ static void json_get_visitor(struct json_visitor *visitor, struct json *json) {
       extra->found = true;
     }
   }
+  json_visit_foreach(visitor, json);
 }
 struct json *json_get(struct json *self, const char *key) {
   struct json_visitor visitor;

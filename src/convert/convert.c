@@ -27,6 +27,7 @@ static void convert_visitor(struct json_visitor *visitor, struct json *json) {
     json_set(func, "name", convert_get_identifier(json));
     json_arr_push(self->module, func);
   }
+  json_visit_foreach(visitor, json);
 }
 void convert(struct json_factory *factory, struct json *json) {
   struct json_visitor visitor;
