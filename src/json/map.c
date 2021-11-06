@@ -6,6 +6,7 @@
 struct json_map {
   json_map_t map;
   void *extra;
+  bool_t finished;
   index_t index;
   const char *key;
   struct json *val;
@@ -13,6 +14,9 @@ struct json_map {
 
 void *json_map_extra(struct json_map *self) {
   return self->extra;
+}
+void json_map_finish(struct json_map *self) {
+  self->finished = true;
 }
 index_t json_map_index(struct json_map *self) {
   return self->index;
@@ -26,10 +30,11 @@ struct json *json_map_val(struct json_map *self) {
 void json_map_foreach(json_map_t map, void *extra, struct json_vec *vec) {
   struct json_map self;
   index_t i, count = json_vec_count(vec);
-  for (i = 0; i < count; i++) {
+  self.map = map;
+  self.extra = extra;
+  self.finished = false;
+  for (i = 0; i < count && !self.finished; i++) {
     struct json_pair *pair = json_vec_at(vec, i);
-    self.map = map;
-    self.extra = extra;
     self.index = i;
     self.key = json_pair_key(pair);
     self.val = json_pair_val(pair);
