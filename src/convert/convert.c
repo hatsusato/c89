@@ -1,40 +1,29 @@
 #include "convert.h"
 
-#include "json/factory.h"
 #include "json/json.h"
+#include "json/util.h"
 #include "json/visitor.h"
-#include "scanner/symbol.h"
+#include "util/symbol.h"
 
 struct convert_extra {
-  struct json_factory *factory;
   struct json_arr *module;
 };
 
-struct json *convert_get_identifier(struct json *json) {
-  while (!json_is_null(json)) {
-    json = json_get(json, SYMBOL_DIRECT_DECLARATOR);
-    if (json_has(json, SYMBOL_IDENTIFIER)) {
-      return json_get(json, SYMBOL_IDENTIFIER);
-    }
-  }
-  return json;
-}
 static void convert_visitor(struct json_visitor *visitor, struct json *json) {
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
-    struct convert_extra *self = visitor->extra;
-    struct json *func = json_factory_obj(self->factory);
-    json_set(func, "name", convert_get_identifier(json));
+    struct convert_extra *self = json_visit_extra(visitor);
+    struct json *func = json_new_obj();
+    json_set(func, "name", json_get_identifier(json));
     json_arr_push(self->module, func);
+    json_del(func);
   }
+  json_visit_foreach(visitor, json);
 }
-void convert(struct json_factory *factory, struct json *json) {
-  struct json_visitor visitor;
+void convert(struct json *json) {
   struct convert_extra extra;
-  struct json *module = json_factory_arr(factory);
-  visitor.visitor = convert_visitor;
-  visitor.extra = &extra;
-  extra.factory = factory;
+  struct json *module = json_new_arr();
   extra.module = json_as_arr(module);
-  json_visit(&visitor, json);
+  json_visit(convert_visitor, &extra, json);
   json_set(json, "module", module);
+  json_del(module);
 }

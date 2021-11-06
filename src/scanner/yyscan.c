@@ -1,5 +1,6 @@
 #include "yyscan.h"
 
+#include "json/json.h"
 #include "parser.tab.h"
 #include "util/util.h"
 
@@ -35,4 +36,33 @@ YYSCAN_TYPE yyscan_json_token(yyscan_t self) {
   const char *text = yyget_text(self);
   assert(text[yyget_leng(self)] == 0);
   return scanner_json_token(yyget_extra(self), text);
+}
+YYSCAN_TYPE yyscan_json_str(const char *str) {
+  return json_new_str(str);
+}
+YYSCAN_TYPE yyscan_json_arr(void) {
+  return json_new_arr();
+}
+YYSCAN_TYPE yyscan_json_obj(void) {
+  return json_new_obj();
+}
+YYSCAN_TYPE yyscan_json_push(YYSCAN_TYPE arr, YYSCAN_TYPE val) {
+  assert(json_is_arr(arr));
+  json_arr_push(json_as_arr(arr), val);
+  json_del(val);
+  return arr;
+}
+YYSCAN_TYPE yyscan_json_set(YYSCAN_TYPE obj, const char *key, YYSCAN_TYPE val) {
+  assert(json_is_obj(obj));
+  json_obj_insert(json_as_obj(obj), key, val);
+  json_del(val);
+  return obj;
+}
+YYSCAN_TYPE yyscan_json_binop(YYSCAN_TYPE lhs, YYSCAN_TYPE op,
+                              YYSCAN_TYPE rhs) {
+  YYSCAN_TYPE expr = yyscan_json_obj();
+  yyscan_json_set(expr, "lhs", lhs);
+  yyscan_json_set(expr, "op", op);
+  yyscan_json_set(expr, "rhs", rhs);
+  return expr;
 }

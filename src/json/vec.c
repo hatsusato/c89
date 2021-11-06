@@ -1,7 +1,9 @@
 #include "vec.h"
 
 #include "map.h"
+#include "new.h"
 #include "pair.h"
+#include "tag.h"
 #include "util/util.h"
 
 struct json_vec {
@@ -33,6 +35,9 @@ static void json_vec_reserve(struct json_vec *self, index_t capacity) {
     json_pair_free(tmp.base);
   }
 }
+static void json_vec_del_map(struct json_map *map) {
+  json_del(json_map_val(map));
+}
 
 struct json_vec *json_vec_new(void) {
   struct json_vec *self = util_malloc(sizeof(struct json_vec));
@@ -41,6 +46,7 @@ struct json_vec *json_vec_new(void) {
   return self;
 }
 void json_vec_del(struct json_vec *self) {
+  json_map_foreach(json_vec_del_map, NULL, self);
   json_pair_free(self->base);
   util_free(self);
 }
@@ -51,6 +57,7 @@ void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
   json_vec_reserve(self, self->count + 1);
   json_pair_set(json_pair_at(self->base, self->count), key, val);
   self->count++;
+  json_increment(val);
 }
 struct json_pair *json_vec_at(struct json_vec *self, index_t index) {
   index += index < 0 ? self->count : 0;
@@ -76,14 +83,4 @@ struct json_pair *json_vec_find(struct json_vec *self, const char *key) {
     }
   }
   return NULL;
-}
-void json_vec_foreach(struct json_vec *self, struct json_map *map) {
-  index_t i;
-  for (i = 0; i < self->count; i++) {
-    struct json_pair *pair = json_pair_at(self->base, i);
-    map->index = i;
-    map->key = json_pair_key(pair);
-    map->val = json_pair_val(pair);
-    map->map(map);
-  }
 }

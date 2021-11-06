@@ -3,18 +3,12 @@
 
 #include "yyscan_t.h"
 
-struct json_factory;
+struct json_set;
 
-YYSCAN_EXTRA scanner_new(struct json_factory *);
+YYSCAN_EXTRA scanner_new(struct json_set *);
 void scanner_del(YYSCAN_EXTRA);
 YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA, const char *);
-YYSCAN_TYPE scanner_json_str(YYSCAN_EXTRA, const char *);
-YYSCAN_TYPE scanner_json_arr(YYSCAN_EXTRA);
-YYSCAN_TYPE scanner_json_obj(YYSCAN_EXTRA);
-YYSCAN_TYPE scanner_json_push(YYSCAN_TYPE, YYSCAN_TYPE);
-YYSCAN_TYPE scanner_json_set(YYSCAN_TYPE, const char *, YYSCAN_TYPE);
-YYSCAN_TYPE scanner_json_binop(YYSCAN_EXTRA, YYSCAN_TYPE, YYSCAN_TYPE,
-                               YYSCAN_TYPE);
+YYSCAN_TYPE scanner_get_comma(YYSCAN_EXTRA);
 YYSCAN_TYPE scanner_get_top(YYSCAN_EXTRA);
 void scanner_set_top(YYSCAN_EXTRA, YYSCAN_TYPE);
 int scanner_is_typedef(YYSCAN_EXTRA, const char *);

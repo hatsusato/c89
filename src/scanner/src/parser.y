@@ -8,7 +8,6 @@
 
 %code provides {
 #include "lexer.h"
-#include "symbol.h"
 #include "yyscan.h"
 }
 
@@ -261,7 +260,7 @@ left-brace: "{" { $$ = YYSCAN_STR(SYMBOL_LEFT_BRACE); }
 ;
 right-brace: "}" { $$ = YYSCAN_STR(SYMBOL_RIGHT_BRACE); }
 ;
-comma: "," { $$ = YYSCAN_STR(SYMBOL_COMMA); }
+comma: "," { $$ = YYSCAN_GET_COMMA(); }
 ;
 colon: ":" { $$ = YYSCAN_STR(SYMBOL_COLON); }
 ;
@@ -592,7 +591,7 @@ expression.opt
 expression
 : assignment-expression
 | expression comma assignment-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
+  $$ = YYSCAN_BINOP($1, YYSCAN_NEW_COMMA(), $3);
 }
 ;
 
@@ -963,7 +962,7 @@ parameter-type-list
 | parameter-list comma ellipsis {
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, SYMBOL_PARAMETER_LIST, $1);
-  YYSCAN_SET($$, SYMBOL_COMMA, $2);
+  YYSCAN_SET($$, SYMBOL_COMMA, YYSCAN_NEW_COMMA());
   YYSCAN_SET($$, SYMBOL_ELLIPSIS, $3);
 }
 ;
@@ -1088,7 +1087,7 @@ initializer
   $$ = YYSCAN_OBJ();
   YYSCAN_SET($$, SYMBOL_LEFT_BRACE, $1);
   YYSCAN_SET($$, SYMBOL_INITIALIZER_LIST, $2);
-  YYSCAN_SET($$, SYMBOL_COMMA, $3);
+  YYSCAN_SET($$, SYMBOL_COMMA, YYSCAN_NEW_COMMA());
   YYSCAN_SET($$, SYMBOL_RIGHT_BRACE, $4);
 }
 ;

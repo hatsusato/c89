@@ -1,0 +1,8 @@
+#ifndef INCLUDE_GUARD_1406F42D_D479_4EF0_85E4_C74F6DB5E5B8
+#define INCLUDE_GUARD_1406F42D_D479_4EF0_85E4_C74F6DB5E5B8
+
+struct json_map;
+
+typedef void (*json_map_t)(struct json_map *);
+
+#endif /* INCLUDE_GUARD_1406F42D_D479_4EF0_85E4_C74F6DB5E5B8 */
