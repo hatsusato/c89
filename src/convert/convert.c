@@ -11,20 +11,11 @@ struct convert_extra {
   struct json_arr *module;
 };
 
-struct json *convert_get_identifier(struct json *json) {
-  while (!json_is_null(json)) {
-    json = json_get(json, SYMBOL_DIRECT_DECLARATOR);
-    if (json_has(json, SYMBOL_IDENTIFIER)) {
-      return json_get(json, SYMBOL_IDENTIFIER);
-    }
-  }
-  return json;
-}
 static void convert_visitor(struct json_visitor *visitor, struct json *json) {
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
     struct convert_extra *self = json_visit_extra(visitor);
     struct json *func = json_factory_obj(self->factory);
-    json_set(func, "name", convert_get_identifier(json));
+    json_set(func, "name", json_get_identifier(json));
     json_arr_push(self->module, func);
   }
   json_visit_foreach(visitor, json);
