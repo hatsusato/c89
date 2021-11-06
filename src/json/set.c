@@ -1,6 +1,8 @@
 #include "set.h"
 
 #include "json.h"
+#include "map.h"
+#include "pair.h"
 #include "util/util.h"
 
 struct json_set {
@@ -15,4 +17,14 @@ struct json_set *json_set_new(void) {
 void json_set_del(struct json_set *self) {
   json_obj_del(self->set);
   util_free(self);
+}
+const char *json_set_insert(struct json_set *self, const char *symbol) {
+  struct json_pair *pair = json_obj_find(self->set, symbol);
+  if (pair) {
+    return json_pair_key(pair);
+  } else {
+    const char *dup = util_strdup(symbol);
+    json_obj_insert(self->set, dup, json_null());
+    return dup;
+  }
 }
