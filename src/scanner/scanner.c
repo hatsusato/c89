@@ -31,36 +31,6 @@ YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA self, const char *token) {
   token = json_factory_symbol(self->factory, token);
   return json_factory_str(self->factory, token);
 }
-YYSCAN_TYPE scanner_json_str(YYSCAN_EXTRA self, const char *symbol) {
-  return json_factory_str(self->factory, symbol);
-}
-YYSCAN_TYPE scanner_json_arr(YYSCAN_EXTRA self) {
-  return json_factory_arr(self->factory);
-}
-YYSCAN_TYPE scanner_json_obj(YYSCAN_EXTRA self) {
-  return json_factory_obj(self->factory);
-}
-YYSCAN_TYPE scanner_json_push(YYSCAN_TYPE json, YYSCAN_TYPE val) {
-  assert(json_is_arr(json));
-  json_arr_push(json_as_arr(json), val);
-  json_del(val);
-  return json;
-}
-YYSCAN_TYPE scanner_json_set(YYSCAN_TYPE json, const char *key,
-                             YYSCAN_TYPE val) {
-  assert(json_is_obj(json));
-  json_obj_insert(json_as_obj(json), key, val);
-  json_del(val);
-  return json;
-}
-YYSCAN_TYPE scanner_json_binop(YYSCAN_EXTRA self, YYSCAN_TYPE lhs,
-                               YYSCAN_TYPE op, YYSCAN_TYPE rhs) {
-  YYSCAN_TYPE expr = scanner_json_obj(self);
-  scanner_json_set(expr, "lhs", lhs);
-  scanner_json_set(expr, "op", op);
-  scanner_json_set(expr, "rhs", rhs);
-  return expr;
-}
 YYSCAN_TYPE scanner_get_comma(YYSCAN_EXTRA self) {
   return self->comma;
 }
