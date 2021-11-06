@@ -42,6 +42,7 @@ void compile(bool_t debug) {
       json_print(json);
     }
   }
+  json_del(json);
   json_factory_del(factory);
 }
 

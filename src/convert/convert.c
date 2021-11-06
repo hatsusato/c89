@@ -17,6 +17,7 @@ static void convert_visitor(struct json_visitor *visitor, struct json *json) {
     struct json *func = json_factory_obj(self->factory);
     json_set(func, "name", json_get_identifier(json));
     json_arr_push(self->module, func);
+    json_del(func);
   }
   json_visit_foreach(visitor, json);
 }
@@ -27,4 +28,5 @@ void convert(struct json_factory *factory, struct json *json) {
   extra.module = json_as_arr(module);
   json_visit(convert_visitor, &extra, json);
   json_set(json, "module", module);
+  json_del(module);
 }

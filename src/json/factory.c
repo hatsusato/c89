@@ -14,9 +14,6 @@ struct json_factory {
 static void json_factory_free_symbol(struct json_map *map) {
   util_free((void *)json_map_key(map));
 }
-static void json_factory_free_pool(struct json_map *map) {
-  json_del(json_map_val(map));
-}
 
 struct json_factory *json_factory_new(void) {
   struct json_factory *self = util_malloc(sizeof(struct json_factory));
@@ -26,7 +23,6 @@ struct json_factory *json_factory_new(void) {
   return self;
 }
 void json_factory_del(struct json_factory *self) {
-  json_arr_foreach(self->pool, json_factory_free_pool, NULL);
   json_obj_foreach(self->symbol, json_factory_free_symbol, NULL);
   json_arr_del(self->pool);
   json_obj_del(self->symbol);
