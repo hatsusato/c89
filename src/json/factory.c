@@ -12,10 +12,10 @@ struct json_factory {
 };
 
 static void json_factory_free(struct json_map *map) {
-  if (map->is_obj) {
-    util_free((void *)map->key);
+  if (json_map_is_obj(map)) {
+    util_free((void *)json_map_key(map));
   } else {
-    json_del(map->val);
+    json_del(json_map_val(map));
   }
 }
 

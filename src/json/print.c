@@ -16,16 +16,16 @@ static void json_print_str(struct printer *self, struct json_str *str) {
   printer_quote(self, json_str_get(str));
 }
 static void json_print_map(struct json_map *map) {
-  struct printer *self = map->extra;
-  if (0 < map->index) {
+  struct printer *self = json_map_extra(map);
+  if (0 < json_map_index(map)) {
     printer_print(self, ",");
   }
   printer_newline(self);
-  if (map->is_obj) {
-    printer_quote(self, map->key);
+  if (json_map_is_obj(map)) {
+    printer_quote(self, json_map_key(map));
     printer_print(self, ": ");
   }
-  json_print_json(self, map->val);
+  json_print_json(self, json_map_val(map));
 }
 static void json_print_arr(struct printer *self, struct json_arr *arr) {
   printer_open(self, "[");

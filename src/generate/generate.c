@@ -12,8 +12,8 @@ static void generate_header(struct printer *printer) {
   printer_newline(printer);
 }
 static void generate_function(struct json_map *map) {
-  struct printer *printer = map->extra;
-  struct json *name = json_get(map->val, "name");
+  struct printer *printer = json_map_extra(map);
+  struct json *name = json_get(json_map_val(map), "name");
   assert(json_is_str(name));
   printer_newline(printer);
   printer_print(printer, "define i32 @%s() ", json_get_str(name));
