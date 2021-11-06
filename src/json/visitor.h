@@ -11,7 +11,7 @@ struct json_visitor {
   void *extra;
 };
 
-void json_visit(struct json_visitor *, struct json *);
+void json_visit(json_visitor_t, void *, struct json *);
 void json_visit_foreach(struct json_visitor *, struct json *);
 
 #endif /* INCLUDE_GUARD_BAC01668_22C9_47DA_ACA9_033FC7005651 */

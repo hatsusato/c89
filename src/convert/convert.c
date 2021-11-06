@@ -30,13 +30,10 @@ static void convert_visitor(struct json_visitor *visitor, struct json *json) {
   json_visit_foreach(visitor, json);
 }
 void convert(struct json_factory *factory, struct json *json) {
-  struct json_visitor visitor;
   struct convert_extra extra;
   struct json *module = json_factory_arr(factory);
-  visitor.visitor = convert_visitor;
-  visitor.extra = &extra;
   extra.factory = factory;
   extra.module = json_as_arr(module);
-  json_visit(&visitor, json);
+  json_visit(convert_visitor, &extra, json);
   json_set(json, "module", module);
 }

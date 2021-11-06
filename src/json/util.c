@@ -34,14 +34,11 @@ static void json_get_visitor(struct json_visitor *visitor, struct json *json) {
   json_visit_foreach(visitor, json);
 }
 struct json *json_get(struct json *self, const char *key) {
-  struct json_visitor visitor;
   struct json_get_extra extra;
-  visitor.visitor = json_get_visitor;
-  visitor.extra = &extra;
   extra.key = key;
   extra.found = false;
   extra.result = json_null();
-  json_visit(&visitor, self);
+  json_visit(json_get_visitor, &extra, self);
   return extra.result;
 }
 const char *json_get_str(struct json *json) {
