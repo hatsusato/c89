@@ -2,7 +2,7 @@
 
 #include "json.h"
 #include "print.h"
-#include "util/type.h"
+#include "tag.h"
 #include "visitor.h"
 
 struct json_get_extra {
@@ -43,4 +43,16 @@ struct json *json_get(struct json *self, const char *key) {
 }
 const char *json_get_str(struct json *json) {
   return json_is_str(json) ? json_str_get(json_as_str(json)) : NULL;
+}
+void json_foreach(struct json *json, json_map_t map, void *extra) {
+  switch (json_tag(json)) {
+  case JSON_TAG_ARR:
+    json_arr_foreach(json_as_arr(json), map, extra);
+    break;
+  case JSON_TAG_OBJ:
+    json_obj_foreach(json_as_obj(json), map, extra);
+    break;
+  default:
+    break;
+  }
 }

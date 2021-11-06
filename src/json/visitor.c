@@ -3,6 +3,7 @@
 #include "json.h"
 #include "map.h"
 #include "tag.h"
+#include "util.h"
 
 struct json_visitor {
   json_visitor_t visitor;
@@ -23,14 +24,5 @@ static void json_visit_map(struct json_map *map) {
   self->visitor(self, json_map_val(map));
 }
 void json_visit_foreach(struct json_visitor *self, struct json *json) {
-  switch (json_tag(json)) {
-  case JSON_TAG_ARR:
-    json_arr_foreach(json_as_arr(json), json_visit_map, self);
-    break;
-  case JSON_TAG_OBJ:
-    json_obj_foreach(json_as_obj(json), json_visit_map, self);
-    break;
-  default:
-    break;
-  }
+  json_foreach(json, json_visit_map, self);
 }

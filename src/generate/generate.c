@@ -28,7 +28,6 @@ void generate(struct json *json) {
   struct printer *printer = printer_new_stdout();
   struct json *module = json_get(json, "module");
   generate_header(printer);
-  assert(json_is_arr(module));
-  json_arr_foreach(json_as_arr(module), generate_function, printer);
+  json_foreach(module, generate_function, printer);
   printer_del(printer);
 }
