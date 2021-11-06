@@ -4,8 +4,9 @@
 #include "yyscan_t.h"
 
 struct json_factory;
+struct json_set;
 
-YYSCAN_EXTRA scanner_new(struct json_factory *);
+YYSCAN_EXTRA scanner_new(struct json_factory *, struct json_set *);
 void scanner_del(YYSCAN_EXTRA);
 YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA, const char *);
 YYSCAN_TYPE scanner_get_comma(YYSCAN_EXTRA);

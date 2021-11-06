@@ -9,14 +9,17 @@
 
 struct scanner {
   struct json_factory *factory;
+  struct json_set *symbols;
   struct json_obj *typedefs;
   YYSCAN_TYPE comma;
   YYSCAN_TYPE top;
 };
 
-YYSCAN_EXTRA scanner_new(struct json_factory *factory) {
+YYSCAN_EXTRA scanner_new(struct json_factory *factory,
+                         struct json_set *symbols) {
   YYSCAN_EXTRA self = util_malloc(sizeof(struct scanner));
   self->factory = factory;
+  self->symbols = symbols;
   self->typedefs = json_obj_new();
   self->comma = json_new_str(SYMBOL_COMMA);
   self->top = json_null();
