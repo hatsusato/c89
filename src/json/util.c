@@ -23,7 +23,7 @@ bool_t json_has(struct json *self, const char *key) {
   return json_is_obj(self) ? json_obj_has(json_as_obj(self), key) : false;
 }
 static void json_get_visitor(struct json_visitor *visitor, struct json *json) {
-  struct json_get_extra *extra = visitor->extra;
+  struct json_get_extra *extra = json_visit_extra(visitor);
   if (!extra->found && json_is_obj(json)) {
     struct json_obj *obj = json_as_obj(json);
     if (json_obj_has(obj, extra->key)) {

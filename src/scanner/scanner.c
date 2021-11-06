@@ -71,7 +71,7 @@ int scanner_is_typedef(YYSCAN_EXTRA self, const char *symbol) {
 static void scanner_find_typedef(struct json_visitor *visitor,
                                  struct json *json) {
   if (json_is_obj(json) && json_obj_has(json_as_obj(json), SYMBOL_TYPEDEF)) {
-    bool_t *found = visitor->extra;
+    bool_t *found = json_visit_extra(visitor);
     *found = true;
   }
   json_visit_foreach(visitor, json);
@@ -86,7 +86,7 @@ static void scanner_collect_typedef(struct json_visitor *visitor,
           json_obj_get(json_as_obj(direct), SYMBOL_IDENTIFIER);
       if (json_is_str(identifier)) {
         const char *symbol = json_str_get(json_as_str(identifier));
-        struct json_obj *typedefs = visitor->extra;
+        struct json_obj *typedefs = json_visit_extra(visitor);
         json_obj_insert(typedefs, symbol, json_null());
       }
     }

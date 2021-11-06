@@ -22,7 +22,7 @@ struct json *convert_get_identifier(struct json *json) {
 }
 static void convert_visitor(struct json_visitor *visitor, struct json *json) {
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
-    struct convert_extra *self = visitor->extra;
+    struct convert_extra *self = json_visit_extra(visitor);
     struct json *func = json_factory_obj(self->factory);
     json_set(func, "name", convert_get_identifier(json));
     json_arr_push(self->module, func);
