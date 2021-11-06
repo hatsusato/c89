@@ -7,14 +7,6 @@
 struct json;
 struct json_vec;
 
-struct json_map {
-  json_map_t map;
-  void *extra;
-  index_t index;
-  const char *key;
-  struct json *val;
-};
-
 void *json_map_extra(struct json_map *);
 index_t json_map_index(struct json_map *);
 const char *json_map_key(struct json_map *);

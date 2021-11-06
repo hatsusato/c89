@@ -3,6 +3,14 @@
 #include "pair.h"
 #include "vec.h"
 
+struct json_map {
+  json_map_t map;
+  void *extra;
+  index_t index;
+  const char *key;
+  struct json *val;
+};
+
 void *json_map_extra(struct json_map *self) {
   return self->extra;
 }
