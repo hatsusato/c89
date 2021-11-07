@@ -9,7 +9,7 @@ static struct json *convert_extra_new_function(void) {
   json_del(blocks);
   return function;
 }
-struct json *convert_extra_new_block(void) {
+static struct json *convert_extra_new_block(void) {
   struct json *block = json_new_obj();
   struct json *instructions = json_new_arr();
   json_insert(block, "block", instructions);
@@ -31,4 +31,10 @@ void convert_extra_init(struct convert_extra *self, struct json *module) {
   self->block = json_null();
   json_push(json_get(module, "module"), function);
   json_del(function);
+}
+void convert_extra_push_block(struct convert_extra *self) {
+  struct json *block = convert_extra_new_block();
+  self->block = block;
+  json_push(json_get(self->function, "function"), block);
+  json_del(block);
 }
