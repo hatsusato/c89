@@ -1,6 +1,7 @@
 #include "new.h"
 
 #include "json.h"
+#include "tag.h"
 #include "type.h"
 #include "util/util.h"
 
@@ -80,4 +81,19 @@ struct json_arr *json_as_arr(struct json *self) {
 struct json_obj *json_as_obj(struct json *self) {
   assert(json_is_obj(self));
   return self->data;
+}
+bool_t json_is_null(struct json *self) {
+  return json_tag(self) == JSON_TAG_NULL;
+}
+bool_t json_is_int(struct json *self) {
+  return json_tag(self) == JSON_TAG_INT;
+}
+bool_t json_is_str(struct json *self) {
+  return json_tag(self) == JSON_TAG_STR;
+}
+bool_t json_is_arr(struct json *self) {
+  return json_tag(self) == JSON_TAG_ARR;
+}
+bool_t json_is_obj(struct json *self) {
+  return json_tag(self) == JSON_TAG_OBJ;
 }
