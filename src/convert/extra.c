@@ -9,6 +9,13 @@ static struct json *convert_extra_new_function(void) {
   json_del(blocks);
   return function;
 }
+struct json *convert_extra_new_block(void) {
+  struct json *block = json_new_obj();
+  struct json *instructions = json_new_arr();
+  json_insert(block, "block", instructions);
+  json_del(instructions);
+  return block;
+}
 
 struct json *convert_extra_new_module(void) {
   struct json *module = json_new_obj();
