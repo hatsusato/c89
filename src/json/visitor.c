@@ -2,8 +2,6 @@
 
 #include "json.h"
 #include "map.h"
-#include "tag.h"
-#include "util.h"
 
 struct json_visitor {
   json_visitor_t visitor;

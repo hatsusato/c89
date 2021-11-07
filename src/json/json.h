@@ -25,5 +25,6 @@ struct json_obj *json_as_obj(struct json *);
 #include "json/null.h"
 #include "json/obj.h"
 #include "json/str.h"
+#include "json/util.h"
 
 #endif /* INCLUDE_GUARD_5E299705_D2B2_4EFA_AD2B_575DB876526E */

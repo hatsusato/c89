@@ -2,7 +2,6 @@
 
 #include "json/json.h"
 #include "json/set.h"
-#include "json/util.h"
 #include "json/visitor.h"
 #include "util/symbol.h"
 #include "util/util.h"

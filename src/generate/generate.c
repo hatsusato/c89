@@ -1,7 +1,7 @@
 #include "generate.h"
 
+#include "json/json.h"
 #include "json/map.h"
-#include "json/util.h"
 #include "printer/printer.h"
 
 static void generate_header(struct printer *printer) {
