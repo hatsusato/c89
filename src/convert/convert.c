@@ -3,6 +3,7 @@
 #include "extra.h"
 #include "json/json.h"
 #include "json/map.h"
+#include "statement.h"
 #include "util/symbol.h"
 
 static void convert_function_definition(struct convert_extra *self,
@@ -20,6 +21,7 @@ static void convert_function_definition(struct convert_extra *self,
   str = json_new_str("0");
   json_insert(ret, "value", str);
   json_del(str);
+  convert_statement(self, json);
 }
 static void convert_external_declaration(struct json_map *map) {
   struct json *module = json_map_extra(map);
