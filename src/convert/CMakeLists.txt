@@ -1,6 +1,7 @@
 add_library(convert STATIC)
 target_sources(convert PRIVATE
   convert.c
+  declaration.c
   extra.c
   statement.c
   )
