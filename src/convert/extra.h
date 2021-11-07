@@ -8,6 +8,7 @@ struct convert_extra {
 };
 
 struct json *convert_extra_new_module(void);
+struct json *convert_extra_new_instr(const char *);
 void convert_extra_init(struct convert_extra *, struct json *);
 void convert_extra_push_block(struct convert_extra *);
 void convert_extra_push_instr(struct convert_extra *, struct json *);

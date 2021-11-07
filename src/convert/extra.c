@@ -24,6 +24,11 @@ struct json *convert_extra_new_module(void) {
   json_del(functions);
   return module;
 }
+struct json *convert_extra_new_instr(const char *tag) {
+  struct json *instr = json_new_obj();
+  json_insert_str(instr, "instr", tag);
+  return instr;
+}
 void convert_extra_init(struct convert_extra *self, struct json *module) {
   struct json *function = convert_extra_new_function();
   self->module = module;

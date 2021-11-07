@@ -12,9 +12,8 @@ static void convert_compound_statement(struct convert_extra *self,
 static void convert_jump_statement(struct convert_extra *self,
                                    struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
-    struct json *instr = json_new_obj();
+    struct json *instr = convert_extra_new_instr("ret");
     struct json *expr = json_get(json, SYMBOL_EXPRESSION);
-    json_insert_str(instr, "instr", "ret");
     json_insert(instr, "value", json_get(expr, SYMBOL_INTEGER_CONSTANT));
     convert_extra_push_instr(self, instr);
     json_del(instr);
