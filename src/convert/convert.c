@@ -6,13 +6,20 @@
 #include "json/visitor.h"
 #include "util/symbol.h"
 
+void convert_function_definition(struct convert_extra *self,
+                                 struct json *json) {
+  struct json *name = json_find_identifier(json);
+  struct json *func = json_new_obj();
+  json_insert(func, "name", name);
+  json_push(self->module, func);
+  json_del(func);
+}
+
 static void convert_visitor(struct json_visitor *visitor, struct json *json) {
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
     struct convert_extra *self = json_visit_extra(visitor);
-    struct json *func = json_new_obj();
-    json_insert(func, "name", json_find_identifier(json));
-    json_push(self->module, func);
-    json_del(func);
+    convert_function_definition(self,
+                                json_get(json, SYMBOL_FUNCTION_DEFINITION));
   }
   json_visit_foreach(visitor, json);
 }
