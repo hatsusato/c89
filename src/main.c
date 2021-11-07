@@ -35,11 +35,13 @@ void compile(bool_t debug) {
   if (json_is_null(json)) {
     util_error("ERROR: failed to parse");
   } else {
-    convert(json);
-    generate(json);
+    struct json *module = convert(json);
+    generate(module);
     if (debug) {
       json_print(json);
+      json_print(module);
     }
+    json_del(module);
   }
   json_del(json);
   json_set_del(symbols);
