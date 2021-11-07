@@ -12,8 +12,8 @@ static void generate_header(struct printer *printer) {
 static void generate_function(struct json_map *map) {
   struct printer *printer = json_map_extra(map);
   struct json *func = json_map_val(map);
-  struct json *name = json_find(func, "name");
-  struct json *ret = json_find(func, "ret");
+  struct json *name = json_get(func, "name");
+  struct json *ret = json_get(func, "ret");
   printer_newline(printer);
   printer_print(printer, "define i32 @%s() ", json_get_str(name));
   printer_open(printer, "{");
@@ -25,7 +25,7 @@ static void generate_function(struct json_map *map) {
 }
 void generate(struct json *json) {
   struct printer *printer = printer_new_stdout();
-  struct json *module = json_find(json, "module");
+  struct json *module = json_get(json, "module");
   generate_header(printer);
   json_foreach(module, generate_function, printer);
   printer_del(printer);
