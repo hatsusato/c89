@@ -15,7 +15,7 @@ struct json_get_extra {
 void json_print(struct json *self) {
   json_print_stdout(self);
 }
-void json_set(struct json *self, const char *key, struct json *val) {
+void json_insert(struct json *self, const char *key, struct json *val) {
   if (json_is_obj(self)) {
     json_obj_insert(json_as_obj(self), key, val);
   }

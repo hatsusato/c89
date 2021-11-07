@@ -10,7 +10,7 @@
 #define YYSCAN_ARR() yyscan_json_arr()
 #define YYSCAN_OBJ() yyscan_json_obj()
 #define YYSCAN_PUSH(arr, val) yyscan_json_push(arr, val)
-#define YYSCAN_SET(obj, key, val) yyscan_json_set(obj, key, val)
+#define YYSCAN_SET(obj, key, val) yyscan_json_insert(obj, key, val)
 #define YYSCAN_BINOP(lhs, op, rhs) yyscan_json_binop(lhs, op, rhs)
 #define YYSCAN_TAG(key, val) YYSCAN_SET(YYSCAN_OBJ(), key, val)
 #define YYSCAN_NEW_COMMA() YYSCAN_STR(SYMBOL_COMMA)
@@ -27,7 +27,7 @@ YYSCAN_TYPE yyscan_json_str(const char *);
 YYSCAN_TYPE yyscan_json_arr(void);
 YYSCAN_TYPE yyscan_json_obj(void);
 YYSCAN_TYPE yyscan_json_push(YYSCAN_TYPE, YYSCAN_TYPE);
-YYSCAN_TYPE yyscan_json_set(YYSCAN_TYPE, const char *, YYSCAN_TYPE);
+YYSCAN_TYPE yyscan_json_insert(YYSCAN_TYPE, const char *, YYSCAN_TYPE);
 YYSCAN_TYPE yyscan_json_binop(YYSCAN_TYPE, YYSCAN_TYPE, YYSCAN_TYPE);
 
 #endif /* INCLUDE_GUARD_9CD5F173_4C3F_436C_9085_C797766F802E */
