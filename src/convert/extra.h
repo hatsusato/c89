@@ -3,6 +3,7 @@
 
 struct convert_extra {
   struct json *module;
+  struct json *function;
 };
 
 void convert_extra_init(struct convert_extra *, struct json *);
