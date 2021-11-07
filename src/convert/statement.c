@@ -1,5 +1,6 @@
 #include "statement.h"
 
+#include "declaration.h"
 #include "extra.h"
 #include "json/json.h"
 #include "json/map.h"
@@ -7,6 +8,7 @@
 
 static void convert_compound_statement(struct convert_extra *self,
                                        struct json *json) {
+  convert_declaration(self, json);
   convert_statement(self, json);
 }
 static void convert_jump_statement(struct convert_extra *self,
