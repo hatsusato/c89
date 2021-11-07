@@ -23,6 +23,9 @@ void json_insert(struct json *self, const char *key, struct json *val) {
 bool_t json_has(struct json *self, const char *key) {
   return json_is_obj(self) ? json_obj_has(json_as_obj(self), key) : false;
 }
+struct json *json_get(struct json *self, const char *key) {
+  return json_is_obj(self) ? json_obj_get(json_as_obj(self), key) : json_null();
+}
 const char *json_get_str(struct json *json) {
   return json_is_str(json) ? json_str_get(json_as_str(json)) : NULL;
 }
