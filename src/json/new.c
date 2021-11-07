@@ -14,6 +14,8 @@ static struct json *json_alloc(enum json_tag tag, void *data) {
 static void json_free(struct json *self) {
   void *data = self->data;
   switch (json_tag(self)) {
+  case JSON_TAG_NULL:
+    return;
   case JSON_TAG_INT:
     json_int_del(data);
     break;
@@ -33,6 +35,12 @@ static void json_free(struct json *self) {
   util_free(self);
 }
 
+void json_del(struct json *self) {
+  json_decrement(self);
+  if (0 == self->references) {
+    json_free(self);
+  }
+}
 struct json *json_new_int(int num) {
   return json_alloc(JSON_TAG_INT, json_int_new(num));
 }
@@ -60,17 +68,6 @@ struct json_arr *json_as_arr(struct json *self) {
 struct json_obj *json_as_obj(struct json *self) {
   assert(json_is_obj(self));
   return self->data;
-}
-void json_del(struct json *self) {
-  if (json_is_null(self)) {
-    assert(0 == self->references);
-  } else {
-    self->references--;
-    assert(0 <= self->references);
-    if (0 == self->references) {
-      json_free(self);
-    }
-  }
 }
 void json_increment(struct json *self) {
   if (self->tag != JSON_TAG_NULL) {
