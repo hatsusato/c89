@@ -47,13 +47,17 @@ struct json *json_find(struct json *self, const char *key) {
 }
 static void json_find_identifier_visitor(struct json_visitor *visitor,
                                          struct json *json) {
-  if (json_has(json, SYMBOL_DIRECT_DECLARATOR)) {
+  if (json_has(json, SYMBOL_DECLARATOR)) {
     while (!json_is_null(json)) {
-      json = json_find(json, SYMBOL_DIRECT_DECLARATOR);
       if (json_has(json, SYMBOL_IDENTIFIER)) {
         struct json_find_extra *extra = json_visit_extra(visitor);
-        extra->result = json_find(json, SYMBOL_IDENTIFIER);
+        extra->result = json_get(json, SYMBOL_IDENTIFIER);
         json_visit_finish(visitor);
+        return;
+      } else if (json_has(json, SYMBOL_DECLARATOR)) {
+        json = json_get(json, SYMBOL_DECLARATOR);
+      } else {
+        json = json_get(json, SYMBOL_DIRECT_DECLARATOR);
       }
     }
   } else {
