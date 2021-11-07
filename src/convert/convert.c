@@ -11,7 +11,7 @@ static void convert_visitor(struct json_visitor *visitor, struct json *json) {
     struct convert_extra *self = json_visit_extra(visitor);
     struct json *func = json_new_obj();
     json_insert(func, "name", json_find_identifier(json));
-    json_arr_push(self->module, func);
+    json_push(self->module, func);
     json_del(func);
   }
   json_visit_foreach(visitor, json);
@@ -19,7 +19,7 @@ static void convert_visitor(struct json_visitor *visitor, struct json *json) {
 void convert(struct json *json) {
   struct convert_extra extra;
   struct json *module = json_new_arr();
-  extra.module = json_as_arr(module);
+  extra.module = module;
   json_visit(convert_visitor, &extra, json);
   json_insert(json, "module", module);
   json_del(module);
