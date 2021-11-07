@@ -23,7 +23,7 @@ void json_insert(struct json *self, const char *key, struct json *val) {
 bool_t json_has(struct json *self, const char *key) {
   return json_is_obj(self) ? json_obj_has(json_as_obj(self), key) : false;
 }
-static void json_get_visitor(struct json_visitor *visitor, struct json *json) {
+static void json_find_visitor(struct json_visitor *visitor, struct json *json) {
   struct json_get_extra *extra = json_visit_extra(visitor);
   if (json_has(json, extra->key)) {
     assert(json_is_obj(json));
@@ -32,11 +32,11 @@ static void json_get_visitor(struct json_visitor *visitor, struct json *json) {
   }
   json_visit_foreach(visitor, json);
 }
-struct json *json_get(struct json *self, const char *key) {
+struct json *json_find(struct json *self, const char *key) {
   struct json_get_extra extra;
   extra.key = key;
   extra.result = json_null();
-  json_visit(json_get_visitor, &extra, self);
+  json_visit(json_find_visitor, &extra, self);
   return extra.result;
 }
 const char *json_get_str(struct json *json) {
@@ -46,10 +46,10 @@ static void json_get_identifier_visitor(struct json_visitor *visitor,
                                         struct json *json) {
   if (json_has(json, SYMBOL_DIRECT_DECLARATOR)) {
     while (!json_is_null(json)) {
-      json = json_get(json, SYMBOL_DIRECT_DECLARATOR);
+      json = json_find(json, SYMBOL_DIRECT_DECLARATOR);
       if (json_has(json, SYMBOL_IDENTIFIER)) {
         struct json_get_extra *extra = json_visit_extra(visitor);
-        extra->result = json_get(json, SYMBOL_IDENTIFIER);
+        extra->result = json_find(json, SYMBOL_IDENTIFIER);
         json_visit_finish(visitor);
       }
     }

@@ -54,9 +54,9 @@ static void scanner_collect_typedef(struct json_visitor *visitor,
   }
 }
 void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
-  struct json *specs = json_get(decl, SYMBOL_DECLARATION_SPECIFIERS);
-  struct json *list = json_get(decl, SYMBOL_INIT_DECLARATOR_LIST);
-  if (!json_is_null(json_get(specs, SYMBOL_TYPEDEF))) {
+  struct json *specs = json_find(decl, SYMBOL_DECLARATION_SPECIFIERS);
+  struct json *list = json_find(decl, SYMBOL_INIT_DECLARATOR_LIST);
+  if (!json_is_null(json_find(specs, SYMBOL_TYPEDEF))) {
     json_visit(scanner_collect_typedef, self->typedefs, list);
   }
 }
