@@ -54,6 +54,10 @@ void json_decrement(struct json *self) {
   }
   assert(0 <= self->references);
 }
+struct json *json_null(void) {
+  static struct json null = {JSON_TAG_NULL, NULL, 0};
+  return &null;
+}
 struct json *json_new_int(int num) {
   return json_alloc(JSON_TAG_INT, json_int_new(num));
 }

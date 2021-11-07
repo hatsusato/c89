@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-#include "null.h"
+#include "new.h"
 #include "util/util.h"
 
 struct json_pair {
