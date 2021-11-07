@@ -1,12 +1,12 @@
 int f1(void) {
   return 10;
 }
-#if 0
 int f2(void) {
   int x;
   x = 2;
   return 1 + x + 3;
 }
+#if 0
 int f3(void) {
   int x;
   x = 2;
