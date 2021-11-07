@@ -25,6 +25,11 @@ void convert_external_declaration(struct json_map *map) {
     convert_function_definition(&self, json);
   }
 }
+struct json *convert_translation_unit(struct json *json) {
+  struct json *module = json_new_arr();
+  json_foreach(json, convert_external_declaration, module);
+  return module;
+}
 
 static void convert_visitor(struct json_visitor *visitor, struct json *json) {
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
