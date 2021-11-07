@@ -1,13 +1,10 @@
 #include "convert.h"
 
+#include "extra.h"
 #include "json/json.h"
 #include "json/util.h"
 #include "json/visitor.h"
 #include "util/symbol.h"
-
-struct convert_extra {
-  struct json_arr *module;
-};
 
 static void convert_visitor(struct json_visitor *visitor, struct json *json) {
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
