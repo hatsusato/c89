@@ -9,10 +9,8 @@ static void convert_function_definition(struct convert_extra *self,
                                         struct json *json) {
   struct json *name = json_find_identifier(json);
   struct json *func = json_new_obj();
-  struct json *module = json_new_arr();
   json_insert(func, "name", name);
-  json_insert(self->module, "module", module);
-  json_push(module, func);
+  json_push(json_get(self->module, "module"), func);
   json_del(func);
 }
 static void convert_external_declaration(struct json_map *map) {
@@ -26,7 +24,7 @@ static void convert_external_declaration(struct json_map *map) {
   }
 }
 static struct json *convert_translation_unit(struct json *json) {
-  struct json *module = json_new_obj();
+  struct json *module = convert_extra_new_module();
   json_foreach(json, convert_external_declaration, module);
   return module;
 }
