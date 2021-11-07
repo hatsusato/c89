@@ -4,12 +4,17 @@
 #include "json/map.h"
 #include "printer/printer.h"
 
+static void generate_print(struct printer *printer, struct json *obj,
+                           const char *key) {
+  struct json *str = json_get(obj, key);
+  printer_print(printer, "%s", json_get_str(str));
+}
 static void generate_instr(struct json_map *map) {
   struct printer *printer = json_map_extra(map);
   struct json *instr = json_map_val(map);
-  struct json *tag = json_get(instr, "instr");
-  struct json *val = json_get(instr, "value");
-  printer_print(printer, "%s i32 %s", json_get_str(tag), json_get_str(val));
+  generate_print(printer, instr, "instr");
+  printer_print(printer, " i32 ");
+  generate_print(printer, instr, "value");
   printer_newline(printer);
 }
 static void generate_block(struct json_map *map) {
@@ -20,9 +25,10 @@ static void generate_block(struct json_map *map) {
 static void generate_function(struct json_map *map) {
   struct printer *printer = json_map_extra(map);
   struct json *func = json_map_val(map);
-  struct json *name = json_get(func, "name");
   printer_newline(printer);
-  printer_print(printer, "define i32 @%s() ", json_get_str(name));
+  printer_print(printer, "define i32 @");
+  generate_print(printer, func, "name");
+  printer_print(printer, "() ");
   printer_open(printer, "{");
   printer_newline(printer);
   json_foreach(json_get(func, "function"), generate_block, printer);
