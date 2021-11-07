@@ -45,6 +45,22 @@ struct json *json_new_arr(void) {
 struct json *json_new_obj(void) {
   return json_alloc(JSON_TAG_OBJ, json_obj_new());
 }
+struct json_int *json_as_int(struct json *self) {
+  assert(json_is_int(self));
+  return json_data(self);
+}
+struct json_str *json_as_str(struct json *self) {
+  assert(json_is_str(self));
+  return json_data(self);
+}
+struct json_arr *json_as_arr(struct json *self) {
+  assert(json_is_arr(self));
+  return json_data(self);
+}
+struct json_obj *json_as_obj(struct json *self) {
+  assert(json_is_obj(self));
+  return json_data(self);
+}
 void json_del(struct json *self) {
   if (json_is_null(self)) {
     assert(0 == self->references);
