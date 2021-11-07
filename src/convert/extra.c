@@ -21,6 +21,7 @@ void convert_extra_init(struct convert_extra *self, struct json *module) {
   struct json *function = convert_extra_new_function();
   self->module = module;
   self->function = function;
+  self->block = json_null();
   json_push(json_get(module, "module"), function);
   json_del(function);
 }

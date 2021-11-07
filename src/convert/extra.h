@@ -4,6 +4,7 @@
 struct convert_extra {
   struct json *module;
   struct json *function;
+  struct json *block;
 };
 
 struct json *convert_extra_new_module(void);
