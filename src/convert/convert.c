@@ -9,18 +9,8 @@
 static void convert_function_definition(struct convert_extra *self,
                                         struct json *json) {
   struct json *name = json_find_identifier(json);
-  struct json *ret = json_new_obj();
-  struct json *str;
   json_insert(self->function, "name", name);
   convert_extra_push_block(self);
-  convert_extra_push_instr(self, ret);
-  json_del(ret);
-  str = json_new_str("ret");
-  json_insert(ret, "instr", str);
-  json_del(str);
-  str = json_new_str("0");
-  json_insert(ret, "value", str);
-  json_del(str);
   convert_statement(self, json);
 }
 static void convert_external_declaration(struct json_map *map) {
