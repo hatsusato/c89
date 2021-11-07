@@ -13,7 +13,5 @@ enum json_tag {
 
 enum json_tag json_tag(struct json *);
 void *json_data(struct json *);
-void json_increment(struct json *);
-void json_decrement(struct json *);
 
 #endif /* INCLUDE_GUARD_3B393E86_0AF1_4C94_960B_A6CEAC5B0F4D */

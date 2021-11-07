@@ -3,7 +3,6 @@
 #include "map.h"
 #include "new.h"
 #include "pair.h"
-#include "tag.h"
 #include "util/util.h"
 
 struct json_vec {
