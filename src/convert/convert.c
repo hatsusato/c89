@@ -2,6 +2,7 @@
 
 #include "extra.h"
 #include "json/json.h"
+#include "json/map.h"
 #include "json/util.h"
 #include "json/visitor.h"
 #include "util/symbol.h"
@@ -13,6 +14,16 @@ void convert_function_definition(struct convert_extra *self,
   json_insert(func, "name", name);
   json_push(self->module, func);
   json_del(func);
+}
+void convert_external_declaration(struct json_map *map) {
+  struct json *module = json_map_extra(map);
+  struct json *json = json_map_val(map);
+  if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
+    struct convert_extra self;
+    self.module = module;
+    json = json_get(json, SYMBOL_FUNCTION_DEFINITION);
+    convert_function_definition(&self, json);
+  }
 }
 
 static void convert_visitor(struct json_visitor *visitor, struct json *json) {
