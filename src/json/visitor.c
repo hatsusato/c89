@@ -1,6 +1,5 @@
 #include "visitor.h"
 
-#include "json.h"
 #include "map.h"
 
 struct json_visitor {
