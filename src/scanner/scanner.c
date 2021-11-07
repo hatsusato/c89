@@ -45,7 +45,7 @@ static void scanner_collect_typedef(struct json_visitor *visitor,
                                     struct json *json) {
   if (json_has(json, SYMBOL_DIRECT_DECLARATOR)) {
     struct json_obj *typedefs = json_visit_extra(visitor);
-    struct json *identifier = json_get_identifier(json);
+    struct json *identifier = json_find_identifier(json);
     const char *symbol = json_get_str(identifier);
     assert(symbol);
     json_obj_insert(typedefs, symbol, json_null());

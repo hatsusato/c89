@@ -13,7 +13,7 @@ static void convert_visitor(struct json_visitor *visitor, struct json *json) {
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
     struct convert_extra *self = json_visit_extra(visitor);
     struct json *func = json_new_obj();
-    json_insert(func, "name", json_get_identifier(json));
+    json_insert(func, "name", json_find_identifier(json));
     json_arr_push(self->module, func);
     json_del(func);
   }

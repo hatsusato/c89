@@ -42,8 +42,8 @@ struct json *json_find(struct json *self, const char *key) {
 const char *json_get_str(struct json *json) {
   return json_is_str(json) ? json_str_get(json_as_str(json)) : NULL;
 }
-static void json_get_identifier_visitor(struct json_visitor *visitor,
-                                        struct json *json) {
+static void json_find_identifier_visitor(struct json_visitor *visitor,
+                                         struct json *json) {
   if (json_has(json, SYMBOL_DIRECT_DECLARATOR)) {
     while (!json_is_null(json)) {
       json = json_find(json, SYMBOL_DIRECT_DECLARATOR);
@@ -57,9 +57,9 @@ static void json_get_identifier_visitor(struct json_visitor *visitor,
     json_visit_foreach(visitor, json);
   }
 }
-struct json *json_get_identifier(struct json *json) {
+struct json *json_find_identifier(struct json *json) {
   struct json_get_extra extra = {NULL, NULL};
   extra.result = json_null();
-  json_visit(json_get_identifier_visitor, &extra, json);
+  json_visit(json_find_identifier_visitor, &extra, json);
   return extra.result;
 }
