@@ -15,10 +15,13 @@ struct json_find_extra {
 void json_print(struct json *self) {
   json_print_stdout(self);
 }
+void json_push(struct json *self, struct json *val) {
+  assert(json_is_arr(self));
+  json_arr_push(json_as_arr(self), val);
+}
 void json_insert(struct json *self, const char *key, struct json *val) {
-  if (json_is_obj(self)) {
-    json_obj_insert(json_as_obj(self), key, val);
-  }
+  assert(json_is_obj(self));
+  json_obj_insert(json_as_obj(self), key, val);
 }
 bool_t json_has(struct json *self, const char *key) {
   return json_is_obj(self) ? json_obj_has(json_as_obj(self), key) : false;

@@ -7,6 +7,7 @@
 struct json;
 
 void json_print(struct json *);
+void json_push(struct json *, struct json *);
 void json_insert(struct json *, const char *, struct json *);
 bool_t json_has(struct json *, const char *);
 struct json *json_get(struct json *, const char *);
