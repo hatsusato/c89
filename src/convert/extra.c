@@ -38,3 +38,6 @@ void convert_extra_push_block(struct convert_extra *self) {
   json_push(json_get(self->function, "function"), block);
   json_del(block);
 }
+void convert_extra_push_instr(struct convert_extra *self, struct json *instr) {
+  json_push(json_get(self->block, "block"), instr);
+}
