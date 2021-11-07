@@ -41,6 +41,18 @@ void json_del(struct json *self) {
     json_free(self);
   }
 }
+void json_increment(struct json *self) {
+  if (!json_is_null(self)) {
+    self->references++;
+  }
+  assert(0 <= self->references);
+}
+void json_decrement(struct json *self) {
+  if (!json_is_null(self)) {
+    self->references--;
+  }
+  assert(0 <= self->references);
+}
 struct json *json_new_int(int num) {
   return json_alloc(JSON_TAG_INT, json_int_new(num));
 }
@@ -68,16 +80,4 @@ struct json_arr *json_as_arr(struct json *self) {
 struct json_obj *json_as_obj(struct json *self) {
   assert(json_is_obj(self));
   return self->data;
-}
-void json_increment(struct json *self) {
-  if (self->tag != JSON_TAG_NULL) {
-    self->references++;
-  }
-  assert(0 <= self->references);
-}
-void json_decrement(struct json *self) {
-  if (self->tag != JSON_TAG_NULL) {
-    self->references--;
-  }
-  assert(0 <= self->references);
 }
