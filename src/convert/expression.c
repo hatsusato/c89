@@ -13,18 +13,12 @@ static struct json *convert_identifier(struct convert *self,
   json_insert(instr, "pointer", pointer);
   return instr;
 }
-static struct json *convert_integer_constant(struct convert *self,
-                                             struct json *json) {
-  UTIL_UNUSED(self);
-  return json;
-}
 static struct json *convert_primary_expression(struct convert *self,
                                                struct json *json) {
   if (json_has(json, SYMBOL_IDENTIFIER)) {
     return convert_identifier(self, json_get(json, SYMBOL_IDENTIFIER));
   } else if (json_has(json, SYMBOL_INTEGER_CONSTANT)) {
-    return convert_integer_constant(self,
-                                    json_get(json, SYMBOL_INTEGER_CONSTANT));
+    return json_get(json, SYMBOL_INTEGER_CONSTANT);
   } else {
     return json;
   }
@@ -70,17 +64,6 @@ struct json *convert_rvalue(struct convert *self, struct json *json) {
     return convert_additive_expression(self, json);
   } else if (util_streq(tag, SYMBOL_ASSIGNMENT_EXPRESSION)) {
     return convert_assignment_expression(self, json);
-  } else if (json_has(json, SYMBOL_IDENTIFIER)) {
-    return convert_identifier(self, json_get(json, SYMBOL_IDENTIFIER));
-  } else if (json_has(json, SYMBOL_INTEGER_CONSTANT)) {
-    return convert_integer_constant(self,
-                                    json_get(json, SYMBOL_INTEGER_CONSTANT));
-  } else if (json_has(json, SYMBOL_ADDITIVE_EXPRESSION)) {
-    return convert_additive_expression(
-        self, json_get(json, SYMBOL_ADDITIVE_EXPRESSION));
-  } else if (json_has(json, SYMBOL_ASSIGNMENT_EXPRESSION)) {
-    return convert_assignment_expression(
-        self, json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION));
   } else {
     return json;
   }
