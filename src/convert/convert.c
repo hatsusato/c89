@@ -18,7 +18,7 @@ static void convert_external_declaration(struct json_map *map) {
   struct json *json = json_map_val(map);
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
     struct convert self;
-    convert_extra_init(&self, module);
+    convert_init(&self, module);
     json = json_get(json, SYMBOL_FUNCTION_DEFINITION);
     convert_function_definition(&self, json);
   }
