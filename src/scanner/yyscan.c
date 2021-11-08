@@ -62,3 +62,8 @@ YYSCAN_TYPE yyscan_json_insert(YYSCAN_TYPE obj, const char *key,
   json_del(val);
   return obj;
 }
+YYSCAN_TYPE yyscan_json_expr(const char *tag) {
+  struct json *expr = yyscan_json_obj();
+  yyscan_json_insert(expr, "tag", json_new_str(tag));
+  return expr;
+}
