@@ -425,12 +425,30 @@ unary-expression
 }
 ;
 unary-operator
-: ampersand
-| asterisk
-| plus
-| minus
-| tilde
-| exclamation
+: ampersand {
+  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_AMPERSAND, $1);
+}
+| asterisk {
+  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_ASTERISK, $1);
+}
+| plus {
+  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_PLUS, $1);
+}
+| minus {
+  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_MINUS, $1);
+}
+| tilde {
+  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_TILDE, $1);
+}
+| exclamation {
+  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_EXCLAMATION, $1);
+}
 ;
 cast-expression
 : unary-expression
@@ -450,9 +468,18 @@ multiplicative-expression
 }
 ;
 multiplicative-operator
-: asterisk
-| slash
-| percent
+: asterisk {
+  $$ = YYSCAN_EXPR(SYMBOL_MULTIPLICATIVE_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_ASTERISK, $1);
+}
+| slash {
+  $$ = YYSCAN_EXPR(SYMBOL_MULTIPLICATIVE_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_SLASH, $1);
+}
+| percent {
+  $$ = YYSCAN_EXPR(SYMBOL_MULTIPLICATIVE_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_PERCENT, $1);
+}
 ;
 additive-expression
 : multiplicative-expression
@@ -462,8 +489,14 @@ additive-expression
 }
 ;
 additive-operator
-: plus
-| minus
+: plus {
+  $$ = YYSCAN_EXPR(SYMBOL_ADDITIVE_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_PLUS, $1);
+}
+| minus {
+  $$ = YYSCAN_EXPR(SYMBOL_ADDITIVE_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_MINUS, $1);
+}
 ;
 shift-expression
 : additive-expression
@@ -473,8 +506,14 @@ shift-expression
 }
 ;
 shift-operator
-: left-shift
-| right-shift
+: left-shift {
+  $$ = YYSCAN_EXPR(SYMBOL_SHIFT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_LEFT_SHIFT, $1);
+}
+| right-shift {
+  $$ = YYSCAN_EXPR(SYMBOL_SHIFT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_RIGHT_SHIFT, $1);
+}
 ;
 relational-expression
 : shift-expression
@@ -484,10 +523,22 @@ relational-expression
 }
 ;
 relational-operator
-: less-than
-| greater-than
-| less-equal
-| greater-equal
+: less-than {
+  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_LESS_THAN, $1);
+}
+| greater-than {
+  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_GREATER_THAN, $1);
+}
+| less-equal {
+  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_LESS_EQUAL, $1);
+}
+| greater-equal {
+  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_GREATER_EQUAL, $1);
+}
 ;
 equality-expression
 : relational-expression
@@ -497,8 +548,14 @@ equality-expression
 }
 ;
 equality-operator
-: equal
-| not-equal
+: equal {
+  $$ = YYSCAN_EXPR(SYMBOL_EQUALITY_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_EQUAL, $1);
+}
+| not-equal {
+  $$ = YYSCAN_EXPR(SYMBOL_EQUALITY_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_NOT_EQUAL, $1);
+}
 ;
 and-expression
 : equality-expression
@@ -554,17 +611,50 @@ assignment-expression
 }
 ;
 assignment-operator
-: assign
-| asterisk-assign
-| slash-assign
-| percent-assign
-| plus-assign
-| minus-assign
-| left-shift-assign
-| right-shift-assign
-| ampersand-assign
-| caret-assign
-| bar-assign
+: assign {
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_ASSIGN, $1);
+}
+| asterisk-assign {
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_ASTERISK_ASSIGN, $1);
+}
+| slash-assign {
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_SLASH_ASSIGN, $1);
+}
+| percent-assign {
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_PERCENT_ASSIGN, $1);
+}
+| plus-assign {
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_PLUS_ASSIGN, $1);
+}
+| minus-assign {
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_MINUS_ASSIGN, $1);
+}
+| left-shift-assign {
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_LEFT_SHIFT_ASSIGN, $1);
+}
+| right-shift-assign {
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_RIGHT_SHIFT_ASSIGN, $1);
+}
+| ampersand-assign {
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_AMPERSAND_ASSIGN, $1);
+}
+| caret-assign {
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_CARET_ASSIGN, $1);
+}
+| bar-assign {
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_OPERATOR);
+  YYSCAN_INSERT($$, SYMBOL_BAR_ASSIGN, $1);
+}
 ;
 expression.opt
 : %empty {
