@@ -557,35 +557,45 @@ and-expression
 : equality-expression
 | and-expression ampersand equality-expression {
   $$ = YYSCAN_EXPR(SYMBOL_AND_EXPRESSION);
-  YYSCAN_BINOP($$, $1, $2, $3);
+  YYSCAN_INSERT($$, SYMBOL_AND_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_AMPERSAND, $2);
+  YYSCAN_INSERT($$, SYMBOL_EQUALITY_EXPRESSION, $3);
 }
 ;
 exclusive-or-expression
 : and-expression
 | exclusive-or-expression caret and-expression {
   $$ = YYSCAN_EXPR(SYMBOL_EXCLUSIVE_OR_EXPRESSION);
-  YYSCAN_BINOP($$, $1, $2, $3);
+  YYSCAN_INSERT($$, SYMBOL_EXCLUSIVE_OR_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_CARET, $2);
+  YYSCAN_INSERT($$, SYMBOL_AND_EXPRESSION, $3);
 }
 ;
 inclusive-or-expression
 : exclusive-or-expression
 | inclusive-or-expression bar exclusive-or-expression {
   $$ = YYSCAN_EXPR(SYMBOL_INCLUSIVE_OR_EXPRESSION);
-  YYSCAN_BINOP($$, $1, $2, $3);
+  YYSCAN_INSERT($$, SYMBOL_INCLUSIVE_OR_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_BAR, $2);
+  YYSCAN_INSERT($$, SYMBOL_EXCLUSIVE_OR_EXPRESSION, $3);
 }
 ;
 logical-and-expression
 : inclusive-or-expression
 | logical-and-expression and inclusive-or-expression {
   $$ = YYSCAN_EXPR(SYMBOL_LOGICAL_AND_EXPRESSION);
-  YYSCAN_BINOP($$, $1, $2, $3);
+  YYSCAN_INSERT($$, SYMBOL_LOGICAL_AND_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_AND, $2);
+  YYSCAN_INSERT($$, SYMBOL_INCLUSIVE_OR_EXPRESSION, $3);
 }
 ;
 logical-or-expression
 : logical-and-expression
 | logical-or-expression or logical-and-expression {
   $$ = YYSCAN_EXPR(SYMBOL_LOGICAL_OR_EXPRESSION);
-  YYSCAN_BINOP($$, $1, $2, $3);
+  YYSCAN_INSERT($$, SYMBOL_LOGICAL_OR_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_OR, $2);
+  YYSCAN_INSERT($$, SYMBOL_LOGICAL_AND_EXPRESSION, $3);
 }
 ;
 conditional-expression
