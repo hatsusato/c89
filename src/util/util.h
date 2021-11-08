@@ -24,6 +24,7 @@ void util_memcpy(void *, const void *, index_t, align_t);
 int util_strcmp(const char *, const char *);
 bool_t util_streq(const char *, const char *);
 const char *util_strdup(const char *);
+int util_atoi(const char *);
 void util_print(const char *, ...);
 void util_error(const char *, ...);
 

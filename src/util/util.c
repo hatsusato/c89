@@ -37,6 +37,9 @@ const char *util_strdup(const char *src) {
   util_memcpy(dst, src, count + 1, 1);
   return dst;
 }
+int util_atoi(const char *str) {
+  return atoi(str);
+}
 void util_print(const char *format, ...) {
   FILE *fp = stdout;
   va_list args;
