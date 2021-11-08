@@ -6,7 +6,7 @@
 #include "statement.h"
 #include "util/symbol.h"
 
-static void convert_function_definition(struct convert_extra *self,
+static void convert_function_definition(struct convert *self,
                                         struct json *json) {
   struct json *name = json_find_identifier(json);
   json_insert(self->function, "name", name);
@@ -17,7 +17,7 @@ static void convert_external_declaration(struct json_map *map) {
   struct json *module = json_map_extra(map);
   struct json *json = json_map_val(map);
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
-    struct convert_extra self;
+    struct convert self;
     convert_extra_init(&self, module);
     json = json_get(json, SYMBOL_FUNCTION_DEFINITION);
     convert_function_definition(&self, json);

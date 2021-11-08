@@ -7,17 +7,16 @@
 #include "json/map.h"
 #include "util/symbol.h"
 
-static void convert_compound_statement(struct convert_extra *self,
+static void convert_compound_statement(struct convert *self,
                                        struct json *json) {
   convert_declaration(self, json);
   convert_statement(self, json);
 }
-static void convert_expression_statement(struct convert_extra *self,
+static void convert_expression_statement(struct convert *self,
                                          struct json *json) {
   convert_rvalue(self, json_get(json, SYMBOL_EXPRESSION));
 }
-static void convert_jump_statement(struct convert_extra *self,
-                                   struct json *json) {
+static void convert_jump_statement(struct convert *self, struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
     struct json *instr = convert_extra_new_instr("ret");
     struct json *expr = convert_rvalue(self, json_get(json, SYMBOL_EXPRESSION));
@@ -27,12 +26,12 @@ static void convert_jump_statement(struct convert_extra *self,
   }
 }
 static void convert_statement_list(struct json_map *map) {
-  struct convert_extra *self = json_map_extra(map);
+  struct convert *self = json_map_extra(map);
   struct json *json = json_map_val(map);
   convert_statement(self, json);
 }
 
-void convert_statement(struct convert_extra *self, struct json *json) {
+void convert_statement(struct convert *self, struct json *json) {
   if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
     convert_compound_statement(self, json_get(json, SYMBOL_COMPOUND_STATEMENT));
   } else if (json_has(json, SYMBOL_EXPRESSION_STATEMENT)) {

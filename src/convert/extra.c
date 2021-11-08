@@ -32,7 +32,7 @@ struct json *convert_extra_new_instr(const char *tag) {
   json_insert_str(instr, "instr", tag);
   return instr;
 }
-void convert_extra_init(struct convert_extra *self, struct json *module) {
+void convert_extra_init(struct convert *self, struct json *module) {
   struct json *function = convert_extra_new_function();
   self->module = module;
   self->function = function;
@@ -40,22 +40,21 @@ void convert_extra_init(struct convert_extra *self, struct json *module) {
   json_push(json_get(module, "module"), function);
   json_del(function);
 }
-void convert_extra_push_block(struct convert_extra *self) {
+void convert_extra_push_block(struct convert *self) {
   struct json *block = convert_extra_new_block();
   self->block = block;
   json_push(json_get(self->function, "function"), block);
   json_del(block);
 }
-void convert_extra_push_instr(struct convert_extra *self, struct json *instr) {
+void convert_extra_push_instr(struct convert *self, struct json *instr) {
   json_push(json_get(self->block, "block"), instr);
 }
-void convert_extra_push_symbol(struct convert_extra *self,
-                               struct json *identifier,
+void convert_extra_push_symbol(struct convert *self, struct json *identifier,
                                struct json *instruction) {
   struct json *table = json_get(self->module, "table");
   json_insert(table, json_get_str(identifier), instruction);
 }
-struct json *convert_extra_lookup_symbol(struct convert_extra *self,
+struct json *convert_extra_lookup_symbol(struct convert *self,
                                          struct json *identifier) {
   struct json *table = json_get(self->module, "table");
   return json_get(table, json_get_str(identifier));
