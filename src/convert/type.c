@@ -5,8 +5,11 @@
 static struct json *convert_new_function(void) {
   struct json *json = json_new_obj();
   struct json *function = json_new_arr();
+  struct json *alloc = json_new_arr();
   json_insert(json, "function", function);
   json_del(function);
+  json_insert(json, "alloc", alloc);
+  json_del(alloc);
   return json;
 }
 static struct json *convert_new_block(void) {
