@@ -6,30 +6,26 @@
 #include "printer/printer.h"
 #include "util/util.h"
 
-struct generate_numbering {
-  index_t index;
-};
-
 static bool_t generate_numbering_has_register(struct json *json) {
   const char *tag = json_get_str(json_get(json, "instr"));
   return !(util_streq(tag, "store") || util_streq(tag, "ret"));
 }
 static void generate_numbering_instr(struct json_map *map) {
-  struct generate_numbering *numbering = json_map_extra(map);
+  index_t *index = json_map_extra(map);
   struct json *instr = json_map_val(map);
   if (generate_numbering_has_register(instr)) {
-    struct json *reg = json_new_int(numbering->index++);
+    struct json *reg = json_new_int((*index)++);
     json_insert(instr, "reg", reg);
     json_del(reg);
   }
 }
 static void generate_numbering_block(struct json_map *map) {
-  struct generate_numbering *numbering = json_map_extra(map);
+  index_t *index = json_map_extra(map);
   struct json *block = json_map_val(map);
-  struct json *label = json_new_int(numbering->index++);
+  struct json *label = json_new_int((*index)++);
   json_insert(block, "label", label);
   json_del(label);
-  json_foreach(json_get(block, "block"), generate_numbering_instr, numbering);
+  json_foreach(json_get(block, "block"), generate_numbering_instr, index);
 }
 static void generate_print(struct printer *printer, struct json *obj,
                            const char *key) {
@@ -45,9 +41,8 @@ static void generate_function(struct json_map *map) {
   struct printer *printer = json_map_extra(map);
   struct json *func = json_map_val(map);
   struct json *blocks = json_get(func, "function");
-  struct generate_numbering numbering;
-  numbering.index = 0;
-  json_foreach(blocks, generate_numbering_block, &numbering);
+  index_t index = 0;
+  json_foreach(blocks, generate_numbering_block, &index);
   printer_newline(printer);
   printer_print(printer, "define i32 @");
   generate_print(printer, func, "name");
