@@ -104,7 +104,6 @@
 #define SYMBOL_MULTIPLICATIVE_EXPRESSION "multiplicative-expression"
 #define SYMBOL_ADDITIVE_EXPRESSION "additive-expression"
 #define SYMBOL_SHIFT_EXPRESSION "shift-expression"
-#define SYMBOL_SHIFT_OPERATOR "shift-operator"
 #define SYMBOL_RELATIONAL_EXPRESSION "relational-expression"
 #define SYMBOL_RELATIONAL_OPERATOR "relational-operator"
 #define SYMBOL_EQUALITY_EXPRESSION "equality-expression"

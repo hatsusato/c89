@@ -498,19 +498,17 @@ additive-expression
 ;
 shift-expression
 : additive-expression
-| shift-expression shift-operator additive-expression {
+| shift-expression left-shift additive-expression {
   $$ = YYSCAN_EXPR(SYMBOL_SHIFT_EXPRESSION);
-  YYSCAN_BINOP($$, $1, $2, $3);
+  YYSCAN_INSERT($$, SYMBOL_SHIFT_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_LEFT_SHIFT, $2);
+  YYSCAN_INSERT($$, SYMBOL_ADDITIVE_EXPRESSION, $3);
 }
-;
-shift-operator
-: left-shift {
-  $$ = YYSCAN_EXPR(SYMBOL_SHIFT_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_LEFT_SHIFT, $1);
-}
-| right-shift {
-  $$ = YYSCAN_EXPR(SYMBOL_SHIFT_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_RIGHT_SHIFT, $1);
+| shift-expression right-shift additive-expression {
+  $$ = YYSCAN_EXPR(SYMBOL_SHIFT_EXPRESSION);
+  YYSCAN_INSERT($$, SYMBOL_SHIFT_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_RIGHT_SHIFT, $2);
+  YYSCAN_INSERT($$, SYMBOL_ADDITIVE_EXPRESSION, $3);
 }
 ;
 relational-expression
