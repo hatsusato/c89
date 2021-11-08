@@ -513,27 +513,29 @@ shift-expression
 ;
 relational-expression
 : shift-expression
-| relational-expression relational-operator shift-expression {
+| relational-expression less-than shift-expression {
   $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_EXPRESSION);
-  YYSCAN_BINOP($$, $1, $2, $3);
+  YYSCAN_INSERT($$, SYMBOL_RELATIONAL_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_LESS_THAN, $2);
+  YYSCAN_INSERT($$, SYMBOL_SHIFT_EXPRESSION, $3);
 }
-;
-relational-operator
-: less-than {
-  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_LESS_THAN, $1);
+| relational-expression greater-than shift-expression {
+  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_EXPRESSION);
+  YYSCAN_INSERT($$, SYMBOL_RELATIONAL_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_GREATER_THAN, $2);
+  YYSCAN_INSERT($$, SYMBOL_SHIFT_EXPRESSION, $3);
 }
-| greater-than {
-  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_GREATER_THAN, $1);
+| relational-expression less-equal shift-expression {
+  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_EXPRESSION);
+  YYSCAN_INSERT($$, SYMBOL_RELATIONAL_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_LESS_EQUAL, $2);
+  YYSCAN_INSERT($$, SYMBOL_SHIFT_EXPRESSION, $3);
 }
-| less-equal {
-  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_LESS_EQUAL, $1);
-}
-| greater-equal {
-  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_GREATER_EQUAL, $1);
+| relational-expression greater-equal shift-expression {
+  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_EXPRESSION);
+  YYSCAN_INSERT($$, SYMBOL_RELATIONAL_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_GREATER_EQUAL, $2);
+  YYSCAN_INSERT($$, SYMBOL_SHIFT_EXPRESSION, $3);
 }
 ;
 equality-expression
