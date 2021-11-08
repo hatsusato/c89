@@ -16,3 +16,19 @@ void convert_immediate(struct json *json) {
     convert_insert_immediate(json, util_atoi(json_get_str(val)));
   }
 }
+bool_t convert_immediate_additive_expression(struct json *json,
+                                             struct json *lhs,
+                                             struct json *rhs) {
+  lhs = json_get(lhs, SYMBOL_IMMEDIATE);
+  rhs = json_get(rhs, SYMBOL_IMMEDIATE);
+  if (json_is_null(lhs) || json_is_null(rhs)) {
+    return false;
+  } else {
+    int lval, rval;
+    assert(json_is_int(lhs) && json_is_int(rhs));
+    lval = json_int_get(json_as_int(lhs));
+    rval = json_int_get(json_as_int(rhs));
+    convert_insert_immediate(json, lval + rval);
+    return true;
+  }
+}

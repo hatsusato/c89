@@ -28,10 +28,14 @@ static struct json *convert_additive_expression(struct convert *self,
   struct json *rhs = json_get(json, SYMBOL_MULTIPLICATIVE_EXPRESSION);
   struct json *op1 = convert_rvalue(self, lhs);
   struct json *op2 = convert_rvalue(self, rhs);
-  struct json *instr = convert_push_instr(self, "add");
-  json_insert(instr, "lhs", op1);
-  json_insert(instr, "rhs", op2);
-  return instr;
+  if (convert_immediate_additive_expression(json, op1, op2)) {
+    return json;
+  } else {
+    struct json *instr = convert_push_instr(self, "add");
+    json_insert(instr, "lhs", op1);
+    json_insert(instr, "rhs", op2);
+    return instr;
+  }
 }
 static struct json *convert_assignment_expression(struct convert *self,
                                                   struct json *json) {
