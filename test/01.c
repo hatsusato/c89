@@ -11,7 +11,7 @@ int f3(void) {
   x = 2;
   x = x + 3;
   x = x + 4 + 5 + 6;
-  return x;
+  return 1 + 2 + 3 + x;
 }
 #if 0
 int f4(void) {
