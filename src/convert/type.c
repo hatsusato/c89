@@ -26,10 +26,26 @@ static struct json *convert_new_instr(const char *instr) {
   return json;
 }
 
+static void convert_table_push(struct convert *self) {
+  struct json *table = json_new_obj();
+  struct json *next = json_take(self->module, "table");
+  json_insert(self->module, "table", table);
+  json_del(table);
+  json_insert(table, "$next", next);
+  json_del(next);
+}
+static void convert_table_pop(struct convert *self) {
+  struct json *table = json_get(self->module, "table");
+  struct json *next = json_take(table, "$next");
+  json_insert(self->module, "table", next);
+  json_del(next);
+}
+
 void convert_init(struct convert *self, struct json *module) {
   self->module = module;
   self->function = json_null();
   self->block = json_null();
+  convert_table_push(self);
 }
 void convert_finish(struct convert *self) {
   struct json *alloc = json_get(self->function, "alloc");
@@ -37,6 +53,7 @@ void convert_finish(struct convert *self) {
   struct json *front = json_front(function);
   json_append(alloc, json_get(front, "block"));
   json_insert(front, "block", alloc);
+  convert_table_pop(self);
 }
 struct json *convert_new_module(void) {
   struct json *json = json_new_obj();
