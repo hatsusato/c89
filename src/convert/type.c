@@ -69,17 +69,29 @@ struct json *convert_push_instr(struct convert *self, const char *tag) {
   json_del(instr);
   return instr;
 }
-void convert_push_symbol(struct convert *self, struct json *identifier) {
+static struct json *convert_table_insert(struct convert *self,
+                                         const char *key) {
   struct json *table = json_get(self->module, "table");
-  struct json *alloc = json_get(self->function, "alloc");
-  struct json *instr = convert_new_instr("alloca");
-  json_insert(instr, "name", identifier);
-  json_insert(table, json_get_str(identifier), instr);
-  json_push(alloc, instr);
+  struct json *instr;
+  assert(!json_has(table, key));
+  instr = convert_new_instr("alloca");
+  json_insert(table, key, instr);
   json_del(instr);
+  return instr;
+}
+static struct json *convert_table_lookup(struct convert *self,
+                                         const char *key) {
+  struct json *table = json_get(self->module, "table");
+  return json_get(table, key);
+}
+void convert_push_symbol(struct convert *self, struct json *identifier) {
+  const char *name = json_get_str(identifier);
+  struct json *instr = convert_table_insert(self, name);
+  struct json *alloc = json_get(self->function, "alloc");
+  json_push(alloc, instr);
 }
 struct json *convert_lookup_symbol(struct convert *self,
                                    struct json *identifier) {
-  struct json *table = json_get(self->module, "table");
-  return json_get(table, json_get_str(identifier));
+  const char *name = json_get_str(identifier);
+  return convert_table_lookup(self, name);
 }
