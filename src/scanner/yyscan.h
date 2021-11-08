@@ -10,6 +10,7 @@
 #define YYSCAN_STR(symbol) yyscan_json_str(symbol)
 #define YYSCAN_ARR() yyscan_json_arr()
 #define YYSCAN_OBJ() yyscan_json_obj()
+#define YYSCAN_EXPR(key) YYSCAN_INSERT(YYSCAN_OBJ(), "tag", YYSCAN_STR(key))
 #define YYSCAN_PUSH(arr, val) yyscan_json_push(arr, val)
 #define YYSCAN_INSERT(obj, key, val) yyscan_json_insert(obj, key, val)
 #define YYSCAN_BINOP(lhs, op, rhs) yyscan_json_binop(lhs, op, rhs)

@@ -315,27 +315,27 @@ string-literal
 /* 6.3 Expressions */
 primary-expression
 : identifier {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_PRIMARY_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_IDENTIFIER, $1);
 }
 | floating-constant {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_PRIMARY_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_FLOATING_CONSTANT, $1);
 }
 | integer-constant {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_PRIMARY_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_INTEGER_CONSTANT, $1);
 }
 | character-constant {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_PRIMARY_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_CHARACTER_CONSTANT, $1);
 }
 | string-literal {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_PRIMARY_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_STRING_LITERAL, $1);
 }
 | left-paren expression right-paren {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_PRIMARY_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_LEFT_PAREN, $1);
   YYSCAN_INSERT($$, SYMBOL_EXPRESSION, $2);
   YYSCAN_INSERT($$, SYMBOL_RIGHT_PAREN, $3);
@@ -345,7 +345,7 @@ primary-expression
 postfix-expression
 : primary-expression
 | postfix-expression left-bracket expression right-bracket {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_POSTFIX_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_POSTFIX_EXPRESSION, $1);
   YYSCAN_INSERT($$, SYMBOL_LEFT_BRACKET, $2);
   YYSCAN_INSERT($$, SYMBOL_EXPRESSION, $3);
@@ -353,7 +353,7 @@ postfix-expression
   $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
 }
 | postfix-expression left-paren argument-expression-list.opt right-paren {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_POSTFIX_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_POSTFIX_EXPRESSION, $1);
   YYSCAN_INSERT($$, SYMBOL_LEFT_PAREN, $2);
   YYSCAN_INSERT($$, SYMBOL_ARGUMENT_EXPRESSION_LIST, $3);
@@ -361,27 +361,27 @@ postfix-expression
   $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
 }
 | postfix-expression period identifier {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_POSTFIX_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_POSTFIX_EXPRESSION, $1);
   YYSCAN_INSERT($$, SYMBOL_PERIOD, $2);
   YYSCAN_INSERT($$, SYMBOL_IDENTIFIER, $3);
   $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
 }
 | postfix-expression arrow identifier {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_POSTFIX_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_POSTFIX_EXPRESSION, $1);
   YYSCAN_INSERT($$, SYMBOL_ARROW, $2);
   YYSCAN_INSERT($$, SYMBOL_IDENTIFIER, $3);
   $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
 }
 | postfix-expression increment {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_POSTFIX_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_POSTFIX_EXPRESSION, $1);
   YYSCAN_INSERT($$, SYMBOL_INCREMENT, $2);
   $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
 }
 | postfix-expression decrement {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_POSTFIX_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_POSTFIX_EXPRESSION, $1);
   YYSCAN_INSERT($$, SYMBOL_DECREMENT, $2);
   $$ = YYSCAN_TAG(SYMBOL_POSTFIX_EXPRESSION, $$);
@@ -404,31 +404,31 @@ argument-expression-list
 unary-expression
 : postfix-expression
 | increment unary-expression {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_UNARY_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_INCREMENT, $1);
   YYSCAN_INSERT($$, SYMBOL_UNARY_EXPRESSION, $2);
   $$ = YYSCAN_TAG(SYMBOL_UNARY_EXPRESSION, $$);
 }
 | decrement unary-expression {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_UNARY_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_DECREMENT, $1);
   YYSCAN_INSERT($$, SYMBOL_UNARY_EXPRESSION, $2);
   $$ = YYSCAN_TAG(SYMBOL_UNARY_EXPRESSION, $$);
 }
 | unary-operator cast-expression {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_UNARY_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_UNARY_OPERATOR, $1);
   YYSCAN_INSERT($$, SYMBOL_CAST_EXPRESSION, $2);
   $$ = YYSCAN_TAG(SYMBOL_UNARY_EXPRESSION, $$);
 }
 | sizeof unary-expression {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_UNARY_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_SIZEOF, $1);
   YYSCAN_INSERT($$, SYMBOL_UNARY_EXPRESSION, $2);
   $$ = YYSCAN_TAG(SYMBOL_UNARY_EXPRESSION, $$);
 }
 | sizeof left-paren type-name right-paren {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_UNARY_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_SIZEOF, $1);
   YYSCAN_INSERT($$, SYMBOL_LEFT_PAREN, $2);
   YYSCAN_INSERT($$, SYMBOL_TYPE_NAME, $3);
@@ -447,7 +447,7 @@ unary-operator
 cast-expression
 : unary-expression
 | left-paren type-name right-paren cast-expression {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_CAST_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_LEFT_PAREN, $1);
   YYSCAN_INSERT($$, SYMBOL_TYPE_NAME, $2);
   YYSCAN_INSERT($$, SYMBOL_RIGHT_PAREN, $3);
@@ -551,13 +551,12 @@ logical-or-expression
 conditional-expression
 : logical-or-expression
 | logical-or-expression question expression colon conditional-expression {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_EXPR(SYMBOL_CONDITIONAL_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_LOGICAL_OR_EXPRESSION, $1);
   YYSCAN_INSERT($$, SYMBOL_QUESTION, $2);
   YYSCAN_INSERT($$, SYMBOL_EXPRESSION, $3);
   YYSCAN_INSERT($$, SYMBOL_COLON, $4);
   YYSCAN_INSERT($$, SYMBOL_CONDITIONAL_EXPRESSION, $5);
-  $$ = YYSCAN_TAG(SYMBOL_CONDITIONAL_EXPRESSION, $$);
 }
 ;
 assignment-expression
