@@ -426,27 +426,27 @@ unary-expression
 ;
 unary-operator
 : ampersand {
-  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  $$ = YYSCAN_OBJ();
   YYSCAN_INSERT($$, SYMBOL_AMPERSAND, $1);
 }
 | asterisk {
-  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  $$ = YYSCAN_OBJ();
   YYSCAN_INSERT($$, SYMBOL_ASTERISK, $1);
 }
 | plus {
-  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  $$ = YYSCAN_OBJ();
   YYSCAN_INSERT($$, SYMBOL_PLUS, $1);
 }
 | minus {
-  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  $$ = YYSCAN_OBJ();
   YYSCAN_INSERT($$, SYMBOL_MINUS, $1);
 }
 | tilde {
-  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  $$ = YYSCAN_OBJ();
   YYSCAN_INSERT($$, SYMBOL_TILDE, $1);
 }
 | exclamation {
-  $$ = YYSCAN_EXPR(SYMBOL_UNARY_OPERATOR);
+  $$ = YYSCAN_OBJ();
   YYSCAN_INSERT($$, SYMBOL_EXCLAMATION, $1);
 }
 ;
