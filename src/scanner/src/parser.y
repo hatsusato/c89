@@ -458,8 +458,8 @@ cast-expression
 multiplicative-expression
 : cast-expression
 | multiplicative-expression multiplicative-operator cast-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(SYMBOL_MULTIPLICATIVE_EXPRESSION, $$);
+  $$ = YYSCAN_EXPR(SYMBOL_MULTIPLICATIVE_EXPRESSION);
+  YYSCAN_BINOP($$, $1, $2, $3);
 }
 ;
 multiplicative-operator
@@ -470,8 +470,8 @@ multiplicative-operator
 additive-expression
 : multiplicative-expression
 | additive-expression additive-operator multiplicative-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(SYMBOL_ADDITIVE_EXPRESSION, $$);
+  $$ = YYSCAN_EXPR(SYMBOL_ADDITIVE_EXPRESSION);
+  YYSCAN_BINOP($$, $1, $2, $3);
 }
 ;
 additive-operator
@@ -481,8 +481,8 @@ additive-operator
 shift-expression
 : additive-expression
 | shift-expression shift-operator additive-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(SYMBOL_SHIFT_EXPRESSION, $$);
+  $$ = YYSCAN_EXPR(SYMBOL_SHIFT_EXPRESSION);
+  YYSCAN_BINOP($$, $1, $2, $3);
 }
 ;
 shift-operator
@@ -492,8 +492,8 @@ shift-operator
 relational-expression
 : shift-expression
 | relational-expression relational-operator shift-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(SYMBOL_RELATIONAL_EXPRESSION, $$);
+  $$ = YYSCAN_EXPR(SYMBOL_RELATIONAL_EXPRESSION);
+  YYSCAN_BINOP($$, $1, $2, $3);
 }
 ;
 relational-operator
@@ -505,8 +505,8 @@ relational-operator
 equality-expression
 : relational-expression
 | equality-expression equality-operator relational-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(SYMBOL_EQUALITY_EXPRESSION, $$);
+  $$ = YYSCAN_EXPR(SYMBOL_EQUALITY_EXPRESSION);
+  YYSCAN_BINOP($$, $1, $2, $3);
 }
 ;
 equality-operator
@@ -516,36 +516,36 @@ equality-operator
 and-expression
 : equality-expression
 | and-expression ampersand equality-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(SYMBOL_AND_EXPRESSION, $$);
+  $$ = YYSCAN_EXPR(SYMBOL_AND_EXPRESSION);
+  YYSCAN_BINOP($$, $1, $2, $3);
 }
 ;
 exclusive-or-expression
 : and-expression
 | exclusive-or-expression caret and-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(SYMBOL_EXCLUSIVE_OR_EXPRESSION, $$);
+  $$ = YYSCAN_EXPR(SYMBOL_EXCLUSIVE_OR_EXPRESSION);
+  YYSCAN_BINOP($$, $1, $2, $3);
 }
 ;
 inclusive-or-expression
 : exclusive-or-expression
 | inclusive-or-expression bar exclusive-or-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(SYMBOL_INCLUSIVE_OR_EXPRESSION, $$);
+  $$ = YYSCAN_EXPR(SYMBOL_INCLUSIVE_OR_EXPRESSION);
+  YYSCAN_BINOP($$, $1, $2, $3);
 }
 ;
 logical-and-expression
 : inclusive-or-expression
 | logical-and-expression and inclusive-or-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(SYMBOL_LOGICAL_AND_EXPRESSION, $$);
+  $$ = YYSCAN_EXPR(SYMBOL_LOGICAL_AND_EXPRESSION);
+  YYSCAN_BINOP($$, $1, $2, $3);
 }
 ;
 logical-or-expression
 : logical-and-expression
 | logical-or-expression or logical-and-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(SYMBOL_LOGICAL_OR_EXPRESSION, $$);
+  $$ = YYSCAN_EXPR(SYMBOL_LOGICAL_OR_EXPRESSION);
+  YYSCAN_BINOP($$, $1, $2, $3);
 }
 ;
 conditional-expression
@@ -562,8 +562,8 @@ conditional-expression
 assignment-expression
 : conditional-expression
 | unary-expression assignment-operator assignment-expression {
-  $$ = YYSCAN_BINOP($1, $2, $3);
-  $$ = YYSCAN_TAG(SYMBOL_ASSIGNMENT_EXPRESSION, $$);
+  $$ = YYSCAN_EXPR(SYMBOL_ASSIGNMENT_EXPRESSION);
+  YYSCAN_BINOP($$, $1, $2, $3);
 }
 ;
 assignment-operator
@@ -588,7 +588,10 @@ expression.opt
 expression
 : assignment-expression
 | expression comma assignment-expression {
-  $$ = YYSCAN_BINOP($1, YYSCAN_NEW_COMMA(), $3);
+  $$ = YYSCAN_EXPR(SYMBOL_EXPRESSION);
+  YYSCAN_INSERT($$, SYMBOL_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_COMMA, YYSCAN_NEW_COMMA());
+  YYSCAN_INSERT($$, SYMBOL_ASSIGNMENT_EXPRESSION, $3);
 }
 ;
 
@@ -1056,7 +1059,7 @@ typedef-name
 initializer
 : assignment-expression {
   $$ = YYSCAN_OBJ();
-  YYSCAN_INSERT($$, SYMBOL_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_ASSIGNMENT_EXPRESSION, $1);
 }
 | left-brace initializer-list right-brace {
   $$ = YYSCAN_OBJ();
