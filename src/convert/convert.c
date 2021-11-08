@@ -22,6 +22,7 @@ static void convert_external_declaration(struct json_map *map) {
     convert_push_function(&self);
     convert_function_definition(&self,
                                 json_get(json, SYMBOL_FUNCTION_DEFINITION));
+    convert_finish(&self);
   }
 }
 static struct json *convert_translation_unit(struct json *json) {

@@ -56,7 +56,7 @@ void json_vec_push(struct json_vec *self, const char *key, struct json *val) {
   json_vec_reserve(self, self->count + 1);
   json_pair_set(json_pair_at(self->base, self->count), key, val);
   self->count++;
-  json_increment(val);
+  json_ref(val);
 }
 struct json_pair *json_vec_at(struct json_vec *self, index_t index) {
   index += index < 0 ? self->count : 0;

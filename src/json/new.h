@@ -10,8 +10,7 @@ struct json_obj;
 struct json_str;
 
 void json_del(struct json *);
-void json_increment(struct json *);
-void json_decrement(struct json *);
+void json_ref(struct json *);
 struct json *json_null(void);
 struct json *json_new_int(int);
 struct json *json_new_str(const char *);

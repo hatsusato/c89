@@ -15,5 +15,8 @@ struct json *json_get(struct json *, const char *);
 struct json *json_find(struct json *, const char *);
 const char *json_get_str(struct json *);
 struct json *json_find_identifier(struct json *);
+struct json *json_front(struct json *);
+void json_append(struct json *, struct json *);
+struct json *json_take(struct json *, const char *);
 
 #endif /* INCLUDE_GUARD_0363FDA6_C88C_4B43_9B75_218C62E9A789 */
