@@ -6,6 +6,7 @@
 #include "yyscan_t.h"
 
 #define YYSCAN_TOKEN() yyscan_json_token(YYSCAN_PARAM)
+#define YYSCAN_NULL() yyscan_json_null()
 #define YYSCAN_STR(symbol) yyscan_json_str(symbol)
 #define YYSCAN_ARR() yyscan_json_arr()
 #define YYSCAN_OBJ() yyscan_json_obj()
@@ -23,6 +24,7 @@ void yyerror(yyscan_t, const char *);
 void yyscan_parse(YYSCAN_EXTRA);
 int yyscan_is_typedef(yyscan_t, const char *);
 YYSCAN_TYPE yyscan_json_token(yyscan_t);
+YYSCAN_TYPE yyscan_json_null(void);
 YYSCAN_TYPE yyscan_json_str(const char *);
 YYSCAN_TYPE yyscan_json_arr(void);
 YYSCAN_TYPE yyscan_json_obj(void);

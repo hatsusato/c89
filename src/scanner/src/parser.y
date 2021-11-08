@@ -272,7 +272,7 @@ ellipsis: "..." { $$ = YYSCAN_STR(SYMBOL_ELLIPSIS); }
 /* 6.1 Lexical elements */
 identifier.opt
 : %empty {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_NULL();
 }
 | identifier
 ;
@@ -582,7 +582,7 @@ assignment-operator
 ;
 expression.opt
 : %empty {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_NULL();
 }
 | expression
 ;
@@ -596,7 +596,7 @@ expression
 /* 6.4 Constant expressions */
 constant-expression.opt
 : %empty {
-  $$ = YYSCAN_OBJ();
+  $$ = YYSCAN_NULL();
 }
 | constant-expression
 ;

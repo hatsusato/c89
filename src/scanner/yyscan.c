@@ -37,6 +37,9 @@ YYSCAN_TYPE yyscan_json_token(yyscan_t self) {
   assert(text[yyget_leng(self)] == 0);
   return scanner_json_token(yyget_extra(self), text);
 }
+YYSCAN_TYPE yyscan_json_null(void) {
+  return json_null();
+}
 YYSCAN_TYPE yyscan_json_str(const char *str) {
   return json_new_str(str);
 }
