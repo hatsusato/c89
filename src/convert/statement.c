@@ -12,6 +12,10 @@ static void convert_compound_statement(struct convert_extra *self,
   convert_declaration(self, json);
   convert_statement(self, json);
 }
+static void convert_expression_statement(struct convert_extra *self,
+                                         struct json *json) {
+  convert_expression(self, json_get(json, SYMBOL_EXPRESSION));
+}
 static void convert_jump_statement(struct convert_extra *self,
                                    struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
@@ -32,6 +36,9 @@ static void convert_statement_list(struct json_map *map) {
 void convert_statement(struct convert_extra *self, struct json *json) {
   if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
     convert_compound_statement(self, json_get(json, SYMBOL_COMPOUND_STATEMENT));
+  } else if (json_has(json, SYMBOL_EXPRESSION_STATEMENT)) {
+    convert_expression_statement(self,
+                                 json_get(json, SYMBOL_EXPRESSION_STATEMENT));
   } else if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
     convert_jump_statement(self, json_get(json, SYMBOL_JUMP_STATEMENT));
   } else if (json_has(json, SYMBOL_STATEMENT_LIST)) {
