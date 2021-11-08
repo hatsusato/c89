@@ -483,19 +483,17 @@ multiplicative-expression
 ;
 additive-expression
 : multiplicative-expression
-| additive-expression additive-operator multiplicative-expression {
+| additive-expression plus multiplicative-expression {
   $$ = YYSCAN_EXPR(SYMBOL_ADDITIVE_EXPRESSION);
-  YYSCAN_BINOP($$, $1, $2, $3);
+  YYSCAN_INSERT($$, SYMBOL_ADDITIVE_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_PLUS, $2);
+  YYSCAN_INSERT($$, SYMBOL_MULTIPLICATIVE_EXPRESSION, $3);
 }
-;
-additive-operator
-: plus {
-  $$ = YYSCAN_EXPR(SYMBOL_ADDITIVE_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_PLUS, $1);
-}
-| minus {
-  $$ = YYSCAN_EXPR(SYMBOL_ADDITIVE_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_MINUS, $1);
+| additive-expression minus multiplicative-expression {
+  $$ = YYSCAN_EXPR(SYMBOL_ADDITIVE_EXPRESSION);
+  YYSCAN_INSERT($$, SYMBOL_ADDITIVE_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_MINUS, $2);
+  YYSCAN_INSERT($$, SYMBOL_MULTIPLICATIVE_EXPRESSION, $3);
 }
 ;
 shift-expression
