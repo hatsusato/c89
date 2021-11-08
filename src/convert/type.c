@@ -69,6 +69,10 @@ struct json *convert_push_instr(struct convert *self, const char *tag) {
   json_del(instr);
   return instr;
 }
+static void convert_alloc_push(struct convert *self, struct json *instr) {
+  struct json *alloc = json_get(self->function, "alloc");
+  json_push(alloc, instr);
+}
 static struct json *convert_table_insert(struct convert *self,
                                          const char *key) {
   struct json *table = json_get(self->module, "table");
@@ -87,8 +91,7 @@ static struct json *convert_table_lookup(struct convert *self,
 void convert_push_symbol(struct convert *self, struct json *identifier) {
   const char *name = json_get_str(identifier);
   struct json *instr = convert_table_insert(self, name);
-  struct json *alloc = json_get(self->function, "alloc");
-  json_push(alloc, instr);
+  convert_alloc_push(self, instr);
 }
 struct json *convert_lookup_symbol(struct convert *self,
                                    struct json *identifier) {
