@@ -11,7 +11,6 @@ struct json_str;
 
 void json_del(struct json *);
 void json_ref(struct json *);
-void json_decrement(struct json *);
 struct json *json_null(void);
 struct json *json_new_int(int);
 struct json *json_new_str(const char *);

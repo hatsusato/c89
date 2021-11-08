@@ -27,7 +27,7 @@ index_t json_obj_count(struct json_obj *self) {
 void json_obj_insert(struct json_obj *self, const char *key, struct json *val) {
   struct json_pair *pair = json_obj_find(self, key);
   if (pair) {
-    json_decrement(json_pair_val(pair));
+    json_del(json_pair_val(pair));
     json_ref(val);
     json_pair_set(pair, key, val);
   } else {
