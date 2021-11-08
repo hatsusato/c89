@@ -1,29 +1,36 @@
 #include "convert.h"
 
 #include "json/json.h"
-#include "json/util.h"
-#include "json/visitor.h"
+#include "json/map.h"
+#include "statement.h"
+#include "type.h"
 #include "util/symbol.h"
 
-struct convert_extra {
-  struct json_arr *module;
-};
-
-static void convert_visitor(struct json_visitor *visitor, struct json *json) {
-  if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
-    struct convert_extra *self = json_visit_extra(visitor);
-    struct json *func = json_new_obj();
-    json_set(func, "name", json_get_identifier(json));
-    json_arr_push(self->module, func);
-    json_del(func);
-  }
-  json_visit_foreach(visitor, json);
+static void convert_function_definition(struct convert *self,
+                                        struct json *json) {
+  struct json *name = json_find_identifier(json);
+  json_insert(self->function, "name", name);
+  convert_push_block(self);
+  convert_statement(self, json);
 }
-void convert(struct json *json) {
-  struct convert_extra extra;
-  struct json *module = json_new_arr();
-  extra.module = json_as_arr(module);
-  json_visit(convert_visitor, &extra, json);
-  json_set(json, "module", module);
-  json_del(module);
+static void convert_external_declaration(struct json_map *map) {
+  struct json *module = json_map_extra(map);
+  struct json *json = json_map_val(map);
+  if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
+    struct convert self;
+    convert_init(&self, module);
+    convert_push_function(&self);
+    convert_function_definition(&self,
+                                json_get(json, SYMBOL_FUNCTION_DEFINITION));
+  }
+}
+static struct json *convert_translation_unit(struct json *json) {
+  struct json *module = convert_new_module();
+  json_foreach(json, convert_external_declaration, module);
+  return module;
+}
+
+struct json *convert(struct json *json) {
+  struct json *translation_unit = json_get(json, SYMBOL_TRANSLATION_UNIT);
+  return convert_translation_unit(translation_unit);
 }

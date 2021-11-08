@@ -1,33 +1,25 @@
 #include "generate.h"
 
+#include "function.h"
 #include "json/json.h"
 #include "json/map.h"
-#include "json/util.h"
 #include "printer/printer.h"
-#include "util/util.h"
 
 static void generate_header(struct printer *printer) {
   printer_print(printer, "target triple = ");
   printer_quote(printer, "x86_64-unknown-linux-gnu");
   printer_newline(printer);
 }
-static void generate_function(struct json_map *map) {
+static void generate_map(struct json_map *map) {
   struct printer *printer = json_map_extra(map);
-  struct json *name = json_get(json_map_val(map), "name");
-  assert(json_is_str(name));
-  printer_newline(printer);
-  printer_print(printer, "define i32 @%s() ", json_get_str(name));
-  printer_open(printer, "{");
-  printer_newline(printer);
-  printer_print(printer, "ret i32 0");
-  printer_newline(printer);
-  printer_close(printer, "}");
-  printer_newline(printer);
+  struct json *function = json_map_val(map);
+  generate_function(printer, function);
 }
+
 void generate(struct json *json) {
   struct printer *printer = printer_new_stdout();
-  struct json *module = json_get(json, "module");
+  struct json *functions = json_get(json, "module");
   generate_header(printer);
-  json_foreach(module, generate_function, printer);
+  json_foreach(functions, generate_map, printer);
   printer_del(printer);
 }

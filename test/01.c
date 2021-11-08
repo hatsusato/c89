@@ -4,8 +4,9 @@ int f1(void) {
 int f2(void) {
   int x;
   x = 2;
-  return 1 + x + 3;
+  return x;
 }
+#if 0
 int f3(void) {
   int x;
   x = 2;
@@ -50,3 +51,4 @@ int f7(void) {
 int g1;
 int g2, g3;
 int g4 = 4;
+#endif

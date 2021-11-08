@@ -1,6 +1,8 @@
 #include "map.h"
 
+#include "json.h"
 #include "pair.h"
+#include "tag.h"
 #include "vec.h"
 
 struct json_map {
@@ -39,5 +41,17 @@ void json_map_foreach(json_map_t map, void *extra, struct json_vec *vec) {
     self.key = json_pair_key(pair);
     self.val = json_pair_val(pair);
     map(&self);
+  }
+}
+void json_foreach(struct json *json, json_map_t map, void *extra) {
+  switch (json_tag(json)) {
+  case JSON_TAG_ARR:
+    json_arr_foreach(json_as_arr(json), map, extra);
+    break;
+  case JSON_TAG_OBJ:
+    json_obj_foreach(json_as_obj(json), map, extra);
+    break;
+  default:
+    break;
   }
 }

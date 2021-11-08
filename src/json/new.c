@@ -1,6 +1,7 @@
 #include "new.h"
 
 #include "json.h"
+#include "tag.h"
 #include "type.h"
 #include "util/util.h"
 
@@ -12,8 +13,10 @@ static struct json *json_alloc(enum json_tag tag, void *data) {
   return self;
 }
 static void json_free(struct json *self) {
-  void *data = json_data(self);
+  void *data = self->data;
   switch (json_tag(self)) {
+  case JSON_TAG_NULL:
+    return;
   case JSON_TAG_INT:
     json_int_del(data);
     break;
@@ -33,6 +36,28 @@ static void json_free(struct json *self) {
   util_free(self);
 }
 
+void json_del(struct json *self) {
+  json_decrement(self);
+  if (0 == self->references) {
+    json_free(self);
+  }
+}
+void json_increment(struct json *self) {
+  if (!json_is_null(self)) {
+    self->references++;
+  }
+  assert(0 <= self->references);
+}
+void json_decrement(struct json *self) {
+  if (!json_is_null(self)) {
+    self->references--;
+  }
+  assert(0 <= self->references);
+}
+struct json *json_null(void) {
+  static struct json null = {JSON_TAG_NULL, NULL, 0};
+  return &null;
+}
 struct json *json_new_int(int num) {
   return json_alloc(JSON_TAG_INT, json_int_new(num));
 }
@@ -45,14 +70,34 @@ struct json *json_new_arr(void) {
 struct json *json_new_obj(void) {
   return json_alloc(JSON_TAG_OBJ, json_obj_new());
 }
-void json_del(struct json *self) {
-  if (json_is_null(self)) {
-    assert(0 == self->references);
-  } else {
-    self->references--;
-    assert(0 <= self->references);
-    if (0 == self->references) {
-      json_free(self);
-    }
-  }
+struct json_int *json_as_int(struct json *self) {
+  assert(json_is_int(self));
+  return self->data;
+}
+struct json_str *json_as_str(struct json *self) {
+  assert(json_is_str(self));
+  return self->data;
+}
+struct json_arr *json_as_arr(struct json *self) {
+  assert(json_is_arr(self));
+  return self->data;
+}
+struct json_obj *json_as_obj(struct json *self) {
+  assert(json_is_obj(self));
+  return self->data;
+}
+bool_t json_is_null(struct json *self) {
+  return json_tag(self) == JSON_TAG_NULL;
+}
+bool_t json_is_int(struct json *self) {
+  return json_tag(self) == JSON_TAG_INT;
+}
+bool_t json_is_str(struct json *self) {
+  return json_tag(self) == JSON_TAG_STR;
+}
+bool_t json_is_arr(struct json *self) {
+  return json_tag(self) == JSON_TAG_ARR;
+}
+bool_t json_is_obj(struct json *self) {
+  return json_tag(self) == JSON_TAG_OBJ;
 }

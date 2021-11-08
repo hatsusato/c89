@@ -2,7 +2,6 @@
 
 #include "json/json.h"
 #include "json/set.h"
-#include "json/util.h"
 #include "json/visitor.h"
 #include "util/symbol.h"
 #include "util/util.h"
@@ -46,7 +45,7 @@ static void scanner_collect_typedef(struct json_visitor *visitor,
                                     struct json *json) {
   if (json_has(json, SYMBOL_DIRECT_DECLARATOR)) {
     struct json_obj *typedefs = json_visit_extra(visitor);
-    struct json *identifier = json_get_identifier(json);
+    struct json *identifier = json_find_identifier(json);
     const char *symbol = json_get_str(identifier);
     assert(symbol);
     json_obj_insert(typedefs, symbol, json_null());
@@ -57,7 +56,7 @@ static void scanner_collect_typedef(struct json_visitor *visitor,
 void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
   struct json *specs = json_get(decl, SYMBOL_DECLARATION_SPECIFIERS);
   struct json *list = json_get(decl, SYMBOL_INIT_DECLARATOR_LIST);
-  if (!json_is_null(json_get(specs, SYMBOL_TYPEDEF))) {
+  if (!json_is_null(json_find(specs, SYMBOL_TYPEDEF))) {
     json_visit(scanner_collect_typedef, self->typedefs, list);
   }
 }
