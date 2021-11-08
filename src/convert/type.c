@@ -29,7 +29,7 @@ static void convert_push_function(struct convert *self) {
   self->function = function;
 }
 
-struct json *convert_extra_new_module(void) {
+struct json *convert_new_module(void) {
   struct json *module = json_new_obj();
   struct json *functions = json_new_arr();
   struct json *table = json_new_obj();

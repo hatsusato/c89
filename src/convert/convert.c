@@ -24,7 +24,7 @@ static void convert_external_declaration(struct json_map *map) {
   }
 }
 static struct json *convert_translation_unit(struct json *json) {
-  struct json *module = convert_extra_new_module();
+  struct json *module = convert_new_module();
   json_foreach(json, convert_external_declaration, module);
   return module;
 }
