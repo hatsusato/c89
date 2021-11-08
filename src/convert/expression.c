@@ -17,6 +17,15 @@ static struct json *convert_integer_constant(struct convert *self,
   UTIL_UNUSED(self);
   return json;
 }
+static struct json *convert_additive_expression(struct convert *self,
+                                                struct json *json) {
+  struct json *lhs = convert_rvalue(self, json_get(json, "lhs"));
+  struct json *rhs = convert_rvalue(self, json_get(json, "rhs"));
+  struct json *instr = convert_push_instr(self, "add");
+  json_insert(instr, "lhs", lhs);
+  json_insert(instr, "rhs", rhs);
+  return instr;
+}
 static struct json *convert_assignment_expression(struct convert *self,
                                                   struct json *json) {
   struct json *value = convert_rvalue(self, json_get(json, "rhs"));
@@ -40,6 +49,9 @@ struct json *convert_rvalue(struct convert *self, struct json *json) {
   } else if (json_has(json, SYMBOL_INTEGER_CONSTANT)) {
     return convert_integer_constant(self,
                                     json_get(json, SYMBOL_INTEGER_CONSTANT));
+  } else if (json_has(json, SYMBOL_ADDITIVE_EXPRESSION)) {
+    return convert_additive_expression(
+        self, json_get(json, SYMBOL_ADDITIVE_EXPRESSION));
   } else if (json_has(json, SYMBOL_ASSIGNMENT_EXPRESSION)) {
     return convert_assignment_expression(
         self, json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION));
