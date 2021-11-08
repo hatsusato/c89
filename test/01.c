@@ -6,13 +6,14 @@ int f2(void) {
   x = 2;
   return x;
 }
-#if 0
 int f3(void) {
   int x;
   x = 2;
-  x = 1 + x + 3;
-  return x + 4;
+  x = x + 3;
+  x = x + 4 + 5 + 6;
+  return 1 + 2 + 3 + x;
 }
+#if 0
 int f4(void) {
   int x;
   int y;

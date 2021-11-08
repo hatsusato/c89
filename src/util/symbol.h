@@ -113,6 +113,7 @@
 #define SYMBOL_LOGICAL_OR_EXPRESSION "logical-or-expression"
 #define SYMBOL_CONDITIONAL_EXPRESSION "conditional-expression"
 #define SYMBOL_ASSIGNMENT_EXPRESSION "assignment-expression"
+#define SYMBOL_ASSIGNMENT_OPERATOR "assignment-operator"
 #define SYMBOL_EXPRESSION "expression"
 
 /* 6.4 Constant expressions */
@@ -167,5 +168,12 @@
 #define SYMBOL_TRANSLATION_UNIT "translation-unit"
 #define SYMBOL_EXTERNAL_DECLARATION "external-declaration"
 #define SYMBOL_FUNCTION_DEFINITION "function-definition"
+
+/* Other symbols */
+#define SYMBOL_THEN_STATEMENT "then-statement"
+#define SYMBOL_ELSE_STATEMENT "else-statement"
+#define SYMBOL_INIT_EXPRESSION "init-expression"
+#define SYMBOL_COND_EXPRESSION "cond-expression"
+#define SYMBOL_ITER_EXPRESSION "iter-expression"
 
 #endif /* INCLUDE_GUARD_E0353946_9774_492C_A775_4B26998B01E8 */

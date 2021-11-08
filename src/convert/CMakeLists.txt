@@ -3,6 +3,7 @@ target_sources(convert PRIVATE
   convert.c
   declaration.c
   expression.c
+  immediate.c
   statement.c
   type.c
   )
