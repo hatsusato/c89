@@ -11,6 +11,7 @@ static void convert_init_declarator(struct convert_extra *self,
   struct json *instr = convert_extra_new_instr("alloca");
   json_insert(instr, "name", identifier);
   convert_extra_push_instr(self, instr);
+  convert_extra_push_symbol(self, identifier, instr);
   json_del(instr);
 }
 static void convert_init_declarator_list(struct json_map *map) {

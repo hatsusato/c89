@@ -20,7 +20,10 @@ static struct json *convert_extra_new_block(void) {
 struct json *convert_extra_new_module(void) {
   struct json *module = json_new_obj();
   struct json *functions = json_new_arr();
+  struct json *table = json_new_obj();
   json_insert(module, "module", functions);
+  json_insert(module, "table", table);
+  json_del(table);
   json_del(functions);
   return module;
 }
@@ -45,4 +48,10 @@ void convert_extra_push_block(struct convert_extra *self) {
 }
 void convert_extra_push_instr(struct convert_extra *self, struct json *instr) {
   json_push(json_get(self->block, "block"), instr);
+}
+void convert_extra_push_symbol(struct convert_extra *self,
+                               struct json *identifier,
+                               struct json *instruction) {
+  struct json *table = json_get(self->module, "table");
+  json_insert(table, json_get_str(identifier), instruction);
 }
