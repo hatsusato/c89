@@ -1,6 +1,7 @@
 #include "util.h"
 
 #include "json.h"
+#include "map.h"
 #include "print.h"
 #include "tag.h"
 #include "util/symbol.h"
@@ -80,4 +81,12 @@ struct json *json_find_identifier(struct json *json) {
 }
 struct json *json_front(struct json *json) {
   return json_is_arr(json) ? json_arr_at(json_as_arr(json), 0) : json_null();
+}
+static void json_append_map(struct json_map *map) {
+  struct json *dst = json_map_extra(map);
+  struct json *src = json_map_val(map);
+  json_push(dst, src);
+}
+void json_append(struct json *dst, struct json *src) {
+  json_foreach(src, json_append_map, dst);
 }
