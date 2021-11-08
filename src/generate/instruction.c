@@ -25,6 +25,12 @@ static void generate_alloca(struct printer *printer, struct json *json) {
   generate_reg(printer, json);
   printer_print(printer, " = alloca i32, align 4");
 }
+static void generate_load(struct printer *printer, struct json *json) {
+  generate_reg(printer, json);
+  printer_print(printer, " = load i32, i32* ");
+  generate_reg(printer, json_get(json, "pointer"));
+  printer_print(printer, ", align 4");
+}
 static void generate_store(struct printer *printer, struct json *json) {
   printer_print(printer, "store i32 ");
   generate_reg(printer, json_get(json, "value"));
@@ -38,6 +44,8 @@ void generate_instruction(struct printer *printer, struct json *json) {
     generate_ret(printer, json);
   } else if (util_streq(tag, "alloca")) {
     generate_alloca(printer, json);
+  } else if (util_streq(tag, "load")) {
+    generate_load(printer, json);
   } else if (util_streq(tag, "store")) {
     generate_store(printer, json);
   } else {
