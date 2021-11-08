@@ -7,10 +7,9 @@
 
 #define YYSCAN_TOKEN() yyscan_json_token(YYSCAN_PARAM)
 #define YYSCAN_NULL() yyscan_json_null()
-#define YYSCAN_STR(symbol) yyscan_json_str(symbol)
 #define YYSCAN_ARR() yyscan_json_arr()
-#define YYSCAN_SINGLE(val) YYSCAN_PUSH(YYSCAN_ARR(), val)
 #define YYSCAN_OBJ() yyscan_json_obj()
+#define YYSCAN_SINGLE(val) YYSCAN_PUSH(YYSCAN_ARR(), val)
 #define YYSCAN_PUSH(arr, val) yyscan_json_push(arr, val)
 #define YYSCAN_INSERT(obj, key, val) yyscan_json_insert(obj, key, val)
 #define YYSCAN_EXPR(key) yyscan_json_expr(key)
@@ -23,7 +22,6 @@ void yyscan_parse(YYSCAN_EXTRA);
 int yyscan_is_typedef(yyscan_t, const char *);
 YYSCAN_TYPE yyscan_json_token(yyscan_t);
 YYSCAN_TYPE yyscan_json_null(void);
-YYSCAN_TYPE yyscan_json_str(const char *);
 YYSCAN_TYPE yyscan_json_arr(void);
 YYSCAN_TYPE yyscan_json_obj(void);
 YYSCAN_TYPE yyscan_json_push(YYSCAN_TYPE, YYSCAN_TYPE);

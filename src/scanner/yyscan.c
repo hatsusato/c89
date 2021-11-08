@@ -40,9 +40,6 @@ YYSCAN_TYPE yyscan_json_token(yyscan_t self) {
 YYSCAN_TYPE yyscan_json_null(void) {
   return json_null();
 }
-YYSCAN_TYPE yyscan_json_str(const char *str) {
-  return json_new_str(str);
-}
 YYSCAN_TYPE yyscan_json_arr(void) {
   return json_new_arr();
 }
