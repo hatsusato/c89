@@ -7,7 +7,12 @@
 
 static struct json *convert_identifier(struct convert_extra *self,
                                        struct json *json) {
-  return convert_extra_lookup_symbol(self, json);
+  struct json *pointer = convert_extra_lookup_symbol(self, json);
+  struct json *instr = convert_extra_new_instr("load");
+  json_insert(instr, "pointer", pointer);
+  convert_extra_push_instr(self, instr);
+  json_del(instr);
+  return instr;
 }
 static struct json *convert_integer_constant(struct convert_extra *self,
                                              struct json *json) {
