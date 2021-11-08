@@ -1,6 +1,7 @@
 #include "type.h"
 
 #include "json/json.h"
+#include "util/util.h"
 
 static struct json *convert_new_function(void) {
   struct json *json = json_new_obj();
@@ -29,6 +30,13 @@ void convert_init(struct convert *self, struct json *module) {
   self->module = module;
   self->function = json_null();
   self->block = json_null();
+}
+void convert_finish(struct convert *self) {
+  struct json *alloc = json_get(self->function, "alloc");
+  struct json *function = json_get(self->function, "function");
+  struct json *front = json_front(function);
+  json_append(alloc, json_get(front, "block"));
+  json_insert(front, "block", alloc);
 }
 struct json *convert_new_module(void) {
   struct json *json = json_new_obj();
