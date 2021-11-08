@@ -13,7 +13,6 @@ int f3(void) {
   x = x + 4 + 5 + 6;
   return 1 + 2 + 3 + x;
 }
-#if 0
 int f4(void) {
   int x;
   int y;
@@ -23,6 +22,7 @@ int f4(void) {
   z = x + y;
   return x + y + z;
 }
+#if 0
 int f5(void) {
   int x = 1, y = 2, z = x + y;
   return x + y + z;
