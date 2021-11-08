@@ -9,19 +9,19 @@ static struct json *convert_new_function(void) {
   json_del(blocks);
   return function;
 }
+static struct json *convert_new_block(void) {
+  struct json *block = json_new_obj();
+  struct json *instructions = json_new_arr();
+  json_insert(block, "block", instructions);
+  json_del(instructions);
+  return block;
+}
 static void convert_push_function(struct convert *self) {
   struct json *module = json_get(self->module, "module");
   struct json *function = convert_new_function();
   json_push(module, function);
   json_del(function);
   self->function = function;
-}
-static struct json *convert_extra_new_block(void) {
-  struct json *block = json_new_obj();
-  struct json *instructions = json_new_arr();
-  json_insert(block, "block", instructions);
-  json_del(instructions);
-  return block;
 }
 
 struct json *convert_extra_new_module(void) {
@@ -45,11 +45,12 @@ void convert_init(struct convert *self, struct json *module) {
   self->block = json_null();
   convert_push_function(self);
 }
-void convert_extra_push_block(struct convert *self) {
-  struct json *block = convert_extra_new_block();
-  self->block = block;
-  json_push(json_get(self->function, "function"), block);
+void convert_push_block(struct convert *self) {
+  struct json *function = json_get(self->function, "function");
+  struct json *block = convert_new_block();
+  json_push(function, block);
   json_del(block);
+  self->block = block;
 }
 void convert_extra_push_instr(struct convert *self, struct json *instr) {
   json_push(json_get(self->block, "block"), instr);
