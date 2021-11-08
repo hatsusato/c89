@@ -102,7 +102,6 @@
 #define SYMBOL_UNARY_OPERATOR "unary-operator"
 #define SYMBOL_CAST_EXPRESSION "cast-expression"
 #define SYMBOL_MULTIPLICATIVE_EXPRESSION "multiplicative-expression"
-#define SYMBOL_MULTIPLICATIVE_OPERATOR "multiplicative-operator"
 #define SYMBOL_ADDITIVE_EXPRESSION "additive-expression"
 #define SYMBOL_ADDITIVE_OPERATOR "additive-operator"
 #define SYMBOL_SHIFT_EXPRESSION "shift-expression"

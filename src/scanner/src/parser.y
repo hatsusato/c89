@@ -462,23 +462,23 @@ cast-expression
 ;
 multiplicative-expression
 : cast-expression
-| multiplicative-expression multiplicative-operator cast-expression {
+| multiplicative-expression asterisk cast-expression {
   $$ = YYSCAN_EXPR(SYMBOL_MULTIPLICATIVE_EXPRESSION);
-  YYSCAN_BINOP($$, $1, $2, $3);
+  YYSCAN_INSERT($$, SYMBOL_MULTIPLICATIVE_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_ASTERISK, $2);
+  YYSCAN_INSERT($$, SYMBOL_CAST_EXPRESSION, $3);
 }
-;
-multiplicative-operator
-: asterisk {
-  $$ = YYSCAN_EXPR(SYMBOL_MULTIPLICATIVE_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_ASTERISK, $1);
+| multiplicative-expression slash cast-expression {
+  $$ = YYSCAN_EXPR(SYMBOL_MULTIPLICATIVE_EXPRESSION);
+  YYSCAN_INSERT($$, SYMBOL_MULTIPLICATIVE_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_SLASH, $2);
+  YYSCAN_INSERT($$, SYMBOL_CAST_EXPRESSION, $3);
 }
-| slash {
-  $$ = YYSCAN_EXPR(SYMBOL_MULTIPLICATIVE_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_SLASH, $1);
-}
-| percent {
-  $$ = YYSCAN_EXPR(SYMBOL_MULTIPLICATIVE_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_PERCENT, $1);
+| multiplicative-expression percent cast-expression {
+  $$ = YYSCAN_EXPR(SYMBOL_MULTIPLICATIVE_EXPRESSION);
+  YYSCAN_INSERT($$, SYMBOL_MULTIPLICATIVE_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_PERCENT, $2);
+  YYSCAN_INSERT($$, SYMBOL_CAST_EXPRESSION, $3);
 }
 ;
 additive-expression
