@@ -10,9 +10,9 @@
 #define YYSCAN_ARR() yyscan_json_arr()
 #define YYSCAN_OBJ() yyscan_json_obj()
 #define YYSCAN_PUSH(arr, val) yyscan_json_push(arr, val)
-#define YYSCAN_SET(obj, key, val) yyscan_json_insert(obj, key, val)
+#define YYSCAN_INSERT(obj, key, val) yyscan_json_insert(obj, key, val)
 #define YYSCAN_BINOP(lhs, op, rhs) yyscan_json_binop(lhs, op, rhs)
-#define YYSCAN_TAG(key, val) YYSCAN_SET(YYSCAN_OBJ(), key, val)
+#define YYSCAN_TAG(key, val) YYSCAN_INSERT(YYSCAN_OBJ(), key, val)
 #define YYSCAN_NEW_COMMA() YYSCAN_STR(SYMBOL_COMMA)
 #define YYSCAN_GET_COMMA() scanner_get_comma(yyget_extra(YYSCAN_PARAM))
 #define YYSCAN_REGISTER(decl) \
