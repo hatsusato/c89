@@ -14,14 +14,13 @@ static void convert_compound_statement(struct convert_extra *self,
 }
 static void convert_expression_statement(struct convert_extra *self,
                                          struct json *json) {
-  convert_expression(self, json_get(json, SYMBOL_EXPRESSION));
+  convert_rvalue(self, json_get(json, SYMBOL_EXPRESSION));
 }
 static void convert_jump_statement(struct convert_extra *self,
                                    struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
     struct json *instr = convert_extra_new_instr("ret");
-    struct json *expr =
-        convert_expression(self, json_get(json, SYMBOL_EXPRESSION));
+    struct json *expr = convert_rvalue(self, json_get(json, SYMBOL_EXPRESSION));
     json_insert(instr, "value", expr);
     convert_extra_push_instr(self, instr);
     json_del(instr);
