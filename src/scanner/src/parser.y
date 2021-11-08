@@ -1260,7 +1260,7 @@ selection-statement
   YYSCAN_INSERT($$, SYMBOL_LEFT_PAREN, $2);
   YYSCAN_INSERT($$, SYMBOL_EXPRESSION, $3);
   YYSCAN_INSERT($$, SYMBOL_RIGHT_PAREN, $4);
-  YYSCAN_INSERT($$, SYMBOL_STATEMENT, $5);
+  YYSCAN_INSERT($$, SYMBOL_THEN_STATEMENT, $5);
 }
 | if left-paren expression right-paren statement else statement {
   $$ = YYSCAN_OBJ();
@@ -1268,9 +1268,9 @@ selection-statement
   YYSCAN_INSERT($$, SYMBOL_LEFT_PAREN, $2);
   YYSCAN_INSERT($$, SYMBOL_EXPRESSION, $3);
   YYSCAN_INSERT($$, SYMBOL_RIGHT_PAREN, $4);
-  YYSCAN_INSERT($$, SYMBOL_STATEMENT, $5);
+  YYSCAN_INSERT($$, SYMBOL_THEN_STATEMENT, $5);
   YYSCAN_INSERT($$, SYMBOL_ELSE, $6);
-  YYSCAN_INSERT($$, SYMBOL_STATEMENT, $7);
+  YYSCAN_INSERT($$, SYMBOL_ELSE_STATEMENT, $7);
 }
 | switch left-paren expression right-paren statement {
   $$ = YYSCAN_OBJ();

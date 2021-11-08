@@ -174,4 +174,8 @@
 #define SYMBOL_EXTERNAL_DECLARATION "external-declaration"
 #define SYMBOL_FUNCTION_DEFINITION "function-definition"
 
+/* Other symbols */
+#define SYMBOL_THEN_STATEMENT "then-statement"
+#define SYMBOL_ELSE_STATEMENT "else-statement"
+
 #endif /* INCLUDE_GUARD_E0353946_9774_492C_A775_4B26998B01E8 */
