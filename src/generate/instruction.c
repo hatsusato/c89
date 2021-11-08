@@ -4,11 +4,6 @@
 #include "printer/printer.h"
 #include "util/util.h"
 
-static void generate_print(struct printer *printer, struct json *obj,
-                           const char *key) {
-  struct json *str = json_get(obj, key);
-  printer_print(printer, "%s", json_get_str(str));
-}
 static void generate_reg(struct printer *printer, struct json *json) {
   if (json_has(json, "reg")) {
     struct json *reg = json_get(json, "reg");
@@ -19,7 +14,7 @@ static void generate_reg(struct printer *printer, struct json *json) {
 }
 static void generate_ret(struct printer *printer, struct json *json) {
   printer_print(printer, "ret i32 ");
-  generate_print(printer, json, "value");
+  generate_reg(printer, json_get(json, "value"));
 }
 static void generate_alloca(struct printer *printer, struct json *json) {
   generate_reg(printer, json);
