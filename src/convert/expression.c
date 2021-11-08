@@ -29,8 +29,10 @@ static struct json *convert_additive_expression(struct convert *self,
 }
 static struct json *convert_assignment_expression(struct convert *self,
                                                   struct json *json) {
-  struct json *value = convert_rvalue(self, json_get(json, "rhs"));
-  struct json *pointer = convert_lvalue(self, json_get(json, "lhs"));
+  struct json *lhs = json_get(json, SYMBOL_UNARY_EXPRESSION);
+  struct json *rhs = json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION);
+  struct json *value = convert_rvalue(self, rhs);
+  struct json *pointer = convert_lvalue(self, lhs);
   struct json *instr = convert_push_instr(self, "store");
   json_insert(instr, "value", value);
   json_insert(instr, "pointer", pointer);
@@ -45,8 +47,13 @@ struct json *convert_lvalue(struct convert *self, struct json *json) {
   }
 }
 struct json *convert_rvalue(struct convert *self, struct json *json) {
+  const char *tag = json_get_str(json_get(json, "tag"));
   convert_immediate(json);
-  if (json_has(json, SYMBOL_IDENTIFIER)) {
+  if (!tag) {
+    return json;
+  } else if (util_streq(tag, SYMBOL_ASSIGNMENT_EXPRESSION)) {
+    return convert_assignment_expression(self, json);
+  } else if (json_has(json, SYMBOL_IDENTIFIER)) {
     return convert_identifier(self, json_get(json, SYMBOL_IDENTIFIER));
   } else if (json_has(json, SYMBOL_INTEGER_CONSTANT)) {
     return convert_integer_constant(self,
