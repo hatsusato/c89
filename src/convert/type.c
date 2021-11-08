@@ -3,23 +3,39 @@
 #include "json/json.h"
 
 static struct json *convert_new_function(void) {
-  struct json *function = json_new_obj();
-  struct json *blocks = json_new_arr();
-  json_insert(function, "function", blocks);
-  json_del(blocks);
-  return function;
+  struct json *json = json_new_obj();
+  struct json *function = json_new_arr();
+  json_insert(json, "function", function);
+  json_del(function);
+  return json;
 }
 static struct json *convert_new_block(void) {
-  struct json *block = json_new_obj();
-  struct json *instructions = json_new_arr();
-  json_insert(block, "block", instructions);
-  json_del(instructions);
-  return block;
+  struct json *json = json_new_obj();
+  struct json *block = json_new_arr();
+  json_insert(json, "block", block);
+  json_del(block);
+  return json;
 }
-static struct json *convert_new_instr(const char *tag) {
-  struct json *instr = json_new_obj();
-  json_insert_str(instr, "instr", tag);
-  return instr;
+static struct json *convert_new_instr(const char *instr) {
+  struct json *json = json_new_obj();
+  json_insert_str(json, "instr", instr);
+  return json;
+}
+
+void convert_init(struct convert *self, struct json *module) {
+  self->module = module;
+  self->function = json_null();
+  self->block = json_null();
+}
+struct json *convert_new_module(void) {
+  struct json *json = json_new_obj();
+  struct json *module = json_new_arr();
+  struct json *table = json_new_obj();
+  json_insert(json, "module", module);
+  json_insert(json, "table", table);
+  json_del(table);
+  json_del(module);
+  return json;
 }
 void convert_push_function(struct convert *self) {
   struct json *module = json_get(self->module, "module");
@@ -27,22 +43,6 @@ void convert_push_function(struct convert *self) {
   json_push(module, function);
   json_del(function);
   self->function = function;
-}
-
-struct json *convert_new_module(void) {
-  struct json *module = json_new_obj();
-  struct json *functions = json_new_arr();
-  struct json *table = json_new_obj();
-  json_insert(module, "module", functions);
-  json_insert(module, "table", table);
-  json_del(table);
-  json_del(functions);
-  return module;
-}
-void convert_init(struct convert *self, struct json *module) {
-  self->module = module;
-  self->function = json_null();
-  self->block = json_null();
 }
 void convert_push_block(struct convert *self) {
   struct json *function = json_get(self->function, "function");

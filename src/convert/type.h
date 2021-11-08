@@ -7,8 +7,8 @@ struct convert {
   struct json *block;
 };
 
-struct json *convert_new_module(void);
 void convert_init(struct convert *, struct json *);
+struct json *convert_new_module(void);
 void convert_push_function(struct convert *);
 void convert_push_block(struct convert *);
 struct json *convert_push_instr(struct convert *, const char *);
