@@ -55,3 +55,8 @@ void convert_extra_push_symbol(struct convert_extra *self,
   struct json *table = json_get(self->module, "table");
   json_insert(table, json_get_str(identifier), instruction);
 }
+struct json *convert_extra_lookup_symbol(struct convert_extra *self,
+                                         struct json *identifier) {
+  struct json *table = json_get(self->module, "table");
+  return json_get(table, json_get_str(identifier));
+}

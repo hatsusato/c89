@@ -14,5 +14,6 @@ void convert_extra_push_block(struct convert_extra *);
 void convert_extra_push_instr(struct convert_extra *, struct json *);
 void convert_extra_push_symbol(struct convert_extra *, struct json *,
                                struct json *);
+struct json *convert_extra_lookup_symbol(struct convert_extra *, struct json *);
 
 #endif /* INCLUDE_GUARD_CB18DD4B_D664_4B99_90FE_A9C9088A348E */
