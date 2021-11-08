@@ -58,7 +58,13 @@ static struct json *convert_table_insert(struct convert *self,
 static struct json *convert_table_lookup(struct convert *self,
                                          const char *key) {
   struct json *table = json_get(self->module, "table");
-  return json_get(table, key);
+  while (!json_is_null(table)) {
+    if (json_has(table, key)) {
+      return json_get(table, key);
+    }
+    table = json_get(table, "$next");
+  }
+  return json_null();
 }
 
 void convert_init(struct convert *self, struct json *module) {
