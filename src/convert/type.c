@@ -59,13 +59,13 @@ struct json *convert_push_instr(struct convert *self, const char *tag) {
   json_del(instr);
   return instr;
 }
-void convert_extra_push_symbol(struct convert *self, struct json *identifier,
-                               struct json *instruction) {
+void convert_push_symbol(struct convert *self, struct json *identifier,
+                         struct json *instruction) {
   struct json *table = json_get(self->module, "table");
   json_insert(table, json_get_str(identifier), instruction);
 }
-struct json *convert_extra_lookup_symbol(struct convert *self,
-                                         struct json *identifier) {
+struct json *convert_lookup_symbol(struct convert *self,
+                                   struct json *identifier) {
   struct json *table = json_get(self->module, "table");
   return json_get(table, json_get_str(identifier));
 }
