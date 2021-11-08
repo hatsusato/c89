@@ -55,7 +55,7 @@ struct json *json_find(struct json *self, const char *key) {
 }
 static void json_find_identifier_visitor(struct json_visitor *visitor,
                                          struct json *json) {
-  if (json_has(json, SYMBOL_DECLARATOR)) {
+  if (json_has(json, SYMBOL_DIRECT_DECLARATOR)) {
     while (!json_is_null(json)) {
       if (json_has(json, SYMBOL_IDENTIFIER)) {
         struct json_find_extra *extra = json_visit_extra(visitor);
