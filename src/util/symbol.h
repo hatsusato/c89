@@ -106,7 +106,6 @@
 #define SYMBOL_SHIFT_EXPRESSION "shift-expression"
 #define SYMBOL_RELATIONAL_EXPRESSION "relational-expression"
 #define SYMBOL_EQUALITY_EXPRESSION "equality-expression"
-#define SYMBOL_EQUALITY_OPERATOR "equality-operator"
 #define SYMBOL_AND_EXPRESSION "and-expression"
 #define SYMBOL_EXCLUSIVE_OR_EXPRESSION "exclusive-or-expression"
 #define SYMBOL_INCLUSIVE_OR_EXPRESSION "inclusive-or-expression"

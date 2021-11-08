@@ -540,19 +540,17 @@ relational-expression
 ;
 equality-expression
 : relational-expression
-| equality-expression equality-operator relational-expression {
+| equality-expression equal relational-expression {
   $$ = YYSCAN_EXPR(SYMBOL_EQUALITY_EXPRESSION);
-  YYSCAN_BINOP($$, $1, $2, $3);
+  YYSCAN_INSERT($$, SYMBOL_EQUALITY_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_EQUAL, $2);
+  YYSCAN_INSERT($$, SYMBOL_RELATIONAL_EXPRESSION, $3);
 }
-;
-equality-operator
-: equal {
-  $$ = YYSCAN_EXPR(SYMBOL_EQUALITY_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_EQUAL, $1);
-}
-| not-equal {
-  $$ = YYSCAN_EXPR(SYMBOL_EQUALITY_OPERATOR);
-  YYSCAN_INSERT($$, SYMBOL_NOT_EQUAL, $1);
+| equality-expression not-equal relational-expression {
+  $$ = YYSCAN_EXPR(SYMBOL_EQUALITY_EXPRESSION);
+  YYSCAN_INSERT($$, SYMBOL_EQUALITY_EXPRESSION, $1);
+  YYSCAN_INSERT($$, SYMBOL_NOT_EQUAL, $2);
+  YYSCAN_INSERT($$, SYMBOL_RELATIONAL_EXPRESSION, $3);
 }
 ;
 and-expression
