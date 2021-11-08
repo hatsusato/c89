@@ -1,6 +1,7 @@
 #include "statement.h"
 
 #include "declaration.h"
+#include "expression.h"
 #include "extra.h"
 #include "json/json.h"
 #include "json/map.h"
@@ -15,8 +16,9 @@ static void convert_jump_statement(struct convert_extra *self,
                                    struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
     struct json *instr = convert_extra_new_instr("ret");
-    struct json *expr = json_get(json, SYMBOL_EXPRESSION);
-    json_insert(instr, "value", json_get(expr, SYMBOL_INTEGER_CONSTANT));
+    struct json *expr =
+        convert_expression(self, json_get(json, SYMBOL_EXPRESSION));
+    json_insert(instr, "value", expr);
     convert_extra_push_instr(self, instr);
     json_del(instr);
   }
