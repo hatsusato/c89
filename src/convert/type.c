@@ -16,6 +16,11 @@ static struct json *convert_new_block(void) {
   json_del(instructions);
   return block;
 }
+static struct json *convert_new_instr(const char *tag) {
+  struct json *instr = json_new_obj();
+  json_insert_str(instr, "instr", tag);
+  return instr;
+}
 static void convert_push_function(struct convert *self) {
   struct json *module = json_get(self->module, "module");
   struct json *function = convert_new_function();
@@ -34,11 +39,6 @@ struct json *convert_extra_new_module(void) {
   json_del(functions);
   return module;
 }
-struct json *convert_extra_new_instr(const char *tag) {
-  struct json *instr = json_new_obj();
-  json_insert_str(instr, "instr", tag);
-  return instr;
-}
 void convert_init(struct convert *self, struct json *module) {
   self->module = module;
   self->function = json_null();
@@ -52,8 +52,12 @@ void convert_push_block(struct convert *self) {
   json_del(block);
   self->block = block;
 }
-void convert_extra_push_instr(struct convert *self, struct json *instr) {
-  json_push(json_get(self->block, "block"), instr);
+struct json *convert_push_instr(struct convert *self, const char *tag) {
+  struct json *block = json_get(self->block, "block");
+  struct json *instr = convert_new_instr(tag);
+  json_push(block, instr);
+  json_del(instr);
+  return instr;
 }
 void convert_extra_push_symbol(struct convert *self, struct json *identifier,
                                struct json *instruction) {

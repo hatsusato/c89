@@ -18,11 +18,9 @@ static void convert_expression_statement(struct convert *self,
 }
 static void convert_jump_statement(struct convert *self, struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
-    struct json *instr = convert_extra_new_instr("ret");
     struct json *expr = convert_rvalue(self, json_get(json, SYMBOL_EXPRESSION));
+    struct json *instr = convert_push_instr(self, "ret");
     json_insert(instr, "value", expr);
-    convert_extra_push_instr(self, instr);
-    json_del(instr);
   }
 }
 static void convert_statement_list(struct json_map *map) {

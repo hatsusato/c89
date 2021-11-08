@@ -8,10 +8,8 @@
 static struct json *convert_identifier(struct convert *self,
                                        struct json *json) {
   struct json *pointer = convert_extra_lookup_symbol(self, json);
-  struct json *instr = convert_extra_new_instr("load");
+  struct json *instr = convert_push_instr(self, "load");
   json_insert(instr, "pointer", pointer);
-  convert_extra_push_instr(self, instr);
-  json_del(instr);
   return instr;
 }
 static struct json *convert_integer_constant(struct convert *self,
@@ -23,11 +21,9 @@ static struct json *convert_assignment_expression(struct convert *self,
                                                   struct json *json) {
   struct json *value = convert_rvalue(self, json_get(json, "rhs"));
   struct json *pointer = convert_lvalue(self, json_get(json, "lhs"));
-  struct json *instr = convert_extra_new_instr("store");
+  struct json *instr = convert_push_instr(self, "store");
   json_insert(instr, "value", value);
   json_insert(instr, "pointer", pointer);
-  convert_extra_push_instr(self, instr);
-  json_del(instr);
   return instr;
 }
 

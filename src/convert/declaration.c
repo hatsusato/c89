@@ -7,11 +7,9 @@
 
 static void convert_init_declarator(struct convert *self, struct json *json) {
   struct json *identifier = json_find_identifier(json);
-  struct json *instr = convert_extra_new_instr("alloca");
+  struct json *instr = convert_push_instr(self, "alloca");
   json_insert(instr, "name", identifier);
-  convert_extra_push_instr(self, instr);
   convert_extra_push_symbol(self, identifier, instr);
-  json_del(instr);
 }
 static void convert_init_declarator_list(struct json_map *map) {
   struct convert *self = json_map_extra(map);
