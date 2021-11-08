@@ -38,21 +38,25 @@ static void json_free(struct json *self) {
 
 void json_del(struct json *self) {
   json_decrement(self);
-  if (0 == self->references) {
-    json_free(self);
-  }
 }
 void json_increment(struct json *self) {
-  if (!json_is_null(self)) {
+  if (json_is_null(self)) {
+    assert(0 == self->references);
+  } else {
+    assert(0 < self->references);
     self->references++;
   }
-  assert(0 <= self->references);
 }
 void json_decrement(struct json *self) {
-  if (!json_is_null(self)) {
+  if (json_is_null(self)) {
+    assert(0 == self->references);
+  } else {
+    assert(0 < self->references);
     self->references--;
+    if (0 == self->references) {
+      json_free(self);
+    }
   }
-  assert(0 <= self->references);
 }
 struct json *json_null(void) {
   static struct json null = {JSON_TAG_NULL, NULL, 0};
