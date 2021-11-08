@@ -17,7 +17,7 @@ static struct json *convert_integer_constant(struct convert_extra *self,
 static struct json *convert_assignment_expression(struct convert_extra *self,
                                                   struct json *json) {
   struct json *value = convert_expression(self, json_get(json, "rhs"));
-  struct json *pointer = convert_expression(self, json_get(json, "lhs"));
+  struct json *pointer = convert_lvalue(self, json_get(json, "lhs"));
   struct json *instr = convert_extra_new_instr("store");
   json_insert(instr, "value", value);
   json_insert(instr, "pointer", pointer);
@@ -26,6 +26,13 @@ static struct json *convert_assignment_expression(struct convert_extra *self,
   return instr;
 }
 
+struct json *convert_lvalue(struct convert_extra *self, struct json *json) {
+  if (json_has(json, SYMBOL_IDENTIFIER)) {
+    return convert_extra_lookup_symbol(self, json_get(json, SYMBOL_IDENTIFIER));
+  } else {
+    return json;
+  }
+}
 struct json *convert_expression(struct convert_extra *self, struct json *json) {
   if (json_has(json, SYMBOL_IDENTIFIER)) {
     return convert_identifier(self, json_get(json, SYMBOL_IDENTIFIER));
