@@ -15,10 +15,10 @@ static struct json *convert_identifier(struct convert *self,
 }
 static struct json *convert_primary_expression(struct convert *self,
                                                struct json *json) {
+  convert_immediate_primary_expression(json);
   if (json_has(json, SYMBOL_IDENTIFIER)) {
     return convert_identifier(self, json_get(json, SYMBOL_IDENTIFIER));
   } else {
-    assert(json_has(json, SYMBOL_IMMEDIATE));
     return json;
   }
 }
@@ -58,7 +58,6 @@ struct json *convert_lvalue(struct convert *self, struct json *json) {
 }
 struct json *convert_rvalue(struct convert *self, struct json *json) {
   const char *tag = json_get_str(json_get(json, "tag"));
-  convert_immediate(json);
   if (!tag) {
     return json;
   } else if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {

@@ -8,6 +8,7 @@
 struct json;
 
 void convert_immediate(struct json *);
+void convert_immediate_primary_expression(struct json *);
 bool_t convert_immediate_additive_expression(struct json *, struct json *,
                                              struct json *);
 
