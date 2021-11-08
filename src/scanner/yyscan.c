@@ -62,9 +62,3 @@ YYSCAN_TYPE yyscan_json_insert(YYSCAN_TYPE obj, const char *key,
   json_del(val);
   return obj;
 }
-void yyscan_json_binop(YYSCAN_TYPE obj, YYSCAN_TYPE lhs, YYSCAN_TYPE op,
-                       YYSCAN_TYPE rhs) {
-  yyscan_json_insert(obj, "lhs", lhs);
-  yyscan_json_insert(obj, "op", op);
-  yyscan_json_insert(obj, "rhs", rhs);
-}
