@@ -35,6 +35,16 @@ void scanner_set_top(YYSCAN_EXTRA self, YYSCAN_TYPE top) {
 int scanner_is_typedef(YYSCAN_EXTRA self, const char *symbol) {
   return json_obj_has(self->typedefs, symbol);
 }
+static void scanner_find_typedef(struct json_visitor *visitor,
+                                 struct json *json) {
+  if (json_has(json, SYMBOL_TYPEDEF)) {
+    bool_t *found = json_visit_extra(visitor);
+    *found = true;
+    json_visit_finish(visitor);
+  } else {
+    json_visit_foreach(visitor, json);
+  }
+}
 static void scanner_collect_typedef(struct json_visitor *visitor,
                                     struct json *json) {
   if (json_has(json, SYMBOL_DIRECT_DECLARATOR)) {
@@ -50,7 +60,9 @@ static void scanner_collect_typedef(struct json_visitor *visitor,
 void scanner_register_typedef(YYSCAN_EXTRA self, YYSCAN_TYPE decl) {
   struct json *specs = json_get(decl, SYMBOL_DECLARATION_SPECIFIERS);
   struct json *list = json_get(decl, SYMBOL_INIT_DECLARATOR_LIST);
-  if (!json_is_null(json_find(specs, SYMBOL_TYPEDEF))) {
+  bool_t found = false;
+  json_visit(scanner_find_typedef, &found, specs);
+  if (found) {
     json_visit(scanner_collect_typedef, self->typedefs, list);
   }
 }
