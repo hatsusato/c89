@@ -59,6 +59,7 @@ struct json *convert_lvalue(struct convert *self, struct json *json) {
 struct json *convert_rvalue(struct convert *self, struct json *json) {
   const char *tag = json_get_str(json_get(json, "tag"));
   if (!tag) {
+    assert(false);
     return json;
   } else if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
     return convert_primary_expression(self, json);
