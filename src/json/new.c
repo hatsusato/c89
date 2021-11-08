@@ -39,7 +39,7 @@ static void json_free(struct json *self) {
 void json_del(struct json *self) {
   json_decrement(self);
 }
-void json_increment(struct json *self) {
+void json_ref(struct json *self) {
   if (json_is_null(self)) {
     assert(0 == self->references);
   } else {
