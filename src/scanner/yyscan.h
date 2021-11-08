@@ -9,6 +9,7 @@
 #define YYSCAN_NULL() yyscan_json_null()
 #define YYSCAN_STR(symbol) yyscan_json_str(symbol)
 #define YYSCAN_ARR() yyscan_json_arr()
+#define YYSCAN_SINGLE(val) YYSCAN_PUSH(YYSCAN_ARR(), val)
 #define YYSCAN_OBJ() yyscan_json_obj()
 #define YYSCAN_EXPR(key) YYSCAN_INSERT(YYSCAN_OBJ(), "tag", YYSCAN_STR(key))
 #define YYSCAN_PUSH(arr, val) yyscan_json_push(arr, val)

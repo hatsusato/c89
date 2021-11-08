@@ -395,7 +395,7 @@ argument-expression-list.opt
 ;
 argument-expression-list
 : assignment-expression {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | argument-expression-list comma assignment-expression {
   $$ = YYSCAN_PUSH($1, $3);
@@ -617,7 +617,7 @@ declaration
 ;
 declaration-specifiers
 : declaration-specifier {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | declaration-specifiers declaration-specifier {
   $$ = YYSCAN_PUSH($1, $2);
@@ -645,7 +645,7 @@ init-declarator-list.opt
 ;
 init-declarator-list
 : init-declarator {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | init-declarator-list comma init-declarator {
   $$ = YYSCAN_PUSH($1, $3);
@@ -762,7 +762,7 @@ struct-or-union
 ;
 struct-declaration-list
 : struct-declaration {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | struct-declaration-list struct-declaration {
   $$ = YYSCAN_PUSH($1, $2);
@@ -778,7 +778,7 @@ struct-declaration
 ;
 specifier-qualifier-list
 : specifier-qualifier {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | specifier-qualifier-list specifier-qualifier {
   $$ = YYSCAN_PUSH($1, $2);
@@ -796,7 +796,7 @@ specifier-qualifier
 ;
 struct-declarator-list
 : struct-declarator {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | struct-declarator-list comma struct-declarator {
   $$ = YYSCAN_PUSH($1, $3);
@@ -831,7 +831,7 @@ enum-specifier
 ;
 enumerator-list
 : enumerator {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | enumerator-list comma enumerator {
   $$ = YYSCAN_PUSH($1, $3);
@@ -930,7 +930,7 @@ type-qualifier-list.opt
 ;
 type-qualifier-list
 : type-qualifier {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | type-qualifier-list type-qualifier {
   $$ = YYSCAN_PUSH($1, $2);
@@ -956,7 +956,7 @@ parameter-type-list
 ;
 parameter-list
 : parameter-declaration {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | parameter-list comma parameter-declaration {
   $$ = YYSCAN_PUSH($1, $3);
@@ -982,7 +982,7 @@ identifier-list.opt
 ;
 identifier-list
 : identifier {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | identifier-list comma identifier {
   $$ = YYSCAN_PUSH($1, $3);
@@ -1077,7 +1077,7 @@ initializer
 ;
 initializer-list
 : initializer {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | initializer-list comma initializer {
   $$ = YYSCAN_PUSH($1, $3);
@@ -1149,7 +1149,7 @@ declaration-list.opt
 ;
 declaration-list
 : declaration {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | declaration-list declaration {
   $$ = YYSCAN_PUSH($1, $2);
@@ -1163,7 +1163,7 @@ statement-list.opt
 ;
 statement-list
 : statement {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | statement-list statement {
   $$ = YYSCAN_PUSH($1, $2);
@@ -1271,7 +1271,7 @@ top
 ;
 translation-unit
 : external-declaration {
-  $$ = YYSCAN_PUSH(YYSCAN_ARR(), $1);
+  $$ = YYSCAN_SINGLE($1);
 }
 | translation-unit external-declaration {
   $$ = YYSCAN_PUSH($1, $2);
