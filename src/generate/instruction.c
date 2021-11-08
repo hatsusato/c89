@@ -9,13 +9,23 @@ static void generate_print(struct printer *printer, struct json *obj,
   struct json *str = json_get(obj, key);
   printer_print(printer, "%s", json_get_str(str));
 }
+static void generate_ret(struct printer *printer, struct json *json) {
+  printer_print(printer, "ret i32 ");
+  generate_print(printer, json, "value");
+}
+static void generate_alloca(struct printer *printer, struct json *json) {
+  generate_print(printer, json, "reg");
+  printer_print(printer, " = alloca i32, align 4");
+}
 void generate_instruction(struct printer *printer, struct json *json) {
   const char *tag = json_get_str(json_get(json, "instr"));
   if (util_streq(tag, "ret")) {
-    printer_print(printer, "ret i32 ");
-    generate_print(printer, json, "value");
-    printer_newline(printer);
+    generate_ret(printer, json);
+  } else if (util_streq(tag, "alloca")) {
+    generate_alloca(printer, json);
   } else {
     json_print(json);
+    return;
   }
+  printer_newline(printer);
 }
