@@ -177,5 +177,8 @@
 /* Other symbols */
 #define SYMBOL_THEN_STATEMENT "then-statement"
 #define SYMBOL_ELSE_STATEMENT "else-statement"
+#define SYMBOL_INIT_EXPRESSION "init-expression"
+#define SYMBOL_COND_EXPRESSION "cond-expression"
+#define SYMBOL_ITER_EXPRESSION "iter-expression"
 
 #endif /* INCLUDE_GUARD_E0353946_9774_492C_A775_4B26998B01E8 */
