@@ -9,7 +9,6 @@
 struct scanner {
   struct json_set *symbols;
   struct json_obj *typedefs;
-  YYSCAN_TYPE comma;
   YYSCAN_TYPE top;
 };
 
@@ -17,20 +16,15 @@ YYSCAN_EXTRA scanner_new(struct json_set *symbols) {
   YYSCAN_EXTRA self = util_malloc(sizeof(struct scanner));
   self->symbols = symbols;
   self->typedefs = json_obj_new();
-  self->comma = json_new_str(SYMBOL_COMMA);
   self->top = json_null();
   return self;
 }
 void scanner_del(YYSCAN_EXTRA self) {
-  json_del(self->comma);
   json_obj_del(self->typedefs);
   util_free(self);
 }
 YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA self, const char *token) {
   return json_new_str(json_set_insert(self->symbols, token));
-}
-YYSCAN_TYPE scanner_get_comma(YYSCAN_EXTRA self) {
-  return self->comma;
 }
 YYSCAN_TYPE scanner_get_top(YYSCAN_EXTRA self) {
   return self->top;
