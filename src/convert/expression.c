@@ -20,11 +20,13 @@ static struct json *convert_integer_constant(struct convert *self,
 }
 static struct json *convert_additive_expression(struct convert *self,
                                                 struct json *json) {
-  struct json *lhs = convert_rvalue(self, json_get(json, "lhs"));
-  struct json *rhs = convert_rvalue(self, json_get(json, "rhs"));
+  struct json *lhs = json_get(json, SYMBOL_ADDITIVE_EXPRESSION);
+  struct json *rhs = json_get(json, SYMBOL_MULTIPLICATIVE_EXPRESSION);
+  struct json *op1 = convert_rvalue(self, lhs);
+  struct json *op2 = convert_rvalue(self, rhs);
   struct json *instr = convert_push_instr(self, "add");
-  json_insert(instr, "lhs", lhs);
-  json_insert(instr, "rhs", rhs);
+  json_insert(instr, "lhs", op1);
+  json_insert(instr, "rhs", op2);
   return instr;
 }
 static struct json *convert_assignment_expression(struct convert *self,
@@ -51,6 +53,8 @@ struct json *convert_rvalue(struct convert *self, struct json *json) {
   convert_immediate(json);
   if (!tag) {
     return json;
+  } else if (util_streq(tag, SYMBOL_ADDITIVE_EXPRESSION)) {
+    return convert_additive_expression(self, json);
   } else if (util_streq(tag, SYMBOL_ASSIGNMENT_EXPRESSION)) {
     return convert_assignment_expression(self, json);
   } else if (json_has(json, SYMBOL_IDENTIFIER)) {
