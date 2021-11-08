@@ -17,9 +17,8 @@ static struct json *convert_primary_expression(struct convert *self,
                                                struct json *json) {
   if (json_has(json, SYMBOL_IDENTIFIER)) {
     return convert_identifier(self, json_get(json, SYMBOL_IDENTIFIER));
-  } else if (json_has(json, SYMBOL_INTEGER_CONSTANT)) {
-    return json_get(json, SYMBOL_INTEGER_CONSTANT);
   } else {
+    assert(json_has(json, SYMBOL_IMMEDIATE));
     return json;
   }
 }

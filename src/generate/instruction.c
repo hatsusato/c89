@@ -9,7 +9,11 @@ static void generate_register(struct printer *printer, struct json *json,
   if (key && json_has(json, key)) {
     json = json_get(json, key);
   }
-  if (json_has(json, "reg")) {
+  if (json_has(json, "immediate")) {
+    struct json *immediate = json_get(json, "immediate");
+    assert(json_is_int(immediate));
+    printer_print(printer, "%d", json_int_get(json_as_int(immediate)));
+  } else if (json_has(json, "reg")) {
     struct json *reg = json_get(json, "reg");
     printer_print(printer, "%%%d", json_int_get(json_as_int(reg)));
   } else {
