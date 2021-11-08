@@ -2,12 +2,18 @@
 
 #include "json/json.h"
 
-static struct json *convert_extra_new_function(void) {
+static struct json *convert_new_function(void) {
   struct json *function = json_new_obj();
   struct json *blocks = json_new_arr();
   json_insert(function, "function", blocks);
   json_del(blocks);
   return function;
+}
+static void convert_push_function(struct convert *self) {
+  struct json *module = json_get(self->module, "module");
+  struct json *function = convert_new_function();
+  json_push(module, function);
+  json_del(function);
 }
 static struct json *convert_extra_new_block(void) {
   struct json *block = json_new_obj();
@@ -33,7 +39,7 @@ struct json *convert_extra_new_instr(const char *tag) {
   return instr;
 }
 void convert_extra_init(struct convert *self, struct json *module) {
-  struct json *function = convert_extra_new_function();
+  struct json *function = convert_new_function();
   self->module = module;
   self->function = function;
   self->block = json_null();
