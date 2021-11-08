@@ -19,8 +19,9 @@ static void convert_external_declaration(struct json_map *map) {
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
     struct convert self;
     convert_init(&self, module);
-    json = json_get(json, SYMBOL_FUNCTION_DEFINITION);
-    convert_function_definition(&self, json);
+    convert_push_function(&self);
+    convert_function_definition(&self,
+                                json_get(json, SYMBOL_FUNCTION_DEFINITION));
   }
 }
 static struct json *convert_translation_unit(struct json *json) {

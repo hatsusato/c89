@@ -21,7 +21,7 @@ static struct json *convert_new_instr(const char *tag) {
   json_insert_str(instr, "instr", tag);
   return instr;
 }
-static void convert_push_function(struct convert *self) {
+void convert_push_function(struct convert *self) {
   struct json *module = json_get(self->module, "module");
   struct json *function = convert_new_function();
   json_push(module, function);
@@ -43,7 +43,6 @@ void convert_init(struct convert *self, struct json *module) {
   self->module = module;
   self->function = json_null();
   self->block = json_null();
-  convert_push_function(self);
 }
 void convert_push_block(struct convert *self) {
   struct json *function = json_get(self->function, "function");
