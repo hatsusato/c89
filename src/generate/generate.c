@@ -1,6 +1,6 @@
 #include "generate.h"
 
-#include "instruction.h"
+#include "block.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "printer/printer.h"
@@ -10,15 +10,10 @@ static void generate_print(struct printer *printer, struct json *obj,
   struct json *str = json_get(obj, key);
   printer_print(printer, "%s", json_get_str(str));
 }
-static void generate_instr(struct json_map *map) {
-  struct printer *printer = json_map_extra(map);
-  struct json *instr = json_map_val(map);
-  generate_instruction(printer, instr);
-}
-static void generate_block(struct json_map *map) {
+static void generate_function_map(struct json_map *map) {
   struct printer *printer = json_map_extra(map);
   struct json *block = json_map_val(map);
-  json_foreach(json_get(block, "block"), generate_instr, printer);
+  generate_block(printer, block);
 }
 static void generate_function(struct json_map *map) {
   struct printer *printer = json_map_extra(map);
@@ -29,7 +24,7 @@ static void generate_function(struct json_map *map) {
   printer_print(printer, "() ");
   printer_open(printer, "{");
   printer_newline(printer);
-  json_foreach(json_get(func, "function"), generate_block, printer);
+  json_foreach(json_get(func, "function"), generate_function_map, printer);
   printer_close(printer, "}");
   printer_newline(printer);
 }

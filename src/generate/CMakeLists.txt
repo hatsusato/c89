@@ -1,5 +1,6 @@
 add_library(generate STATIC)
 target_sources(generate PRIVATE
+  block.c
   generate.c
   instruction.c
   )
