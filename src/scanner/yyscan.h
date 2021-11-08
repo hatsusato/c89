@@ -16,8 +16,6 @@
 #define YYSCAN_INSERT(obj, key, val) yyscan_json_insert(obj, key, val)
 #define YYSCAN_BINOP(obj, lhs, op, rhs) yyscan_json_binop(obj, lhs, op, rhs)
 #define YYSCAN_TAG(key, val) YYSCAN_INSERT(YYSCAN_OBJ(), key, val)
-#define YYSCAN_NEW_COMMA() YYSCAN_STR(SYMBOL_COMMA)
-#define YYSCAN_GET_COMMA() scanner_get_comma(yyget_extra(YYSCAN_PARAM))
 #define YYSCAN_REGISTER(decl) \
   scanner_register_typedef(yyget_extra(YYSCAN_PARAM), decl)
 #define YYSCAN_SET_TOP(top) scanner_set_top(yyget_extra(YYSCAN_PARAM), top)

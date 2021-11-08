@@ -260,7 +260,7 @@ left-brace: "{" { $$ = YYSCAN_STR(SYMBOL_LEFT_BRACE); }
 ;
 right-brace: "}" { $$ = YYSCAN_STR(SYMBOL_RIGHT_BRACE); }
 ;
-comma: "," { $$ = YYSCAN_GET_COMMA(); }
+comma: "," { $$ = YYSCAN_NULL(); }
 ;
 colon: ":" { $$ = YYSCAN_STR(SYMBOL_COLON); }
 ;
@@ -590,7 +590,7 @@ expression
 | expression comma assignment-expression {
   $$ = YYSCAN_EXPR(SYMBOL_EXPRESSION);
   YYSCAN_INSERT($$, SYMBOL_EXPRESSION, $1);
-  YYSCAN_INSERT($$, SYMBOL_COMMA, YYSCAN_NEW_COMMA());
+  YYSCAN_INSERT($$, SYMBOL_COMMA, $2);
   YYSCAN_INSERT($$, SYMBOL_ASSIGNMENT_EXPRESSION, $3);
 }
 ;
@@ -950,7 +950,7 @@ parameter-type-list
 | parameter-list comma ellipsis {
   $$ = YYSCAN_OBJ();
   YYSCAN_INSERT($$, SYMBOL_PARAMETER_LIST, $1);
-  YYSCAN_INSERT($$, SYMBOL_COMMA, YYSCAN_NEW_COMMA());
+  YYSCAN_INSERT($$, SYMBOL_COMMA, $2);
   YYSCAN_INSERT($$, SYMBOL_ELLIPSIS, $3);
 }
 ;
@@ -1071,7 +1071,7 @@ initializer
   $$ = YYSCAN_OBJ();
   YYSCAN_INSERT($$, SYMBOL_LEFT_BRACE, $1);
   YYSCAN_INSERT($$, SYMBOL_INITIALIZER_LIST, $2);
-  YYSCAN_INSERT($$, SYMBOL_COMMA, YYSCAN_NEW_COMMA());
+  YYSCAN_INSERT($$, SYMBOL_COMMA, $3);
   YYSCAN_INSERT($$, SYMBOL_RIGHT_BRACE, $4);
 }
 ;
