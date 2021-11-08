@@ -1,9 +1,9 @@
 #include "convert.h"
 
-#include "extra.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "statement.h"
+#include "type.h"
 #include "util/symbol.h"
 
 static void convert_function_definition(struct convert *self,

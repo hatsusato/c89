@@ -2,9 +2,9 @@
 
 #include "declaration.h"
 #include "expression.h"
-#include "extra.h"
 #include "json/json.h"
 #include "json/map.h"
+#include "type.h"
 #include "util/symbol.h"
 
 static void convert_compound_statement(struct convert *self,

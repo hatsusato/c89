@@ -1,7 +1,7 @@
 #include "expression.h"
 
-#include "extra.h"
 #include "json/json.h"
+#include "type.h"
 #include "util/symbol.h"
 #include "util/util.h"
 
