@@ -1,8 +1,7 @@
-#include "type.h"
+#include "module.h"
 
 #include "function.h"
 #include "json/json.h"
-#include "table.h"
 
 static struct json *convert_new_block(void) {
   struct json *json = json_new_obj();

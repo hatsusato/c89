@@ -3,8 +3,8 @@
 #include "expression.h"
 #include "json/json.h"
 #include "json/map.h"
+#include "module.h"
 #include "table.h"
-#include "type.h"
 #include "util/symbol.h"
 
 static struct json *convert_initializer(struct json *, struct json *);

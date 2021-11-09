@@ -2,7 +2,6 @@
 
 #include "alloc.h"
 #include "json/json.h"
-#include "type.h"
 #include "util/util.h"
 
 struct json *convert_table_insert(struct json *module,

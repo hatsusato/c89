@@ -1,7 +1,6 @@
 #include "alloc.h"
 
 #include "json/json.h"
-#include "type.h"
 
 static struct json *convert_new_alloca(void) {
   struct json *json = json_new_obj();

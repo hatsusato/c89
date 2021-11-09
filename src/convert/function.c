@@ -3,7 +3,6 @@
 #include "alloc.h"
 #include "json/json.h"
 #include "table.h"
-#include "type.h"
 
 static struct json *convert_function_new(void) {
   struct json *json = json_new_obj();

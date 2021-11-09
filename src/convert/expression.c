@@ -2,8 +2,8 @@
 
 #include "immediate.h"
 #include "json/json.h"
+#include "module.h"
 #include "table.h"
-#include "type.h"
 #include "util/symbol.h"
 #include "util/util.h"
 
