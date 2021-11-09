@@ -4,13 +4,14 @@
 #include "table.h"
 
 static void convert_init_alloc(struct convert *self) {
-  struct json *function = self->function;
+  struct json *module = convert_get_module(self);
   struct json *alloc = json_new_arr();
-  json_insert(function, "alloc", alloc);
+  json_insert(module, "alloc", alloc);
   json_del(alloc);
 }
 static struct json *convert_get_alloc(struct convert *self) {
-  return json_get(self->function, "alloc");
+  struct json *module = convert_get_module(self);
+  return json_get(module, "alloc");
 }
 
 static struct json *convert_new_function(void) {
