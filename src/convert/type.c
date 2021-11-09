@@ -27,10 +27,16 @@ struct json *convert_new_alloca(struct convert *self) {
   json_push(alloc, instr);
   return instr;
 }
+static void convert_set_block(struct convert *self, struct json *block) {
+  self->block = block;
+}
+static struct json *convert_get_block(struct convert *self) {
+  return self->block;
+}
 
 void convert_init(struct convert *self, struct json *module) {
   self->module = module;
-  self->block = json_null();
+  convert_set_block(self, json_null());
 }
 struct json *convert_new_module(void) {
   struct json *json = json_new_obj();
@@ -50,12 +56,13 @@ void convert_push_block(struct convert *self) {
   struct json *block = convert_new_block();
   json_push(function, block);
   json_del(block);
-  self->block = block;
+  convert_set_block(self, block);
 }
 struct json *convert_push_instr(struct convert *self, const char *tag) {
-  struct json *block = json_get(self->block, "block");
+  struct json *block = convert_get_block(self);
+  struct json *array = json_get(block, "block");
   struct json *instr = convert_new_instr(tag);
-  json_push(block, instr);
+  json_push(array, instr);
   json_del(instr);
   return instr;
 }
