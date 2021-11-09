@@ -16,6 +16,9 @@ struct json *generate_global_get(struct json *module) {
 }
 void generate_global(struct printer *printer, struct json *json) {
   struct json *init = json_get(json, "init");
+  if (json_is_null(json)) {
+    return;
+  }
   generate_global_name(printer, json);
   printer_print(printer, " = global i32 ");
   if (json_has(init, "immediate")) {
