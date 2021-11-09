@@ -26,3 +26,7 @@ void convert_function_push(struct convert *self) {
   json_insert(module, "function", function);
   convert_alloc_init(self);
 }
+struct json *convert_function_get(struct convert *self) {
+  struct json *module = convert_get_module(self);
+  return json_get(module, "function");
+}
