@@ -1,21 +1,10 @@
 #include "function.h"
 
+#include "alloc.h"
 #include "json/json.h"
 #include "table.h"
 #include "type.h"
 
-static void convert_alloc_init(struct convert *self) {
-  struct json *module = convert_get_module(self);
-  struct json *alloc = json_new_arr();
-  json_insert(module, "alloc", alloc);
-  json_del(alloc);
-}
-static struct json *convert_alloc_finish(struct convert *self) {
-  struct json *module = convert_get_module(self);
-  struct json *alloc = json_take(module, "alloc");
-  json_insert(module, "alloc", json_null());
-  return alloc;
-}
 static struct json *convert_function_new(void) {
   struct json *json = json_new_obj();
   struct json *function = json_new_arr();
