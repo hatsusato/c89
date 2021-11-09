@@ -5,9 +5,8 @@
 #include "type.h"
 #include "util/util.h"
 
-struct json *convert_table_insert(struct convert *self,
+struct json *convert_table_insert(struct json *module,
                                   struct json *identifier) {
-  struct json *module = convert_get_module(self);
   struct json *table = json_get(module, "table");
   const char *key = json_get_str(identifier);
   if (json_has(table, key)) {
@@ -20,9 +19,8 @@ struct json *convert_table_insert(struct convert *self,
     return instr;
   }
 }
-struct json *convert_table_lookup(struct convert *self,
+struct json *convert_table_lookup(struct json *module,
                                   struct json *identifier) {
-  struct json *module = convert_get_module(self);
   struct json *table = json_get(module, "table");
   const char *key = json_get_str(identifier);
   while (!json_is_null(table)) {
@@ -33,8 +31,7 @@ struct json *convert_table_lookup(struct convert *self,
   }
   return json_null();
 }
-void convert_table_push(struct convert *self) {
-  struct json *module = convert_get_module(self);
+void convert_table_push(struct json *module) {
   struct json *table = json_new_obj();
   struct json *next = json_take(module, "table");
   json_insert(module, "table", table);
@@ -42,10 +39,9 @@ void convert_table_push(struct convert *self) {
   json_insert(table, "$next", next);
   json_del(next);
 }
-void convert_table_pop(struct convert *self) {
-  struct json *module = convert_get_module(self);
+void convert_table_pop(struct json *module) {
   struct json *table = json_get(module, "table");
   struct json *next = json_take(table, "$next");
-  json_insert(self->module, "table", next);
+  json_insert(module, "table", next);
   json_del(next);
 }

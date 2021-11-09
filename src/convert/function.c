@@ -25,7 +25,7 @@ void convert_function_init(struct convert *self) {
   json_del(function);
   json_insert(module, "function", function);
   convert_alloc_init(module);
-  convert_table_push(self);
+  convert_table_push(module);
 }
 void convert_function_finish(struct convert *self) {
   struct json *module = convert_get_module(self);
@@ -36,7 +36,7 @@ void convert_function_finish(struct convert *self) {
   json_append(alloc, json_get(front, "block"));
   json_insert(front, "block", alloc);
   json_del(alloc);
-  convert_table_pop(self);
+  convert_table_pop(module);
 }
 struct json *convert_function_get_blocks(struct convert *self) {
   struct json *function = convert_function_get(self);

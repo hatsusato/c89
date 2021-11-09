@@ -10,8 +10,9 @@
 static struct json *convert_initializer(struct convert *, struct json *);
 
 static void convert_init_declarator(struct convert *self, struct json *json) {
+  struct json *module = convert_get_module(self);
   struct json *identifier = json_find_identifier(json);
-  struct json *pointer = convert_table_insert(self, identifier);
+  struct json *pointer = convert_table_insert(module, identifier);
   if (json_has(json, SYMBOL_INITIALIZER)) {
     struct json *value =
         convert_initializer(self, json_get(json, SYMBOL_INITIALIZER));
