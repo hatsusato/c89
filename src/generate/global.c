@@ -3,18 +3,27 @@
 #include "json/json.h"
 #include "printer/printer.h"
 
+static void generate_immediate(struct printer *printer, struct json *json) {
+  struct json *immediate = json_get(json, "immediate");
+  if (json_is_int(immediate)) {
+    int val = json_int_get(json_as_int(immediate));
+    printer_print(printer, "%d", val);
+  }
+}
+
 struct json *generate_global_get(struct json *module) {
   return json_get(module, "global");
 }
 void generate_global(struct printer *printer, struct json *json) {
   struct json *init = json_get(json, "init");
-  int val = 0;
-  if (json_has(init, "immediate")) {
-    struct json *immediate = json_get(init, "immediate");
-    val = json_int_get(json_as_int(immediate));
-  }
   generate_global_name(printer, json);
-  printer_print(printer, " = global i32 %d, align 4", val);
+  printer_print(printer, " = global i32 ");
+  if (json_has(init, "immediate")) {
+    generate_immediate(printer, init);
+  } else {
+    printer_print(printer, "0");
+  }
+  printer_print(printer, ", align 4");
   printer_newline(printer);
 }
 void generate_global_name(struct printer *printer, struct json *json) {
