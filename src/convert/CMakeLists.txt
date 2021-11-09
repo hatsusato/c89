@@ -5,6 +5,7 @@ target_sources(convert PRIVATE
   expression.c
   immediate.c
   statement.c
+  table.c
   type.c
   )
 target_link_libraries(convert PRIVATE
