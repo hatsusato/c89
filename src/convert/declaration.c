@@ -36,11 +36,12 @@ static void convert_init_declarator_list_global(struct json_map *map) {
   convert_table_insert(module, identifier, instr);
   json_del(instr);
   json_insert(instr, "name", identifier);
+  json_insert(instr, "global", json_null());
   if (json_has(json, SYMBOL_INITIALIZER)) {
-    struct json *instr = convert_table_lookup(module, identifier);
+    struct json *value = convert_table_lookup(module, identifier);
     struct json *init = json_get(json, SYMBOL_INITIALIZER);
     init = convert_initializer(module, init);
-    json_insert(instr, "init", init);
+    json_insert(value, "init", init);
   }
 }
 static struct json *convert_initializer(struct json *module,
