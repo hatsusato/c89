@@ -1,11 +1,13 @@
 #include "global.h"
 
 #include "json/json.h"
+#include "table.h"
 
 void convert_global_init(struct json *module) {
   struct json *global = json_new_obj();
   json_insert(module, "global", global);
   json_del(global);
+  convert_table_push(module);
 }
 void convert_global_finish(struct json *module) {
   struct json *global = json_get(module, "global");

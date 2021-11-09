@@ -2,14 +2,12 @@
 
 #include "function.h"
 #include "json/json.h"
-#include "table.h"
 
 struct json *convert_module_new(void) {
   struct json *module = json_new_obj();
   struct json *array = json_new_arr();
   json_insert(module, "module", array);
   json_del(array);
-  convert_table_push(module);
   return module;
 }
 static struct json *convert_new_block(void) {
