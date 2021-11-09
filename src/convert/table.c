@@ -36,3 +36,8 @@ void convert_table_pop(struct json *module) {
   json_insert(module, "table", next);
   json_del(next);
 }
+bool_t convert_table_is_global(struct json *module) {
+  struct json *table = json_get(module, "table");
+  struct json *next = json_get(table, "$next");
+  return json_is_null(next);
+}
