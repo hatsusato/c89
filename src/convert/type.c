@@ -28,10 +28,12 @@ struct json *convert_new_alloca(struct convert *self) {
   return instr;
 }
 static void convert_set_block(struct convert *self, struct json *block) {
-  self->block = block;
+  struct json *module = convert_get_module(self);
+  json_insert(module, "block", block);
 }
 static struct json *convert_get_block(struct convert *self) {
-  return self->block;
+  struct json *module = convert_get_module(self);
+  return json_get(module, "block");
 }
 
 void convert_init(struct convert *self, struct json *module) {
