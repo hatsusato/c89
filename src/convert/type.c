@@ -47,10 +47,13 @@ struct json *convert_new_alloca(struct convert *self) {
 }
 
 static void convert_set_function(struct convert *self, struct json *function) {
+  struct json *module = convert_get_module(self);
   self->function = function;
+  json_insert(module, "function", function);
 }
 static struct json *convert_get_function(struct convert *self) {
-  return self->function;
+  struct json *module = convert_get_module(self);
+  return json_get(module, "function");
 }
 
 void convert_init(struct convert *self, struct json *module) {
