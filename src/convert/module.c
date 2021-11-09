@@ -1,17 +1,16 @@
 #include "module.h"
 
 #include "function.h"
+#include "global.h"
 #include "json/json.h"
 #include "table.h"
 
 struct json *convert_module_new(void) {
   struct json *module = json_new_obj();
   struct json *array = json_new_arr();
-  struct json *global = json_new_arr();
   json_insert(module, "module", array);
   json_del(array);
-  json_insert(module, "global", global);
-  json_del(global);
+  convert_global_init(module);
   convert_table_push(module);
   return module;
 }
