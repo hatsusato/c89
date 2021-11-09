@@ -2,6 +2,7 @@
 
 #include "function.h"
 #include "json/json.h"
+#include "table.h"
 
 static struct json *convert_new_block(void) {
   struct json *json = json_new_obj();
@@ -17,14 +18,12 @@ static struct json *convert_new_instr(const char *instr) {
 }
 
 struct json *convert_module_new(void) {
-  struct json *json = json_new_obj();
-  struct json *module = json_new_arr();
-  struct json *table = json_new_obj();
-  json_insert(json, "module", module);
-  json_insert(json, "table", table);
-  json_del(table);
-  json_del(module);
-  return json;
+  struct json *module = json_new_obj();
+  struct json *array = json_new_arr();
+  json_insert(module, "module", array);
+  json_del(array);
+  convert_table_push(module);
+  return module;
 }
 void convert_push_block(struct json *module) {
   struct json *array = convert_function_get_blocks(module);
