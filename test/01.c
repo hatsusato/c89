@@ -22,11 +22,11 @@ int f4(void) {
   z = x + y;
   return x + y + z;
 }
-#if 0
 int f5(void) {
   int x = 1, y = 2, z = x + y;
   return x + y + z;
 }
+#if 0
 int f6(void) {
   int x = 0;
   {

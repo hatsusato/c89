@@ -1,32 +1,21 @@
 #include "convert.h"
 
+#include "function.h"
 #include "json/json.h"
 #include "json/map.h"
-#include "statement.h"
-#include "type.h"
+#include "module.h"
 #include "util/symbol.h"
 
-static void convert_function_definition(struct convert *self,
-                                        struct json *json) {
-  struct json *name = json_find_identifier(json);
-  json_insert(self->function, "name", name);
-  convert_push_block(self);
-  convert_statement(self, json);
-}
 static void convert_external_declaration(struct json_map *map) {
   struct json *module = json_map_extra(map);
   struct json *json = json_map_val(map);
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
-    struct convert self;
-    convert_init(&self, module);
-    convert_push_function(&self);
-    convert_function_definition(&self,
+    convert_function_definition(module,
                                 json_get(json, SYMBOL_FUNCTION_DEFINITION));
-    convert_finish(&self);
   }
 }
 static struct json *convert_translation_unit(struct json *json) {
-  struct json *module = convert_new_module();
+  struct json *module = convert_module_new();
   json_foreach(json, convert_external_declaration, module);
   return module;
 }
