@@ -13,9 +13,14 @@ static void generate_header(struct printer *printer) {
 static void generate_global(struct json_map *map) {
   struct printer *printer = json_map_extra(map);
   struct json *global = json_map_val(map);
-  struct json *name = json_get(global, "name");
-  printer_print(printer, "@%s", json_get_str(name));
-  printer_print(printer, " = global i32 0, align 4");
+  const char *name = json_get_str(json_get(global, "name"));
+  struct json *init = json_get(global, "init");
+  int val = 0;
+  if (json_has(init, "immediate")) {
+    struct json *immediate = json_get(init, "immediate");
+    val = json_int_get(json_as_int(immediate));
+  }
+  printer_print(printer, "@%s = global i32 %d, align 4", name, val);
   printer_newline(printer);
 }
 static void generate_map(struct json_map *map) {
