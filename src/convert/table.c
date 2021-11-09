@@ -1,5 +1,6 @@
 #include "table.h"
 
+#include "alloc.h"
 #include "json/json.h"
 #include "type.h"
 #include "util/util.h"
@@ -13,7 +14,7 @@ struct json *convert_table_insert(struct convert *self,
     assert(false);
     return json_null();
   } else {
-    struct json *instr = convert_new_alloca(self);
+    struct json *instr = convert_alloc_push(self);
     json_insert(table, key, instr);
     json_del(instr);
     return instr;
