@@ -17,7 +17,7 @@ static struct json *convert_function_get(struct json *module) {
   return json_get(module, "function");
 }
 
-void convert_function_init(struct json *module) {
+static void convert_function_init(struct json *module) {
   struct json *array = json_get(module, "module");
   struct json *function = convert_function_new();
   json_push(array, function);
@@ -26,7 +26,7 @@ void convert_function_init(struct json *module) {
   convert_alloc_init(module);
   convert_table_push(module);
 }
-void convert_function_finish(struct json *module) {
+static void convert_function_finish(struct json *module) {
   struct json *array = convert_function_get_blocks(module);
   struct json *front = json_front(array);
   struct json *alloc = convert_alloc_finish(module);
@@ -35,13 +35,14 @@ void convert_function_finish(struct json *module) {
   json_del(alloc);
   convert_table_pop(module);
 }
+static void convert_function_set_name(struct json *module, struct json *name) {
+  struct json *function = convert_function_get(module);
+  json_insert(function, "name", name);
+}
+
 struct json *convert_function_get_blocks(struct json *module) {
   struct json *function = convert_function_get(module);
   return json_get(function, "function");
-}
-void convert_function_set_name(struct json *module, struct json *name) {
-  struct json *function = convert_function_get(module);
-  json_insert(function, "name", name);
 }
 void convert_function_definition(struct json *module, struct json *json) {
   convert_function_init(module);
