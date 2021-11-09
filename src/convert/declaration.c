@@ -38,6 +38,11 @@ static void convert_init_declarator_list_global(struct json_map *map) {
   json_push(global, instr);
   json_del(instr);
   json_insert(instr, "name", identifier);
+  if (json_has(json, SYMBOL_INITIALIZER)) {
+    struct json *init = json_get(json, SYMBOL_INITIALIZER);
+    init = convert_initializer(module, init);
+    json_insert(instr, "init", init);
+  }
 }
 static struct json *convert_initializer(struct json *module,
                                         struct json *json) {
