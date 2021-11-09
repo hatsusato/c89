@@ -28,6 +28,17 @@ static void convert_init_declarator_list(struct json_map *map) {
   struct json *json = json_map_val(map);
   convert_init_declarator(module, json);
 }
+static void convert_init_declarator_list_global(struct json_map *map) {
+  struct json *module = json_map_extra(map);
+  struct json *json = json_map_val(map);
+  struct json *global = json_get(module, "global");
+  struct json *identifier = json_find_identifier(json);
+  struct json *instr = convert_new_instr("global");
+  convert_table_insert(module, identifier, instr);
+  json_push(global, instr);
+  json_del(instr);
+  json_insert(instr, "name", identifier);
+}
 static struct json *convert_initializer(struct json *module,
                                         struct json *json) {
   if (json_has(json, SYMBOL_ASSIGNMENT_EXPRESSION)) {
@@ -44,8 +55,10 @@ static void convert_declaration_list(struct json_map *map) {
 
 void convert_declaration(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_INIT_DECLARATOR_LIST)) {
-    json_foreach(json_get(json, SYMBOL_INIT_DECLARATOR_LIST),
-                 convert_init_declarator_list, module);
+    json_map_t map = convert_table_is_global(module)
+                         ? convert_init_declarator_list_global
+                         : convert_init_declarator_list;
+    json_foreach(json_get(json, SYMBOL_INIT_DECLARATOR_LIST), map, module);
   } else if (json_has(json, SYMBOL_DECLARATION_LIST)) {
     json_foreach(json_get(json, SYMBOL_DECLARATION_LIST),
                  convert_declaration_list, module);

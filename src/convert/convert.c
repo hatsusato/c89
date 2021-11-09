@@ -1,5 +1,6 @@
 #include "convert.h"
 
+#include "declaration.h"
 #include "function.h"
 #include "json/json.h"
 #include "json/map.h"
@@ -12,6 +13,8 @@ static void convert_external_declaration(struct json_map *map) {
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
     convert_function_definition(module,
                                 json_get(json, SYMBOL_FUNCTION_DEFINITION));
+  } else if (json_has(json, SYMBOL_DECLARATION)) {
+    convert_declaration(module, json_get(json, SYMBOL_DECLARATION));
   }
 }
 static struct json *convert_translation_unit(struct json *json) {
