@@ -7,8 +7,11 @@
 struct json *convert_module_new(void) {
   struct json *module = json_new_obj();
   struct json *array = json_new_arr();
+  struct json *global = json_new_arr();
   json_insert(module, "module", array);
   json_del(array);
+  json_insert(module, "global", global);
+  json_del(global);
   convert_table_push(module);
   return module;
 }
