@@ -26,7 +26,6 @@ int f5(void) {
   int x = 1, y = 2, z = x + y;
   return x + y + z;
 }
-#if 0
 int f6(void) {
   int x = 0;
   {
@@ -37,6 +36,7 @@ int f6(void) {
   }
   return x;
 }
+#if 0
 int g5, g6 = 6, g7;
 int g8 = 8, g9;
 int f7(void) {
