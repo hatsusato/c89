@@ -9,7 +9,7 @@
 static void convert_function_definition(struct convert *self,
                                         struct json *json) {
   struct json *name = json_find_identifier(json);
-  json_insert(self->function, "name", name);
+  convert_function_set_name(self, name);
   convert_push_block(self);
   convert_statement(self, json);
 }
