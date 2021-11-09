@@ -17,7 +17,7 @@ static struct json *convert_new_instr(const char *instr) {
   return json;
 }
 
-struct json *convert_new_module(void) {
+struct json *convert_module_new(void) {
   struct json *json = json_new_obj();
   struct json *module = json_new_arr();
   struct json *table = json_new_obj();
