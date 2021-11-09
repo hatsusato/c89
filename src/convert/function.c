@@ -30,3 +30,7 @@ struct json *convert_function_get(struct convert *self) {
   struct json *module = convert_get_module(self);
   return json_get(module, "function");
 }
+void convert_function_set_name(struct convert *self, struct json *name) {
+  struct json *function = convert_function_get(self);
+  json_insert(function, "name", name);
+}

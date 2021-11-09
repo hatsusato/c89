@@ -5,5 +5,6 @@ struct convert;
 
 void convert_function_push(struct convert *);
 struct json *convert_function_get(struct convert *);
+void convert_function_set_name(struct convert *, struct json *);
 
 #endif /* INCLUDE_GUARD_7ABBD975_1225_4AF5_BCA9_04D58DC44EF3 */

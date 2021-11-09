@@ -8,7 +8,6 @@ struct convert {
 };
 
 struct json *convert_new_alloca(struct convert *);
-void convert_function_set_name(struct convert *, struct json *);
 
 void convert_init(struct convert *, struct json *);
 void convert_finish(struct convert *);

@@ -34,11 +34,6 @@ struct json *convert_new_alloca(struct convert *self) {
   return instr;
 }
 
-void convert_function_set_name(struct convert *self, struct json *name) {
-  struct json *function = convert_function_get(self);
-  json_insert(function, "name", name);
-}
-
 void convert_init(struct convert *self, struct json *module) {
   self->module = module;
   self->block = json_null();
