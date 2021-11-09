@@ -5,11 +5,14 @@
 #include "json/json.h"
 #include "json/map.h"
 #include "module.h"
+#include "table.h"
 #include "util/symbol.h"
 
 static void convert_compound_statement(struct json *module, struct json *json) {
+  convert_table_push(module);
   convert_declaration(module, json);
   convert_statement(module, json);
+  convert_table_pop(module);
 }
 static void convert_expression_statement(struct json *module,
                                          struct json *json) {
