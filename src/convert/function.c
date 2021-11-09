@@ -16,6 +16,12 @@ static void convert_alloc_init(struct convert *self) {
   json_insert(module, "alloc", alloc);
   json_del(alloc);
 }
+static struct json *convert_alloc_finish(struct convert *self) {
+  struct json *module = convert_get_module(self);
+  struct json *alloc = json_take(module, "alloc");
+  json_insert(module, "alloc", json_null());
+  return alloc;
+}
 
 void convert_function_push(struct convert *self) {
   struct json *module = convert_get_module(self);
@@ -25,6 +31,15 @@ void convert_function_push(struct convert *self) {
   json_del(function);
   json_insert(module, "function", function);
   convert_alloc_init(self);
+}
+void convert_function_finish(struct convert *self) {
+  struct json *function = convert_function_get(self);
+  struct json *array = json_get(function, "function");
+  struct json *front = json_front(array);
+  struct json *alloc = convert_alloc_finish(self);
+  json_append(alloc, json_get(front, "block"));
+  json_insert(front, "block", alloc);
+  json_del(alloc);
 }
 struct json *convert_function_get(struct convert *self) {
   struct json *module = convert_get_module(self);
