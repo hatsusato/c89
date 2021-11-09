@@ -1,6 +1,7 @@
 #include "function.h"
 
 #include "json/json.h"
+#include "table.h"
 #include "type.h"
 
 static void convert_alloc_init(struct convert *self) {
@@ -31,6 +32,7 @@ void convert_function_init(struct convert *self) {
   json_del(function);
   json_insert(module, "function", function);
   convert_alloc_init(self);
+  convert_table_push(self);
 }
 void convert_function_finish(struct convert *self) {
   struct json *function = convert_function_get(self);
@@ -40,6 +42,7 @@ void convert_function_finish(struct convert *self) {
   json_append(alloc, json_get(front, "block"));
   json_insert(front, "block", alloc);
   json_del(alloc);
+  convert_table_pop(self);
 }
 struct json *convert_function_get(struct convert *self) {
   struct json *module = convert_get_module(self);
