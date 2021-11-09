@@ -3,7 +3,7 @@
 #include "json/json.h"
 #include "type.h"
 
-static struct json *convert_new_instr(void) {
+static struct json *convert_new_alloca(void) {
   struct json *json = json_new_obj();
   json_insert_str(json, "instr", "alloca");
   return json;
@@ -24,7 +24,7 @@ struct json *convert_alloc_finish(struct convert *self) {
 struct json *convert_alloc_push(struct convert *self) {
   struct json *module = convert_get_module(self);
   struct json *alloc = json_get(module, "alloc");
-  struct json *instr = convert_new_instr();
+  struct json *instr = convert_new_alloca();
   json_push(alloc, instr);
   return instr;
 }

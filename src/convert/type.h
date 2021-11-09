@@ -7,8 +7,6 @@ struct convert {
   struct json *block;
 };
 
-struct json *convert_new_alloca(struct convert *);
-
 void convert_init(struct convert *, struct json *);
 struct json *convert_new_module(void);
 struct json *convert_get_module(struct convert *);

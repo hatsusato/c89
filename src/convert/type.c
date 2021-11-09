@@ -4,11 +4,6 @@
 #include "json/json.h"
 #include "table.h"
 
-static struct json *convert_get_alloc(struct convert *self) {
-  struct json *module = convert_get_module(self);
-  return json_get(module, "alloc");
-}
-
 static struct json *convert_new_block(void) {
   struct json *json = json_new_obj();
   struct json *block = json_new_arr();
@@ -20,12 +15,6 @@ static struct json *convert_new_instr(const char *instr) {
   struct json *json = json_new_obj();
   json_insert_str(json, "instr", instr);
   return json;
-}
-struct json *convert_new_alloca(struct convert *self) {
-  struct json *instr = convert_new_instr("alloca");
-  struct json *alloc = convert_get_alloc(self);
-  json_push(alloc, instr);
-  return instr;
 }
 
 void convert_init(struct convert *self, struct json *module) {
