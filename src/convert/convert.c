@@ -9,8 +9,9 @@
 
 static void convert_function_definition(struct convert *self,
                                         struct json *json) {
+  struct json *module = convert_get_module(self);
   struct json *name = json_find_identifier(json);
-  convert_function_set_name(self, name);
+  convert_function_set_name(module, name);
   convert_push_block(self);
   convert_statement(self, json);
 }
@@ -20,10 +21,10 @@ static void convert_external_declaration(struct json_map *map) {
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
     struct convert self;
     self.module = module;
-    convert_function_init(&self);
+    convert_function_init(module);
     convert_function_definition(&self,
                                 json_get(json, SYMBOL_FUNCTION_DEFINITION));
-    convert_function_finish(&self);
+    convert_function_finish(module);
   }
 }
 static struct json *convert_translation_unit(struct json *json) {
