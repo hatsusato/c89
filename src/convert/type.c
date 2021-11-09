@@ -31,6 +31,7 @@ struct json *convert_new_alloca(struct convert *self) {
 void convert_init(struct convert *self, struct json *module) {
   self->module = module;
   self->block = json_null();
+  convert_function_init(self);
   convert_table_push(self);
 }
 void convert_finish(struct convert *self) {

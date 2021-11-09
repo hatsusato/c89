@@ -3,7 +3,7 @@
 
 struct convert;
 
-void convert_function_push(struct convert *);
+void convert_function_init(struct convert *);
 void convert_function_finish(struct convert *);
 struct json *convert_function_get(struct convert *);
 void convert_function_set_name(struct convert *, struct json *);
