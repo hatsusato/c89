@@ -3,6 +3,7 @@
 
 struct json *convert_module_new(void);
 void convert_push_block(struct json *);
+struct json *convert_new_instr(const char *);
 struct json *convert_push_instr(struct json *, const char *);
 
 #endif /* INCLUDE_GUARD_CB18DD4B_D664_4B99_90FE_A9C9088A348E */
