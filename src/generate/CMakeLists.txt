@@ -3,6 +3,7 @@ target_sources(generate PRIVATE
   block.c
   function.c
   generate.c
+  global.c
   instruction.c
   numbering.c
   )

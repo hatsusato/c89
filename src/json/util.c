@@ -90,6 +90,15 @@ static void json_append_map(struct json_map *map) {
 void json_append(struct json *dst, struct json *src) {
   json_foreach(src, json_append_map, dst);
 }
+static void json_merge_map(struct json_map *map) {
+  struct json *dst = json_map_extra(map);
+  const char *key = json_map_key(map);
+  struct json *val = json_map_val(map);
+  json_insert(dst, key, val);
+}
+void json_merge(struct json *dst, struct json *src) {
+  json_foreach(src, json_merge_map, dst);
+}
 struct json *json_take(struct json *json, const char *key) {
   struct json *val = json_get(json, key);
   json_ref(val);

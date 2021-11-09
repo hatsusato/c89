@@ -1,12 +1,7 @@
 #include "alloc.h"
 
 #include "json/json.h"
-
-static struct json *convert_new_alloca(void) {
-  struct json *json = json_new_obj();
-  json_insert_str(json, "instr", "alloca");
-  return json;
-}
+#include "module.h"
 
 void convert_alloc_init(struct json *module) {
   struct json *alloc = json_new_arr();
@@ -20,7 +15,7 @@ struct json *convert_alloc_finish(struct json *module) {
 }
 struct json *convert_alloc_push(struct json *module) {
   struct json *alloc = json_get(module, "alloc");
-  struct json *instr = convert_new_alloca();
+  struct json *instr = convert_new_instr("alloca");
   json_push(alloc, instr);
   return instr;
 }

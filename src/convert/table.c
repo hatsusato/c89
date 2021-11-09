@@ -1,22 +1,15 @@
 #include "table.h"
 
-#include "alloc.h"
+#include "global.h"
 #include "json/json.h"
 #include "util/util.h"
 
-struct json *convert_table_insert(struct json *module,
-                                  struct json *identifier) {
+void convert_table_insert(struct json *module, struct json *identifier,
+                          struct json *instr) {
   struct json *table = json_get(module, "table");
   const char *key = json_get_str(identifier);
-  if (json_has(table, key)) {
-    assert(false);
-    return json_null();
-  } else {
-    struct json *instr = convert_alloc_push(module);
-    json_insert(table, key, instr);
-    json_del(instr);
-    return instr;
-  }
+  assert(!json_has(table, key));
+  json_insert(table, key, instr);
 }
 struct json *convert_table_lookup(struct json *module,
                                   struct json *identifier) {
@@ -24,7 +17,9 @@ struct json *convert_table_lookup(struct json *module,
   const char *key = json_get_str(identifier);
   while (!json_is_null(table)) {
     if (json_has(table, key)) {
-      return json_get(table, key);
+      struct json *value = json_get(table, key);
+      convert_global_push(module, value);
+      return value;
     }
     table = json_get(table, "$next");
   }
@@ -43,4 +38,9 @@ void convert_table_pop(struct json *module) {
   struct json *next = json_take(table, "$next");
   json_insert(module, "table", next);
   json_del(next);
+}
+bool_t convert_table_is_global(struct json *module) {
+  struct json *table = json_get(module, "table");
+  struct json *next = json_get(table, "$next");
+  return json_is_null(next);
 }
