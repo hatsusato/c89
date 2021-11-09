@@ -9,7 +9,8 @@
 
 static void convert_compound_statement(struct convert *self,
                                        struct json *json) {
-  convert_declaration(self, json);
+  struct json *module = convert_get_module(self);
+  convert_declaration(module, json);
   convert_statement(self, json);
 }
 static void convert_expression_statement(struct convert *self,
