@@ -3,14 +3,21 @@
 #include "json/json.h"
 #include "table.h"
 
+static void convert_init_alloc(struct convert *self) {
+  struct json *function = self->function;
+  struct json *alloc = json_new_arr();
+  json_insert(function, "alloc", alloc);
+  json_del(alloc);
+}
+static struct json *convert_get_alloc(struct convert *self) {
+  return json_get(self->function, "alloc");
+}
+
 static struct json *convert_new_function(void) {
   struct json *json = json_new_obj();
   struct json *function = json_new_arr();
-  struct json *alloc = json_new_arr();
   json_insert(json, "function", function);
   json_del(function);
-  json_insert(json, "alloc", alloc);
-  json_del(alloc);
   return json;
 }
 static struct json *convert_new_block(void) {
@@ -27,7 +34,7 @@ struct json *convert_new_instr(const char *instr) {
 }
 
 static void convert_alloc_push(struct convert *self, struct json *instr) {
-  struct json *alloc = json_get(self->function, "alloc");
+  struct json *alloc = convert_get_alloc(self);
   json_push(alloc, instr);
 }
 
@@ -53,7 +60,7 @@ void convert_init(struct convert *self, struct json *module) {
   convert_table_push(self);
 }
 void convert_finish(struct convert *self) {
-  struct json *alloc = json_get(self->function, "alloc");
+  struct json *alloc = convert_get_alloc(self);
   struct json *function = json_get(self->function, "function");
   struct json *front = json_front(function);
   json_append(alloc, json_get(front, "block"));
@@ -79,6 +86,7 @@ void convert_push_function(struct convert *self) {
   json_push(module, function);
   json_del(function);
   self->function = function;
+  convert_init_alloc(self);
 }
 void convert_push_block(struct convert *self) {
   struct json *function = json_get(self->function, "function");
