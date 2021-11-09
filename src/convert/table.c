@@ -13,7 +13,7 @@ struct json *convert_table_insert(struct convert *self,
     assert(false);
     return json_null();
   } else {
-    struct json *instr = convert_new_instr("alloca");
+    struct json *instr = convert_new_alloca(self);
     json_insert(table, key, instr);
     json_del(instr);
     return instr;
