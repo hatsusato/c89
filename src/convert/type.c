@@ -46,8 +46,7 @@ struct json *convert_get_module(struct convert *self) {
 }
 void convert_push_block(struct convert *self) {
   struct json *module = convert_get_module(self);
-  struct json *function = convert_function_get(self);
-  struct json *array = json_get(function, "function");
+  struct json *array = convert_function_get_blocks(self);
   struct json *block = convert_new_block();
   json_push(array, block);
   json_insert(module, "block", block);
