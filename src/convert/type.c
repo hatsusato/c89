@@ -27,9 +27,6 @@ struct json *convert_new_module(void) {
   json_del(module);
   return json;
 }
-struct json *convert_get_module(struct convert *self) {
-  return self->module;
-}
 void convert_push_block(struct json *module) {
   struct json *array = convert_function_get_blocks(module);
   struct json *block = convert_new_block();
