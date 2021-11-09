@@ -31,14 +31,13 @@ static void convert_init_declarator_list(struct json_map *map) {
 static void convert_init_declarator_list_global(struct json_map *map) {
   struct json *module = json_map_extra(map);
   struct json *json = json_map_val(map);
-  struct json *global = json_get(module, "global");
   struct json *identifier = json_find_identifier(json);
   struct json *instr = convert_new_instr("global");
   convert_table_insert(module, identifier, instr);
-  json_push(global, instr);
   json_del(instr);
   json_insert(instr, "name", identifier);
   if (json_has(json, SYMBOL_INITIALIZER)) {
+    struct json *instr = convert_table_lookup(module, identifier);
     struct json *init = json_get(json, SYMBOL_INITIALIZER);
     init = convert_initializer(module, init);
     json_insert(instr, "init", init);

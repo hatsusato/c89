@@ -16,7 +16,13 @@ struct json *convert_table_lookup(struct json *module,
   const char *key = json_get_str(identifier);
   while (!json_is_null(table)) {
     if (json_has(table, key)) {
-      return json_get(table, key);
+      struct json *instr = json_get(table, key);
+      const char *tag = json_get_str(json_get(instr, "instr"));
+      if (util_streq(tag, "global")) {
+        struct json *global = json_get(module, "global");
+        json_push(global, instr);
+      }
+      return instr;
     }
     table = json_get(table, "$next");
   }
