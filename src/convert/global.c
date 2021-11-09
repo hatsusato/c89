@@ -7,6 +7,11 @@ void convert_global_init(struct json *module) {
   json_insert(module, "global", global);
   json_del(global);
 }
+void convert_global_finish(struct json *module) {
+  struct json *global = json_get(module, "global");
+  struct json *table = json_get(module, "table");
+  json_merge(global, table);
+}
 struct json *convert_global_new_value(struct json *identifier) {
   struct json *value = json_new_obj();
   json_insert(value, "name", identifier);

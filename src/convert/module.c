@@ -1,7 +1,6 @@
 #include "module.h"
 
 #include "function.h"
-#include "global.h"
 #include "json/json.h"
 #include "table.h"
 
@@ -10,7 +9,6 @@ struct json *convert_module_new(void) {
   struct json *array = json_new_arr();
   json_insert(module, "module", array);
   json_del(array);
-  convert_global_init(module);
   convert_table_push(module);
   return module;
 }

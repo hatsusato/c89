@@ -4,6 +4,7 @@
 struct json;
 
 void convert_global_init(struct json *);
+void convert_global_finish(struct json *);
 struct json *convert_global_new_value(struct json *);
 void convert_global_push(struct json *, struct json *);
 

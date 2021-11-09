@@ -2,6 +2,7 @@
 
 #include "declaration.h"
 #include "function.h"
+#include "global.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "module.h"
@@ -19,7 +20,9 @@ static void convert_external_declaration(struct json_map *map) {
 }
 static struct json *convert_translation_unit(struct json *json) {
   struct json *module = convert_module_new();
+  convert_global_init(module);
   json_foreach(json, convert_external_declaration, module);
+  convert_global_finish(module);
   return module;
 }
 
