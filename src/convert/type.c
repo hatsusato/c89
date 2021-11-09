@@ -46,21 +46,6 @@ struct json *convert_new_alloca(struct convert *self) {
   return instr;
 }
 
-static void convert_table_push(struct convert *self) {
-  struct json *table = json_new_obj();
-  struct json *next = json_take(self->module, "table");
-  json_insert(self->module, "table", table);
-  json_del(table);
-  json_insert(table, "$next", next);
-  json_del(next);
-}
-static void convert_table_pop(struct convert *self) {
-  struct json *table = json_get(self->module, "table");
-  struct json *next = json_take(table, "$next");
-  json_insert(self->module, "table", next);
-  json_del(next);
-}
-
 void convert_init(struct convert *self, struct json *module) {
   self->module = module;
   self->function = json_null();
