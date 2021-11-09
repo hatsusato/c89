@@ -36,20 +36,24 @@ int f6(void) {
   }
   return x;
 }
-#if 0
-int g5, g6 = 6, g7;
-int g8 = 8, g9;
+int g8;
+int g15;
+int g1 = 1;
+int g2 = 2;
+int g10, g16, g9;
+int g3 = 3, g11, g4 = 4;
+int g5 = 5, g6 = 6, g7 = 7;
 int f7(void) {
-  int x = g7;
-  {
-    int x = g8;
-    {
-      int x = g9;
-    }
-  }
-  return x;
+  int x1 = g8;
+  int x2 = g1;
+  int x4 = g9;
+  int x3 = g10;
+  int x6 = g11;
+  int x5 = g3;
+  int x7 = g7;
+  return g5;
 }
-int g1;
-int g2, g3;
-int g4 = 4;
-#endif
+int g17;
+int g12 = 12;
+int g18, g19;
+int g13 = 13, g14 = 14;
