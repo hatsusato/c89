@@ -29,7 +29,8 @@ static void convert_init_declarator_list(struct json_map *map) {
 static struct json *convert_initializer(struct convert *self,
                                         struct json *json) {
   if (json_has(json, SYMBOL_ASSIGNMENT_EXPRESSION)) {
-    return convert_rvalue(self, json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION));
+    struct json *module = convert_get_module(self);
+    return convert_rvalue(module, json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION));
   } else {
     return json;
   }
