@@ -24,14 +24,15 @@ void convert_function_init(struct convert *self) {
   json_push(array, function);
   json_del(function);
   json_insert(module, "function", function);
-  convert_alloc_init(self);
+  convert_alloc_init(module);
   convert_table_push(self);
 }
 void convert_function_finish(struct convert *self) {
+  struct json *module = convert_get_module(self);
   struct json *function = convert_function_get(self);
   struct json *array = json_get(function, "function");
   struct json *front = json_front(array);
-  struct json *alloc = convert_alloc_finish(self);
+  struct json *alloc = convert_alloc_finish(module);
   json_append(alloc, json_get(front, "block"));
   json_insert(front, "block", alloc);
   json_del(alloc);

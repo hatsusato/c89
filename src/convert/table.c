@@ -14,7 +14,7 @@ struct json *convert_table_insert(struct convert *self,
     assert(false);
     return json_null();
   } else {
-    struct json *instr = convert_alloc_push(self);
+    struct json *instr = convert_alloc_push(module);
     json_insert(table, key, instr);
     json_del(instr);
     return instr;
