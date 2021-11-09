@@ -3,7 +3,7 @@
 #include "json/json.h"
 
 void convert_global_init(struct json *module) {
-  struct json *global = json_new_arr();
+  struct json *global = json_new_obj();
   json_insert(module, "global", global);
   json_del(global);
 }
@@ -16,6 +16,7 @@ struct json *convert_global_new_value(struct json *identifier) {
 void convert_global_push(struct json *module, struct json *value) {
   if (json_has(value, "global")) {
     struct json *global = json_get(module, "global");
-    json_push(global, value);
+    const char *name = json_get_str(json_get(value, "name"));
+    json_insert(global, name, value);
   }
 }
