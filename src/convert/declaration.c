@@ -10,34 +10,28 @@
 #include "util/symbol.h"
 
 static void convert_init_declarator(struct json *module, struct json *json) {
+  bool_t is_global = convert_table_is_global(module);
   struct json *identifier = json_find_identifier(json);
-  struct json *pointer = convert_alloc_push(module);
+  struct json *pointer = is_global ? convert_global_new_value(identifier)
+                                   : convert_alloc_push(module);
   convert_table_insert(module, identifier, pointer);
   json_del(pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = convert_rvalue(module, json);
-    struct json *instr = convert_push_instr(module, "store");
-    json_insert(instr, "value", value);
-    json_insert(instr, "pointer", pointer);
+    if (is_global) {
+      pointer = convert_table_lookup(module, identifier);
+      json_insert(pointer, "init", value);
+    } else {
+      struct json *instr = convert_push_instr(module, "store");
+      json_insert(instr, "value", value);
+      json_insert(instr, "pointer", pointer);
+    }
   }
 }
 static void convert_init_declarator_list(struct json_map *map) {
   struct json *module = json_map_extra(map);
   struct json *json = json_map_val(map);
   convert_init_declarator(module, json);
-}
-static void convert_init_declarator_list_global(struct json_map *map) {
-  struct json *module = json_map_extra(map);
-  struct json *json = json_map_val(map);
-  struct json *identifier = json_find_identifier(json);
-  struct json *instr = convert_global_new_value(identifier);
-  convert_table_insert(module, identifier, instr);
-  json_del(instr);
-  if (json_has(json, SYMBOL_ASSIGN)) {
-    struct json *value = convert_table_lookup(module, identifier);
-    struct json *init = convert_rvalue(module, json);
-    json_insert(value, "init", init);
-  }
 }
 static void convert_declaration_list(struct json_map *map) {
   struct json *module = json_map_extra(map);
@@ -47,10 +41,8 @@ static void convert_declaration_list(struct json_map *map) {
 
 void convert_declaration(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_INIT_DECLARATOR_LIST)) {
-    json_map_t map = convert_table_is_global(module)
-                         ? convert_init_declarator_list_global
-                         : convert_init_declarator_list;
-    json_foreach(json_get(json, SYMBOL_INIT_DECLARATOR_LIST), map, module);
+    json_foreach(json_get(json, SYMBOL_INIT_DECLARATOR_LIST),
+                 convert_init_declarator_list, module);
   } else if (json_has(json, SYMBOL_DECLARATION_LIST)) {
     json_foreach(json_get(json, SYMBOL_DECLARATION_LIST),
                  convert_declaration_list, module);
