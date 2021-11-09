@@ -3,6 +3,9 @@
 #include "json/json.h"
 #include "printer/printer.h"
 
+struct json *generate_global_get(struct json *module) {
+  return json_get(module, "global");
+}
 void generate_global(struct printer *printer, struct json *json) {
   const char *name = json_get_str(json_get(json, "name"));
   struct json *init = json_get(json, "init");

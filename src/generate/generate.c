@@ -22,10 +22,10 @@ static void generate_map(struct json_map *map) {
   generate_function(printer, function);
 }
 
-void generate(struct json *json) {
+void generate(struct json *module) {
   struct printer *printer = printer_new_stdout();
-  struct json *functions = json_get(json, "module");
-  struct json *global = json_get(json, "global");
+  struct json *functions = json_get(module, "module");
+  struct json *global = generate_global_get(module);
   generate_header(printer);
   json_foreach(global, generate_global_map, printer);
   json_foreach(functions, generate_map, printer);
