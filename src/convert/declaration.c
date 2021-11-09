@@ -3,6 +3,7 @@
 #include "expression.h"
 #include "json/json.h"
 #include "json/map.h"
+#include "table.h"
 #include "type.h"
 #include "util/symbol.h"
 
@@ -10,11 +11,10 @@ static struct json *convert_initializer(struct convert *, struct json *);
 
 static void convert_init_declarator(struct convert *self, struct json *json) {
   struct json *identifier = json_find_identifier(json);
-  convert_push_symbol(self, identifier);
+  struct json *pointer = convert_table_insert(self, identifier);
   if (json_has(json, SYMBOL_INITIALIZER)) {
     struct json *value =
         convert_initializer(self, json_get(json, SYMBOL_INITIALIZER));
-    struct json *pointer = convert_lookup_symbol(self, identifier);
     struct json *instr = convert_push_instr(self, "store");
     json_insert(instr, "value", value);
     json_insert(instr, "pointer", pointer);

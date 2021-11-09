@@ -103,10 +103,3 @@ struct json *convert_push_instr(struct convert *self, const char *tag) {
   json_del(instr);
   return instr;
 }
-void convert_push_symbol(struct convert *self, struct json *identifier) {
-  convert_table_insert(self, identifier);
-}
-struct json *convert_lookup_symbol(struct convert *self,
-                                   struct json *identifier) {
-  return convert_table_lookup(self, identifier);
-}

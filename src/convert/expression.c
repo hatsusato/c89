@@ -2,13 +2,14 @@
 
 #include "immediate.h"
 #include "json/json.h"
+#include "table.h"
 #include "type.h"
 #include "util/symbol.h"
 #include "util/util.h"
 
 static struct json *convert_identifier(struct convert *self,
                                        struct json *json) {
-  struct json *pointer = convert_lookup_symbol(self, json);
+  struct json *pointer = convert_table_lookup(self, json);
   struct json *instr = convert_push_instr(self, "load");
   json_insert(instr, "pointer", pointer);
   return instr;
@@ -51,7 +52,7 @@ static struct json *convert_assignment_expression(struct convert *self,
 
 struct json *convert_lvalue(struct convert *self, struct json *json) {
   if (json_has(json, SYMBOL_IDENTIFIER)) {
-    return convert_lookup_symbol(self, json_get(json, SYMBOL_IDENTIFIER));
+    return convert_table_lookup(self, json_get(json, SYMBOL_IDENTIFIER));
   } else {
     return json;
   }
