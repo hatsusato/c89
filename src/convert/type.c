@@ -46,10 +46,6 @@ struct json *convert_new_alloca(struct convert *self) {
   return instr;
 }
 
-static void convert_set_function(struct convert *self, struct json *function) {
-  struct json *module = convert_get_module(self);
-  json_insert(module, "function", function);
-}
 static struct json *convert_get_function(struct convert *self) {
   struct json *module = convert_get_module(self);
   return json_get(module, "function");
@@ -61,7 +57,6 @@ void convert_function_set_name(struct convert *self, struct json *name) {
 
 void convert_init(struct convert *self, struct json *module) {
   self->module = module;
-  convert_set_function(self, json_null());
   self->block = json_null();
   convert_table_push(self);
 }
@@ -88,11 +83,12 @@ struct json *convert_get_module(struct convert *self) {
   return self->module;
 }
 void convert_push_function(struct convert *self) {
-  struct json *module = json_get(self->module, "module");
+  struct json *module = convert_get_module(self);
+  struct json *array = json_get(module, "module");
   struct json *function = convert_new_function();
-  json_push(module, function);
+  json_push(array, function);
   json_del(function);
-  convert_set_function(self, function);
+  json_insert(module, "function", function);
   convert_init_alloc(self);
 }
 void convert_push_block(struct convert *self) {
