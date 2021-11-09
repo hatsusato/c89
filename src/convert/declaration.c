@@ -1,5 +1,6 @@
 #include "declaration.h"
 
+#include "alloc.h"
 #include "expression.h"
 #include "json/json.h"
 #include "json/map.h"
@@ -11,7 +12,9 @@ static struct json *convert_initializer(struct json *, struct json *);
 
 static void convert_init_declarator(struct json *module, struct json *json) {
   struct json *identifier = json_find_identifier(json);
-  struct json *pointer = convert_table_insert(module, identifier);
+  struct json *pointer = convert_alloc_push(module);
+  convert_table_insert(module, identifier, pointer);
+  json_del(pointer);
   if (json_has(json, SYMBOL_INITIALIZER)) {
     struct json *value =
         convert_initializer(module, json_get(json, SYMBOL_INITIALIZER));

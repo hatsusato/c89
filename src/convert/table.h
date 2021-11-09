@@ -3,7 +3,7 @@
 
 struct json;
 
-struct json *convert_table_insert(struct json *, struct json *);
+void convert_table_insert(struct json *, struct json *, struct json *);
 struct json *convert_table_lookup(struct json *, struct json *);
 void convert_table_push(struct json *);
 void convert_table_pop(struct json *);
