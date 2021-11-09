@@ -16,7 +16,7 @@ static void convert_init_declarator(struct convert *self, struct json *json) {
   if (json_has(json, SYMBOL_INITIALIZER)) {
     struct json *value =
         convert_initializer(self, json_get(json, SYMBOL_INITIALIZER));
-    struct json *instr = convert_push_instr(self, "store");
+    struct json *instr = convert_push_instr(module, "store");
     json_insert(instr, "value", value);
     json_insert(instr, "pointer", pointer);
   }

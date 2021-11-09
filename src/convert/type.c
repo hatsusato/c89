@@ -30,16 +30,14 @@ struct json *convert_new_module(void) {
 struct json *convert_get_module(struct convert *self) {
   return self->module;
 }
-void convert_push_block(struct convert *self) {
-  struct json *module = convert_get_module(self);
+void convert_push_block(struct json *module) {
   struct json *array = convert_function_get_blocks(module);
   struct json *block = convert_new_block();
   json_push(array, block);
   json_insert(module, "block", block);
   json_del(block);
 }
-struct json *convert_push_instr(struct convert *self, const char *tag) {
-  struct json *module = convert_get_module(self);
+struct json *convert_push_instr(struct json *module, const char *tag) {
   struct json *block = json_get(module, "block");
   struct json *array = json_get(block, "block");
   struct json *instr = convert_new_instr(tag);

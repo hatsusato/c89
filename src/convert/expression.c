@@ -11,7 +11,7 @@ static struct json *convert_identifier(struct convert *self,
                                        struct json *json) {
   struct json *module = convert_get_module(self);
   struct json *pointer = convert_table_lookup(module, json);
-  struct json *instr = convert_push_instr(self, "load");
+  struct json *instr = convert_push_instr(module, "load");
   json_insert(instr, "pointer", pointer);
   return instr;
 }
@@ -33,7 +33,8 @@ static struct json *convert_additive_expression(struct convert *self,
   if (convert_immediate_additive_expression(json, op1, op2)) {
     return json;
   } else {
-    struct json *instr = convert_push_instr(self, "add");
+    struct json *module = convert_get_module(self);
+    struct json *instr = convert_push_instr(module, "add");
     json_insert(instr, "lhs", op1);
     json_insert(instr, "rhs", op2);
     return instr;
@@ -41,11 +42,12 @@ static struct json *convert_additive_expression(struct convert *self,
 }
 static struct json *convert_assignment_expression(struct convert *self,
                                                   struct json *json) {
+  struct json *module = convert_get_module(self);
   struct json *lhs = json_get(json, SYMBOL_UNARY_EXPRESSION);
   struct json *rhs = json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION);
   struct json *value = convert_rvalue(self, rhs);
   struct json *pointer = convert_lvalue(self, lhs);
-  struct json *instr = convert_push_instr(self, "store");
+  struct json *instr = convert_push_instr(module, "store");
   json_insert(instr, "value", value);
   json_insert(instr, "pointer", pointer);
   return instr;

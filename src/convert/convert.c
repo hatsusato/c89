@@ -12,7 +12,7 @@ static void convert_function_definition(struct convert *self,
   struct json *module = convert_get_module(self);
   struct json *name = json_find_identifier(json);
   convert_function_set_name(module, name);
-  convert_push_block(self);
+  convert_push_block(module);
   convert_statement(self, json);
 }
 static void convert_external_declaration(struct json_map *map) {

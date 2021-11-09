@@ -18,8 +18,9 @@ static void convert_expression_statement(struct convert *self,
 }
 static void convert_jump_statement(struct convert *self, struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
+    struct json *module = convert_get_module(self);
     struct json *expr = convert_rvalue(self, json_get(json, SYMBOL_EXPRESSION));
-    struct json *instr = convert_push_instr(self, "ret");
+    struct json *instr = convert_push_instr(module, "ret");
     json_insert(instr, "value", expr);
   }
 }
