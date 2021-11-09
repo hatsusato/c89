@@ -2,6 +2,8 @@
 
 #include "alloc.h"
 #include "json/json.h"
+#include "module.h"
+#include "statement.h"
 #include "table.h"
 
 static struct json *convert_function_new(void) {
@@ -40,4 +42,11 @@ struct json *convert_function_get_blocks(struct json *module) {
 void convert_function_set_name(struct json *module, struct json *name) {
   struct json *function = convert_function_get(module);
   json_insert(function, "name", name);
+}
+void convert_function_definition(struct json *module, struct json *json) {
+  convert_function_init(module);
+  convert_function_set_name(module, json_find_identifier(json));
+  convert_push_block(module);
+  convert_statement(module, json);
+  convert_function_finish(module);
 }
