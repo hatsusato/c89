@@ -5,6 +5,7 @@ target_sources(convert PRIVATE
   declaration.c
   expression.c
   function.c
+  global.c
   immediate.c
   module.c
   statement.c
