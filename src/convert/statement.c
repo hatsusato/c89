@@ -7,20 +7,16 @@
 #include "type.h"
 #include "util/symbol.h"
 
-static void convert_compound_statement(struct convert *self,
-                                       struct json *json) {
-  struct json *module = convert_get_module(self);
+static void convert_compound_statement(struct json *module, struct json *json) {
   convert_declaration(module, json);
-  convert_statement(self, json);
+  convert_statement(module, json);
 }
-static void convert_expression_statement(struct convert *self,
+static void convert_expression_statement(struct json *module,
                                          struct json *json) {
-  struct json *module = convert_get_module(self);
   convert_rvalue(module, json_get(json, SYMBOL_EXPRESSION));
 }
-static void convert_jump_statement(struct convert *self, struct json *json) {
+static void convert_jump_statement(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
-    struct json *module = convert_get_module(self);
     struct json *expr =
         convert_rvalue(module, json_get(json, SYMBOL_EXPRESSION));
     struct json *instr = convert_push_instr(module, "ret");
@@ -28,21 +24,22 @@ static void convert_jump_statement(struct convert *self, struct json *json) {
   }
 }
 static void convert_statement_list(struct json_map *map) {
-  struct convert *self = json_map_extra(map);
+  struct json *module = json_map_extra(map);
   struct json *json = json_map_val(map);
-  convert_statement(self, json);
+  convert_statement(module, json);
 }
 
-void convert_statement(struct convert *self, struct json *json) {
+void convert_statement(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
-    convert_compound_statement(self, json_get(json, SYMBOL_COMPOUND_STATEMENT));
+    convert_compound_statement(module,
+                               json_get(json, SYMBOL_COMPOUND_STATEMENT));
   } else if (json_has(json, SYMBOL_EXPRESSION_STATEMENT)) {
-    convert_expression_statement(self,
+    convert_expression_statement(module,
                                  json_get(json, SYMBOL_EXPRESSION_STATEMENT));
   } else if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
-    convert_jump_statement(self, json_get(json, SYMBOL_JUMP_STATEMENT));
+    convert_jump_statement(module, json_get(json, SYMBOL_JUMP_STATEMENT));
   } else if (json_has(json, SYMBOL_STATEMENT_LIST)) {
     json_foreach(json_get(json, SYMBOL_STATEMENT_LIST), convert_statement_list,
-                 self);
+                 module);
   }
 }
