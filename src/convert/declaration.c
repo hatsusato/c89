@@ -2,6 +2,7 @@
 
 #include "alloc.h"
 #include "expression.h"
+#include "global.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "module.h"
@@ -29,11 +30,9 @@ static void convert_init_declarator_list_global(struct json_map *map) {
   struct json *module = json_map_extra(map);
   struct json *json = json_map_val(map);
   struct json *identifier = json_find_identifier(json);
-  struct json *instr = convert_new_instr("global");
+  struct json *instr = convert_global_new_value(identifier);
   convert_table_insert(module, identifier, instr);
   json_del(instr);
-  json_insert(instr, "name", identifier);
-  json_insert(instr, "global", json_null());
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = convert_table_lookup(module, identifier);
     struct json *init = convert_rvalue(module, json);
