@@ -33,6 +33,7 @@ static void convert_function_finish(struct json *module) {
   json_append(alloc, json_get(front, "block"));
   json_insert(front, "block", alloc);
   json_del(alloc);
+  json_insert(module, "block", json_null());
   convert_table_pop(module);
 }
 static void convert_function_set_name(struct json *module, struct json *name) {
