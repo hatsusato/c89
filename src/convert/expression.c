@@ -48,6 +48,14 @@ static struct json *convert_assignment_expression(struct json *module,
   json_insert(instr, "pointer", pointer);
   return instr;
 }
+static struct json *convert_initializer(struct json *module,
+                                        struct json *json) {
+  if (json_has(json, SYMBOL_ASSIGNMENT_EXPRESSION)) {
+    return convert_rvalue(module, json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION));
+  } else {
+    return json;
+  }
+}
 
 struct json *convert_lvalue(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_IDENTIFIER)) {
@@ -58,15 +66,14 @@ struct json *convert_lvalue(struct json *module, struct json *json) {
 }
 struct json *convert_rvalue(struct json *module, struct json *json) {
   const char *tag = json_get_str(json_get(json, "tag"));
-  if (!tag) {
-    assert(false);
-    return json;
-  } else if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
+  if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
     return convert_primary_expression(module, json);
   } else if (util_streq(tag, SYMBOL_ADDITIVE_EXPRESSION)) {
     return convert_additive_expression(module, json);
   } else if (util_streq(tag, SYMBOL_ASSIGNMENT_EXPRESSION)) {
     return convert_assignment_expression(module, json);
+  } else if (json_has(json, SYMBOL_INITIALIZER)) {
+    return convert_initializer(module, json_get(json, SYMBOL_INITIALIZER));
   } else {
     return json;
   }
