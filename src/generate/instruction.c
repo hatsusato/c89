@@ -1,5 +1,6 @@
 #include "instruction.h"
 
+#include "global.h"
 #include "json/json.h"
 #include "printer/printer.h"
 #include "util/util.h"
@@ -16,6 +17,8 @@ static void generate_register(struct printer *printer, struct json *json,
   } else if (json_has(json, "reg")) {
     struct json *reg = json_get(json, "reg");
     printer_print(printer, "%%%d", json_int_get(json_as_int(reg)));
+  } else if (json_has(json, "global")) {
+    generate_global_name(printer, json);
   } else {
     printer_print(printer, "%s", json_get_str(json));
   }
