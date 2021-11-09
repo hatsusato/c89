@@ -7,9 +7,8 @@
 #include "type.h"
 #include "util/symbol.h"
 
-static void convert_function_definition(struct convert *self,
+static void convert_function_definition(struct json *module,
                                         struct json *json) {
-  struct json *module = convert_get_module(self);
   struct json *name = json_find_identifier(json);
   convert_function_set_name(module, name);
   convert_push_block(module);
@@ -19,10 +18,8 @@ static void convert_external_declaration(struct json_map *map) {
   struct json *module = json_map_extra(map);
   struct json *json = json_map_val(map);
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
-    struct convert self;
-    self.module = module;
     convert_function_init(module);
-    convert_function_definition(&self,
+    convert_function_definition(module,
                                 json_get(json, SYMBOL_FUNCTION_DEFINITION));
     convert_function_finish(module);
   }
