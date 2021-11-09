@@ -14,7 +14,6 @@ void convert_init(struct convert *, struct json *);
 void convert_finish(struct convert *);
 struct json *convert_new_module(void);
 struct json *convert_get_module(struct convert *);
-void convert_push_function(struct convert *);
 void convert_push_block(struct convert *);
 struct json *convert_push_instr(struct convert *, const char *);
 

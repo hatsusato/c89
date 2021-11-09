@@ -3,4 +3,6 @@
 
 struct convert;
 
+void convert_function_push(struct convert *);
+
 #endif /* INCLUDE_GUARD_7ABBD975_1225_4AF5_BCA9_04D58DC44EF3 */
