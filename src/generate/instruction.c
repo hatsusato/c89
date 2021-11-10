@@ -62,16 +62,15 @@ static void generate_store(struct printer *printer, struct json *json) {
 /* Other Operations */
 
 void generate_instruction(struct printer *printer, struct json *json) {
-  const char *tag = json_get_str(json_get(json, "instr"));
-  if (util_streq(tag, "ret")) {
+  if (json_has(json, "ret")) {
     generate_ret(printer, json);
-  } else if (util_streq(tag, "add")) {
+  } else if (json_has(json, "add")) {
     generate_add(printer, json);
-  } else if (util_streq(tag, "alloca")) {
+  } else if (json_has(json, "alloca")) {
     generate_alloca(printer, json);
-  } else if (util_streq(tag, "load")) {
+  } else if (json_has(json, "load")) {
     generate_load(printer, json);
-  } else if (util_streq(tag, "store")) {
+  } else if (json_has(json, "store")) {
     generate_store(printer, json);
   } else {
     json_print(json);

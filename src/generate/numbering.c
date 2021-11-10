@@ -6,8 +6,7 @@
 #include "util/util.h"
 
 static bool_t generate_numbering_has_register(struct json *json) {
-  const char *tag = json_get_str(json_get(json, "instr"));
-  return !(util_streq(tag, "store") || util_streq(tag, "ret"));
+  return !(json_has(json, "store") || json_has(json, "ret"));
 }
 static void generate_numbering_instr(struct json_map *map) {
   index_t *index = json_map_extra(map);
