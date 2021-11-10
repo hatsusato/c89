@@ -3,6 +3,7 @@
 #include "declaration.h"
 #include "function.h"
 #include "global.h"
+#include "ir/module.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "module.h"
@@ -26,7 +27,7 @@ static void convert_translation_unit(struct json *module, struct json *json) {
 
 struct json *convert(struct json *json) {
   struct json *translation_unit = json_get(json, SYMBOL_TRANSLATION_UNIT);
-  struct json *module = convert_module_new();
+  struct json *module = ir_module_new();
   convert_translation_unit(module, translation_unit);
   return module;
 }

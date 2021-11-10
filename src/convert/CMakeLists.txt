@@ -12,6 +12,7 @@ target_sources(convert PRIVATE
   table.c
   )
 target_link_libraries(convert PRIVATE
+  ir
   json
   options
   util
