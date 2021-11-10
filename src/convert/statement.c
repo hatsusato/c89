@@ -5,7 +5,6 @@
 #include "ir/module.h"
 #include "json/json.h"
 #include "json/map.h"
-#include "module.h"
 #include "util/symbol.h"
 
 static void convert_compound_statement(struct json *module, struct json *json) {

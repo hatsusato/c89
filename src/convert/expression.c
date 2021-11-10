@@ -3,7 +3,6 @@
 #include "immediate.h"
 #include "ir/module.h"
 #include "json/json.h"
-#include "module.h"
 #include "util/symbol.h"
 #include "util/util.h"
 
