@@ -2,6 +2,7 @@
 
 #include "declaration.h"
 #include "expression.h"
+#include "ir/table.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "module.h"
@@ -9,7 +10,7 @@
 #include "util/symbol.h"
 
 static void convert_compound_statement(struct json *module, struct json *json) {
-  convert_table_push(module);
+  ir_table_push(module);
   convert_declaration(module, json);
   convert_statement(module, json);
   convert_table_pop(module);
