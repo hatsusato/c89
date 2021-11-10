@@ -79,7 +79,6 @@ void ir_module_init_function(struct json *module, struct json *name) {
   ir_function_init(function, name);
   json_push(array, function);
   json_insert(module, "function", function);
-  ir_function_push_block(function);
   ir_module_push_scope(module);
   json_del(function);
 }
