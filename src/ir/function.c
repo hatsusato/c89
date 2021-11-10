@@ -4,6 +4,15 @@
 #include "instr.h"
 #include "json/json.h"
 #include "json/map.h"
+#include "table.h"
+
+static struct json *ir_function_get_table(struct json *function) {
+  return json_get(function, "table");
+}
+static void ir_function_set_table(struct json *function, struct json *table) {
+  json_insert(function, "table", table);
+  json_del(table);
+}
 
 void ir_function_init(struct json *function) {
   struct json *array = json_new_arr();
@@ -24,6 +33,16 @@ void ir_function_finish(struct json *function) {
   json_append(alloc, block);
   json_insert(front, "instructions", alloc);
   json_insert(function, "alloc", json_null());
+}
+void ir_function_push_scope(struct json *function) {
+  struct json *table = ir_function_get_table(function);
+  struct json *updated = ir_table_push(table);
+  ir_function_set_table(function, updated);
+}
+void ir_function_pop_scope(struct json *function) {
+  struct json *table = ir_function_get_table(function);
+  struct json *updated = ir_table_pop(table);
+  ir_function_set_table(function, updated);
 }
 struct json *ir_function_new_block(struct json *function) {
   struct json *block = ir_block_new();
