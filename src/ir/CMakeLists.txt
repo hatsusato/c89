@@ -1,0 +1,9 @@
+add_library(ir STATIC)
+target_sources(ir PRIVATE
+  module.c
+  )
+target_link_libraries(ir PRIVATE
+  json
+  options
+  util
+  )

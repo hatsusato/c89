@@ -29,6 +29,7 @@ target_link_libraries(unittest PRIVATE
 
 add_subdirectory(convert)
 add_subdirectory(generate)
+add_subdirectory(ir)
 add_subdirectory(json)
 add_subdirectory(printer)
 add_subdirectory(scanner)
