@@ -50,6 +50,10 @@ void ir_module_push_global(struct json *module, struct json *value) {
     json_insert(global, name, value);
   }
 }
+struct json *ir_module_new_alloca(struct json *module) {
+  struct json *function = json_get(module, "function");
+  return ir_function_new_alloca(function);
+}
 void ir_module_insert_symbol(struct json *module, const char *name,
                              struct json *value) {
   struct json *table = ir_module_get_table(module);

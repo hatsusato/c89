@@ -13,8 +13,8 @@ static void convert_init_declarator(struct json *module, struct json *json) {
   bool_t is_global = ir_module_is_global_scope(module);
   struct json *identifier = json_find_identifier(json);
   const char *name = json_get_str(identifier);
-  struct json *pointer =
-      is_global ? ir_value_new_global(identifier) : convert_alloc_push(module);
+  struct json *pointer = is_global ? ir_value_new_global(identifier)
+                                   : ir_module_new_alloca(module);
   ir_module_insert_symbol(module, name, pointer);
   json_del(pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
