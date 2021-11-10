@@ -1,6 +1,5 @@
 add_library(convert STATIC)
 target_sources(convert PRIVATE
-  alloc.c
   convert.c
   declaration.c
   expression.c

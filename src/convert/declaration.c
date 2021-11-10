@@ -1,6 +1,5 @@
 #include "declaration.h"
 
-#include "alloc.h"
 #include "expression.h"
 #include "ir/module.h"
 #include "ir/value.h"
