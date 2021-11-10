@@ -4,11 +4,6 @@
 #include "module.h"
 #include "util/util.h"
 
-void ir_table_init(struct json *module) {
-  struct json *table = json_new_obj();
-  json_insert(module, "table", table);
-  json_del(table);
-}
 struct json *ir_table_push(struct json *next) {
   struct json *table = json_new_obj();
   json_insert(table, "$next", next);

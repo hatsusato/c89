@@ -5,7 +5,6 @@
 
 struct json;
 
-void ir_table_init(struct json *);
 struct json *ir_table_push(struct json *);
 struct json *ir_table_pop(struct json *);
 void ir_table_insert(struct json *, const char *, struct json *);
