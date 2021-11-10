@@ -36,6 +36,13 @@ void ir_function_push_block(struct json *function) {
   json_insert(function, "current", block);
   json_del(block);
 }
+struct json *ir_function_new_instr(struct json *function, const char *tag) {
+  struct json *instr = ir_instr_new(tag);
+  struct json *block = json_get(function, "current");
+  struct json *array = json_get(block, "block");
+  json_push(array, instr);
+  return instr;
+}
 struct json *ir_function_new_alloca(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
   struct json *instr = ir_instr_new("alloca");
