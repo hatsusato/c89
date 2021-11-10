@@ -11,7 +11,7 @@
 #include "util/symbol.h"
 
 static void convert_init_declarator(struct json *module, struct json *json) {
-  bool_t is_global = convert_table_is_global(module);
+  bool_t is_global = ir_table_is_global(module);
   struct json *identifier = json_find_identifier(json);
   const char *name = json_get_str(identifier);
   struct json *pointer =

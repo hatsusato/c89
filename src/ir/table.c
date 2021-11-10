@@ -40,3 +40,7 @@ struct json *ir_table_lookup(struct json *module, const char *name) {
   }
   return json_null();
 }
+bool_t ir_table_is_global(struct json *module) {
+  struct json *table = json_get(module, "table");
+  return !json_has(table, "$next");
+}
