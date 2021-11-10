@@ -7,9 +7,10 @@
 #include "table.h"
 #include "value.h"
 
-static void ir_module_set_table(struct json *module, struct json *table) {
-  json_insert(module, "table", table);
-  json_del(table);
+static void ir_module_init_obj(struct json *module, const char *key) {
+  struct json *value = json_new_obj();
+  json_insert(module, key, value);
+  json_del(value);
 }
 static struct json *ir_module_get_current_table(struct json *module) {
   struct json *function = json_get(module, "current");
@@ -21,11 +22,10 @@ static struct json *ir_module_get_global(struct json *module) {
 
 void ir_module_init(struct json *module) {
   struct json *array = json_new_arr();
-  struct json *table = json_new_obj();
   json_insert(module, "functions", array);
   json_del(array);
-  ir_module_set_table(module, table);
-  ir_global_init(module);
+  ir_module_init_obj(module, "table");
+  ir_module_init_obj(module, "global");
 }
 void ir_module_finish(struct json *module) {
   ir_global_finish(module);
