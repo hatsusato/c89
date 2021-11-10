@@ -2,6 +2,14 @@
 
 #include "json/json.h"
 
+static struct json *ir_block_new(void) {
+  struct json *block = json_new_obj();
+  struct json *array = json_new_arr();
+  json_insert(block, "block", array);
+  json_del(array);
+  return block;
+}
+
 void ir_function_init(struct json *function) {
   struct json *array = json_new_arr();
   struct json *alloc = json_new_arr();
@@ -18,4 +26,11 @@ void ir_function_finish(struct json *function) {
   json_append(alloc, block);
   json_insert(front, "block", alloc);
   json_insert(function, "alloc", json_null());
+}
+void ir_function_push_block(struct json *function) {
+  struct json *array = json_get(function, "function");
+  struct json *block = ir_block_new();
+  json_push(array, block);
+  json_insert(function, "current", block);
+  json_del(block);
 }
