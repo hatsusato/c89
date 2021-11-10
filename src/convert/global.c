@@ -1,6 +1,7 @@
 #include "global.h"
 
 #include "ir/global.h"
+#include "ir/module.h"
 #include "json/json.h"
 #include "table.h"
 
@@ -19,8 +20,6 @@ struct json *convert_global_new_value(struct json *identifier) {
 }
 void convert_global_push(struct json *module, struct json *value) {
   if (json_has(value, "global")) {
-    struct json *global = json_get(module, "global");
-    const char *name = json_get_str(json_get(value, "name"));
-    json_insert(global, name, value);
+    ir_module_push_global(module, value);
   }
 }
