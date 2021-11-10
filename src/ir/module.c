@@ -54,6 +54,14 @@ struct json *ir_module_new_alloca(struct json *module) {
   struct json *function = json_get(module, "function");
   return ir_function_new_alloca(function);
 }
+struct json *ir_module_new_identifier(struct json *module,
+                                      struct json *identifier) {
+  if (ir_module_is_global_scope(module)) {
+    return ir_value_new_global(identifier);
+  } else {
+    return ir_module_new_alloca(module);
+  }
+}
 void ir_module_insert_symbol(struct json *module, const char *name,
                              struct json *value) {
   struct json *table = ir_module_get_table(module);

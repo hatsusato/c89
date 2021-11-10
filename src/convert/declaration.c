@@ -2,22 +2,19 @@
 
 #include "expression.h"
 #include "ir/module.h"
-#include "ir/value.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "util/symbol.h"
 
 static void convert_init_declarator(struct json *module, struct json *json) {
-  bool_t is_global = ir_module_is_global_scope(module);
   struct json *identifier = json_find_identifier(json);
   const char *name = json_get_str(identifier);
-  struct json *pointer = is_global ? ir_value_new_global(identifier)
-                                   : ir_module_new_alloca(module);
+  struct json *pointer = ir_module_new_identifier(module, identifier);
   ir_module_insert_symbol(module, name, pointer);
   json_del(pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = convert_rvalue(module, json);
-    if (is_global) {
+    if (ir_module_is_global_scope(module)) {
       pointer = ir_module_lookup_symbol(module, name);
       json_insert(pointer, "init", value);
     } else {
