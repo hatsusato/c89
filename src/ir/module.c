@@ -12,7 +12,9 @@ struct json *ir_module_new(void) {
   return module;
 }
 void ir_module_push_global(struct json *module, struct json *value) {
-  struct json *global = ir_global_get(module);
-  const char *name = ir_value_get_name(value);
-  json_insert(global, name, value);
+  if (ir_value_is_global(value)) {
+    struct json *global = ir_global_get(module);
+    const char *name = ir_value_get_name(value);
+    json_insert(global, name, value);
+  }
 }

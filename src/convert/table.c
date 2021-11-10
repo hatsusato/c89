@@ -1,6 +1,7 @@
 #include "table.h"
 
 #include "global.h"
+#include "ir/module.h"
 #include "json/json.h"
 #include "util/util.h"
 
@@ -18,7 +19,7 @@ struct json *convert_table_lookup(struct json *module,
   while (!json_is_null(table)) {
     if (json_has(table, key)) {
       struct json *value = json_get(table, key);
-      convert_global_push(module, value);
+      ir_module_push_global(module, value);
       return value;
     }
     table = json_get(table, "$next");

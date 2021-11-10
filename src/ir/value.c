@@ -12,3 +12,6 @@ const char *ir_value_get_name(struct json *value) {
   struct json *name = json_get(value, "name");
   return json_get_str(name);
 }
+bool_t ir_value_is_global(struct json *value) {
+  return json_has(value, "global");
+}
