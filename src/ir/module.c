@@ -61,17 +61,6 @@ struct json *ir_module_new_function(struct json *module) {
   json_insert(module, "current", function);
   return function;
 }
-void ir_module_insert_symbol(struct json *module, const char *name,
-                             struct json *value) {
-  struct json *table = ir_module_get_current_table(module);
-  ir_table_insert(table, name, value);
-}
-struct json *ir_module_lookup_symbol(struct json *module, const char *name) {
-  struct json *table = ir_module_get_current_table(module);
-  struct json *value = ir_table_lookup(table, name);
-  ir_module_push_global(module, value);
-  return value;
-}
 void ir_module_init_function(struct json *module) {
   struct json *function = ir_module_new_function(module);
   struct json *table = json_get(module, "table");
