@@ -8,20 +8,20 @@
 #include "statement.h"
 #include "util/symbol.h"
 
-static void builder_function_definition(struct json *module,
+static void builder_function_definition(struct json *function,
                                         struct json *json) {
   struct json *name = json_find_identifier(json);
-  ir_module_init_function(module);
-  ir_function_set_name(json_get(module, "current"), name);
-  builder_statement(json_get(module, "current"), json);
-  ir_module_finish_function(module);
+  ir_function_set_name(function, name);
+  builder_statement(function, json);
 }
 static void builder_external_declaration(struct json_map *map) {
   struct json *module = json_map_extra(map);
   struct json *json = json_map_val(map);
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
-    builder_function_definition(module,
+    ir_module_init_function(module);
+    builder_function_definition(json_get(module, "current"),
                                 json_get(json, SYMBOL_FUNCTION_DEFINITION));
+    ir_module_finish_function(module);
   } else if (json_has(json, SYMBOL_DECLARATION)) {
     builder_global_declaration(module, json_get(json, SYMBOL_DECLARATION));
   }
