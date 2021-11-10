@@ -15,6 +15,9 @@ static struct json *ir_module_get_current_table(struct json *module) {
   struct json *function = json_get(module, "current");
   return json_get(function, "table");
 }
+static struct json *ir_module_get_global(struct json *module) {
+  return json_get(module, "global");
+}
 
 void ir_module_init(struct json *module) {
   struct json *array = json_new_arr();
@@ -33,7 +36,7 @@ bool_t ir_module_is_global_scope(struct json *module) {
 }
 void ir_module_push_global(struct json *module, struct json *value) {
   if (ir_value_is_global(value)) {
-    struct json *global = ir_global_get(module);
+    struct json *global = ir_module_get_global(module);
     const char *name = ir_value_get_name(value);
     json_insert(global, name, value);
   }
@@ -64,7 +67,7 @@ struct json *ir_module_new_function(struct json *module) {
 void ir_module_init_function(struct json *module) {
   struct json *function = ir_module_new_function(module);
   struct json *table = json_get(module, "table");
-  struct json *global = json_get(module, "global");
+  struct json *global = ir_module_get_global(module);
   ir_function_init(function);
   json_insert(function, "table", table);
   json_insert(function, "global", global);
