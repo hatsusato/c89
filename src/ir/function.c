@@ -26,13 +26,6 @@ void ir_function_finish(struct json *function) {
   json_insert(front, "block", alloc);
   json_insert(function, "alloc", json_null());
 }
-void ir_function_push_block(struct json *function) {
-  struct json *array = json_get(function, "function");
-  struct json *block = ir_block_new();
-  json_push(array, block);
-  json_insert(function, "current", block);
-  json_del(block);
-}
 struct json *ir_function_new_block(struct json *function) {
   struct json *block = ir_block_new();
   struct json *array = json_get(function, "function");
