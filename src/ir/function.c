@@ -3,6 +3,7 @@
 #include "block.h"
 #include "instr.h"
 #include "json/json.h"
+#include "json/map.h"
 
 void ir_function_init(struct json *function, struct json *name) {
   struct json *array = json_new_arr();
@@ -44,4 +45,8 @@ struct json *ir_function_new_alloca(struct json *function) {
   struct json *instr = ir_instr_new("alloca");
   json_push(alloc, instr);
   return instr;
+}
+void ir_function_foreach(struct json *function, json_map_t map, void *extra) {
+  struct json *blocks = json_get(function, "function");
+  json_foreach(blocks, map, extra);
 }
