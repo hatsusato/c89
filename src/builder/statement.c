@@ -11,7 +11,7 @@
 static void builder_compound_statement(struct json *module, struct json *json) {
   struct json *function = json_get(module, "current");
   ir_function_push_scope(function);
-  builder_declaration(module, json);
+  builder_declaration(function, json);
   builder_statement(module, json);
   ir_function_pop_scope(function);
 }
