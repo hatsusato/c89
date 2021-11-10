@@ -1,7 +1,6 @@
 #include "table.h"
 
 #include "json/json.h"
-#include "module.h"
 #include "util/util.h"
 
 struct json *ir_table_push(struct json *next) {
@@ -27,7 +26,6 @@ struct json *ir_table_lookup(struct json *table, const char *name) {
   }
   return json_null();
 }
-bool_t ir_table_is_global(struct json *module) {
-  struct json *table = json_get(module, "table");
+bool_t ir_table_is_global(struct json *table) {
   return !json_has(table, "$next");
 }

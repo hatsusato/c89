@@ -39,7 +39,8 @@ void ir_module_pop_scope(struct json *module) {
   ir_module_set_table(module, updated);
 }
 bool_t ir_module_is_global_scope(struct json *module) {
-  return ir_table_is_global(module);
+  struct json *table = ir_module_get_table(module);
+  return ir_table_is_global(table);
 }
 void ir_module_push_global(struct json *module, struct json *value) {
   if (ir_value_is_global(value)) {
