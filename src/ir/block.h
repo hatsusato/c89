@@ -3,4 +3,6 @@
 
 struct json;
 
+struct json *ir_block_new(void);
+
 #endif /* INCLUDE_GUARD_1E89582D_FC82_4187_9C45_D63C06551A2E */

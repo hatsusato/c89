@@ -1,15 +1,8 @@
 #include "function.h"
 
+#include "block.h"
 #include "instr.h"
 #include "json/json.h"
-
-static struct json *ir_block_new(void) {
-  struct json *block = json_new_obj();
-  struct json *array = json_new_arr();
-  json_insert(block, "block", array);
-  json_del(array);
-  return block;
-}
 
 void ir_function_init(struct json *function, struct json *name) {
   struct json *array = json_new_arr();
