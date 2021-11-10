@@ -1,5 +1,6 @@
 #include "function.h"
 
+#include "instr.h"
 #include "json/json.h"
 
 static struct json *ir_block_new(void) {
@@ -34,4 +35,10 @@ void ir_function_push_block(struct json *function) {
   json_push(array, block);
   json_insert(function, "current", block);
   json_del(block);
+}
+struct json *ir_function_new_alloca(struct json *function) {
+  struct json *alloc = json_get(function, "alloc");
+  struct json *instr = ir_instr_new("alloca");
+  json_push(alloc, instr);
+  return instr;
 }
