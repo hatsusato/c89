@@ -46,6 +46,10 @@ struct json *ir_function_new_alloca(struct json *function) {
   json_push(alloc, instr);
   return instr;
 }
+const char *ir_function_get_name(struct json *function) {
+  struct json *name = json_get(function, "name");
+  return json_get_str(name);
+}
 void ir_function_foreach(struct json *function, json_map_t map, void *extra) {
   struct json *blocks = json_get(function, "function");
   json_foreach(blocks, map, extra);
