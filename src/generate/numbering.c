@@ -1,6 +1,7 @@
 #include "numbering.h"
 
 #include "ir/block.h"
+#include "ir/instr.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "util/util.h"
@@ -12,9 +13,7 @@ static void generate_numbering_instr(struct json_map *map) {
   index_t *index = json_map_extra(map);
   struct json *instr = json_map_val(map);
   if (generate_numbering_has_register(instr)) {
-    struct json *reg = json_new_int((*index)++);
-    json_insert(instr, "reg", reg);
-    json_del(reg);
+    ir_instr_set_numbering(instr, (*index)++);
   }
 }
 static void generate_numbering_block(struct json_map *map) {
