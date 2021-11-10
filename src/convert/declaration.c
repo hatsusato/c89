@@ -3,7 +3,7 @@
 #include "alloc.h"
 #include "expression.h"
 #include "global.h"
-#include "ir/global.h"
+#include "ir/value.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "module.h"
@@ -14,7 +14,7 @@ static void convert_init_declarator(struct json *module, struct json *json) {
   bool_t is_global = convert_table_is_global(module);
   struct json *identifier = json_find_identifier(json);
   struct json *pointer =
-      is_global ? ir_global_value_new(identifier) : convert_alloc_push(module);
+      is_global ? ir_value_new_global(identifier) : convert_alloc_push(module);
   convert_table_insert(module, identifier, pointer);
   json_del(pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {

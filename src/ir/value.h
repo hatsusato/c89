@@ -3,4 +3,6 @@
 
 struct json;
 
+struct json *ir_value_new_global(struct json *);
+
 #endif /* INCLUDE_GUARD_595231AD_B6B3_42B4_BBB8_682163EA7D87 */
