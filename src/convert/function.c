@@ -1,7 +1,7 @@
 #include "function.h"
 
 #include "alloc.h"
-#include "ir/table.h"
+#include "ir/module.h"
 #include "json/json.h"
 #include "module.h"
 #include "statement.h"
@@ -24,7 +24,7 @@ static void convert_function_init(struct json *module) {
   json_del(function);
   json_insert(module, "function", function);
   convert_alloc_init(module);
-  ir_table_push(module);
+  ir_module_push_scope(module);
 }
 static void convert_function_finish(struct json *module) {
   struct json *array = convert_function_get_blocks(module);
@@ -34,7 +34,7 @@ static void convert_function_finish(struct json *module) {
   json_insert(front, "block", alloc);
   json_del(alloc);
   json_insert(module, "block", json_null());
-  ir_table_pop(module);
+  ir_module_pop_scope(module);
 }
 static void convert_function_set_name(struct json *module, struct json *name) {
   struct json *function = convert_function_get(module);

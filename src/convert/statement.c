@@ -2,17 +2,17 @@
 
 #include "declaration.h"
 #include "expression.h"
-#include "ir/table.h"
+#include "ir/module.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "module.h"
 #include "util/symbol.h"
 
 static void convert_compound_statement(struct json *module, struct json *json) {
-  ir_table_push(module);
+  ir_module_push_scope(module);
   convert_declaration(module, json);
   convert_statement(module, json);
-  ir_table_pop(module);
+  ir_module_pop_scope(module);
 }
 static void convert_expression_statement(struct json *module,
                                          struct json *json) {

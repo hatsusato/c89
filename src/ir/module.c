@@ -19,6 +19,12 @@ void ir_module_init(struct json *module) {
 void ir_module_finish(struct json *module) {
   ir_global_finish(module);
 }
+void ir_module_push_scope(struct json *module) {
+  ir_table_push(module);
+}
+void ir_module_pop_scope(struct json *module) {
+  ir_table_pop(module);
+}
 void ir_module_push_global(struct json *module, struct json *value) {
   if (ir_value_is_global(value)) {
     struct json *global = ir_global_get(module);
