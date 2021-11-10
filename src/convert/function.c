@@ -17,7 +17,7 @@ static void convert_function_init(struct json *module) {
   json_push(array, function);
   json_del(function);
   json_insert(module, "function", function);
-  convert_alloc_init(module);
+  ir_function_init(function);
   ir_module_push_scope(module);
 }
 static void convert_function_finish(struct json *module) {
