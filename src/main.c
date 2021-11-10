@@ -35,7 +35,7 @@ void compile(bool_t debug) {
   if (json_is_null(json)) {
     util_error("ERROR: failed to parse");
   } else {
-    struct json *module = convert(json);
+    struct json *module = build(json);
     generate(module);
     if (debug) {
       json_print(json);

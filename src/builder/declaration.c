@@ -6,14 +6,14 @@
 #include "json/map.h"
 #include "util/symbol.h"
 
-static void convert_init_declarator(struct json *module, struct json *json) {
+static void builder_init_declarator(struct json *module, struct json *json) {
   struct json *identifier = json_find_identifier(json);
   const char *name = json_get_str(identifier);
   struct json *pointer = ir_module_new_identifier(module, identifier);
   ir_module_insert_symbol(module, name, pointer);
   json_del(pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
-    struct json *value = convert_rvalue(module, json);
+    struct json *value = builder_rvalue(module, json);
     if (ir_module_is_global_scope(module)) {
       pointer = ir_module_lookup_symbol(module, name);
       json_insert(pointer, "init", value);
@@ -25,23 +25,23 @@ static void convert_init_declarator(struct json *module, struct json *json) {
     }
   }
 }
-static void convert_init_declarator_list(struct json_map *map) {
+static void builder_init_declarator_list(struct json_map *map) {
   struct json *module = json_map_extra(map);
   struct json *json = json_map_val(map);
-  convert_init_declarator(module, json);
+  builder_init_declarator(module, json);
 }
-static void convert_declaration_list(struct json_map *map) {
+static void builder_declaration_list(struct json_map *map) {
   struct json *module = json_map_extra(map);
   struct json *json = json_map_val(map);
-  convert_declaration(module, json);
+  builder_declaration(module, json);
 }
 
-void convert_declaration(struct json *module, struct json *json) {
+void builder_declaration(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_INIT_DECLARATOR_LIST)) {
     json_foreach(json_get(json, SYMBOL_INIT_DECLARATOR_LIST),
-                 convert_init_declarator_list, module);
+                 builder_init_declarator_list, module);
   } else if (json_has(json, SYMBOL_DECLARATION_LIST)) {
     json_foreach(json_get(json, SYMBOL_DECLARATION_LIST),
-                 convert_declaration_list, module);
+                 builder_declaration_list, module);
   }
 }
