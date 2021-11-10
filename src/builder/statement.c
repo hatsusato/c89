@@ -2,16 +2,18 @@
 
 #include "declaration.h"
 #include "expression.h"
+#include "ir/function.h"
 #include "ir/module.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "util/symbol.h"
 
 static void builder_compound_statement(struct json *module, struct json *json) {
-  ir_module_push_scope(module);
+  struct json *function = json_get(module, "current");
+  ir_function_push_scope(function);
   builder_declaration(module, json);
   builder_statement(module, json);
-  ir_module_pop_scope(module);
+  ir_function_pop_scope(function);
 }
 static void builder_expression_statement(struct json *module,
                                          struct json *json) {
