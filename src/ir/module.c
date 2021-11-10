@@ -1,7 +1,6 @@
 #include "module.h"
 
 #include "function.h"
-#include "global.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "table.h"
