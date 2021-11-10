@@ -79,9 +79,6 @@ struct json *json_find_identifier(struct json *json) {
   json_visit(json_find_identifier_visitor, &extra, json);
   return extra.result;
 }
-struct json *json_front(struct json *json) {
-  return json_is_arr(json) ? json_arr_at(json_as_arr(json), 0) : json_null();
-}
 static void json_append_map(struct json_map *map) {
   struct json *dst = json_map_extra(map);
   struct json *src = json_map_val(map);

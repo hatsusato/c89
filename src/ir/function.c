@@ -19,8 +19,7 @@ void ir_function_init(struct json *function, struct json *name) {
 }
 void ir_function_finish(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
-  struct json *block_array = json_get(function, "function");
-  struct json *front = json_front(block_array);
+  struct json *front = json_get(function, "front");
   struct json *block = json_get(front, "block");
   json_append(alloc, block);
   json_insert(front, "block", alloc);
