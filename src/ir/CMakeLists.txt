@@ -2,6 +2,7 @@ add_library(ir STATIC)
 target_sources(ir PRIVATE
   function.c
   global.c
+  instr.c
   module.c
   table.c
   value.c
