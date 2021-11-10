@@ -3,4 +3,6 @@
 
 struct json;
 
+struct json *ir_function_new(void);
+
 #endif /* INCLUDE_GUARD_A1347A49_DCBC_4F34_8469_952AF077EE17 */
