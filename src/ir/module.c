@@ -13,5 +13,5 @@ struct json *ir_module_new(void) {
 void ir_module_push_global(struct json *module, struct json *value) {
   struct json *global = ir_global_get(module);
   const char *name = ir_global_value_name(value);
-  json_insert(global, name, value)
+  json_insert(global, name, value);
 }
