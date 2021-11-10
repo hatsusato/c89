@@ -1,7 +1,7 @@
 #include "block.h"
 
 #include "instruction.h"
-#include "json/json.h"
+#include "ir/block.h"
 #include "json/map.h"
 
 static void generate_block_map(struct json_map *map) {
@@ -10,5 +10,5 @@ static void generate_block_map(struct json_map *map) {
   generate_instruction(printer, instr);
 }
 void generate_block(struct printer *printer, struct json *json) {
-  json_foreach(json_get(json, "instructions"), generate_block_map, printer);
+  ir_block_foreach(json, generate_block_map, printer);
 }

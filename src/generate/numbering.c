@@ -1,5 +1,6 @@
 #include "numbering.h"
 
+#include "ir/block.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "util/util.h"
@@ -23,8 +24,7 @@ static void generate_numbering_block(struct json_map *map) {
   struct json *label = json_new_int((*index)++);
   json_insert(block, "label", label);
   json_del(label);
-  json_foreach(json_get(block, "instructions"), generate_numbering_instr,
-               index);
+  ir_block_foreach(block, generate_numbering_instr, index);
 }
 
 void generate_numbering(struct json *function) {
