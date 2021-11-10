@@ -17,7 +17,7 @@ struct json *ir_module_new_alloca(struct json *);
 struct json *ir_module_new_identifier(struct json *, struct json *);
 void ir_module_insert_symbol(struct json *, const char *, struct json *);
 struct json *ir_module_lookup_symbol(struct json *, const char *);
-void ir_module_init_function(struct json *, struct json *);
+void ir_module_init_function(struct json *);
 void ir_module_finish_function(struct json *);
 void ir_module_foreach(struct json *, json_map_t, void *);
 

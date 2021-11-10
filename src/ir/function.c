@@ -5,7 +5,7 @@
 #include "json/json.h"
 #include "json/map.h"
 
-void ir_function_init(struct json *function, struct json *name) {
+void ir_function_init(struct json *function) {
   struct json *array = json_new_arr();
   struct json *alloc = json_new_arr();
   struct json *block;
@@ -13,7 +13,6 @@ void ir_function_init(struct json *function, struct json *name) {
   json_del(array);
   json_insert(function, "alloc", alloc);
   json_del(alloc);
-  json_insert(function, "name", name);
   block = ir_function_new_block(function);
   json_insert(function, "front", block);
   json_del(block);

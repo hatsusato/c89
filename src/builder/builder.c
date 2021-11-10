@@ -11,7 +11,7 @@
 static void builder_function_definition(struct json *module,
                                         struct json *json) {
   struct json *name = json_find_identifier(json);
-  ir_module_init_function(module, name);
+  ir_module_init_function(module);
   ir_function_set_name(json_get(module, "current"), name);
   builder_statement(module, json);
   ir_module_finish_function(module);

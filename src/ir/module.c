@@ -74,10 +74,10 @@ struct json *ir_module_lookup_symbol(struct json *module, const char *name) {
   ir_module_push_global(module, value);
   return value;
 }
-void ir_module_init_function(struct json *module, struct json *name) {
+void ir_module_init_function(struct json *module) {
   struct json *function = json_new_obj();
   struct json *array = json_get(module, "functions");
-  ir_function_init(function, name);
+  ir_function_init(function);
   json_push(array, function);
   json_insert(module, "current", function);
   ir_module_push_scope(module);

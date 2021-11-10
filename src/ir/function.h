@@ -5,7 +5,7 @@
 
 struct json;
 
-void ir_function_init(struct json *, struct json *);
+void ir_function_init(struct json *);
 void ir_function_finish(struct json *);
 struct json *ir_function_new_block(struct json *);
 struct json *ir_function_new_instr(struct json *, const char *);
