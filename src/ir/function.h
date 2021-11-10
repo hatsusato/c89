@@ -3,7 +3,7 @@
 
 struct json;
 
-void ir_function_init(struct json *);
+void ir_function_init(struct json *, struct json *);
 void ir_function_finish(struct json *);
 void ir_function_push_block(struct json *);
 

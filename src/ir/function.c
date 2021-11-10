@@ -10,13 +10,14 @@ static struct json *ir_block_new(void) {
   return block;
 }
 
-void ir_function_init(struct json *function) {
+void ir_function_init(struct json *function, struct json *name) {
   struct json *array = json_new_arr();
   struct json *alloc = json_new_arr();
   json_insert(function, "function", array);
   json_del(array);
   json_insert(function, "alloc", alloc);
   json_del(alloc);
+  json_insert(function, "name", name);
 }
 void ir_function_finish(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
