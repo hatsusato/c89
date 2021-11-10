@@ -22,9 +22,10 @@ static void convert_init_declarator(struct json *module, struct json *json) {
       pointer = ir_module_lookup_symbol(module, name);
       json_insert(pointer, "init", value);
     } else {
-      struct json *instr = convert_push_instr(module, "store");
+      struct json *instr = ir_module_new_instr(module, "store");
       json_insert(instr, "value", value);
       json_insert(instr, "pointer", pointer);
+      json_del(instr);
     }
   }
 }

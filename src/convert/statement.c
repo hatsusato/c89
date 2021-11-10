@@ -22,8 +22,9 @@ static void convert_jump_statement(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
     struct json *expr =
         convert_rvalue(module, json_get(json, SYMBOL_EXPRESSION));
-    struct json *instr = convert_push_instr(module, "ret");
+    struct json *instr = ir_module_new_instr(module, "ret");
     json_insert(instr, "value", expr);
+    json_del(instr);
   }
 }
 static void convert_statement_list(struct json_map *map) {

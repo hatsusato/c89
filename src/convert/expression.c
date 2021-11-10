@@ -10,8 +10,9 @@
 static struct json *convert_identifier(struct json *module, struct json *json) {
   const char *name = json_get_str(json);
   struct json *pointer = ir_module_lookup_symbol(module, name);
-  struct json *instr = convert_push_instr(module, "load");
+  struct json *instr = ir_module_new_instr(module, "load");
   json_insert(instr, "pointer", pointer);
+  json_del(instr);
   return instr;
 }
 static struct json *convert_primary_expression(struct json *module,
@@ -32,9 +33,10 @@ static struct json *convert_additive_expression(struct json *module,
   if (convert_immediate_additive_expression(json, op1, op2)) {
     return json;
   } else {
-    struct json *instr = convert_push_instr(module, "add");
+    struct json *instr = ir_module_new_instr(module, "add");
     json_insert(instr, "lhs", op1);
     json_insert(instr, "rhs", op2);
+    json_del(instr);
     return instr;
   }
 }
@@ -44,9 +46,10 @@ static struct json *convert_assignment_expression(struct json *module,
   struct json *rhs = json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION);
   struct json *value = convert_rvalue(module, rhs);
   struct json *pointer = convert_lvalue(module, lhs);
-  struct json *instr = convert_push_instr(module, "store");
+  struct json *instr = ir_module_new_instr(module, "store");
   json_insert(instr, "value", value);
   json_insert(instr, "pointer", pointer);
+  json_del(instr);
   return instr;
 }
 static struct json *convert_initializer(struct json *module,
