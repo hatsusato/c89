@@ -1,6 +1,7 @@
 #include "instruction.h"
 
 #include "global.h"
+#include "ir/instr.h"
 #include "json/json.h"
 #include "printer/printer.h"
 #include "util/util.h"
@@ -14,7 +15,7 @@ static void generate_register(struct printer *printer, struct json *json,
     struct json *immediate = json_get(json, "immediate");
     assert(json_is_int(immediate));
     printer_print(printer, "%d", json_int_get(json_as_int(immediate)));
-  } else if (json_has(json, "reg")) {
+  } else if (ir_instr_has_numbering(json)) {
     struct json *reg = json_get(json, "reg");
     printer_print(printer, "%%%d", json_int_get(json_as_int(reg)));
   } else if (json_has(json, "global")) {
