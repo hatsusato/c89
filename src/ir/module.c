@@ -2,6 +2,7 @@
 
 #include "global.h"
 #include "json/json.h"
+#include "table.h"
 #include "value.h"
 
 struct json *ir_module_new(void) {
@@ -13,6 +14,7 @@ struct json *ir_module_new(void) {
 }
 void ir_module_init(struct json *module) {
   ir_global_init(module);
+  ir_table_init(module);
 }
 void ir_module_finish(struct json *module) {
   ir_global_finish(module);
