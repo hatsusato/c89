@@ -63,6 +63,13 @@ struct json *ir_module_new_identifier(struct json *module,
     return ir_module_new_alloca(module);
   }
 }
+struct json *ir_module_new_function(struct json *module) {
+  struct json *function = json_new_obj();
+  struct json *array = json_get(module, "functions");
+  json_push(array, function);
+  json_insert(module, "current", function);
+  return function;
+}
 void ir_module_insert_symbol(struct json *module, const char *name,
                              struct json *value) {
   struct json *table = ir_module_get_table(module);
@@ -75,11 +82,8 @@ struct json *ir_module_lookup_symbol(struct json *module, const char *name) {
   return value;
 }
 void ir_module_init_function(struct json *module) {
-  struct json *function = json_new_obj();
-  struct json *array = json_get(module, "functions");
+  struct json *function = ir_module_new_function(module);
   ir_function_init(function);
-  json_push(array, function);
-  json_insert(module, "current", function);
   ir_module_push_scope(module);
   json_del(function);
 }
