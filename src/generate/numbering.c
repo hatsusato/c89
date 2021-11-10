@@ -1,10 +1,10 @@
 #include "numbering.h"
 
 #include "ir/block.h"
+#include "ir/function.h"
 #include "ir/instr.h"
 #include "json/json.h"
 #include "json/map.h"
-#include "util/util.h"
 
 static bool_t generate_numbering_has_register(struct json *json) {
   return !(json_has(json, "store") || json_has(json, "ret"));
@@ -26,7 +26,6 @@ static void generate_numbering_block(struct json_map *map) {
 }
 
 void generate_numbering(struct json *function) {
-  struct json *blocks = json_get(function, "function");
   index_t index = 0;
-  json_foreach(blocks, generate_numbering_block, &index);
+  ir_function_foreach(function, generate_numbering_block, &index);
 }
