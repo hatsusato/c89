@@ -13,7 +13,7 @@ static void builder_function_definition(struct json *module,
   struct json *name = json_find_identifier(json);
   ir_module_init_function(module);
   ir_function_set_name(json_get(module, "current"), name);
-  builder_statement(module, json);
+  builder_statement(json_get(module, "current"), json);
   ir_module_finish_function(module);
 }
 static void builder_external_declaration(struct json_map *map) {
