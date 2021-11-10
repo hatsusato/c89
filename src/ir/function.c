@@ -5,6 +5,7 @@
 #include "json/json.h"
 #include "json/map.h"
 #include "table.h"
+#include "value.h"
 
 static struct json *ir_function_get_table(struct json *function) {
   return json_get(function, "table");
@@ -12,6 +13,11 @@ static struct json *ir_function_get_table(struct json *function) {
 static void ir_function_set_table(struct json *function, struct json *table) {
   json_insert(function, "table", table);
   json_del(table);
+}
+void ir_function_push_global(struct json *function, struct json *value) {
+  struct json *global = json_get(function, "global");
+  const char *name = ir_value_get_name(value);
+  json_insert(global, name, value);
 }
 
 void ir_function_init(struct json *function) {
