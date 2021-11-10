@@ -10,6 +10,7 @@ void ir_function_finish(struct json *);
 struct json *ir_function_new_block(struct json *);
 struct json *ir_function_new_instr(struct json *, const char *);
 struct json *ir_function_new_alloca(struct json *);
+void ir_function_set_name(struct json *, struct json *);
 const char *ir_function_get_name(struct json *);
 void ir_function_foreach(struct json *, json_map_t, void *);
 

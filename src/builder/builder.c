@@ -1,6 +1,7 @@
 #include "builder.h"
 
 #include "declaration.h"
+#include "ir/function.h"
 #include "ir/module.h"
 #include "json/json.h"
 #include "json/map.h"
@@ -11,6 +12,7 @@ static void builder_function_definition(struct json *module,
                                         struct json *json) {
   struct json *name = json_find_identifier(json);
   ir_module_init_function(module, name);
+  ir_function_set_name(json_get(module, "current"), name);
   builder_statement(module, json);
   ir_module_finish_function(module);
 }

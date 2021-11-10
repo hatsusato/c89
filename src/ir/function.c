@@ -46,6 +46,9 @@ struct json *ir_function_new_alloca(struct json *function) {
   json_push(alloc, instr);
   return instr;
 }
+void ir_function_set_name(struct json *function, struct json *name) {
+  json_insert(function, "name", name);
+}
 const char *ir_function_get_name(struct json *function) {
   struct json *name = json_get(function, "name");
   return json_get_str(name);
