@@ -7,7 +7,6 @@
 #include "json/json.h"
 #include "json/map.h"
 #include "module.h"
-#include "table.h"
 #include "util/symbol.h"
 
 static void convert_init_declarator(struct json *module, struct json *json) {

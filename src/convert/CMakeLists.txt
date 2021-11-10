@@ -8,7 +8,6 @@ target_sources(convert PRIVATE
   immediate.c
   module.c
   statement.c
-  table.c
   )
 target_link_libraries(convert PRIVATE
   ir

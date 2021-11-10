@@ -5,7 +5,6 @@
 #include "json/json.h"
 #include "module.h"
 #include "statement.h"
-#include "table.h"
 
 static struct json *convert_function_new(void) {
   struct json *json = json_new_obj();
