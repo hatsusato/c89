@@ -1,6 +1,5 @@
 #include "table.h"
 
-#include "global.h"
 #include "ir/module.h"
 #include "json/json.h"
 #include "util/util.h"

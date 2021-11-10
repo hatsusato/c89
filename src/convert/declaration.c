@@ -2,7 +2,6 @@
 
 #include "alloc.h"
 #include "expression.h"
-#include "global.h"
 #include "ir/value.h"
 #include "json/json.h"
 #include "json/map.h"
