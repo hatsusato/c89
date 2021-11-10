@@ -21,15 +21,8 @@ static void convert_function_init(struct json *module) {
   ir_module_push_scope(module);
 }
 static void convert_function_finish(struct json *module) {
-  struct json *array = convert_function_get_blocks(module);
-  struct json *front = json_front(array);
-  struct json *alloc = convert_alloc_finish(module);
-  struct json *merged = json_new_arr();
-  json_append(merged, alloc);
-  json_append(merged, json_get(front, "block"));
-  json_insert(front, "block", merged);
-  json_del(alloc);
-  json_del(merged);
+  struct json *function = convert_function_get(module);
+  ir_function_finish(function);
   json_insert(module, "block", json_null());
   ir_module_pop_scope(module);
 }
