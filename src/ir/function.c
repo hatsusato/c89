@@ -14,7 +14,7 @@ static void ir_function_set_table(struct json *function, struct json *table) {
   json_insert(function, "table", table);
   json_del(table);
 }
-void ir_function_push_global(struct json *function, struct json *value) {
+static void ir_function_push_global(struct json *function, struct json *value) {
   struct json *global = json_get(function, "global");
   const char *name = ir_value_get_name(value);
   json_insert(global, name, value);
@@ -49,6 +49,19 @@ void ir_function_pop_scope(struct json *function) {
   struct json *table = ir_function_get_table(function);
   struct json *updated = ir_table_pop(table);
   ir_function_set_table(function, updated);
+}
+void ir_function_insert_symbol(struct json *function, const char *key,
+                               struct json *val) {
+  struct json *table = ir_function_get_table(function);
+  ir_table_insert(table, key, val);
+}
+struct json *ir_function_lookup_symbol(struct json *function, const char *key) {
+  struct json *table = ir_function_get_table(function);
+  struct json *value = ir_table_lookup(table, key);
+  if (ir_value_is_global(value)) {
+    ir_function_push_global(function, value);
+  }
+  return value;
 }
 struct json *ir_function_new_block(struct json *function) {
   struct json *block = ir_block_new();
