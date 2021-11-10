@@ -16,8 +16,8 @@ static void generate_register(struct printer *printer, struct json *json,
     assert(json_is_int(immediate));
     printer_print(printer, "%d", json_int_get(json_as_int(immediate)));
   } else if (ir_instr_has_numbering(json)) {
-    struct json *reg = json_get(json, "reg");
-    printer_print(printer, "%%%d", json_int_get(json_as_int(reg)));
+    int reg = ir_instr_get_numbering(json);
+    printer_print(printer, "%%%d", reg);
   } else if (json_has(json, "global")) {
     generate_global_name(printer, json);
   } else {
