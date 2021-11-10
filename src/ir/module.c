@@ -18,7 +18,7 @@ static void ir_module_set_table(struct json *module, struct json *table) {
 void ir_module_init(struct json *module) {
   struct json *array = json_new_arr();
   struct json *table = json_new_obj();
-  json_insert(module, "module", array);
+  json_insert(module, "functions", array);
   json_del(array);
   ir_module_set_table(module, table);
   ir_global_init(module);
@@ -76,7 +76,7 @@ struct json *ir_module_lookup_symbol(struct json *module, const char *name) {
 }
 void ir_module_init_function(struct json *module, struct json *name) {
   struct json *function = json_new_obj();
-  struct json *array = json_get(module, "module");
+  struct json *array = json_get(module, "functions");
   ir_function_init(function, name);
   json_push(array, function);
   json_insert(module, "current", function);
@@ -89,6 +89,6 @@ void ir_module_finish_function(struct json *module) {
   ir_module_pop_scope(module);
 }
 void ir_module_foreach(struct json *module, json_map_t map, void *extra) {
-  struct json *functions = json_get(module, "module");
+  struct json *functions = json_get(module, "functions");
   json_foreach(functions, map, extra);
 }
