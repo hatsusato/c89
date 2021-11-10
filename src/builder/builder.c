@@ -23,7 +23,7 @@ static void builder_external_declaration(struct json_map *map) {
     builder_function_definition(module,
                                 json_get(json, SYMBOL_FUNCTION_DEFINITION));
   } else if (json_has(json, SYMBOL_DECLARATION)) {
-    builder_declaration(module, json_get(json, SYMBOL_DECLARATION));
+    builder_global_declaration(module, json_get(json, SYMBOL_DECLARATION));
   }
 }
 static void builder_translation_unit(struct json *module, struct json *json) {
