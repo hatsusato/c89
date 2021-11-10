@@ -2,50 +2,38 @@
 
 #include "expression.h"
 #include "ir/function.h"
-#include "ir/module.h"
+#include "ir/value.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "util/symbol.h"
 
 static void builder_init_declarator(struct json *module, struct json *json) {
+  struct json *function = json_get(module, "current");
   struct json *identifier = json_find_identifier(json);
   const char *name = json_get_str(identifier);
-  struct json *pointer = ir_module_new_identifier(module, identifier);
-  struct json *function = json_get(module, "current");
+  struct json *pointer = ir_function_new_alloca(function);
   ir_function_insert_symbol(function, name, pointer);
   json_del(pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = builder_rvalue(function, json);
-    if (ir_module_is_global_scope(module)) {
-      pointer = ir_function_lookup_symbol(function, name);
-      json_insert(pointer, "init", value);
-    } else {
-      struct json *instr = ir_module_new_instr(module, "store");
-      json_insert(instr, "value", value);
-      json_insert(instr, "pointer", pointer);
-      json_del(instr);
-    }
+    struct json *instr = ir_function_new_instr(function, "store");
+    json_insert(instr, "value", value);
+    json_insert(instr, "pointer", pointer);
+    json_del(instr);
   }
 }
 static void builder_global_init_declarator(struct json *module,
                                            struct json *json) {
+  struct json *function = json_get(module, "current");
   struct json *identifier = json_find_identifier(json);
   const char *name = json_get_str(identifier);
-  struct json *pointer = ir_module_new_identifier(module, identifier);
-  struct json *function = json_get(module, "current");
+  struct json *pointer = ir_value_new_global(identifier);
   ir_function_insert_symbol(function, name, pointer);
   json_del(pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = builder_rvalue(function, json);
-    if (ir_module_is_global_scope(module)) {
-      pointer = ir_function_lookup_symbol(function, name);
-      json_insert(pointer, "init", value);
-    } else {
-      struct json *instr = ir_module_new_instr(module, "store");
-      json_insert(instr, "value", value);
-      json_insert(instr, "pointer", pointer);
-      json_del(instr);
-    }
+    pointer = ir_function_lookup_symbol(function, name);
+    json_insert(pointer, "init", value);
   }
 }
 static void builder_init_declarator_list(struct json_map *map) {
