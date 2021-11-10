@@ -47,8 +47,12 @@ void ir_module_push_global(struct json *module, struct json *value) {
 }
 void ir_module_insert_symbol(struct json *module, const char *name,
                              struct json *value) {
-  ir_table_insert(module, name, value);
+  struct json *table = ir_module_get_table(module);
+  ir_table_insert(table, name, value);
 }
 struct json *ir_module_lookup_symbol(struct json *module, const char *name) {
-  return ir_table_lookup(module, name);
+  struct json *table = ir_module_get_table(module);
+  struct json *value = ir_table_lookup(table, name);
+  ir_module_push_global(module, value);
+  return value;
 }

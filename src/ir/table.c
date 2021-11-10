@@ -14,19 +14,14 @@ struct json *ir_table_pop(struct json *table) {
   json_ref(next);
   return next;
 }
-void ir_table_insert(struct json *module, const char *name,
-                     struct json *value) {
-  struct json *table = json_get(module, "table");
+void ir_table_insert(struct json *table, const char *name, struct json *value) {
   assert(!json_has(table, name));
   json_insert(table, name, value);
 }
-struct json *ir_table_lookup(struct json *module, const char *name) {
-  struct json *table = json_get(module, "table");
+struct json *ir_table_lookup(struct json *table, const char *name) {
   while (!json_is_null(table)) {
     if (json_has(table, name)) {
-      struct json *value = json_get(table, name);
-      ir_module_push_global(module, value);
-      return value;
+      return json_get(table, name);
     }
     table = json_get(table, "$next");
   }
