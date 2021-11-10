@@ -15,7 +15,7 @@ static void builder_init_declarator(struct json *module, struct json *json) {
   ir_function_insert_symbol(function, name, pointer);
   json_del(pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
-    struct json *value = builder_rvalue(module, json);
+    struct json *value = builder_rvalue(function, json);
     if (ir_module_is_global_scope(module)) {
       pointer = ir_function_lookup_symbol(function, name);
       json_insert(pointer, "init", value);

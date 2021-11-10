@@ -17,12 +17,14 @@ static void builder_compound_statement(struct json *module, struct json *json) {
 }
 static void builder_expression_statement(struct json *module,
                                          struct json *json) {
-  builder_rvalue(module, json_get(json, SYMBOL_EXPRESSION));
+  struct json *function = json_get(module, "current");
+  builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
 }
 static void builder_jump_statement(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
+    struct json *function = json_get(module, "current");
     struct json *expr =
-        builder_rvalue(module, json_get(json, SYMBOL_EXPRESSION));
+        builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
     struct json *instr = ir_module_new_instr(module, "ret");
     json_insert(instr, "value", expr);
     json_del(instr);
