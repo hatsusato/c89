@@ -1,6 +1,7 @@
 #include "expression.h"
 
 #include "immediate.h"
+#include "ir/table.h"
 #include "json/json.h"
 #include "module.h"
 #include "table.h"
@@ -8,7 +9,8 @@
 #include "util/util.h"
 
 static struct json *convert_identifier(struct json *module, struct json *json) {
-  struct json *pointer = convert_table_lookup(module, json);
+  const char *name = json_get_str(json);
+  struct json *pointer = ir_table_lookup(module, name);
   struct json *instr = convert_push_instr(module, "load");
   json_insert(instr, "pointer", pointer);
   return instr;
@@ -59,7 +61,9 @@ static struct json *convert_initializer(struct json *module,
 
 struct json *convert_lvalue(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_IDENTIFIER)) {
-    return convert_table_lookup(module, json_get(json, SYMBOL_IDENTIFIER));
+    struct json *identifier = json_get(json, SYMBOL_IDENTIFIER);
+    const char *name = json_get_str(identifier);
+    return ir_table_lookup(module, name);
   } else {
     return json;
   }

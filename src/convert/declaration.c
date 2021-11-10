@@ -2,6 +2,7 @@
 
 #include "alloc.h"
 #include "expression.h"
+#include "ir/table.h"
 #include "ir/value.h"
 #include "json/json.h"
 #include "json/map.h"
@@ -12,14 +13,15 @@
 static void convert_init_declarator(struct json *module, struct json *json) {
   bool_t is_global = convert_table_is_global(module);
   struct json *identifier = json_find_identifier(json);
+  const char *name = json_get_str(identifier);
   struct json *pointer =
       is_global ? ir_value_new_global(identifier) : convert_alloc_push(module);
-  convert_table_insert(module, identifier, pointer);
+  ir_table_insert(module, name, pointer);
   json_del(pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = convert_rvalue(module, json);
     if (is_global) {
-      pointer = convert_table_lookup(module, identifier);
+      pointer = ir_table_lookup(module, name);
       json_insert(pointer, "init", value);
     } else {
       struct json *instr = convert_push_instr(module, "store");
