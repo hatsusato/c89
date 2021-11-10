@@ -1,6 +1,6 @@
 add_library(builder STATIC)
 target_sources(builder PRIVATE
-  convert.c
+  builder.c
   declaration.c
   expression.c
   immediate.c
