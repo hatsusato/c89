@@ -8,3 +8,7 @@ struct json *ir_value_new_global(struct json *identifier) {
   json_insert(value, "global", json_null());
   return value;
 }
+const char *ir_value_get_name(struct json *value) {
+  struct json *name = json_get(value, "name");
+  return json_get_str(name);
+}

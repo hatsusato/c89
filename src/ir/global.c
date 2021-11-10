@@ -15,7 +15,3 @@ void ir_global_finish(struct json *module) {
 struct json *ir_global_get(struct json *module) {
   return json_get(module, "global");
 }
-const char *ir_global_value_name(struct json *value) {
-  struct json *name = json_get(value, "name");
-  return json_get_str(name);
-}
