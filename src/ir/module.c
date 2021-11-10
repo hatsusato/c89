@@ -3,6 +3,7 @@
 #include "function.h"
 #include "global.h"
 #include "json/json.h"
+#include "json/map.h"
 #include "table.h"
 #include "value.h"
 
@@ -86,4 +87,8 @@ void ir_module_finish_function(struct json *module) {
   struct json *function = json_get(module, "function");
   ir_function_finish(function);
   ir_module_pop_scope(module);
+}
+void ir_module_foreach(struct json *module, json_map_t map, void *extra) {
+  struct json *functions = json_get(module, "module");
+  json_foreach(functions, map, extra);
 }
