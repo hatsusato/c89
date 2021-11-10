@@ -12,6 +12,7 @@ void ir_module_push_scope(struct json *);
 void ir_module_pop_scope(struct json *);
 bool_t ir_module_is_global_scope(struct json *);
 void ir_module_push_global(struct json *, struct json *);
+struct json *ir_module_new_instr(struct json *, const char *);
 struct json *ir_module_new_alloca(struct json *);
 void ir_module_insert_symbol(struct json *, const char *, struct json *);
 struct json *ir_module_lookup_symbol(struct json *, const char *);
