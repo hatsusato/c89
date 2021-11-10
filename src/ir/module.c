@@ -48,11 +48,11 @@ void ir_module_push_global(struct json *module, struct json *value) {
   }
 }
 struct json *ir_module_new_instr(struct json *module, const char *tag) {
-  struct json *function = json_get(module, "function");
+  struct json *function = json_get(module, "current");
   return ir_function_new_instr(function, tag);
 }
 struct json *ir_module_new_alloca(struct json *module) {
-  struct json *function = json_get(module, "function");
+  struct json *function = json_get(module, "current");
   return ir_function_new_alloca(function);
 }
 struct json *ir_module_new_identifier(struct json *module,
@@ -79,12 +79,12 @@ void ir_module_init_function(struct json *module, struct json *name) {
   struct json *array = json_get(module, "module");
   ir_function_init(function, name);
   json_push(array, function);
-  json_insert(module, "function", function);
+  json_insert(module, "current", function);
   ir_module_push_scope(module);
   json_del(function);
 }
 void ir_module_finish_function(struct json *module) {
-  struct json *function = json_get(module, "function");
+  struct json *function = json_get(module, "current");
   ir_function_finish(function);
   ir_module_pop_scope(module);
 }
