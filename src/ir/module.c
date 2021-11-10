@@ -45,3 +45,10 @@ void ir_module_push_global(struct json *module, struct json *value) {
     json_insert(global, name, value);
   }
 }
+void ir_module_insert_symbol(struct json *module, const char *name,
+                             struct json *value) {
+  ir_table_insert(module, name, value);
+}
+struct json *ir_module_lookup_symbol(struct json *module, const char *name) {
+  return ir_table_lookup(module, name);
+}
