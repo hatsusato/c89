@@ -1,14 +1,16 @@
 #include "expression.h"
 
 #include "immediate.h"
+#include "ir/function.h"
 #include "ir/module.h"
 #include "json/json.h"
 #include "util/symbol.h"
 #include "util/util.h"
 
 static struct json *builder_identifier(struct json *module, struct json *json) {
+  struct json *function = json_get(module, "current");
   const char *name = json_get_str(json);
-  struct json *pointer = ir_module_lookup_symbol(module, name);
+  struct json *pointer = ir_function_lookup_symbol(function, name);
   struct json *instr = ir_module_new_instr(module, "load");
   json_insert(instr, "pointer", pointer);
   json_del(instr);
@@ -62,9 +64,10 @@ static struct json *builder_initializer(struct json *module,
 
 struct json *builder_lvalue(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_IDENTIFIER)) {
+    struct json *function = json_get(module, "current");
     struct json *identifier = json_get(json, SYMBOL_IDENTIFIER);
     const char *name = json_get_str(identifier);
-    return ir_module_lookup_symbol(module, name);
+    return ir_function_lookup_symbol(function, name);
   } else {
     return json;
   }

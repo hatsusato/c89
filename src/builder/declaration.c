@@ -1,6 +1,7 @@
 #include "declaration.h"
 
 #include "expression.h"
+#include "ir/function.h"
 #include "ir/module.h"
 #include "json/json.h"
 #include "json/map.h"
@@ -10,12 +11,13 @@ static void builder_init_declarator(struct json *module, struct json *json) {
   struct json *identifier = json_find_identifier(json);
   const char *name = json_get_str(identifier);
   struct json *pointer = ir_module_new_identifier(module, identifier);
-  ir_module_insert_symbol(module, name, pointer);
+  struct json *function = json_get(module, "current");
+  ir_function_insert_symbol(function, name, pointer);
   json_del(pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = builder_rvalue(module, json);
     if (ir_module_is_global_scope(module)) {
-      pointer = ir_module_lookup_symbol(module, name);
+      pointer = ir_function_lookup_symbol(function, name);
       json_insert(pointer, "init", value);
     } else {
       struct json *instr = ir_module_new_instr(module, "store");
