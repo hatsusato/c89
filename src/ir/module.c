@@ -1,5 +1,6 @@
 #include "module.h"
 
+#include "function.h"
 #include "global.h"
 #include "json/json.h"
 #include "table.h"
@@ -59,4 +60,18 @@ struct json *ir_module_lookup_symbol(struct json *module, const char *name) {
   struct json *value = ir_table_lookup(table, name);
   ir_module_push_global(module, value);
   return value;
+}
+void ir_module_init_function(struct json *module) {
+  struct json *function = json_new_obj();
+  struct json *array = json_get(module, "module");
+  ir_function_init(function);
+  json_push(array, function);
+  json_insert(module, "function", function);
+  ir_module_push_scope(module);
+  json_del(function);
+}
+void ir_module_finish_function(struct json *module) {
+  struct json *function = json_get(module, "function");
+  ir_function_finish(function);
+  ir_module_pop_scope(module);
 }
