@@ -1,12 +1,19 @@
 #include "convert.h"
 
 #include "declaration.h"
-#include "function.h"
 #include "ir/module.h"
 #include "json/json.h"
 #include "json/map.h"
+#include "statement.h"
 #include "util/symbol.h"
 
+static void convert_function_definition(struct json *module,
+                                        struct json *json) {
+  struct json *name = json_find_identifier(json);
+  ir_module_init_function(module, name);
+  convert_statement(module, json);
+  ir_module_finish_function(module);
+}
 static void convert_external_declaration(struct json_map *map) {
   struct json *module = json_map_extra(map);
   struct json *json = json_map_val(map);
