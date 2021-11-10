@@ -2,11 +2,9 @@
 
 #include "declaration.h"
 #include "function.h"
-#include "global.h"
 #include "ir/module.h"
 #include "json/json.h"
 #include "json/map.h"
-#include "module.h"
 #include "util/symbol.h"
 
 static void convert_external_declaration(struct json_map *map) {
@@ -20,9 +18,9 @@ static void convert_external_declaration(struct json_map *map) {
   }
 }
 static void convert_translation_unit(struct json *module, struct json *json) {
-  convert_global_init(module);
+  ir_module_init(module);
   json_foreach(json, convert_external_declaration, module);
-  convert_global_finish(module);
+  ir_module_finish(module);
 }
 
 struct json *convert(struct json *json) {
