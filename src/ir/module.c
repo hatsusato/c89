@@ -28,7 +28,9 @@ void ir_module_init(struct json *module) {
   ir_module_init_obj(module, "global");
 }
 void ir_module_finish(struct json *module) {
-  ir_global_finish(module);
+  struct json *table = json_get(module, "table");
+  struct json *global = ir_module_get_global(module);
+  json_merge(global, table);
 }
 bool_t ir_module_is_global_scope(struct json *module) {
   struct json *table = ir_module_get_current_table(module);
