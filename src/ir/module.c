@@ -14,16 +14,12 @@ static void ir_module_set_table(struct json *module, struct json *table) {
   json_del(table);
 }
 
-struct json *ir_module_new(void) {
-  struct json *module = json_new_obj();
+void ir_module_init(struct json *module) {
   struct json *array = json_new_arr();
   struct json *table = json_new_obj();
   json_insert(module, "module", array);
   json_del(array);
   ir_module_set_table(module, table);
-  return module;
-}
-void ir_module_init(struct json *module) {
   ir_global_init(module);
 }
 void ir_module_finish(struct json *module) {

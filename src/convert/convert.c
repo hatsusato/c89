@@ -18,14 +18,14 @@ static void convert_external_declaration(struct json_map *map) {
   }
 }
 static void convert_translation_unit(struct json *module, struct json *json) {
-  ir_module_init(module);
   json_foreach(json, convert_external_declaration, module);
-  ir_module_finish(module);
 }
 
 struct json *convert(struct json *json) {
   struct json *translation_unit = json_get(json, SYMBOL_TRANSLATION_UNIT);
-  struct json *module = ir_module_new();
+  struct json *module = json_new_obj();
+  ir_module_init(module);
   convert_translation_unit(module, translation_unit);
+  ir_module_finish(module);
   return module;
 }
