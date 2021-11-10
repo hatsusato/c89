@@ -23,7 +23,6 @@ static void convert_function_init(struct json *module) {
 static void convert_function_finish(struct json *module) {
   struct json *function = convert_function_get(module);
   ir_function_finish(function);
-  json_insert(module, "block", json_null());
   ir_module_pop_scope(module);
 }
 static void convert_function_set_name(struct json *module, struct json *name) {
