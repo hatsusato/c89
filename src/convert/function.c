@@ -13,11 +13,11 @@ static struct json *convert_function_get(struct json *module) {
 
 static void convert_function_init(struct json *module) {
   struct json *array = json_get(module, "module");
-  struct json *function = ir_function_new();
+  struct json *function = json_new_obj();
+  ir_function_init(function);
   json_push(array, function);
   json_del(function);
   json_insert(module, "function", function);
-  ir_function_init(function);
   ir_module_push_scope(module);
 }
 static void convert_function_finish(struct json *module) {
