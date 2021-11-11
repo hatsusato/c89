@@ -66,10 +66,11 @@ struct json *ir_function_make_instr(struct json *function, const char *tag) {
   json_del(instr);
   return instr;
 }
-struct json *ir_function_new_alloca(struct json *function) {
+struct json *ir_function_make_alloca(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
   struct json *instr = ir_instr_new("alloca");
   ir_block_push_instr(alloc, instr);
+  json_del(instr);
   return instr;
 }
 void ir_function_set_name(struct json *function, struct json *name) {
