@@ -3,7 +3,7 @@ target_sources(main PRIVATE
   main.c
   )
 target_link_libraries(main PRIVATE
-  convert
+  builder
   generate
   json
   options
@@ -27,8 +27,9 @@ target_link_libraries(unittest PRIVATE
   util
   )
 
-add_subdirectory(convert)
+add_subdirectory(builder)
 add_subdirectory(generate)
+add_subdirectory(ir)
 add_subdirectory(json)
 add_subdirectory(printer)
 add_subdirectory(scanner)

@@ -3,6 +3,6 @@
 
 struct json;
 
-struct json *convert(struct json *);
+struct json *build(struct json *);
 
 #endif /* INCLUDE_GUARD_1F1337DE_895F_45EE_959F_A1D190BEC347 */

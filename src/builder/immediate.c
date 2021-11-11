@@ -6,19 +6,17 @@
 
 #define SYMBOL_IMMEDIATE "immediate"
 
-static void convert_insert_immediate(struct json *json, int val) {
-  struct json *immediate = json_new_int(val);
-  json_insert(json, SYMBOL_IMMEDIATE, immediate);
-  json_del(immediate);
+static void builder_insert_immediate(struct json *json, int val) {
+  json_set(json, SYMBOL_IMMEDIATE, json_new_int(val));
 }
 
-void convert_immediate_primary_expression(struct json *json) {
+void builder_immediate_primary_expression(struct json *json) {
   if (json_has(json, SYMBOL_INTEGER_CONSTANT)) {
     struct json *val = json_get(json, SYMBOL_INTEGER_CONSTANT);
-    convert_insert_immediate(json, util_atoi(json_get_str(val)));
+    builder_insert_immediate(json, util_atoi(json_get_str(val)));
   }
 }
-bool_t convert_immediate_additive_expression(struct json *json,
+bool_t builder_immediate_additive_expression(struct json *json,
                                              struct json *lhs,
                                              struct json *rhs) {
   lhs = json_get(lhs, SYMBOL_IMMEDIATE);
@@ -30,7 +28,7 @@ bool_t convert_immediate_additive_expression(struct json *json,
     assert(json_is_int(lhs) && json_is_int(rhs));
     lval = json_int_get(json_as_int(lhs));
     rval = json_int_get(json_as_int(rhs));
-    convert_insert_immediate(json, lval + rval);
+    builder_insert_immediate(json, lval + rval);
     return true;
   }
 }

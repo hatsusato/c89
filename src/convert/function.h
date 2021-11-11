@@ -1,9 +1,0 @@
-#ifndef INCLUDE_GUARD_7ABBD975_1225_4AF5_BCA9_04D58DC44EF3
-#define INCLUDE_GUARD_7ABBD975_1225_4AF5_BCA9_04D58DC44EF3
-
-struct json;
-
-struct json *convert_function_get_blocks(struct json *);
-void convert_function_definition(struct json *, struct json *);
-
-#endif /* INCLUDE_GUARD_7ABBD975_1225_4AF5_BCA9_04D58DC44EF3 */

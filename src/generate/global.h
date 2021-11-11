@@ -4,7 +4,6 @@
 struct json;
 struct printer;
 
-struct json *generate_global_get(struct json *);
 void generate_global(struct printer *, struct json *);
 void generate_global_name(struct printer *, struct json *);
 

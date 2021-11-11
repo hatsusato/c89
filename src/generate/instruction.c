@@ -1,6 +1,7 @@
 #include "instruction.h"
 
 #include "global.h"
+#include "ir/instr.h"
 #include "json/json.h"
 #include "printer/printer.h"
 #include "util/util.h"
@@ -14,9 +15,9 @@ static void generate_register(struct printer *printer, struct json *json,
     struct json *immediate = json_get(json, "immediate");
     assert(json_is_int(immediate));
     printer_print(printer, "%d", json_int_get(json_as_int(immediate)));
-  } else if (json_has(json, "reg")) {
-    struct json *reg = json_get(json, "reg");
-    printer_print(printer, "%%%d", json_int_get(json_as_int(reg)));
+  } else if (ir_instr_has_numbering(json)) {
+    int reg = ir_instr_get_numbering(json);
+    printer_print(printer, "%%%d", reg);
   } else if (json_has(json, "global")) {
     generate_global_name(printer, json);
   } else {
@@ -62,16 +63,15 @@ static void generate_store(struct printer *printer, struct json *json) {
 /* Other Operations */
 
 void generate_instruction(struct printer *printer, struct json *json) {
-  const char *tag = json_get_str(json_get(json, "instr"));
-  if (util_streq(tag, "ret")) {
+  if (json_has(json, "ret")) {
     generate_ret(printer, json);
-  } else if (util_streq(tag, "add")) {
+  } else if (json_has(json, "add")) {
     generate_add(printer, json);
-  } else if (util_streq(tag, "alloca")) {
+  } else if (json_has(json, "alloca")) {
     generate_alloca(printer, json);
-  } else if (util_streq(tag, "load")) {
+  } else if (json_has(json, "load")) {
     generate_load(printer, json);
-  } else if (util_streq(tag, "store")) {
+  } else if (json_has(json, "store")) {
     generate_store(printer, json);
   } else {
     json_print(json);

@@ -52,15 +52,12 @@ YYSCAN_TYPE yyscan_json_push(YYSCAN_TYPE arr, YYSCAN_TYPE val) {
   json_del(val);
   return arr;
 }
-YYSCAN_TYPE yyscan_json_insert(YYSCAN_TYPE obj, const char *key,
-                               YYSCAN_TYPE val) {
-  assert(json_is_obj(obj));
-  json_obj_insert(json_as_obj(obj), key, val);
-  json_del(val);
+YYSCAN_TYPE yyscan_json_set(YYSCAN_TYPE obj, const char *key, YYSCAN_TYPE val) {
+  json_set(obj, key, val);
   return obj;
 }
 YYSCAN_TYPE yyscan_json_expr(const char *tag) {
   struct json *expr = yyscan_json_obj();
-  yyscan_json_insert(expr, "tag", json_new_str(tag));
+  yyscan_json_set(expr, "tag", json_new_str(tag));
   return expr;
 }
