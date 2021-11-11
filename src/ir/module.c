@@ -11,10 +11,6 @@ static void ir_module_init_obj(struct json *module, const char *key) {
   json_insert(module, key, value);
   json_del(value);
 }
-static struct json *ir_module_get_current_table(struct json *module) {
-  struct json *function = json_get(module, "current");
-  return json_get(function, "table");
-}
 static struct json *ir_module_get_global(struct json *module) {
   return json_get(module, "global");
 }
@@ -30,33 +26,6 @@ void ir_module_finish(struct json *module) {
   struct json *table = json_get(module, "table");
   struct json *global = ir_module_get_global(module);
   json_merge(global, table);
-}
-bool_t ir_module_is_global_scope(struct json *module) {
-  struct json *table = ir_module_get_current_table(module);
-  return ir_table_is_global(table);
-}
-void ir_module_push_global(struct json *module, struct json *value) {
-  if (ir_value_is_global(value)) {
-    struct json *global = ir_module_get_global(module);
-    const char *name = ir_value_get_name(value);
-    json_insert(global, name, value);
-  }
-}
-struct json *ir_module_new_instr(struct json *module, const char *tag) {
-  struct json *function = json_get(module, "current");
-  return ir_function_new_instr(function, tag);
-}
-struct json *ir_module_new_alloca(struct json *module) {
-  struct json *function = json_get(module, "current");
-  return ir_function_new_alloca(function);
-}
-struct json *ir_module_new_identifier(struct json *module,
-                                      struct json *identifier) {
-  if (ir_module_is_global_scope(module)) {
-    return ir_value_new_global(identifier);
-  } else {
-    return ir_module_new_alloca(module);
-  }
 }
 struct json *ir_module_new_function(struct json *module) {
   struct json *function = json_new_obj();
