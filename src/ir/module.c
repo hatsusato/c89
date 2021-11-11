@@ -30,17 +30,17 @@ void ir_module_finish(struct json *module) {
 struct json *ir_module_new_function(struct json *module) {
   struct json *function = json_new_obj();
   struct json *array = json_get(module, "functions");
+  struct json *table = json_get(module, "table");
+  struct json *global = ir_module_get_global(module);
   json_push(array, function);
   json_insert(module, "current", function);
+  json_insert(function, "table", table);
+  json_insert(function, "global", global);
   return function;
 }
 void ir_module_init_function(struct json *module) {
   struct json *function = ir_module_new_function(module);
-  struct json *table = json_get(module, "table");
-  struct json *global = ir_module_get_global(module);
   ir_function_init(function);
-  json_insert(function, "table", table);
-  json_insert(function, "global", global);
   ir_function_push_scope(function);
   json_del(function);
 }
