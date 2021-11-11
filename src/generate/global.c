@@ -11,9 +11,6 @@ static void generate_immediate(struct printer *printer, struct json *json) {
   }
 }
 
-struct json *generate_global_get(struct json *module) {
-  return json_get(module, "global");
-}
 void generate_global(struct printer *printer, struct json *json) {
   struct json *init = json_get(json, "init");
   if (json_is_null(json) || !json_has(json, "global")) {
