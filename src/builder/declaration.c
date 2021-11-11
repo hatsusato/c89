@@ -32,7 +32,7 @@ static void builder_global_init_declarator(struct json *module,
   json_del(pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *global = json_get(module, "global");
-    struct json *value = builder_rvalue(json_get(module, "current"), json);
+    struct json *value = builder_global_rvalue(json);
     json_insert(global, name, pointer);
     json_insert(pointer, "init", value);
   }

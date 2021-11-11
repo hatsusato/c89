@@ -61,6 +61,13 @@ static struct json *builder_initializer(struct json *function,
     return json;
   }
 }
+static struct json *builder_global_initializer(struct json *json) {
+  if (json_has(json, SYMBOL_ASSIGNMENT_EXPRESSION)) {
+    return builder_global_rvalue(json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION));
+  } else {
+    return json;
+  }
+}
 
 struct json *builder_lvalue(struct json *function, struct json *json) {
   if (json_has(json, SYMBOL_IDENTIFIER)) {
@@ -81,6 +88,17 @@ struct json *builder_rvalue(struct json *function, struct json *json) {
     return builder_assignment_expression(function, json);
   } else if (json_has(json, SYMBOL_INITIALIZER)) {
     return builder_initializer(function, json_get(json, SYMBOL_INITIALIZER));
+  } else {
+    return json;
+  }
+}
+struct json *builder_global_rvalue(struct json *json) {
+  const char *tag = json_get_str(json_get(json, "tag"));
+  if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
+    builder_immediate_primary_expression(json);
+    return json;
+  } else if (json_has(json, SYMBOL_INITIALIZER)) {
+    return builder_global_initializer(json_get(json, SYMBOL_INITIALIZER));
   } else {
     return json;
   }
