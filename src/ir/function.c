@@ -21,11 +21,13 @@ void ir_function_init(struct json *function) {
   ir_function_set(function, "blocks", json_new_arr());
   ir_function_set(function, "alloc", ir_block_new());
   ir_function_set(function, "front", ir_function_new_block(function));
+  ir_function_push_scope(function);
 }
 void ir_function_finish(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
   struct json *front = json_get(function, "front");
   ir_block_prepend(front, alloc);
+  ir_function_pop_scope(function);
   json_insert(function, "alloc", json_null());
   json_insert(function, "front", json_null());
   json_insert(function, "current", json_null());

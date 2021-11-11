@@ -41,13 +41,11 @@ struct json *ir_module_new_function(struct json *module) {
 void ir_module_init_function(struct json *module) {
   struct json *function = ir_module_new_function(module);
   ir_function_init(function);
-  ir_function_push_scope(function);
   json_del(function);
 }
 void ir_module_finish_function(struct json *module) {
   struct json *function = json_get(module, "current");
   ir_function_finish(function);
-  ir_function_pop_scope(function);
 }
 void ir_module_foreach(struct json *module, json_map_t map, void *extra) {
   struct json *functions = json_get(module, "functions");
