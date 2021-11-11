@@ -35,8 +35,17 @@ static void builder_selection_statement(struct json *function,
     {
       struct json *br_then = ir_function_make_instr(function, "br");
       struct json *block_else = ir_function_make_block(function);
-      json_insert(br_then, "dest", block_else);
       json_insert(br, "iffalse", block_else);
+      if (json_has(json, SYMBOL_ELSE)) {
+        builder_statement(function, json_get(json, SYMBOL_ELSE_STATEMENT));
+        {
+          struct json *br_else = ir_function_make_instr(function, "br");
+          struct json *block_after = ir_function_make_block(function);
+          json_insert(br_else, "dest", block_after);
+          block_else = block_after;
+        }
+      }
+      json_insert(br_then, "dest", block_else);
     }
   }
 }
