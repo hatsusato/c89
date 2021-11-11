@@ -11,7 +11,7 @@
 #define YYSCAN_OBJ() yyscan_json_obj()
 #define YYSCAN_SINGLE(val) YYSCAN_PUSH(YYSCAN_ARR(), val)
 #define YYSCAN_PUSH(arr, val) yyscan_json_push(arr, val)
-#define YYSCAN_INSERT(obj, key, val) yyscan_json_insert(obj, key, val)
+#define YYSCAN_INSERT(obj, key, val) yyscan_json_set(obj, key, val)
 #define YYSCAN_EXPR(key) yyscan_json_expr(key)
 #define YYSCAN_REGISTER(decl) \
   scanner_register_typedef(yyget_extra(YYSCAN_PARAM), decl)
@@ -25,7 +25,7 @@ YYSCAN_TYPE yyscan_json_null(void);
 YYSCAN_TYPE yyscan_json_arr(void);
 YYSCAN_TYPE yyscan_json_obj(void);
 YYSCAN_TYPE yyscan_json_push(YYSCAN_TYPE, YYSCAN_TYPE);
-YYSCAN_TYPE yyscan_json_insert(YYSCAN_TYPE, const char *, YYSCAN_TYPE);
+YYSCAN_TYPE yyscan_json_set(YYSCAN_TYPE, const char *, YYSCAN_TYPE);
 YYSCAN_TYPE yyscan_json_expr(const char *);
 
 #endif /* INCLUDE_GUARD_9CD5F173_4C3F_436C_9085_C797766F802E */
