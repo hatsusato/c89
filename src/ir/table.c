@@ -1,6 +1,7 @@
 #include "table.h"
 
 #include "json/json.h"
+#include "json/map.h"
 #include "util/util.h"
 
 struct json *ir_table_last(struct json *table) {
@@ -41,4 +42,17 @@ struct json *ir_table_lookup(struct json *table, const char *name) {
 struct json *ir_table_get_global(struct json *table) {
   struct json *last = ir_table_last(table);
   return json_get(last, "$global");
+}
+static void ir_table_finish_map(struct json_map *map) {
+  struct json *global = json_map_extra(map);
+  const char *key = json_map_key(map);
+  struct json *val = json_map_val(map);
+  if (!util_streq(key, "$global") && !json_has(global, key)) {
+    json_insert(global, key, val);
+  }
+}
+void ir_table_finish(struct json *table) {
+  assert(!json_has(table, "$next"));
+  assert(json_has(table, "$global"));
+  json_foreach(table, ir_table_finish_map, json_get(table, "$global"));
 }
