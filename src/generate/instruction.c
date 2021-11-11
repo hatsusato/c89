@@ -15,6 +15,10 @@ static void generate_register(struct printer *printer, struct json *json,
     struct json *immediate = json_get(json, "immediate");
     assert(json_is_int(immediate));
     printer_print(printer, "%d", json_int_get(json_as_int(immediate)));
+  } else if (json_has(json, "label")) {
+    struct json *label = json_get(json, "label");
+    assert(json_is_int(label));
+    printer_print(printer, "%%%d", json_int_get(json_as_int(label)));
   } else if (ir_instr_has_numbering(json)) {
     int reg = ir_instr_get_numbering(json);
     printer_print(printer, "%%%d", reg);
