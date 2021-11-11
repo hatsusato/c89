@@ -14,6 +14,13 @@ void ir_block_push_instr(struct json *block, struct json *instr) {
   struct json *array = json_get(block, "instructions");
   json_push(array, instr);
 }
+void ir_block_prepend(struct json *self, struct json *other) {
+  struct json *array = json_new_arr();
+  json_append(array, json_get(other, "instructions"));
+  json_append(array, json_get(self, "instructions"));
+  json_insert(self, "instructions", array);
+  json_del(array);
+}
 void ir_block_foreach(struct json *block, json_map_t map, void *extra) {
   struct json *instructions = json_get(block, "instructions");
   json_foreach(instructions, map, extra);
