@@ -16,7 +16,7 @@ void ir_function_init(struct json *function, struct json *definition) {
   struct json *name = json_find_identifier(definition);
   json_set(function, "blocks", json_new_arr());
   json_set(function, "alloc", ir_block_new());
-  json_set(function, "front", ir_function_new_block(function));
+  json_insert(function, "front", ir_function_make_block(function));
   ir_function_set_name(function, name);
   ir_function_push_scope(function);
 }
@@ -51,11 +51,12 @@ struct json *ir_function_lookup_symbol(struct json *function, const char *key) {
   ir_table_insert_global(table, value);
   return value;
 }
-struct json *ir_function_new_block(struct json *function) {
+struct json *ir_function_make_block(struct json *function) {
   struct json *array = json_get(function, "blocks");
   struct json *block = ir_block_new();
   json_push(array, block);
   json_insert(function, "current", block);
+  json_del(block);
   return block;
 }
 struct json *ir_function_new_instr(struct json *function, const char *tag) {
