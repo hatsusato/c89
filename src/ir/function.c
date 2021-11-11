@@ -50,7 +50,7 @@ void ir_function_insert_symbol(struct json *function, const char *key,
 struct json *ir_function_lookup_symbol(struct json *function, const char *key) {
   struct json *table = json_get(function, "table");
   struct json *value = ir_table_lookup(table, key);
-  ir_table_insert_value(table, key, value);
+  ir_table_insert_global(table, value);
   return value;
 }
 struct json *ir_function_new_block(struct json *function) {

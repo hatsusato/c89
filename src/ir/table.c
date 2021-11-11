@@ -44,11 +44,11 @@ struct json *ir_table_get_global(struct json *table) {
   struct json *last = ir_table_last(table);
   return json_get(last, "$global");
 }
-void ir_table_insert_value(struct json *table, const char *key,
-                           struct json *value) {
+void ir_table_insert_global(struct json *table, struct json *value) {
   if (ir_value_is_global(value)) {
     struct json *global = ir_table_get_global(table);
-    json_insert(global, key, value);
+    const char *name = ir_value_get_name(value);
+    json_insert(global, name, value);
   }
 }
 static void ir_table_finish_map(struct json_map *map) {
