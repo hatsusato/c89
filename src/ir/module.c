@@ -7,14 +7,14 @@
 #include "value.h"
 
 void ir_module_init(struct json *module) {
+  struct json *table = ir_table_new();
   json_set(module, "functions", json_new_arr());
-  json_set(module, "table", ir_table_new());
-  json_set(module, "global", json_new_obj());
+  json_set(module, "table", table);
+  json_insert(module, "global", ir_table_get_global(table));
 }
 void ir_module_finish(struct json *module) {
   struct json *table = json_get(module, "table");
-  struct json *global = json_get(module, "global");
-  json_merge(global, table);
+  ir_table_finish(table);
 }
 struct json *ir_module_new_function(struct json *module) {
   struct json *array = json_get(module, "functions");
