@@ -29,6 +29,19 @@ static void generate_ret(struct printer *printer, struct json *json) {
   printer_print(printer, "ret i32 ");
   generate_register(printer, json, "value");
 }
+static void generate_br(struct printer *printer, struct json *json) {
+  if (json_has(json, "cond")) {
+    printer_print(printer, "br i1 ");
+    generate_register(printer, json, "cond");
+    printer_print(printer, ", label ");
+    generate_register(printer, json, "iftrue");
+    printer_print(printer, ", label ");
+    generate_register(printer, json, "iffalse");
+  } else {
+    printer_print(printer, "br label ");
+    generate_register(printer, json, "dest");
+  }
+}
 /* Unary Operations */
 /* Binary Operations */
 static void generate_add(struct printer *printer, struct json *json) {
@@ -72,6 +85,8 @@ static void generate_icmp(struct printer *printer, struct json *json) {
 void generate_instruction(struct printer *printer, struct json *json) {
   if (json_has(json, "ret")) {
     generate_ret(printer, json);
+  } else if (json_has(json, "br")) {
+    generate_br(printer, json);
   } else if (json_has(json, "add")) {
     generate_add(printer, json);
   } else if (json_has(json, "alloca")) {
