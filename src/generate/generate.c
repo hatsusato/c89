@@ -11,11 +11,13 @@ static void generate_header(struct printer *printer) {
   printer_print(printer, "target triple = ");
   printer_quote(printer, "x86_64-unknown-linux-gnu");
   printer_newline(printer);
-  printer_newline(printer);
 }
 static void generate_global_map(struct json_map *map) {
   struct printer *printer = json_map_extra(map);
   struct json *global = json_map_val(map);
+  if (json_map_index(map) == 0) {
+    printer_newline(printer);
+  }
   generate_global(printer, global);
 }
 static void generate_map(struct json_map *map) {
