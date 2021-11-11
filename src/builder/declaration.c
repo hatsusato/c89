@@ -2,6 +2,7 @@
 
 #include "expression.h"
 #include "ir/function.h"
+#include "ir/module.h"
 #include "ir/table.h"
 #include "ir/value.h"
 #include "json/json.h"
@@ -24,15 +25,12 @@ static void builder_init_declarator(struct json *function, struct json *json) {
 }
 static void builder_global_init_declarator(struct json *module,
                                            struct json *json) {
-  struct json *table = json_get(module, "table");
   struct json *identifier = json_find_identifier(json);
-  const char *name = json_get_str(identifier);
-  struct json *pointer = ir_value_new_global(identifier);
-  ir_table_insert(table, name, pointer);
-  json_del(pointer);
+  struct json *pointer = ir_module_make_global(module, identifier);
   if (json_has(json, SYMBOL_ASSIGN)) {
-    struct json *global = json_get(module, "global");
     struct json *value = builder_global_rvalue(json);
+    struct json *global = json_get(module, "global");
+    const char *name = json_get_str(identifier);
     json_insert(global, name, pointer);
     json_insert(pointer, "init", value);
   }
