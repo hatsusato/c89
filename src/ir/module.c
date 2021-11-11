@@ -39,7 +39,8 @@ void ir_module_insert_global(struct json *module, struct json *global) {
   struct json *table = json_get(module, "table");
   ir_table_insert_global(table, global);
 }
-void ir_module_foreach(struct json *module, json_map_t map, void *extra) {
+void ir_module_foreach_function(struct json *module, json_map_t map,
+                                void *extra) {
   struct json *functions = json_get(module, "functions");
   json_foreach(functions, map, extra);
 }
