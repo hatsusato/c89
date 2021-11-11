@@ -3,6 +3,11 @@
 #include "json/json.h"
 #include "util/util.h"
 
+struct json *ir_table_new(void) {
+  struct json *table = json_new_obj();
+  json_set(table, "$global", json_new_obj());
+  return table;
+}
 struct json *ir_table_push(struct json *next) {
   struct json *table = json_new_obj();
   json_insert(table, "$next", next);
