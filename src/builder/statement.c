@@ -3,6 +3,7 @@
 #include "declaration.h"
 #include "expression.h"
 #include "ir/function.h"
+#include "ir/instr.h"
 #include "ir/module.h"
 #include "json/json.h"
 #include "json/map.h"
@@ -18,6 +19,26 @@ static void builder_compound_statement(struct json *function,
 static void builder_expression_statement(struct json *function,
                                          struct json *json) {
   builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
+}
+static void builder_selection_statement(struct json *function,
+                                        struct json *json) {
+  if (json_has(json, SYMBOL_IF)) {
+    struct json *expr =
+        builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
+    struct json *icmp = ir_function_make_instr(function, "icmp");
+    struct json *br = ir_function_make_instr(function, "br");
+    struct json *block_then = ir_function_make_block(function);
+    ir_instr_icmp_cond(icmp, expr);
+    json_insert(br, "cond", icmp);
+    json_insert(br, "iftrue", block_then);
+    builder_statement(function, json_get(json, SYMBOL_THEN_STATEMENT));
+    {
+      struct json *br_then = ir_function_make_instr(function, "br");
+      struct json *block_else = ir_function_make_block(function);
+      json_insert(br_then, "dest", block_else);
+      json_insert(br, "iffalse", block_else);
+    }
+  }
 }
 static void builder_jump_statement(struct json *function, struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
@@ -40,6 +61,9 @@ void builder_statement(struct json *function, struct json *json) {
   } else if (json_has(json, SYMBOL_EXPRESSION_STATEMENT)) {
     builder_expression_statement(function,
                                  json_get(json, SYMBOL_EXPRESSION_STATEMENT));
+  } else if (json_has(json, SYMBOL_SELECTION_STATEMENT)) {
+    builder_selection_statement(function,
+                                json_get(json, SYMBOL_SELECTION_STATEMENT));
   } else if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
     builder_jump_statement(function, json_get(json, SYMBOL_JUMP_STATEMENT));
   } else if (json_has(json, SYMBOL_STATEMENT_LIST)) {
