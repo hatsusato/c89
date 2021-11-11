@@ -26,9 +26,8 @@ static void generate_map(struct json_map *map) {
 
 void generate(struct json *module) {
   struct printer *printer = printer_new_stdout();
-  struct json *global = generate_global_get(module);
   generate_header(printer);
-  json_foreach(global, generate_global_map, printer);
+  ir_module_foreach_global(module, generate_global_map, printer);
   ir_module_foreach(module, generate_map, printer);
   printer_del(printer);
 }
