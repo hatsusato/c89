@@ -3,6 +3,13 @@
 #include "json/json.h"
 #include "util/util.h"
 
+struct json *ir_table_last(struct json *table) {
+  while (json_has(table, "$next")) {
+    table = json_get(table, "$next");
+  }
+  return table;
+}
+
 struct json *ir_table_new(void) {
   struct json *table = json_new_obj();
   json_set(table, "$global", json_new_obj());
@@ -30,4 +37,8 @@ struct json *ir_table_lookup(struct json *table, const char *name) {
     table = json_get(table, "$next");
   }
   return json_null();
+}
+struct json *ir_table_get_global(struct json *table) {
+  struct json *last = ir_table_last(table);
+  return json_get(last, "$global");
 }
