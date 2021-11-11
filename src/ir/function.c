@@ -7,11 +7,6 @@
 #include "table.h"
 #include "value.h"
 
-static void ir_global_push_value(struct json *global, struct json *value) {
-  const char *name = ir_value_get_name(value);
-  json_insert(global, name, value);
-}
-
 struct json *ir_function_new(struct json *table, struct json *global) {
   struct json *function = json_new_obj();
   json_insert(function, "table", table);
@@ -51,6 +46,10 @@ void ir_function_insert_symbol(struct json *function, const char *key,
                                struct json *val) {
   struct json *table = json_get(function, "table");
   ir_table_insert(table, key, val);
+}
+static void ir_global_push_value(struct json *global, struct json *value) {
+  const char *name = ir_value_get_name(value);
+  json_insert(global, name, value);
 }
 struct json *ir_function_lookup_symbol(struct json *function, const char *key) {
   struct json *table = json_get(function, "table");
