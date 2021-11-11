@@ -22,7 +22,6 @@ struct json *ir_module_new_function(struct json *module) {
   struct json *global = json_get(module, "global");
   struct json *function = ir_function_new(table, global);
   json_push(array, function);
-  json_insert(module, "current", function);
   return function;
 }
 void ir_module_foreach(struct json *module, json_map_t map, void *extra) {
