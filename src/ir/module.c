@@ -38,15 +38,6 @@ struct json *ir_module_new_function(struct json *module) {
   json_insert(function, "global", global);
   return function;
 }
-void ir_module_init_function(struct json *module) {
-  struct json *function = ir_module_new_function(module);
-  ir_function_init(function);
-  json_del(function);
-}
-void ir_module_finish_function(struct json *module) {
-  struct json *function = json_get(module, "current");
-  ir_function_finish(function);
-}
 void ir_module_foreach(struct json *module, json_map_t map, void *extra) {
   struct json *functions = json_get(module, "functions");
   json_foreach(functions, map, extra);
