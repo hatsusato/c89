@@ -3,6 +3,7 @@
 #include "json/json.h"
 #include "json/map.h"
 #include "util/util.h"
+#include "value.h"
 
 struct json *ir_table_last(struct json *table) {
   while (json_has(table, "$next")) {
@@ -42,6 +43,13 @@ struct json *ir_table_lookup(struct json *table, const char *name) {
 struct json *ir_table_get_global(struct json *table) {
   struct json *last = ir_table_last(table);
   return json_get(last, "$global");
+}
+void ir_table_insert_value(struct json *table, const char *key,
+                           struct json *value) {
+  if (ir_value_is_global(value)) {
+    struct json *global = ir_table_get_global(table);
+    json_insert(global, key, value);
+  }
 }
 static void ir_table_finish_map(struct json_map *map) {
   struct json *global = json_map_extra(map);
