@@ -12,9 +12,6 @@ static void ir_function_set(struct json *function, const char *key,
   json_insert(function, key, value);
   json_del(value);
 }
-static struct json *ir_function_get_table(struct json *function) {
-  return json_get(function, "table");
-}
 static void ir_global_push_value(struct json *global, struct json *value) {
   const char *name = ir_value_get_name(value);
   json_insert(global, name, value);
@@ -34,22 +31,22 @@ void ir_function_finish(struct json *function) {
   json_insert(function, "current", json_null());
 }
 void ir_function_push_scope(struct json *function) {
-  struct json *table = ir_function_get_table(function);
+  struct json *table = json_get(function, "table");
   struct json *updated = ir_table_push(table);
   ir_function_set(function, "table", updated);
 }
 void ir_function_pop_scope(struct json *function) {
-  struct json *table = ir_function_get_table(function);
+  struct json *table = json_get(function, "table");
   struct json *updated = ir_table_pop(table);
   ir_function_set(function, "table", updated);
 }
 void ir_function_insert_symbol(struct json *function, const char *key,
                                struct json *val) {
-  struct json *table = ir_function_get_table(function);
+  struct json *table = json_get(function, "table");
   ir_table_insert(table, key, val);
 }
 struct json *ir_function_lookup_symbol(struct json *function, const char *key) {
-  struct json *table = ir_function_get_table(function);
+  struct json *table = json_get(function, "table");
   struct json *value = ir_table_lookup(table, key);
   if (ir_value_is_global(value)) {
     struct json *global = json_get(function, "global");
@@ -58,15 +55,15 @@ struct json *ir_function_lookup_symbol(struct json *function, const char *key) {
   return value;
 }
 struct json *ir_function_new_block(struct json *function) {
-  struct json *block = ir_block_new();
   struct json *array = json_get(function, "blocks");
+  struct json *block = ir_block_new();
   json_push(array, block);
   json_insert(function, "current", block);
   return block;
 }
 struct json *ir_function_new_instr(struct json *function, const char *tag) {
-  struct json *instr = ir_instr_new(tag);
   struct json *block = json_get(function, "current");
+  struct json *instr = ir_instr_new(tag);
   ir_block_push_instr(block, instr);
   return instr;
 }
