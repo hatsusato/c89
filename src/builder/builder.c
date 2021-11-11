@@ -10,11 +10,10 @@
 
 static void builder_function_definition(struct json *module,
                                         struct json *json) {
-  struct json *function = ir_module_new_function(module);
+  struct json *function = ir_module_make_function(module);
   ir_function_init(function, json);
   builder_statement(function, json);
   ir_function_finish(function);
-  json_del(function);
 }
 static void builder_external_declaration(struct json_map *map) {
   struct json *module = json_map_extra(map);
