@@ -8,6 +8,13 @@ struct json *ir_instr_new(const char *tag) {
   json_insert(instr, tag, json_null());
   return instr;
 }
+void ir_instr_icmp_cond(struct json *instr, struct json *value) {
+  struct json *zero = json_new_obj();
+  json_set(zero, "immediate", json_new_int(0));
+  json_insert(instr, "lhs", value);
+  json_insert(instr, "rhs", zero);
+  json_del(zero);
+}
 void ir_instr_set_numbering(struct json *instr, int num) {
   assert(!ir_instr_has_numbering(instr));
   json_set(instr, "reg", json_new_int(num));
