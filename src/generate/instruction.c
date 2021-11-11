@@ -61,6 +61,13 @@ static void generate_store(struct printer *printer, struct json *json) {
 }
 /* Conversion Operations */
 /* Other Operations */
+static void generate_icmp(struct printer *printer, struct json *json) {
+  generate_register(printer, json, NULL);
+  printer_print(printer, " = icmp ne i32 ");
+  generate_register(printer, json, "lhs");
+  printer_print(printer, ", ");
+  generate_register(printer, json, "rhs");
+}
 
 void generate_instruction(struct printer *printer, struct json *json) {
   if (json_has(json, "ret")) {
@@ -73,6 +80,8 @@ void generate_instruction(struct printer *printer, struct json *json) {
     generate_load(printer, json);
   } else if (json_has(json, "store")) {
     generate_store(printer, json);
+  } else if (json_has(json, "icmp")) {
+    generate_icmp(printer, json);
   } else {
     json_print(json);
     return;
