@@ -23,9 +23,8 @@ static void builder_jump_statement(struct json *function, struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
     struct json *expr =
         builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
-    struct json *instr = ir_function_new_instr(function, "ret");
+    struct json *instr = ir_function_make_instr(function, "ret");
     json_insert(instr, "value", expr);
-    json_del(instr);
   }
 }
 static void builder_statement_list(struct json_map *map) {

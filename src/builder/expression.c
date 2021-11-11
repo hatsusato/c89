@@ -10,9 +10,8 @@ static struct json *builder_identifier(struct json *function,
                                        struct json *json) {
   const char *name = json_get_str(json);
   struct json *pointer = ir_function_lookup_symbol(function, name);
-  struct json *instr = ir_function_new_instr(function, "load");
+  struct json *instr = ir_function_make_instr(function, "load");
   json_insert(instr, "pointer", pointer);
-  json_del(instr);
   return instr;
 }
 static struct json *builder_primary_expression(struct json *function,
@@ -33,10 +32,9 @@ static struct json *builder_additive_expression(struct json *function,
   if (builder_immediate_additive_expression(json, op1, op2)) {
     return json;
   } else {
-    struct json *instr = ir_function_new_instr(function, "add");
+    struct json *instr = ir_function_make_instr(function, "add");
     json_insert(instr, "lhs", op1);
     json_insert(instr, "rhs", op2);
-    json_del(instr);
     return instr;
   }
 }
@@ -46,10 +44,9 @@ static struct json *builder_assignment_expression(struct json *function,
   struct json *rhs = json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION);
   struct json *value = builder_rvalue(function, rhs);
   struct json *pointer = builder_lvalue(function, lhs);
-  struct json *instr = ir_function_new_instr(function, "store");
+  struct json *instr = ir_function_make_instr(function, "store");
   json_insert(instr, "value", value);
   json_insert(instr, "pointer", pointer);
-  json_del(instr);
   return instr;
 }
 static struct json *builder_initializer(struct json *function,

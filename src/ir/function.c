@@ -59,10 +59,11 @@ struct json *ir_function_make_block(struct json *function) {
   json_del(block);
   return block;
 }
-struct json *ir_function_new_instr(struct json *function, const char *tag) {
+struct json *ir_function_make_instr(struct json *function, const char *tag) {
   struct json *block = json_get(function, "current");
   struct json *instr = ir_instr_new(tag);
   ir_block_push_instr(block, instr);
+  json_del(instr);
   return instr;
 }
 struct json *ir_function_new_alloca(struct json *function) {
