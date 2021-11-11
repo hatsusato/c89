@@ -33,6 +33,7 @@ void ir_function_finish(struct json *function) {
   json_insert(front, "instructions", alloc);
   json_insert(function, "alloc", json_null());
   json_insert(function, "front", json_null());
+  json_insert(function, "current", json_null());
 }
 void ir_function_push_scope(struct json *function) {
   struct json *table = ir_function_get_table(function);
