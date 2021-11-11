@@ -8,8 +8,7 @@
 
 static struct json *builder_identifier(struct json *function,
                                        struct json *json) {
-  const char *name = json_get_str(json);
-  struct json *pointer = ir_function_lookup_symbol(function, name);
+  struct json *pointer = ir_function_lookup_symbol(function, json);
   struct json *instr = ir_function_make_instr(function, "load");
   json_insert(instr, "pointer", pointer);
   return instr;
@@ -69,8 +68,7 @@ static struct json *builder_global_initializer(struct json *json) {
 struct json *builder_lvalue(struct json *function, struct json *json) {
   if (json_has(json, SYMBOL_IDENTIFIER)) {
     struct json *identifier = json_get(json, SYMBOL_IDENTIFIER);
-    const char *name = json_get_str(identifier);
-    return ir_function_lookup_symbol(function, name);
+    return ir_function_lookup_symbol(function, identifier);
   } else {
     return json;
   }

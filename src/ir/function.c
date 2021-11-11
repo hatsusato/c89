@@ -40,13 +40,16 @@ void ir_function_pop_scope(struct json *function) {
   struct json *updated = ir_table_pop(table);
   json_set(function, "table", updated);
 }
-void ir_function_insert_symbol(struct json *function, const char *key,
+void ir_function_insert_symbol(struct json *function, struct json *name,
                                struct json *val) {
   struct json *table = json_get(function, "table");
+  const char *key = json_get_str(name);
   ir_table_insert(table, key, val);
 }
-struct json *ir_function_lookup_symbol(struct json *function, const char *key) {
+struct json *ir_function_lookup_symbol(struct json *function,
+                                       struct json *name) {
   struct json *table = json_get(function, "table");
+  const char *key = json_get_str(name);
   struct json *value = ir_table_lookup(table, key);
   ir_table_insert_global(table, value);
   return value;
