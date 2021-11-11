@@ -31,6 +31,3 @@ struct json *ir_table_lookup(struct json *table, const char *name) {
   }
   return json_null();
 }
-bool_t ir_table_is_global(struct json *table) {
-  return !json_has(table, "$next");
-}
