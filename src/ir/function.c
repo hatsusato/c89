@@ -15,8 +15,7 @@ static void ir_function_set(struct json *function, const char *key,
 static struct json *ir_function_get_table(struct json *function) {
   return json_get(function, "table");
 }
-static void ir_function_push_global(struct json *function, struct json *value) {
-  struct json *global = json_get(function, "global");
+static void ir_global_push_value(struct json *global, struct json *value) {
   const char *name = ir_value_get_name(value);
   json_insert(global, name, value);
 }
@@ -54,7 +53,8 @@ struct json *ir_function_lookup_symbol(struct json *function, const char *key) {
   struct json *table = ir_function_get_table(function);
   struct json *value = ir_table_lookup(table, key);
   if (ir_value_is_global(value)) {
-    ir_function_push_global(function, value);
+    struct json *global = json_get(function, "global");
+    ir_global_push_value(global, value);
   }
   return value;
 }
