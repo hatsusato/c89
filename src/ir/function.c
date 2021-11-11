@@ -69,8 +69,7 @@ struct json *ir_function_new_block(struct json *function) {
 struct json *ir_function_new_instr(struct json *function, const char *tag) {
   struct json *instr = ir_instr_new(tag);
   struct json *block = json_get(function, "current");
-  struct json *array = json_get(block, "instructions");
-  json_push(array, instr);
+  ir_block_push_instr(block, instr);
   return instr;
 }
 struct json *ir_function_new_alloca(struct json *function) {
