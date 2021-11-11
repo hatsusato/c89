@@ -17,14 +17,12 @@ void ir_module_finish(struct json *module) {
   json_merge(global, table);
 }
 struct json *ir_module_new_function(struct json *module) {
-  struct json *function = json_new_obj();
   struct json *array = json_get(module, "functions");
   struct json *table = json_get(module, "table");
   struct json *global = json_get(module, "global");
+  struct json *function = ir_function_new(table, global);
   json_push(array, function);
   json_insert(module, "current", function);
-  json_insert(function, "table", table);
-  json_insert(function, "global", global);
   return function;
 }
 void ir_module_foreach(struct json *module, json_map_t map, void *extra) {

@@ -12,6 +12,12 @@ static void ir_global_push_value(struct json *global, struct json *value) {
   json_insert(global, name, value);
 }
 
+struct json *ir_function_new(struct json *table, struct json *global) {
+  struct json *function = json_new_obj();
+  json_insert(function, "table", table);
+  json_insert(function, "global", global);
+  return function;
+}
 void ir_function_init(struct json *function, struct json *definition) {
   struct json *name = json_find_identifier(definition);
   json_set(function, "blocks", json_new_arr());
@@ -28,6 +34,8 @@ void ir_function_finish(struct json *function) {
   json_insert(function, "alloc", json_null());
   json_insert(function, "front", json_null());
   json_insert(function, "current", json_null());
+  json_insert(function, "table", json_null());
+  json_insert(function, "global", json_null());
 }
 void ir_function_push_scope(struct json *function) {
   struct json *table = json_get(function, "table");
