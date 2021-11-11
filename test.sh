@@ -62,7 +62,7 @@ print() {
   echo "$bold$color$2$normal: ${name#/}" >&2
 }
 check() {
-  compile "$1" >/dev/null || exit
+  compile -s "$1" >/dev/null || exit
   if compare -q "$1"; then
     print 32 PASS "$1"
   else
