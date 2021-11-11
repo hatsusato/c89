@@ -7,12 +7,13 @@
 #include "table.h"
 #include "value.h"
 
+static void ir_function_set(struct json *function, const char *key,
+                            struct json *value) {
+  json_insert(function, key, value);
+  json_del(value);
+}
 static struct json *ir_function_get_table(struct json *function) {
   return json_get(function, "table");
-}
-static void ir_function_set_table(struct json *function, struct json *table) {
-  json_insert(function, "table", table);
-  json_del(table);
 }
 static void ir_function_push_global(struct json *function, struct json *value) {
   struct json *global = json_get(function, "global");
@@ -21,16 +22,9 @@ static void ir_function_push_global(struct json *function, struct json *value) {
 }
 
 void ir_function_init(struct json *function) {
-  struct json *array = json_new_arr();
-  struct json *alloc = json_new_arr();
-  struct json *block;
-  json_insert(function, "blocks", array);
-  json_del(array);
-  json_insert(function, "alloc", alloc);
-  json_del(alloc);
-  block = ir_function_new_block(function);
-  json_insert(function, "front", block);
-  json_del(block);
+  ir_function_set(function, "blocks", json_new_arr());
+  ir_function_set(function, "alloc", json_new_arr());
+  ir_function_set(function, "front", ir_function_new_block(function));
 }
 void ir_function_finish(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
@@ -39,16 +33,17 @@ void ir_function_finish(struct json *function) {
   json_append(alloc, block);
   json_insert(front, "instructions", alloc);
   json_insert(function, "alloc", json_null());
+  json_insert(function, "front", json_null());
 }
 void ir_function_push_scope(struct json *function) {
   struct json *table = ir_function_get_table(function);
   struct json *updated = ir_table_push(table);
-  ir_function_set_table(function, updated);
+  ir_function_set(function, "table", updated);
 }
 void ir_function_pop_scope(struct json *function) {
   struct json *table = ir_function_get_table(function);
   struct json *updated = ir_table_pop(table);
-  ir_function_set_table(function, updated);
+  ir_function_set(function, "table", updated);
 }
 void ir_function_insert_symbol(struct json *function, const char *key,
                                struct json *val) {
