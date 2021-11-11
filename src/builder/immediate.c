@@ -7,9 +7,7 @@
 #define SYMBOL_IMMEDIATE "immediate"
 
 static void builder_insert_immediate(struct json *json, int val) {
-  struct json *immediate = json_new_int(val);
-  json_insert(json, SYMBOL_IMMEDIATE, immediate);
-  json_del(immediate);
+  json_set(json, SYMBOL_IMMEDIATE, json_new_int(val));
 }
 
 void builder_immediate_primary_expression(struct json *json) {

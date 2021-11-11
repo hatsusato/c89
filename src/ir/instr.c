@@ -9,10 +9,8 @@ struct json *ir_instr_new(const char *tag) {
   return instr;
 }
 void ir_instr_set_numbering(struct json *instr, int num) {
-  struct json *reg = json_new_int(num);
   assert(!ir_instr_has_numbering(instr));
-  json_insert(instr, "reg", reg);
-  json_del(reg);
+  json_set(instr, "reg", json_new_int(num));
 }
 bool_t ir_instr_has_numbering(struct json *instr) {
   return json_has(instr, "reg");

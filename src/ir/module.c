@@ -6,18 +6,10 @@
 #include "table.h"
 #include "value.h"
 
-static void ir_module_init_obj(struct json *module, const char *key) {
-  struct json *value = json_new_obj();
-  json_insert(module, key, value);
-  json_del(value);
-}
-
 void ir_module_init(struct json *module) {
-  struct json *array = json_new_arr();
-  json_insert(module, "functions", array);
-  json_del(array);
-  ir_module_init_obj(module, "table");
-  ir_module_init_obj(module, "global");
+  json_set(module, "functions", json_new_arr());
+  json_set(module, "table", json_new_obj());
+  json_set(module, "global", json_new_obj());
 }
 void ir_module_finish(struct json *module) {
   struct json *table = json_get(module, "table");

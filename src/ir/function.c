@@ -7,11 +7,6 @@
 #include "table.h"
 #include "value.h"
 
-static void ir_function_set(struct json *function, const char *key,
-                            struct json *value) {
-  json_insert(function, key, value);
-  json_del(value);
-}
 static void ir_global_push_value(struct json *global, struct json *value) {
   const char *name = ir_value_get_name(value);
   json_insert(global, name, value);
@@ -19,9 +14,9 @@ static void ir_global_push_value(struct json *global, struct json *value) {
 
 void ir_function_init(struct json *function, struct json *definition) {
   struct json *name = json_find_identifier(definition);
-  ir_function_set(function, "blocks", json_new_arr());
-  ir_function_set(function, "alloc", ir_block_new());
-  ir_function_set(function, "front", ir_function_new_block(function));
+  json_set(function, "blocks", json_new_arr());
+  json_set(function, "alloc", ir_block_new());
+  json_set(function, "front", ir_function_new_block(function));
   ir_function_set_name(function, name);
   ir_function_push_scope(function);
 }
@@ -37,12 +32,12 @@ void ir_function_finish(struct json *function) {
 void ir_function_push_scope(struct json *function) {
   struct json *table = json_get(function, "table");
   struct json *updated = ir_table_push(table);
-  ir_function_set(function, "table", updated);
+  json_set(function, "table", updated);
 }
 void ir_function_pop_scope(struct json *function) {
   struct json *table = json_get(function, "table");
   struct json *updated = ir_table_pop(table);
-  ir_function_set(function, "table", updated);
+  json_set(function, "table", updated);
 }
 void ir_function_insert_symbol(struct json *function, const char *key,
                                struct json *val) {
