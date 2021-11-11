@@ -9,6 +9,13 @@
 static void generate_function_map(struct json_map *map) {
   struct printer *printer = json_map_extra(map);
   struct json *block = json_map_val(map);
+  if (0 < json_map_index(map)) {
+    printer_newline(printer);
+    printer_close(printer, "");
+    generate_block_label(printer, block);
+    printer_open(printer, "");
+    printer_newline(printer);
+  }
   generate_block(printer, block);
 }
 void generate_function(struct printer *printer, struct json *function) {
