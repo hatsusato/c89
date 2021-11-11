@@ -11,9 +11,6 @@ static void ir_module_init_obj(struct json *module, const char *key) {
   json_insert(module, key, value);
   json_del(value);
 }
-static struct json *ir_module_get_global(struct json *module) {
-  return json_get(module, "global");
-}
 
 void ir_module_init(struct json *module) {
   struct json *array = json_new_arr();
@@ -24,14 +21,14 @@ void ir_module_init(struct json *module) {
 }
 void ir_module_finish(struct json *module) {
   struct json *table = json_get(module, "table");
-  struct json *global = ir_module_get_global(module);
+  struct json *global = json_get(module, "global");
   json_merge(global, table);
 }
 struct json *ir_module_new_function(struct json *module) {
   struct json *function = json_new_obj();
   struct json *array = json_get(module, "functions");
   struct json *table = json_get(module, "table");
-  struct json *global = ir_module_get_global(module);
+  struct json *global = json_get(module, "global");
   json_push(array, function);
   json_insert(module, "current", function);
   json_insert(function, "table", table);
