@@ -73,6 +73,9 @@ struct json *json_new_arr(void) {
 struct json *json_new_obj(void) {
   return json_alloc(JSON_TAG_OBJ, json_obj_new());
 }
+struct json *json_new_weak(struct json *json) {
+  return json_alloc(JSON_TAG_WEAK, json);
+}
 struct json_int *json_as_int(struct json *self) {
   assert(json_is_int(self));
   return self->data;
@@ -103,4 +106,7 @@ bool_t json_is_arr(struct json *self) {
 }
 bool_t json_is_obj(struct json *self) {
   return json_tag(self) == JSON_TAG_OBJ;
+}
+bool_t json_is_weak(struct json *self) {
+  return json_tag(self) == JSON_TAG_WEAK;
 }
