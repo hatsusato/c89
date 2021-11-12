@@ -29,6 +29,8 @@ static void json_free(struct json *self) {
   case JSON_TAG_OBJ:
     json_obj_del(data);
     break;
+  case JSON_TAG_WEAK:
+    break;
   default:
     assert(false);
     return;
