@@ -2,6 +2,7 @@
 
 #include "immediate.h"
 #include "ir/function.h"
+#include "ir/instr.h"
 #include "json/json.h"
 #include "util/symbol.h"
 #include "util/util.h"
@@ -10,7 +11,7 @@ static struct json *builder_identifier(struct json *function,
                                        struct json *json) {
   struct json *pointer = ir_function_lookup_symbol(function, json);
   struct json *instr = ir_function_make_instr(function, "load");
-  json_insert(instr, "pointer", pointer);
+  ir_instr_insert(instr, "pointer", pointer);
   return instr;
 }
 static struct json *builder_primary_expression(struct json *function,
@@ -32,8 +33,8 @@ static struct json *builder_additive_expression(struct json *function,
     return json;
   } else {
     struct json *instr = ir_function_make_instr(function, "add");
-    json_insert(instr, "lhs", op1);
-    json_insert(instr, "rhs", op2);
+    ir_instr_insert(instr, "lhs", op1);
+    ir_instr_insert(instr, "rhs", op2);
     return instr;
   }
 }
@@ -44,8 +45,8 @@ static struct json *builder_assignment_expression(struct json *function,
   struct json *value = builder_rvalue(function, rhs);
   struct json *pointer = builder_lvalue(function, lhs);
   struct json *instr = ir_function_make_instr(function, "store");
-  json_insert(instr, "value", value);
-  json_insert(instr, "pointer", pointer);
+  ir_instr_insert(instr, "value", value);
+  ir_instr_insert(instr, "pointer", pointer);
   return instr;
 }
 static struct json *builder_initializer(struct json *function,

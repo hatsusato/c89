@@ -2,6 +2,7 @@
 
 #include "expression.h"
 #include "ir/function.h"
+#include "ir/instr.h"
 #include "ir/module.h"
 #include "ir/table.h"
 #include "ir/value.h"
@@ -16,8 +17,8 @@ static void builder_init_declarator(struct json *function, struct json *json) {
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = builder_rvalue(function, json);
     struct json *instr = ir_function_make_instr(function, "store");
-    json_insert(instr, "value", value);
-    json_insert(instr, "pointer", pointer);
+    ir_instr_insert(instr, "value", value);
+    ir_instr_insert(instr, "pointer", pointer);
   }
 }
 static void builder_global_init_declarator(struct json *module,

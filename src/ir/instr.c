@@ -8,6 +8,9 @@ struct json *ir_instr_new(const char *tag) {
   json_insert(instr, tag, json_null());
   return instr;
 }
+void ir_instr_insert(struct json *instr, const char *key, struct json *value) {
+  json_insert(instr, key, value);
+}
 void ir_instr_icmp_cond(struct json *instr, struct json *value) {
   struct json *zero = json_new_obj();
   json_set(zero, "immediate", json_new_int(0));

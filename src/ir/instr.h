@@ -6,6 +6,7 @@
 struct json;
 
 struct json *ir_instr_new(const char *);
+void ir_instr_insert(struct json *, const char *, struct json *);
 void ir_instr_icmp_cond(struct json *, struct json *);
 void ir_instr_set_numbering(struct json *, int);
 bool_t ir_instr_has_numbering(struct json *);
