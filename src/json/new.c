@@ -76,22 +76,6 @@ struct json *json_new_obj(void) {
 struct json *json_new_weak(struct json *json) {
   return json_alloc(JSON_TAG_WEAK, json);
 }
-struct json_int *json_as_int(struct json *self) {
-  assert(json_is_int(self));
-  return self->data;
-}
-struct json_str *json_as_str(struct json *self) {
-  assert(json_is_str(self));
-  return self->data;
-}
-struct json_arr *json_as_arr(struct json *self) {
-  assert(json_is_arr(self));
-  return self->data;
-}
-struct json_obj *json_as_obj(struct json *self) {
-  assert(json_is_obj(self));
-  return self->data;
-}
 bool_t json_is_null(struct json *self) {
   return json_tag(self) == JSON_TAG_NULL;
 }
@@ -109,4 +93,20 @@ bool_t json_is_obj(struct json *self) {
 }
 bool_t json_is_weak(struct json *self) {
   return json_tag(self) == JSON_TAG_WEAK;
+}
+struct json_int *json_as_int(struct json *self) {
+  assert(json_is_int(self));
+  return self->data;
+}
+struct json_str *json_as_str(struct json *self) {
+  assert(json_is_str(self));
+  return self->data;
+}
+struct json_arr *json_as_arr(struct json *self) {
+  assert(json_is_arr(self));
+  return self->data;
+}
+struct json_obj *json_as_obj(struct json *self) {
+  assert(json_is_obj(self));
+  return self->data;
 }
