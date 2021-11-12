@@ -9,7 +9,7 @@ struct json *ir_instr_new(const char *tag) {
   return instr;
 }
 void ir_instr_insert(struct json *instr, const char *key, struct json *value) {
-  json_insert(instr, key, value);
+  json_set(instr, key, json_new_weak(value));
 }
 void ir_instr_icmp_cond(struct json *instr, struct json *value) {
   struct json *zero = json_new_obj();
