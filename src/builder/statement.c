@@ -35,28 +35,27 @@ static void builder_selection_statement(struct json *function,
     struct json *expr =
         builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
     struct json *icmp = ir_function_make_instr(function, "icmp");
+    struct json *block_then = ir_function_make_block(function);
     ir_instr_icmp_cond(icmp, expr);
     ir_instr_insert(br, "cond", icmp);
-    {
-      struct json *block_then, *block_else = json_null();
-      block_then = ir_function_make_block(function);
-      builder_statement(function, json_get(json, SYMBOL_THEN_STATEMENT));
-      if (json_has(json, SYMBOL_ELSE)) {
-        block_else = ir_function_make_block(function);
-        builder_statement(function, json_get(json, SYMBOL_ELSE_STATEMENT));
-      }
+    builder_statement(function, json_get(json, SYMBOL_THEN_STATEMENT));
+    if (json_has(json, SYMBOL_ELSE)) {
+      struct json *block_else = ir_function_make_block(function);
+      builder_statement(function, json_get(json, SYMBOL_ELSE_STATEMENT));
       {
         struct json *block_before = ir_function_get_block(function);
         struct json *block_after = ir_function_make_block(function);
         builder_statement_set_terminator_dest(block_before, block_after);
-        if (json_has(json, SYMBOL_ELSE)) {
-          builder_statement_set_terminator_dest(block_then, block_after);
-        } else {
-          block_else = block_after;
-        }
+        builder_statement_set_terminator_dest(block_then, block_after);
+        ir_instr_insert(br, "iftrue", block_then);
+        ir_instr_insert(br, "iffalse", block_else);
       }
+    } else {
+      struct json *block_before = ir_function_get_block(function);
+      struct json *block_after = ir_function_make_block(function);
+      builder_statement_set_terminator_dest(block_before, block_after);
       ir_instr_insert(br, "iftrue", block_then);
-      ir_instr_insert(br, "iffalse", block_else);
+      ir_instr_insert(br, "iffalse", block_after);
     }
     json_del(br);
   }
