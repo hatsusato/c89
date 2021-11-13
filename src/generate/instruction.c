@@ -15,6 +15,10 @@ static void generate_register(struct printer *printer, struct json *json,
     struct json *immediate = json_get(json, "immediate");
     assert(json_is_int(immediate));
     printer_print(printer, "%d", json_int_get(json_as_int(immediate)));
+  } else if (json_has(json, "label")) {
+    struct json *label = json_get(json, "label");
+    assert(json_is_int(label));
+    printer_print(printer, "%%%d", json_int_get(json_as_int(label)));
   } else if (ir_instr_has_numbering(json)) {
     int reg = ir_instr_get_numbering(json);
     printer_print(printer, "%%%d", reg);
@@ -28,6 +32,19 @@ static void generate_register(struct printer *printer, struct json *json,
 static void generate_ret(struct printer *printer, struct json *json) {
   printer_print(printer, "ret i32 ");
   generate_register(printer, json, "value");
+}
+static void generate_br(struct printer *printer, struct json *json) {
+  if (json_has(json, "cond")) {
+    printer_print(printer, "br i1 ");
+    generate_register(printer, json, "cond");
+    printer_print(printer, ", label ");
+    generate_register(printer, json, "iftrue");
+    printer_print(printer, ", label ");
+    generate_register(printer, json, "iffalse");
+  } else {
+    printer_print(printer, "br label ");
+    generate_register(printer, json, "dest");
+  }
 }
 /* Unary Operations */
 /* Binary Operations */
@@ -61,10 +78,19 @@ static void generate_store(struct printer *printer, struct json *json) {
 }
 /* Conversion Operations */
 /* Other Operations */
+static void generate_icmp(struct printer *printer, struct json *json) {
+  generate_register(printer, json, NULL);
+  printer_print(printer, " = icmp ne i32 ");
+  generate_register(printer, json, "lhs");
+  printer_print(printer, ", ");
+  generate_register(printer, json, "rhs");
+}
 
 void generate_instruction(struct printer *printer, struct json *json) {
   if (json_has(json, "ret")) {
     generate_ret(printer, json);
+  } else if (json_has(json, "br")) {
+    generate_br(printer, json);
   } else if (json_has(json, "add")) {
     generate_add(printer, json);
   } else if (json_has(json, "alloca")) {
@@ -73,6 +99,8 @@ void generate_instruction(struct printer *printer, struct json *json) {
     generate_load(printer, json);
   } else if (json_has(json, "store")) {
     generate_store(printer, json);
+  } else if (json_has(json, "icmp")) {
+    generate_icmp(printer, json);
   } else {
     json_print(json);
     return;

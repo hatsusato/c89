@@ -16,17 +16,17 @@ void ir_function_init(struct json *function, struct json *definition) {
   struct json *name = json_find_identifier(definition);
   json_set(function, "blocks", json_new_arr());
   json_set(function, "alloc", ir_block_new());
-  json_insert(function, "front", ir_function_make_block(function));
+  json_insert(function, "entry", ir_function_make_block(function));
   ir_function_set_name(function, name);
   ir_function_push_scope(function);
 }
 void ir_function_finish(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
-  struct json *front = json_get(function, "front");
-  ir_block_prepend(front, alloc);
+  struct json *entry = json_get(function, "entry");
+  ir_block_prepend(entry, alloc);
   ir_function_pop_scope(function);
   json_insert(function, "alloc", json_null());
-  json_insert(function, "front", json_null());
+  json_insert(function, "entry", json_null());
   json_insert(function, "current", json_null());
   json_insert(function, "table", json_null());
 }
@@ -75,6 +75,9 @@ struct json *ir_function_make_alloca(struct json *function) {
   ir_block_push_instr(alloc, instr);
   json_del(instr);
   return instr;
+}
+struct json *ir_function_get_block(struct json *function) {
+  return json_get(function, "current");
 }
 void ir_function_set_name(struct json *function, struct json *name) {
   json_insert(function, "name", name);

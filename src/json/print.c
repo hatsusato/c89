@@ -50,6 +50,7 @@ static void json_print_obj(struct printer *self, struct json_obj *obj) {
   printer_close(self, "}");
 }
 static void json_print_json(struct printer *self, struct json *json) {
+  json = json_unwrap(json);
   switch (json_tag(json)) {
   case JSON_TAG_NULL:
     json_print_null(self);

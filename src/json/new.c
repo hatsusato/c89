@@ -29,6 +29,8 @@ static void json_free(struct json *self) {
   case JSON_TAG_OBJ:
     json_obj_del(data);
     break;
+  case JSON_TAG_WEAK:
+    break;
   default:
     assert(false);
     return;
@@ -71,34 +73,47 @@ struct json *json_new_arr(void) {
 struct json *json_new_obj(void) {
   return json_alloc(JSON_TAG_OBJ, json_obj_new());
 }
+struct json *json_new_weak(struct json *json) {
+  return json_alloc(JSON_TAG_WEAK, json_unwrap(json));
+}
+bool_t json_is_null(struct json *self) {
+  return json_tag(json_unwrap(self)) == JSON_TAG_NULL;
+}
+bool_t json_is_int(struct json *self) {
+  return json_tag(json_unwrap(self)) == JSON_TAG_INT;
+}
+bool_t json_is_str(struct json *self) {
+  return json_tag(json_unwrap(self)) == JSON_TAG_STR;
+}
+bool_t json_is_arr(struct json *self) {
+  return json_tag(json_unwrap(self)) == JSON_TAG_ARR;
+}
+bool_t json_is_obj(struct json *self) {
+  return json_tag(json_unwrap(self)) == JSON_TAG_OBJ;
+}
+bool_t json_is_weak(struct json *self) {
+  return json_tag(self) == JSON_TAG_WEAK;
+}
 struct json_int *json_as_int(struct json *self) {
+  self = json_unwrap(self);
   assert(json_is_int(self));
   return self->data;
 }
 struct json_str *json_as_str(struct json *self) {
+  self = json_unwrap(self);
   assert(json_is_str(self));
   return self->data;
 }
 struct json_arr *json_as_arr(struct json *self) {
+  self = json_unwrap(self);
   assert(json_is_arr(self));
   return self->data;
 }
 struct json_obj *json_as_obj(struct json *self) {
+  self = json_unwrap(self);
   assert(json_is_obj(self));
   return self->data;
 }
-bool_t json_is_null(struct json *self) {
-  return json_tag(self) == JSON_TAG_NULL;
-}
-bool_t json_is_int(struct json *self) {
-  return json_tag(self) == JSON_TAG_INT;
-}
-bool_t json_is_str(struct json *self) {
-  return json_tag(self) == JSON_TAG_STR;
-}
-bool_t json_is_arr(struct json *self) {
-  return json_tag(self) == JSON_TAG_ARR;
-}
-bool_t json_is_obj(struct json *self) {
-  return json_tag(self) == JSON_TAG_OBJ;
+struct json *json_unwrap(struct json *self) {
+  return json_is_weak(self) ? self->data : self;
 }
