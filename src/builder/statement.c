@@ -68,6 +68,7 @@ static void builder_jump_statement(struct json *function, struct json *json) {
         builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
     ir_instr_insert(instr, "value", expr);
     json_del(instr);
+    ir_function_increment_return(function);
   }
 }
 static void builder_statement_list(struct json_map *map) {

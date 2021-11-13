@@ -19,5 +19,6 @@ struct json *ir_function_get_block(struct json *);
 void ir_function_set_name(struct json *, struct json *);
 const char *ir_function_get_name(struct json *);
 void ir_function_foreach(struct json *, json_map_t, void *);
+void ir_function_increment_return(struct json *);
 
 #endif /* INCLUDE_GUARD_A1347A49_DCBC_4F34_8469_952AF077EE17 */
