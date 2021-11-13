@@ -18,6 +18,9 @@ void ir_instr_icmp_cond(struct json *instr, struct json *value) {
   json_insert(instr, "rhs", zero);
   json_del(zero);
 }
+bool_t ir_instr_check_kind(struct json *instr, const char *tag) {
+  return json_has(instr, tag);
+}
 void ir_instr_set_numbering(struct json *instr, int num) {
   assert(!ir_instr_has_numbering(instr));
   json_set(instr, "reg", json_new_int(num));

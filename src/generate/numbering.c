@@ -7,8 +7,8 @@
 #include "json/map.h"
 
 static bool_t generate_numbering_has_register(struct json *json) {
-  return !(json_has(json, "store") || json_has(json, "ret") ||
-           json_has(json, "br"));
+  return !(ir_instr_check_kind(json, "store") ||
+           ir_instr_check_kind(json, "ret") || ir_instr_check_kind(json, "br"));
 }
 static void generate_numbering_instr(struct json_map *map) {
   index_t *index = json_map_extra(map);

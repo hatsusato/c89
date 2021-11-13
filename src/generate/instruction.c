@@ -87,19 +87,19 @@ static void generate_icmp(struct printer *printer, struct json *json) {
 }
 
 void generate_instruction(struct printer *printer, struct json *json) {
-  if (json_has(json, "ret")) {
+  if (ir_instr_check_kind(json, "ret")) {
     generate_ret(printer, json);
-  } else if (json_has(json, "br")) {
+  } else if (ir_instr_check_kind(json, "br")) {
     generate_br(printer, json);
-  } else if (json_has(json, "add")) {
+  } else if (ir_instr_check_kind(json, "add")) {
     generate_add(printer, json);
-  } else if (json_has(json, "alloca")) {
+  } else if (ir_instr_check_kind(json, "alloca")) {
     generate_alloca(printer, json);
-  } else if (json_has(json, "load")) {
+  } else if (ir_instr_check_kind(json, "load")) {
     generate_load(printer, json);
-  } else if (json_has(json, "store")) {
+  } else if (ir_instr_check_kind(json, "store")) {
     generate_store(printer, json);
-  } else if (json_has(json, "icmp")) {
+  } else if (ir_instr_check_kind(json, "icmp")) {
     generate_icmp(printer, json);
   } else {
     json_print(json);
