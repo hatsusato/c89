@@ -13,7 +13,9 @@ static void generate_block_map(struct json_map *map) {
   generate_instruction(printer, instr);
 }
 void generate_block(struct printer *printer, struct json *json) {
+  struct json *terminator = ir_block_get_terminator(json);
   ir_block_foreach(json, generate_block_map, printer);
+  generate_instruction(printer, terminator);
 }
 void generate_block_label(struct printer *printer, struct json *block) {
   struct json *label = json_get(block, "label");
