@@ -38,7 +38,7 @@ static void builder_selection_statement(struct json *function,
     ir_instr_icmp_cond(icmp, expr);
     ir_instr_insert(br, "cond", icmp);
     {
-      struct json *block_then, *block_else;
+      struct json *block_then, *block_else = json_null();
       block_then = ir_function_make_block(function);
       builder_statement(function, json_get(json, SYMBOL_THEN_STATEMENT));
       if (json_has(json, SYMBOL_ELSE)) {
