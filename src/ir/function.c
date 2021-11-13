@@ -76,6 +76,9 @@ struct json *ir_function_make_alloca(struct json *function) {
   json_del(instr);
   return instr;
 }
+struct json *ir_function_get_block(struct json *function) {
+  return json_get(function, "current");
+}
 void ir_function_set_name(struct json *function, struct json *name) {
   json_insert(function, "name", name);
 }
