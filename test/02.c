@@ -10,7 +10,6 @@ int f1(void) {
   x = x + 5;
   return x;
 }
-#if 0
 int f2(void) {
   int x = 0;
   if (x) {
@@ -33,6 +32,7 @@ int f3(void) {
   x = x + 4;
   return x;
 }
+#if 0
 int f4(void) {
   int x = 0;
   if (x) {
