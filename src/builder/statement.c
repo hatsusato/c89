@@ -63,10 +63,12 @@ static void builder_selection_statement(struct json *function,
 }
 static void builder_jump_statement(struct json *function, struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
+    struct json *block = ir_function_get_block(function);
+    struct json *instr = ir_block_new_terminator(block, "ret");
     struct json *expr =
         builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
-    struct json *instr = ir_function_make_instr(function, "ret");
     ir_instr_insert(instr, "value", expr);
+    json_del(instr);
   }
 }
 static void builder_statement_list(struct json_map *map) {
