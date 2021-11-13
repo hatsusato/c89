@@ -87,7 +87,9 @@ static void generate_icmp(struct printer *printer, struct json *json) {
 }
 
 void generate_instruction(struct printer *printer, struct json *json) {
-  if (ir_instr_check_kind(json, "ret")) {
+  if (ir_instr_is_skip(json)) {
+    return;
+  } else if (ir_instr_check_kind(json, "ret")) {
     generate_ret(printer, json);
   } else if (ir_instr_check_kind(json, "br")) {
     generate_br(printer, json);

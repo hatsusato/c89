@@ -17,6 +17,7 @@ void ir_function_init(struct json *function, struct json *definition) {
   json_set(function, "blocks", json_new_arr());
   json_set(function, "alloc", ir_block_new());
   json_insert(function, "entry", ir_function_make_block(function));
+  json_insert(function, "retval", ir_function_make_alloca(function));
   json_set(function, "retcount", json_new_int(0));
   ir_function_set_name(function, name);
   ir_function_push_scope(function);
@@ -24,12 +25,17 @@ void ir_function_init(struct json *function, struct json *definition) {
 void ir_function_finish(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
   struct json *entry = json_get(function, "entry");
+  struct json *count = json_get(function, "retcount");
   ir_block_prepend(entry, alloc);
   ir_function_pop_scope(function);
   json_insert(function, "alloc", json_null());
   json_insert(function, "entry", json_null());
   json_insert(function, "current", json_null());
   json_insert(function, "table", json_null());
+  if (json_int_get(json_as_int(count)) < 2) {
+    struct json *retval = json_get(function, "retval");
+    ir_instr_set_skip(retval);
+  }
 }
 void ir_function_push_scope(struct json *function) {
   struct json *table = json_get(function, "table");

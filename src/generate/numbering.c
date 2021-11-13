@@ -13,7 +13,9 @@ static bool_t generate_numbering_has_register(struct json *json) {
 static void generate_numbering_instr(struct json_map *map) {
   index_t *index = json_map_extra(map);
   struct json *instr = json_map_val(map);
-  if (generate_numbering_has_register(instr)) {
+  if (ir_instr_is_skip(instr)) {
+    return;
+  } else if (generate_numbering_has_register(instr)) {
     ir_instr_set_numbering(instr, (*index)++);
   }
 }
