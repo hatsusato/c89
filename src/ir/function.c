@@ -41,14 +41,13 @@ void ir_function_finish(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
   struct json *entry = json_get(function, "entry");
   struct json *retobj = json_get(function, "retobj");
-  struct json *count = json_get(retobj, "retcount");
   ir_block_prepend(entry, alloc);
   ir_function_pop_scope(function);
   json_insert(function, "alloc", json_null());
   json_insert(function, "entry", json_null());
   json_insert(function, "current", json_null());
   json_insert(function, "table", json_null());
-  if (json_int_get(json_as_int(count)) < 2) {
+  if (ir_return_get_count(retobj) < 2) {
     struct json *retval = json_get(retobj, "retval");
     ir_instr_set_skip(retval);
   } else {

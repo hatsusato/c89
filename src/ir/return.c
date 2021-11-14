@@ -24,3 +24,7 @@ struct json *ir_return_new(struct json *retval) {
   json_set(retobj, "retblock", retblock);
   return retobj;
 }
+int ir_return_get_count(struct json *retobj) {
+  struct json *retcount = json_get(retobj, "retcount");
+  return json_int_get(json_as_int(retcount));
+}
