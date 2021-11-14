@@ -23,9 +23,12 @@ static void builder_expression_statement(struct json *function,
 }
 static void builder_statement_set_terminator_dest(struct json *block_before,
                                                   struct json *block_after) {
-  struct json *br = ir_block_new_terminator(block_before, "br");
-  ir_instr_insert(br, "dest", block_after);
-  json_del(br);
+  struct json *terminator = ir_block_get_terminator(block_before);
+  if (json_is_null(terminator)) {
+    struct json *br = ir_block_new_terminator(block_before, "br");
+    ir_instr_insert(br, "dest", block_after);
+    json_del(br);
+  }
 }
 static void builder_selection_statement(struct json *function,
                                         struct json *json) {
