@@ -14,6 +14,9 @@ static void ir_function_push_return_block(struct json *function) {
   struct json *array = json_get(function, "blocks");
   json_push(array, retblock);
 }
+static void ir_function_clear(struct json *function, const char *key) {
+  json_insert(function, key, json_null());
+}
 
 struct json *ir_function_new(struct json *table) {
   struct json *function = json_new_obj();
@@ -36,10 +39,10 @@ void ir_function_finish(struct json *function) {
   struct json *retobj = json_get(function, "retobj");
   ir_block_prepend(entry, alloc);
   ir_function_pop_scope(function);
-  json_insert(function, "alloc", json_null());
-  json_insert(function, "entry", json_null());
-  json_insert(function, "current", json_null());
-  json_insert(function, "table", json_null());
+  ir_function_clear(function, "alloc");
+  ir_function_clear(function, "entry");
+  ir_function_clear(function, "current");
+  ir_function_clear(function, "table");
   if (ir_return_get_count(retobj) < 2) {
     ir_return_skip(retobj);
   } else {
