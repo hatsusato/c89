@@ -6,6 +6,7 @@
 struct json;
 
 struct json *ir_block_new(void);
+struct json *ir_block_make_instr(struct json *, const char *);
 void ir_block_push_instr(struct json *, struct json *);
 struct json *ir_block_new_terminator(struct json *, const char *);
 struct json *ir_block_get_terminator(struct json *);
