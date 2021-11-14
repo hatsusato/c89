@@ -17,9 +17,10 @@ struct json *ir_block_make_instr(struct json *block, const char *tag) {
   json_del(instr);
   return instr;
 }
-struct json *ir_block_new_terminator(struct json *block, const char *tag) {
+struct json *ir_block_make_terminator(struct json *block, const char *tag) {
   struct json *terminator = ir_instr_new(tag);
   json_insert(block, "terminator", terminator);
+  json_del(terminator);
   return terminator;
 }
 struct json *ir_block_get_terminator(struct json *block) {

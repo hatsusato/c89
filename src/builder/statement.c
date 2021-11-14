@@ -25,16 +25,15 @@ static void builder_statement_set_terminator_dest(struct json *block_before,
                                                   struct json *block_after) {
   struct json *terminator = ir_block_get_terminator(block_before);
   if (json_is_null(terminator)) {
-    struct json *br = ir_block_new_terminator(block_before, "br");
+    struct json *br = ir_block_make_terminator(block_before, "br");
     ir_instr_insert(br, "dest", block_after);
-    json_del(br);
   }
 }
 static void builder_selection_statement(struct json *function,
                                         struct json *json) {
   if (json_has(json, SYMBOL_IF)) {
     struct json *block = ir_function_get_block(function);
-    struct json *br = ir_block_new_terminator(block, "br");
+    struct json *br = ir_block_make_terminator(block, "br");
     struct json *expr =
         builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
     struct json *icmp = ir_function_make_instr(function, "icmp");
@@ -60,17 +59,15 @@ static void builder_selection_statement(struct json *function,
       ir_instr_insert(br, "iftrue", block_then);
       ir_instr_insert(br, "iffalse", block_after);
     }
-    json_del(br);
   }
 }
 static void builder_jump_statement(struct json *function, struct json *json) {
   if (json_has(json, SYMBOL_RETURN)) {
     struct json *block = ir_function_get_block(function);
-    struct json *instr = ir_block_new_terminator(block, "ret");
+    struct json *instr = ir_block_make_terminator(block, "ret");
     struct json *expr =
         builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
     ir_instr_insert(instr, "value", expr);
-    json_del(instr);
     ir_function_increment_return(function);
   }
 }
