@@ -52,21 +52,8 @@ void ir_function_finish(struct json *function) {
     struct json *retval = json_get(retobj, "retval");
     ir_instr_set_skip(retval);
   } else {
-    struct json *retval = json_get(retobj, "retval");
-    struct json *retblock = json_get(retobj, "retblock");
     ir_function_foreach(function, ir_function_finish_return, retobj);
     ir_function_push_return_block(function);
-    {
-      struct json *load = ir_instr_new("load");
-      ir_block_push_instr(retblock, load);
-      ir_instr_insert(load, "pointer", retval);
-      json_del(load);
-      {
-        struct json *ret = ir_block_new_terminator(retblock, "ret");
-        ir_instr_insert(ret, "value", load);
-        json_del(ret);
-      }
-    }
   }
 }
 void ir_function_push_scope(struct json *function) {
