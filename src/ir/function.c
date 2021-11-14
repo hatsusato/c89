@@ -17,22 +17,28 @@ void ir_function_init(struct json *function, struct json *definition) {
   json_set(function, "blocks", json_new_arr());
   json_set(function, "alloc", ir_block_new());
   json_insert(function, "entry", ir_function_make_block(function));
-  json_insert(function, "retval", ir_function_make_alloca(function));
-  json_set(function, "retcount", json_new_int(0));
   ir_function_set_name(function, name);
   ir_function_push_scope(function);
+  json_set(function, "retobj", json_new_obj());
+  {
+    struct json *retobj = json_get(function, "retobj");
+    json_insert(retobj, "retval", ir_function_make_alloca(function));
+    json_set(retobj, "retcount", json_new_int(0));
+    json_set(retobj, "retblock", ir_block_new());
+  }
 }
 static void ir_function_finish_return(struct json_map *map) {
   struct json *block = json_map_val(map);
-  struct json *function = json_map_extra(map);
-  struct json *retval = json_get(function, "retval");
-  struct json *retblock = json_get(function, "retblock");
+  struct json *retobj = json_map_extra(map);
+  struct json *retval = json_get(retobj, "retval");
+  struct json *retblock = json_get(retobj, "retblock");
   ir_block_finish_return(block, retval, retblock);
 }
 void ir_function_finish(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
   struct json *entry = json_get(function, "entry");
-  struct json *count = json_get(function, "retcount");
+  struct json *retobj = json_get(function, "retobj");
+  struct json *count = json_get(retobj, "retcount");
   ir_block_prepend(entry, alloc);
   ir_function_pop_scope(function);
   json_insert(function, "alloc", json_null());
@@ -40,13 +46,12 @@ void ir_function_finish(struct json *function) {
   json_insert(function, "current", json_null());
   json_insert(function, "table", json_null());
   if (json_int_get(json_as_int(count)) < 2) {
-    struct json *retval = json_get(function, "retval");
+    struct json *retval = json_get(retobj, "retval");
     ir_instr_set_skip(retval);
   } else {
-    struct json *retval = json_get(function, "retval");
-    struct json *retblock = ir_block_new();
-    json_insert(function, "retblock", retblock);
-    ir_function_foreach(function, ir_function_finish_return, function);
+    struct json *retval = json_get(retobj, "retval");
+    struct json *retblock = json_get(retobj, "retblock");
+    ir_function_foreach(function, ir_function_finish_return, retobj);
     {
       struct json *array = json_get(function, "blocks");
       struct json *load = ir_instr_new("load");
@@ -60,7 +65,6 @@ void ir_function_finish(struct json *function) {
         json_del(ret);
       }
     }
-    json_del(retblock);
   }
 }
 void ir_function_push_scope(struct json *function) {
@@ -124,7 +128,8 @@ void ir_function_foreach(struct json *function, json_map_t map, void *extra) {
   json_foreach(blocks, map, extra);
 }
 void ir_function_increment_return(struct json *function) {
-  struct json *count = json_get(function, "retcount");
+  struct json *retobj = json_get(function, "retobj");
+  struct json *count = json_get(retobj, "retcount");
   int num = json_int_get(json_as_int(count));
   json_int_set(json_as_int(count), num + 1);
 }
