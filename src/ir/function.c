@@ -87,17 +87,11 @@ struct json *ir_function_make_block(struct json *function) {
 }
 struct json *ir_function_make_instr(struct json *function, const char *tag) {
   struct json *block = json_get(function, "current");
-  struct json *instr = ir_instr_new(tag);
-  ir_block_push_instr(block, instr);
-  json_del(instr);
-  return instr;
+  return ir_block_make_instr(block, tag);
 }
 struct json *ir_function_make_alloca(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
-  struct json *instr = ir_instr_new("alloca");
-  ir_block_push_instr(alloc, instr);
-  json_del(instr);
-  return instr;
+  return ir_block_make_instr(alloc, "alloca");
 }
 struct json *ir_function_get_block(struct json *function) {
   return json_get(function, "current");

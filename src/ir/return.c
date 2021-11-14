@@ -7,11 +7,9 @@
 
 static struct json *ir_return_block_new(struct json *retval) {
   struct json *retblock = ir_block_new();
-  struct json *load = ir_instr_new("load");
+  struct json *load = ir_block_make_instr(retblock, "load");
   struct json *ret = ir_block_new_terminator(retblock, "ret");
-  ir_block_push_instr(retblock, load);
   ir_instr_insert(load, "pointer", retval);
-  json_del(load);
   ir_instr_insert(ret, "value", load);
   json_del(ret);
   return retblock;
@@ -46,11 +44,9 @@ void ir_return_finish_map(struct json_map *map) {
   struct json *terminator = ir_block_get_terminator(block);
   if (ir_instr_check_kind(terminator, "ret")) {
     struct json *value = json_get(terminator, "value");
-    struct json *instr = ir_instr_new("store");
-    ir_block_push_instr(block, instr);
+    struct json *instr = ir_block_make_instr(block, "store");
     ir_instr_insert(instr, "value", value);
     ir_instr_insert(instr, "pointer", retval);
-    json_del(instr);
     {
       struct json *br = ir_block_new_terminator(block, "br");
       ir_instr_insert(br, "dest", retblock);

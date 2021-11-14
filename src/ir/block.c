@@ -17,10 +17,6 @@ struct json *ir_block_make_instr(struct json *block, const char *tag) {
   json_del(instr);
   return instr;
 }
-void ir_block_push_instr(struct json *block, struct json *instr) {
-  struct json *array = json_get(block, "instructions");
-  json_push(array, instr);
-}
 struct json *ir_block_new_terminator(struct json *block, const char *tag) {
   struct json *terminator = ir_instr_new(tag);
   json_insert(block, "terminator", terminator);
