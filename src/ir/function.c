@@ -48,8 +48,7 @@ void ir_function_finish(struct json *function) {
   json_insert(function, "current", json_null());
   json_insert(function, "table", json_null());
   if (ir_return_get_count(retobj) < 2) {
-    struct json *retval = json_get(retobj, "retval");
-    ir_instr_set_skip(retval);
+    ir_return_skip(retobj);
   } else {
     ir_function_foreach(function, ir_function_finish_return, retobj);
     ir_function_push_return_block(function);

@@ -28,3 +28,7 @@ int ir_return_get_count(struct json *retobj) {
   struct json *retcount = json_get(retobj, "retcount");
   return json_int_get(json_as_int(retcount));
 }
+void ir_return_skip(struct json *retobj) {
+  struct json *retval = json_get(retobj, "retval");
+  ir_instr_set_skip(retval);
+}
