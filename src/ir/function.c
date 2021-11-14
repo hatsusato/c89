@@ -115,7 +115,5 @@ void ir_function_foreach(struct json *function, json_map_t map, void *extra) {
 }
 void ir_function_increment_return(struct json *function) {
   struct json *retobj = json_get(function, "retobj");
-  struct json *count = json_get(retobj, "retcount");
-  int num = json_int_get(json_as_int(count));
-  json_int_set(json_as_int(count), num + 1);
+  ir_return_increment(retobj);
 }
