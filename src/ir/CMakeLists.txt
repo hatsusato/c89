@@ -4,6 +4,7 @@ target_sources(ir PRIVATE
   function.c
   instr.c
   module.c
+  return.c
   table.c
   value.c
   )
