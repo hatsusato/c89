@@ -17,6 +17,11 @@ static void ir_function_push_return_block(struct json *function) {
 static void ir_function_clear(struct json *function, const char *key) {
   json_insert(function, key, json_null());
 }
+static void ir_function_finish_alloc(struct json *function) {
+  struct json *alloc = json_get(function, "alloc");
+  struct json *entry = json_get(function, "entry");
+  ir_block_prepend(entry, alloc);
+}
 
 struct json *ir_function_new(struct json *table) {
   struct json *function = json_new_obj();
@@ -34,10 +39,8 @@ void ir_function_init(struct json *function, struct json *definition) {
   ir_function_push_scope(function);
 }
 void ir_function_finish(struct json *function) {
-  struct json *alloc = json_get(function, "alloc");
-  struct json *entry = json_get(function, "entry");
   struct json *retobj = json_get(function, "retobj");
-  ir_block_prepend(entry, alloc);
+  ir_function_finish_alloc(function);
   ir_function_pop_scope(function);
   ir_function_clear(function, "alloc");
   ir_function_clear(function, "entry");
