@@ -10,19 +10,18 @@
 
 struct json *ir_function_new(struct json *table) {
   struct json *function = json_new_obj();
+  json_set(function, "alloc", ir_block_new());
+  json_set(function, "blocks", json_new_arr());
   json_insert(function, "table", table);
   return function;
 }
 void ir_function_init(struct json *function, struct json *definition) {
   struct json *name = json_find_identifier(definition);
-  struct json *retval;
-  json_set(function, "blocks", json_new_arr());
-  json_set(function, "alloc", ir_block_new());
+  struct json *retval = ir_function_make_alloca(function);
+  json_set(function, "retobj", ir_return_new(retval));
   json_insert(function, "entry", ir_function_make_block(function));
   ir_function_set_name(function, name);
   ir_function_push_scope(function);
-  retval = ir_function_make_alloca(function);
-  json_set(function, "retobj", ir_return_new(retval));
 }
 static void ir_function_finish_return(struct json_map *map) {
   struct json *block = json_map_val(map);
