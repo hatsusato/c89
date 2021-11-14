@@ -4,6 +4,7 @@
 #include "instr.h"
 #include "json/json.h"
 #include "json/map.h"
+#include "return.h"
 #include "table.h"
 #include "value.h"
 
@@ -14,18 +15,14 @@ struct json *ir_function_new(struct json *table) {
 }
 void ir_function_init(struct json *function, struct json *definition) {
   struct json *name = json_find_identifier(definition);
+  struct json *retval;
   json_set(function, "blocks", json_new_arr());
   json_set(function, "alloc", ir_block_new());
   json_insert(function, "entry", ir_function_make_block(function));
   ir_function_set_name(function, name);
   ir_function_push_scope(function);
-  json_set(function, "retobj", json_new_obj());
-  {
-    struct json *retobj = json_get(function, "retobj");
-    json_insert(retobj, "retval", ir_function_make_alloca(function));
-    json_set(retobj, "retcount", json_new_int(0));
-    json_set(retobj, "retblock", ir_block_new());
-  }
+  retval = ir_function_make_alloca(function);
+  json_set(function, "retobj", ir_return_new(retval));
 }
 static void ir_function_finish_return(struct json_map *map) {
   struct json *block = json_map_val(map);
