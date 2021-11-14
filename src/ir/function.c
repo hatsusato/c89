@@ -30,13 +30,6 @@ void ir_function_init(struct json *function, struct json *definition) {
   ir_function_set_name(function, name);
   ir_function_push_scope(function);
 }
-static void ir_function_finish_return(struct json_map *map) {
-  struct json *block = json_map_val(map);
-  struct json *retobj = json_map_extra(map);
-  struct json *retval = json_get(retobj, "retval");
-  struct json *retblock = json_get(retobj, "retblock");
-  ir_block_finish_return(block, retval, retblock);
-}
 void ir_function_finish(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
   struct json *entry = json_get(function, "entry");
@@ -50,7 +43,7 @@ void ir_function_finish(struct json *function) {
   if (ir_return_get_count(retobj) < 2) {
     ir_return_skip(retobj);
   } else {
-    ir_function_foreach(function, ir_function_finish_return, retobj);
+    ir_function_foreach(function, ir_return_finish_map, retobj);
     ir_function_push_return_block(function);
   }
 }

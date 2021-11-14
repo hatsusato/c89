@@ -33,20 +33,3 @@ void ir_block_foreach(struct json *block, json_map_t map, void *extra) {
   struct json *instructions = json_get(block, "instructions");
   json_foreach(instructions, map, extra);
 }
-void ir_block_finish_return(struct json *block, struct json *retval,
-                            struct json *retblock) {
-  struct json *terminator = ir_block_get_terminator(block);
-  if (ir_instr_check_kind(terminator, "ret")) {
-    struct json *value = json_get(terminator, "value");
-    struct json *instr = ir_instr_new("store");
-    ir_block_push_instr(block, instr);
-    ir_instr_insert(instr, "value", value);
-    ir_instr_insert(instr, "pointer", retval);
-    json_del(instr);
-    {
-      struct json *br = ir_block_new_terminator(block, "br");
-      ir_instr_insert(br, "dest", retblock);
-      json_del(br);
-    }
-  }
-}
