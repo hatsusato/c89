@@ -35,20 +35,22 @@ void ir_return_skip(struct json *retobj) {
   struct json *retval = json_get(retobj, "retval");
   ir_instr_set_skip(retval);
 }
+static void ir_return_set_block_terminator(struct json *retobj,
+                                           struct json *block) {
+  struct json *retblock = json_get(retobj, "retblock");
+  struct json *br = ir_block_make_terminator(block, "br");
+  ir_instr_insert(br, "dest", retblock);
+}
 void ir_return_finish_map(struct json_map *map) {
   struct json *block = json_map_val(map);
   struct json *retobj = json_map_extra(map);
   struct json *retval = json_get(retobj, "retval");
-  struct json *retblock = json_get(retobj, "retblock");
   struct json *terminator = ir_block_get_terminator(block);
   if (ir_instr_check_kind(terminator, "ret")) {
     struct json *value = json_get(terminator, "value");
     struct json *instr = ir_block_make_instr(block, "store");
     ir_instr_insert(instr, "value", value);
     ir_instr_insert(instr, "pointer", retval);
-    {
-      struct json *br = ir_block_make_terminator(block, "br");
-      ir_instr_insert(br, "dest", retblock);
-    }
+    ir_return_set_block_terminator(retobj, block);
   }
 }
