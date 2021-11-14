@@ -22,6 +22,13 @@ void ir_function_init(struct json *function, struct json *definition) {
   ir_function_set_name(function, name);
   ir_function_push_scope(function);
 }
+static void ir_function_finish_return(struct json_map *map) {
+  struct json *block = json_map_val(map);
+  struct json *function = json_map_extra(map);
+  struct json *retval = json_get(function, "retval");
+  struct json *retblock = json_get(function, "retblock");
+  ir_block_finish_return(block, retval, retblock);
+}
 void ir_function_finish(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
   struct json *entry = json_get(function, "entry");
@@ -35,6 +42,25 @@ void ir_function_finish(struct json *function) {
   if (json_int_get(json_as_int(count)) < 2) {
     struct json *retval = json_get(function, "retval");
     ir_instr_set_skip(retval);
+  } else {
+    struct json *retval = json_get(function, "retval");
+    struct json *retblock = ir_block_new();
+    json_insert(function, "retblock", retblock);
+    ir_function_foreach(function, ir_function_finish_return, function);
+    {
+      struct json *array = json_get(function, "blocks");
+      struct json *load = ir_instr_new("load");
+      json_push(array, retblock);
+      ir_block_push_instr(retblock, load);
+      ir_instr_insert(load, "pointer", retval);
+      json_del(load);
+      {
+        struct json *ret = ir_block_new_terminator(retblock, "ret");
+        ir_instr_insert(ret, "value", load);
+        json_del(ret);
+      }
+    }
+    json_del(retblock);
   }
 }
 void ir_function_push_scope(struct json *function) {
