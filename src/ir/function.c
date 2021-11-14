@@ -8,6 +8,13 @@
 #include "table.h"
 #include "value.h"
 
+static void ir_function_push_return_block(struct json *function) {
+  struct json *retobj = json_get(function, "retobj");
+  struct json *retblock = json_get(retobj, "retblock");
+  struct json *array = json_get(function, "blocks");
+  json_push(array, retblock);
+}
+
 struct json *ir_function_new(struct json *table) {
   struct json *function = json_new_obj();
   json_set(function, "alloc", ir_block_new());
@@ -48,10 +55,9 @@ void ir_function_finish(struct json *function) {
     struct json *retval = json_get(retobj, "retval");
     struct json *retblock = json_get(retobj, "retblock");
     ir_function_foreach(function, ir_function_finish_return, retobj);
+    ir_function_push_return_block(function);
     {
-      struct json *array = json_get(function, "blocks");
       struct json *load = ir_instr_new("load");
-      json_push(array, retblock);
       ir_block_push_instr(retblock, load);
       ir_instr_insert(load, "pointer", retval);
       json_del(load);
