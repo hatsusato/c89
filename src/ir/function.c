@@ -8,12 +8,6 @@
 #include "table.h"
 #include "value.h"
 
-static void ir_function_push_return_block(struct json *function) {
-  struct json *retobj = json_get(function, "retobj");
-  struct json *retblock = json_get(retobj, "retblock");
-  struct json *array = json_get(function, "blocks");
-  json_push(array, retblock);
-}
 static void ir_function_clear(struct json *function, const char *key) {
   json_insert(function, key, json_null());
 }
@@ -49,8 +43,9 @@ void ir_function_finish(struct json *function) {
   if (ir_return_get_count(retobj) < 2) {
     ir_return_skip(retobj);
   } else {
+    struct json *retblock = json_get(retobj, "retblock");
     ir_function_foreach(function, ir_return_finish_map, retobj);
-    ir_function_push_return_block(function);
+    ir_function_push_block(function, retblock);
   }
 }
 void ir_function_push_scope(struct json *function) {
@@ -78,10 +73,8 @@ struct json *ir_function_lookup_symbol(struct json *function,
   return value;
 }
 struct json *ir_function_make_block(struct json *function) {
-  struct json *array = json_get(function, "blocks");
   struct json *block = ir_block_new();
-  json_push(array, block);
-  json_insert(function, "current", block);
+  ir_function_push_block(function, block);
   json_del(block);
   return block;
 }
@@ -95,6 +88,11 @@ struct json *ir_function_make_alloca(struct json *function) {
 }
 struct json *ir_function_get_block(struct json *function) {
   return json_get(function, "current");
+}
+void ir_function_push_block(struct json *function, struct json *block) {
+  struct json *array = json_get(function, "blocks");
+  json_push(array, block);
+  json_insert(function, "current", block);
 }
 void ir_function_set_name(struct json *function, struct json *name) {
   json_insert(function, "name", name);
