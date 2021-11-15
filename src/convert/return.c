@@ -18,9 +18,19 @@ static void convert_return_statement_list_map(struct json_map *map) {
     json_map_finish(map);
   }
 }
+static bool_t convert_return_compound_statement(struct json *json) {
+  bool_t has_return = false;
+  json_foreach(json_get(json, SYMBOL_STATEMENT_LIST),
+               convert_return_statement_list_map, &has_return);
+  return has_return;
+}
 static bool_t convert_return_statement(struct json *json) {
   bool_t has_return = false;
-  if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
+  if (false) {
+  } else if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
+    has_return = convert_return_compound_statement(
+        json_get(json, SYMBOL_COMPOUND_STATEMENT));
+  } else if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
     has_return =
         convert_return_jump_statement(json_get(json, SYMBOL_JUMP_STATEMENT));
   }
