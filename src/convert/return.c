@@ -40,14 +40,14 @@ static bool_t convert_return_statement(struct json *json) {
   bool_t has_return = false;
   if (false) {
   } else if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
-    has_return = convert_return_compound_statement(
-        json_get(json, SYMBOL_COMPOUND_STATEMENT));
+    json = json_get(json, SYMBOL_COMPOUND_STATEMENT);
+    has_return = convert_return_compound_statement(json);
   } else if (json_has(json, SYMBOL_SELECTION_STATEMENT)) {
-    has_return = convert_return_selection_statement(
-        json_get(json, SYMBOL_SELECTION_STATEMENT));
+    json = json_get(json, SYMBOL_SELECTION_STATEMENT);
+    has_return = convert_return_selection_statement(json);
   } else if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
-    has_return =
-        convert_return_jump_statement(json_get(json, SYMBOL_JUMP_STATEMENT));
+    json = json_get(json, SYMBOL_JUMP_STATEMENT);
+    has_return = convert_return_jump_statement(json);
   }
   if (has_return) {
     json_insert(json, "has-return", json_null());
