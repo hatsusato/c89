@@ -27,8 +27,11 @@ struct json *ir_function_new(struct json *table) {
 void ir_function_init(struct json *function, struct json *definition) {
   struct json *name = json_find_identifier(definition);
   struct json *retval = ir_function_make_alloca(function);
+  struct json *entry = ir_block_new();
   json_set(function, "retobj", ir_return_new(retval));
-  json_insert(function, "entry", ir_function_make_block(function));
+  ir_function_push_block(function, entry);
+  json_insert(function, "entry", entry);
+  json_del(entry);
   ir_function_set_name(function, name);
   ir_function_push_scope(function);
 }
@@ -71,12 +74,6 @@ struct json *ir_function_lookup_symbol(struct json *function,
   struct json *value = ir_table_lookup(table, key);
   ir_table_insert_global(table, value);
   return value;
-}
-struct json *ir_function_make_block(struct json *function) {
-  struct json *block = ir_block_new();
-  ir_function_push_block(function, block);
-  json_del(block);
-  return block;
 }
 struct json *ir_function_make_instr(struct json *function, const char *tag) {
   struct json *block = json_get(function, "current");
