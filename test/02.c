@@ -1,13 +1,13 @@
 int f1(void) {
-  int x = 1;
+  int x = 0;
   if (x) {
-    x = x + 2;
+    x = x + 1;
     if (x) {
-      x = x + 3;
+      x = x + 2;
     }
-    x = x + 4;
+    x = x + 3;
   }
-  x = x + 5;
+  x = x + 4;
   return x;
 }
 int f2(void) {
@@ -17,10 +17,21 @@ int f2(void) {
   } else {
     x = x + 2;
   }
-  x = x + 3;
   return x;
 }
 int f3(void) {
+  int x = 0;
+  if (x) {
+    x = x + 1;
+    if (x) {
+      x = x + 2;
+    } else {
+      x = x + 3;
+    }
+  }
+  return x;
+}
+int f4(void) {
   int x = 0;
   if (x) {
     x = x + 1;
@@ -29,61 +40,95 @@ int f3(void) {
   } else {
     x = x + 3;
   }
-  x = x + 4;
   return x;
 }
-int f4(void) {
+int f5(void) {
   int x = 0;
   if (x) {
     x = x + 1;
     if (x) {
       x = x + 2;
-      return x + 3;
+      return x;
     }
-    x = x + 4;
+    x = x + 3;
   }
-  x = x + 5;
-  return x + 6;
-}
-#if 0
-int f5(void) {
-  int x = 1;
-  if (x) {
-    int y = x + 2;
-    if (y) {
-      int z = y + 3;
-      return z;
-    }
-    return y;
-  }
+  x = x + 4;
   return x;
 }
 int f6(void) {
-  int x = 1;
+  int x = 0;
   if (x) {
-    int y = x + 2;
-    if (y) {
-      int z = y + 3;
-      return z;
+    x = x + 1;
+    if (x) {
+      x = x + 2;
+    } else {
+      x = x + 3;
+      return x;
     }
-    return y;
+  }
+  return x;
+}
+#if 0
+int f7(void) {
+  int x = 0;
+  if (x) {
+    x = x + 1;
+    return x;
   } else {
+    x = x + 2;
     return x;
   }
 }
-int f7(void) {
-  int x = 1;
+int f8(void) {
+  int x = 0;
   if (x) {
-    int y = x + 2;
-    int x = y + 2;
-    if (y) {
-      int z = y + 3;
-      int x = z + 3;
-      return x;
-    }
+    x = x + 1;
+    return x;
+  } else if (x) {
+    x = x + 2;
     return x;
   } else {
+    x = x + 3;
     return x;
   }
+}
+int f9(void) {
+  int x = 0;
+  if (x) {
+    x = x + 1;
+    if (x) {
+      x = x + 2;
+      if (x) {
+        x = x + 4;
+      } else {
+        return x;
+      }
+      return x;
+    } else {
+      if (x) {
+        x = x + 4;
+        return x;
+      } else {
+        return x;
+      }
+    }
+  } else {
+    if (x) {
+      x = x + 2;
+      if (x) {
+        x = x + 4;
+      } else {
+        return x;
+      }
+    } else {
+      if (x) {
+        x = x + 4;
+      } else {
+        return x;
+      }
+      return x;
+    }
+  }
+  return x;
 }
 #endif
