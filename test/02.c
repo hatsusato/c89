@@ -68,7 +68,6 @@ int f6(void) {
   }
   return x;
 }
-#if 0
 int f7(void) {
   int x = 0;
   if (x) {
@@ -131,4 +130,3 @@ int f9(void) {
   }
   return x;
 }
-#endif
