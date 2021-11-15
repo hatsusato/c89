@@ -28,6 +28,7 @@ target_link_libraries(unittest PRIVATE
   )
 
 add_subdirectory(builder)
+add_subdirectory(convert)
 add_subdirectory(generate)
 add_subdirectory(ir)
 add_subdirectory(json)
