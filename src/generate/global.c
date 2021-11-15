@@ -2,9 +2,10 @@
 
 #include "json/json.h"
 #include "printer/printer.h"
+#include "util/symbol.h"
 
 static void generate_immediate(struct printer *printer, struct json *json) {
-  struct json *immediate = json_get(json, "immediate");
+  struct json *immediate = json_get(json, SYMBOL_IMMEDIATE);
   if (json_is_int(immediate)) {
     int val = json_int_get(json_as_int(immediate));
     printer_print(printer, "%d", val);
@@ -18,7 +19,7 @@ void generate_global(struct printer *printer, struct json *json) {
   }
   generate_global_name(printer, json);
   printer_print(printer, " = global i32 ");
-  if (json_has(init, "immediate")) {
+  if (json_has(init, SYMBOL_IMMEDIATE)) {
     generate_immediate(printer, init);
   } else {
     printer_print(printer, "0");

@@ -4,6 +4,7 @@ target_sources(main PRIVATE
   )
 target_link_libraries(main PRIVATE
   builder
+  convert
   generate
   json
   options
@@ -28,6 +29,7 @@ target_link_libraries(unittest PRIVATE
   )
 
 add_subdirectory(builder)
+add_subdirectory(convert)
 add_subdirectory(generate)
 add_subdirectory(ir)
 add_subdirectory(json)

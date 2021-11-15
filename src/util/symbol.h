@@ -176,4 +176,8 @@
 #define SYMBOL_COND_EXPRESSION "cond-expression"
 #define SYMBOL_ITER_EXPRESSION "iter-expression"
 
+#define SYMBOL_EXPR_TAG "expr-tag"
+#define SYMBOL_IMMEDIATE "immediate"
+#define SYMBOL_HAS_RETURN "has-return"
+
 #endif /* INCLUDE_GUARD_E0353946_9774_492C_A775_4B26998B01E8 */
