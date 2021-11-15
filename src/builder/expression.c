@@ -70,7 +70,7 @@ struct json *builder_lvalue(struct json *function, struct json *json) {
 }
 struct json *builder_rvalue(struct json *function, struct json *json) {
   const char *tag = json_get_str(json_get(json, SYMBOL_EXPR_TAG));
-  if (json_has(json, "immediate")) {
+  if (json_has(json, SYMBOL_IMMEDIATE)) {
     return json;
   } else if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
     return builder_primary_expression(function, json);
@@ -86,7 +86,7 @@ struct json *builder_rvalue(struct json *function, struct json *json) {
 }
 struct json *builder_global_rvalue(struct json *json) {
   const char *tag = json_get_str(json_get(json, SYMBOL_EXPR_TAG));
-  if (json_has(json, "immediate")) {
+  if (json_has(json, SYMBOL_IMMEDIATE)) {
     return json;
   } else if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
     return json;

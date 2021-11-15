@@ -6,7 +6,7 @@
 #include "util/util.h"
 
 static void convert_immediate_insert(struct json *json, int val) {
-  json_set(json, "immediate", json_new_int(val));
+  json_set(json, SYMBOL_IMMEDIATE, json_new_int(val));
 }
 static void convert_immediate_expression(struct json *);
 
@@ -22,8 +22,8 @@ static void convert_immediate_additive_expression(struct json *json) {
   struct json *rhs = json_get(json, SYMBOL_MULTIPLICATIVE_EXPRESSION);
   convert_immediate_expression(lhs);
   convert_immediate_expression(rhs);
-  lhs = json_get(lhs, "immediate");
-  rhs = json_get(rhs, "immediate");
+  lhs = json_get(lhs, SYMBOL_IMMEDIATE);
+  rhs = json_get(rhs, SYMBOL_IMMEDIATE);
   if (json_is_int(lhs) && json_is_int(rhs)) {
     int lval = json_int_get(json_as_int(lhs));
     int rval = json_int_get(json_as_int(rhs));

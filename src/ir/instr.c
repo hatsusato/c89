@@ -1,6 +1,7 @@
 #include "instr.h"
 
 #include "json/json.h"
+#include "util/symbol.h"
 #include "util/util.h"
 
 struct json *ir_instr_new(const char *tag) {
@@ -13,7 +14,7 @@ void ir_instr_insert(struct json *instr, const char *key, struct json *value) {
 }
 void ir_instr_icmp_cond(struct json *instr, struct json *value) {
   struct json *zero = json_new_obj();
-  json_set(zero, "immediate", json_new_int(0));
+  json_set(zero, SYMBOL_IMMEDIATE, json_new_int(0));
   json_insert(instr, "lhs", value);
   json_insert(instr, "rhs", zero);
   json_del(zero);

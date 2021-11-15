@@ -4,6 +4,7 @@
 #include "ir/instr.h"
 #include "json/json.h"
 #include "printer/printer.h"
+#include "util/symbol.h"
 #include "util/util.h"
 
 static void generate_register(struct printer *printer, struct json *json,
@@ -11,8 +12,8 @@ static void generate_register(struct printer *printer, struct json *json,
   if (key && json_has(json, key)) {
     json = json_get(json, key);
   }
-  if (json_has(json, "immediate")) {
-    struct json *immediate = json_get(json, "immediate");
+  if (json_has(json, SYMBOL_IMMEDIATE)) {
+    struct json *immediate = json_get(json, SYMBOL_IMMEDIATE);
     assert(json_is_int(immediate));
     printer_print(printer, "%d", json_int_get(json_as_int(immediate)));
   } else if (json_has(json, "label")) {
