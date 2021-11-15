@@ -7,6 +7,9 @@
 
 static bool_t convert_return_statement(struct json *);
 
+static bool_t convert_return_jump_statement(struct json *json) {
+  return json_has(json, SYMBOL_RETURN);
+}
 static void convert_return_statement_list_map(struct json_map *map) {
   bool_t *has_return = json_map_extra(map);
   struct json *json = json_map_val(map);
@@ -17,6 +20,10 @@ static void convert_return_statement_list_map(struct json_map *map) {
 }
 static bool_t convert_return_statement(struct json *json) {
   bool_t has_return = false;
+  if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
+    has_return =
+        convert_return_jump_statement(json_get(json, SYMBOL_JUMP_STATEMENT));
+  }
   if (has_return) {
     json_insert(json, "has-return", json_null());
   }
