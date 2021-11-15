@@ -44,7 +44,11 @@ static void convert_immediate_expression(struct json *json) {
 }
 static void convert_immediate_visitor(struct json_visitor *visitor,
                                       struct json *json) {
-  if (json_has(json, SYMBOL_EXPRESSION)) {
+  if (json_has(json, SYMBOL_ASSIGNMENT_EXPRESSION)) {
+    convert_immediate_expression(json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION));
+  } else if (json_has(json, SYMBOL_CONSTANT_EXPRESSION)) {
+    convert_immediate_expression(json_get(json, SYMBOL_CONSTANT_EXPRESSION));
+  } else if (json_has(json, SYMBOL_EXPRESSION)) {
     convert_immediate_expression(json_get(json, SYMBOL_EXPRESSION));
   } else {
     json_visit_foreach(visitor, json);

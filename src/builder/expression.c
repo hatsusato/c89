@@ -90,8 +90,9 @@ struct json *builder_rvalue(struct json *function, struct json *json) {
 }
 struct json *builder_global_rvalue(struct json *json) {
   const char *tag = json_get_str(json_get(json, "tag"));
-  if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
-    builder_immediate_primary_expression(json);
+  if (json_has(json, "immediate")) {
+    return json;
+  } else if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
     return json;
   } else if (json_has(json, SYMBOL_INITIALIZER)) {
     return builder_global_initializer(json_get(json, SYMBOL_INITIALIZER));
