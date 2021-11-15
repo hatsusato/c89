@@ -41,7 +41,7 @@ static void convert_immediate_assignment_expression(struct json *json) {
   convert_immediate_expression(rhs);
 }
 static void convert_immediate_expression(struct json *json) {
-  const char *tag = json_get_str(json_get(json, "tag"));
+  const char *tag = json_get_str(json_get(json, SYMBOL_EXPR_TAG));
   if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
     convert_immediate_primary_expression(json);
   } else if (util_streq(tag, SYMBOL_ADDITIVE_EXPRESSION)) {
@@ -52,7 +52,7 @@ static void convert_immediate_expression(struct json *json) {
 }
 static void convert_immediate_visitor(struct json_visitor *visitor,
                                       struct json *json) {
-  if (json_has(json, "tag")) {
+  if (json_has(json, SYMBOL_EXPR_TAG)) {
     convert_immediate_expression(json);
   } else {
     json_visit_foreach(visitor, json);

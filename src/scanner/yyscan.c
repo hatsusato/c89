@@ -58,6 +58,6 @@ YYSCAN_TYPE yyscan_json_set(YYSCAN_TYPE obj, const char *key, YYSCAN_TYPE val) {
 }
 YYSCAN_TYPE yyscan_json_expr(const char *tag) {
   struct json *expr = yyscan_json_obj();
-  yyscan_json_set(expr, "tag", json_new_str(tag));
+  yyscan_json_set(expr, SYMBOL_EXPR_TAG, json_new_str(tag));
   return expr;
 }
