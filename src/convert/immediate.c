@@ -34,12 +34,20 @@ static void convert_immediate_additive_expression(struct json *json) {
     }
   }
 }
+static void convert_immediate_assignment_expression(struct json *json) {
+  struct json *lhs = json_get(json, SYMBOL_UNARY_EXPRESSION);
+  struct json *rhs = json_get(json, SYMBOL_ASSIGNMENT_EXPRESSION);
+  convert_immediate_expression(lhs);
+  convert_immediate_expression(rhs);
+}
 static void convert_immediate_expression(struct json *json) {
   const char *tag = json_get_str(json_get(json, "tag"));
   if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
     convert_immediate_primary_expression(json);
   } else if (util_streq(tag, SYMBOL_ADDITIVE_EXPRESSION)) {
     convert_immediate_additive_expression(json);
+  } else if (util_streq(tag, SYMBOL_ASSIGNMENT_EXPRESSION)) {
+    convert_immediate_assignment_expression(json);
   }
 }
 static void convert_immediate_visitor(struct json_visitor *visitor,
