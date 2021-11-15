@@ -52,7 +52,9 @@ static void builder_selection_statement(struct json *function,
       ir_instr_insert(br, "cond", icmp);
       ir_instr_insert(br, "iftrue", block_then);
       ir_instr_insert(br, "iffalse", block_else);
-      ir_function_next_block(function, block_next);
+      if (!json_has(json, SYMBOL_HAS_RETURN)) {
+        ir_function_next_block(function, block_next);
+      }
     }
     json_del(block_next);
   }

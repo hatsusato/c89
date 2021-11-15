@@ -50,7 +50,7 @@ static bool_t convert_return_statement(struct json *json) {
     has_return = convert_return_jump_statement(json);
   }
   if (has_return) {
-    json_insert(json, "has-return", json_null());
+    json_insert(json, SYMBOL_HAS_RETURN, json_null());
   }
   return has_return;
 }
