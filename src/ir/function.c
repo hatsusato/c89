@@ -92,6 +92,16 @@ void ir_function_push_block(struct json *function, struct json *block) {
   json_push(array, block);
   json_insert(function, "current", block);
 }
+void ir_function_next_block(struct json *function, struct json *block) {
+  struct json *prev = ir_function_get_block(function);
+  struct json *next = ir_function_get_next(function);
+  struct json *terminator = ir_block_get_terminator(prev);
+  if (json_is_null(terminator)) {
+    terminator = ir_block_make_terminator(prev, "br");
+    ir_instr_insert(terminator, "dest", json_is_null(next) ? block : next);
+  }
+  ir_function_push_block(function, block);
+}
 void ir_function_set_next(struct json *function, struct json *next) {
   json_insert(function, "next", next);
 }
