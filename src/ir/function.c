@@ -22,6 +22,7 @@ struct json *ir_function_new(struct json *table) {
   json_set(function, "alloc", ir_block_new());
   json_set(function, "blocks", json_new_arr());
   json_insert(function, "table", table);
+  json_insert(function, "next", json_null());
   return function;
 }
 void ir_function_init(struct json *function, struct json *definition) {
@@ -90,6 +91,12 @@ void ir_function_push_block(struct json *function, struct json *block) {
   struct json *array = json_get(function, "blocks");
   json_push(array, block);
   json_insert(function, "current", block);
+}
+void ir_function_set_next(struct json *function, struct json *next) {
+  json_insert(function, "next", next);
+}
+struct json *ir_function_get_next(struct json *function) {
+  return json_get(function, "next");
 }
 void ir_function_set_name(struct json *function, struct json *name) {
   json_insert(function, "name", name);
