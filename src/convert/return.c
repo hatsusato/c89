@@ -10,6 +10,18 @@ static bool_t convert_return_statement(struct json *);
 static bool_t convert_return_jump_statement(struct json *json) {
   return json_has(json, SYMBOL_RETURN);
 }
+static bool_t convert_return_selection_statement(struct json *json) {
+  if (json_has(json, SYMBOL_IF)) {
+    bool_t then_has_return =
+        convert_return_statement(json_get(json, SYMBOL_THEN_STATEMENT));
+    if (json_has(json, SYMBOL_ELSE)) {
+      bool_t else_has_return =
+          convert_return_statement(json_get(json, SYMBOL_ELSE_STATEMENT));
+      return then_has_return && else_has_return;
+    }
+  }
+  return false;
+}
 static void convert_return_statement_list_map(struct json_map *map) {
   bool_t *has_return = json_map_extra(map);
   struct json *json = json_map_val(map);
@@ -30,6 +42,9 @@ static bool_t convert_return_statement(struct json *json) {
   } else if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
     has_return = convert_return_compound_statement(
         json_get(json, SYMBOL_COMPOUND_STATEMENT));
+  } else if (json_has(json, SYMBOL_SELECTION_STATEMENT)) {
+    has_return = convert_return_selection_statement(
+        json_get(json, SYMBOL_SELECTION_STATEMENT));
   } else if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
     has_return =
         convert_return_jump_statement(json_get(json, SYMBOL_JUMP_STATEMENT));
