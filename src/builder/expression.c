@@ -1,6 +1,5 @@
 #include "expression.h"
 
-#include "immediate.h"
 #include "ir/function.h"
 #include "ir/instr.h"
 #include "json/json.h"
@@ -16,7 +15,6 @@ static struct json *builder_identifier(struct json *function,
 }
 static struct json *builder_primary_expression(struct json *function,
                                                struct json *json) {
-  builder_immediate_primary_expression(json);
   if (json_has(json, SYMBOL_IDENTIFIER)) {
     return builder_identifier(function, json_get(json, SYMBOL_IDENTIFIER));
   } else {
@@ -29,14 +27,10 @@ static struct json *builder_additive_expression(struct json *function,
   struct json *rhs = json_get(json, SYMBOL_MULTIPLICATIVE_EXPRESSION);
   struct json *op1 = builder_rvalue(function, lhs);
   struct json *op2 = builder_rvalue(function, rhs);
-  if (builder_immediate_additive_expression(json, op1, op2)) {
-    return json;
-  } else {
-    struct json *instr = ir_function_make_instr(function, "add");
-    ir_instr_insert(instr, "lhs", op1);
-    ir_instr_insert(instr, "rhs", op2);
-    return instr;
-  }
+  struct json *instr = ir_function_make_instr(function, "add");
+  ir_instr_insert(instr, "lhs", op1);
+  ir_instr_insert(instr, "rhs", op2);
+  return instr;
 }
 static struct json *builder_assignment_expression(struct json *function,
                                                   struct json *json) {
@@ -76,7 +70,9 @@ struct json *builder_lvalue(struct json *function, struct json *json) {
 }
 struct json *builder_rvalue(struct json *function, struct json *json) {
   const char *tag = json_get_str(json_get(json, "tag"));
-  if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
+  if (json_has(json, "immediate")) {
+    return json;
+  } else if (util_streq(tag, SYMBOL_PRIMARY_EXPRESSION)) {
     return builder_primary_expression(function, json);
   } else if (util_streq(tag, SYMBOL_ADDITIVE_EXPRESSION)) {
     return builder_additive_expression(function, json);
