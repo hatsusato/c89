@@ -36,7 +36,7 @@ bool_t ir_instr_has_numbering(struct json *instr) {
   return json_has(instr, "reg");
 }
 int ir_instr_get_numbering(struct json *instr) {
-  struct json *reg = json_get(instr, "reg");
+  struct json *reg = json_obj_get(instr, "reg");
   assert(json_is_int(reg));
   return json_int_get(reg);
 }

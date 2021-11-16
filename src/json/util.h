@@ -9,7 +9,6 @@ struct json;
 void json_print(struct json *);
 void json_insert_str(struct json *, const char *, const char *);
 bool_t json_has(struct json *, const char *);
-struct json *json_get(struct json *, const char *);
 struct json *json_find(struct json *, const char *);
 const char *json_get_str(struct json *);
 struct json *json_find_identifier(struct json *);

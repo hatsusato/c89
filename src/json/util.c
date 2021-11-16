@@ -24,9 +24,6 @@ void json_insert_str(struct json *self, const char *key, const char *val) {
 bool_t json_has(struct json *self, const char *key) {
   return json_is_obj(self) ? json_obj_has(self, key) : false;
 }
-struct json *json_get(struct json *self, const char *key) {
-  return json_is_obj(self) ? json_obj_get(self, key) : json_null();
-}
 const char *json_get_str(struct json *json) {
   return json_is_str(json) ? json_str_get(json) : NULL;
 }
@@ -52,13 +49,13 @@ static void json_find_identifier_visitor(struct json_visitor *visitor,
     while (!json_is_null(json)) {
       if (json_has(json, SYMBOL_IDENTIFIER)) {
         struct json_find_extra *extra = json_visit_extra(visitor);
-        extra->result = json_get(json, SYMBOL_IDENTIFIER);
+        extra->result = json_obj_get(json, SYMBOL_IDENTIFIER);
         json_visit_finish(visitor);
         return;
       } else if (json_has(json, SYMBOL_DECLARATOR)) {
-        json = json_get(json, SYMBOL_DECLARATOR);
+        json = json_obj_get(json, SYMBOL_DECLARATOR);
       } else {
-        json = json_get(json, SYMBOL_DIRECT_DECLARATOR);
+        json = json_obj_get(json, SYMBOL_DIRECT_DECLARATOR);
       }
     }
   } else {
@@ -89,7 +86,7 @@ void json_merge(struct json *dst, struct json *src) {
   json_foreach(src, json_merge_map, dst);
 }
 struct json *json_take(struct json *json, const char *key) {
-  struct json *val = json_get(json, key);
+  struct json *val = json_obj_get(json, key);
   json_ref(val);
   return val;
 }

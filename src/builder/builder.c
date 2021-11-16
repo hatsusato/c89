@@ -20,9 +20,9 @@ static void builder_external_declaration(struct json_map *map) {
   struct json *json = json_map_val(map);
   if (json_has(json, SYMBOL_FUNCTION_DEFINITION)) {
     builder_function_definition(module,
-                                json_get(json, SYMBOL_FUNCTION_DEFINITION));
+                                json_obj_get(json, SYMBOL_FUNCTION_DEFINITION));
   } else if (json_has(json, SYMBOL_DECLARATION)) {
-    builder_global_declaration(module, json_get(json, SYMBOL_DECLARATION));
+    builder_global_declaration(module, json_obj_get(json, SYMBOL_DECLARATION));
   }
 }
 static void builder_translation_unit(struct json *module, struct json *json) {
@@ -30,7 +30,7 @@ static void builder_translation_unit(struct json *module, struct json *json) {
 }
 
 struct json *build(struct json *json) {
-  struct json *translation_unit = json_get(json, SYMBOL_TRANSLATION_UNIT);
+  struct json *translation_unit = json_obj_get(json, SYMBOL_TRANSLATION_UNIT);
   struct json *module = json_new_obj();
   ir_module_init(module);
   builder_translation_unit(module, translation_unit);

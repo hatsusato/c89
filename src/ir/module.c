@@ -13,12 +13,12 @@ void ir_module_init(struct json *module) {
   json_obj_set(module, "table", table);
 }
 void ir_module_finish(struct json *module) {
-  struct json *table = json_get(module, "table");
+  struct json *table = json_obj_get(module, "table");
   ir_table_finish(table);
 }
 struct json *ir_module_make_function(struct json *module) {
-  struct json *array = json_get(module, "functions");
-  struct json *table = json_get(module, "table");
+  struct json *array = json_obj_get(module, "functions");
+  struct json *table = json_obj_get(module, "table");
   struct json *function = ir_function_new(table);
   json_arr_push(array, function);
   json_del(function);
@@ -26,7 +26,7 @@ struct json *ir_module_make_function(struct json *module) {
 }
 struct json *ir_module_make_global(struct json *module,
                                    struct json *identifier) {
-  struct json *table = json_get(module, "table");
+  struct json *table = json_obj_get(module, "table");
   const char *name = json_get_str(identifier);
   struct json *global = ir_value_new_global(identifier);
   assert(!json_has(table, "$next"));
@@ -35,17 +35,17 @@ struct json *ir_module_make_global(struct json *module,
   return global;
 }
 void ir_module_insert_global(struct json *module, struct json *global) {
-  struct json *table = json_get(module, "table");
+  struct json *table = json_obj_get(module, "table");
   ir_table_insert_global(table, global);
 }
 void ir_module_foreach_function(struct json *module, json_map_t map,
                                 void *extra) {
-  struct json *functions = json_get(module, "functions");
+  struct json *functions = json_obj_get(module, "functions");
   json_foreach(functions, map, extra);
 }
 void ir_module_foreach_global(struct json *module, json_map_t map,
                               void *extra) {
-  struct json *table = json_get(module, "table");
+  struct json *table = json_obj_get(module, "table");
   struct json *global = ir_table_get_global(table);
   json_foreach(global, map, extra);
 }

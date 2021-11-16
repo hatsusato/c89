@@ -19,7 +19,7 @@ static void builder_compound_statement(struct json *function,
 }
 static void builder_expression_statement(struct json *function,
                                          struct json *json) {
-  builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
+  builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
 }
 static struct json *builder_statement_next_block(struct json *function,
                                                  struct json *json) {
@@ -35,7 +35,7 @@ static void builder_selection_statement(struct json *function,
   if (json_has(json, SYMBOL_IF)) {
     struct json *block_prev = ir_function_get_block(function);
     struct json *expr =
-        builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
+        builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
     struct json *icmp = ir_function_make_instr(function, "icmp");
     struct json *br = ir_block_make_terminator(block_prev, "br");
     struct json *block_next = ir_block_new();
@@ -43,11 +43,11 @@ static void builder_selection_statement(struct json *function,
     ir_function_set_next(function, block_next);
     {
       struct json *block_then = builder_statement_next_block(
-          function, json_get(json, SYMBOL_THEN_STATEMENT));
+          function, json_obj_get(json, SYMBOL_THEN_STATEMENT));
       struct json *block_else = block_next;
       if (json_has(json, SYMBOL_ELSE)) {
         block_else = builder_statement_next_block(
-            function, json_get(json, SYMBOL_ELSE_STATEMENT));
+            function, json_obj_get(json, SYMBOL_ELSE_STATEMENT));
       }
       ir_instr_insert(br, "cond", icmp);
       ir_instr_insert(br, "iftrue", block_then);
@@ -65,7 +65,7 @@ static void builder_jump_statement(struct json *function, struct json *json) {
     struct json *block = ir_function_get_block(function);
     struct json *instr = ir_block_make_terminator(block, "ret");
     struct json *expr =
-        builder_rvalue(function, json_get(json, SYMBOL_EXPRESSION));
+        builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
     ir_instr_insert(instr, "value", expr);
     ir_function_increment_return(function);
   }
@@ -79,17 +79,17 @@ static void builder_statement_list(struct json_map *map) {
 void builder_statement(struct json *function, struct json *json) {
   if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
     builder_compound_statement(function,
-                               json_get(json, SYMBOL_COMPOUND_STATEMENT));
+                               json_obj_get(json, SYMBOL_COMPOUND_STATEMENT));
   } else if (json_has(json, SYMBOL_EXPRESSION_STATEMENT)) {
-    builder_expression_statement(function,
-                                 json_get(json, SYMBOL_EXPRESSION_STATEMENT));
+    builder_expression_statement(
+        function, json_obj_get(json, SYMBOL_EXPRESSION_STATEMENT));
   } else if (json_has(json, SYMBOL_SELECTION_STATEMENT)) {
     builder_selection_statement(function,
-                                json_get(json, SYMBOL_SELECTION_STATEMENT));
+                                json_obj_get(json, SYMBOL_SELECTION_STATEMENT));
   } else if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
-    builder_jump_statement(function, json_get(json, SYMBOL_JUMP_STATEMENT));
+    builder_jump_statement(function, json_obj_get(json, SYMBOL_JUMP_STATEMENT));
   } else if (json_has(json, SYMBOL_STATEMENT_LIST)) {
-    json_foreach(json_get(json, SYMBOL_STATEMENT_LIST), builder_statement_list,
-                 function);
+    json_foreach(json_obj_get(json, SYMBOL_STATEMENT_LIST),
+                 builder_statement_list, function);
   }
 }

@@ -54,19 +54,19 @@ static void builder_global_declaration_list(struct json_map *map) {
 
 void builder_declaration(struct json *function, struct json *json) {
   if (json_has(json, SYMBOL_INIT_DECLARATOR_LIST)) {
-    json_foreach(json_get(json, SYMBOL_INIT_DECLARATOR_LIST),
+    json_foreach(json_obj_get(json, SYMBOL_INIT_DECLARATOR_LIST),
                  builder_init_declarator_list, function);
   } else if (json_has(json, SYMBOL_DECLARATION_LIST)) {
-    json_foreach(json_get(json, SYMBOL_DECLARATION_LIST),
+    json_foreach(json_obj_get(json, SYMBOL_DECLARATION_LIST),
                  builder_declaration_list, function);
   }
 }
 void builder_global_declaration(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_INIT_DECLARATOR_LIST)) {
-    json_foreach(json_get(json, SYMBOL_INIT_DECLARATOR_LIST),
+    json_foreach(json_obj_get(json, SYMBOL_INIT_DECLARATOR_LIST),
                  builder_global_init_declarator_list, module);
   } else if (json_has(json, SYMBOL_DECLARATION_LIST)) {
-    json_foreach(json_get(json, SYMBOL_DECLARATION_LIST),
+    json_foreach(json_obj_get(json, SYMBOL_DECLARATION_LIST),
                  builder_global_declaration_list, module);
   }
 }

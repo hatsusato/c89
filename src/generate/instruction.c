@@ -10,14 +10,14 @@
 static void generate_register(struct printer *printer, struct json *json,
                               const char *key) {
   if (key && json_has(json, key)) {
-    json = json_get(json, key);
+    json = json_obj_get(json, key);
   }
   if (json_has(json, SYMBOL_IMMEDIATE)) {
-    struct json *immediate = json_get(json, SYMBOL_IMMEDIATE);
+    struct json *immediate = json_obj_get(json, SYMBOL_IMMEDIATE);
     assert(json_is_int(immediate));
     printer_print(printer, "%d", json_int_get(immediate));
   } else if (json_has(json, "label")) {
-    struct json *label = json_get(json, "label");
+    struct json *label = json_obj_get(json, "label");
     assert(json_is_int(label));
     printer_print(printer, "%%%d", json_int_get(label));
   } else if (ir_instr_has_numbering(json)) {

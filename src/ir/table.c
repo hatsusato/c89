@@ -7,7 +7,7 @@
 
 struct json *ir_table_last(struct json *table) {
   while (json_has(table, "$next")) {
-    table = json_get(table, "$next");
+    table = json_obj_get(table, "$next");
   }
   return table;
 }
@@ -23,7 +23,7 @@ struct json *ir_table_push(struct json *next) {
   return table;
 }
 struct json *ir_table_pop(struct json *table) {
-  struct json *next = json_get(table, "$next");
+  struct json *next = json_obj_get(table, "$next");
   json_ref(next);
   return next;
 }
@@ -34,15 +34,15 @@ void ir_table_insert(struct json *table, const char *name, struct json *value) {
 struct json *ir_table_lookup(struct json *table, const char *name) {
   while (!json_is_null(table)) {
     if (json_has(table, name)) {
-      return json_get(table, name);
+      return json_obj_get(table, name);
     }
-    table = json_get(table, "$next");
+    table = json_obj_get(table, "$next");
   }
   return json_null();
 }
 struct json *ir_table_get_global(struct json *table) {
   struct json *last = ir_table_last(table);
-  return json_get(last, "$global");
+  return json_obj_get(last, "$global");
 }
 void ir_table_insert_global(struct json *table, struct json *value) {
   if (ir_value_is_global(value)) {
@@ -62,5 +62,5 @@ static void ir_table_finish_map(struct json_map *map) {
 void ir_table_finish(struct json *table) {
   assert(!json_has(table, "$next"));
   assert(json_has(table, "$global"));
-  json_foreach(table, ir_table_finish_map, json_get(table, "$global"));
+  json_foreach(table, ir_table_finish_map, json_obj_get(table, "$global"));
 }
