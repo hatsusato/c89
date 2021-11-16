@@ -10,6 +10,12 @@
 #include "json/map.h"
 #include "util/symbol.h"
 
+static void builder_labeled_statement(struct json *function,
+                                      struct json *json) {
+  if (json_has(json, SYMBOL_DEFAULT)) {
+    builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
+  }
+}
 static void builder_compound_statement(struct json *function,
                                        struct json *json) {
   ir_function_push_scope(function);
@@ -77,7 +83,10 @@ static void builder_statement_list(struct json_map *map) {
 }
 
 void builder_statement(struct json *function, struct json *json) {
-  if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
+  if (json_has(json, SYMBOL_LABELED_STATEMENT)) {
+    builder_labeled_statement(function,
+                              json_obj_get(json, SYMBOL_LABELED_STATEMENT));
+  } else if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
     builder_compound_statement(function,
                                json_obj_get(json, SYMBOL_COMPOUND_STATEMENT));
   } else if (json_has(json, SYMBOL_EXPRESSION_STATEMENT)) {
