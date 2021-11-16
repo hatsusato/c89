@@ -63,6 +63,18 @@ static void builder_selection_statement(struct json *function,
       }
     }
     json_del(block_next);
+  } else if (json_has(json, SYMBOL_SWITCH)) {
+    struct json *block_prev = ir_function_get_block(function);
+    struct json *expr =
+        builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
+    struct json *terminator = ir_block_make_terminator(block_prev, "switch");
+    struct json *block_default = builder_statement_next_block(
+        function, json_obj_get(json, SYMBOL_STATEMENT));
+    struct json *block_next = ir_block_new();
+    json_obj_insert(terminator, "value", expr);
+    json_obj_insert(terminator, "default", block_default);
+    ir_function_next_block(function, block_next);
+    json_del(block_next);
   }
   ir_function_set_next(function, old_next);
 }
