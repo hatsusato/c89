@@ -41,7 +41,7 @@ struct json *json_get(struct json *self, const char *key) {
   return json_is_obj(self) ? json_obj_get(json_as_obj(self), key) : json_null();
 }
 const char *json_get_str(struct json *json) {
-  return json_is_str(json) ? json_str_get(json_as_str(json)) : NULL;
+  return json_is_str(json) ? json_str_get(json) : NULL;
 }
 static void json_find_visitor(struct json_visitor *visitor, struct json *json) {
   struct json_find_extra *extra = json_visit_extra(visitor);

@@ -19,10 +19,8 @@ void json_arr_unittest(void) {
   }
   for (i = 0; i < count; i++) {
     struct json *elem = json_arr_at(arr, i);
-    struct json_str *jstr = json_as_str(elem);
-    assert(jstr);
-    assert(util_streq(json_str_get(jstr), str[i]));
-    UTIL_UNUSED(jstr);
+    assert(util_streq(json_str_get(elem), str[i]));
+    UTIL_UNUSED(elem);
   }
   util_free(str);
   json_del(json);
@@ -44,10 +42,8 @@ void json_obj_unittest(void) {
   }
   for (i = 0; i < count; i++) {
     struct json *val = json_obj_get(obj, key[i]);
-    struct json_str *jstr = json_as_str(val);
-    assert(jstr);
-    assert(util_streq(json_str_get(jstr), key[i]));
-    UTIL_UNUSED(jstr);
+    assert(util_streq(json_str_get(val), key[i]));
+    UTIL_UNUSED(val);
   }
   assert(!json_obj_has(obj, "0"));
   util_free(key);
