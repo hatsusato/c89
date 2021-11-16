@@ -31,8 +31,8 @@ bool_t ir_block_has_terminator(struct json *block) {
 }
 void ir_block_prepend(struct json *self, struct json *other) {
   struct json *array = json_new_arr();
-  json_append(array, json_obj_get(other, "instructions"));
-  json_append(array, json_obj_get(self, "instructions"));
+  json_arr_append(array, json_obj_get(other, "instructions"));
+  json_arr_append(array, json_obj_get(self, "instructions"));
   json_obj_insert(self, "instructions", array);
   json_del(array);
 }

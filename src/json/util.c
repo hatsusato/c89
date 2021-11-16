@@ -68,13 +68,13 @@ struct json *json_find_identifier(struct json *json) {
   json_visit(json_find_identifier_visitor, &extra, json);
   return extra.result;
 }
-static void json_append_map(struct json_map *map) {
+static void json_arr_append_map(struct json_map *map) {
   struct json *dst = json_map_extra(map);
   struct json *src = json_map_val(map);
   json_arr_push(dst, src);
 }
-void json_append(struct json *dst, struct json *src) {
-  json_foreach(src, json_append_map, dst);
+void json_arr_append(struct json *dst, struct json *src) {
+  json_foreach(src, json_arr_append_map, dst);
 }
 static void json_merge_map(struct json_map *map) {
   struct json *dst = json_map_extra(map);
@@ -82,7 +82,7 @@ static void json_merge_map(struct json_map *map) {
   struct json *val = json_map_val(map);
   json_obj_insert(dst, key, val);
 }
-void json_merge(struct json *dst, struct json *src) {
+void json_obj_merge(struct json *dst, struct json *src) {
   json_foreach(src, json_merge_map, dst);
 }
 struct json *json_take(struct json *json, const char *key) {
