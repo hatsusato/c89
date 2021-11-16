@@ -2,6 +2,7 @@
 #include "convert/convert.h"
 #include "generate/generate.h"
 #include "json/json.h"
+#include "json/print.h"
 #include "json/set.h"
 #include "scanner/parse.h"
 #include "unittest.h"
@@ -41,8 +42,8 @@ void compile(bool_t debug) {
     module = build(json);
     generate(module);
     if (debug) {
-      json_print(json);
-      json_print(module);
+      json_print_stdout(json);
+      json_print_stdout(module);
     }
     json_del(module);
   }

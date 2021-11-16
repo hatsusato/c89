@@ -49,8 +49,39 @@ static void json_print_obj(struct printer *self, struct json *obj) {
   }
   printer_close(self, "}");
 }
+static void json_print_weak_obj_map(struct json_map *map) {
+  struct printer *self = json_map_extra(map);
+  const char *key = json_map_key(map);
+  if (0 < json_map_index(map)) {
+    printer_print(self, ", ");
+  }
+  printer_print(self, "%s", key);
+}
+static void json_print_weak(struct printer *self, struct json *weak) {
+  struct json *json = json_unwrap(weak);
+  printer_print(self, "(");
+  switch (json_tag(json)) {
+  case JSON_TAG_NULL:
+    json_print_null(self);
+    break;
+  case JSON_TAG_INT:
+    json_print_int(self, json);
+    break;
+  case JSON_TAG_STR:
+    json_print_str(self, json);
+    break;
+  case JSON_TAG_ARR:
+    json_print_arr(self, json);
+    break;
+  case JSON_TAG_OBJ:
+    json_foreach(json, json_print_weak_obj_map, self);
+    break;
+  default:
+    break;
+  }
+  printer_print(self, ")");
+}
 static void json_print_json(struct printer *self, struct json *json) {
-  json = json_unwrap(json);
   switch (json_tag(json)) {
   case JSON_TAG_NULL:
     json_print_null(self);
@@ -66,6 +97,11 @@ static void json_print_json(struct printer *self, struct json *json) {
     break;
   case JSON_TAG_OBJ:
     json_print_obj(self, json);
+    break;
+  case JSON_TAG_WEAK:
+    printer_print(self, "\"weak");
+    json_print_weak(self, json);
+    printer_print(self, "\"");
     break;
   default:
     break;
