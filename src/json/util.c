@@ -16,10 +16,6 @@ struct json_find_extra {
 void json_print(struct json *self) {
   json_print_stdout(self);
 }
-void json_push(struct json *self, struct json *val) {
-  assert(json_is_arr(self));
-  json_arr_push(self, val);
-}
 void json_insert(struct json *self, const char *key, struct json *val) {
   assert(json_is_obj(self));
   json_obj_insert(self, key, val);
@@ -87,7 +83,7 @@ struct json *json_find_identifier(struct json *json) {
 static void json_append_map(struct json_map *map) {
   struct json *dst = json_map_extra(map);
   struct json *src = json_map_val(map);
-  json_push(dst, src);
+  json_arr_push(dst, src);
 }
 void json_append(struct json *dst, struct json *src) {
   json_foreach(src, json_append_map, dst);

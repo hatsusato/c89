@@ -89,7 +89,7 @@ struct json *ir_function_get_block(struct json *function) {
 }
 void ir_function_push_block(struct json *function, struct json *block) {
   struct json *array = json_get(function, "blocks");
-  json_push(array, block);
+  json_arr_push(array, block);
   json_insert(function, "current", block);
 }
 void ir_function_next_block(struct json *function, struct json *block) {

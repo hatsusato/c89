@@ -7,7 +7,6 @@
 struct json;
 
 void json_print(struct json *);
-void json_push(struct json *, struct json *);
 void json_insert(struct json *, const char *, struct json *);
 void json_set(struct json *, const char *, struct json *);
 void json_insert_str(struct json *, const char *, const char *);

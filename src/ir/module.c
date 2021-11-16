@@ -20,7 +20,7 @@ struct json *ir_module_make_function(struct json *module) {
   struct json *array = json_get(module, "functions");
   struct json *table = json_get(module, "table");
   struct json *function = ir_function_new(table);
-  json_push(array, function);
+  json_arr_push(array, function);
   json_del(function);
   return function;
 }

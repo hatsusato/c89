@@ -13,7 +13,7 @@ struct json *ir_block_new(void) {
 struct json *ir_block_make_instr(struct json *block, const char *tag) {
   struct json *instr = ir_instr_new(tag);
   struct json *array = json_get(block, "instructions");
-  json_push(array, instr);
+  json_arr_push(array, instr);
   json_del(instr);
   return instr;
 }
