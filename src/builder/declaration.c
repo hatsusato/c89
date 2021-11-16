@@ -28,7 +28,7 @@ static void builder_global_init_declarator(struct json *module,
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = builder_global_rvalue(json);
     ir_module_insert_global(module, pointer);
-    json_insert(pointer, "init", value);
+    json_obj_insert(pointer, "init", value);
   }
 }
 static void builder_init_declarator_list(struct json_map *map) {

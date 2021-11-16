@@ -9,7 +9,7 @@
 #include "value.h"
 
 static void ir_function_clear(struct json *function, const char *key) {
-  json_insert(function, key, json_null());
+  json_obj_insert(function, key, json_null());
 }
 static void ir_function_finish_alloc(struct json *function) {
   struct json *alloc = json_get(function, "alloc");
@@ -21,8 +21,8 @@ struct json *ir_function_new(struct json *table) {
   struct json *function = json_new_obj();
   json_set(function, "alloc", ir_block_new());
   json_set(function, "blocks", json_new_arr());
-  json_insert(function, "table", table);
-  json_insert(function, "next", json_null());
+  json_obj_insert(function, "table", table);
+  json_obj_insert(function, "next", json_null());
   return function;
 }
 void ir_function_init(struct json *function, struct json *definition) {
@@ -31,7 +31,7 @@ void ir_function_init(struct json *function, struct json *definition) {
   struct json *entry = ir_block_new();
   json_set(function, "retobj", ir_return_new(retval));
   ir_function_push_block(function, entry);
-  json_insert(function, "entry", entry);
+  json_obj_insert(function, "entry", entry);
   json_del(entry);
   ir_function_set_name(function, name);
   ir_function_push_scope(function);
@@ -90,7 +90,7 @@ struct json *ir_function_get_block(struct json *function) {
 void ir_function_push_block(struct json *function, struct json *block) {
   struct json *array = json_get(function, "blocks");
   json_arr_push(array, block);
-  json_insert(function, "current", block);
+  json_obj_insert(function, "current", block);
 }
 void ir_function_next_block(struct json *function, struct json *block) {
   struct json *prev = ir_function_get_block(function);
@@ -102,13 +102,13 @@ void ir_function_next_block(struct json *function, struct json *block) {
   ir_function_push_block(function, block);
 }
 void ir_function_set_next(struct json *function, struct json *next) {
-  json_insert(function, "next", next);
+  json_obj_insert(function, "next", next);
 }
 struct json *ir_function_get_next(struct json *function) {
   return json_get(function, "next");
 }
 void ir_function_set_name(struct json *function, struct json *name) {
-  json_insert(function, "name", name);
+  json_obj_insert(function, "name", name);
 }
 const char *ir_function_get_name(struct json *function) {
   struct json *name = json_get(function, "name");

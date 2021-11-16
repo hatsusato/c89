@@ -23,7 +23,7 @@ static void generate_numbering_block(struct json_map *map) {
   index_t *index = json_map_extra(map);
   struct json *block = json_map_val(map);
   struct json *label = json_new_int((*index)++);
-  json_insert(block, "label", label);
+  json_obj_insert(block, "label", label);
   json_del(label);
   ir_block_foreach(block, generate_numbering_instr, index);
 }

@@ -7,7 +7,7 @@
 struct json *ir_block_new(void) {
   struct json *block = json_new_obj();
   json_set(block, "instructions", json_new_arr());
-  json_insert(block, "terminator", json_null());
+  json_obj_insert(block, "terminator", json_null());
   return block;
 }
 struct json *ir_block_make_instr(struct json *block, const char *tag) {
@@ -19,7 +19,7 @@ struct json *ir_block_make_instr(struct json *block, const char *tag) {
 }
 struct json *ir_block_make_terminator(struct json *block, const char *tag) {
   struct json *terminator = ir_instr_new(tag);
-  json_insert(block, "terminator", terminator);
+  json_obj_insert(block, "terminator", terminator);
   json_del(terminator);
   return terminator;
 }
@@ -33,7 +33,7 @@ void ir_block_prepend(struct json *self, struct json *other) {
   struct json *array = json_new_arr();
   json_append(array, json_get(other, "instructions"));
   json_append(array, json_get(self, "instructions"));
-  json_insert(self, "instructions", array);
+  json_obj_insert(self, "instructions", array);
   json_del(array);
 }
 void ir_block_foreach(struct json *block, json_map_t map, void *extra) {

@@ -16,10 +16,6 @@ struct json_find_extra {
 void json_print(struct json *self) {
   json_print_stdout(self);
 }
-void json_insert(struct json *self, const char *key, struct json *val) {
-  assert(json_is_obj(self));
-  json_obj_insert(self, key, val);
-}
 void json_set(struct json *self, const char *key, struct json *val) {
   assert(json_is_obj(self));
   json_obj_insert(self, key, val);
@@ -27,7 +23,7 @@ void json_set(struct json *self, const char *key, struct json *val) {
 }
 void json_insert_str(struct json *self, const char *key, const char *val) {
   struct json *str = json_new_str(val);
-  json_insert(self, key, str);
+  json_obj_insert(self, key, str);
   json_del(str);
 }
 bool_t json_has(struct json *self, const char *key) {
@@ -92,7 +88,7 @@ static void json_merge_map(struct json_map *map) {
   struct json *dst = json_map_extra(map);
   const char *key = json_map_key(map);
   struct json *val = json_map_val(map);
-  json_insert(dst, key, val);
+  json_obj_insert(dst, key, val);
 }
 void json_merge(struct json *dst, struct json *src) {
   json_foreach(src, json_merge_map, dst);

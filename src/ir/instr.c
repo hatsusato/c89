@@ -6,7 +6,7 @@
 
 struct json *ir_instr_new(const char *tag) {
   struct json *instr = json_new_obj();
-  json_insert(instr, tag, json_null());
+  json_obj_insert(instr, tag, json_null());
   return instr;
 }
 void ir_instr_insert(struct json *instr, const char *key, struct json *value) {
@@ -15,15 +15,15 @@ void ir_instr_insert(struct json *instr, const char *key, struct json *value) {
 void ir_instr_icmp_cond(struct json *instr, struct json *value) {
   struct json *zero = json_new_obj();
   json_set(zero, SYMBOL_IMMEDIATE, json_new_int(0));
-  json_insert(instr, "lhs", value);
-  json_insert(instr, "rhs", zero);
+  json_obj_insert(instr, "lhs", value);
+  json_obj_insert(instr, "rhs", zero);
   json_del(zero);
 }
 bool_t ir_instr_check_kind(struct json *instr, const char *tag) {
   return json_has(instr, tag);
 }
 void ir_instr_set_skip(struct json *instr) {
-  json_insert(instr, "skip", json_null());
+  json_obj_insert(instr, "skip", json_null());
 }
 bool_t ir_instr_is_skip(struct json *instr) {
   return json_has(instr, "skip");
