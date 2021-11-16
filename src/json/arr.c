@@ -15,20 +15,20 @@ struct json_arr *json_arr_new(void) {
   self->vec = json_vec_new();
   return self;
 }
-void json_arr_del(struct json_arr *self) {
-  json_vec_del(self->vec);
-  util_free(self);
+void json_arr_del(struct json *self) {
+  json_vec_del(json_as_arr(self)->vec);
+  util_free(json_as_arr(self));
 }
-index_t json_arr_count(struct json_arr *self) {
-  return json_vec_count(self->vec);
+index_t json_arr_count(struct json *self) {
+  return json_vec_count(json_as_arr(self)->vec);
 }
-struct json *json_arr_at(struct json_arr *self, index_t index) {
-  struct json_pair *pair = json_vec_at(self->vec, index);
+struct json *json_arr_at(struct json *self, index_t index) {
+  struct json_pair *pair = json_vec_at(json_as_arr(self)->vec, index);
   return pair ? json_pair_val(pair) : json_null();
 }
-void json_arr_push(struct json_arr *self, struct json *val) {
-  json_vec_push(self->vec, NULL, val);
+void json_arr_push(struct json *self, struct json *val) {
+  json_vec_push(json_as_arr(self)->vec, NULL, val);
 }
-void json_arr_foreach(struct json_arr *self, json_map_t map, void *extra) {
-  json_map_foreach(map, extra, self->vec);
+void json_arr_foreach(struct json *self, json_map_t map, void *extra) {
+  json_map_foreach(map, extra, json_as_arr(self)->vec);
 }

@@ -5,7 +5,6 @@
 
 void json_arr_unittest(void) {
   struct json *json = json_new_arr();
-  struct json_arr *arr = json_as_arr(json);
   index_t i, count = 100;
   char(*str)[2] = util_malloc_array(count, sizeof(char[2]));
   for (i = 0; i < count; i++) {
@@ -14,11 +13,11 @@ void json_arr_unittest(void) {
   }
   for (i = 0; i < count; i++) {
     struct json *val = json_new_str(str[i]);
-    json_arr_push(arr, val);
+    json_arr_push(json, val);
     json_del(val);
   }
   for (i = 0; i < count; i++) {
-    struct json *elem = json_arr_at(arr, i);
+    struct json *elem = json_arr_at(json, i);
     assert(util_streq(json_str_get(elem), str[i]));
     UTIL_UNUSED(elem);
   }

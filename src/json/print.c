@@ -23,7 +23,7 @@ static void json_print_arr_map(struct json_map *map) {
   printer_newline(self);
   json_print_json(self, json_map_val(map));
 }
-static void json_print_arr(struct printer *self, struct json_arr *arr) {
+static void json_print_arr(struct printer *self, struct json *arr) {
   printer_open(self, "[");
   if (0 < json_arr_count(arr)) {
     json_arr_foreach(arr, json_print_arr_map, self);
@@ -62,7 +62,7 @@ static void json_print_json(struct printer *self, struct json *json) {
     json_print_str(self, json);
     break;
   case JSON_TAG_ARR:
-    json_print_arr(self, json_as_arr(json));
+    json_print_arr(self, json);
     break;
   case JSON_TAG_OBJ:
     json_print_obj(self, json_as_obj(json));

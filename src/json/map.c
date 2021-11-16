@@ -47,7 +47,7 @@ void json_foreach(struct json *json, json_map_t map, void *extra) {
   json = json_unwrap(json);
   switch (json_tag(json)) {
   case JSON_TAG_ARR:
-    json_arr_foreach(json_as_arr(json), map, extra);
+    json_arr_foreach(json, map, extra);
     break;
   case JSON_TAG_OBJ:
     json_obj_foreach(json_as_obj(json), map, extra);
