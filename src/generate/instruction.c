@@ -47,6 +47,15 @@ static void generate_br(struct printer *printer, struct json *json) {
     generate_register(printer, json, "dest");
   }
 }
+static void generate_switch(struct printer *printer, struct json *json) {
+  printer_print(printer, "switch i32 ");
+  generate_register(printer, json, "value");
+  printer_print(printer, ", label ");
+  generate_register(printer, json, "default");
+  printer_print(printer, " [");
+  printer_newline(printer);
+  printer_print(printer, "]");
+}
 /* Unary Operations */
 /* Binary Operations */
 static void generate_add(struct printer *printer, struct json *json) {
@@ -94,6 +103,8 @@ void generate_instruction(struct printer *printer, struct json *json) {
     generate_ret(printer, json);
   } else if (ir_instr_check_kind(json, "br")) {
     generate_br(printer, json);
+  } else if (ir_instr_check_kind(json, "switch")) {
+    generate_switch(printer, json);
   } else if (ir_instr_check_kind(json, "add")) {
     generate_add(printer, json);
   } else if (ir_instr_check_kind(json, "alloca")) {
