@@ -7,6 +7,7 @@ int f1(void) {
   }
   return 0;
 }
+#if 0
 int f2(void) {
   int x = 0;
   switch (x) {
@@ -134,3 +135,4 @@ int f10(void) {
   }
   return 0;
 }
+#endif
