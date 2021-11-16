@@ -27,7 +27,6 @@ void json_arr_unittest(void) {
 
 void json_obj_unittest(void) {
   struct json *json = json_new_obj();
-  struct json_obj *obj = json_as_obj(json);
   index_t i, count = 100;
   char(*key)[2] = util_malloc_array(count, sizeof(char[2]));
   for (i = 0; i < count; i++) {
@@ -36,15 +35,15 @@ void json_obj_unittest(void) {
   }
   for (i = 0; i < count; i++) {
     struct json *val = json_new_str(key[i]);
-    json_obj_insert(obj, key[i], val);
+    json_obj_insert(json, key[i], val);
     json_del(val);
   }
   for (i = 0; i < count; i++) {
-    struct json *val = json_obj_get(obj, key[i]);
+    struct json *val = json_obj_get(json, key[i]);
     assert(util_streq(json_str_get(val), key[i]));
     UTIL_UNUSED(val);
   }
-  assert(!json_obj_has(obj, "0"));
+  assert(!json_obj_has(json, "0"));
   util_free(key);
   json_del(json);
 }

@@ -8,19 +8,19 @@
 
 struct scanner {
   struct json_set *symbols;
-  struct json_obj *typedefs;
+  struct json *typedefs;
   YYSCAN_TYPE top;
 };
 
 YYSCAN_EXTRA scanner_new(struct json_set *symbols) {
   YYSCAN_EXTRA self = util_malloc(sizeof(struct scanner));
   self->symbols = symbols;
-  self->typedefs = json_obj_new();
+  self->typedefs = json_new_obj();
   self->top = json_null();
   return self;
 }
 void scanner_del(YYSCAN_EXTRA self) {
-  json_obj_del(self->typedefs);
+  json_del(self->typedefs);
   util_free(self);
 }
 YYSCAN_TYPE scanner_json_token(YYSCAN_EXTRA self, const char *token) {
@@ -48,7 +48,7 @@ static void scanner_find_typedef(struct json_visitor *visitor,
 static void scanner_collect_typedef(struct json_visitor *visitor,
                                     struct json *json) {
   if (json_has(json, SYMBOL_DIRECT_DECLARATOR)) {
-    struct json_obj *typedefs = json_visit_extra(visitor);
+    struct json *typedefs = json_visit_extra(visitor);
     struct json *identifier = json_find_identifier(json);
     const char *symbol = json_get_str(identifier);
     assert(symbol);

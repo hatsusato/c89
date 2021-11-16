@@ -13,7 +13,6 @@ static struct json *json_alloc(enum json_tag tag, void *data) {
   return self;
 }
 static void json_free(struct json *self) {
-  void *data = self->data;
   switch (json_tag(self)) {
   case JSON_TAG_NULL:
     return;
@@ -27,7 +26,7 @@ static void json_free(struct json *self) {
     json_arr_del(self);
     break;
   case JSON_TAG_OBJ:
-    json_obj_del(data);
+    json_obj_del(self);
     break;
   case JSON_TAG_WEAK:
     break;
