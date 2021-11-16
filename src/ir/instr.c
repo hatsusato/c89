@@ -10,11 +10,11 @@ struct json *ir_instr_new(const char *tag) {
   return instr;
 }
 void ir_instr_insert(struct json *instr, const char *key, struct json *value) {
-  json_set(instr, key, json_new_weak(value));
+  json_obj_set(instr, key, json_new_weak(value));
 }
 void ir_instr_icmp_cond(struct json *instr, struct json *value) {
   struct json *zero = json_new_obj();
-  json_set(zero, SYMBOL_IMMEDIATE, json_new_int(0));
+  json_obj_set(zero, SYMBOL_IMMEDIATE, json_new_int(0));
   json_obj_insert(instr, "lhs", value);
   json_obj_insert(instr, "rhs", zero);
   json_del(zero);
@@ -30,7 +30,7 @@ bool_t ir_instr_is_skip(struct json *instr) {
 }
 void ir_instr_set_numbering(struct json *instr, int num) {
   assert(!ir_instr_has_numbering(instr));
-  json_set(instr, "reg", json_new_int(num));
+  json_obj_set(instr, "reg", json_new_int(num));
 }
 bool_t ir_instr_has_numbering(struct json *instr) {
   return json_has(instr, "reg");

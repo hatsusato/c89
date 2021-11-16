@@ -9,8 +9,8 @@
 
 void ir_module_init(struct json *module) {
   struct json *table = ir_table_new();
-  json_set(module, "functions", json_new_arr());
-  json_set(module, "table", table);
+  json_obj_set(module, "functions", json_new_arr());
+  json_obj_set(module, "table", table);
 }
 void ir_module_finish(struct json *module) {
   struct json *table = json_get(module, "table");

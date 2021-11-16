@@ -6,7 +6,7 @@
 
 struct json *ir_block_new(void) {
   struct json *block = json_new_obj();
-  json_set(block, "instructions", json_new_arr());
+  json_obj_set(block, "instructions", json_new_arr());
   json_obj_insert(block, "terminator", json_null());
   return block;
 }

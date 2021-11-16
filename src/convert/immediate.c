@@ -7,7 +7,7 @@
 
 static void convert_immediate_rvalue(struct json *);
 static void convert_immediate_insert(struct json *json, int val) {
-  json_set(json, SYMBOL_IMMEDIATE, json_new_int(val));
+  json_obj_set(json, SYMBOL_IMMEDIATE, json_new_int(val));
 }
 
 static void convert_immediate_primary_expression(struct json *json) {

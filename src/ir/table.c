@@ -14,7 +14,7 @@ struct json *ir_table_last(struct json *table) {
 
 struct json *ir_table_new(void) {
   struct json *table = json_new_obj();
-  json_set(table, "$global", json_new_obj());
+  json_obj_set(table, "$global", json_new_obj());
   return table;
 }
 struct json *ir_table_push(struct json *next) {

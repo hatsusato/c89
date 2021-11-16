@@ -37,6 +37,10 @@ void json_obj_insert(struct json *self, const char *key, struct json *val) {
     }
   }
 }
+void json_obj_set(struct json *self, const char *key, struct json *val) {
+  json_obj_insert(self, key, val);
+  json_del(val);
+}
 struct json *json_obj_get(struct json *self, const char *key) {
   struct json_pair *pair = json_obj_find(self, key);
   return pair ? json_pair_val(pair) : json_null();

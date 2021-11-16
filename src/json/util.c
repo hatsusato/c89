@@ -16,11 +16,6 @@ struct json_find_extra {
 void json_print(struct json *self) {
   json_print_stdout(self);
 }
-void json_set(struct json *self, const char *key, struct json *val) {
-  assert(json_is_obj(self));
-  json_obj_insert(self, key, val);
-  json_del(val);
-}
 void json_insert_str(struct json *self, const char *key, const char *val) {
   struct json *str = json_new_str(val);
   json_obj_insert(self, key, str);
