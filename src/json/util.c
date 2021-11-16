@@ -14,7 +14,7 @@ struct json_find_extra {
 };
 
 void json_print(struct json *self) {
-  json_print_stdout(self);
+  json_print_stderr(self);
 }
 void json_insert_str(struct json *self, const char *key, const char *val) {
   struct json *str = json_new_str(val);

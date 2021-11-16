@@ -77,3 +77,9 @@ void json_print_stdout(struct json *json) {
   printer_newline(printer);
   printer_del(printer);
 }
+void json_print_stderr(struct json *json) {
+  struct printer *printer = printer_new_stderr();
+  json_print_json(printer, json);
+  printer_newline(printer);
+  printer_del(printer);
+}
