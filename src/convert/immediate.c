@@ -25,8 +25,8 @@ static void convert_immediate_additive_expression(struct json *json) {
   lhs = json_get(lhs, SYMBOL_IMMEDIATE);
   rhs = json_get(rhs, SYMBOL_IMMEDIATE);
   if (json_is_int(lhs) && json_is_int(rhs)) {
-    int lval = json_int_get(json_as_int(lhs));
-    int rval = json_int_get(json_as_int(rhs));
+    int lval = json_int_get(lhs);
+    int rval = json_int_get(rhs);
     if (json_has(json, SYMBOL_PLUS)) {
       convert_immediate_insert(json, lval + rval);
     } else if (json_has(json, SYMBOL_MINUS)) {

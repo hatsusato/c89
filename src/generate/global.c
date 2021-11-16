@@ -7,7 +7,7 @@
 static void generate_immediate(struct printer *printer, struct json *json) {
   struct json *immediate = json_get(json, SYMBOL_IMMEDIATE);
   if (json_is_int(immediate)) {
-    int val = json_int_get(json_as_int(immediate));
+    int val = json_int_get(immediate);
     printer_print(printer, "%d", val);
   }
 }

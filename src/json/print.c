@@ -9,7 +9,7 @@ static void json_print_json(struct printer *self, struct json *);
 static void json_print_null(struct printer *self) {
   printer_print(self, "null");
 }
-static void json_print_int(struct printer *self, struct json_int *num) {
+static void json_print_int(struct printer *self, struct json *num) {
   printer_print(self, "%d", json_int_get(num));
 }
 static void json_print_str(struct printer *self, struct json_str *str) {
@@ -56,7 +56,7 @@ static void json_print_json(struct printer *self, struct json *json) {
     json_print_null(self);
     break;
   case JSON_TAG_INT:
-    json_print_int(self, json_as_int(json));
+    json_print_int(self, json);
     break;
   case JSON_TAG_STR:
     json_print_str(self, json_as_str(json));

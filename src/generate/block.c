@@ -19,7 +19,7 @@ void generate_block(struct printer *printer, struct json *json) {
 }
 void generate_block_label(struct printer *printer, struct json *block) {
   struct json *label = json_get(block, "label");
-  int num = json_int_get(json_as_int(label));
+  int num = json_int_get(label);
   assert(json_is_int(label));
   printer_print(printer, "%d:", num);
 }

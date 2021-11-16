@@ -18,7 +18,7 @@ static void json_free(struct json *self) {
   case JSON_TAG_NULL:
     return;
   case JSON_TAG_INT:
-    json_int_del(data);
+    json_int_del(self);
     break;
   case JSON_TAG_STR:
     json_str_del(data);
