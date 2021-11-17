@@ -176,6 +176,7 @@
 #define SYMBOL_COND_EXPRESSION "cond-expression"
 #define SYMBOL_ITER_EXPRESSION "iter-expression"
 
+#define SYMBOL_ENTRY_BLOCK "entry-block"
 #define SYMBOL_EXPR_TAG "expr-tag"
 #define SYMBOL_IMMEDIATE "immediate"
 #define SYMBOL_MUST_RETURN "must-return"
