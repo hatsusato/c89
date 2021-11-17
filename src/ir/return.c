@@ -20,11 +20,16 @@ struct json *ir_return_new(struct json *retval) {
   json_obj_insert(retobj, "retval", retval);
   json_obj_set(retobj, "retcount", json_new_int(0));
   json_obj_set(retobj, "retblock", retblock);
+  json_obj_set(retobj, "blocks", json_new_arr());
   return retobj;
 }
 int ir_return_get_count(struct json *retobj) {
   struct json *retcount = json_obj_get(retobj, "retcount");
   return json_int_get(retcount);
+}
+void ir_return_push(struct json *retobj, struct json *block) {
+  struct json *array = json_obj_get(retobj, "blocks");
+  json_arr_push(array, block);
 }
 void ir_return_increment(struct json *retobj) {
   struct json *retcount = json_obj_get(retobj, "retcount");
