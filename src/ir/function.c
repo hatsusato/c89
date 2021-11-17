@@ -6,6 +6,7 @@
 #include "json/map.h"
 #include "return.h"
 #include "table.h"
+#include "util/symbol.h"
 #include "value.h"
 
 static void ir_function_clear(struct json *function, const char *key) {
@@ -34,7 +35,7 @@ void ir_function_init(struct json *function, struct json *definition) {
   struct json *name = json_find_identifier(definition);
   struct json *retval = ir_function_make_alloca(function);
   struct json *entry = ir_block_new();
-  json_obj_set(function, "retobj", ir_return_new(retval));
+  json_obj_set(function, SYMBOL_RETURN_EXTRA, ir_return_new(retval));
   ir_function_push_block(function, entry);
   json_obj_insert(function, "entry", entry);
   json_del(entry);
@@ -42,7 +43,7 @@ void ir_function_init(struct json *function, struct json *definition) {
   ir_function_push_scope(function);
 }
 static void ir_function_finish_return(struct json *function) {
-  struct json *retobj = json_obj_get(function, "retobj");
+  struct json *retobj = json_obj_get(function, SYMBOL_RETURN_EXTRA);
   struct json *retblock = ir_return_finish(retobj);
   if (!json_is_null(retblock)) {
     ir_function_push_block(function, retblock);
@@ -119,6 +120,6 @@ void ir_function_foreach(struct json *function, json_map_t map, void *extra) {
   json_foreach(blocks, map, extra);
 }
 void ir_function_push_return_block(struct json *function, struct json *block) {
-  struct json *retobj = json_obj_get(function, "retobj");
+  struct json *retobj = json_obj_get(function, SYMBOL_RETURN_EXTRA);
   ir_return_push(retobj, block);
 }
