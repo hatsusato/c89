@@ -25,7 +25,8 @@ struct json *ir_return_new(struct json *retval) {
 struct json *ir_return_finish(struct json *retobj) {
   struct json *array = json_obj_get(retobj, "blocks");
   if (json_arr_count(array) < 2) {
-    ir_return_skip(retobj);
+    struct json *retval = json_obj_get(retobj, "retval");
+    ir_instr_set_skip(retval);
     return json_null();
   } else {
     json_foreach(array, ir_return_finish_map, retobj);
@@ -35,10 +36,6 @@ struct json *ir_return_finish(struct json *retobj) {
 void ir_return_push(struct json *retobj, struct json *block) {
   struct json *array = json_obj_get(retobj, "blocks");
   json_arr_push(array, block);
-}
-void ir_return_skip(struct json *retobj) {
-  struct json *retval = json_obj_get(retobj, "retval");
-  ir_instr_set_skip(retval);
 }
 static void ir_return_set_block_terminator(struct json *retobj,
                                            struct json *block) {
