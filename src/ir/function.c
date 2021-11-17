@@ -122,3 +122,7 @@ void ir_function_increment_return(struct json *function) {
   struct json *retobj = json_obj_get(function, "retobj");
   ir_return_increment(retobj);
 }
+void ir_function_push_return_block(struct json *function, struct json *block) {
+  struct json *retobj = json_obj_get(function, "retobj");
+  ir_return_push(retobj, block);
+}
