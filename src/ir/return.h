@@ -6,9 +6,7 @@ struct json_map;
 
 struct json *ir_return_new(struct json *);
 struct json *ir_return_finish(struct json *);
-int ir_return_get_count(struct json *);
 void ir_return_push(struct json *, struct json *);
-void ir_return_increment(struct json *);
 void ir_return_skip(struct json *);
 void ir_return_finish_map(struct json_map *);
 
