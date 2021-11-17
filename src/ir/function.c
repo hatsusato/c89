@@ -37,19 +37,18 @@ void ir_function_init(struct json *function, struct json *definition) {
   ir_function_push_scope(function);
 }
 void ir_function_finish(struct json *function) {
-  struct json *retobj = json_obj_get(function, "retobj");
   ir_function_finish_alloc(function);
   ir_function_pop_scope(function);
   ir_function_clear(function, "alloc");
   ir_function_clear(function, "entry");
   ir_function_clear(function, "current");
   ir_function_clear(function, "table");
-  if (ir_return_get_count(retobj) < 2) {
-    ir_return_skip(retobj);
-  } else {
-    struct json *retblock = json_obj_get(retobj, "retblock");
-    ir_function_foreach(function, ir_return_finish_map, retobj);
-    ir_function_push_block(function, retblock);
+  {
+    struct json *retobj = json_obj_get(function, "retobj");
+    struct json *retblock = ir_return_finish(retobj);
+    if (!json_is_null(retblock)) {
+      ir_function_push_block(function, retblock);
+    }
   }
 }
 void ir_function_push_scope(struct json *function) {
