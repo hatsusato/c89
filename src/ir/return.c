@@ -22,6 +22,25 @@ struct json *ir_return_new(struct json *retval) {
   json_obj_set(retobj, "blocks", json_new_arr());
   return retobj;
 }
+static void ir_return_set_block_terminator(struct json *retobj,
+                                           struct json *block) {
+  struct json *retblock = json_obj_get(retobj, "retblock");
+  struct json *br = ir_block_make_terminator(block, "br");
+  ir_instr_insert(br, "dest", retblock);
+}
+static void ir_return_finish_map(struct json_map *map) {
+  struct json *block = json_map_val(map);
+  struct json *retobj = json_map_extra(map);
+  struct json *retval = json_obj_get(retobj, "retval");
+  struct json *terminator = ir_block_get_terminator(block);
+  if (ir_instr_check_kind(terminator, "ret")) {
+    struct json *value = json_obj_get(terminator, "value");
+    struct json *instr = ir_block_make_instr(block, "store");
+    ir_instr_insert(instr, "value", value);
+    ir_instr_insert(instr, "pointer", retval);
+    ir_return_set_block_terminator(retobj, block);
+  }
+}
 struct json *ir_return_finish(struct json *retobj) {
   struct json *array = json_obj_get(retobj, "blocks");
   if (json_arr_count(array) < 2) {
@@ -36,23 +55,4 @@ struct json *ir_return_finish(struct json *retobj) {
 void ir_return_push(struct json *retobj, struct json *block) {
   struct json *array = json_obj_get(retobj, "blocks");
   json_arr_push(array, block);
-}
-static void ir_return_set_block_terminator(struct json *retobj,
-                                           struct json *block) {
-  struct json *retblock = json_obj_get(retobj, "retblock");
-  struct json *br = ir_block_make_terminator(block, "br");
-  ir_instr_insert(br, "dest", retblock);
-}
-void ir_return_finish_map(struct json_map *map) {
-  struct json *block = json_map_val(map);
-  struct json *retobj = json_map_extra(map);
-  struct json *retval = json_obj_get(retobj, "retval");
-  struct json *terminator = ir_block_get_terminator(block);
-  if (ir_instr_check_kind(terminator, "ret")) {
-    struct json *value = json_obj_get(terminator, "value");
-    struct json *instr = ir_block_make_instr(block, "store");
-    ir_instr_insert(instr, "value", value);
-    ir_instr_insert(instr, "pointer", retval);
-    ir_return_set_block_terminator(retobj, block);
-  }
 }
