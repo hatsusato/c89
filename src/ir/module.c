@@ -36,7 +36,8 @@ struct json *ir_module_make_global(struct json *module,
 }
 void ir_module_insert_global(struct json *module, struct json *global) {
   struct json *table = json_obj_get(module, "table");
-  ir_table_insert_global(table, global);
+  const char *name = ir_value_get_name(global);
+  ir_table_insert_global(table, name, global);
 }
 void ir_module_foreach_function(struct json *module, json_map_t map,
                                 void *extra) {
