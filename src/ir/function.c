@@ -59,13 +59,11 @@ void ir_function_finish(struct json *function) {
 }
 void ir_function_push_scope(struct json *function) {
   struct json *table = json_obj_get(function, "table");
-  struct json *updated = ir_table_push(table);
-  json_obj_set(function, "table", updated);
+  ir_table_push(table);
 }
 void ir_function_pop_scope(struct json *function) {
   struct json *table = json_obj_get(function, "table");
-  struct json *updated = ir_table_pop(table);
-  json_obj_set(function, "table", updated);
+  ir_table_pop(table);
 }
 void ir_function_insert_symbol(struct json *function, struct json *name,
                                struct json *val) {
