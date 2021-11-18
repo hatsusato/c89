@@ -47,6 +47,5 @@ void ir_module_foreach_function(struct json *module, json_map_t map,
 void ir_module_foreach_global(struct json *module, json_map_t map,
                               void *extra) {
   struct json *table = json_obj_get(module, "table");
-  struct json *global = ir_table_get_global(table);
-  json_foreach(global, map, extra);
+  ir_table_foreach_global(table, map, extra);
 }

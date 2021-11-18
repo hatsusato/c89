@@ -64,3 +64,7 @@ void ir_table_finish(struct json *table) {
   assert(!json_has(symbols, SYMBOL_TABLE_NEXT));
   json_foreach(symbols, ir_table_finish_map, table);
 }
+void ir_table_foreach_global(struct json *table, json_map_t map, void *extra) {
+  struct json *global = ir_table_get_global(table);
+  json_foreach(global, map, extra);
+}
