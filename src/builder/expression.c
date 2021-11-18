@@ -2,13 +2,16 @@
 
 #include "ir/function.h"
 #include "ir/instr.h"
+#include "ir/table.h"
 #include "json/json.h"
 #include "util/symbol.h"
 #include "util/util.h"
 
 static struct json *builder_identifier(struct json *function,
                                        struct json *json) {
-  struct json *pointer = ir_function_lookup_symbol(function, json);
+  struct json *table = ir_function_get_table(function);
+  const char *name = json_get_str(json);
+  struct json *pointer = ir_table_lookup(table, name);
   struct json *instr = ir_function_make_instr(function, "load");
   ir_instr_insert(instr, "pointer", pointer);
   return instr;
@@ -63,8 +66,10 @@ static struct json *builder_global_initializer(struct json *json) {
 
 struct json *builder_lvalue(struct json *function, struct json *json) {
   if (json_has(json, SYMBOL_IDENTIFIER)) {
+    struct json *table = ir_function_get_table(function);
     struct json *identifier = json_obj_get(json, SYMBOL_IDENTIFIER);
-    return ir_function_lookup_symbol(function, identifier);
+    const char *name = json_get_str(identifier);
+    return ir_table_lookup(table, name);
   } else {
     return json;
   }
