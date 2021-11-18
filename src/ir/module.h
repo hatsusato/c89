@@ -7,6 +7,7 @@ struct json;
 
 void ir_module_init(struct json *);
 void ir_module_finish(struct json *);
+struct json *ir_module_get_table(struct json *);
 struct json *ir_module_make_function(struct json *);
 struct json *ir_module_make_global(struct json *, struct json *);
 void ir_module_insert_global(struct json *, struct json *);
