@@ -62,12 +62,6 @@ void ir_function_finish(struct json *function) {
 struct json *ir_function_get_table(struct json *function) {
   return json_obj_get(function, "table");
 }
-void ir_function_insert_symbol(struct json *function, struct json *name,
-                               struct json *val) {
-  struct json *table = ir_function_get_table(function);
-  const char *key = json_get_str(name);
-  ir_table_insert(table, key, val);
-}
 struct json *ir_function_lookup_symbol(struct json *function,
                                        struct json *name) {
   struct json *table = ir_function_get_table(function);
