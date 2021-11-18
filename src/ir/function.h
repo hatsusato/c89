@@ -9,8 +9,6 @@ struct json *ir_function_new(struct json *);
 void ir_function_init(struct json *, struct json *);
 void ir_function_finish(struct json *);
 struct json *ir_function_get_table(struct json *);
-void ir_function_push_scope(struct json *);
-void ir_function_pop_scope(struct json *);
 void ir_function_insert_symbol(struct json *, struct json *, struct json *);
 struct json *ir_function_lookup_symbol(struct json *, struct json *);
 struct json *ir_function_make_instr(struct json *, const char *);

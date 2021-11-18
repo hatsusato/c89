@@ -35,11 +35,12 @@ void ir_function_init(struct json *function, struct json *definition) {
   struct json *name = json_find_identifier(definition);
   struct json *retval = ir_function_make_alloca(function);
   struct json *entry = ir_block_new();
+  struct json *table = ir_function_get_table(function);
   json_obj_set(function, SYMBOL_RETURN_EXTRA, ir_return_new(retval));
   ir_function_push_block(function, entry);
   json_obj_set(function, SYMBOL_ENTRY_BLOCK, entry);
   ir_function_set_name(function, name);
-  ir_function_push_scope(function);
+  ir_table_push(table);
 }
 static void ir_function_finish_return(struct json *function) {
   struct json *retobj = json_obj_get(function, SYMBOL_RETURN_EXTRA);
@@ -49,8 +50,9 @@ static void ir_function_finish_return(struct json *function) {
   }
 }
 void ir_function_finish(struct json *function) {
+  struct json *table = ir_function_get_table(function);
+  ir_table_pop(table);
   ir_function_finish_alloc(function);
-  ir_function_pop_scope(function);
   ir_function_clear(function, SYMBOL_ALLOC_BLOCK);
   ir_function_clear(function, SYMBOL_ENTRY_BLOCK);
   ir_function_clear(function, "current");
@@ -59,14 +61,6 @@ void ir_function_finish(struct json *function) {
 }
 struct json *ir_function_get_table(struct json *function) {
   return json_obj_get(function, "table");
-}
-void ir_function_push_scope(struct json *function) {
-  struct json *table = ir_function_get_table(function);
-  ir_table_push(table);
-}
-void ir_function_pop_scope(struct json *function) {
-  struct json *table = ir_function_get_table(function);
-  ir_table_pop(table);
 }
 void ir_function_insert_symbol(struct json *function, struct json *name,
                                struct json *val) {

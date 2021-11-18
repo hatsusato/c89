@@ -6,6 +6,7 @@
 #include "ir/function.h"
 #include "ir/instr.h"
 #include "ir/module.h"
+#include "ir/table.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "util/symbol.h"
@@ -18,10 +19,11 @@ static void builder_labeled_statement(struct json *function,
 }
 static void builder_compound_statement(struct json *function,
                                        struct json *json) {
-  ir_function_push_scope(function);
+  struct json *table = ir_function_get_table(function);
+  ir_table_push(table);
   builder_declaration(function, json);
   builder_statement(function, json);
-  ir_function_pop_scope(function);
+  ir_table_pop(table);
 }
 static void builder_expression_statement(struct json *function,
                                          struct json *json) {
