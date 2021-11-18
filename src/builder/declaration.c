@@ -28,9 +28,8 @@ static void builder_global_init_declarator(struct json *module,
   struct json *identifier = json_find_identifier(json);
   struct json *pointer = ir_table_make_global(table, identifier);
   if (json_has(json, SYMBOL_ASSIGN)) {
-    const char *name = json_get_str(identifier);
     struct json *value = builder_global_rvalue(json);
-    ir_table_insert_global(table, name, pointer);
+    ir_table_insert_global(table, pointer);
     json_obj_insert(pointer, "init", value);
   }
 }

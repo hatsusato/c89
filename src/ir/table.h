@@ -12,7 +12,7 @@ void ir_table_pop(struct json *);
 void ir_table_insert(struct json *, struct json *, struct json *);
 struct json *ir_table_lookup(struct json *, struct json *);
 struct json *ir_table_make_global(struct json *, struct json *);
-void ir_table_insert_global(struct json *, const char *, struct json *);
+void ir_table_insert_global(struct json *, struct json *);
 void ir_table_finish(struct json *);
 void ir_table_foreach_global(struct json *, json_map_t, void *);
 
