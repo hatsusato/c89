@@ -180,6 +180,8 @@
 #define SYMBOL_ENTRY_BLOCK "entry-block"
 #define SYMBOL_EXPR_TAG "expr-tag"
 #define SYMBOL_IMMEDIATE "immediate"
+#define SYMBOL_MODULE_FUNCTIONS "module-functions"
+#define SYMBOL_MODULE_TABLE "module-table"
 #define SYMBOL_MUST_RETURN "must-return"
 #define SYMBOL_RETURN_EXTRA "return-extra"
 #define SYMBOL_TABLE_GLOBAL "table-global"
