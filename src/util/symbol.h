@@ -182,5 +182,8 @@
 #define SYMBOL_IMMEDIATE "immediate"
 #define SYMBOL_MUST_RETURN "must-return"
 #define SYMBOL_RETURN_EXTRA "return-extra"
+#define SYMBOL_TABLE_GLOBAL "table-global"
+#define SYMBOL_TABLE_NEXT "table-next"
+#define SYMBOL_TABLE_SYMBOLS "table-symbols"
 
 #endif /* INCLUDE_GUARD_E0353946_9774_492C_A775_4B26998B01E8 */
