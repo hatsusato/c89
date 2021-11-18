@@ -40,6 +40,14 @@ struct json *ir_table_lookup(struct json *table, const char *name) {
   }
   return json_null();
 }
+struct json *ir_table_make_global(struct json *table, struct json *identifier) {
+  const char *name = json_get_str(identifier);
+  struct json *global = ir_value_new_global(identifier);
+  assert(!json_has(table, SYMBOL_TABLE_NEXT));
+  ir_table_insert(table, name, global);
+  json_del(global);
+  return global;
+}
 void ir_table_insert_global(struct json *table, const char *key,
                             struct json *value) {
   struct json *global = json_obj_get(table, SYMBOL_TABLE_GLOBAL);
