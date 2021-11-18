@@ -67,9 +67,6 @@ struct json *ir_function_lookup_symbol(struct json *function,
   struct json *table = ir_function_get_table(function);
   const char *key = json_get_str(name);
   struct json *value = ir_table_lookup(table, key);
-  if (ir_value_is_global(value)) {
-    ir_table_insert_global(table, key, value);
-  }
   return value;
 }
 struct json *ir_function_make_instr(struct json *function, const char *tag) {

@@ -40,6 +40,9 @@ static struct json *ir_table_symbols_find(struct json *symbols,
 struct json *ir_table_lookup(struct json *table, const char *name) {
   struct json *symbols = json_obj_get(table, SYMBOL_TABLE_SYMBOLS);
   struct json *found = ir_table_symbols_find(symbols, name);
+  if (ir_value_is_global(found)) {
+    ir_table_insert_global(table, name, found);
+  }
   return found;
 }
 struct json *ir_table_make_global(struct json *table, struct json *identifier) {
