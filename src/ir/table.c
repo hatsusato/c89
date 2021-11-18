@@ -24,8 +24,10 @@ void ir_table_pop(struct json *table) {
   json_ref(next);
   json_obj_set(table, SYMBOL_TABLE_SYMBOLS, next);
 }
-void ir_table_insert(struct json *table, const char *name, struct json *value) {
+void ir_table_insert(struct json *table, struct json *identifier,
+                     struct json *value) {
   struct json *symbols = json_obj_get(table, SYMBOL_TABLE_SYMBOLS);
+  const char *name = json_get_str(identifier);
   assert(!json_has(symbols, name));
   assert(!util_streq(SYMBOL_TABLE_NEXT, name));
   json_obj_insert(symbols, name, value);
@@ -37,8 +39,9 @@ static struct json *ir_table_symbols_find(struct json *symbols,
   }
   return json_is_obj(symbols) ? json_obj_get(symbols, name) : json_null();
 }
-struct json *ir_table_lookup(struct json *table, const char *name) {
+struct json *ir_table_lookup(struct json *table, struct json *identifier) {
   struct json *symbols = json_obj_get(table, SYMBOL_TABLE_SYMBOLS);
+  const char *name = json_get_str(identifier);
   struct json *found = ir_table_symbols_find(symbols, name);
   if (ir_value_is_global(found)) {
     ir_table_insert_global(table, name, found);
@@ -46,10 +49,9 @@ struct json *ir_table_lookup(struct json *table, const char *name) {
   return found;
 }
 struct json *ir_table_make_global(struct json *table, struct json *identifier) {
-  const char *name = json_get_str(identifier);
   struct json *global = ir_value_new_global(identifier);
   assert(!json_has(table, SYMBOL_TABLE_NEXT));
-  ir_table_insert(table, name, global);
+  ir_table_insert(table, identifier, global);
   json_del(global);
   return global;
 }

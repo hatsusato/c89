@@ -13,9 +13,8 @@
 static void builder_init_declarator(struct json *function, struct json *json) {
   struct json *table = ir_function_get_table(function);
   struct json *identifier = json_find_identifier(json);
-  const char *key = json_get_str(identifier);
   struct json *pointer = ir_function_make_alloca(function);
-  ir_table_insert(table, key, pointer);
+  ir_table_insert(table, identifier, pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = builder_rvalue(function, json);
     struct json *instr = ir_function_make_instr(function, "store");
