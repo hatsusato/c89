@@ -40,12 +40,9 @@ struct json *ir_table_lookup(struct json *table, const char *name) {
   }
   return json_null();
 }
-struct json *ir_table_get_global(struct json *table) {
-  return json_obj_get(table, SYMBOL_TABLE_GLOBAL);
-}
 void ir_table_insert_global(struct json *table, const char *key,
                             struct json *value) {
-  struct json *global = ir_table_get_global(table);
+  struct json *global = json_obj_get(table, SYMBOL_TABLE_GLOBAL);
   assert(ir_value_is_global(value));
   if (json_has(global, key)) {
     assert(json_obj_get(global, key) == value);
@@ -65,6 +62,6 @@ void ir_table_finish(struct json *table) {
   json_foreach(symbols, ir_table_finish_map, table);
 }
 void ir_table_foreach_global(struct json *table, json_map_t map, void *extra) {
-  struct json *global = ir_table_get_global(table);
+  struct json *global = json_obj_get(table, SYMBOL_TABLE_GLOBAL);
   json_foreach(global, map, extra);
 }
