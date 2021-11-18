@@ -57,23 +57,26 @@ void ir_function_finish(struct json *function) {
   ir_function_clear(function, "table");
   ir_function_finish_return(function);
 }
+struct json *ir_function_get_table(struct json *function) {
+  return json_obj_get(function, "table");
+}
 void ir_function_push_scope(struct json *function) {
-  struct json *table = json_obj_get(function, "table");
+  struct json *table = ir_function_get_table(function);
   ir_table_push(table);
 }
 void ir_function_pop_scope(struct json *function) {
-  struct json *table = json_obj_get(function, "table");
+  struct json *table = ir_function_get_table(function);
   ir_table_pop(table);
 }
 void ir_function_insert_symbol(struct json *function, struct json *name,
                                struct json *val) {
-  struct json *table = json_obj_get(function, "table");
+  struct json *table = ir_function_get_table(function);
   const char *key = json_get_str(name);
   ir_table_insert(table, key, val);
 }
 struct json *ir_function_lookup_symbol(struct json *function,
                                        struct json *name) {
-  struct json *table = json_obj_get(function, "table");
+  struct json *table = ir_function_get_table(function);
   const char *key = json_get_str(name);
   struct json *value = ir_table_lookup(table, key);
   if (ir_value_is_global(value)) {
