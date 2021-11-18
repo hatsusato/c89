@@ -30,15 +30,17 @@ void ir_table_insert(struct json *table, const char *name, struct json *value) {
   assert(!util_streq(SYMBOL_TABLE_NEXT, name));
   json_obj_insert(symbols, name, value);
 }
-struct json *ir_table_lookup(struct json *table, const char *name) {
-  struct json *symbols = json_obj_get(table, SYMBOL_TABLE_SYMBOLS);
-  while (!json_is_null(symbols)) {
-    if (json_has(symbols, name)) {
-      return json_obj_get(symbols, name);
-    }
+static struct json *ir_table_symbols_find(struct json *symbols,
+                                          const char *name) {
+  while (json_is_obj(symbols) && !json_has(symbols, name)) {
     symbols = json_obj_get(symbols, SYMBOL_TABLE_NEXT);
   }
-  return json_null();
+  return json_is_obj(symbols) ? json_obj_get(symbols, name) : json_null();
+}
+struct json *ir_table_lookup(struct json *table, const char *name) {
+  struct json *symbols = json_obj_get(table, SYMBOL_TABLE_SYMBOLS);
+  struct json *found = ir_table_symbols_find(symbols, name);
+  return found;
 }
 struct json *ir_table_make_global(struct json *table, struct json *identifier) {
   const char *name = json_get_str(identifier);
