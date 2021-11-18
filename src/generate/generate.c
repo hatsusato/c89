@@ -3,6 +3,7 @@
 #include "function.h"
 #include "global.h"
 #include "ir/module.h"
+#include "ir/table.h"
 #include "json/json.h"
 #include "json/map.h"
 #include "printer/printer.h"
@@ -28,8 +29,9 @@ static void generate_map(struct json_map *map) {
 
 void generate(struct json *module) {
   struct printer *printer = printer_new_stdout();
+  struct json *table = ir_module_get_table(module);
   generate_header(printer);
-  ir_module_foreach_global(module, generate_global_map, printer);
+  ir_table_foreach_global(table, generate_global_map, printer);
   ir_module_foreach_function(module, generate_map, printer);
   printer_del(printer);
 }
