@@ -4,8 +4,24 @@
 #include "json/visitor.h"
 #include "util/symbol.h"
 
-bool_t convert_default_labeled_statement(struct json *json) {
-  return json_has(json, SYMBOL_DEFAULT);
+static bool_t convert_default_statement(struct json *);
+static bool_t convert_default_labeled_statement(struct json *json) {
+  if (json_has(json, SYMBOL_DEFAULT)) {
+    return true;
+  } else {
+    return convert_default_statement(json_obj_get(json, SYMBOL_STATEMENT));
+  }
+}
+static bool_t convert_default_statement(struct json *json) {
+  bool_t has_default = false;
+  if (json_has(json, SYMBOL_LABELED_STATEMENT)) {
+    json = json_obj_get(json, SYMBOL_LABELED_STATEMENT);
+    has_default = convert_default_labeled_statement(json);
+  }
+  if (has_default) {
+    json_obj_insert(json, SYMBOL_HAS_DEFAULT, json_null());
+  }
+  return has_default;
 }
 static void convert_default_visitor(struct json_visitor *visitor,
                                     struct json *json) {

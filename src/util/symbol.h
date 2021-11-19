@@ -179,6 +179,7 @@
 #define SYMBOL_ALLOC_BLOCK "alloc-block"
 #define SYMBOL_ENTRY_BLOCK "entry-block"
 #define SYMBOL_EXPR_TAG "expr-tag"
+#define SYMBOL_HAS_DEFAULT "has-default"
 #define SYMBOL_IMMEDIATE "immediate"
 #define SYMBOL_MODULE_FUNCTIONS "module-functions"
 #define SYMBOL_MODULE_TABLE "module-table"
