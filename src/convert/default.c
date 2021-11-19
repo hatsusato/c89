@@ -40,6 +40,9 @@ static bool_t convert_default_selection_statement(struct json *json) {
     return false;
   }
 }
+static bool_t convert_default_iteration_statement(struct json *json) {
+  return convert_default_statement(json_obj_get(json, SYMBOL_STATEMENT));
+}
 static bool_t convert_default_statement(struct json *json) {
   bool_t has_default = false;
   if (json_has(json, SYMBOL_LABELED_STATEMENT)) {
@@ -51,6 +54,9 @@ static bool_t convert_default_statement(struct json *json) {
   } else if (json_has(json, SYMBOL_SELECTION_STATEMENT)) {
     json = json_obj_get(json, SYMBOL_SELECTION_STATEMENT);
     has_default = convert_default_selection_statement(json);
+  } else if (json_has(json, SYMBOL_ITERATION_STATEMENT)) {
+    json = json_obj_get(json, SYMBOL_ITERATION_STATEMENT);
+    has_default = convert_default_iteration_statement(json);
   }
   if (has_default) {
     json_obj_insert(json, SYMBOL_HAS_DEFAULT, json_null());
