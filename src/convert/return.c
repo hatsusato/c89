@@ -57,10 +57,8 @@ static bool_t convert_return_statement(struct json *json) {
 static void convert_return_visitor(struct json_visitor *visitor,
                                    struct json *json) {
   if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
-    bool_t must_return = false;
     json = json_obj_get(json, SYMBOL_COMPOUND_STATEMENT);
-    json = json_obj_get(json, SYMBOL_STATEMENT_LIST);
-    json_foreach(json, convert_return_statement_list, &must_return);
+    convert_return_compound_statement(json);
   } else {
     json_visit_foreach(visitor, json);
   }
