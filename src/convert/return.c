@@ -12,55 +12,55 @@ static bool_t convert_return_jump_statement(struct json *json) {
 }
 static bool_t convert_return_selection_statement(struct json *json) {
   if (json_has(json, SYMBOL_IF)) {
-    bool_t then_has_return =
+    bool_t then_must_return =
         convert_return_statement(json_obj_get(json, SYMBOL_THEN_STATEMENT));
     if (json_has(json, SYMBOL_ELSE)) {
-      bool_t else_has_return =
+      bool_t else_must_return =
           convert_return_statement(json_obj_get(json, SYMBOL_ELSE_STATEMENT));
-      return then_has_return && else_has_return;
+      return then_must_return && else_must_return;
     }
   }
   return false;
 }
-static void convert_return_statement_list_map(struct json_map *map) {
-  bool_t *has_return = json_map_extra(map);
+static void convert_return_statement_list(struct json_map *map) {
+  bool_t *must_return = json_map_extra(map);
   struct json *json = json_map_val(map);
   if (convert_return_statement(json)) {
-    *has_return = true;
+    *must_return = true;
     json_map_finish(map);
   }
 }
 static bool_t convert_return_compound_statement(struct json *json) {
-  bool_t has_return = false;
+  bool_t must_return = false;
   json_foreach(json_obj_get(json, SYMBOL_STATEMENT_LIST),
-               convert_return_statement_list_map, &has_return);
-  return has_return;
+               convert_return_statement_list, &must_return);
+  return must_return;
 }
 static bool_t convert_return_statement(struct json *json) {
-  bool_t has_return = false;
+  bool_t must_return = false;
   if (false) {
   } else if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
     json = json_obj_get(json, SYMBOL_COMPOUND_STATEMENT);
-    has_return = convert_return_compound_statement(json);
+    must_return = convert_return_compound_statement(json);
   } else if (json_has(json, SYMBOL_SELECTION_STATEMENT)) {
     json = json_obj_get(json, SYMBOL_SELECTION_STATEMENT);
-    has_return = convert_return_selection_statement(json);
+    must_return = convert_return_selection_statement(json);
   } else if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
     json = json_obj_get(json, SYMBOL_JUMP_STATEMENT);
-    has_return = convert_return_jump_statement(json);
+    must_return = convert_return_jump_statement(json);
   }
-  if (has_return) {
+  if (must_return) {
     json_obj_insert(json, SYMBOL_MUST_RETURN, json_null());
   }
-  return has_return;
+  return must_return;
 }
 static void convert_return_visitor(struct json_visitor *visitor,
                                    struct json *json) {
   if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
-    bool_t has_return = false;
+    bool_t must_return = false;
     json = json_obj_get(json, SYMBOL_COMPOUND_STATEMENT);
     json = json_obj_get(json, SYMBOL_STATEMENT_LIST);
-    json_foreach(json, convert_return_statement_list_map, &has_return);
+    json_foreach(json, convert_return_statement_list, &must_return);
   } else {
     json_visit_foreach(visitor, json);
   }
