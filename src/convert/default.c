@@ -27,6 +27,19 @@ static bool_t convert_default_compound_statement(struct json *json) {
                convert_default_statement_list, &has_default);
   return has_default;
 }
+static bool_t convert_default_selection_statement(struct json *json) {
+  if (json_has(json, SYMBOL_IF)) {
+    bool_t then_has_default =
+        convert_default_statement(json_obj_get(json, SYMBOL_THEN_STATEMENT));
+    bool_t else_has_default =
+        json_has(json, SYMBOL_ELSE) &&
+        convert_default_statement(json_obj_get(json, SYMBOL_ELSE_STATEMENT));
+    return then_has_default || else_has_default;
+  } else {
+    convert_default_statement(json_obj_get(json, SYMBOL_STATEMENT));
+    return false;
+  }
+}
 static bool_t convert_default_statement(struct json *json) {
   bool_t has_default = false;
   if (json_has(json, SYMBOL_LABELED_STATEMENT)) {
@@ -35,6 +48,9 @@ static bool_t convert_default_statement(struct json *json) {
   } else if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
     json = json_obj_get(json, SYMBOL_COMPOUND_STATEMENT);
     has_default = convert_default_compound_statement(json);
+  } else if (json_has(json, SYMBOL_SELECTION_STATEMENT)) {
+    json = json_obj_get(json, SYMBOL_SELECTION_STATEMENT);
+    has_default = convert_default_selection_statement(json);
   }
   if (has_default) {
     json_obj_insert(json, SYMBOL_HAS_DEFAULT, json_null());
