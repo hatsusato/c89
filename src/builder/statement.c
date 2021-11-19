@@ -13,7 +13,10 @@
 
 static void builder_labeled_statement(struct json *function,
                                       struct json *json) {
-  if (json_has(json, SYMBOL_DEFAULT)) {
+  if (false) {
+  } else if (json_has(json, SYMBOL_CASE)) {
+    builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
+  } else if (json_has(json, SYMBOL_DEFAULT)) {
     builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
   }
 }
