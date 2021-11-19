@@ -6,22 +6,6 @@
 #include "util/symbol.h"
 
 static bool_t convert_return_statement(struct json *);
-
-static bool_t convert_return_jump_statement(struct json *json) {
-  return json_has(json, SYMBOL_RETURN);
-}
-static bool_t convert_return_selection_statement(struct json *json) {
-  if (json_has(json, SYMBOL_IF)) {
-    bool_t then_must_return =
-        convert_return_statement(json_obj_get(json, SYMBOL_THEN_STATEMENT));
-    if (json_has(json, SYMBOL_ELSE)) {
-      bool_t else_must_return =
-          convert_return_statement(json_obj_get(json, SYMBOL_ELSE_STATEMENT));
-      return then_must_return && else_must_return;
-    }
-  }
-  return false;
-}
 static void convert_return_statement_list(struct json_map *map) {
   bool_t *must_return = json_map_extra(map);
   struct json *json = json_map_val(map);
@@ -35,6 +19,21 @@ static bool_t convert_return_compound_statement(struct json *json) {
   json_foreach(json_obj_get(json, SYMBOL_STATEMENT_LIST),
                convert_return_statement_list, &must_return);
   return must_return;
+}
+static bool_t convert_return_selection_statement(struct json *json) {
+  if (json_has(json, SYMBOL_IF)) {
+    bool_t then_must_return =
+        convert_return_statement(json_obj_get(json, SYMBOL_THEN_STATEMENT));
+    if (json_has(json, SYMBOL_ELSE)) {
+      bool_t else_must_return =
+          convert_return_statement(json_obj_get(json, SYMBOL_ELSE_STATEMENT));
+      return then_must_return && else_must_return;
+    }
+  }
+  return false;
+}
+static bool_t convert_return_jump_statement(struct json *json) {
+  return json_has(json, SYMBOL_RETURN);
 }
 static bool_t convert_return_statement(struct json *json) {
   bool_t must_return = false;
@@ -57,8 +56,8 @@ static bool_t convert_return_statement(struct json *json) {
 static void convert_return_visitor(struct json_visitor *visitor,
                                    struct json *json) {
   if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
-    json = json_obj_get(json, SYMBOL_COMPOUND_STATEMENT);
-    convert_return_compound_statement(json);
+    convert_return_compound_statement(
+        json_obj_get(json, SYMBOL_COMPOUND_STATEMENT));
   } else {
     json_visit_foreach(visitor, json);
   }
