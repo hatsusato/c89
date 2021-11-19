@@ -1,6 +1,7 @@
 #include "default.h"
 
 #include "json/json.h"
+#include "json/map.h"
 #include "json/visitor.h"
 #include "util/symbol.h"
 
@@ -10,6 +11,14 @@ static bool_t convert_default_labeled_statement(struct json *json) {
     return true;
   } else {
     return convert_default_statement(json_obj_get(json, SYMBOL_STATEMENT));
+  }
+}
+void convert_default_statement_list(struct json_map *map) {
+  bool_t *has_default = json_map_extra(map);
+  struct json *json = json_map_val(map);
+  if (convert_default_statement(json)) {
+    *has_default = true;
+    json_map_finish(map);
   }
 }
 static bool_t convert_default_statement(struct json *json) {
