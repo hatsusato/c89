@@ -37,6 +37,26 @@ static struct json *builder_statement_next_block(struct json *function,
   json_del(next);
   return next;
 }
+static void builder_selection_statement_if(struct json *function,
+                                           struct json *json, struct json *br) {
+  struct json *block_next = ir_block_new();
+  ir_function_set_next(function, block_next);
+  {
+    struct json *block_then = builder_statement_next_block(
+        function, json_obj_get(json, SYMBOL_THEN_STATEMENT));
+    struct json *block_else = block_next;
+    if (json_has(json, SYMBOL_ELSE)) {
+      block_else = builder_statement_next_block(
+          function, json_obj_get(json, SYMBOL_ELSE_STATEMENT));
+    }
+    ir_instr_insert(br, "iftrue", block_then);
+    ir_instr_insert(br, "iffalse", block_else);
+    if (!json_has(json, SYMBOL_MUST_RETURN)) {
+      ir_function_next_block(function, block_next);
+    }
+  }
+  json_del(block_next);
+}
 static void builder_selection_statement(struct json *function,
                                         struct json *json) {
   struct json *old_next = ir_function_get_next(function);
@@ -46,25 +66,9 @@ static void builder_selection_statement(struct json *function,
         builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
     struct json *icmp = ir_function_make_instr(function, "icmp");
     struct json *br = ir_block_make_terminator(block_prev, "br");
-    struct json *block_next = ir_block_new();
     ir_instr_icmp_cond(icmp, expr);
-    ir_function_set_next(function, block_next);
-    {
-      struct json *block_then = builder_statement_next_block(
-          function, json_obj_get(json, SYMBOL_THEN_STATEMENT));
-      struct json *block_else = block_next;
-      if (json_has(json, SYMBOL_ELSE)) {
-        block_else = builder_statement_next_block(
-            function, json_obj_get(json, SYMBOL_ELSE_STATEMENT));
-      }
-      ir_instr_insert(br, "cond", icmp);
-      ir_instr_insert(br, "iftrue", block_then);
-      ir_instr_insert(br, "iffalse", block_else);
-      if (!json_has(json, SYMBOL_MUST_RETURN)) {
-        ir_function_next_block(function, block_next);
-      }
-    }
-    json_del(block_next);
+    ir_instr_insert(br, "cond", icmp);
+    builder_selection_statement_if(function, json, br);
   } else if (json_has(json, SYMBOL_SWITCH)) {
     struct json *block_prev = ir_function_get_block(function);
     struct json *expr =
