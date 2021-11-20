@@ -12,13 +12,25 @@
 #include "json/map.h"
 #include "util/symbol.h"
 
+static struct json *builder_statement_next_block(struct json *function,
+                                                 struct json *json) {
+  struct json *next = ir_block_new();
+  ir_function_next_block(function, next);
+  builder_statement(function, json);
+  json_del(next);
+  return next;
+}
+
 static void builder_labeled_statement(struct json *function,
                                       struct json *json) {
   if (false) {
   } else if (json_has(json, SYMBOL_CASE)) {
     builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
   } else if (json_has(json, SYMBOL_DEFAULT)) {
-    builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
+    struct json *switch_extra = ir_function_get_switch(function);
+    struct json *block = builder_statement_next_block(
+        function, json_obj_get(json, SYMBOL_STATEMENT));
+    ir_switch_insert_default(switch_extra, block);
   }
 }
 static void builder_compound_statement(struct json *function,
@@ -32,14 +44,6 @@ static void builder_compound_statement(struct json *function,
 static void builder_expression_statement(struct json *function,
                                          struct json *json) {
   builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
-}
-static struct json *builder_statement_next_block(struct json *function,
-                                                 struct json *json) {
-  struct json *next = ir_block_new();
-  ir_function_next_block(function, next);
-  builder_statement(function, json);
-  json_del(next);
-  return next;
 }
 static void builder_selection_statement_if(struct json *function,
                                            struct json *json, struct json *br) {
@@ -62,16 +66,17 @@ static void builder_selection_statement_if(struct json *function,
   json_del(block_next);
 }
 static void builder_selection_statement_switch(struct json *function,
-                                               struct json *json) {
+                                               struct json *json,
+                                               struct json *switch_extra) {
   struct json *block_prev = ir_function_get_block(function);
   struct json *expr =
       builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
   struct json *terminator = ir_block_make_terminator(block_prev, "switch");
-  struct json *block_default = builder_statement_next_block(
-      function, json_obj_get(json, SYMBOL_STATEMENT));
   struct json *block_next = ir_block_new();
+  builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
   json_obj_insert(terminator, "value", expr);
-  json_obj_insert(terminator, "default", block_default);
+  json_obj_insert(terminator, "default",
+                  json_obj_get(switch_extra, SYMBOL_SWITCH_EXTRA_DEFAULT));
   ir_function_next_block(function, block_next);
   json_del(block_next);
 }
@@ -91,7 +96,7 @@ static void builder_selection_statement(struct json *function,
     struct json *switch_old = ir_function_get_switch(function);
     struct json *switch_extra = ir_switch_new();
     ir_function_set_switch(function, switch_extra);
-    builder_selection_statement_switch(function, json);
+    builder_selection_statement_switch(function, json, switch_extra);
     ir_function_set_switch(function, switch_old);
     json_del(switch_extra);
   }
