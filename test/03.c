@@ -16,13 +16,11 @@ int f2(void) {
   }
   return 0;
 }
-#if 0
 int f3(void) {
   int x = 0;
   switch (x) {
   case 1:
     x = 1;
-    break;
   case 2:
     x = 2;
     break;
@@ -32,6 +30,7 @@ int f3(void) {
   }
   return 0;
 }
+#if 0
 int f4(void) {
   int x = 0;
   switch (x) {

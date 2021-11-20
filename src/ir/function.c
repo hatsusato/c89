@@ -17,18 +17,12 @@ static void ir_function_finish_alloc(struct json *function) {
   struct json *entry = json_obj_get(function, SYMBOL_ENTRY_BLOCK);
   ir_block_prepend(entry, alloc);
 }
-static void ir_function_push_block(struct json *function, struct json *block) {
-  struct json *array = json_obj_get(function, "blocks");
-  json_arr_push(array, block);
-  json_obj_insert(function, "current", block);
-}
 
 struct json *ir_function_new(struct json *table) {
   struct json *function = json_new_obj();
   json_obj_set(function, SYMBOL_ALLOC_BLOCK, ir_block_new());
   json_obj_set(function, "blocks", json_new_arr());
   json_obj_insert(function, "table", table);
-  json_obj_insert(function, "next", json_null());
   return function;
 }
 void ir_function_init(struct json *function, struct json *definition) {
@@ -70,28 +64,26 @@ struct json *ir_function_make_alloca(struct json *function) {
   struct json *alloc = json_obj_get(function, SYMBOL_ALLOC_BLOCK);
   return ir_block_make_instr(alloc, "alloca");
 }
+void ir_function_push_block(struct json *function, struct json *block) {
+  struct json *array = json_obj_get(function, "blocks");
+  json_arr_push(array, block);
+  json_obj_insert(function, "current", block);
+}
 struct json *ir_function_get_block(struct json *function) {
   return json_obj_get(function, "current");
 }
-void ir_function_advance_next(struct json *function, struct json *block) {
+void ir_function_terminate_prev(struct json *function, struct json *block) {
   struct json *prev = ir_function_get_block(function);
-  struct json *next = ir_function_get_next(function);
   if (!ir_block_has_terminator(prev)) {
     struct json *terminator = ir_block_make_terminator(prev, "br");
-    ir_instr_insert(terminator, "dest", json_is_null(next) ? block : next);
+    ir_instr_insert(terminator, "dest", block);
   }
-  ir_function_push_block(function, block);
 }
-struct json *ir_function_new_next(struct json *function) {
-  struct json *next = ir_block_new();
-  ir_function_advance_next(function, next);
-  return next;
+void ir_function_set_break(struct json *function, struct json *block) {
+  json_obj_insert(function, SYMBOL_FUNCTION_EXTRA_BREAK, block);
 }
-void ir_function_set_next(struct json *function, struct json *next) {
-  json_obj_insert(function, "next", next);
-}
-struct json *ir_function_get_next(struct json *function) {
-  return json_obj_get(function, "next");
+struct json *ir_function_get_break(struct json *function) {
+  return json_obj_get(function, SYMBOL_FUNCTION_EXTRA_BREAK);
 }
 void ir_function_set_switch(struct json *function, struct json *extra) {
   json_obj_insert(function, SYMBOL_SWITCH_EXTRA, extra);
