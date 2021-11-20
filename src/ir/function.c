@@ -73,7 +73,7 @@ struct json *ir_function_make_alloca(struct json *function) {
 struct json *ir_function_get_block(struct json *function) {
   return json_obj_get(function, "current");
 }
-void ir_function_next_block(struct json *function, struct json *block) {
+void ir_function_advance_next(struct json *function, struct json *block) {
   struct json *prev = ir_function_get_block(function);
   struct json *next = ir_function_get_next(function);
   if (!ir_block_has_terminator(prev)) {
@@ -84,7 +84,7 @@ void ir_function_next_block(struct json *function, struct json *block) {
 }
 struct json *ir_function_new_next(struct json *function) {
   struct json *next = ir_block_new();
-  ir_function_next_block(function, next);
+  ir_function_advance_next(function, next);
   return next;
 }
 void ir_function_set_next(struct json *function, struct json *next) {
