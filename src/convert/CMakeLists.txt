@@ -1,7 +1,6 @@
 add_library(convert STATIC)
 target_sources(convert PRIVATE
   convert.c
-  default.c
   immediate.c
   return.c
   )
