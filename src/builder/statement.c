@@ -61,6 +61,20 @@ static void builder_selection_statement_if(struct json *function,
   }
   json_del(block_next);
 }
+static void builder_selection_statement_switch(struct json *function,
+                                               struct json *json) {
+  struct json *block_prev = ir_function_get_block(function);
+  struct json *expr =
+      builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
+  struct json *terminator = ir_block_make_terminator(block_prev, "switch");
+  struct json *block_default = builder_statement_next_block(
+      function, json_obj_get(json, SYMBOL_STATEMENT));
+  struct json *block_next = ir_block_new();
+  json_obj_insert(terminator, "value", expr);
+  json_obj_insert(terminator, "default", block_default);
+  ir_function_next_block(function, block_next);
+  json_del(block_next);
+}
 static void builder_selection_statement(struct json *function,
                                         struct json *json) {
   struct json *old_next = ir_function_get_next(function);
@@ -77,19 +91,7 @@ static void builder_selection_statement(struct json *function,
     struct json *switch_old = ir_function_get_switch(function);
     struct json *switch_extra = ir_switch_new();
     ir_function_set_switch(function, switch_extra);
-    {
-      struct json *block_prev = ir_function_get_block(function);
-      struct json *expr =
-          builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
-      struct json *terminator = ir_block_make_terminator(block_prev, "switch");
-      struct json *block_default = builder_statement_next_block(
-          function, json_obj_get(json, SYMBOL_STATEMENT));
-      struct json *block_next = ir_block_new();
-      json_obj_insert(terminator, "value", expr);
-      json_obj_insert(terminator, "default", block_default);
-      ir_function_next_block(function, block_next);
-      json_del(block_next);
-    }
+    builder_selection_statement_switch(function, json);
     ir_function_set_switch(function, switch_old);
     json_del(switch_extra);
   }
