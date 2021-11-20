@@ -25,7 +25,11 @@ static void builder_labeled_statement(struct json *function,
                                       struct json *json) {
   if (false) {
   } else if (json_has(json, SYMBOL_CASE)) {
-    builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
+    struct json *switch_extra = ir_function_get_switch(function);
+    struct json *block = builder_statement_next_block(
+        function, json_obj_get(json, SYMBOL_STATEMENT));
+    ir_switch_insert_case(
+        switch_extra, json_obj_get(json, SYMBOL_CONSTANT_EXPRESSION), block);
   } else if (json_has(json, SYMBOL_DEFAULT)) {
     struct json *switch_extra = ir_function_get_switch(function);
     struct json *block = builder_statement_next_block(
