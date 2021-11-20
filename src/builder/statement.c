@@ -14,8 +14,7 @@
 
 static struct json *builder_statement_next_block(struct json *function,
                                                  struct json *json) {
-  struct json *next = ir_block_new();
-  ir_function_next_block(function, next);
+  struct json *next = ir_function_new_next(function);
   builder_statement(function, json);
   json_del(next);
   return next;

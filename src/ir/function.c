@@ -82,6 +82,11 @@ void ir_function_next_block(struct json *function, struct json *block) {
   }
   ir_function_push_block(function, block);
 }
+struct json *ir_function_new_next(struct json *function) {
+  struct json *next = ir_block_new();
+  ir_function_next_block(function, next);
+  return next;
+}
 void ir_function_set_next(struct json *function, struct json *next) {
   json_obj_insert(function, "next", next);
 }
