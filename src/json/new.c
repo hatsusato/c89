@@ -73,8 +73,7 @@ struct json *json_new_obj(void) {
   return json_alloc(JSON_TAG_OBJ, json_obj_new());
 }
 struct json *json_new_weak(struct json *json) {
-  json = json_unwrap(json);
-  return json_is_null(json) ? json : json_alloc(JSON_TAG_WEAK, json);
+  return json_alloc(JSON_TAG_WEAK, json_unwrap(json));
 }
 bool_t json_is_null(struct json *self) {
   return json_tag(json_unwrap(self)) == JSON_TAG_NULL;
