@@ -3,6 +3,7 @@
 #include "global.h"
 #include "ir/instr.h"
 #include "json/json.h"
+#include "json/map.h"
 #include "printer/printer.h"
 #include "util/symbol.h"
 #include "util/util.h"
@@ -47,14 +48,25 @@ static void generate_br(struct printer *printer, struct json *json) {
     generate_register(printer, json, "dest");
   }
 }
+static void generate_switch_cases(struct json_map *map) {
+  struct printer *printer = json_map_extra(map);
+  struct json *val = json_map_val(map);
+  printer_print(printer, "i32 ");
+  generate_register(printer, val, SYMBOL_SWITCH_EXTRA_VALUE);
+  printer_print(printer, ", label ");
+  generate_register(printer, val, SYMBOL_SWITCH_EXTRA_DEST);
+  printer_newline(printer);
+}
 static void generate_switch(struct printer *printer, struct json *json) {
   printer_print(printer, "switch i32 ");
   generate_register(printer, json, "value");
   printer_print(printer, ", label ");
-  generate_register(printer, json, "default");
-  printer_print(printer, " [");
+  generate_register(printer, json, SYMBOL_INSTR_SWITCH_DEFAULT);
+  printer_open(printer, " [");
   printer_newline(printer);
-  printer_print(printer, "]");
+  json_foreach(json_obj_get(json, SYMBOL_INSTR_SWITCH_CASE),
+               generate_switch_cases, printer);
+  printer_close(printer, "]");
 }
 /* Unary Operations */
 /* Binary Operations */
