@@ -187,6 +187,7 @@
 #define SYMBOL_RETURN_EXTRA "return-extra"
 #define SYMBOL_SWITCH_EXTRA "switch-extra"
 #define SYMBOL_SWITCH_EXTRA_DEFAULT "switch-extra-default"
+#define SYMBOL_SWITCH_EXTRA_INSTR "switch-extra-instr"
 #define SYMBOL_TABLE_GLOBAL "table-global"
 #define SYMBOL_TABLE_NEXT "table-next"
 #define SYMBOL_TABLE_SYMBOLS "table-symbols"

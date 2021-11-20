@@ -68,11 +68,11 @@ static void builder_selection_statement_if(struct json *function,
 static void builder_selection_statement_switch(struct json *function,
                                                struct json *json,
                                                struct json *switch_extra) {
-  struct json *block_prev = ir_function_get_block(function);
   struct json *expr =
       builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
-  struct json *terminator = ir_block_make_terminator(block_prev, "switch");
   struct json *block_next = ir_block_new();
+  struct json *terminator =
+      json_obj_get(switch_extra, SYMBOL_SWITCH_EXTRA_INSTR);
   builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
   json_obj_insert(terminator, "value", expr);
   json_obj_insert(terminator, "default",
@@ -94,7 +94,9 @@ static void builder_selection_statement(struct json *function,
     builder_selection_statement_if(function, json, br);
   } else if (json_has(json, SYMBOL_SWITCH)) {
     struct json *switch_old = ir_function_get_switch(function);
-    struct json *switch_extra = ir_switch_new();
+    struct json *block_prev = ir_function_get_block(function);
+    struct json *terminator = ir_block_make_terminator(block_prev, "switch");
+    struct json *switch_extra = ir_switch_new(terminator);
     ir_function_set_switch(function, switch_extra);
     builder_selection_statement_switch(function, json, switch_extra);
     ir_function_set_switch(function, switch_old);
