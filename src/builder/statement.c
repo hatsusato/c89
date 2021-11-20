@@ -72,25 +72,20 @@ static void builder_selection_statement_if(struct json *function,
 static void builder_selection_statement_switch(struct json *function,
                                                struct json *json,
                                                struct json *switch_extra) {
-  struct json *expr =
-      builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
   struct json *block_next = ir_block_new();
-  struct json *terminator =
-      json_obj_get(switch_extra, SYMBOL_SWITCH_EXTRA_INSTR);
+  ir_function_set_switch(function, switch_extra);
+  ir_switch_insert_default(switch_extra, block_next);
   builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
-  json_obj_insert(terminator, "value", expr);
-  json_obj_insert(terminator, "default",
-                  json_obj_get(switch_extra, SYMBOL_SWITCH_EXTRA_DEFAULT));
   ir_function_next_block(function, block_next);
   json_del(block_next);
 }
 static void builder_selection_statement(struct json *function,
                                         struct json *json) {
   struct json *old_next = ir_function_get_next(function);
+  struct json *block_prev = ir_function_get_block(function);
+  struct json *expr =
+      builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
   if (json_has(json, SYMBOL_IF)) {
-    struct json *block_prev = ir_function_get_block(function);
-    struct json *expr =
-        builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
     struct json *icmp = ir_function_make_instr(function, "icmp");
     struct json *br = ir_block_make_terminator(block_prev, "br");
     ir_instr_icmp_cond(icmp, expr);
@@ -98,13 +93,12 @@ static void builder_selection_statement(struct json *function,
     builder_selection_statement_if(function, json, br);
   } else if (json_has(json, SYMBOL_SWITCH)) {
     struct json *switch_old = ir_function_get_switch(function);
-    struct json *block_prev = ir_function_get_block(function);
     struct json *terminator = ir_block_make_terminator(block_prev, "switch");
     struct json *switch_extra = ir_switch_new(terminator);
-    ir_function_set_switch(function, switch_extra);
+    json_obj_insert(terminator, SYMBOL_INSTR_SWITCH_VALUE, expr);
     builder_selection_statement_switch(function, json, switch_extra);
-    ir_function_set_switch(function, switch_old);
     ir_switch_del(switch_extra);
+    ir_function_set_switch(function, switch_old);
   }
   ir_function_set_next(function, old_next);
 }

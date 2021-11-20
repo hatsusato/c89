@@ -183,6 +183,7 @@
 #define SYMBOL_IMMEDIATE "immediate"
 #define SYMBOL_INSTR_SWITCH_CASE "instr-switch-case"
 #define SYMBOL_INSTR_SWITCH_DEFAULT "instr-switch-default"
+#define SYMBOL_INSTR_SWITCH_VALUE "instr-switch-value"
 #define SYMBOL_MODULE_FUNCTIONS "module-functions"
 #define SYMBOL_MODULE_TABLE "module-table"
 #define SYMBOL_MUST_RETURN "must-return"

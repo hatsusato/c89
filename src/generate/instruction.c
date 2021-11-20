@@ -59,7 +59,7 @@ static void generate_switch_cases(struct json_map *map) {
 }
 static void generate_switch(struct printer *printer, struct json *json) {
   printer_print(printer, "switch i32 ");
-  generate_register(printer, json, "value");
+  generate_register(printer, json, SYMBOL_INSTR_SWITCH_VALUE);
   printer_print(printer, ", label ");
   generate_register(printer, json, SYMBOL_INSTR_SWITCH_DEFAULT);
   printer_open(printer, " [");
