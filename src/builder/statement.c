@@ -70,13 +70,16 @@ static void builder_selection_statement_if(struct json *function,
 static void builder_selection_statement_switch(struct json *function,
                                                struct json *json,
                                                struct json *switch_extra) {
+  struct json *old_break = ir_function_get_break(function);
   struct json *block_next = ir_block_new();
+  ir_function_set_break(function, block_next);
   ir_function_set_switch(function, switch_extra);
   ir_switch_insert_default(switch_extra, block_next);
   builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
   ir_function_terminate_prev(function, block_next);
   ir_function_push_block(function, block_next);
   json_del(block_next);
+  ir_function_set_break(function, old_break);
 }
 static void builder_selection_statement(struct json *function,
                                         struct json *json) {
@@ -102,7 +105,11 @@ static void builder_selection_statement(struct json *function,
   ir_function_set_next(function, old_next);
 }
 static void builder_jump_statement(struct json *function, struct json *json) {
-  if (json_has(json, SYMBOL_RETURN)) {
+  if (false) {
+  } else if (json_has(json, SYMBOL_BREAK)) {
+    struct json *block = ir_function_get_break(function);
+    ir_function_terminate_prev(function, block);
+  } else if (json_has(json, SYMBOL_RETURN)) {
     struct json *block = ir_function_get_block(function);
     struct json *instr = ir_block_make_terminator(block, "ret");
     struct json *expr =
