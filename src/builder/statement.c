@@ -43,28 +43,25 @@ static void builder_expression_statement(struct json *function,
 static void builder_selection_statement_if(struct json *function,
                                            struct json *json, struct json *br) {
   struct json *block_next = ir_block_new();
-  ir_function_set_next(function, block_next);
-  {
-    struct json *block_then = ir_block_new();
-    struct json *block_else = json_null();
-    ir_function_push_block(function, block_then);
-    builder_statement(function, json_obj_get(json, SYMBOL_THEN_STATEMENT));
-    if (json_has(json, SYMBOL_ELSE)) {
-      block_else = ir_block_new();
-      ir_function_terminate_prev(function, block_next);
-      ir_function_push_block(function, block_else);
-      builder_statement(function, json_obj_get(json, SYMBOL_ELSE_STATEMENT));
-    }
-    ir_instr_insert(br, "iftrue", block_then);
-    ir_instr_insert(br, "iffalse",
-                    json_is_null(block_else) ? block_next : block_else);
-    json_del(block_else);
-    json_del(block_then);
-    if (!json_has(json, SYMBOL_MUST_RETURN)) {
-      ir_function_terminate_prev(function, block_next);
-      ir_function_push_block(function, block_next);
-    }
+  struct json *block_then = ir_block_new();
+  struct json *block_else = json_null();
+  ir_function_push_block(function, block_then);
+  builder_statement(function, json_obj_get(json, SYMBOL_THEN_STATEMENT));
+  if (json_has(json, SYMBOL_ELSE)) {
+    block_else = ir_block_new();
+    ir_function_terminate_prev(function, block_next);
+    ir_function_push_block(function, block_else);
+    builder_statement(function, json_obj_get(json, SYMBOL_ELSE_STATEMENT));
   }
+  if (!json_has(json, SYMBOL_MUST_RETURN)) {
+    ir_function_terminate_prev(function, block_next);
+    ir_function_push_block(function, block_next);
+  }
+  ir_instr_insert(br, "iftrue", block_then);
+  ir_instr_insert(br, "iffalse",
+                  json_is_null(block_else) ? block_next : block_else);
+  json_del(block_else);
+  json_del(block_then);
   json_del(block_next);
 }
 static void builder_selection_statement_switch(struct json *function,
@@ -83,7 +80,6 @@ static void builder_selection_statement_switch(struct json *function,
 }
 static void builder_selection_statement(struct json *function,
                                         struct json *json) {
-  struct json *old_next = ir_function_get_next(function);
   struct json *block_prev = ir_function_get_block(function);
   struct json *expr =
       builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
@@ -102,7 +98,6 @@ static void builder_selection_statement(struct json *function,
     ir_switch_del(switch_extra);
     ir_function_set_switch(function, switch_old);
   }
-  ir_function_set_next(function, old_next);
 }
 static void builder_jump_statement(struct json *function, struct json *json) {
   if (false) {

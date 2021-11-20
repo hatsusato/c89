@@ -23,7 +23,6 @@ struct json *ir_function_new(struct json *table) {
   json_obj_set(function, SYMBOL_ALLOC_BLOCK, ir_block_new());
   json_obj_set(function, "blocks", json_new_arr());
   json_obj_insert(function, "table", table);
-  json_obj_insert(function, "next", json_null());
   return function;
 }
 void ir_function_init(struct json *function, struct json *definition) {
@@ -79,12 +78,6 @@ void ir_function_terminate_prev(struct json *function, struct json *block) {
     struct json *terminator = ir_block_make_terminator(prev, "br");
     ir_instr_insert(terminator, "dest", block);
   }
-}
-void ir_function_set_next(struct json *function, struct json *next) {
-  json_obj_insert(function, "next", next);
-}
-struct json *ir_function_get_next(struct json *function) {
-  return json_obj_get(function, "next");
 }
 void ir_function_set_break(struct json *function, struct json *block) {
   json_obj_insert(function, SYMBOL_FUNCTION_EXTRA_BREAK, block);
