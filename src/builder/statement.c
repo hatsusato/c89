@@ -104,7 +104,7 @@ static void builder_selection_statement(struct json *function,
     ir_function_set_switch(function, switch_extra);
     builder_selection_statement_switch(function, json, switch_extra);
     ir_function_set_switch(function, switch_old);
-    json_del(switch_extra);
+    ir_switch_del(switch_extra);
   }
   ir_function_set_next(function, old_next);
 }

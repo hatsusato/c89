@@ -4,6 +4,7 @@
 struct json;
 
 struct json *ir_switch_new(struct json *);
+void ir_switch_del(struct json *);
 void ir_switch_insert_default(struct json *, struct json *);
 void ir_switch_insert_case(struct json *, struct json *, struct json *);
 
