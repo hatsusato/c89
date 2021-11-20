@@ -3,6 +3,7 @@
 #include "global.h"
 #include "ir/instr.h"
 #include "json/json.h"
+#include "json/map.h"
 #include "printer/printer.h"
 #include "util/symbol.h"
 #include "util/util.h"
@@ -10,16 +11,16 @@
 static void generate_register(struct printer *printer, struct json *json,
                               const char *key) {
   if (key && json_has(json, key)) {
-    json = json_get(json, key);
+    json = json_obj_get(json, key);
   }
   if (json_has(json, SYMBOL_IMMEDIATE)) {
-    struct json *immediate = json_get(json, SYMBOL_IMMEDIATE);
+    struct json *immediate = json_obj_get(json, SYMBOL_IMMEDIATE);
     assert(json_is_int(immediate));
-    printer_print(printer, "%d", json_int_get(json_as_int(immediate)));
+    printer_print(printer, "%d", json_int_get(immediate));
   } else if (json_has(json, "label")) {
-    struct json *label = json_get(json, "label");
+    struct json *label = json_obj_get(json, "label");
     assert(json_is_int(label));
-    printer_print(printer, "%%%d", json_int_get(json_as_int(label)));
+    printer_print(printer, "%%%d", json_int_get(label));
   } else if (ir_instr_has_numbering(json)) {
     int reg = ir_instr_get_numbering(json);
     printer_print(printer, "%%%d", reg);
@@ -46,6 +47,26 @@ static void generate_br(struct printer *printer, struct json *json) {
     printer_print(printer, "br label ");
     generate_register(printer, json, "dest");
   }
+}
+static void generate_switch_cases(struct json_map *map) {
+  struct printer *printer = json_map_extra(map);
+  struct json *val = json_map_val(map);
+  printer_print(printer, "i32 ");
+  generate_register(printer, val, SYMBOL_SWITCH_EXTRA_VALUE);
+  printer_print(printer, ", label ");
+  generate_register(printer, val, SYMBOL_SWITCH_EXTRA_DEST);
+  printer_newline(printer);
+}
+static void generate_switch(struct printer *printer, struct json *json) {
+  printer_print(printer, "switch i32 ");
+  generate_register(printer, json, SYMBOL_INSTR_SWITCH_VALUE);
+  printer_print(printer, ", label ");
+  generate_register(printer, json, SYMBOL_INSTR_SWITCH_DEFAULT);
+  printer_open(printer, " [");
+  printer_newline(printer);
+  json_foreach(json_obj_get(json, SYMBOL_INSTR_SWITCH_CASE),
+               generate_switch_cases, printer);
+  printer_close(printer, "]");
 }
 /* Unary Operations */
 /* Binary Operations */
@@ -94,6 +115,8 @@ void generate_instruction(struct printer *printer, struct json *json) {
     generate_ret(printer, json);
   } else if (ir_instr_check_kind(json, "br")) {
     generate_br(printer, json);
+  } else if (ir_instr_check_kind(json, "switch")) {
+    generate_switch(printer, json);
   } else if (ir_instr_check_kind(json, "add")) {
     generate_add(printer, json);
   } else if (ir_instr_check_kind(json, "alloca")) {

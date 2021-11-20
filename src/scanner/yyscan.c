@@ -48,12 +48,12 @@ YYSCAN_TYPE yyscan_json_obj(void) {
 }
 YYSCAN_TYPE yyscan_json_push(YYSCAN_TYPE arr, YYSCAN_TYPE val) {
   assert(json_is_arr(arr));
-  json_arr_push(json_as_arr(arr), val);
+  json_arr_push(arr, val);
   json_del(val);
   return arr;
 }
 YYSCAN_TYPE yyscan_json_set(YYSCAN_TYPE obj, const char *key, YYSCAN_TYPE val) {
-  json_set(obj, key, val);
+  json_obj_set(obj, key, val);
   return obj;
 }
 YYSCAN_TYPE yyscan_json_expr(const char *tag) {

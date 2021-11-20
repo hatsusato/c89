@@ -2,65 +2,80 @@
 
 #include "json/json.h"
 #include "json/map.h"
+#include "util/symbol.h"
 #include "util/util.h"
 #include "value.h"
 
-struct json *ir_table_last(struct json *table) {
-  while (json_has(table, "$next")) {
-    table = json_get(table, "$next");
-  }
-  return table;
-}
-
 struct json *ir_table_new(void) {
   struct json *table = json_new_obj();
-  json_set(table, "$global", json_new_obj());
+  json_obj_set(table, SYMBOL_TABLE_GLOBAL, json_new_obj());
+  json_obj_set(table, SYMBOL_TABLE_SYMBOLS, json_new_obj());
   return table;
 }
-struct json *ir_table_push(struct json *next) {
-  struct json *table = json_new_obj();
-  json_insert(table, "$next", next);
-  return table;
+void ir_table_push(struct json *table) {
+  struct json *symbols = json_new_obj();
+  struct json *next = json_obj_get(table, SYMBOL_TABLE_SYMBOLS);
+  json_obj_insert(symbols, SYMBOL_TABLE_NEXT, next);
+  json_obj_set(table, SYMBOL_TABLE_SYMBOLS, symbols);
 }
-struct json *ir_table_pop(struct json *table) {
-  struct json *next = json_get(table, "$next");
+void ir_table_pop(struct json *table) {
+  struct json *symbols = json_obj_get(table, SYMBOL_TABLE_SYMBOLS);
+  struct json *next = json_obj_get(symbols, SYMBOL_TABLE_NEXT);
   json_ref(next);
-  return next;
+  json_obj_set(table, SYMBOL_TABLE_SYMBOLS, next);
 }
-void ir_table_insert(struct json *table, const char *name, struct json *value) {
-  assert(!json_has(table, name));
-  json_insert(table, name, value);
+void ir_table_insert(struct json *table, struct json *identifier,
+                     struct json *value) {
+  struct json *symbols = json_obj_get(table, SYMBOL_TABLE_SYMBOLS);
+  const char *name = json_get_str(identifier);
+  assert(!json_has(symbols, name));
+  assert(!util_streq(SYMBOL_TABLE_NEXT, name));
+  json_obj_insert(symbols, name, value);
 }
-struct json *ir_table_lookup(struct json *table, const char *name) {
-  while (!json_is_null(table)) {
-    if (json_has(table, name)) {
-      return json_get(table, name);
-    }
-    table = json_get(table, "$next");
+static struct json *ir_table_symbols_find(struct json *symbols,
+                                          const char *name) {
+  while (json_is_obj(symbols) && !json_has(symbols, name)) {
+    symbols = json_obj_get(symbols, SYMBOL_TABLE_NEXT);
   }
-  return json_null();
+  return json_is_obj(symbols) ? json_obj_get(symbols, name) : json_null();
 }
-struct json *ir_table_get_global(struct json *table) {
-  struct json *last = ir_table_last(table);
-  return json_get(last, "$global");
+struct json *ir_table_lookup(struct json *table, struct json *identifier) {
+  struct json *symbols = json_obj_get(table, SYMBOL_TABLE_SYMBOLS);
+  const char *name = json_get_str(identifier);
+  struct json *found = ir_table_symbols_find(symbols, name);
+  if (ir_value_is_global(found)) {
+    ir_table_insert_global(table, found);
+  }
+  return found;
+}
+struct json *ir_table_make_global(struct json *table, struct json *identifier) {
+  struct json *global = ir_value_new_global(identifier);
+  assert(!json_has(table, SYMBOL_TABLE_NEXT));
+  ir_table_insert(table, identifier, global);
+  json_del(global);
+  return global;
 }
 void ir_table_insert_global(struct json *table, struct json *value) {
-  if (ir_value_is_global(value)) {
-    struct json *global = ir_table_get_global(table);
-    const char *name = ir_value_get_name(value);
-    json_insert(global, name, value);
+  struct json *global = json_obj_get(table, SYMBOL_TABLE_GLOBAL);
+  const char *key = ir_value_get_name(value);
+  assert(ir_value_is_global(value));
+  if (json_has(global, key)) {
+    assert(json_obj_get(global, key) == value);
+  } else {
+    json_obj_insert(global, key, value);
   }
 }
 static void ir_table_finish_map(struct json_map *map) {
-  struct json *global = json_map_extra(map);
-  const char *key = json_map_key(map);
+  struct json *table = json_map_extra(map);
   struct json *val = json_map_val(map);
-  if (!util_streq(key, "$global") && !json_has(global, key)) {
-    json_insert(global, key, val);
-  }
+  ir_table_insert_global(table, val);
 }
 void ir_table_finish(struct json *table) {
-  assert(!json_has(table, "$next"));
-  assert(json_has(table, "$global"));
-  json_foreach(table, ir_table_finish_map, json_get(table, "$global"));
+  struct json *symbols = json_obj_get(table, SYMBOL_TABLE_SYMBOLS);
+  assert(!json_has(symbols, SYMBOL_TABLE_NEXT));
+  json_foreach(symbols, ir_table_finish_map, table);
+}
+void ir_table_foreach_global(struct json *table, json_map_t map, void *extra) {
+  struct json *global = json_obj_get(table, SYMBOL_TABLE_GLOBAL);
+  json_foreach(global, map, extra);
 }

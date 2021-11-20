@@ -18,8 +18,8 @@ void generate_block(struct printer *printer, struct json *json) {
   generate_instruction(printer, terminator);
 }
 void generate_block_label(struct printer *printer, struct json *block) {
-  struct json *label = json_get(block, "label");
-  int num = json_int_get(json_as_int(label));
+  struct json *label = json_obj_get(block, "label");
+  int num = json_int_get(label);
   assert(json_is_int(label));
   printer_print(printer, "%d:", num);
 }

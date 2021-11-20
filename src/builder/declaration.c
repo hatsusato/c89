@@ -11,9 +11,10 @@
 #include "util/symbol.h"
 
 static void builder_init_declarator(struct json *function, struct json *json) {
+  struct json *table = ir_function_get_table(function);
   struct json *identifier = json_find_identifier(json);
   struct json *pointer = ir_function_make_alloca(function);
-  ir_function_insert_symbol(function, identifier, pointer);
+  ir_table_insert(table, identifier, pointer);
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = builder_rvalue(function, json);
     struct json *instr = ir_function_make_instr(function, "store");
@@ -23,12 +24,13 @@ static void builder_init_declarator(struct json *function, struct json *json) {
 }
 static void builder_global_init_declarator(struct json *module,
                                            struct json *json) {
+  struct json *table = ir_module_get_table(module);
   struct json *identifier = json_find_identifier(json);
-  struct json *pointer = ir_module_make_global(module, identifier);
+  struct json *pointer = ir_table_make_global(table, identifier);
   if (json_has(json, SYMBOL_ASSIGN)) {
     struct json *value = builder_global_rvalue(json);
-    ir_module_insert_global(module, pointer);
-    json_insert(pointer, "init", value);
+    ir_table_insert_global(table, pointer);
+    json_obj_insert(pointer, "init", value);
   }
 }
 static void builder_init_declarator_list(struct json_map *map) {
@@ -54,19 +56,19 @@ static void builder_global_declaration_list(struct json_map *map) {
 
 void builder_declaration(struct json *function, struct json *json) {
   if (json_has(json, SYMBOL_INIT_DECLARATOR_LIST)) {
-    json_foreach(json_get(json, SYMBOL_INIT_DECLARATOR_LIST),
+    json_foreach(json_obj_get(json, SYMBOL_INIT_DECLARATOR_LIST),
                  builder_init_declarator_list, function);
   } else if (json_has(json, SYMBOL_DECLARATION_LIST)) {
-    json_foreach(json_get(json, SYMBOL_DECLARATION_LIST),
+    json_foreach(json_obj_get(json, SYMBOL_DECLARATION_LIST),
                  builder_declaration_list, function);
   }
 }
 void builder_global_declaration(struct json *module, struct json *json) {
   if (json_has(json, SYMBOL_INIT_DECLARATOR_LIST)) {
-    json_foreach(json_get(json, SYMBOL_INIT_DECLARATOR_LIST),
+    json_foreach(json_obj_get(json, SYMBOL_INIT_DECLARATOR_LIST),
                  builder_global_init_declarator_list, module);
   } else if (json_has(json, SYMBOL_DECLARATION_LIST)) {
-    json_foreach(json_get(json, SYMBOL_DECLARATION_LIST),
+    json_foreach(json_obj_get(json, SYMBOL_DECLARATION_LIST),
                  builder_global_declaration_list, module);
   }
 }

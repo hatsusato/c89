@@ -5,6 +5,7 @@ target_sources(ir PRIVATE
   instr.c
   module.c
   return.c
+  switch.c
   table.c
   value.c
   )

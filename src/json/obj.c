@@ -17,45 +17,49 @@ struct json_obj *json_obj_new(void) {
   self->sorted = false;
   return self;
 }
-void json_obj_del(struct json_obj *self) {
-  json_vec_del(self->vec);
-  util_free(self);
+void json_obj_del(struct json *self) {
+  json_vec_del(json_as_obj(self)->vec);
+  util_free(json_as_obj(self));
 }
-index_t json_obj_count(struct json_obj *self) {
-  return json_vec_count(self->vec);
+index_t json_obj_count(struct json *self) {
+  return json_vec_count(json_as_obj(self)->vec);
 }
-void json_obj_insert(struct json_obj *self, const char *key, struct json *val) {
+void json_obj_insert(struct json *self, const char *key, struct json *val) {
   struct json_pair *pair = json_obj_find(self, key);
   if (pair) {
     json_del(json_pair_val(pair));
     json_ref(val);
     json_pair_set(pair, key, val);
   } else {
-    json_vec_push(self->vec, key, val);
-    if (self->sorted) {
-      json_vec_sort(self->vec);
+    json_vec_push(json_as_obj(self)->vec, key, val);
+    if (json_as_obj(self)->sorted) {
+      json_vec_sort(json_as_obj(self)->vec);
     }
   }
 }
-struct json *json_obj_get(struct json_obj *self, const char *key) {
+void json_obj_set(struct json *self, const char *key, struct json *val) {
+  json_obj_insert(self, key, val);
+  json_del(val);
+}
+struct json *json_obj_get(struct json *self, const char *key) {
   struct json_pair *pair = json_obj_find(self, key);
   return pair ? json_pair_val(pair) : json_null();
 }
-bool_t json_obj_has(struct json_obj *self, const char *key) {
+bool_t json_obj_has(struct json *self, const char *key) {
   struct json_pair *pair = json_obj_find(self, key);
   return UTIL_BOOL(pair);
 }
-struct json_pair *json_obj_find(struct json_obj *self, const char *key) {
-  if (self->sorted) {
-    return json_vec_search(self->vec, key);
+struct json_pair *json_obj_find(struct json *self, const char *key) {
+  if (json_as_obj(self)->sorted) {
+    return json_vec_search(json_as_obj(self)->vec, key);
   } else {
-    return json_vec_find(self->vec, key);
+    return json_vec_find(json_as_obj(self)->vec, key);
   }
 }
-void json_obj_sort(struct json_obj *self) {
-  self->sorted = true;
-  json_vec_sort(self->vec);
+void json_obj_sort(struct json *self) {
+  json_as_obj(self)->sorted = true;
+  json_vec_sort(json_as_obj(self)->vec);
 }
-void json_obj_foreach(struct json_obj *self, json_map_t map, void *extra) {
-  json_map_foreach(map, extra, self->vec);
+void json_obj_foreach(struct json *self, json_map_t map, void *extra) {
+  json_map_foreach(map, extra, json_as_obj(self)->vec);
 }
