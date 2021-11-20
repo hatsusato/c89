@@ -12,29 +12,19 @@
 #include "json/map.h"
 #include "util/symbol.h"
 
-static struct json *builder_statement_next_block(struct json *function,
-                                                 struct json *json) {
-  struct json *next = ir_function_new_next(function);
-  builder_statement(function, json);
-  json_del(next);
-  return next;
-}
-
 static void builder_labeled_statement(struct json *function,
                                       struct json *json) {
+  struct json *switch_extra = ir_function_get_switch(function);
+  struct json *block = ir_function_new_next(function);
+  builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
   if (false) {
   } else if (json_has(json, SYMBOL_CASE)) {
-    struct json *switch_extra = ir_function_get_switch(function);
-    struct json *block = builder_statement_next_block(
-        function, json_obj_get(json, SYMBOL_STATEMENT));
-    ir_switch_insert_case(
-        switch_extra, json_obj_get(json, SYMBOL_CONSTANT_EXPRESSION), block);
+    struct json *constant = json_obj_get(json, SYMBOL_CONSTANT_EXPRESSION);
+    ir_switch_insert_case(switch_extra, constant, block);
   } else if (json_has(json, SYMBOL_DEFAULT)) {
-    struct json *switch_extra = ir_function_get_switch(function);
-    struct json *block = builder_statement_next_block(
-        function, json_obj_get(json, SYMBOL_STATEMENT));
     ir_switch_insert_default(switch_extra, block);
   }
+  json_del(block);
 }
 static void builder_compound_statement(struct json *function,
                                        struct json *json) {
@@ -53,15 +43,18 @@ static void builder_selection_statement_if(struct json *function,
   struct json *block_next = ir_block_new();
   ir_function_set_next(function, block_next);
   {
-    struct json *block_then = builder_statement_next_block(
-        function, json_obj_get(json, SYMBOL_THEN_STATEMENT));
-    struct json *block_else = block_next;
+    struct json *block_then = ir_function_new_next(function);
+    struct json *block_else = json_null();
+    builder_statement(function, json_obj_get(json, SYMBOL_THEN_STATEMENT));
     if (json_has(json, SYMBOL_ELSE)) {
-      block_else = builder_statement_next_block(
-          function, json_obj_get(json, SYMBOL_ELSE_STATEMENT));
+      block_else = ir_function_new_next(function);
+      builder_statement(function, json_obj_get(json, SYMBOL_ELSE_STATEMENT));
     }
     ir_instr_insert(br, "iftrue", block_then);
-    ir_instr_insert(br, "iffalse", block_else);
+    ir_instr_insert(br, "iffalse",
+                    json_is_null(block_else) ? block_next : block_else);
+    json_del(block_else);
+    json_del(block_then);
     if (!json_has(json, SYMBOL_MUST_RETURN)) {
       ir_function_next_block(function, block_next);
     }
