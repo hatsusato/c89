@@ -15,7 +15,8 @@
 static void builder_labeled_statement(struct json *function,
                                       struct json *json) {
   struct json *switch_extra = ir_function_get_switch(function);
-  struct json *block = ir_function_new_next(function);
+  struct json *block = ir_block_new();
+  ir_function_advance_next(function, block);
   builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
   if (false) {
   } else if (json_has(json, SYMBOL_CASE)) {
@@ -43,11 +44,13 @@ static void builder_selection_statement_if(struct json *function,
   struct json *block_next = ir_block_new();
   ir_function_set_next(function, block_next);
   {
-    struct json *block_then = ir_function_new_next(function);
+    struct json *block_then = ir_block_new();
     struct json *block_else = json_null();
+    ir_function_advance_next(function, block_then);
     builder_statement(function, json_obj_get(json, SYMBOL_THEN_STATEMENT));
     if (json_has(json, SYMBOL_ELSE)) {
-      block_else = ir_function_new_next(function);
+      block_else = ir_block_new();
+      ir_function_advance_next(function, block_else);
       builder_statement(function, json_obj_get(json, SYMBOL_ELSE_STATEMENT));
     }
     ir_instr_insert(br, "iftrue", block_then);
