@@ -93,6 +93,12 @@ void ir_function_set_next(struct json *function, struct json *next) {
 struct json *ir_function_get_next(struct json *function) {
   return json_obj_get(function, "next");
 }
+void ir_function_set_break(struct json *function, struct json *block) {
+  json_obj_insert(function, SYMBOL_FUNCTION_EXTRA_BREAK, block);
+}
+struct json *ir_function_get_break(struct json *function) {
+  return json_obj_get(function, SYMBOL_FUNCTION_EXTRA_BREAK);
+}
 void ir_function_set_switch(struct json *function, struct json *extra) {
   json_obj_insert(function, SYMBOL_SWITCH_EXTRA, extra);
 }
