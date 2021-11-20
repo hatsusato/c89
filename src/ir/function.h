@@ -15,6 +15,8 @@ struct json *ir_function_get_block(struct json *);
 void ir_function_next_block(struct json *, struct json *);
 void ir_function_set_next(struct json *, struct json *);
 struct json *ir_function_get_next(struct json *);
+void ir_function_set_switch(struct json *, struct json *);
+struct json *ir_function_get_switch(struct json *);
 void ir_function_set_name(struct json *, struct json *);
 const char *ir_function_get_name(struct json *);
 void ir_function_foreach(struct json *, json_map_t, void *);

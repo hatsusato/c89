@@ -6,6 +6,7 @@
 #include "ir/function.h"
 #include "ir/instr.h"
 #include "ir/module.h"
+#include "ir/switch.h"
 #include "ir/table.h"
 #include "json/json.h"
 #include "json/map.h"
@@ -73,17 +74,24 @@ static void builder_selection_statement(struct json *function,
     ir_instr_insert(br, "cond", icmp);
     builder_selection_statement_if(function, json, br);
   } else if (json_has(json, SYMBOL_SWITCH)) {
-    struct json *block_prev = ir_function_get_block(function);
-    struct json *expr =
-        builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
-    struct json *terminator = ir_block_make_terminator(block_prev, "switch");
-    struct json *block_default = builder_statement_next_block(
-        function, json_obj_get(json, SYMBOL_STATEMENT));
-    struct json *block_next = ir_block_new();
-    json_obj_insert(terminator, "value", expr);
-    json_obj_insert(terminator, "default", block_default);
-    ir_function_next_block(function, block_next);
-    json_del(block_next);
+    struct json *switch_old = ir_function_get_switch(function);
+    struct json *switch_extra = ir_switch_new();
+    ir_function_set_switch(function, switch_extra);
+    {
+      struct json *block_prev = ir_function_get_block(function);
+      struct json *expr =
+          builder_rvalue(function, json_obj_get(json, SYMBOL_EXPRESSION));
+      struct json *terminator = ir_block_make_terminator(block_prev, "switch");
+      struct json *block_default = builder_statement_next_block(
+          function, json_obj_get(json, SYMBOL_STATEMENT));
+      struct json *block_next = ir_block_new();
+      json_obj_insert(terminator, "value", expr);
+      json_obj_insert(terminator, "default", block_default);
+      ir_function_next_block(function, block_next);
+      json_del(block_next);
+    }
+    ir_function_set_switch(function, switch_old);
+    json_del(switch_extra);
   }
   ir_function_set_next(function, old_next);
 }

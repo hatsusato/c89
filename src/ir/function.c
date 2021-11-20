@@ -88,6 +88,12 @@ void ir_function_set_next(struct json *function, struct json *next) {
 struct json *ir_function_get_next(struct json *function) {
   return json_obj_get(function, "next");
 }
+void ir_function_set_switch(struct json *function, struct json *extra) {
+  json_obj_insert(function, SYMBOL_SWITCH_EXTRA, extra);
+}
+struct json *ir_function_get_switch(struct json *function) {
+  return json_obj_get(function, SYMBOL_SWITCH_EXTRA);
+}
 void ir_function_set_name(struct json *function, struct json *name) {
   json_obj_insert(function, "name", name);
 }
