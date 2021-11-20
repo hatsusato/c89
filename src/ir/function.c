@@ -73,6 +73,13 @@ void ir_function_push_block(struct json *function, struct json *block) {
 struct json *ir_function_get_block(struct json *function) {
   return json_obj_get(function, "current");
 }
+void ir_function_terminate_prev(struct json *function, struct json *block) {
+  struct json *prev = ir_function_get_block(function);
+  if (!ir_block_has_terminator(prev)) {
+    struct json *terminator = ir_block_make_terminator(prev, "br");
+    ir_instr_insert(terminator, "dest", block);
+  }
+}
 void ir_function_advance_next(struct json *function, struct json *block) {
   struct json *prev = ir_function_get_block(function);
   struct json *next = ir_function_get_next(function);
