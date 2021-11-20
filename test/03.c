@@ -19,54 +19,34 @@ int f2(void) {
 int f3(void) {
   int x = 0;
   switch (x) {
+  default:
+    x = 10;
   case 1:
     x = 1;
+    return x;
   case 2:
     x = 2;
     break;
   case 3:
     x = 3;
-    break;
   }
   return 0;
 }
-#if 0
 int f4(void) {
   int x = 0;
   switch (x) {
   case 1:
     x = 1;
-    break;
   case 2:
-    x = 2;
-    break;
+  case 3:
+  case 4:
   default:
+  case 5:
     x = 5;
-    break;
-  case 3:
-    x = 3;
-    break;
-  case 4:
-    x = 4;
-    break;
   }
   return 0;
 }
-int f5(void) {
-  int x = 0;
-  switch (x) {
-  case 1:
-    x = 1;
-  case 2:
-  default:
-  case 3:
-    x = 3;
-    break;
-  case 4:
-    x = 4;
-  }
-  return 0;
-}
+#if 0
 int f6(void) {
   int x = 0;
   switch (x) {
