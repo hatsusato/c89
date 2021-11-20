@@ -17,11 +17,6 @@ static void ir_function_finish_alloc(struct json *function) {
   struct json *entry = json_obj_get(function, SYMBOL_ENTRY_BLOCK);
   ir_block_prepend(entry, alloc);
 }
-static void ir_function_push_block(struct json *function, struct json *block) {
-  struct json *array = json_obj_get(function, "blocks");
-  json_arr_push(array, block);
-  json_obj_insert(function, "current", block);
-}
 
 struct json *ir_function_new(struct json *table) {
   struct json *function = json_new_obj();
@@ -69,6 +64,11 @@ struct json *ir_function_make_instr(struct json *function, const char *tag) {
 struct json *ir_function_make_alloca(struct json *function) {
   struct json *alloc = json_obj_get(function, SYMBOL_ALLOC_BLOCK);
   return ir_block_make_instr(alloc, "alloca");
+}
+void ir_function_push_block(struct json *function, struct json *block) {
+  struct json *array = json_obj_get(function, "blocks");
+  json_arr_push(array, block);
+  json_obj_insert(function, "current", block);
 }
 struct json *ir_function_get_block(struct json *function) {
   return json_obj_get(function, "current");

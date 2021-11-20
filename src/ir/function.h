@@ -11,6 +11,7 @@ void ir_function_finish(struct json *);
 struct json *ir_function_get_table(struct json *);
 struct json *ir_function_make_instr(struct json *, const char *);
 struct json *ir_function_make_alloca(struct json *);
+void ir_function_push_block(struct json *, struct json *);
 struct json *ir_function_get_block(struct json *);
 void ir_function_advance_next(struct json *, struct json *);
 void ir_function_set_next(struct json *, struct json *);
