@@ -195,6 +195,7 @@
 #define SYMBOL_SWITCH_EXTRA_DEFAULT "switch-extra-default"
 #define SYMBOL_SWITCH_EXTRA_DEST "switch-extra-dest"
 #define SYMBOL_SWITCH_EXTRA_INSTR "switch-extra-instr"
+#define SYMBOL_SWITCH_EXTRA_LAST "switch-extra-last"
 #define SYMBOL_SWITCH_EXTRA_VALUE "switch-extra-value"
 #define SYMBOL_TABLE_GLOBAL "table-global"
 #define SYMBOL_TABLE_NEXT "table-next"
