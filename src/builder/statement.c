@@ -15,10 +15,12 @@
 static void builder_labeled_statement(struct json *function,
                                       struct json *json) {
   struct json *switch_extra = ir_function_get_switch(function);
-  struct json *block = ir_block_new();
-  ir_function_terminate_prev(function, block);
-  ir_function_push_block(function, block);
-  builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
+  struct json *block = json_null();
+  if (!json_has(json, SYMBOL_FALL_THROUGH)) {
+    block = ir_block_new();
+    ir_function_terminate_prev(function, block);
+    ir_function_push_block(function, block);
+  }
   if (false) {
   } else if (json_has(json, SYMBOL_CASE)) {
     struct json *constant = json_obj_get(json, SYMBOL_CONSTANT_EXPRESSION);
@@ -26,6 +28,7 @@ static void builder_labeled_statement(struct json *function,
   } else if (json_has(json, SYMBOL_DEFAULT)) {
     ir_switch_insert_default(switch_extra, block);
   }
+  builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
   json_del(block);
 }
 static void builder_compound_statement(struct json *function,
