@@ -51,7 +51,7 @@ compare() {
   if [[ "$1" == -q ]]; then
     exec {out}>/dev/null
   fi
-  diff "$1" <(compile -s "$2") <(compile "$2") >&$out
+  diff -W 80 "$1" <(compile -s "$2") <(compile "$2") >&$out
 }
 print() {
   local e=$'\e['
