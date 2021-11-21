@@ -179,6 +179,7 @@
 #define SYMBOL_ALLOC_BLOCK "alloc-block"
 #define SYMBOL_ENTRY_BLOCK "entry-block"
 #define SYMBOL_EXPR_TAG "expr-tag"
+#define SYMBOL_FALL_THROUGH "fall-through"
 #define SYMBOL_FUNCTION_EXTRA_BREAK "function-extra-break"
 #define SYMBOL_HAS_DEFAULT "has-default"
 #define SYMBOL_IMMEDIATE "immediate"
