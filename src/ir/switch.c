@@ -24,9 +24,13 @@ void ir_switch_insert_case(struct json *self, struct json *value,
                            struct json *block) {
   struct json *array = json_obj_get(self, SYMBOL_SWITCH_EXTRA_CASE);
   struct json *elem = json_new_obj();
+  if (json_is_null(block)) {
+    block = json_obj_get(self, SYMBOL_SWITCH_EXTRA_LAST);
+  } else {
+    json_obj_insert(self, SYMBOL_SWITCH_EXTRA_LAST, block);
+  }
   json_obj_insert(elem, SYMBOL_SWITCH_EXTRA_VALUE, value);
   json_obj_insert(elem, SYMBOL_SWITCH_EXTRA_DEST, block);
   json_arr_push(array, elem);
   json_del(elem);
-  json_obj_insert(self, SYMBOL_SWITCH_EXTRA_LAST, block);
 }
