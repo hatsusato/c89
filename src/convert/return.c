@@ -20,6 +20,19 @@ struct convert_return_extra {
   enum switch_state switch_state;
   enum return_state return_state;
 };
+static void return_state_set(struct convert_return_extra *self,
+                             enum return_state state) {
+  if (self->return_state == RETURN_STATE_DEFAULT) {
+    self->return_state = state;
+  }
+}
+static void return_state_transit(struct convert_return_extra *self) {
+  if (self->return_state == RETURN_STATE_MUST) {
+    self->return_state = RETURN_STATE_DEFAULT;
+  } else {
+    self->return_state = RETURN_STATE_NEVER;
+  }
+}
 
 static void convert_return_statement(struct convert_return_extra *,
                                      struct json *);
@@ -30,11 +43,7 @@ static void convert_return_labeled_statement(struct convert_return_extra *self,
     assert(self->switch_state == SWITCH_STATE_INSIDE ||
            self->return_state == RETURN_STATE_DEFAULT);
     if (self->switch_state == SWITCH_STATE_INSIDE) {
-      if (self->return_state == RETURN_STATE_MUST) {
-        self->return_state = RETURN_STATE_DEFAULT;
-      } else {
-        self->return_state = RETURN_STATE_NEVER;
-      }
+      return_state_transit(self);
     }
     self->switch_state = SWITCH_STATE_INSIDE;
   }
@@ -58,9 +67,8 @@ static void convert_return_selection_statement(
     convert_return_statement(&extra, json_obj_get(json, SYMBOL_STATEMENT));
     assert(extra.switch_state != SWITCH_STATE_OUTSIDE);
     if (extra.switch_state == SWITCH_STATE_INSIDE &&
-        extra.return_state == RETURN_STATE_MUST &&
-        self->return_state == RETURN_STATE_DEFAULT) {
-      self->return_state = RETURN_STATE_MUST;
+        extra.return_state == RETURN_STATE_MUST) {
+      return_state_set(self, RETURN_STATE_MUST);
     }
   } else {
     struct convert_return_extra extra_then = *self, extra_else = *self;
@@ -79,14 +87,12 @@ static void convert_return_selection_statement(
                extra_else.switch_state == SWITCH_STATE_INSIDE) {
       self->switch_state = SWITCH_STATE_INSIDE;
     }
-    if (self->return_state == RETURN_STATE_DEFAULT) {
-      if (extra_then.return_state == RETURN_STATE_NEVER ||
-          extra_else.return_state == RETURN_STATE_NEVER) {
-        self->return_state = RETURN_STATE_NEVER;
-      } else if (extra_then.return_state == RETURN_STATE_MUST &&
-                 extra_else.return_state == RETURN_STATE_MUST) {
-        self->return_state = RETURN_STATE_MUST;
-      }
+    if (extra_then.return_state == RETURN_STATE_NEVER ||
+        extra_else.return_state == RETURN_STATE_NEVER) {
+      return_state_set(self, RETURN_STATE_NEVER);
+    } else if (extra_then.return_state == RETURN_STATE_MUST &&
+               extra_else.return_state == RETURN_STATE_MUST) {
+      return_state_set(self, RETURN_STATE_MUST);
     }
   }
 }
@@ -94,13 +100,9 @@ static void convert_return_jump_statement(struct convert_return_extra *self,
                                           struct json *json) {
   if (json_has(json, SYMBOL_GOTO)) {
   } else if (json_has(json, SYMBOL_CONTINUE) || json_has(json, SYMBOL_BREAK)) {
-    if (self->return_state == RETURN_STATE_DEFAULT) {
-      self->return_state = RETURN_STATE_NEVER;
-    }
+    return_state_set(self, RETURN_STATE_NEVER);
   } else if (json_has(json, SYMBOL_RETURN)) {
-    if (self->return_state == RETURN_STATE_DEFAULT) {
-      self->return_state = RETURN_STATE_MUST;
-    }
+    return_state_set(self, RETURN_STATE_MUST);
   }
 }
 static void convert_return_statement(struct convert_return_extra *self,
