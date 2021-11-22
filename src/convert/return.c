@@ -7,11 +7,17 @@
 #include "util/util.h"
 
 struct convert_return_extra {
-  bool_t must_return;
+  bool_t must_return, after_case;
 };
 
 static void convert_return_statement(struct convert_return_extra *,
                                      struct json *);
+static void convert_return_labeled_statement(struct convert_return_extra *self,
+                                             struct json *json) {
+  if (json_has(json, SYMBOL_CASE)) {
+    self->after_case = true;
+  }
+}
 static void convert_return_statement_list(struct json_map *map) {
   struct convert_return_extra *self = json_map_extra(map);
   struct json *json = json_map_val(map);
@@ -55,7 +61,9 @@ static void convert_return_statement(struct convert_return_extra *self,
                                      struct json *json) {
   struct convert_return_extra extra;
   extra.must_return = false;
-  if (false) {
+  if (json_has(json, SYMBOL_LABELED_STATEMENT)) {
+    json = json_obj_get(json, SYMBOL_LABELED_STATEMENT);
+    convert_return_labeled_statement(&extra, json);
   } else if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
     json = json_obj_get(json, SYMBOL_COMPOUND_STATEMENT);
     convert_return_compound_statement(&extra, json);
