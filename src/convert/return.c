@@ -108,20 +108,22 @@ static void convert_return_jump_statement(struct convert_return_extra *self,
 }
 static void convert_return_statement(struct convert_return_extra *self,
                                      struct json *json) {
+  struct json *child = json_null();
   if (json_has(json, SYMBOL_LABELED_STATEMENT)) {
-    json = json_obj_get(json, SYMBOL_LABELED_STATEMENT);
-    convert_return_labeled_statement(self, json);
+    child = json_obj_get(json, SYMBOL_LABELED_STATEMENT);
+    convert_return_labeled_statement(self, child);
   } else if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
-    json = json_obj_get(json, SYMBOL_COMPOUND_STATEMENT);
-    convert_return_compound_statement(self, json);
+    child = json_obj_get(json, SYMBOL_COMPOUND_STATEMENT);
+    convert_return_compound_statement(self, child);
   } else if (json_has(json, SYMBOL_SELECTION_STATEMENT)) {
-    json = json_obj_get(json, SYMBOL_SELECTION_STATEMENT);
-    convert_return_selection_statement(self, json);
+    child = json_obj_get(json, SYMBOL_SELECTION_STATEMENT);
+    convert_return_selection_statement(self, child);
   } else if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
-    json = json_obj_get(json, SYMBOL_JUMP_STATEMENT);
-    convert_return_jump_statement(self, json);
+    child = json_obj_get(json, SYMBOL_JUMP_STATEMENT);
+    convert_return_jump_statement(self, child);
   }
   if (self->return_state == RETURN_STATE_MUST) {
+    json_obj_insert(child, SYMBOL_MUST_RETURN, json_null());
     json_obj_insert(json, SYMBOL_MUST_RETURN, json_null());
   }
 }
