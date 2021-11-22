@@ -5,20 +5,25 @@
 #include "json/visitor.h"
 #include "util/symbol.h"
 
+struct convert_return_extra {
+  bool_t must_return;
+};
+
 static bool_t convert_return_statement(struct json *);
 static void convert_return_statement_list(struct json_map *map) {
-  bool_t *must_return = json_map_extra(map);
+  struct convert_return_extra *extra = json_map_extra(map);
   struct json *json = json_map_val(map);
   if (convert_return_statement(json)) {
-    *must_return = true;
+    extra->must_return = true;
     json_map_finish(map);
   }
 }
 static bool_t convert_return_compound_statement(struct json *json) {
-  bool_t must_return = false;
+  struct convert_return_extra extra;
+  extra.must_return = false;
   json_foreach(json_obj_get(json, SYMBOL_STATEMENT_LIST),
-               convert_return_statement_list, &must_return);
-  return must_return;
+               convert_return_statement_list, &extra);
+  return extra.must_return;
 }
 static bool_t convert_return_selection_statement(struct json *json) {
   if (json_has(json, SYMBOL_IF)) {
