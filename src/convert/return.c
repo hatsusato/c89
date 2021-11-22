@@ -7,7 +7,7 @@
 #include "util/util.h"
 
 struct convert_return_extra {
-  bool_t must_return, after_case;
+  bool_t must_return, never_return, after_case, return_case, under_switch;
 };
 
 static void convert_return_statement(struct convert_return_extra *,
@@ -86,7 +86,7 @@ static void convert_return_statement(struct convert_return_extra *self,
 static void convert_return_visitor(struct json_visitor *visitor,
                                    struct json *json) {
   if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
-    struct convert_return_extra extra = {false, false};
+    struct convert_return_extra extra = {false, false, false, false, false};
     convert_return_compound_statement(
         &extra, json_obj_get(json, SYMBOL_COMPOUND_STATEMENT));
   } else {
