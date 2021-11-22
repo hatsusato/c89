@@ -46,15 +46,16 @@ int f4(void) {
   }
   return 0;
 }
-#if 0
-int f6(void) {
+int f5(void) {
   int x = 0;
   switch (x) {
   default:
     x = 1;
     return x;
   }
+  return 0;
 }
+#if 0
 int f7(void) {
   int x = 0;
   switch (x) {
