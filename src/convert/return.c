@@ -21,17 +21,11 @@ static void convert_return_labeled_statement(struct convert_return_extra *self,
 static void convert_return_statement_list(struct json_map *map) {
   struct convert_return_extra *self = json_map_extra(map);
   struct json *json = json_map_val(map);
-  struct convert_return_extra extra;
-  extra.must_return = false;
-  convert_return_statement(&extra, json);
-  if (extra.must_return) {
-    self->must_return = true;
-    json_map_finish(map);
-  }
+  convert_return_statement(self, json);
 }
 static void convert_return_compound_statement(struct convert_return_extra *self,
                                               struct json *json) {
-  struct convert_return_extra extra;
+  struct convert_return_extra extra = *self;
   extra.must_return = false;
   json_foreach(json_obj_get(json, SYMBOL_STATEMENT_LIST),
                convert_return_statement_list, &extra);
@@ -39,7 +33,7 @@ static void convert_return_compound_statement(struct convert_return_extra *self,
 }
 static void convert_return_selection_statement(
     struct convert_return_extra *self, struct json *json) {
-  struct convert_return_extra extra;
+  struct convert_return_extra extra = *self;
   bool_t then_return = false, else_return = false;
   if (json_has(json, SYMBOL_IF)) {
     extra.must_return = false;
@@ -55,11 +49,13 @@ static void convert_return_selection_statement(
 }
 static void convert_return_jump_statement(struct convert_return_extra *self,
                                           struct json *json) {
-  self->must_return = json_has(json, SYMBOL_RETURN);
+  if (json_has(json, SYMBOL_RETURN)) {
+    self->must_return = true;
+  }
 }
 static void convert_return_statement(struct convert_return_extra *self,
                                      struct json *json) {
-  struct convert_return_extra extra;
+  struct convert_return_extra extra = *self;
   extra.must_return = false;
   if (json_has(json, SYMBOL_LABELED_STATEMENT)) {
     json = json_obj_get(json, SYMBOL_LABELED_STATEMENT);
@@ -82,8 +78,7 @@ static void convert_return_statement(struct convert_return_extra *self,
 static void convert_return_visitor(struct json_visitor *visitor,
                                    struct json *json) {
   if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
-    struct convert_return_extra extra;
-    extra.must_return = false;
+    struct convert_return_extra extra = {false, false};
     convert_return_compound_statement(
         &extra, json_obj_get(json, SYMBOL_COMPOUND_STATEMENT));
   } else {
