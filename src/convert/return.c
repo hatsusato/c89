@@ -33,19 +33,23 @@ static void return_state_transit(struct convert_return_extra *self) {
     self->return_state = RETURN_STATE_NEVER;
   }
 }
+static void switch_state_inside(struct convert_return_extra *self) {
+  assert(self->switch_state != SWITCH_STATE_OUTSIDE);
+  self->switch_state = SWITCH_STATE_INSIDE;
+}
 
 static void convert_return_statement(struct convert_return_extra *,
                                      struct json *);
 static void convert_return_labeled_statement(struct convert_return_extra *self,
                                              struct json *json) {
   if (json_has(json, SYMBOL_CASE)) {
-    assert(self->switch_state != SWITCH_STATE_OUTSIDE);
-    assert(self->switch_state == SWITCH_STATE_INSIDE ||
-           self->return_state == RETURN_STATE_DEFAULT);
+    if (self->switch_state == SWITCH_STATE_BETWEEN) {
+      assert(self->return_state == RETURN_STATE_DEFAULT);
+    }
     if (self->switch_state == SWITCH_STATE_INSIDE) {
       return_state_transit(self);
     }
-    self->switch_state = SWITCH_STATE_INSIDE;
+    switch_state_inside(self);
   }
   convert_return_statement(self, json_obj_get(json, SYMBOL_STATEMENT));
 }
@@ -83,9 +87,10 @@ static void convert_return_selection_statement(
     if (self->switch_state == SWITCH_STATE_OUTSIDE) {
       assert(extra_then.switch_state == SWITCH_STATE_OUTSIDE);
       assert(extra_else.switch_state == SWITCH_STATE_OUTSIDE);
-    } else if (extra_then.switch_state == SWITCH_STATE_INSIDE ||
-               extra_else.switch_state == SWITCH_STATE_INSIDE) {
-      self->switch_state = SWITCH_STATE_INSIDE;
+    }
+    if (extra_then.switch_state == SWITCH_STATE_INSIDE ||
+        extra_else.switch_state == SWITCH_STATE_INSIDE) {
+      switch_state_inside(self);
     }
     if (extra_then.return_state == RETURN_STATE_NEVER ||
         extra_else.return_state == RETURN_STATE_NEVER) {
