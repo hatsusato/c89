@@ -39,7 +39,7 @@ static void convert_return_statement(struct convert_return_extra *,
                                      struct json *);
 static void convert_return_labeled_statement(struct convert_return_extra *self,
                                              struct json *json) {
-  if (json_has(json, SYMBOL_CASE)) {
+  if (json_has(json, SYMBOL_CASE) || json_has(json, SYMBOL_DEFAULT)) {
     if (self->switch_state == SWITCH_STATE_BETWEEN) {
       assert(self->return_state == RETURN_STATE_DEFAULT);
     }
