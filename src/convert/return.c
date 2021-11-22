@@ -34,18 +34,26 @@ static void convert_return_compound_statement(struct convert_return_extra *self,
 static void convert_return_selection_statement(
     struct convert_return_extra *self, struct json *json) {
   struct convert_return_extra extra = *self;
-  bool_t then_return = false, else_return = false;
-  if (json_has(json, SYMBOL_IF)) {
+  if (json_has(json, SYMBOL_SWITCH)) {
     extra.must_return = false;
-    convert_return_statement(&extra, json_obj_get(json, SYMBOL_THEN_STATEMENT));
-    then_return = extra.must_return;
+    convert_return_statement(&extra, json_obj_get(json, SYMBOL_STATEMENT));
+    self->must_return = extra.must_return;
+  } else {
+    bool_t then_return = false, else_return = false;
+    if (json_has(json, SYMBOL_IF)) {
+      extra.must_return = false;
+      convert_return_statement(&extra,
+                               json_obj_get(json, SYMBOL_THEN_STATEMENT));
+      then_return = extra.must_return;
+    }
+    if (json_has(json, SYMBOL_ELSE)) {
+      extra.must_return = false;
+      convert_return_statement(&extra,
+                               json_obj_get(json, SYMBOL_ELSE_STATEMENT));
+      else_return = extra.must_return;
+    }
+    self->must_return = then_return && else_return;
   }
-  if (json_has(json, SYMBOL_ELSE)) {
-    extra.must_return = false;
-    convert_return_statement(&extra, json_obj_get(json, SYMBOL_ELSE_STATEMENT));
-    else_return = extra.must_return;
-  }
-  self->must_return = then_return && else_return;
 }
 static void convert_return_jump_statement(struct convert_return_extra *self,
                                           struct json *json) {
