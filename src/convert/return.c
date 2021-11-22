@@ -26,12 +26,9 @@ static void return_state_set(struct convert_return_extra *self,
     self->return_state = state;
   }
 }
-static void return_state_transit(struct convert_return_extra *self) {
-  if (self->return_state == RETURN_STATE_MUST) {
-    self->return_state = RETURN_STATE_DEFAULT;
-  } else {
-    self->return_state = RETURN_STATE_NEVER;
-  }
+static bool_t return_state_is_must(struct convert_return_extra *self) {
+  return self->switch_state == SWITCH_STATE_INSIDE &&
+         self->return_state == RETURN_STATE_MUST;
 }
 static void switch_state_inside(struct convert_return_extra *self) {
   assert(self->switch_state != SWITCH_STATE_OUTSIDE);
@@ -46,8 +43,8 @@ static void convert_return_labeled_statement(struct convert_return_extra *self,
     if (self->switch_state == SWITCH_STATE_BETWEEN) {
       assert(self->return_state == RETURN_STATE_DEFAULT);
     }
-    if (self->switch_state == SWITCH_STATE_INSIDE) {
-      return_state_transit(self);
+    if (return_state_is_must(self)) {
+      self->return_state = RETURN_STATE_DEFAULT;
     }
     switch_state_inside(self);
   }
@@ -70,8 +67,7 @@ static void convert_return_selection_statement(
                                          RETURN_STATE_DEFAULT};
     convert_return_statement(&extra, json_obj_get(json, SYMBOL_STATEMENT));
     assert(extra.switch_state != SWITCH_STATE_OUTSIDE);
-    if (extra.switch_state == SWITCH_STATE_INSIDE &&
-        extra.return_state == RETURN_STATE_MUST) {
+    if (return_state_is_must(&extra)) {
       return_state_set(self, RETURN_STATE_MUST);
     }
   } else {
