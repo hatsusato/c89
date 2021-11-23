@@ -55,8 +55,7 @@ int f5(void) {
   }
   return 0;
 }
-#if 0
-int f7(void) {
+int f6(void) {
   int x = 0;
   switch (x) {
   case 1:
@@ -65,6 +64,7 @@ int f7(void) {
   }
   return 0;
 }
+#if 0
 int f8(void) {
   int x = 0;
   switch (x) {
