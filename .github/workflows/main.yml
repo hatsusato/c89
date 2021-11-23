@@ -45,7 +45,7 @@ jobs:
                   "mrkdwn_in": ["text"],
                   "fallback": "GitHub Actions Notification",
                   "color": "${{ matrix.color }}",
-                  "text": "${{ format('{0} {1}: <{2}/actions/runs/{3}|#{4}> {5}', github.workflow, matrix.text, github.event.repository.url, github.run_id, github.run_number, github.event.head_commit.message) }}",
+                  "text": "${{ format('{0} {1}: <{2}/actions/runs/{3}|#{4}>', github.workflow, matrix.status, github.event.repository.url, github.run_id, github.run_number) }}",
                   "footer": "${{ format('<{0}|{1}>', github.event.repository.url, github.event.repository.full_name) }}",
                   "footer_icon": "${{ env.ICON_URL }}"
                 }
@@ -58,8 +58,6 @@ jobs:
       matrix:
         include:
           - status: success
-            text: Success
             color: good
           - status: failure
-            text: Failed
             color: danger
