@@ -19,6 +19,7 @@ enum return_state {
 struct convert_return_extra {
   enum switch_state switch_state;
   enum return_state return_state;
+  bool_t has_default;
 };
 static void return_state_set(struct convert_return_extra *self,
                              enum return_state state) {
@@ -48,6 +49,9 @@ static void convert_return_labeled_statement(struct convert_return_extra *self,
     }
     switch_state_inside(self);
   }
+  if (json_has(json, SYMBOL_DEFAULT)) {
+    self->has_default = true;
+  }
   convert_return_statement(self, json_obj_get(json, SYMBOL_STATEMENT));
 }
 static void convert_return_statement_list(struct json_map *map) {
@@ -64,10 +68,10 @@ static void convert_return_selection_statement(
     struct convert_return_extra *self, struct json *json) {
   if (json_has(json, SYMBOL_SWITCH)) {
     struct convert_return_extra extra = {SWITCH_STATE_BETWEEN,
-                                         RETURN_STATE_DEFAULT};
+                                         RETURN_STATE_DEFAULT, false};
     convert_return_statement(&extra, json_obj_get(json, SYMBOL_STATEMENT));
     assert(extra.switch_state != SWITCH_STATE_OUTSIDE);
-    if (return_state_is_must(&extra)) {
+    if (return_state_is_must(&extra) && extra.has_default) {
       return_state_set(self, RETURN_STATE_MUST);
     }
   } else {
@@ -131,7 +135,7 @@ static void convert_return_visitor(struct json_visitor *visitor,
                                    struct json *json) {
   if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
     struct convert_return_extra extra = {SWITCH_STATE_OUTSIDE,
-                                         RETURN_STATE_DEFAULT};
+                                         RETURN_STATE_DEFAULT, false};
     convert_return_compound_statement(
         &extra, json_obj_get(json, SYMBOL_COMPOUND_STATEMENT));
   } else {
