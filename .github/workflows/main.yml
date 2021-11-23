@@ -59,72 +59,7 @@ jobs:
                       "fields": [
                         {
                           "type": "plain_text",
-                          "text": "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_RUN_ID: ${GITHUB_RUN_ID}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_RUN_NUMBER: ${GITHUB_RUN_NUMBER}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_JOB: ${GITHUB_JOB}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_ACTION: ${GITHUB_ACTION}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_ACTION_PATH: ${GITHUB_ACTION_PATH}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_ACTIONS: ${GITHUB_ACTIONS}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_ACTOR: ${GITHUB_ACTOR}"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "section",
-                      "fields": [
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_EVENT_PATH: ${GITHUB_EVENT_PATH}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_SHA: ${GITHUB_SHA}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_REF: ${GITHUB_REF}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_REF_NAME: ${GITHUB_REF_NAME}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
+                          "text": $values.test
                         }
                       ]
                     }
@@ -134,3 +69,5 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        values: |
+          test: $GITHUB_WORKFLOW, ${GITHUB_WORKFLOW}, ${{ GITHUB_WORKFLOW }}
