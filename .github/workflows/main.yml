@@ -44,11 +44,93 @@ jobs:
           BUILD_DIR: ${{ matrix.build_dir }}
         run: ./test.sh -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
-      - name: Post to a Slack channel
-        id: slack
+      - name: Notify
         uses: slackapi/slack-github-action@v1.16.0
         with:
-          channel-id: ${{ secrets.CHANNEL_ID }}  # Slack channel id or name to post message. https://api.slack.com/methods/chat.postMessage#channels
-          slack-message: 'posting from a github action!'
+          channel-id: ${{ secrets.CHANNEL_ID }}
+          payload: |
+            {
+              "attachments": [
+                {
+                  "color": "#28A745",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "fields": [
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_WORKFLOW: ${{ env.GITHUB_WORKFLOW }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_RUN_ID: ${{ env.GITHUB_RUN_ID }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_RUN_NUMBER: ${{ env.GITHUB_RUN_NUMBER }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_JOB: ${{ env.GITHUB_JOB }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_ACTION: ${{ env.GITHUB_ACTION }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_ACTION_PATH: ${{ env.GITHUB_ACTION_PATH }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_ACTIONS: ${{ env.GITHUB_ACTIONS }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_ACTOR: ${{ env.GITHUB_ACTOR }}"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "section",
+                      "fields": [
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_EVENT_NAME: ${{ env.GITHUB_EVENT_NAME }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_EVENT_PATH: ${{ env.GITHUB_EVENT_PATH }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_SHA: ${{ env.GITHUB_SHA }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_REF: ${{ env.GITHUB_REF }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_REF_NAME: ${{ env.GITHUB_REF_NAME }}"
+                        },
+                        {
+                          "type": "plain_text",
+                          "text": "GITHUB_HEAD_REF: ${{ env.GITHUB_HEAD_REF }}"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
