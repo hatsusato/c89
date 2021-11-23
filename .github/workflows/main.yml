@@ -59,7 +59,7 @@ jobs:
                       "fields": [
                         {
                           "type": "plain_text",
-                          "text": $values.test
+                          "text": "${{ github.action }}"
                         }
                       ]
                     }
@@ -69,5 +69,3 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        values: |
-          test: $GITHUB_WORKFLOW, ${GITHUB_WORKFLOW}, ${{ GITHUB_WORKFLOW }}
