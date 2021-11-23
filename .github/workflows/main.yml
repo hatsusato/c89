@@ -57,7 +57,7 @@ jobs:
                   "color": "danger",
                   "text": "${{ github.workflow }} Failed: <${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> ${{ github.event.head_commit.message }}",
                   "footer": "<${{ github.event.repository.url }}|${{ github.event.repository.full_name }}>",
-                  "footer_link": "https://slack.github.com/static/img/favicon-neutral.png"
+                  "footer_icon": "https://slack.github.com/static/img/favicon-neutral.png"
                 }
               ]
             }
