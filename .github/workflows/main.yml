@@ -30,15 +30,14 @@ jobs:
             build_dir: debug
       fail-fast: false
       max-parallel: 2
-    continue-on-error: true
-  notify-success:
-    name: Notify Success
+  notify:
+    name: Notify
     needs: build
     runs-on: ubuntu-latest
-#   if: needs.build.result == 'success'
+    if: always()
     steps:
       - run: echo '${{ toJSON(needs) }}'
-      - name: Notify
+      - name: Notify success
         uses: slackapi/slack-github-action@v1.16.0
         with:
           channel-id: ${{ secrets.CHANNEL_ID }}
@@ -57,14 +56,7 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-  notify-failure:
-    name: Notify Failure
-    needs: build
-    runs-on: ubuntu-latest
-#   if: needs.build.result == 'failure'
-    steps:
-      - run: echo '${{ toJSON(needs) }}'
-      - name: Notify
+      - name: Notify failure
         uses: slackapi/slack-github-action@v1.16.0
         with:
           channel-id: ${{ secrets.CHANNEL_ID }}
