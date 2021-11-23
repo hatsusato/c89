@@ -32,13 +32,6 @@ jobs:
     name: Notify
     needs: build
     runs-on: ubuntu-latest
-    env:
-      MESSAGE: ${{ github.event.head_commit.message }}
-      REPO_URL: ${{ github.event.repository.url }}
-      FULL_NAME: ${{ github.event.repository.full_name }}
-      ACTION_LINK: ${{ format('<{0}/actions/runs/{1}|#{2}>', env.REPO_URL, github.run_id, github.run_number) }}
-      FOOTER_LINK: ${{ format('<{0}|{1}>', env.REPO_URL, env.FULL_NAME) }}
-      ICON_URL: https://slack.github.com/static/img/favicon-neutral.png
     if: always()
     steps:
       - if: needs.build.result == matrix.status
@@ -53,14 +46,15 @@ jobs:
                   "mrkdwn_in": ["text"],
                   "fallback": "GitHub Actions Notification",
                   "color": "${{ matrix.color }}",
-                  "text": "${{ join([github.workflow, format('{0}:', matrix.txt), env.ACTION_LINK, env.MESSAGE], ' ') }}",
-                  "footer": "${{ env.FOOTER_LINK }}",
-                  "footer_icon": "${{ env.ICON_URL }}"
+                  "text": "${{ format('{0} {1}: <{2}/actions/runs/{3}|#{4}> {5}', github.workflow, matrix.txt, github.event.repository.url, github.run_id, github.run_number, github.event.head_commit.message) }}",
+                  "footer": "${{ format('<{0}|{1}>', github.event.repository.url, github.event.repository.full_name) }}",
+                  "footer_icon": ""
                 }
               ]
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          ICON_URL: https://slack.github.com/static/img/favicon-neutral.png
     strategy:
       matrix:
         include:
