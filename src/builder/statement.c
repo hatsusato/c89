@@ -15,10 +15,12 @@
 static void builder_labeled_statement(struct json *function,
                                       struct json *json) {
   struct json *switch_extra = ir_function_get_switch(function);
-  struct json *block = ir_block_new();
-  ir_function_terminate_prev(function, block);
-  ir_function_push_block(function, block);
-  builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
+  struct json *block = json_null();
+  if (!json_has(json, SYMBOL_FALL_THROUGH)) {
+    block = ir_block_new();
+    ir_function_terminate_prev(function, block);
+    ir_function_push_block(function, block);
+  }
   if (false) {
   } else if (json_has(json, SYMBOL_CASE)) {
     struct json *constant = json_obj_get(json, SYMBOL_CONSTANT_EXPRESSION);
@@ -26,6 +28,7 @@ static void builder_labeled_statement(struct json *function,
   } else if (json_has(json, SYMBOL_DEFAULT)) {
     ir_switch_insert_default(switch_extra, block);
   }
+  builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
   json_del(block);
 }
 static void builder_compound_statement(struct json *function,
@@ -73,8 +76,10 @@ static void builder_selection_statement_switch(struct json *function,
   ir_function_set_switch(function, switch_extra);
   ir_switch_insert_default(switch_extra, block_next);
   builder_statement(function, json_obj_get(json, SYMBOL_STATEMENT));
-  ir_function_terminate_prev(function, block_next);
-  ir_function_push_block(function, block_next);
+  if (!json_has(json, SYMBOL_MUST_RETURN)) {
+    ir_function_terminate_prev(function, block_next);
+    ir_function_push_block(function, block_next);
+  }
   json_del(block_next);
   ir_function_set_break(function, old_break);
 }
@@ -117,6 +122,10 @@ static void builder_statement_list(struct json_map *map) {
   struct json *function = json_map_extra(map);
   struct json *json = json_map_val(map);
   builder_statement(function, json);
+  if (json_is_null(ir_function_get_switch(function)) &&
+      json_has(json, SYMBOL_MUST_RETURN)) {
+    json_map_finish(map);
+  }
 }
 
 void builder_statement(struct json *function, struct json *json) {

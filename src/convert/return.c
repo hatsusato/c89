@@ -4,60 +4,140 @@
 #include "json/map.h"
 #include "json/visitor.h"
 #include "util/symbol.h"
+#include "util/util.h"
 
-static bool_t convert_return_statement(struct json *);
-static void convert_return_statement_list(struct json_map *map) {
-  bool_t *must_return = json_map_extra(map);
-  struct json *json = json_map_val(map);
-  if (convert_return_statement(json)) {
-    *must_return = true;
-    json_map_finish(map);
+enum switch_state {
+  SWITCH_STATE_OUTSIDE,
+  SWITCH_STATE_BETWEEN,
+  SWITCH_STATE_INSIDE
+};
+enum return_state {
+  RETURN_STATE_DEFAULT,
+  RETURN_STATE_NEVER,
+  RETURN_STATE_MUST
+};
+struct convert_return_extra {
+  enum switch_state switch_state;
+  enum return_state return_state;
+  bool_t has_default;
+};
+static void return_state_set(struct convert_return_extra *self,
+                             enum return_state state) {
+  if (self->return_state == RETURN_STATE_DEFAULT) {
+    self->return_state = state;
   }
 }
-static bool_t convert_return_compound_statement(struct json *json) {
-  bool_t must_return = false;
-  json_foreach(json_obj_get(json, SYMBOL_STATEMENT_LIST),
-               convert_return_statement_list, &must_return);
-  return must_return;
+static bool_t return_state_is_must(struct convert_return_extra *self) {
+  return self->switch_state == SWITCH_STATE_INSIDE &&
+         self->return_state == RETURN_STATE_MUST;
 }
-static bool_t convert_return_selection_statement(struct json *json) {
-  if (json_has(json, SYMBOL_IF)) {
-    bool_t then_must_return =
-        convert_return_statement(json_obj_get(json, SYMBOL_THEN_STATEMENT));
+static void switch_state_inside(struct convert_return_extra *self) {
+  assert(self->switch_state != SWITCH_STATE_OUTSIDE);
+  self->switch_state = SWITCH_STATE_INSIDE;
+}
+
+static void convert_return_statement(struct convert_return_extra *,
+                                     struct json *);
+static void convert_return_labeled_statement(struct convert_return_extra *self,
+                                             struct json *json) {
+  if (json_has(json, SYMBOL_CASE) || json_has(json, SYMBOL_DEFAULT)) {
+    if (self->switch_state == SWITCH_STATE_BETWEEN) {
+      assert(self->return_state == RETURN_STATE_DEFAULT);
+    }
+    if (return_state_is_must(self)) {
+      self->return_state = RETURN_STATE_DEFAULT;
+    }
+    switch_state_inside(self);
+  }
+  if (json_has(json, SYMBOL_DEFAULT)) {
+    self->has_default = true;
+  }
+  convert_return_statement(self, json_obj_get(json, SYMBOL_STATEMENT));
+}
+static void convert_return_statement_list(struct json_map *map) {
+  struct convert_return_extra *self = json_map_extra(map);
+  struct json *json = json_map_val(map);
+  convert_return_statement(self, json);
+}
+static void convert_return_compound_statement(struct convert_return_extra *self,
+                                              struct json *json) {
+  json_foreach(json_obj_get(json, SYMBOL_STATEMENT_LIST),
+               convert_return_statement_list, self);
+}
+static void convert_return_selection_statement(
+    struct convert_return_extra *self, struct json *json) {
+  if (json_has(json, SYMBOL_SWITCH)) {
+    struct convert_return_extra extra = {SWITCH_STATE_BETWEEN,
+                                         RETURN_STATE_DEFAULT, false};
+    convert_return_statement(&extra, json_obj_get(json, SYMBOL_STATEMENT));
+    assert(extra.switch_state != SWITCH_STATE_OUTSIDE);
+    if (return_state_is_must(&extra) && extra.has_default) {
+      return_state_set(self, RETURN_STATE_MUST);
+    }
+  } else {
+    struct convert_return_extra extra_then = *self, extra_else = *self;
+    if (json_has(json, SYMBOL_IF)) {
+      convert_return_statement(&extra_then,
+                               json_obj_get(json, SYMBOL_THEN_STATEMENT));
+    }
     if (json_has(json, SYMBOL_ELSE)) {
-      bool_t else_must_return =
-          convert_return_statement(json_obj_get(json, SYMBOL_ELSE_STATEMENT));
-      return then_must_return && else_must_return;
+      convert_return_statement(&extra_else,
+                               json_obj_get(json, SYMBOL_ELSE_STATEMENT));
+    }
+    if (self->switch_state == SWITCH_STATE_OUTSIDE) {
+      assert(extra_then.switch_state == SWITCH_STATE_OUTSIDE);
+      assert(extra_else.switch_state == SWITCH_STATE_OUTSIDE);
+    }
+    if (extra_then.switch_state == SWITCH_STATE_INSIDE ||
+        extra_else.switch_state == SWITCH_STATE_INSIDE) {
+      switch_state_inside(self);
+    }
+    if (extra_then.return_state == RETURN_STATE_NEVER ||
+        extra_else.return_state == RETURN_STATE_NEVER) {
+      return_state_set(self, RETURN_STATE_NEVER);
+    } else if (extra_then.return_state == RETURN_STATE_MUST &&
+               extra_else.return_state == RETURN_STATE_MUST) {
+      return_state_set(self, RETURN_STATE_MUST);
     }
   }
-  return false;
 }
-static bool_t convert_return_jump_statement(struct json *json) {
-  return json_has(json, SYMBOL_RETURN);
-}
-static bool_t convert_return_statement(struct json *json) {
-  bool_t must_return = false;
-  if (false) {
-  } else if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
-    json = json_obj_get(json, SYMBOL_COMPOUND_STATEMENT);
-    must_return = convert_return_compound_statement(json);
-  } else if (json_has(json, SYMBOL_SELECTION_STATEMENT)) {
-    json = json_obj_get(json, SYMBOL_SELECTION_STATEMENT);
-    must_return = convert_return_selection_statement(json);
-  } else if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
-    json = json_obj_get(json, SYMBOL_JUMP_STATEMENT);
-    must_return = convert_return_jump_statement(json);
+static void convert_return_jump_statement(struct convert_return_extra *self,
+                                          struct json *json) {
+  if (json_has(json, SYMBOL_GOTO)) {
+  } else if (json_has(json, SYMBOL_CONTINUE) || json_has(json, SYMBOL_BREAK)) {
+    return_state_set(self, RETURN_STATE_NEVER);
+  } else if (json_has(json, SYMBOL_RETURN)) {
+    return_state_set(self, RETURN_STATE_MUST);
   }
-  if (must_return) {
+}
+static void convert_return_statement(struct convert_return_extra *self,
+                                     struct json *json) {
+  struct json *child = json_null();
+  if (json_has(json, SYMBOL_LABELED_STATEMENT)) {
+    child = json_obj_get(json, SYMBOL_LABELED_STATEMENT);
+    convert_return_labeled_statement(self, child);
+  } else if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
+    child = json_obj_get(json, SYMBOL_COMPOUND_STATEMENT);
+    convert_return_compound_statement(self, child);
+  } else if (json_has(json, SYMBOL_SELECTION_STATEMENT)) {
+    child = json_obj_get(json, SYMBOL_SELECTION_STATEMENT);
+    convert_return_selection_statement(self, child);
+  } else if (json_has(json, SYMBOL_JUMP_STATEMENT)) {
+    child = json_obj_get(json, SYMBOL_JUMP_STATEMENT);
+    convert_return_jump_statement(self, child);
+  }
+  if (self->return_state == RETURN_STATE_MUST) {
+    json_obj_insert(child, SYMBOL_MUST_RETURN, json_null());
     json_obj_insert(json, SYMBOL_MUST_RETURN, json_null());
   }
-  return must_return;
 }
 static void convert_return_visitor(struct json_visitor *visitor,
                                    struct json *json) {
   if (json_has(json, SYMBOL_COMPOUND_STATEMENT)) {
+    struct convert_return_extra extra = {SWITCH_STATE_OUTSIDE,
+                                         RETURN_STATE_DEFAULT, false};
     convert_return_compound_statement(
-        json_obj_get(json, SYMBOL_COMPOUND_STATEMENT));
+        &extra, json_obj_get(json, SYMBOL_COMPOUND_STATEMENT));
   } else {
     json_visit_foreach(visitor, json);
   }
