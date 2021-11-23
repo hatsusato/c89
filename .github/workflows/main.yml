@@ -58,7 +58,7 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "${{ github.event.repository.url }}/actions/runs/${{ github.run_id }} Failed: <${{ github.workflow }} #${{ github.run_number }}|${{ github.event.head_commit.message }}>"
+                        "text": "${{ github.workflow }} #${{ github.run_number }} Failed: <${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|${{ github.event.head_commit.message }}>"
                       }
                     },
                     {
