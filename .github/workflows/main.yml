@@ -75,7 +75,7 @@ jobs:
                         },
                         {
                           "type": "plain_text",
-                          "text": "github.event: ${{ github.event }}"
+                          "text": "github.event: ${{ toJSON(github.event) }}"
                         },
                         {
                           "type": "plain_text",
