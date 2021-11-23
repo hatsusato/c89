@@ -18,7 +18,6 @@ jobs:
         env:
           BUILD_DIR: ${{ matrix.build_dir }}
         run: ./test.sh -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-      - run: test ${{ matrix.build_type }} = Release || exit
     strategy:
       matrix:
         include:
