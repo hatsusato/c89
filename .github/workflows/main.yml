@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.build.result == 'success'
     steps:
+      - run: echo '${{ toJSON(needs) }}'
       - name: Notify
         uses: slackapi/slack-github-action@v1.16.0
         with:
@@ -60,6 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.build.result == 'failure'
     steps:
+      - run: echo '${{ toJSON(needs) }}'
       - name: Notify
         uses: slackapi/slack-github-action@v1.16.0
         with:
