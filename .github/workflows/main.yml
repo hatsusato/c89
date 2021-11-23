@@ -9,8 +9,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    outputs:
-      status: ${{ job.status }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -35,9 +33,18 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: always()
+    strategy:
+      matrix:
+        include:
+          - status: success
+            color: good
+            text: ${{ github.workflow }} Success
+          - status: failure
+            color: danger
+            text: "${{ github.workflow }} Failed: <${{ env.ACTION_URL }}|#${{ github.run_number }}> ${{ github.event.head_commit.message }}"
     steps:
-      - run: echo '${{ toJSON(needs) }}'
-      - name: Notify success
+      - if: needs.build.result == matrix.status
+        name: Notify ${{ matrix.status }}
         uses: slackapi/slack-github-action@v1.16.0
         with:
           channel-id: ${{ secrets.CHANNEL_ID }}
@@ -47,32 +54,15 @@ jobs:
                 {
                   "mrkdwn_in": ["text"],
                   "fallback": "GitHub Actions Notification",
-                  "color": "good",
-                  "text": "${{ github.workflow }} Success",
-                  "footer": "<${{ github.event.repository.url }}|${{ github.event.repository.full_name }}>",
-                  "footer_icon": "https://slack.github.com/static/img/favicon-neutral.png"
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      - name: Notify failure
-        uses: slackapi/slack-github-action@v1.16.0
-        with:
-          channel-id: ${{ secrets.CHANNEL_ID }}
-          payload: |
-            {
-              "attachments": [
-                {
-                  "mrkdwn_in": ["text"],
-                  "fallback": "GitHub Actions Notification",
-                  "color": "danger",
-                  "text": "${{ github.workflow }} Failed: <${{ env.ACTION_URL }}|#${{ github.run_number }}> ${{ github.event.head_commit.message }}",
-                  "footer": "<${{ github.event.repository.url }}|${{ github.event.repository.full_name }}>",
-                  "footer_icon": "https://slack.github.com/static/img/favicon-neutral.png"
+                  "color": "${{ matrix.color }}",
+                  "text": "${{ matrix.text }}",
+                  "footer": "${{ env.FOOTER }}",
+                  "footer_icon": "${{ env.ICON }}"
                 }
               ]
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           ACTION_URL: ${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}
+          FOOTER: <${{ github.event.repository.url }}|${{ github.event.repository.full_name }}>
+          ICON: https://slack.github.com/static/img/favicon-neutral.png
