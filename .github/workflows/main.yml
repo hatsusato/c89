@@ -52,95 +52,26 @@ jobs:
             {
               "attachments": [
                 {
-                  "color": "#28A745",
+                  "color": "danger",
                   "blocks": [
                     {
                       "type": "section",
-                      "fields": [
-                        {
-                          "type": "plain_text",
-                          "text": "github.action: ${{ github.action }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.action_path: ${{ github.action_path }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.actor: ${{ github.actor }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.base_ref: ${{ github.base_ref }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.event: ${{ toJSON(github.event) }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.event_name: ${{ github.event_name }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.event_path: ${{ github.event_path }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.head_ref: ${{ github.head_ref }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.job: ${{ github.job }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.ref: ${{ github.ref }}"
-                        }
-                      ]
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "${{ github.event.repository.url }}/actions/runs/${{ github.run_id }} Failed: <${{ github.workflow }} \#${{ github.run_number }}|${{ github.event.head_commit.message }}>"
+                      }
                     },
                     {
-                      "type": "section",
-                      "fields": [
+                      "type": "context",
+                      "elements": [
                         {
-                          "type": "plain_text",
-                          "text": "github.ref_name: ${{ github.ref_name }}"
+                          "type": "image",
+                          "image_url": "https://slack.github.com/static/img/favicon-neutral.png",
+                          "alt_text": "<${{ github.event.repository.url }}|${{ github.event.repository.full_name }}>"
                         },
                         {
-                          "type": "plain_text",
-                          "text": "github.repository: ${{ github.repository }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.repository_owner: ${{ github.repository_owner }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.run_id: ${{ github.run_id }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.run_number: ${{ github.run_number }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.run_attempt: ${{ github.run_attempt }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.server_url: ${{ github.server_url }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.sha: ${{ github.sha }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.workflow: ${{ github.workflow }}"
-                        },
-                        {
-                          "type": "plain_text",
-                          "text": "github.workspace: ${{ github.workspace }}"
+                          "type": "mrkdwn",
+                          "text": "<${{ github.event.repository.url }}|${{ github.event.repository.full_name }}>"
                         }
                       ]
                     }
