@@ -32,16 +32,14 @@ jobs:
     name: Notify
     needs: build
     runs-on: ubuntu-latest
+    env:
+      MESSAGE: ${{ github.event.head_commit.message }}
+      REPO_URL: ${{ github.event.repository.url }}
+      FULL_NAME: ${{ github.event.repository.full_name }}
+      ACTION_LINK: ${{ format('<{0}/actions/runs/{1}|#{2}>', env.REPO_URL, github.run_id, github.run_number) }}
+      FOOTER_LINK: ${{ format('<{0}|{1}>', env.REPO_URL, env.FULL_NAME) }}
+      ICON_URL: https://slack.github.com/static/img/favicon-neutral.png
     if: always()
-    strategy:
-      matrix:
-        include:
-          - status: success
-            color: good
-            text: ${{ github.workflow }} Success
-          - status: failure
-            color: danger
-            text: "${{ github.workflow }} Failed: <${{ env.ACTION_URL }}|#${{ github.run_number }}> ${{ github.event.head_commit.message }}"
     steps:
       - if: needs.build.result == matrix.status
         name: Notify ${{ matrix.status }}
@@ -55,14 +53,20 @@ jobs:
                   "mrkdwn_in": ["text"],
                   "fallback": "GitHub Actions Notification",
                   "color": "${{ matrix.color }}",
-                  "text": "${{ matrix.text }}",
-                  "footer": "${{ env.FOOTER }}",
-                  "footer_icon": "${{ env.ICON }}"
+                  "text": "${{ join([github.workflow, format('{0}:', matrix.txt), env.ACTION_LINK, env.MESSAGE], ' ') }}",
+                  "footer": "${{ env.FOOTER_LINK }}",
+                  "footer_icon": "${{ env.ICON_URL }}"
                 }
               ]
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          ACTION_URL: ${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}
-          FOOTER: <${{ github.event.repository.url }}|${{ github.event.repository.full_name }}>
-          ICON: https://slack.github.com/static/img/favicon-neutral.png
+    strategy:
+      matrix:
+        include:
+          - status: success
+            text: Success
+            color: good
+          - status: failure
+            text: Failed
+            color: danger
