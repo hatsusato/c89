@@ -43,3 +43,12 @@ jobs:
         env:
           BUILD_DIR: ${{ matrix.build_dir }}
         run: ./test.sh -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+
+      - name: Post to a Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.16.0
+        with:
+          channel-id: ${{ secrets.CHANNEL_ID }}  # Slack channel id or name to post message. https://api.slack.com/methods/chat.postMessage#channels
+          slack-message: 'posting from a github action!'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
