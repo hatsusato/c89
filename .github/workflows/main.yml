@@ -18,6 +18,47 @@ jobs:
         env:
           BUILD_DIR: ${{ matrix.build_dir }}
         run: ./test.sh -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+    strategy:
+      matrix:
+        include:
+          - build_type: Release
+            build_dir: release
+          - build_type: Debug
+            build_dir: debug
+      fail-fast: false
+      max-parallel: 2
+    continue-on-error: true
+  notify-success:
+    name: Notify Success
+    needs: build
+    runs-on: ubuntu-latest
+    if: needs.build.result == 'success'
+    steps:
+      - name: Notify
+        uses: slackapi/slack-github-action@v1.16.0
+        with:
+          channel-id: ${{ secrets.CHANNEL_ID }}
+          payload: |
+            {
+              "attachments": [
+                {
+                  "mrkdwn_in": ["text"],
+                  "fallback": "GitHub Actions Notification",
+                  "color": "good",
+                  "text": "${{ github.workflow }} Success",
+                  "footer": "<${{ github.event.repository.url }}|${{ github.event.repository.full_name }}>",
+                  "footer_icon": "https://slack.github.com/static/img/favicon-neutral.png"
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+  notify-failure:
+    name: Notify Failure
+    needs: build
+    runs-on: ubuntu-latest
+    if: needs.build.result == 'success'
+    steps:
       - name: Notify
         uses: slackapi/slack-github-action@v1.16.0
         with:
@@ -38,12 +79,3 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           ACTION_URL: ${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}
-    strategy:
-      matrix:
-        include:
-          - build_type: Release
-            build_dir: release
-          - build_type: Debug
-            build_dir: debug
-      fail-fast: false
-      max-parallel: 2
