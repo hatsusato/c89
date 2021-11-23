@@ -18,6 +18,7 @@ jobs:
         env:
           BUILD_DIR: ${{ matrix.build_dir }}
         run: ./test.sh -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+      - run: [[ ${{ matrix.build_type }} == release ]] || exit
     strategy:
       matrix:
         include:
@@ -57,7 +58,7 @@ jobs:
     name: Notify Failure
     needs: build
     runs-on: ubuntu-latest
-    if: needs.build.result == 'success'
+    if: needs.build.result == 'failure'
     steps:
       - name: Notify
         uses: slackapi/slack-github-action@v1.16.0
