@@ -9,6 +9,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    outputs:
+      status: ${{ job.status }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -33,7 +35,7 @@ jobs:
     name: Notify Success
     needs: build
     runs-on: ubuntu-latest
-    if: needs.build.result == 'success'
+#   if: needs.build.result == 'success'
     steps:
       - run: echo '${{ toJSON(needs) }}'
       - name: Notify
@@ -59,7 +61,7 @@ jobs:
     name: Notify Failure
     needs: build
     runs-on: ubuntu-latest
-    if: needs.build.result == 'failure'
+#   if: needs.build.result == 'failure'
     steps:
       - run: echo '${{ toJSON(needs) }}'
       - name: Notify
