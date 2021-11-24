@@ -6,9 +6,11 @@ on:
     branches: [ master ]
   workflow_dispatch:
 jobs:
-  build:
-    name: Build
+  test:
+    name: Test
     runs-on: ubuntu-latest
+    env:
+      BUILD_DIR: ${{ matrix.build_type }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -19,12 +21,8 @@ jobs:
           done
       - name: Build
         run: ./build.sh -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        env:
-          BUILD_DIR: ${{ matrix.build_type }}
       - name: Test
-        run: ./test.sh -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        env:
-          BUILD_DIR: ${{ matrix.build_type }}
+        run: ./test.sh
     strategy:
       matrix:
         build_type: [Release, Debug]
@@ -32,14 +30,14 @@ jobs:
       max-parallel: 2
   notify:
     name: Notify
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - if: needs.build.result == matrix.status
+      - if: needs.test.result == matrix.status
         name: Checkout
         uses: actions/checkout@v2
-      - if: needs.build.result == matrix.status
+      - if: needs.test.result == matrix.status
         name: Notify ${{ matrix.status }}
         uses: ./.github/actions/notify-to-slack
         with:
