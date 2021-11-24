@@ -2,11 +2,6 @@
 
 set -eu
 
-BUILD_DIR=${BUILD_DIR:-build}
-TEST_DIR=${TEST_DIR:-test}
-TOP_DIR=$(dirname "$BASH_SOURCE")
-cd "$TOP_DIR"
-
 tests() {
   local f opts=(-name '*.c') x=excludes.txt
   if test -f "$x"; then
@@ -72,4 +67,9 @@ main() {
   exit $count
 }
 
+[[ -v BUILD_DIR ]] || ./build.sh
+BUILD_DIR=${BUILD_DIR:-build}
+TEST_DIR=${TEST_DIR:-test}
+TOP_DIR=$(dirname "$BASH_SOURCE")
+cd "$TOP_DIR"
 tests | main

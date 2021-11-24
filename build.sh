@@ -2,10 +2,6 @@
 
 set -eu
 
-BUILD_DIR=${BUILD_DIR:-build}
-TOP_DIR=$(dirname "$BASH_SOURCE")
-cd "$TOP_DIR"
-
 is-parallel() {
   local arg
   for arg; do
@@ -27,5 +23,8 @@ clean() {
   exit
 }
 
+BUILD_DIR=${BUILD_DIR:-build}
+TOP_DIR=$(dirname "$BASH_SOURCE")
+cd "$TOP_DIR"
 clean "$@"
 build "$@"
