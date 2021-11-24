@@ -13,18 +13,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Versions
-        run: for cmd in clang flex bison make cmake; do $cmd --version | head -n1; done
+        run: |
+          for cmd in clang flex bison make cmake; do
+            $cmd --version | head -n1
+          done
       - name: Test
-        env:
-          BUILD_DIR: ${{ matrix.build_dir }}
         run: ./test.sh -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        env:
+          BUILD_DIR: ${{ matrix.build_type }}
     strategy:
       matrix:
-        include:
-          - build_type: Release
-            build_dir: release
-          - build_type: Debug
-            build_dir: debug
+        build_type: [Release, Debug]
       fail-fast: false
       max-parallel: 2
   notify:
@@ -34,30 +33,16 @@ jobs:
     if: always()
     steps:
       - if: needs.build.result == matrix.status
+        name: Checkout
+        uses: actions/checkout@v2
+      - if: needs.build.result == matrix.status
         name: Notify ${{ matrix.status }}
-        uses: slackapi/slack-github-action@v1.16.0
+        uses: ./.github/actions/notify-to-slack
         with:
-          channel-id: ${{ secrets.CHANNEL_ID }}
-          payload: |
-            {
-              "attachments": [
-                {
-                  "mrkdwn_in": ["text"],
-                  "fallback": "GitHub Actions Notification",
-                  "color": "${{ matrix.color }}",
-                  "text": "${{ format('{0} {1}: <{2}/actions/runs/{3}|#{4}>', github.workflow, matrix.status, github.event.repository.url, github.run_id, github.run_number) }}",
-                  "footer": "${{ format('<{0}|{1}>', github.event.repository.url, github.event.repository.full_name) }}",
-                  "footer_icon": "${{ env.ICON_URL }}"
-                }
-              ]
-            }
+          status: ${{ matrix.status }}
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          ICON_URL: https://slack.github.com/static/img/favicon-neutral.png
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          BOT_USER_OAUTH_TOKEN: ${{ secrets.BOT_USER_OAUTH_TOKEN }}
     strategy:
       matrix:
-        include:
-          - status: success
-            color: good
-          - status: failure
-            color: danger
+        status: [success, failure]
