@@ -7,28 +7,6 @@ TEST_DIR=${TEST_DIR:-test}
 TOP_DIR=$(dirname "$BASH_SOURCE")
 cd "$TOP_DIR"
 
-error() {
-  echo "ERROR: $*" >&2
-  exit 1
-}
-build() {
-  mkdir -p "$BUILD_DIR"
-  local target_dir=$(cd -P "$BUILD_DIR"; pwd)
-  cmake -B "$target_dir" "$@" .
-  local arg opts=(--no-print-directory -C "$BUILD_DIR")
-  for arg; do
-    if [[ "$arg" == -j ]]; then
-      opts+=(-j)
-    fi
-  done
-  make "${opts[@]}"
-}
-clean() {
-  if [[ "$*" == clean && "$*" == "$1" ]]; then
-    make -C "$BUILD_DIR" clean >/dev/null
-    exit
-  fi
-}
 tests() {
   local f opts=(-name '*.c') x=excludes.txt
   if test -f "$x"; then
@@ -38,20 +16,12 @@ tests() {
   fi
   find "$TEST_DIR" "${opts[@]}" | sort
 }
-compile() {
-  local sh=./compile.sh
-  if test -x "$sh"; then
-    "$sh" "$@"
-  else
-    error "$sh not found"
-  fi
-}
 compare() {
   local out=1
-  if [[ "$1" == -q ]]; then
+  if [[ $opt == -q ]]; then
     exec {out}>/dev/null
   fi
-  diff -W 80 "$1" <(compile -s "$2") <(compile "$2") >&$out
+  diff -W 80 "$opt" <(./compile.sh -s "$1") <(./compile.sh "$1") >&$out
 }
 print() {
   local e=$'\e['
@@ -62,12 +32,13 @@ print() {
   echo "$bold$color$2$normal: ${name#/}" >&2
 }
 check() {
-  compile -s "$1" >/dev/null || exit
-  if compare -q "$1"; then
+  local opt
+  ./compile.sh -s "$1" >/dev/null || exit
+  if opt=-q compare "$1"; then
     print 32 PASS "$1"
   else
     print 31 FAIL "$1"
-    compare -y "$1"
+    opt=-y compare "$1"
     return 1
   fi
 }
@@ -101,6 +72,4 @@ main() {
   exit $count
 }
 
-clean "$@"
-build "$@"
 tests | main
