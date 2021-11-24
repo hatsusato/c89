@@ -17,6 +17,10 @@ jobs:
           for cmd in clang flex bison make cmake; do
             $cmd --version | head -n1
           done
+      - name: Build
+        run: ./build.sh -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        env:
+          BUILD_DIR: ${{ matrix.build_type }}
       - name: Test
         run: ./test.sh -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         env:
